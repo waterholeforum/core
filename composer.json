@@ -1,0 +1,58 @@
+{
+    "name": "waterhole/core",
+    "description": "Waterhole core",
+    "keywords": [
+        "forum"
+    ],
+    "license": "proprietary",
+    "require": {
+        "ext-json": "*",
+        "doctrine/dbal": "^3.1",
+        "fntneves/laravel-transactional-events": "^2.0",
+        "intervention/image": "^2.5",
+        "jrmajor/fluent": "^0.2",
+        "laravel/framework": "^8.45",
+        "laravel/scout": "^9.1",
+        "laravel/ui": "^3.3",
+        "nyholm/psr7": "^1.4",
+        "pragmarx/yaml": "^1.2",
+        "staudenmeir/laravel-adjacency-list": "^1.6",
+        "symfony/psr-http-message-bridge": "^2.1",
+        "tonysm/turbo-laravel": "^0.7.1",
+        "vanderlee/php-stable-sort-functions": "^2.0"
+    },
+    "require-dev": {
+        "mockery/mockery": "^1.0",
+        "phpunit/phpunit": "^7.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Waterhole\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Waterhole\\Providers\\WaterholeServiceProvider"
+            ],
+            "aliases": {
+                "Waterhole": "Waterhole\\Waterhole"
+            }
+        }
+    }
+}
