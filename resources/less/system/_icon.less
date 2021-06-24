@@ -1,0 +1,50 @@
+.icon {
+  display: inline-block;
+  height: 1.2em;
+  width: 1.2em;
+  vertical-align: -0.2em;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.icon--thin {
+  stroke-width: 1.5;
+}
+
+.icon--thick {
+  stroke-width: 2.5;
+}
+
+.icon--narrow {
+  margin-left: -0.2em;
+  margin-right: -0.2em;
+}
+
+.with-icon {
+  display: inline-flex;
+  align-items: baseline;
+
+  > .icon {
+    align-self: center;
+    margin-top: -1px;
+    margin-right: 0.2em;
+
+    &:not(:first-child) {
+      margin-left: 0.2em;
+    }
+  }
+}
+
+.icon-tabler-lock circle {
+  display: none;
+}
+
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 0.3em 0.1em;
+  border-radius: 100%;
+  background: currentColor;
+  vertical-align: -5px;
+}

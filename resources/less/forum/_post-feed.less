@@ -1,0 +1,33 @@
+.post-feed__refresh {
+  position: sticky;
+  top: calc(var(--header-height) + var(--space-md));
+
+  > * {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .btn {
+    box-shadow: var(--shadow-md);
+  }
+}
+
+.post-list > * {
+  padding: var(--space-sm) 0;
+}
+
+.post-list-item__content > .post-summary {
+  flex-grow: 1;
+}
+
+@media (max-width: @breakpoint-xs) {
+  .post-list-item__content {
+    align-items: flex-start;
+    gap: 1px;
+  }
+}
+
+.post-cards {
+  &:extend(.card-list all);
+}

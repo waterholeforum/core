@@ -1,0 +1,92 @@
+.btn {
+  height: var(--control-height);
+  background: var(--color-fill);
+  color: var(--color-text);
+  border-radius: var(--radius);
+  border: 0;
+  margin: 0;
+  display: inline-flex;
+  gap: var(--space-xxs);
+  align-items: center;
+  justify-content: center;
+  padding: 0 calc(0.4 * var(--control-height));
+  text-decoration: none !important;
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+  vertical-align: middle;
+  flex-shrink: 0;
+
+  .clickable();
+}
+
+// Outline
+
+.btn--outline {
+  border: 1px solid var(--color-stroke);
+  background: var(--color-bg);
+  color: var(--color-muted);
+}
+
+// Transparent
+
+:not([open]) > .btn--transparent:not(:hover, .is-hovered, :focus, .is-focused),
+.btn--transparent:is(:disabled, .is-disabled),
+.btn--transparent:not(button, a, [role='button'], [role='link']) {
+  background: transparent;
+  color: var(--color-muted);
+}
+
+// Sizes
+
+.btn--sm {
+  --control-height: var(--control-height-small);
+  padding: 0 calc(0.3 * var(--control-height-small));
+  font-size: var(--text-xs);
+}
+
+.btn--narrow {
+  padding: 0 calc(0.3 * var(--control-height));
+}
+
+.btn--wide {
+  padding: 0 calc(0.5 * var(--control-height));
+}
+
+// Icon button
+
+.btn--icon {
+  width: var(--control-height);
+  padding: 0;
+  border-radius: 100px;
+  position: relative;
+
+  .avatar {
+    width: 100%;
+    height: 100%;
+  }
+
+  .icon {
+    font-size: 120%;
+  }
+
+  .badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .label {
+    &:extend(.visually-hidden);
+  }
+}
+
+// Active state
+
+.btn {
+  &.is-active,
+  &[aria-pressed='true'] {
+    color: var(--color-accent-text) !important;
+    background: var(--color-accent-soft) !important;
+    border-color: transparent;
+  }
+}

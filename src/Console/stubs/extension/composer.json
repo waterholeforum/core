@@ -1,0 +1,28 @@
+{
+    "name": "{{ name }}",
+    "type": "waterhole-extension",
+    "description": "",
+    "license": "MIT",
+    "require": {
+        "waterhole/core": "^{{ waterhole_verison }}"
+    },
+    "autoload": {
+        "psr-4": {
+            "{{ namespace_escaped }}\\": "src/"
+        }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "{{ namespace_escaped }}\\{{ prefix }}ServiceProvider"
+            ]
+        },
+        "waterhole": {
+            "name": "{{ prefix }}"
+        }
+    }
+}

@@ -1,0 +1,19 @@
+.breadcrumb {
+  list-style: none;
+  padding: 0;
+  color: var(--color-muted);
+
+  > * {
+    display: inline;
+  }
+
+  > * + ::before {
+    content: ' › ';
+    margin: 0 var(--space-xxs);
+    color: var(--color-muted);
+  }
+
+  [aria-current='page'] {
+    color: var(--color-text);
+  }
+}

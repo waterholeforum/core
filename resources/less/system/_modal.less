@@ -1,0 +1,53 @@
+/* Style the modal container */
+ui-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: var(--z-index-overlay);
+  padding: var(--space-xxxl) var(--space-gutter);
+  overflow: auto;
+
+  &:not([hidden]) {
+    display: flex;
+  }
+
+  .dialog {
+    box-shadow: var(--shadow-md);
+    border: 0;
+  }
+}
+
+/* Style the backdrop */
+ui-modal::part(backdrop) {
+  background: var(--color-overlay);
+}
+
+ui-modal::part(content) {
+  max-width: 100%;
+}
+
+/* Transitions using hello-goodbye */
+ui-modal.enter-active,
+ui-modal.leave-active {
+  transition: opacity 0.3s;
+}
+
+ui-modal.enter-from,
+ui-modal.leave-to {
+  opacity: 0;
+}
+
+ui-modal.enter-active::part(content),
+ui-modal.leave-active::part(content) {
+  transition: transform 0.3s cubic-bezier(0.54, 1.12, 0.38, 1.11), opacity 0.3s;
+}
+
+ui-modal.enter-from::part(content),
+ui-modal.leave-to::part(content) {
+  transform: scale(0.7);
+  opacity: 0;
+}

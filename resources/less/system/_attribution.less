@@ -1,0 +1,36 @@
+:root {
+  --attribution-avatar-size: 2.5em;
+}
+
+.attribution {
+  padding-left: calc(var(--attribution-avatar-size) + var(--space-md));
+
+  .avatar {
+    float: left;
+    margin-left: calc(-1 * (var(--attribution-avatar-size) + var(--space-md)));
+    width: var(--attribution-avatar-size);
+    height: var(--attribution-avatar-size);
+  }
+}
+
+.attribution__name {
+  color: inherit;
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  margin-right: var(--space-xxs);
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.attribution__info {
+  display: block;
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+  margin-top: var(--space-xxs);
+
+  > * + *::before {
+    content: ' · ';
+  }
+}

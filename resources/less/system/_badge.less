@@ -1,0 +1,53 @@
+.badge {
+  border-radius: 999px;
+  background: var(--color-fill);
+  color: var(--color-muted);
+  border: 0;
+  margin: 0;
+  font-size: var(--text-xxs);
+  font-weight: var(--weight-medium);
+  line-height: 1.2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5ch;
+  min-height: 1.7em;
+  text-align: center;
+  padding: 0 0.6em;
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
+
+  > .icon:first-child {
+    margin-left: -0.2em;
+    margin-right: 0.2em;
+  }
+
+  .icon {
+    stroke-width: 2.5;
+  }
+}
+
+.group-badge {
+  background-color: var(--group-color, var(--color-fill));
+  color: var(--group-color-constrast, var(--color-muted));
+}
+
+.badge--hidden {
+  border: 2px dotted var(--color-stroke);
+  background-color: transparent;
+}
+
+.suspended-badge {
+  background: var(--color-muted);
+  color: var(--color-bg);
+}
+
+.tag {
+  &:extend(.badge);
+  border-radius: 4px;
+  font-weight: normal;
+  padding: 0 0.5em;
+}

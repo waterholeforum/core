@@ -1,0 +1,26 @@
+.post-summary {
+  display: flex;
+  gap: var(--space-md);
+  align-items: flex-start;
+}
+
+.post-summary__avatar {
+  width: 2.5rem;
+  text-decoration: none !important;
+  flex-shrink: 0;
+}
+
+.post-summary__title a {
+  padding: 10px 0;
+  margin: -10px 0;
+  display: block;
+
+  .not-logged-in &:visited,
+  .is-read & {
+    color: var(--color-muted);
+  }
+}
+
+.is-read .post-summary__unread {
+  display: none;
+}

@@ -1,0 +1,22 @@
+turbo-frame {
+  display: block;
+}
+
+.turbo-progress-bar {
+  background-color: var(--color-accent);
+}
+
+.next-page {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    bottom: -100px;
+  }
+
+  .no-js & {
+    display: none;
+  }
+}

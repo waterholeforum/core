@@ -1,0 +1,148 @@
+@breakpoint-xs: 36rem;
+@breakpoint-sm: 53rem;
+@breakpoint-md: 69rem;
+@breakpoint-lg: 75rem;
+
+:root {
+  // Background color
+  --bg-hsl: 255 100% 100%;
+  --color-bg: hsl(var(--bg-hsl));
+
+  // Text color
+  --text-hsl: 0 0% 0%;
+  --color-text: hsl(var(--text-hsl));
+
+  // Muted color
+  --muted-hsl: 250 10% 50%;
+  --color-muted: hsl(var(--muted-hsl));
+  --color-fill: hsl(var(--muted-hsl) / 0.1);
+  --color-stroke: hsl(var(--muted-hsl) / 0.25);
+
+  // Emphasis color
+  --color-emphasis: hsl(217, 16%, 22%);
+  --color-emphasis-contrast: #fff;
+
+  // Accent color
+  --accent-h: 255;
+  --accent-s: 100%;
+  --accent-l: 65%;
+  --color-accent: hsl(var(--accent-h) var(--accent-s) var(--accent-l));
+  --color-accent-contrast: #fff;
+  --color-accent-soft: hsl(var(--accent-h) var(--accent-s) var(--accent-l) / 0.2);
+  --color-accent-text: hsl(var(--accent-h) var(--accent-s) 50%);
+
+  // Danger color
+  --danger-h: 0;
+  --danger-s: 100%;
+  --danger-l: 38%;
+  --color-danger: hsl(var(--danger-h) var(--danger-s) var(--danger-l));
+  --color-danger-contrast: #fff;
+  --color-danger-soft: hsl(var(--danger-h) var(--danger-s) var(--danger-l) / 0.2);
+  --color-danger-text: hsl(var(--danger-h) var(--danger-s) 30%);
+
+  // Warning color
+  --warning-h: 60;
+  --warning-s: 100%;
+  --warning-l: 45%;
+  --color-warning: hsl(var(--warning-h) var(--warning-s) var(--warning-l));
+  --color-warning-contrast: hsl(var(--warning-h) var(--warning-s) calc(var(--warning-l) - 30%));
+  --color-warning-soft: hsl(var(--warning-h) var(--warning-s) var(--warning-l) / 0.2);
+  --color-warning-text: hsl(var(--warning-h) var(--warning-s) 20%);
+
+  // Success color
+  --success-h: 127;
+  --success-s: 100%;
+  --success-l: 27%;
+  --color-success: hsl(var(--success-h) var(--success-s) var(--success-l));
+  --color-success-contrast: #fff;
+  --color-success-soft: hsl(var(--success-h) var(--success-s) var(--success-l) / 0.2);
+  --color-success-text: hsl(var(--success-h) var(--success-s) 30%);
+
+  // Latest color
+  --activity-h: 23;
+  --activity-s: 100%;
+  --activity-l: 45%;
+  --color-activity: hsl(var(--activity-h) var(--activity-s) var(--activity-l));
+  --color-activity-contrast: #fff;
+  --color-activity-soft: hsl(var(--activity-h) var(--activity-s) var(--activity-l) / 0.2);
+  --color-activity-text: hsl(var(--activity-h) var(--activity-s) 40%);
+
+  // Border radius
+  --radius: 10px;
+
+  // Shadows
+  --shadow-ring: 0 0 0 1px rgb(0 0 0 / 0.05);
+  --shadow-sm: var(--shadow-ring), 0 1px 4px rgb(0 0 0 / 0.1);
+  --shadow-md: var(--shadow-ring), 0 5px 15px rgb(0 0 0 / 0.2);
+
+  // Filters
+  --filter-hover: brightness(0.95);
+  --filter-active: brightness(0.9);
+
+  // Overlays
+  --color-overlay: rgb(0 0 0 / 0.5);
+
+  // Font
+  --font-system: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  --font-text: var(--font-system);
+  --font-display: var(--font-text);
+  --font-mono: SFMono-Regular, Menlo, Monaco, Consolas, 'Courier New', monospace;
+
+  // Font weights
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-bold: 600;
+
+  // Line height
+  --line-height-default: 1.3;
+  --line-height-condensed: 1.2;
+  --line-height-expanded: 1.5;
+
+  // Typographic measure
+  --measure: 80ch;
+
+  // Z-indexes
+  --z-index-header: 100;
+  --z-index-overlay: 200;
+  --z-index-alerts: 300;
+
+  // Font size
+  --text-xxs: 0.8rem;
+  --text-xs: 0.875rem;
+  --text-sm: 1rem;
+  --text-md: 1.125rem;
+  --text-lg: 1.5rem;
+  --text-xl: 2rem;
+  --text-xxl: 2.5rem;
+
+  // Spacing
+  --ratio: 1.5;
+  --space-px: 1px;
+  --space-xxs: calc(var(--space-xs) / var(--ratio));
+  --space-xs: calc(var(--space-sm) / var(--ratio));
+  --space-sm: calc(var(--space-md) / var(--ratio));
+  --space-md: 1rem;
+  --space-lg: calc(var(--space-md) * var(--ratio));
+  --space-xl: calc(var(--space-lg) * var(--ratio));
+  --space-xxl: calc(var(--space-xl) * var(--ratio));
+  --space-xxxl: calc(var(--space-xxl) * var(--ratio));
+  --space-gutter: min(2rem, 5vw);
+
+  // Heights
+  --control-height: 2.5em;
+  --control-height-small: 2.1em;
+  --header-height: 4rem;
+}
+
+:root[data-theme='dark'] {
+  --bg-hsl: 200 10% 14%;
+  --text-hsl: 0 0% 93%;
+  --muted-hsl: 250 10% 60%;
+  --color-accent-text: hsl(var(--accent-h) var(--accent-s) 70%);
+  --color-danger-text: hsl(var(--danger-h) var(--danger-s) 70%);
+  --color-success-text: hsl(var(--success-h) var(--success-s) 35%);
+  --color-warning-text: hsl(var(--warning-h) var(--warning-s) 40%);
+  --color-activity-text: hsl(var(--activity-h) var(--activity-s) 60%);
+  --shadow-ring: 0 0 0 1px rgb(255 255 255 / 0.1);
+}

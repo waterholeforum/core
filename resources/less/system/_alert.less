@@ -1,0 +1,25 @@
+.alert {
+  border-radius: var(--radius);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-fill);
+  display: flex;
+  align-items: flex-start;
+  font-size: var(--text-xs);
+  gap: var(--space-sm);
+  line-height: var(--line-height-expanded);
+}
+
+.alert__icon {
+  display: flex;
+  font-size: var(--text-md);
+  line-height: var(--line-height-default);
+}
+
+.alert__actions {
+  display: flex;
+  align-items: center;
+  margin-block: calc(-1 * var(--space-xs));
+  margin-right: calc(-1 * var(--space-sm));
+  margin-left: auto;
+  gap: var(--space-sm);
+}

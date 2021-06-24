@@ -1,0 +1,14 @@
+.skip-link {
+  color: var(--color-accent-contrast);
+  background-color: var(--color-accent);
+  padding: var(--space-xs);
+  position: absolute;
+  top: -10rem;
+
+  &:focus {
+    position: absolute;
+    z-index: var(--z-index-overlay);
+    top: var(--space-xs);
+    left: var(--space-xs);
+  }
+}
