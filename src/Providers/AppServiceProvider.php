@@ -2,6 +2,7 @@
 
 namespace Waterhole\Providers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use PragmaRX\Yaml\Package\Facade as Yaml;
@@ -60,18 +61,13 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        Model::preventLazyLoading();
+
         $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
 
         collect($this->configFiles)->each(function ($config) {
             $this->publishes([__DIR__."/../../config/$config.php" => config_path("waterhole/$config.php")], 'waterhole');
         });
-
-        $this->publishes([
-            __DIR__.'/../../config/nav.yml' => config_path('waterhole/nav.yml'),
-        ]);
-
-        Yaml::loadToConfig(__DIR__.'/../../config/nav.yml', 'waterhole.nav');
-        Yaml::loadToConfig(config_path('waterhole/nav.yml'), 'waterhole.nav');
 
         // Override the notifications database channel with our own instance.
         // This is necessary to extract special fields from the notification

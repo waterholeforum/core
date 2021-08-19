@@ -2,31 +2,37 @@
 
 namespace Waterhole\Providers;
 
-use Waterhole\Models\Extension;
 use Illuminate\Support\ServiceProvider;
-use Waterhole\Waterhole;
 
-class ExtensionServiceProvider extends ServiceProvider
+abstract class ExtensionServiceProvider extends ServiceProvider
 {
-    public function register()
-    {
-        // $this->app->instance('waterhole.extensions', [
-        //     new Extension('tobyz/waterhole-hello-world')
-        // ]);
-        //
-        // foreach ($this->app['waterhole.extensions'] as $extension) {
-        //     $extension->extend($this->app, 'register');
-        // }
+    private array $extenders;
 
-        Waterhole::applyExtenders($this->app, 'register');
+    abstract public function extenders(): array;
+
+    public function __construct($app)
+    {
+        parent::__construct($app);
+
+        $this->extenders = $this->extenders();
+    }
+
+    public function register(): void
+    {
+        $this->applyExtenders('register');
     }
 
     public function boot()
     {
-        // foreach ($this->app['waterhole.extensions'] as $extension) {
-        //     $extension->extend($this->app, 'boot');
-        // }
+        $this->applyExtenders('boot');
+    }
 
-        Waterhole::applyExtenders($this->app, 'boot');
+    private function applyExtenders(string $method): void
+    {
+        foreach ($this->extenders as $extender) {
+            if (method_exists($extender, $method)) {
+                $extender->$method($this->app);
+            }
+        }
     }
 }

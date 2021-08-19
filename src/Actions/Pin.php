@@ -15,7 +15,7 @@ class Pin extends Action
 
     public function appliesTo($item): bool
     {
-        return ($item instanceof Post || $item instanceof Comment) && ! $item->is_pinned;
+        return ($item instanceof Post || ($item instanceof Comment && ! $item->parent_id)) && ! $item->is_pinned;
     }
 
     public function authorize(User $user, $item): bool

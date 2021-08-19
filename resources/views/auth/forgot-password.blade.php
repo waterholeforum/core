@@ -1,8 +1,4 @@
-@extends('waterhole::centered')
-
-@section('title', __('waterhole::auth.forgot-password-title'))
-
-@section('content')
+<x-waterhole::layout-centered :title="__('waterhole::auth.forgot-password-title')">
     <h1>{{ __('waterhole::auth.forgot-password-title') }}</h1>
 
     <p>{{ __('waterhole::auth.forgot-password-introduction') }}</p>
@@ -24,4 +20,4 @@
             <button type="submit">{{ __('waterhole::auth.forgot-password-submit') }}</button>
         </div>
     </form>
-@endsection
+</x-waterhole::layout-centered>

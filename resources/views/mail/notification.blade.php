@@ -1,4 +1,4 @@
-@component('mail::centered')
+@component('mail::components.layout-centered.php')
   <div class="notification-text">
     @isset($avatar)
       <img src="{{ $avatar }}" class="avatar">

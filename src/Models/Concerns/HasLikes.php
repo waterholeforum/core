@@ -7,8 +7,15 @@ use Waterhole\Models\User;
 
 trait HasLikes
 {
-    public function likedBy(): MorphMany
+    public function likedBy()
     {
-        return $this->morphMany(User::class, 'likes')->withTimestamps();
+        return $this->morphToMany(User::class, 'content', 'likes')->withPivot('created_at');
+    }
+
+    public function refreshLikeMetadata(): static
+    {
+        $this->score = $this->likedBy()->count();
+
+        return $this;
     }
 }

@@ -7,8 +7,11 @@ use Illuminate\Support\Facades\Auth;
 use Waterhole\Actions\Action;
 use Waterhole\Actions\Delete;
 use Waterhole\Actions\DeleteChannel;
+use Waterhole\Actions\Edit;
+use Waterhole\Actions\Like;
 use Waterhole\Actions\MoveChannel;
 use Waterhole\Actions\Pin;
+use Waterhole\Actions\Reply;
 use Waterhole\Actions\Unpin;
 use Waterhole\Extend\Concerns\ManagesComponents;
 
@@ -19,16 +22,23 @@ class Actions
     protected static function defaultComponents(): array
     {
         return [
-            Pin::class => 0,
-            Unpin::class => 0,
-            MoveChannel::class => 0,
-            DeleteChannel::class => 100,
-            Delete::class => 100,
+            Like::class,
+            Reply::class,
+            Pin::class,
+            Unpin::class,
+            Edit::class,
+            MoveChannel::class,
+            DeleteChannel::class,
+            Delete::class,
         ];
     }
 
-    public static function for($items)
+    public static function for($items): array
     {
+        if (! Auth::check()) {
+            return [];
+        }
+
         if (! $items instanceof Collection) {
             $items = collect($items);
         }

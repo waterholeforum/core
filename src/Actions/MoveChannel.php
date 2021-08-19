@@ -42,12 +42,12 @@ class MoveChannel extends Action
 
     public function run(Collection $items, Request $request)
     {
-        $validated = $request->validate([
+        $data = $request->validate([
             'channel_id' => ['required', Rule::exists('channels', 'id')],
         ]);
 
         // TODO: check permission to post in this channel
 
-        $items->each->update($validated);
+        $items->each->update($data);
     }
 }

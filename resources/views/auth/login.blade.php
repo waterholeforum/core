@@ -1,8 +1,4 @@
-@extends('waterhole::centered')
-
-@section('title', __('waterhole::auth.login-title'))
-
-@section('content')
+<x-waterhole::layout-centered :title="__('waterhole::auth.login-title')">
     <h1>{{ __('waterhole::auth.login-title') }}</h1>
 
     @if (session('status'))
@@ -39,4 +35,4 @@
             <button type="submit">{{ __('waterhole::auth.login-submit') }}</button>
         </div>
     </form>
-@endsection
+</x-waterhole::layout-centered>

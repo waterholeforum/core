@@ -1,0 +1,86 @@
+*, ::after, ::before {
+  box-sizing: border-box;
+  background: none;
+  font: inherit;
+  color: inherit;
+  overflow-wrap: break-word;
+  margin: 0;
+  padding: 0;
+  border: 0 solid;
+  list-style: none;
+}
+
+html {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-plain);
+  font-size: 100%;
+  line-height: 1.3;
+}
+
+a {
+  color: var(--color-link);
+}
+
+h1, h2, h3, h4 {
+  line-height: 1;
+  font-family: var(--font-special);
+  font-weight: 600;
+  hyphens: auto;
+}
+
+.h1, h1 {
+  font-size: 3rem;
+}
+
+.h2, h2 {
+  font-size: 1.5rem;
+}
+
+.h3, h3 {
+  font-size: 1.125rem;
+}
+
+.h4, h4 {
+  font-size: 1rem;
+}
+
+.lead {
+  font-size: 1.3rem;
+  line-height: 1.4;
+}
+
+:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+[tabindex="-1"]:focus,
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :root {
+    scroll-behavior:smooth
+  }
+}
+
+/*
+TODO
+[href="#main"] {
+    display: inline-block;
+    padding: var(--s-1);
+    color: var(--color-light);
+    background-color: var(--color-dark);
+    position: absolute;
+    top: -10rem
+}
+
+[href="#main"]:focus {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    outline:none
+}
+ */

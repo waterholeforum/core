@@ -1,33 +1,21 @@
-@extends('waterhole::layout')
+<x-waterhole::layout>
+    <x-waterhole::index>
 
-@section('content')
-  <div class="has-left-sidebar has-right-sidebar">
+        <div class="card home-toolbar">
+            <div class="toolbar"> <!-- Extend\HomeToolbar -->
+                <h1 class="visually-hidden">Home</h1>
 
-    <div class="sidebar">
-      <x-waterhole::nav/>
-    </div>
+                <x-waterhole::feed.sort :feed="$feed"/>
 
-    <main>
-      <form method="get">
-        <x-waterhole::search-input :placeholder="__('waterhole::forum.search-placeholder')"/>
-      </form>
+                <div class="spacer"></div>
 
-      <div class="card home-toolbar">
-        <div class="toolbar"> <!-- Extend\HomeToolbar -->
-          <h1>Home</h1>
-          <!-- Sort selector -->
-          <!-- Layout selector -->
-          <div class="spacer"></div>
-          <a href="{{ route('waterhole.posts.create') }}">New Post</a>
+                @can('create', Waterhole\Models\Post::class)
+                    <a href="{{ route('waterhole.posts.create') }}">New Post</a>
+                @endcan
+            </div>
         </div>
-      </div>
 
-      <x-waterhole::posts.list :posts="$posts"/>
-    </main>
+        <x-waterhole::feed.list :feed="$feed"/>
 
-    <aside>
-      Right sidebar
-    </aside>
-
-  </div>
-@endsection
+    </x-waterhole::index>
+</x-waterhole::layout>

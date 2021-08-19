@@ -5,6 +5,7 @@ namespace Waterhole\Actions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
+use Illuminate\Validation\Rule;
 use Waterhole\Models\Channel;
 use Waterhole\Models\User;
 
@@ -38,8 +39,23 @@ class DeleteChannel extends Action
         );
     }
 
-    public function run(Collection $items, Request $request): void
+    public function run(Collection $items, Request $request)
     {
-        // $items->each->delete();
+        $data = $request->validate([
+            'move_posts' => ['boolean'],
+            'channel_id' => ['required_if:move_posts,1', Rule::exists(Channel::class, 'id')],
+        ]);
+
+        $items->each(function (Channel $channel) use ($data) {
+            if ($data['move_posts'] ?? false) {
+                $channel->posts()->update(['channel_id' => $data['channel_id']]);
+            }
+
+            $channel->delete();
+        });
+
+        // TODO: update nav
+
+        return redirect('/');
     }
 }

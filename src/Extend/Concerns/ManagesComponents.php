@@ -2,7 +2,7 @@
 
 namespace Waterhole\Extend\Concerns;
 
-use StableSort\StableSort;
+use Illuminate\Support\Collection;
 
 trait ManagesComponents
 {
@@ -10,7 +10,6 @@ trait ManagesComponents
 
     private string $component;
     private int $position;
-    private bool $remove;
 
     public function __construct(string $component, int $position = 0)
     {
@@ -20,16 +19,7 @@ trait ManagesComponents
 
     public function register(): void
     {
-        if ($this->remove) {
-            unset(static::$components[$this->component]);
-        } else {
-            static::$components[$this->component] = $this->position;
-        }
-    }
-
-    public function remove(): void
-    {
-        $this->remove = true;
+        static::$components[$this->position][] = $this->component;
     }
 
     protected static function defaultComponents(): array
@@ -37,12 +27,24 @@ trait ManagesComponents
         return [];
     }
 
-    public static function getComponents(): array
+    public static function getComponents(): Collection
     {
-        $components = array_merge(static::defaultComponents(), static::$components);
+        $defaults = array_map(function ($components) {
+            return is_array($components) ? $components : [$components];
+        }, static::defaultComponents());
 
-        StableSort::asort($components);
+        $components = array_replace_recursive($defaults, static::$components);
 
-        return array_keys($components);
+        return collect($components)->sortKeys()->flatten();
+    }
+
+    public static function clearComponents(): void
+    {
+        static::$components = [];
+    }
+
+    public static function getInstances(): Collection
+    {
+        return static::getComponents()->map(fn($class) => app($class));
     }
 }

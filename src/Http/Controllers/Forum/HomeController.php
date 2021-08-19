@@ -2,14 +2,16 @@
 
 namespace Waterhole\Http\Controllers\Forum;
 
+use Illuminate\Http\Request;
 use Waterhole\Http\Controllers\Controller;
-use Waterhole\Models\Post;
+use Waterhole\PostFeed;
 
 class HomeController extends Controller
 {
-    public function __invoke()
+    public function __invoke(Request $request)
     {
-        return view('waterhole::forum.home')
-            ->with('posts', Post::query()->latest()->cursorPaginate());
+        $feed = new PostFeed($request);
+
+        return view('waterhole::forum.home')->with(compact('feed'));
     }
 }

@@ -34,4 +34,9 @@ class ChannelPolicy
     {
         return $this->allow();
     }
+
+    public function post(User $user, Channel $channel)
+    {
+        return $this->allow();
+    }
 }

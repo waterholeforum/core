@@ -1,41 +1,24 @@
-@extends('waterhole::layout')
+<x-waterhole::layout :title="$channel->name">
+  <x-waterhole::index>
 
-@section('title', $channel->name)
+    <div class="card channel-card">
+      <h1>{{ $channel->display_name }}</h1>
 
-@section('content')
-  <div class="has-left-sidebar has-right-sidebar">
+      <x-waterhole::feed.sort :feed="$feed"/>
 
-    <div class="sidebar">
-      <x-waterhole::nav/>
-    </div>
-
-    <main>
-      <form method="get">
-        <x-waterhole::search-input :placeholder="__('waterhole::forum.search-placeholder')"/>
-      </form>
-
-      <div class="card channel-card">
-        <h1>{{ $channel->display_name }}</h1>
-        <!-- Sort selector -->
-        <!-- Layout selector -->
-        <div class="spacer"></div>
-        <div>
-          @can('update', $channel)
-            <a href="{{ route('waterhole.channels.edit', ['channel' => $channel]) }}">Edit Channel</a>
-          @endcan
-
-          <x-waterhole::actions actionable="channels" :items="[$channel]"/>
-
-        </div>
-        <a href="{{ route('waterhole.posts.create', ['channel' => $channel->id]) }}">New Post</a>
+      <div class="spacer"></div>
+      <div>
+        <x-waterhole::actions actionable="channels" :items="[$channel]"/>
       </div>
 
-      <x-waterhole::posts.list :posts="$posts"/>
-    </main>
+      @can('create', Waterhole\Models\Post::class)
+        @can('post', $channel)
+          <a href="{{ route('waterhole.posts.create', ['channel' => $channel->id]) }}">New Post</a>
+        @endcan
+      @endcan
+    </div>
 
-    <aside>
-      Right sidebar
-    </aside>
+    <x-waterhole::feed.list :feed="$feed"/>
 
-  </div>
-@endsection
+  </x-waterhole::index>
+</x-waterhole::layout>

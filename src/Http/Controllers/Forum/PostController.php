@@ -3,22 +3,53 @@
 namespace Waterhole\Http\Controllers\Forum;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Waterhole\Extend\CommentsSort;
 use Waterhole\Http\Controllers\Controller;
+use Waterhole\Models\Channel;
+use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
+use Waterhole\Sorts\Sort;
 
 class PostController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('waterhole.auth')->only('create', 'store');
+        $this->middleware('waterhole.auth')->except('show');
+        $this->middleware('waterhole.throttle:waterhole.create')->only('store', 'update');
     }
 
-    public function show(Post $post)
+    public function show(Post $post, Request $request)
     {
         $this->authorize('view', $post);
 
-        return view('waterhole::posts.show', ['post' => $post]);
+        $post->load('likedBy');
+
+        $sorts = CommentsSort::getInstances();
+        $currentSort = $sorts->first(function (Sort $sort) use ($request) {
+            return $sort->handle() === $request->query('sort');
+        }, $sorts[0]);
+
+        $query = $post->comments()->with('user', 'parent.user', 'likedBy');
+
+        $comment = $comments = null;
+
+        if ($cid = $request->query('comment')) {
+            if (! $comment = $query->find($cid)) {
+                return redirect($post->url);
+            }
+            $comment->setRelation('post', $post)->load('replies.user');
+            $comment->replies->each->setRelation('parent', $comment);
+            $comment->replies->each->setRelation('post', $post);
+        } else {
+            $currentSort->apply($query->orderBy('is_pinned', 'desc'));
+            $comments = $query->paginate(config('waterhole.forum.comments_per_page'));
+            $comments->getCollection()->each->setRelation('post', $post);
+        }
+
+        // Mark the post as read for the current user
+        $post->userState?->read()->save();
+
+        return view('waterhole::posts.show', compact('post', 'comments', 'comment', 'sorts', 'currentSort'));
     }
 
     public function create()
@@ -32,11 +63,12 @@ class PostController extends Controller
     {
         $this->authorize('create', Post::class);
 
-        $validated = $request->validate(Post::rules());
+        $post = Post::byUser(
+            $request->user(),
+            $this->data($request)
+        );
 
-        $post = Post::create(array_merge($validated, [
-            'user_id' => Auth::id(),
-        ]));
+        $post->save();
 
         return redirect($post->url);
     }
@@ -52,26 +84,19 @@ class PostController extends Controller
     {
         $this->authorize('update', $post);
 
-        $validated = $request->validate(Post::rules());
-
-        $post->update($validated);
+        $post->fill($this->data($request, $post))->wasEdited()->save();
 
         return redirect($post->url);
     }
 
-    public function delete(Post $post)
+    private function data(Request $request, Post $post = null): array
     {
-        $this->authorize('delete', $post);
+        $data = $request->validate(Post::rules($post));
 
-        return view('waterhole::posts.delete', ['post' => $post]);
-    }
+        if (isset($data['channel_id'])) {
+            $this->authorize('post', Channel::findOrFail($data['channel_id']));
+        }
 
-    public function destroy(Post $post)
-    {
-        $this->authorize('delete', $post);
-
-        $post->delete();
-
-        return redirect($post->channel->url);
+        return $data;
     }
 }

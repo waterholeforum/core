@@ -9,6 +9,6 @@
     </ui-menu>
   </ui-dropdown>
 @else
-  <a href="{{ route('waterhole.login') }}">{{ __('waterhole::header.log-in') }}</a>
-  <a href="{{ route('waterhole.register') }}">{{ __('waterhole::header.register') }}</a>
+  <a href="{{ route('waterhole.login') }}" class="btn btn--link">{{ __('waterhole::header.log-in') }}</a>
+  <a href="{{ route('waterhole.register') }}" class="btn btn--primary">{{ __('waterhole::header.register') }}</a>
 @endauth

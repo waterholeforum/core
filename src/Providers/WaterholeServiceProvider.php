@@ -19,7 +19,7 @@ class WaterholeServiceProvider extends AggregateServiceProvider
         BroadcastServiceProvider::class,
         ViewServiceProvider::class,
 
-        ExtensionServiceProvider::class,
+        // ExtensionServiceProvider::class,
 
         // IgnitionServiceProvider::class,
         // ViewServiceProvider::class,

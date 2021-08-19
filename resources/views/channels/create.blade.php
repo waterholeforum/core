@@ -1,17 +1,15 @@
-@extends('waterhole::layout')
-
-@section('title', 'Create a Channel')
-
-@section('content')
+<x-waterhole::layout title="Create a Channel">
   <form method="POST" action="{{ route('waterhole.channels.store') }}">
     @csrf
 
+    <x-waterhole::errors :errors="$errors"/>
+
     <!-- TODO: componentize -->
 
-    @include('waterhole::channels.fields')
+    @include('waterhole::channels.fields', ['channel' => null])
 
     <div>
       <button type="submit">Create</button>
     </div>
   </form>
-@endsection
+</x-waterhole::layout>

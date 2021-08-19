@@ -1,5 +1,5 @@
 @props(['placeholder'])
 
 <div class="search-input">
-  <input type="text" name="search" placeholder="{{ $placeholder }}">
+  <input class="input" type="text" name="search" placeholder="{{ $placeholder }}">
 </div>

@@ -1,29 +1,37 @@
-@extends('waterhole::layout')
+<x-waterhole::layout :title="$post->title">
+    <div class="container">
+      <div>
+          <a href="{{ $post->channel->url }}">{{ $post->channel->display_name }}</a>
+      </div>
 
-@section('title', $post->title)
+        <x-waterhole::actions actionable="posts" :items="[$post]"/>
 
-@section('content')
-  <div>
-    <a href="{{ $post->channel->url }}">{{ $post->channel->display_name }}</a>
-  </div>
+        <h1>{{ $post->title }}</h1>
 
-  <div>
-    <a href="{{ $post->edit_url }}">Edit</a>
-  </div>
+        {{ $post->body }}
 
-  <x-waterhole::actions actionable="posts" :items="[$post]"/>
+        <h2>{{ $post->comment_count }} comments</h2>
 
-  <h1>{{ $post->title }}</h1>
+        <details>
+            <summary>Sort by {{ $currentSort->name() }}</summary>
+            @foreach ($sorts as $sort)
+                <a href="{{ $post->url }}?sort={{ $sort->handle() }}">{{ $sort->name() }}</a>
+            @endforeach
+        </details>
 
-  {{ $post->body }}
+        @if ($comment)
+            <p><a href="{{ request()->fullUrlWithQuery(['comment' => null]) }}">View
+                    all comments</a></p>
 
-  <h2>{{ $post->comment_count }} comments</h2>
+            <x-waterhole::comments.comment :comment="$comment"/>
+        @else
+            @foreach ($comments as $comment)
+                <x-waterhole::comments.comment :comment="$comment"/>
+            @endforeach
 
-  <ol>
-    @foreach ($post->comments()->whereNull('parent_id')->with('children')->get() as $comment)
-      <x-waterhole::comments.comment :comment="$comment"/>
-    @endforeach
-  </ol>
+            {{ $comments->links() }}
+        @endif
 
-  <x-waterhole::comments.reply :post="$post"/>
-@endsection
+        <x-waterhole::comments.reply :post="$post"/>
+    </div>
+</x-waterhole::layout>

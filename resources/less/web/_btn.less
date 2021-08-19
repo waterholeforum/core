@@ -1,0 +1,28 @@
+.btn {
+  height: var(--control-height);
+  background: var(--color-fill);
+  border-radius: var(--border-radius);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--size-sm) var(--size-md);
+  text-decoration: none;
+
+  &:hover {
+    filter: var(--filter-hover);
+  }
+
+  &:active {
+    filter: var(--filter-active);
+    transform: scale(0.95);
+  }
+}
+
+.btn--primary {
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+}
+
+.btn--link {
+  background: transparent;
+}

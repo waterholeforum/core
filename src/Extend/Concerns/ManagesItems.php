@@ -11,8 +11,6 @@
 
 namespace Waterhole\Extend\Concerns;
 
-use Waterhole\Application;
-
 trait ManagesItems
 {
     private static array $items = [];
@@ -26,7 +24,7 @@ trait ManagesItems
         $this->value = $value;
     }
 
-    public function register(Application $app)
+    public function register(): void
     {
         static::$items[$this->key] = $this->value;
     }

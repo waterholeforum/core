@@ -1,0 +1,87 @@
+@breakpoint-xs: 576px;
+@breakpoint-sm: 768px;
+@breakpoint-md: 992px;
+@breakpoint-lg: 1200px;
+
+:root {
+  // Base color
+  --base-h: 180;
+  --base-s: 20%;
+  //--base-l: 100%;
+  //--base-hsl: var(--base-h), var(--base-s), var(--base-l);
+
+  --color-bg: #fff;
+  --color-fill: ~"hsla(var(--base-h), var(--base-s), 85%, 0.4)";
+  --color-stroke: ~"hsla(var(--base-h), var(--base-s), 85%, 0.6)";
+
+  --color-text: #000;
+  --color-text-muted: ~"hsl(var(--base-h), calc(var(--base-s) / 2), 50%)";
+  --color-link: var(--color-accent);
+
+  // Accent color
+  --accent-h: 253;
+  --accent-s: 100%;
+  --accent-l: 61%;
+  --accent-hsl: var(--accent-h), var(--accent-s), var(--accent-l);
+
+  --color-accent: ~"hsl(var(--accent-hsl))";
+  --color-accent-contrast: #fff;
+  --color-accent-light: ~"hsla(var(--accent-hsl), 0.2)";
+
+  // Tooltip color
+  --color-tooltip: #303742;
+  --color-tooltip-contrast: #fff;
+
+  // Danger color
+  --color-danger: #e85600;
+  --color-danger-contrast: #fff;
+
+  // Warning color
+  --color-warning: #ffb700;
+  --color-warning-contrast: #fff;
+
+  // Success color
+  --color-success: #32b643;
+  --color-success-contrast: #fff;
+
+  // Border radius
+  --border-radius: 6px;
+
+  // Shadows
+  --shadow-light: 0 1px 4px rgba(0, 0, 0, 0.1);
+  --shadow-dark: 0 5px 15px rgba(0, 0, 0, 0.2);
+
+  // Filters
+  --filter-hover: brightness(0.95);
+  --filter-active: brightness(0.9);
+
+  // Overlays
+  --color-overlay-modal: rgba(0, 0, 0, 0.3);
+  --color-overlay-dropdown: rgba(0, 0, 0, 0.3);
+
+  // Font
+  --font-plain: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --font-special: var(--font-plain);
+  --font-mono: Menlo, Courier, Courier New, Andale Mono, monospace;
+
+  // Font weights
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 600;
+
+  // Z-indexes
+  --z-index-overlay: 100;
+  --z-index-toaster: 200;
+
+  // Sizing
+  --size-xs: .25rem;
+  --size-sm: .5rem;
+  --size-md: 1rem;
+  --size-lg: 1.5rem;
+  --size-xl: 2rem;
+  //--size-xl: 4rem;
+
+  --control-height: 2.5em;
+
+  --measure: 65ch;
+}

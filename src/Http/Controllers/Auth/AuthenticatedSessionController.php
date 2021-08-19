@@ -2,6 +2,7 @@
 
 namespace Waterhole\Http\Controllers\Auth;
 
+use Illuminate\Support\Facades\Redirect;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Http\Requests\Auth\LoginRequest;
 use Waterhole\Providers\RouteServiceProvider;
@@ -17,6 +18,10 @@ class AuthenticatedSessionController extends Controller
      */
     public function create()
     {
+        if (! session()->has('url.intended')) {
+            session()->put('url.intended', url()->previous());
+        }
+
         return view('waterhole::auth.login');
     }
 

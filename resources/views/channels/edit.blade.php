@@ -1,11 +1,9 @@
-@extends('waterhole::layout')
-
-@section('title', 'Edit Channel')
-
-@section('content')
+<x-waterhole::layout title="Edit Channel">
   <form method="POST" action="{{ route('waterhole.channels.update', ['channel' => $channel]) }}">
     @csrf
     @method('PATCH')
+
+    <x-waterhole::errors :errors="$errors"/>
 
     <!-- TODO: componentize -->
 
@@ -16,4 +14,4 @@
       <button type="submit">Save</button>
     </div>
   </form>
-@endsection
+</x-waterhole::layout>

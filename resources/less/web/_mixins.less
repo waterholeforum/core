@@ -1,0 +1,21 @@
+.clickable() {
+  &:disabled,
+  &.is-disabled {
+    opacity: .5;
+    cursor: default;
+  }
+
+  &:not(:disabled):not(.is-disabled) {
+    cursor: pointer;
+
+    &:hover,
+    &.is-hovered {
+      filter: var(--filter-hover);
+    }
+
+    &:active {
+      filter: var(--filter-active);
+      transform: scale(0.97);
+    }
+  }
+}

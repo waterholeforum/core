@@ -1,8 +1,4 @@
-@extends('waterhole::centered')
-
-@section('title', __('waterhole::auth.reset-password-title'))
-
-@section('content')
+<x-waterhole::layout-centered :title="__('waterhole::auth.reset-password-title')">
     <h1>{{ __('waterhole::auth.reset-password-title') }}</h1>
 
     <form action="{{ route('waterhole.password.update') }}" method="POST">
@@ -32,4 +28,4 @@
             <button type="submit">{{ __('waterhole::auth.reset-password-submit') }}</button>
         </div>
     </form>
-@endsection
+</x-waterhole::layout-centered>

@@ -1,0 +1,37 @@
+.input {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--color-stroke);
+  background: var(--color-bg);
+  color: var(--color-text);
+  height: var(--control-height);
+  box-sizing: border-box;
+  border-radius: var(--border-radius);
+  padding: var(--size-sm) var(--size-md);
+  appearance: none;
+
+  &::placeholder {
+    color: inherit;
+    opacity: 0.5;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: inset 0 0 0 1px var(--color-accent);
+  }
+}
+
+textarea.input {
+  height: auto;
+  padding: 20px;
+  resize: none;
+}
+
+//select.input {
+//  background-repeat: no-repeat;
+//  background-image: url('../images/chevron-down.svg');
+//  background-position: right 20px center;
+//  background-size: 16px 8px;
+//  padding-right: 30px;
+//}

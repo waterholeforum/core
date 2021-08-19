@@ -2,27 +2,33 @@
 
 namespace Waterhole\Http\Controllers\Forum;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Channel;
-use Waterhole\Models\Post;
+use Waterhole\PostFeed;
 
 class ChannelController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('waterhole.auth')->only('create', 'store');
+        $this->middleware('waterhole.auth')->except('show');
     }
 
-    public function show(Channel $channel)
+    public function show(Channel $channel, Request $request)
     {
         $this->authorize('view', $channel);
 
-        return view('waterhole::channels.show', [
-            'channel' => $channel,
-            'posts' => $channel->posts()->latest()->cursorPaginate()
-        ]);
+        $feed = new PostFeed(
+            request: $request,
+            scope: function (Builder $query) use ($channel) {
+                $query->where('channel_id', $channel->id);
+            },
+            sorts: $channel->sorts,
+            defaultSort: $channel->default_sort,
+        );
+
+        return view('waterhole::channels.show', compact('channel', 'feed'));
     }
 
     public function create()
@@ -36,65 +42,44 @@ class ChannelController extends Controller
     {
         $this->authorize('create', Channel::class);
 
-        $validated = $request->validate(Channel::rules());
-
-        if ($validated['emoji']) {
-            $validated['icon'] = $validated['emoji'];
-            unset($validated['emoji']);
-        }
-
-        $channel = Channel::create($validated);
+        $channel = Channel::create(
+            $this->data($request)
+        );
 
         return redirect($channel->url);
     }
 
     public function edit(Channel $channel)
     {
-        $this->authorize('update', Channel::class);
+        $this->authorize('update', $channel);
 
         return view('waterhole::channels.edit', ['channel' => $channel]);
     }
 
     public function update(Channel $channel, Request $request)
     {
-        $this->authorize('update', Channel::class);
+        $this->authorize('update', $channel);
 
-        $validated = $request->validate(Channel::rules($channel));
-
-        if ($validated['emoji']) {
-            $validated['icon'] = $validated['emoji'];
-            unset($validated['emoji']);
-        }
-
-        $channel->update($validated);
+        $channel->update(
+            $this->data($request, $channel)
+        );
 
         return redirect($channel->url);
     }
 
-    public function delete(Channel $channel)
+    private function data(Request $request, Channel $channel = null): array
     {
-        $this->authorize('delete', $channel);
+        $data = $request->validate(Channel::rules($channel));
 
-        return view('waterhole::channels.delete', ['channel' => $channel]);
-    }
-
-    public function destroy(Channel $channel, Request $request)
-    {
-        $this->authorize('delete', $channel);
-
-        $validated = $request->validate([
-            'move_posts' => ['boolean'],
-            'channel_id' => ['required_if:move_posts,1', Rule::exists(Channel::class, 'id')],
-        ]);
-
-        if ($validated['move_posts'] ?? false) {
-            $channel->posts()->update(['channel_id' => $validated['channel_id']]);
+        if ($data['emoji']) {
+            $data['icon'] = $data['emoji'];
+            unset($data['emoji']);
         }
 
-        $channel->delete();
+        if (! $request->get('custom_sorts')) {
+            $data['sorts'] = $data['default_sort'] = null;
+        }
 
-        // TODO: update nav
-
-        return redirect('/');
+        return $data;
     }
 }

@@ -1,7 +1,0 @@
-tree:
-  -
-    children:
-      - channel: 2
-      - channel: 3
-      - url: https://google.com
-        label: Google

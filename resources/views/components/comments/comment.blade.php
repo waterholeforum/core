@@ -1,26 +1,19 @@
 @props(['comment', 'depth' => 0])
 
-<li>
+<article id="comment-{{ $comment->id }}">
+  <h3>{{ $comment->user->name }}</h3>
+
+  @if ($comment->parent && ! $depth)
+    <div><a href="{{ $comment->parent->url }}">In reply to {{ $comment->parent->user->name }}</a></div>
+  @endif
+
   {{ $comment->body }}
 
-  @if ($depth < config('waterhole.forum.comment_depth', 1))
-    <details>
-      <summary>Reply</summary>
-      <x-waterhole::comments.reply :post="$comment->post" :comment="$comment"/>
-    </details>
-  @endif
+  <x-waterhole::actions actionable="comments" :items="[$comment]"/>
 
-  <details>
-    <summary>Actions</summary>
-    <a href="{{ route('waterhole.comments.edit', ['comment' => $comment]) }}">Edit</a>
-    <x-waterhole::actions actionable="comments" :items="[$comment]"/>
-  </details>
-
-  @if (count($comment->children))
-    <ol>
-      @foreach ($comment->children as $child)
-        <x-waterhole::comments.comment :comment="$child" :depth="$depth + 1"/>
-      @endforeach
-    </ol>
+  @if ($comment->relationLoaded('replies'))
+    @foreach ($comment->replies as $child)
+      <x-waterhole::comments.comment :comment="$child" :depth="$depth + 1"/>
+    @endforeach
   @endif
-</li>
+</article>

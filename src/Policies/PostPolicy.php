@@ -3,6 +3,7 @@
 namespace Waterhole\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
 
@@ -27,10 +28,25 @@ class PostPolicy
 
     public function update(User $user, Post $post)
     {
-        return $this->allow();
+        return $post->user_id === $user->id;
+    }
+
+    public function move(User $user, Post $post)
+    {
+        return $post->user_id === $user->id && $post->comment_count === 0;
     }
 
     public function delete(User $user, Post $post)
+    {
+        return $post->user_id === $user->id && $post->comment_count === 0;
+    }
+
+    public function reply(User $user, Post $post)
+    {
+        return $this->allow();
+    }
+
+    public function like(User $user, Post $post)
     {
         return $this->allow();
     }

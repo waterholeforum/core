@@ -2,6 +2,10 @@
 
 namespace Waterhole\Providers;
 
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Middleware\ThrottleRequests;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Waterhole\Http\Middleware\Authenticate;
@@ -28,40 +32,30 @@ class RouteServiceProvider extends ServiceProvider
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\Session\Middleware\AuthenticateSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \Tonysm\TurboLaravel\Http\Middleware\TurboMiddleware::class,
+            // \Tonysm\TurboLaravel\Http\Middleware\TurboMiddleware::class,
             \Waterhole\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \Waterhole\Http\Middleware\SightActor::class,
-            // \Waterhole\Http\Middleware\SetLocale::class is this not built into Laravel?
+            \Waterhole\Http\Middleware\ActorSeen::class,
+            \Waterhole\Http\Middleware\Localize::class,
         ]);
 
         Route::aliasMiddleware('waterhole.auth', Authenticate::class);
+        Route::aliasMiddleware('waterhole.throttle', ThrottleRequests::class);
+
+        $this->configureRateLimiting();
+
+        $this->routes(function () {
+            Route::middleware('waterhole.web')
+                ->name('waterhole.')
+                ->prefix(config('waterhole.forum.route'))
+                ->group(__DIR__.'/../../routes/web.php');
+        });
     }
 
-    /**
-     * Define the routes for the application.
-     *
-     * @return void
-     */
-    public function map()
+    protected function configureRateLimiting()
     {
-        $this->mapWebRoutes();
-
-        //
-    }
-
-    /**
-     * Define the "web" routes for the application.
-     *
-     * These routes all receive session state, CSRF protection, etc.
-     *
-     * @return void
-     */
-    protected function mapWebRoutes()
-    {
-        Route::middleware('waterhole.web')
-            ->name('waterhole.')
-            ->prefix(config('waterhole.forum.route'))
-            ->group(__DIR__.'/../../routes/web.php');
+        RateLimiter::for('waterhole.create', function (Request $request) {
+            // return Limit::perMinute(2)->by($request->user()->id);
+        });
     }
 }

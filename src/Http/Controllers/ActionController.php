@@ -3,7 +3,6 @@
 namespace Waterhole\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Waterhole\Extend\Actions;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Comment;
@@ -30,7 +29,7 @@ class ActionController extends Controller
         $requestedAction = $request->get('action');
 
         foreach ($actions as $action) {
-            if ($action instanceof $requestedAction) {
+            if (get_class($action) === $requestedAction) {
                 return $action;
             }
         }

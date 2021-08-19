@@ -1,0 +1,32 @@
+<?php
+
+namespace Waterhole\Extend;
+
+use Less_Cache;
+use Waterhole\Extend\Concerns\ManagesAssets;
+
+class Stylesheet
+{
+    use ManagesAssets;
+
+    private static array $assets = [
+        'web' => [
+            __DIR__.'/../../resources/less/web/app.less',
+        ],
+    ];
+
+    public static function compile(array $assets, string $group): array
+    {
+        $files = array_combine(
+            $assets,
+            array_fill(0, count($assets), url('/'))
+        );
+
+        $compiled = Less_Cache::Get($files, [
+            'cache_dir' => storage_path('app/public/css'),
+            'prefix' => "$group-",
+        ]);
+
+        return [asset('css/'.$compiled)];
+    }
+}

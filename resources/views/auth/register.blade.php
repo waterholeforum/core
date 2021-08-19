@@ -1,8 +1,4 @@
-@extends('waterhole::centered')
-
-@section('title', __('waterhole::auth.register-title'))
-
-@section('content')
+<x-waterhole::layout-centered :title="__('waterhole::auth.register-title')">
     <h1>{{ __('waterhole::auth.register-title') }}</h1>
 
 
@@ -31,4 +27,4 @@
             <button type="submit">{{ __('waterhole::auth.register-submit') }}</button>
         </div>
     </form>
-@endsection
+</x-waterhole::layout-centered>

@@ -6,6 +6,12 @@ return [
 
     'route' => '',
 
-    'comment_depth' => 1,
+    'sorts' => ['latest', 'new-activity', 'oldest', 'top', 'alphabetical'],
+
+    'default_sort' => 'latest',
+
+    'default_layout' => 'list',
+
+    'comments_per_page' => 5,
 
 ];

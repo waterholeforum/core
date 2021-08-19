@@ -113,3 +113,8 @@ function highlight_words(string $string, ?string $search)
         }, e($string))
     );
 }
+
+function emojify(string $text): HtmlString
+{
+    return Waterhole\Extend\Emoji::emojify($text);
+}

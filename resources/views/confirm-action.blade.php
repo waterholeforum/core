@@ -1,6 +1,4 @@
-@extends('waterhole::centered')
-
-@section('content')
+<x-waterhole::layout-centered>
   <form action="{{ route('waterhole.action') }}" method="POST">
     @csrf
 
@@ -19,4 +17,4 @@
     <a href="{{ old('redirect', url()->previous()) }}">Cancel</a>
     <button type="submit" name="confirmed" value="1">{{ $action->buttonText($items) }}</button>
   </form>
-@endsection
+</x-waterhole::layout-centered>

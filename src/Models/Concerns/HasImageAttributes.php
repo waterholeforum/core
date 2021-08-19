@@ -22,18 +22,18 @@ trait HasImageAttributes
         return Storage::disk('public')->url($directory.'/'.$value);
     }
 
-    private function removeImage(string $attribute, string $directory): void
+    private function removeImage(string $attribute, string $directory): static
     {
-        if (! $this->$attribute) {
-            return;
+        if ($this->$attribute) {
+            Storage::disk('public')->delete($directory.'/'.$this->$attribute);
+            $this->$attribute = null;
+            $this->save();
         }
 
-        Storage::disk('public')->delete($directory.'/'.$this->$attribute);
-        $this->$attribute = null;
-        $this->save();
+        return $this;
     }
 
-    private function uploadImage(Image $image, string $attribute, string $directory, Closure $encode): void
+    private function uploadImage(Image $image, string $attribute, string $directory, Closure $encode): static
     {
         $this->removeImage($attribute, $directory);
 
@@ -46,5 +46,7 @@ trait HasImageAttributes
         $this->$attribute = Str::random().'.'.$format;
         $this->save();
         Storage::disk('public')->put($directory.'/'.$this->$attribute, $encodedImage);
+
+        return $this;
     }
 }

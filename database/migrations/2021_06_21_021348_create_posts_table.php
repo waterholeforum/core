@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamp('edited_at')->nullable()->index();
             $table->timestamp('last_comment_at')->nullable()->index();
             $table->unsignedInteger('comment_count')->default(0)->index();
-            $table->unsignedInteger('like_count')->default(0)->index();
+            $table->unsignedInteger('score')->default(0)->index();
             $table->boolean('is_pinned')->default(0)->index();
             $table->boolean('is_locked')->default(0);
         });

@@ -12,9 +12,9 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         Gate::before(function ($user, $ability) {
-            if ($user->id === 1) {
-                return true;
-            }
+            // if ($user->id === 1) {
+            //     return true;
+            // }
         });
 
         ResetPassword::createUrlUsing(function ($notifiable, string $token) {

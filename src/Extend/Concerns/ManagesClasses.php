@@ -34,7 +34,7 @@ trait ManagesClasses
         $classes = static::formatClasses(static::defaultClasses(...$params));
 
         foreach (static::$callbacks as $callback) {
-            $classes += static::formatClasses($callback(...$params));
+            $classes = array_merge($classes, static::formatClasses($callback(...$params)));
         }
 
         return implode(' ', array_filter(array_keys(array_filter($classes))));
