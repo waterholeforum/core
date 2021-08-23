@@ -3,12 +3,18 @@
 namespace Waterhole\Models\Concerns;
 
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\HtmlString;
 use Waterhole\Models\User;
 
-trait HasMentions
+trait HasBody
 {
     public function mentions(): MorphMany
     {
         return $this->morphMany(User::class, 'mentions');
+    }
+
+    public function getBodyHtmlAttribute(): HtmlString
+    {
+        return new HtmlString(nl2br($this->body));
     }
 }

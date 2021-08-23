@@ -3,29 +3,21 @@
 namespace Waterhole\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Waterhole\Extend\Actions;
-use Waterhole\Models\Channel;
-use Waterhole\Models\Comment;
-use Waterhole\Models\Post;
+use Waterhole\Extend\Action;
+use Waterhole\Extend\Actionable;
 
 class ActionController extends Controller
 {
-    public static $actionables = [
-        'posts' => Post::class,
-        'channels' => Channel::class,
-        'comments' => Comment::class,
-    ];
-
     protected function getItems(Request $request)
     {
-        abort_unless($class = static::$actionables[$request->get('actionable')] ?? null, 400);
+        abort_unless($class = Actionable::getItems()[$request->get('actionable')] ?? null, 400);
 
         return $class::query()->findMany((array) $request->get('id'));
     }
 
     protected function getAction($items, Request $request)
     {
-        $actions = Actions::for($items);
+        $actions = Action::for($items);
         $requestedAction = $request->get('action');
 
         foreach ($actions as $action) {

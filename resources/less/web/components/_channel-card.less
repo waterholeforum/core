@@ -1,0 +1,35 @@
+.channel-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.channel-card__icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.channel-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  flex-basis: 30ch;
+  flex-grow: 1;
+  line-height: 1.5;
+  align-self: center;
+
+  > * {
+    max-width: 50ch;
+  }
+}
+
+.channel-card__controls {
+  display: flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: .5rem;
+
+  .btn > :nth-last-child(2) {
+    display: none;
+  }
+}

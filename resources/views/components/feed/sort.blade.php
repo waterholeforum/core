@@ -1,8 +1,12 @@
 @props(['feed'])
 
-<details>
-  <summary>Sort by {{ $feed->currentSort()->name() }}</summary>
-  @foreach ($feed->sorts() as $sort)
-    <a href="{{ request()->fullUrlWithQuery(['sort' => $sort->handle()]) }}">{{ $sort->name() }}</a>
-  @endforeach
-</details>
+<div class="tabs">
+    @foreach ($feed->sorts() as $sort)
+        <a
+            href="{{ request()->fullUrlWithQuery(['sort' => $sort->handle()]) }}"
+            class="tab"
+            title="{{ $sort->description() }}"
+            @if ($feed->currentSort() === $sort) aria-current="page" @endif
+        >{{ $sort->name() }}</a>
+    @endforeach
+</div>

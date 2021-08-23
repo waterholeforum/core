@@ -11,7 +11,7 @@ class LayoutAfter
     protected static function defaultComponents(): array
     {
         return [
-            // 'waterhole::components.layout.footer',
+            // 'waterhole::layout.footer',
         ];
     }
 }

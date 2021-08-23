@@ -1,14 +1,22 @@
 @auth
-  <ui-dropdown>
-    <button>{{ Auth::user()->name }}</button>
-    <ui-menu>
-      <form action="{{ route('waterhole.logout') }}" method="POST">
-        @csrf
-        <button type="submit">Log Out</button>
-      </form>
-    </ui-menu>
-  </ui-dropdown>
+    <ui-popup placement="bottom-end">
+        <button class="btn btn--icon">
+            <x-waterhole::ui.avatar :user="Auth::user()"/>
+        </button>
+        <ui-menu class="menu" hidden>
+            <form action="{{ route('waterhole.logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="menu-item">Log Out</button>
+            </form>
+        </ui-menu>
+    </ui-popup>
 @else
-  <a href="{{ route('waterhole.login') }}" class="btn btn--link">{{ __('waterhole::header.log-in') }}</a>
-  <a href="{{ route('waterhole.register') }}" class="btn btn--primary">{{ __('waterhole::header.register') }}</a>
+    <a
+        href="{{ route('waterhole.login') }}"
+        class="btn btn--link"
+    >{{ __('waterhole::header.log-in') }}</a>
+    <a
+        href="{{ route('waterhole.register') }}"
+        class="btn btn--primary"
+    >{{ __('waterhole::header.register') }}</a>
 @endauth

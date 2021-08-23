@@ -29,7 +29,7 @@ class PostController extends Controller
             return $sort->handle() === $request->query('sort');
         }, $sorts[0]);
 
-        $query = $post->comments()->with('user', 'parent.user', 'likedBy');
+        $query = $post->comments()->with(['user', 'parent.user', 'likedBy']);
 
         $comment = $comments = null;
 
@@ -37,17 +37,22 @@ class PostController extends Controller
             if (! $comment = $query->find($cid)) {
                 return redirect($post->url);
             }
-            $comment->setRelation('post', $post)->load('replies.user');
+            $comment->setRelation('post', $post)->load('replies.user', 'replies.likedBy');
             $comment->replies->each->setRelation('parent', $comment);
             $comment->replies->each->setRelation('post', $post);
         } else {
-            $currentSort->apply($query->orderBy('is_pinned', 'desc'));
-            $comments = $query->paginate(config('waterhole.forum.comments_per_page'));
-            $comments->getCollection()->each->setRelation('post', $post);
+            $currentSort->apply($query/*->orderBy('is_pinned', 'desc')*/);
+            $comments = $query->paginate();
+            $comments->getCollection()->each(function (Comment $comment) use ($post) {
+                $comment->setRelation('post', $post);
+                $comment->parent?->setRelation('post', $post);
+            });
         }
 
         // Mark the post as read for the current user
-        $post->userState?->read()->save();
+        if ($comments) {
+            $post->userState?->read($comments->lastItem())->save();
+        }
 
         return view('waterhole::posts.show', compact('post', 'comments', 'comment', 'sorts', 'currentSort'));
     }
@@ -86,7 +91,7 @@ class PostController extends Controller
 
         $post->fill($this->data($request, $post))->wasEdited()->save();
 
-        return redirect($post->url);
+        return redirect($request->get('redirect', $post->url));
     }
 
     private function data(Request $request, Post $post = null): array

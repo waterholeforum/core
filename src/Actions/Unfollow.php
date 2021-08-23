@@ -2,6 +2,8 @@
 
 namespace Waterhole\Actions;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Waterhole\Models\Post;
 
 class Unfollow extends Action
@@ -11,13 +13,18 @@ class Unfollow extends Action
         return 'Unfollow';
     }
 
-    public function appliesTo($item): bool
+    public function icon(Collection $items): ?string
     {
-        return $item instanceof Post && $item->tracker()->followed_at;
+        return 'heroicon-o-x-circle';
     }
 
-    public function run($items)
+    public function appliesTo($item): bool
     {
-        $items->each(fn($item) => $item->tracker()->update(['followed_at' => null]));
+        return $item instanceof Post && $item->userState->followed_at;
+    }
+
+    public function run(Collection $items, Request $request)
+    {
+        $items->each(fn($item) => $item->userState()->update(['followed_at' => null]));
     }
 }

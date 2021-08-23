@@ -74,6 +74,7 @@ class Channel extends Model implements Editable
             'instructions' => ['nullable', 'string'],
             'hide_sidebar' => ['nullable', 'boolean'],
             'sandbox' => ['nullable', 'boolean'],
+            'default_layout' => ['in:list,cards'],
             'sorts' => ['required_with:custom_sorts', 'array'],
             'sorts.*' => ['string', 'distinct', Rule::in(FeedSort::getInstances()->map->handle())],
             'default_sort' => ['required_with:custom_sorts', 'in_array:sorts.*'],

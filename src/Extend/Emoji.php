@@ -20,10 +20,10 @@ class Emoji
         static::$emojify = $this->callback;
     }
 
-    public static function emojify(string $text): HtmlString
+    public static function emojify(string $text, array $attributes = []): HtmlString|string
     {
         if (isset(static::$emojify)) {
-            return new HtmlString((static::$emojify)($text));
+            return new HtmlString((static::$emojify)($text, $attributes));
         }
 
         return $text;

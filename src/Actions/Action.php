@@ -13,7 +13,7 @@ abstract class Action
     public bool $hidden = false;
     public bool $destructive = false;
     public bool $confirm = false;
-    public bool $bulk = true;
+    public bool $bulk = false;
 
     abstract public function name(): string;
 
@@ -24,9 +24,19 @@ abstract class Action
         return true;
     }
 
-    public function attributes(): array
+    public function attributes(Collection $items): array
     {
         return [];
+    }
+
+    public function classes(Collection $items): array
+    {
+        return [];
+    }
+
+    public function icon(Collection $items): ?string
+    {
+        return null;
     }
 
     public function label(Collection $items): string|HtmlString
@@ -49,9 +59,11 @@ abstract class Action
         return null;
     }
 
-    public function render(Collection $items): HtmlString
+    public function render(Collection $items, ComponentAttributeBag $attributes): HtmlString
     {
-        $attributes = new ComponentAttributeBag($this->attributes());
+        $attributes = (new ComponentAttributeBag($attributes->getAttributes()))
+            ->merge($this->attributes($items))
+            ->class($this->classes($items));
 
         if ($this->confirm) {
             $attributes = $attributes->merge([
@@ -60,8 +72,23 @@ abstract class Action
             ]);
         }
 
-        $label = $this->label($items);
+        if ($this->destructive) {
+            $attributes = $attributes->class('is-destructive');
+        }
 
-        return new HtmlString('<button name="action" value="'.static::class.'" '.$attributes.'>'.$label.'</button>');
+        $class = e(static::class);
+        $content = $this->renderContent($items);
+
+        return new HtmlString(<<<html
+            <button name="action" value="$class" $attributes>$content</button>
+        html);
+    }
+
+    protected function renderContent(Collection $items): HtmlString
+    {
+        $label = e($this->label($items));
+        $icon = ($iconName = $this->icon($items)) ? svg($iconName, 'icon')->toHtml() : '';
+
+        return new HtmlString("$icon <span>$label</span>");
     }
 }

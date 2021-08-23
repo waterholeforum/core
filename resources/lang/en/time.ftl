@@ -46,7 +46,7 @@ relative-time = { $unit ->
   [hour] { time-ago }
   [day] { time-ago }
   [week] { time-ago }
-  *[other] { DATETIME($date, dateStyle: "medium") }
+  *[other] { DATETIME($date) }
 }
 
 full-time = { DATETIME($date, dateStyle: "long", timeStyle: "long") }

@@ -71,6 +71,11 @@ class User extends Model implements AuthenticatableContract, MustVerifyEmailCont
         return $this->locale;
     }
 
+    public function getUrlAttribute(): ?string
+    {
+        return null;
+    }
+
     public function getAvatarUrlAttribute()
     {
         return $this->resolvePublicUrl($this->avatar, 'avatars');

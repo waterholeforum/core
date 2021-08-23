@@ -22,7 +22,7 @@ class TimeAgo
     const MONTH = self::DAY * 30;
     const YEAR = self::DAY * 365;
 
-    public static function calculate($then)
+    public static function calculate($then): array
     {
         if (! $then instanceof DateTime) {
             $then = new DateTime($then);

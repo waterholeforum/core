@@ -11,9 +11,9 @@ class PostInfo
     protected static function defaultComponents(): array
     {
         return [
-            'waterhole::components.post.info.channel',
-            'waterhole::components.post.info.activity',
-            'waterhole::components.post.info.unread',
+            'waterhole::posts.info.unread',
+            'waterhole::post-channel',
+            'waterhole::posts.info.activity',
         ];
     }
 }

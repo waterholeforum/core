@@ -7,11 +7,12 @@ use Illuminate\Validation\Rule;
 use Waterhole\Actions\Deletable;
 use Waterhole\Actions\Editable;
 use Waterhole\Models\Concerns\HasLikes;
-use Waterhole\Models\Concerns\HasMentions;
+use Waterhole\Models\Concerns\HasBody;
 
 class Comment extends Model implements Deletable, Editable
 {
-    use HasLikes, HasMentions;
+    use HasLikes;
+    use HasBody;
 
     const UPDATED_AT = null;
 
@@ -72,7 +73,10 @@ class Comment extends Model implements Deletable, Editable
 
     public function getUrlAttribute(): string
     {
-        return route('waterhole.comments.show', ['comment' => $this]);
+        return $this->post->url.'?'.http_build_query([
+            'comment' => $this->id,
+        ]);
+        // return route('waterhole.comments.show', ['comment' => $this]);
     }
 
     public function getEditUrlAttribute(): string
@@ -92,5 +96,10 @@ class Comment extends Model implements Deletable, Editable
         $this->reply_count = $this->replies()->count();
 
         return $this;
+    }
+
+    public function getPerPage(): int
+    {
+        return config('waterhole.forum.comments_per_page', $this->perPage);
     }
 }

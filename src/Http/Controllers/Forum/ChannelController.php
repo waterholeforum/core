@@ -26,6 +26,7 @@ class ChannelController extends Controller
             },
             sorts: $channel->sorts,
             defaultSort: $channel->default_sort,
+            defaultLayout: $channel->default_layout,
         );
 
         return view('waterhole::channels.show', compact('channel', 'feed'));

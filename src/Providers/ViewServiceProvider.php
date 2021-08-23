@@ -2,6 +2,7 @@
 
 namespace Waterhole\Providers;
 
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
@@ -14,6 +15,9 @@ class ViewServiceProvider extends ServiceProvider
         Blade::componentNamespace('Waterhole\\Views\\Components', 'waterhole');
 
         $this->registerComponentsDirective();
+
+        Paginator::defaultView('waterhole::pagination.default');
+        Paginator::defaultSimpleView('waterhole::pagination.simple-default');
     }
 
     private function registerComponentsDirective(): void
@@ -28,7 +32,8 @@ class ViewServiceProvider extends ServiceProvider
                 '<?php if (class_exists($component)): ?>',
                 '<?php $component = $__env->getContainer()->make($component, '.($data ?: '[]').'); ?>',
                 '<?php else: ?>',
-                '<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, [\'view\' => $component, \'data\' => '.($data ?: '[]').']); ?>',
+                '<?php $view = str_replace(\'::\', \'::components.\', $component); ?>',
+                '<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, [\'view\' => $view, \'data\' => '.($data ?: '[]').']); ?>',
                 '<?php endif; ?>',
                 '<?php if ($component->shouldRender()): ?>',
                 '<?php $__env->startComponent($component->resolveView(), $component->data()); ?>',

@@ -2,6 +2,8 @@
 
 namespace Waterhole\Actions;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
@@ -23,7 +25,7 @@ class Pin extends Action
         return $user->can('pin', $item);
     }
 
-    public function run($items, $request): void
+    public function run(Collection $items, Request $request): void
     {
         $items->each->update(['is_pinned' => true]);
     }

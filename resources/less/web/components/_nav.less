@@ -17,7 +17,7 @@
   min-height: var(--control-height);
   padding: var(--size-sm);
   font-weight: var(--font-weight-medium);
-  text-decoration: none;
+  text-decoration: none !important;
   color: var(--color-text);
   border-radius: var(--border-radius);
 
@@ -37,6 +37,7 @@
   }
 
   &.is-active {
+    color: var(--color-accent);
     background: var(--color-accent-light);
   }
 }

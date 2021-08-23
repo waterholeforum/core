@@ -2,6 +2,9 @@
 
 namespace Waterhole\Actions;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Waterhole\Models\Channel;
 use Waterhole\Models\Post;
 
 class Follow extends Action
@@ -11,13 +14,19 @@ class Follow extends Action
         return 'Follow';
     }
 
-    public function appliesTo($item): bool
+    public function icon(Collection $items): ?string
     {
-        return $item instanceof Post && ! $item->tracker()->followed_at;
+        return 'heroicon-o-bell';
     }
 
-    public function run($items, $request)
+    public function appliesTo($item): bool
     {
-        $items->each(fn($item) => $item->tracker()->update(['followed_at' => now()]));
+        return ($item instanceof Post && ! $item->userState->followed_at)
+            || $item instanceof Channel; // temp
+    }
+
+    public function run(Collection $items, Request $request)
+    {
+        $items->each(fn($item) => $item->userState()->update(['followed_at' => now()]));
     }
 }

@@ -6,12 +6,12 @@ return [
 
     'route' => '',
 
-    'sorts' => ['latest', 'new-activity', 'oldest', 'top', 'alphabetical'],
+    'sorts' => ['latest', 'new-activity', 'oldest', 'top'],
 
     'default_sort' => 'latest',
 
     'default_layout' => 'list',
 
-    'comments_per_page' => 5,
+    'comments_per_page' => 15,
 
 ];

@@ -1,0 +1,52 @@
+.comment {
+  padding-left: ~"calc(2.5em + var(--size-md))";
+  position: relative;
+
+  > * + * {
+    margin-top: var(--size-sm);
+  }
+
+  .attribution {
+    padding-left: 0;
+  }
+
+  &::before {
+    content: '';
+    width: 2px;
+    background: var(--color-fill);
+    position: absolute;
+    top: ~"calc(2.5em + 5px)";
+    bottom: 5px;
+    left: ~"calc(2.5em / 2 - 1px)";
+  }
+
+  &:not(:last-of-type) {
+    padding-bottom: var(--size-xl);
+  }
+}
+
+.comment__header {
+  > * + * {
+    margin-top: var(--size-sm);
+  }
+}
+
+.comment__parent {
+  color: var(--color-text-muted);
+  font-size: 90%;
+  font-weight: var(--font-weight-medium);
+
+  //.avatar {
+  //  width: 1em;
+  //  height: 1em;
+  //}
+}
+
+//
+//.comment__footer {
+//  margin-left: ~"calc(-1 * var(--size-sm))";
+//}
+
+.comment__replies {
+  margin-top: var(--size-lg);
+}

@@ -19,15 +19,15 @@ class CommentController extends Controller
         $this->middleware('waterhole.throttle:waterhole.create')->only('store', 'update');
     }
 
-    public function show(Comment $comment, Request $request)
-    {
-        return redirect(
-            $comment->post->url.'?'.http_build_query([
-                'sort' => $request->query('sort'),
-                'comment' => $comment->id,
-            ]).'#comment-'.$comment->id
-        );
-    }
+    // public function show(Comment $comment, Request $request)
+    // {
+    //     return redirect(
+    //         $comment->post->url.'?'.http_build_query([
+    //             'sort' => $request->query('sort'),
+    //             'comment' => $comment->id,
+    //         ]).'#comment-'.$comment->id
+    //     );
+    // }
 
     public function create(Post $post, Request $request)
     {
@@ -62,7 +62,7 @@ class CommentController extends Controller
 
         $post->comments()->save($comment);
 
-        return redirect($comment->url);
+        return redirect($post->url.'?page='.ceil($post->comment_count / $comment->getPerPage()).'#comment-'.$comment->id);
     }
 
     public function edit(Comment $comment)

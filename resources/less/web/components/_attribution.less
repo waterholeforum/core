@@ -1,0 +1,26 @@
+.attribution {
+  padding-left: ~"calc(2.5em + var(--size-md))";
+  min-height: 2.5em;
+
+  .avatar {
+    float: left;
+    margin-left: ~"calc(-1 * (2.5em + var(--size-md)))";
+    width: 2.5em;
+    height: 2.5em;
+  }
+}
+
+.attribution__user {
+  color: inherit;
+  font-weight: var(--font-weight-medium);
+}
+
+.attribution__info {
+  margin-top: .2em;
+  color: var(--color-text-muted);
+  font-size: 80%;
+
+  > * + *::before {
+    content: ' · ';
+  }
+}

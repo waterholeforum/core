@@ -2,6 +2,7 @@
 
 namespace Waterhole\Actions;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
@@ -9,17 +10,23 @@ use Waterhole\Models\User;
 
 class Reply extends Link
 {
-    public bool $hidden = false;
-    public bool $bulk = false;
+    public bool $hidden = true;
 
     public function name(): string
     {
         return 'Reply';
     }
 
-    public function label($items): string|HtmlString
+    public function label(Collection $items): string|HtmlString
     {
-        return $items[0]->reply_count ? $items[0]->reply_count.' replies' : 'Reply';
+        return $items[0]->reply_count
+            ? __('waterhole::forum.comment-reply-count', ['count' => $items[0]->reply_count])
+            : 'Reply';
+    }
+
+    public function icon(Collection $items): string
+    {
+        return 'heroicon-o-chat';
     }
 
     public function appliesTo($item): bool
@@ -34,14 +41,6 @@ class Reply extends Link
 
     public function link($item)
     {
-        if ($item->reply_count) {
-            return $item->url.'?sort='.request('sort');
-        }
-
-        $params = $item instanceof Post
-            ? ['post' => $item]
-            : ['post' => $item->post, 'parent' => $item->id];
-
-        return route('waterhole.posts.comments.create', $params);
+        return $item->url.'#reply';
     }
 }

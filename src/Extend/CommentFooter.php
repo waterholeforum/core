@@ -4,16 +4,15 @@ namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\ManagesComponents;
 
-class PostFooter
+class CommentFooter
 {
     use ManagesComponents;
 
     protected static function defaultComponents(): array
     {
         return [
-            'waterhole::components.comment.footer.likes',
-            'waterhole::components.comment.footer.replies',
-            'waterhole::components.comment.footer.actions',
+            'waterhole::comment-likes',
+            'waterhole::comment-replies',
         ];
     }
 }

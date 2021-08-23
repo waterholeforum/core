@@ -32,7 +32,7 @@
         </div>
 
         <div>
-            <button type="submit">{{ __('waterhole::auth.login-submit') }}</button>
+            <button type="submit" class="btn btn--primary">{{ __('waterhole::auth.login-submit') }}</button>
         </div>
     </form>
 </x-waterhole::layout-centered>

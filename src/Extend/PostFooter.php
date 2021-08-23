@@ -11,9 +11,8 @@ class PostFooter
     protected static function defaultComponents(): array
     {
         return [
-            'waterhole::components.post.footer.likes',
-            'waterhole::components.post.footer.replies',
-            'waterhole::components.post.footer.actions',
+            'waterhole::posts.footer.likes',
+            'waterhole::posts.footer.replies',
         ];
     }
 }

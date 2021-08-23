@@ -11,7 +11,7 @@ class LayoutBefore
     protected static function defaultComponents(): array
     {
         return [
-            'waterhole::components.layout.header',
+            'waterhole::layout.header',
         ];
     }
 }

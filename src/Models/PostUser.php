@@ -12,11 +12,13 @@ class PostUser extends Model
 
     protected $casts = [
         'last_read_at' => 'datetime',
+        'followed_at' => 'datetime',
     ];
 
-    public function read(): static
+    public function read(?int $index): static
     {
         $this->last_read_at = now();
+        $this->last_read_index = $index;
 
         return $this;
     }

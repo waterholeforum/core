@@ -1,21 +1,9 @@
 <x-waterhole::layout>
-    <x-waterhole::index>
+    <x-waterhole::index.layout>
 
-        <div class="card home-toolbar">
-            <div class="toolbar"> <!-- Extend\HomeToolbar -->
-                <h1 class="visually-hidden">Home</h1>
+        @components(Waterhole\Extend\FeedHeader::getComponents(), compact('feed'))
 
-                <x-waterhole::feed.sort :feed="$feed"/>
+        <x-waterhole::feed.content :feed="$feed"/>
 
-                <div class="spacer"></div>
-
-                @can('create', Waterhole\Models\Post::class)
-                    <a href="{{ route('waterhole.posts.create') }}">New Post</a>
-                @endcan
-            </div>
-        </div>
-
-        <x-waterhole::feed.list :feed="$feed"/>
-
-    </x-waterhole::index>
+    </x-waterhole::index.layout>
 </x-waterhole::layout>

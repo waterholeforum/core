@@ -2,6 +2,8 @@
 
 namespace Waterhole\Sorts;
 
+use Waterhole\Models\Post;
+
 class Top extends Sort
 {
     public function name(): string
@@ -16,6 +18,7 @@ class Top extends Sort
 
     public function apply($query): void
     {
-        $query->orderByDesc('score');
+        $query->orderByDesc('score')
+            ->orderByDesc($query->getModel() instanceof Post ? 'comment_count' : 'reply_count');
     }
 }

@@ -11,9 +11,9 @@
     </div>
 </section>
 
-<div class="container with-sidebar-start">
+<div class="container with-sidebar-start index-layout">
     <div>
-        <x-waterhole::nav/>
+        @components(Waterhole\Extend\IndexNav::getComponents())
     </div>
 
     <main id="main">

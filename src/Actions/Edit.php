@@ -2,6 +2,7 @@
 
 namespace Waterhole\Actions;
 
+use Illuminate\Support\Collection;
 use Waterhole\Models\User;
 
 class Edit extends Link
@@ -9,6 +10,11 @@ class Edit extends Link
     public function name(): string
     {
         return 'Edit';
+    }
+
+    public function icon(Collection $items): ?string
+    {
+        return 'heroicon-o-pencil';
     }
 
     public function appliesTo($item): bool

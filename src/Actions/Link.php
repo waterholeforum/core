@@ -12,12 +12,19 @@ abstract class Link extends Action
 
     abstract public function link($item);
 
-    public function render(Collection $items): HtmlString
+    public function render(Collection $items, ComponentAttributeBag $attributes): HtmlString
     {
-        $link = $this->link($items[0]);
-        $attributes = new ComponentAttributeBag($this->attributes());
-        $label = $this->label($items);
+        $link = e($this->link($items[0]));
 
-        return new HtmlString('<a href="'.e($link).'" '.$attributes.'>'.e($label).'</a>');
+        $attributes = new ComponentAttributeBag(array_merge(
+            $this->attributes($items),
+            $attributes->getAttributes()
+        ));
+
+        $content = $this->renderContent($items);
+
+        return new HtmlString(<<<html
+            <a href="$link" $attributes>$content</a>
+        html);
     }
 }

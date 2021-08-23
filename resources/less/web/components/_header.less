@@ -3,11 +3,16 @@
   background: var(--color-bg);
   position: sticky;
   top: 0;
+  z-index: var(--z-index-header);
 
   .container {
     display: flex;
     align-items: center;
     gap: var(--size-sm);
+  }
+
+  &.is-sticky {
+    box-shadow: var(--shadow-light);
   }
 }
 

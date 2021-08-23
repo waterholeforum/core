@@ -17,7 +17,12 @@ class DeleteChannel extends Action
 
     public function name(): string
     {
-        return 'Delete Channel...';
+        return 'Delete...';
+    }
+
+    public function icon(Collection $items): ?string
+    {
+        return 'heroicon-o-trash';
     }
 
     public function appliesTo($item): bool

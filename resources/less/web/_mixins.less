@@ -1,15 +1,13 @@
 .clickable() {
-  &:disabled,
-  &.is-disabled {
+  &:is(:disabled, .is-disabled) {
     opacity: .5;
     cursor: default;
   }
 
-  &:not(:disabled):not(.is-disabled) {
+  &:not(:disabled, .is-disabled) {
     cursor: pointer;
 
-    &:hover,
-    &.is-hovered {
+    &:is(:hover, .is-hovered) {
       filter: var(--filter-hover);
     }
 

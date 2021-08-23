@@ -6,3 +6,16 @@
 // Turbo.start();
 
 // window.Turbo = Turbo;
+
+import { PopupElement, MenuElement, ModalElement, TooltipElement, AlertsElement } from 'inclusive-elements';
+
+window.customElements.define('ui-popup', PopupElement);
+window.customElements.define('ui-menu', MenuElement);
+window.customElements.define('ui-modal', ModalElement);
+window.customElements.define('ui-tooltip', TooltipElement);
+window.customElements.define('ui-alerts', AlertsElement);
+
+const header = document.querySelector('.header');
+window.addEventListener('scroll', () => {
+    header.classList.toggle('is-sticky', pageYOffset > 0);
+});

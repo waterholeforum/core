@@ -1,32 +1,34 @@
 @breakpoint-xs: 576px;
-@breakpoint-sm: 768px;
-@breakpoint-md: 992px;
+@breakpoint-sm: 850px;
+@breakpoint-md: 1100px;
 @breakpoint-lg: 1200px;
 
 :root {
   // Base color
-  --base-h: 180;
+  --base-h: 250;
   --base-s: 20%;
   //--base-l: 100%;
   //--base-hsl: var(--base-h), var(--base-s), var(--base-l);
 
   --color-bg: #fff;
+  --color-bg-transparent: rgba(255, 255, 255, 0);
   --color-fill: ~"hsla(var(--base-h), var(--base-s), 85%, 0.4)";
-  --color-stroke: ~"hsla(var(--base-h), var(--base-s), 85%, 0.6)";
+  --color-stroke: ~"hsla(var(--base-h), var(--base-s), 70%, 0.4)";
 
   --color-text: #000;
-  --color-text-muted: ~"hsl(var(--base-h), calc(var(--base-s) / 2), 50%)";
+  --color-text-muted: ~"hsl(var(--base-h), calc(var(--base-s) / 2), 60%)";
   --color-link: var(--color-accent);
 
   // Accent color
-  --accent-h: 253;
+  --accent-h: 250;
   --accent-s: 100%;
-  --accent-l: 61%;
+  --accent-l: 60%;
   --accent-hsl: var(--accent-h), var(--accent-s), var(--accent-l);
 
   --color-accent: ~"hsl(var(--accent-hsl))";
   --color-accent-contrast: #fff;
-  --color-accent-light: ~"hsla(var(--accent-hsl), 0.2)";
+  //--color-accent-light: ~"hsla(var(--accent-hsl), 0.1)";
+  --color-accent-light: #08FFE7;
 
   // Tooltip color
   --color-tooltip: #303742;
@@ -44,12 +46,14 @@
   --color-success: #32b643;
   --color-success-contrast: #fff;
 
+  --color-unread: #FF8100;
+
   // Border radius
-  --border-radius: 6px;
+  --border-radius: 8px;
 
   // Shadows
   --shadow-light: 0 1px 4px rgba(0, 0, 0, 0.1);
-  --shadow-dark: 0 5px 15px rgba(0, 0, 0, 0.2);
+  --shadow-dark: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 5px 15px rgba(0, 0, 0, 0.2);
 
   // Filters
   --filter-hover: brightness(0.95);
@@ -70,18 +74,17 @@
   --font-weight-bold: 600;
 
   // Z-indexes
-  --z-index-overlay: 100;
-  --z-index-toaster: 200;
+  --z-index-header: 100;
+  --z-index-overlay: 200;
+  --z-index-toaster: 300;
 
   // Sizing
   --size-xs: .25rem;
   --size-sm: .5rem;
   --size-md: 1rem;
   --size-lg: 1.5rem;
-  --size-xl: 2rem;
-  //--size-xl: 4rem;
+  --size-xl: 2.5rem;
 
   --control-height: 2.5em;
-
-  --measure: 65ch;
+  --control-height-small: 2em;
 }

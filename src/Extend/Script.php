@@ -11,7 +11,7 @@ class Script
 
     private static array $assets = [
         'web' => [
-            // __DIR__.'/../../resources/dist/app.js',
+            __DIR__.'/../../resources/dist/app.js',
         ],
     ];
 

@@ -2,24 +2,21 @@
 
 namespace Waterhole\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use Intervention\Image\Image;
 use Waterhole\Actions\Deletable;
 use Waterhole\Actions\Editable;
-use Waterhole\Models\Concerns\HasImageAttributes;
+use Waterhole\Models\Concerns\HasBody;
 use Waterhole\Models\Concerns\HasLikes;
-use Waterhole\Models\Concerns\HasMentions;
 
 class Post extends Model implements Deletable, Editable
 {
-    use HasLikes, HasMentions, HasImageAttributes;
+    use HasLikes;
+    use HasBody;
 
     const UPDATED_AT = null;
 
@@ -56,6 +53,11 @@ class Post extends Model implements Deletable, Editable
         return $this->hasMany(Comment::class);
     }
 
+    public function lastComment(): HasOne
+    {
+        return $this->hasOne(Comment::class)->latestOfMany();
+    }
+
     public function userState(User $user = null): HasOne
     {
         $userId = $user ? $user->id : Auth::id();
@@ -68,23 +70,6 @@ class Post extends Model implements Deletable, Editable
         }
 
         return $relation;
-    }
-
-    public function getCoverUrlAttribute(): string
-    {
-        return $this->resolvePublicUrl($this->cover, 'post-covers');
-    }
-
-    public function removeCover(): static
-    {
-        return $this->removeImage('cover', 'post-covers');
-    }
-
-    public function uploadCover(Image $image): static
-    {
-        return $this->uploadImage($image, 'cover', 'post-covers', function (Image $image) {
-            return $image->crop(1000, 300)->encode('jpg');
-        });
     }
 
     public function getUrlAttribute(): string

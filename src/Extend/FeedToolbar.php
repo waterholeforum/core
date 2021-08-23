@@ -11,9 +11,9 @@ class FeedToolbar
     protected static function defaultComponents(): array
     {
         return [
-            'waterhole::components.feed.sort',
-            'waterhole::components.ui.spacer',
-            'waterhole::components.feed.new-post',
+            'waterhole::feed.sort',
+            'waterhole::ui.spacer',
+            'waterhole::feed.new-post',
         ];
     }
 }

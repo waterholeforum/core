@@ -2,7 +2,6 @@
 
 namespace Waterhole\Sorts;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use ReflectionClass;
 

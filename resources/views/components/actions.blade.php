@@ -1,4 +1,4 @@
-@props(['actionable', 'items' => [], 'actions' => Waterhole\Extend\Actions::for($items)])
+@props(['actionable', 'items' => [], 'actions' => Waterhole\Extend\Action::for($items)])
 
 @if (count($items) && count($actions))
   <form action="{{ route('waterhole.action') }}" method="POST">

@@ -18,6 +18,11 @@ class MoveChannel extends Action
         return 'Move to Channel...';
     }
 
+    public function icon(Collection $items): ?string
+    {
+        return 'heroicon-o-arrow-right';
+    }
+
     public function appliesTo($item): bool
     {
         return $item instanceof Post;

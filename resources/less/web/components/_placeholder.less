@@ -1,0 +1,22 @@
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--size-sm);
+  text-align: center;
+  color: var(--color-text-muted);
+  padding: var(--size-xl) 0;
+
+  > * {
+    max-width: 50ch;
+  }
+}
+
+.placeholder__visual {
+  width: 4em;
+  height: 4em;
+
+  path {
+    stroke-width: 1px;
+  }
+}
