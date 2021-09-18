@@ -12,6 +12,7 @@ class CommentFooter
     {
         return [
             'waterhole::comment-likes',
+            'waterhole::comment-reply',
             'waterhole::comment-replies',
         ];
     }

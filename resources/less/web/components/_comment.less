@@ -3,7 +3,7 @@
   position: relative;
 
   > * + * {
-    margin-top: var(--size-sm);
+    margin-top: var(--size-md);
   }
 
   .attribution {
@@ -20,7 +20,7 @@
     left: ~"calc(2.5em / 2 - 1px)";
   }
 
-  &:not(:last-of-type) {
+  &:not(:last-child) {
     padding-bottom: var(--size-xl);
   }
 }
@@ -42,11 +42,12 @@
   //}
 }
 
-//
-//.comment__footer {
-//  margin-left: ~"calc(-1 * var(--size-sm))";
-//}
 
 .comment__replies {
   margin-top: var(--size-lg);
 }
+
+//.comment__view-replies {
+//  font-size: 90%;
+//  font-weight: var(--font-weight-medium);
+//}

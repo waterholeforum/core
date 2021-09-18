@@ -1,6 +1,6 @@
 @isset($channel)
     <div class="card channel-card">
-        <x-waterhole::ui.icon :icon="$channel->icon" class="channel-card__icon"/>
+        <x-waterhole::icon :icon="$channel->icon" class="channel-card__icon"/>
 
         <div class="channel-card__info">
             <h2>{{ $channel->name }}</h2>
@@ -17,13 +17,13 @@
                 ];
             @endphp
 
-            <x-waterhole::actions.buttons
+            <x-waterhole::action-buttons
                 :for="$channel"
                 :only="$buttonActions"
                 class="btn"
             />
 
-            <x-waterhole::actions.menu
+            <x-waterhole::action-menu
                 :for="$channel"
                 :except="$buttonActions"
             />

@@ -12,6 +12,6 @@ return [
 
     'default_layout' => 'list',
 
-    'comments_per_page' => 15,
+    'comments_per_page' => 10,
 
 ];

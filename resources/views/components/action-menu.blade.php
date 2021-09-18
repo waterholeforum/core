@@ -1,6 +1,6 @@
 @props(['for', 'only' => null, 'except' => null, 'buttonAttributes' => []])
 
-<x-waterhole::actions.buttons
+<x-waterhole::action-buttons
     :for="$for"
     :only="$only"
     :except="$except"
@@ -23,4 +23,4 @@
             </ui-menu>
         </ui-popup>
     </x-slot>
-</x-waterhole::actions.buttons>
+</x-waterhole::action-buttons>

@@ -62,6 +62,10 @@ class CommentController extends Controller
 
         $post->comments()->save($comment);
 
+        if (isset($parent)) {
+            return redirect($parent->url.'#comment-'.$parent->id);
+        }
+
         return redirect($post->url.'?page='.ceil($post->comment_count / $comment->getPerPage()).'#comment-'.$comment->id);
     }
 

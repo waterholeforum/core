@@ -1,7 +1,7 @@
 @auth
     <ui-popup placement="bottom-end">
         <button class="btn btn--icon">
-            <x-waterhole::ui.avatar :user="Auth::user()"/>
+            <x-waterhole::avatar :user="Auth::user()"/>
         </button>
         <ui-menu class="menu" hidden>
             <form action="{{ route('waterhole.logout') }}" method="POST">

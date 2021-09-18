@@ -11,9 +11,9 @@ class SiteHeader
     protected static function defaultComponents(): array
     {
         return [
-            'waterhole::header.title',
-            'waterhole::ui.spacer',
-            'waterhole::header.auth',
+            'waterhole::header-title',
+            'waterhole::spacer',
+            'waterhole::header-auth',
         ];
     }
 }

@@ -1,18 +1,21 @@
 .header {
-  padding: var(--size-md) 0;
-  background: var(--color-bg);
+  //padding: var(--size-md) 0;
+  background: var(--color-bg-translucent);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   position: sticky;
   top: 0;
   z-index: var(--z-index-header);
 
   .container {
+    height: var(--header-height);
     display: flex;
     align-items: center;
     gap: var(--size-sm);
   }
 
   &.is-sticky {
-    box-shadow: var(--shadow-light);
+    //box-shadow: var(--shadow-light);
   }
 }
 
@@ -23,5 +26,11 @@
 
   &:hover {
     text-decoration: underline;
+  }
+}
+
+@media (max-width: @breakpoint-sm) {
+  .header-breadcrumb {
+    display: none;
   }
 }

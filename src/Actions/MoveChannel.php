@@ -36,7 +36,7 @@ class MoveChannel extends Action
     public function confirmation(Collection $items): HtmlString
     {
         return new HtmlString(
-            view('waterhole::posts.move-channel', ['posts' => $items])
+            view('waterhole::post-move-channel', ['posts' => $items])
         );
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Waterhole\Views\Components\Ui;
+namespace Waterhole\Views\Components;
 
 use Illuminate\View\Component;
 use Waterhole\Models\User;
@@ -18,7 +18,7 @@ class Avatar extends Component
 
     public function render()
     {
-        return view('waterhole::components.ui.avatar');
+        return view('waterhole::components.avatar');
     }
 
     public function color(): string

@@ -2,7 +2,7 @@
 
 <div class="attribution">
     <a href="{{ $user->url }}" class="attribution__user">
-        <x-waterhole::ui.avatar :user="$user"/>
+        <x-waterhole::avatar :user="$user"/>
         <span>{{ $user->name }}</span>
     </a>
     <div class="attribution__info">

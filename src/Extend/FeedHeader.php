@@ -11,8 +11,8 @@ class FeedHeader
     protected static function defaultComponents(): array
     {
         return [
-            'waterhole::feed.channel',
-            'waterhole::feed.toolbar',
+            'waterhole::feed-channel',
+            'waterhole::feed-toolbar',
         ];
     }
 }

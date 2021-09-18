@@ -6,7 +6,7 @@
 
 @if ($posts->isNotEmpty())
     <x-dynamic-component
-        :component="'waterhole::feed.content-'.$feed->currentLayout()"
+        :component="'waterhole::feed-content-'.$feed->currentLayout()"
         :posts="$posts"
     />
 

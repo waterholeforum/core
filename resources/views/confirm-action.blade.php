@@ -2,9 +2,9 @@
   <form action="{{ route('waterhole.action') }}" method="POST">
     @csrf
 
-    <input type="hidden" name="action" value="{{ get_class($action) }}">
+    <input type="hidden" name="action_class" value="{{ get_class($action) }}">
     <input type="hidden" name="actionable" value="{{ $actionable }}">
-    <input type="hidden" name="redirect" value="{{ old('redirect', url()->previous()) }}">
+    <input type="hidden" name="return" value="{{ old('return', url()->previous()) }}">
 
     @foreach ($items as $item)
       <input type="hidden" name="id[]" value="{{ $item->id }}">

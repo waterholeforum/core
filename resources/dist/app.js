@@ -89,7 +89,12 @@ __webpack_require__.r(__webpack_exports__);
 // import './bootstrap';
 // import './elements/turbo-echo-stream-tag';
 // Turbo.start();
+//
 // window.Turbo = Turbo;
+//
+// document.addEventListener('turbo:submit-start', e => {
+//     e.detail.formSubmission.submitter.disabled = true;
+// });
 
 window.customElements.define('ui-popup', inclusive_elements__WEBPACK_IMPORTED_MODULE_0__.PopupElement);
 window.customElements.define('ui-menu', inclusive_elements__WEBPACK_IMPORTED_MODULE_0__.MenuElement);
@@ -97,9 +102,13 @@ window.customElements.define('ui-modal', inclusive_elements__WEBPACK_IMPORTED_MO
 window.customElements.define('ui-tooltip', inclusive_elements__WEBPACK_IMPORTED_MODULE_0__.TooltipElement);
 window.customElements.define('ui-alerts', inclusive_elements__WEBPACK_IMPORTED_MODULE_0__.AlertsElement);
 var header = document.querySelector('.header');
-window.addEventListener('scroll', function () {
-  header.classList.toggle('is-sticky', pageYOffset > 0);
-});
+
+var scroll = function scroll() {
+  return header.classList.toggle('is-sticky', pageYOffset > 0);
+};
+
+window.addEventListener('scroll', scroll);
+scroll();
 })();
 
 /******/ })()

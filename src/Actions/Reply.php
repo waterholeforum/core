@@ -31,7 +31,7 @@ class Reply extends Link
 
     public function appliesTo($item): bool
     {
-        return $item instanceof Post || $item instanceof Comment;
+        return $item instanceof Post || ($item instanceof Comment && $item->reply_count);
     }
 
     public function authorize(User $user, $item): bool

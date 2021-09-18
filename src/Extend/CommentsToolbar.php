@@ -11,11 +11,11 @@ class CommentsToolbar
     protected static function defaultComponents(): array
     {
         return [
-            'waterhole::post.comments.title',
-            'waterhole::post.comments.sort',
-            'waterhole::ui.spacer',
-            'waterhole::post.comments.pagination',
-            'waterhole::post.comments.reply-button',
+            'waterhole::post-comments-title',
+            'waterhole::post-comments-sort',
+            'waterhole::spacer',
+            'waterhole::post-comments-pagination',
+            'waterhole::post-comments-reply-button',
         ];
     }
 }

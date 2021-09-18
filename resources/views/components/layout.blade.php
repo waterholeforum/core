@@ -1,15 +1,15 @@
-@props(['title' => null])
+@props(['title' => null, 'breadcrumb' => null])
 
 <!doctype html>
 <html lang="{{ config('app.locale') }}">
 <head>
-  <x-waterhole::layout.head :title="$title"/>
+  <x-waterhole::head :title="$title"/>
 </head>
 
 <body>
 
 <div id="waterhole">
-  @components(Waterhole\Extend\LayoutBefore::getComponents())
+  @components(Waterhole\Extend\LayoutBefore::getComponents(), compact('breadcrumb'))
 
   {{ $slot }}
 

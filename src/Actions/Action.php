@@ -69,6 +69,7 @@ abstract class Action
             $attributes = $attributes->merge([
                 'formmethod' => 'GET',
                 'formaction' => route('waterhole.action.confirm'),
+                'data-turbo-frame' => '_top',
             ]);
         }
 
@@ -80,7 +81,7 @@ abstract class Action
         $content = $this->renderContent($items);
 
         return new HtmlString(<<<html
-            <button name="action" value="$class" $attributes>$content</button>
+            <button type="submit" name="action_class" value="$class" $attributes>$content</button>
         html);
     }
 

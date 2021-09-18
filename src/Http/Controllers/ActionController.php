@@ -18,7 +18,7 @@ class ActionController extends Controller
     protected function getAction($items, Request $request)
     {
         $actions = Action::for($items);
-        $requestedAction = $request->get('action');
+        $requestedAction = $request->get('action_class');
 
         foreach ($actions as $action) {
             if (get_class($action) === $requestedAction) {
@@ -52,6 +52,6 @@ class ActionController extends Controller
             return $response;
         }
 
-        return redirect($request->get('redirect', url()->previous()));
+        return redirect($request->get('return', url()->previous()));
     }
 }

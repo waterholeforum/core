@@ -1,7 +1,8 @@
 @props(['comment'])
 
-<x-waterhole::actions.button
+<x-waterhole::action-button
     :for="$comment"
     :action="Waterhole\Actions\Like::class"
     class="btn btn--transparent btn--small"
+    :return="request()->fullUrl().'#comment-'.$comment->id"
 />

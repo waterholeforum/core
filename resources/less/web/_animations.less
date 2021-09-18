@@ -9,6 +9,11 @@ ui-popup > .leave-to {
   opacity: 0;
 }
 
+ui-popup::part(backdrop),
+ui-popup > :nth-child(2) {
+  z-index: var(--z-index-overlay);
+}
+
 [data-placement="bottom-center"] {
   transform-origin: top center;
 }

@@ -11,12 +11,13 @@
   //--base-hsl: var(--base-h), var(--base-s), var(--base-l);
 
   --color-bg: #fff;
+  --color-bg-translucent: rgba(255, 255, 255, 0.7);
   --color-bg-transparent: rgba(255, 255, 255, 0);
-  --color-fill: ~"hsla(var(--base-h), var(--base-s), 85%, 0.4)";
+  --color-fill: ~"hsla(var(--base-h), var(--base-s), 90%, 0.4)";
   --color-stroke: ~"hsla(var(--base-h), var(--base-s), 70%, 0.4)";
 
   --color-text: #000;
-  --color-text-muted: ~"hsl(var(--base-h), calc(var(--base-s) / 2), 60%)";
+  --color-text-muted: ~"hsl(var(--base-h), calc(var(--base-s) / 2), 55%)";
   --color-link: var(--color-accent);
 
   // Accent color
@@ -49,10 +50,10 @@
   --color-unread: #FF8100;
 
   // Border radius
-  --border-radius: 8px;
+  --border-radius: 10px;
 
   // Shadows
-  --shadow-light: 0 1px 4px rgba(0, 0, 0, 0.1);
+  --shadow-light: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 1px 4px rgba(0, 0, 0, 0.1);
   --shadow-dark: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 5px 15px rgba(0, 0, 0, 0.2);
 
   // Filters
@@ -87,4 +88,6 @@
 
   --control-height: 2.5em;
   --control-height-small: 2em;
+
+  --header-height: 4em;
 }

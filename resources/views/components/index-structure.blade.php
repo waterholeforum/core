@@ -57,7 +57,7 @@
 
 <ui-popup placement="bottom-start" class="index-nav-structure">
     <button class="btn">
-        <x-waterhole::ui.icon :icon="$current['icon'] ?? null"/>
+        <x-waterhole::icon :icon="$current['icon'] ?? null"/>
         <span>{{ $current['label'] ?? 'Navigation' }}</span>
         <x-heroicon-o-selector class="icon"/>
     </button>
@@ -74,7 +74,7 @@
                     @foreach ($group['children'] as $child)
                         <li>
                             <a href="{{ $child['url'] }}" class="nav-link {{ $current === $child ? 'is-active' : '' }}">
-                                <x-waterhole::ui.icon :icon="$child['icon']"/>
+                                <x-waterhole::icon :icon="$child['icon']"/>
                                 <span class="label">{{ $child['label'] }}</span>
                                 @isset ($child['badge'])
                                     <span class="badge">{{ $child['badge'] }}</span>

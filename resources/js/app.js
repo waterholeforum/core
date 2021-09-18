@@ -4,8 +4,12 @@
 // import './elements/turbo-echo-stream-tag';
 
 // Turbo.start();
-
+//
 // window.Turbo = Turbo;
+//
+// document.addEventListener('turbo:submit-start', e => {
+//     e.detail.formSubmission.submitter.disabled = true;
+// });
 
 import { PopupElement, MenuElement, ModalElement, TooltipElement, AlertsElement } from 'inclusive-elements';
 
@@ -16,6 +20,6 @@ window.customElements.define('ui-tooltip', TooltipElement);
 window.customElements.define('ui-alerts', AlertsElement);
 
 const header = document.querySelector('.header');
-window.addEventListener('scroll', () => {
-    header.classList.toggle('is-sticky', pageYOffset > 0);
-});
+const scroll = () => header.classList.toggle('is-sticky', pageYOffset > 0);
+window.addEventListener('scroll', scroll);
+scroll();

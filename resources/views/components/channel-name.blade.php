@@ -12,7 +12,7 @@
 
 @if ($channel)
     <{{ $tag }} {{ $attributes }}>
-        <x-waterhole::ui.icon :icon="$channel->icon"/>
+        <x-waterhole::icon :icon="$channel->icon"/>
         <span>{{ $channel->name }}</span>
     </{{ $tag }}>
 @endif

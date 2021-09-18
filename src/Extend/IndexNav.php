@@ -11,7 +11,7 @@ class IndexNav
     protected static function defaultComponents(): array
     {
         return [
-            'waterhole::index.structure',
+            'waterhole::index-structure',
         ];
     }
 }

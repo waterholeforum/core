@@ -10,7 +10,7 @@
 
         @if ($parent)
             <input type="hidden" name="parent_id" value="{{ $parent->id }}">
-            <p>In reply to {{ $parent->user->name }}</p>
+{{--            <p>In reply to {{ $parent->user->name }}</p>--}}
         @endif
 
         <x-waterhole::errors :errors="$errors"/>
