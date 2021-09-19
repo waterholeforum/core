@@ -8,15 +8,18 @@
             <form method="POST" action="{{ route('waterhole.posts.store') }}">
                 @csrf
 
-                <x-waterhole::errors :errors="$errors"/>
-
                 <div class="form">
-                    <div class="field">
-                        <label for="channel" class="field__label">Channel</label>
+                    <x-waterhole::errors :errors="$errors"/>
+
+                    <x-waterhole::field
+                        name="channel_id"
+                        label="Channel"
+                    >
                         <x-waterhole::channel-picker
-                            id="channel"
+                            id="channel_id"
                             name="channel_id"
-                            :value="old('channel_id', $post->channel_id ?? request('channel'))"
+                            :value="old('channel_id', request('channel'))"
+                            allow-null
                         />
 
                         <div class="content" style="background: var(--color-fill); border-radius: var(--border-radius); padding: 1.5rem; font-size: .9rem">
@@ -27,7 +30,7 @@
                                 <li>Include any error messages
                             </ul>
                         </div>
-                    </div>
+                    </x-waterhole::field>
 
                     @include('waterhole::posts.fields')
 

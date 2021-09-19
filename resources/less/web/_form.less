@@ -20,3 +20,13 @@
   font-size: .9rem;
   color: var(--color-text-muted);
 }
+
+.field__status {
+  font-size: .9rem;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+
+  .has-error & {
+    color: var(--color-danger);
+  }
+}

@@ -100,7 +100,7 @@ class Post extends Model implements Deletable, Editable
     public static function rules(Post $post = null): array
     {
         $rules = [
-            'title' => ['nullable', 'string', 'max:255'],
+            'title' => ['required', 'string', 'max:255'],
             'body' => ['required', 'string'],
         ];
 
