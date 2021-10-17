@@ -43,3 +43,29 @@
 @import '_post-list';
 @import '_post-summary';
 @import '_user-label';
+
+.ruler {
+  .tabs {
+    width: 100%;
+    margin: 0 0 0 ~"calc(-1 * var(--space-md))";
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tab {
+    text-align: left;
+    padding-left: var(--space-md);
+
+    &.is-active,
+    &[aria-current=page] {
+      &::after {
+        width: 3px;
+        height: 100%;
+        bottom: 0;
+        left: 0;
+        transform: none;
+        min-width: 0;
+      }
+    }
+  }
+}

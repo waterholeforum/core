@@ -13,7 +13,7 @@ class CommentButtons
     protected static function defaultComponents(): array
     {
         return [
-            CommentButtonReact::class,
+            // CommentButtonReact::class,
             CommentButtonReply::class,
         ];
     }

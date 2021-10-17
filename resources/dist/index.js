@@ -5570,12 +5570,16 @@ var LoadBackwards = /*#__PURE__*/function (_Controller) {
     value: function lockScrollPosition(e) {
       var _this = this;
 
+      var _a;
+
+      if (e.target !== e.currentTarget) return;
       this.anchor = this.element.nextElementSibling;
 
       if (this.anchor) {
         this.top = this.anchor.getBoundingClientRect().top;
       }
 
+      (_a = this.observer) === null || _a === void 0 ? void 0 : _a.disconnect();
       this.observer = new MutationObserver(function () {
         return _this.restore();
       });
@@ -5596,9 +5600,10 @@ var LoadBackwards = /*#__PURE__*/function (_Controller) {
     }
   }, {
     key: "unlockScrollPosition",
-    value: function unlockScrollPosition() {
+    value: function unlockScrollPosition(e) {
       var _this2 = this;
 
+      if (e.target !== e.currentTarget) return;
       setTimeout(function () {
         var _a;
 

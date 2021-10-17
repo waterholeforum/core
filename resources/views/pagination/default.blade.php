@@ -1,11 +1,11 @@
 @if ($paginator->hasPages())
-    <nav class="pagination tabs">
+{{--    <nav class="pagination tabs">--}}
         {{-- First Page Link --}}
-        @if ($paginator->onFirstPage())
-            <span class="tab" aria-disabled="true">@lang('pagination.first')</span>
-        @else
-            <a class="tab" href="{{ $paginator->url(1) }}">@lang('pagination.first')</a>
-        @endif
+{{--        @if ($paginator->onFirstPage())--}}
+{{--            <span class="tab" aria-disabled="true">@lang('pagination.first')</span>--}}
+{{--        @else--}}
+{{--            <a class="tab" href="{{ $paginator->url(1) }}">@lang('pagination.first')</a>--}}
+{{--        @endif--}}
 
         {{-- Previous Page Link --}}
 {{--        @if ($paginator->onFirstPage())--}}
@@ -40,7 +40,7 @@
 {{--        @if ($paginator->onLastPage())--}}
 {{--            <span class="tab" aria-disabled="true">@lang('pagination.last')</span>--}}
 {{--        @else--}}
-            <a class="tab" href="{{ $paginator->fragment('bottom')->url($paginator->lastPage()) }}">@lang('pagination.last')</a>
+{{--            <a class="tab" href="{{ $paginator->fragment('bottom')->url($paginator->lastPage()) }}">@lang('pagination.last')</a>--}}
 {{--        @endif--}}
-    </nav>
+{{--    </nav>--}}
 @endif

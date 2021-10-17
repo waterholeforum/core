@@ -3,7 +3,8 @@
 namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\ManagesComponents;
-use Waterhole\Views\Components\PostLikes;
+use Waterhole\Views\Components\CommentButtonReact;
+use Waterhole\Views\Components\PostReactions;
 use Waterhole\Views\Components\PostReplies;
 
 class PostFooter
@@ -13,8 +14,9 @@ class PostFooter
     protected static function defaultComponents(): array
     {
         return [
-            PostLikes::class,
+            PostReactions::class,
             PostReplies::class,
+            CommentButtonReact::class,
         ];
     }
 }

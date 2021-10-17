@@ -9,7 +9,7 @@
         {{ emojify($post->body_html) }}
     </div>
 
-    <x-waterhole::post-footer :post="$post" interactive>
-        <x-waterhole::action-menu :for="$post"/>
-    </x-waterhole::post-footer>
+{{--    <x-waterhole::post-footer :post="$post" interactive>--}}
+{{--        <x-waterhole::action-menu :for="$post"/>--}}
+{{--    </x-waterhole::post-footer>--}}
 </article>

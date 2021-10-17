@@ -15,7 +15,7 @@
 
                 <div class="toolbar">
                     <button type="submit" class="btn btn--primary">Save</button>
-                    <a href="{{ url()->previous() }}" class="btn">Cancel</a>
+                    <button onclick="window.history.back()" class="btn">Cancel</button>
                 </div>
             </div>
         </form>

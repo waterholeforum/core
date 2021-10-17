@@ -162,10 +162,10 @@
 }
 
 @media (hover: hover) {
-  .comment__buttons {
+  .comment__buttons, .comment__control {
     transition: opacity .2s;
 
-    .comment__main:not(:hover) > .comment__footer > & {
+    .comment__main:not(:hover) & {
       opacity: 0;
     }
   }

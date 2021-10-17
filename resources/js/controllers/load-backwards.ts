@@ -6,11 +6,14 @@ export class LoadBackwards extends Controller {
     observer?: MutationObserver;
 
     lockScrollPosition(e: CustomEvent) {
+        if (e.target !== e.currentTarget) return;
+
         this.anchor = this.element.nextElementSibling as HTMLElement;
         if (this.anchor) {
             this.top = this.anchor.getBoundingClientRect().top;
         }
 
+        this.observer?.disconnect();
         this.observer = new MutationObserver(() => this.restore());
         this.observer.observe(document.body, { subtree: true, childList: true, attributes: true });
     }
@@ -21,7 +24,9 @@ export class LoadBackwards extends Controller {
         }
     }
 
-    unlockScrollPosition() {
+    unlockScrollPosition(e: CustomEvent) {
+        if (e.target !== e.currentTarget) return;
+
         setTimeout(() => {
             this.observer?.disconnect();
             delete this.observer;

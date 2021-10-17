@@ -16,6 +16,6 @@ class CommentReactions extends Component
 
     public function render()
     {
-        return view('waterhole::components.comment-reactions');
+        return '<x-waterhole::reactions :model="$comment"/>';
     }
 }
