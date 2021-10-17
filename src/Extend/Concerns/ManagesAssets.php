@@ -36,7 +36,7 @@ trait ManagesAssets
                 continue;
             }
 
-            $urls = array_merge($urls, static::compile(static::$assets[$group], $group));
+            $urls = array_merge($urls, self::compile(static::$assets[$group], $group));
         }
 
         return $urls;

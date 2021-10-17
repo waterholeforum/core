@@ -35,7 +35,7 @@ class DeleteChannel extends Action
         return $user->can('delete', $item);
     }
 
-    public function confirmation(Collection $items): string|HtmlString|null
+    public function confirmationBody(Collection $items): HtmlString
     {
         return new HtmlString(
             view('waterhole::channels.delete', [

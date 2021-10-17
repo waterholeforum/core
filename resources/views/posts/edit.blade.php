@@ -9,7 +9,7 @@
             <input type="hidden" name="redirect" value="{{ url()->previous() }}">
 
             <div class="form">
-                <x-waterhole::errors :errors="$errors"/>
+                <x-waterhole::validation-errors :errors="$errors"/>
 
                 @include('waterhole::posts.fields')
 

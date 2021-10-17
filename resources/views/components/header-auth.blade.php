@@ -17,6 +17,6 @@
     >{{ __('waterhole::header.log-in') }}</a>
     <a
         href="{{ route('waterhole.register') }}"
-        class="btn btn--primary"
+        class="btn btn--link"
     >{{ __('waterhole::header.register') }}</a>
 @endauth

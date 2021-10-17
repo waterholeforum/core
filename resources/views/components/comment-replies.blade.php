@@ -1,13 +1,15 @@
-@props(['comment'])
-
-{{--<x-waterhole::action-button--}}
-{{--    :for="$comment"--}}
-{{--    :action="Waterhole\Actions\Reply::class"--}}
-{{--    class="btn btn--transparent btn--small"--}}
-{{--/>--}}
+@props(['comment', 'withReplies'])
 
 @if ($comment->reply_count)
-    <a href="{{ $comment->url }}#comment-{{ $comment->id }}" class="comment__view-replies btn btn--link btn--small">
-        {{ __('waterhole::forum.comment-reply-count', ['count' => $comment->reply_count]) }}
+    <a
+        href="{{ $comment->url }}"
+        class="btn btn--small btn--outline"
+        data-controller="comment-replies"
+        aria-expanded="{{ $withReplies ? 'true' : 'false' }}"
+        aria-controls="@domid($comment, 'replies')"
+    >
+        <x-waterhole::icon icon="waterhole-o-comment"/>
+        <span>{{ $comment->reply_count }}</span>
+        <ui-tooltip class="visually-hidden">Show {{ $comment->reply_count }} replies</ui-tooltip>
     </a>
 @endif

@@ -2,7 +2,7 @@
   <form method="POST" action="{{ route('waterhole.channels.store') }}">
     @csrf
 
-    <x-waterhole::errors :errors="$errors"/>
+    <x-waterhole::validation-errors :errors="$errors"/>
 
     <!-- TODO: componentize -->
 

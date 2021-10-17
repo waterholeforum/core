@@ -3,6 +3,9 @@
 namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\ManagesComponents;
+use Waterhole\Views\Components\FeedNewPost;
+use Waterhole\Views\Components\FeedSort;
+use Waterhole\Views\Components\Spacer;
 
 class FeedToolbar
 {
@@ -11,9 +14,9 @@ class FeedToolbar
     protected static function defaultComponents(): array
     {
         return [
-            'waterhole::feed-sort',
-            'waterhole::spacer',
-            'waterhole::feed-new-post',
+            FeedSort::class,
+            Spacer::class,
+            FeedNewPost::class,
         ];
     }
 }

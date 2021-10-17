@@ -3,6 +3,9 @@
 namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\ManagesComponents;
+use Waterhole\Views\Components\PostAttribution;
+use Waterhole\Views\Components\PostChannel;
+use Waterhole\Views\Components\PostTitle;
 
 class PostHeader
 {
@@ -11,9 +14,9 @@ class PostHeader
     protected static function defaultComponents(): array
     {
         return [
-            'waterhole::post-channel',
-            'waterhole::post-title',
-            'waterhole::post-attribution',
+            PostChannel::class,
+            PostTitle::class,
+            PostAttribution::class,
         ];
     }
 }

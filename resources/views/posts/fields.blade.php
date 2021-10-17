@@ -8,7 +8,7 @@
         name="title"
         type="text"
         value="{{ old('title', $post->title ?? '') }}"
-        class="input full-width"
+        class="input"
     >
 </x-waterhole::field>
 

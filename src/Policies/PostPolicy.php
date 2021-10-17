@@ -38,7 +38,7 @@ class PostPolicy
 
     public function delete(User $user, Post $post)
     {
-        return $this->allow() || $post->user_id === $user->id && $post->comment_count === 0;
+        return $post->user_id === $user->id && $post->comment_count === 0;
     }
 
     public function reply(User $user, Post $post)

@@ -3,6 +3,8 @@
 namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\ManagesComponents;
+use Waterhole\Views\Components\PostLikes;
+use Waterhole\Views\Components\PostReplies;
 
 class PostFooter
 {
@@ -11,8 +13,8 @@ class PostFooter
     protected static function defaultComponents(): array
     {
         return [
-            'waterhole::post-likes',
-            'waterhole::post-replies',
+            PostLikes::class,
+            PostReplies::class,
         ];
     }
 }

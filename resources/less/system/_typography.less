@@ -1,0 +1,69 @@
+.h1, .h2, .h3, .h4,
+h1, h2, h3, h4 {
+  font-family: var(--font-special);
+  hyphens: auto;
+}
+
+.h1, h1 {
+  font-size: var(--text-xxl);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+}
+
+.h2, h2 {
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-bold);
+}
+
+.h3, h3 {
+  font-size: var(--text-md);
+  font-weight: var(--font-weight-bold);
+}
+
+.h4, h4 {
+  font-size: var(--text-sm);
+}
+
+.lead {
+  font-size: var(--text-md);
+  line-height: 1.5;
+}
+
+.content {
+  overflow-wrap: break-word;
+  line-height: 1.5;
+
+  > * + * {
+    margin-top: 1em;
+  }
+
+  > * + :is(h1, h2, h3, h4) {
+    margin-top: 2em;
+  }
+
+  a {
+    font-weight: var(--font-weight-bold);
+  }
+
+  ol {
+    list-style-position: outside;
+    padding-left: 2em;
+  }
+
+  ul {
+    list-style: disc outside;
+    padding-left: 2em;
+
+    ul {
+      list-style-type: circle;
+
+      ul {
+        list-style-type: square;
+      }
+    }
+  }
+
+  img {
+    max-width: 100%;
+  }
+}

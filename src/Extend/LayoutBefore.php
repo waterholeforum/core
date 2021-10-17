@@ -3,6 +3,7 @@
 namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\ManagesComponents;
+use Waterhole\Views\Components\Header;
 
 class LayoutBefore
 {
@@ -11,7 +12,7 @@ class LayoutBefore
     protected static function defaultComponents(): array
     {
         return [
-            'waterhole::header',
+            Header::class,
         ];
     }
 }

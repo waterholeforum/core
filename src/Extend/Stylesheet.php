@@ -10,8 +10,8 @@ class Stylesheet
     use ManagesAssets;
 
     private static array $assets = [
-        'web' => [
-            __DIR__.'/../../resources/less/web/app.less',
+        'forum' => [
+            __DIR__.'/../../resources/less/forum/app.less',
         ],
     ];
 

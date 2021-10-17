@@ -3,6 +3,9 @@
 namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\ManagesComponents;
+use Waterhole\Views\Components\PostActivity;
+use Waterhole\Views\Components\PostChannel;
+use Waterhole\Views\Components\PostUnread;
 
 class PostInfo
 {
@@ -11,9 +14,9 @@ class PostInfo
     protected static function defaultComponents(): array
     {
         return [
-            'waterhole::post-unread',
-            'waterhole::post-channel',
-            'waterhole::post-activity',
+            PostUnread::class,
+            PostChannel::class,
+            PostActivity::class,
         ];
     }
 }

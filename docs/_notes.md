@@ -1,28 +1,55 @@
-* extend
-  * Basics
-    * [x] Introduction - architecture, extenders, structure, example (migration, JSON-API, Item List)
-    * [x] Database - migrations, models, naming conventions
-    * [x] JSON API - server, client
-    * [ ] Frontend architecture - app, $app, actor, payload, etc
-    * [x] UI Components - toast, dropdown, CSS classes, etc. menu items, badges
-    * [ ] Distribution
-  * More
-    * [x] Notifications
-    * [x] Permissions
-    * [x] Post Types
-    * [x] Discussion List Filters
-    * [ ] Search
-    * [ ] Settings
-    * [x] Routes
-    * [x] Console
-    * [x] Internationalization
-    * [x] Formatting
-    * [ ] 
+GETTING STARTED
+- Installation
+- 
+- Basic Themeing
+- Launching Your Community
 
 
-# Integration
 
-You cannot yet install Waterhole as a package in an existing Laravel project.
+HOW-TO GUIDES
+- 
+- Themeing 
+- Creating an Extension
 
 
-# Setting up a staging forum
+
+
+
+
+
+
+CONCEPTS/DISCUSSION
+- Philosophy
+- Progressive Enhancement
+- Accessibility
+
+REFERENCE - information-oriented; description; code-determined; same structure as codebase
+- Extenders
+- Actions
+- 
+
+
+
+Getting Started
+- Quick Start
+- Requirements
+- Upgrading
+- Installation
+- Deployment
+
+Advanced
+- Configuration
+- Troubleshooting
+
+Extending
+- Introduction
+- Assets
+- Views
+- Actions
+- Notifications
+- Permissions
+- Post Feed
+- Search
+- Settings
+- Internationalization
+- Distribution

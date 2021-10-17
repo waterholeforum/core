@@ -17,7 +17,7 @@
 @if (count($actions))
     {{ $before ?? '' }}
 
-    <form action="{{ route('waterhole.action') }}" method="POST">
+    <form action="{{ route('waterhole.action.store') }}" method="POST">
         @csrf
         <input type="hidden" name="actionable" value="{{ $actionable }}">
         <input type="hidden" name="id[]" value="{{ $for->id }}">

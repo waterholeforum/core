@@ -1,0 +1,34 @@
+.attribution {
+  --avatar-size: 2.5em;
+
+  padding-left: ~"calc(var(--avatar-size) + var(--space-md))";
+  //min-height: 2.5em;
+
+  .avatar {
+    float: left;
+    margin-left: ~"calc(-1 * (var(--avatar-size) + var(--space-md)))";
+    width: var(--avatar-size);
+    height: var(--avatar-size);
+  }
+}
+
+.attribution__user {
+  color: inherit;
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.attribution__info {
+  display: block;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-top: var(--space-xs);
+
+  > * + *::before {
+    content: ' · ';
+  }
+}

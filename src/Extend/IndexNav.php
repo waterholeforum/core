@@ -3,6 +3,7 @@
 namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\ManagesComponents;
+use Waterhole\Views\Components\IndexStructure;
 
 class IndexNav
 {
@@ -11,7 +12,7 @@ class IndexNav
     protected static function defaultComponents(): array
     {
         return [
-            'waterhole::index-structure',
+            IndexStructure::class,
         ];
     }
 }

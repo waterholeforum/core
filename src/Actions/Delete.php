@@ -36,8 +36,17 @@ class Delete extends Action
         return 'Are you sure you want to delete this?';
     }
 
-    public function run(Collection $items, Request $request): void
+    public function buttonText(Collection $items): ?string
+    {
+        return 'Delete';
+    }
+
+    public function run(Collection $items, Request $request)
     {
         $items->each->delete();
+
+        if ($request->wantsTurboStream()) {
+            return response()->turboStreamView('waterhole::posts.stream-deleted', ['posts' => $items]);
+        }
     }
 }

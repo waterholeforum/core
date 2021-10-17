@@ -1,7 +1,9 @@
-@props(['name', 'label', 'description' => null])
+@props(['name', 'label' => null, 'description' => null])
 
 <div {{ $attributes->class(['field', 'has-error' => $errors->has($name)]) }}>
-    <label for="{{ $name }}" class="field__label">{{ $label }}</label>
+    @if ($label)
+        <label for="{{ $name }}" class="field__label">{{ $label }}</label>
+    @endif
 
     @if ($description)
         <p class="field__description">{{ $description }}</p>

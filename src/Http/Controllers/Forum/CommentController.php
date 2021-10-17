@@ -19,29 +19,30 @@ class CommentController extends Controller
         $this->middleware('waterhole.throttle:waterhole.create')->only('store', 'update');
     }
 
-    // public function show(Comment $comment, Request $request)
-    // {
-    //     return redirect(
-    //         $comment->post->url.'?'.http_build_query([
-    //             'sort' => $request->query('sort'),
-    //             'comment' => $comment->id,
-    //         ]).'#comment-'.$comment->id
-    //     );
-    // }
-
-    public function create(Post $post, Request $request)
+    public function show(Post $post, Comment $comment)
     {
-        $this->authorize('create', Comment::class);
-        $this->authorize('reply', $post);
+        $all = $comment->childrenAndSelf
+            ->load('user', 'likedBy', 'parent.post', 'parent.user')
+            ->each->setRelation('post', $post);
 
-        $parent = null;
+        $comment = $all->toTree()[0];
 
-        if ($parentId = $request->get('parent')) {
-            $parent = $post->comments()->find($parentId);
-        }
-
-        return view('waterhole::comments.create', compact('post', 'parent'));
+        return view('waterhole::comments.show', compact('post', 'comment'));
     }
+
+    // public function create(Post $post, Request $request)
+    // {
+    //     $this->authorize('create', Comment::class);
+    //     $this->authorize('reply', $post);
+    //
+    //     $parent = null;
+    //
+    //     if ($parentId = $request->get('parent')) {
+    //         $parent = $post->comments()->find($parentId);
+    //     }
+    //
+    //     return view('waterhole::comments.create', compact('post', 'parent'));
+    // }
 
     public function store(Post $post, Request $request)
     {
@@ -84,6 +85,6 @@ class CommentController extends Controller
 
         $comment->update($data);
 
-        return redirect($comment->url);
+        return redirect($request->get('return', $comment->url));
     }
 }

@@ -1,0 +1,95 @@
+.visually-hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.icon,
+.twemoji {
+  display: inline-block;
+  height: 1.2em;
+  width: 1.2em;
+  vertical-align: -0.2em;
+}
+
+.with-icon {
+  display: inline-flex;
+
+  > * + * {
+    margin-left: var(--space-xs);
+  }
+}
+
+.scrollable {
+  overflow: auto;
+  position: relative;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+// Rotation
+.rotate-90 {
+  transform: rotate(90deg);
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.rotate-270 {
+  transform: rotate(270deg);
+}
+
+.text-center {
+  text-align: center;
+}
+
+
+.link--muted {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--text-xs);
+  appearance: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.link--sm {
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.clickable {
+  &:is(:disabled, .is-disabled) {
+    opacity: .5;
+    cursor: default;
+  }
+
+  &:not(:disabled, .is-disabled) {
+    cursor: pointer;
+
+    &:is(:hover, .is-hovered) {
+      filter: var(--filter-hover);
+    }
+
+    &:active {
+      filter: var(--filter-active);
+      transform: scale(0.97);
+    }
+  }
+}

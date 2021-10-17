@@ -3,6 +3,10 @@
 namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\ManagesComponents;
+use Waterhole\Views\Components\HeaderAuth;
+use Waterhole\Views\Components\HeaderSearch;
+use Waterhole\Views\Components\HeaderTitle;
+use Waterhole\Views\Components\Spacer;
 
 class SiteHeader
 {
@@ -11,9 +15,10 @@ class SiteHeader
     protected static function defaultComponents(): array
     {
         return [
-            'waterhole::header-title',
-            'waterhole::spacer',
-            'waterhole::header-auth',
+            HeaderTitle::class,
+            Spacer::class,
+            HeaderSearch::class,
+            HeaderAuth::class,
         ];
     }
 }

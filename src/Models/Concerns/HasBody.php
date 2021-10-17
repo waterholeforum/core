@@ -15,6 +15,6 @@ trait HasBody
 
     public function getBodyHtmlAttribute(): HtmlString
     {
-        return new HtmlString(nl2br($this->body));
+        return new HtmlString($this->body);
     }
 }

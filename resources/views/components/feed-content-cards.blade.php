@@ -9,7 +9,7 @@
             </header>
 
             <div class="post-card__content content">
-                {!! nl2br(Str::limit($post->body, 300, '... <a href="'.$post->url.'">More</a>')) !!}
+                {!! Str::limit(strip_tags($post->body), 300, '... <a href="'.$post->url.'">More</a>') !!}
             </div>
 
             <x-waterhole::post-footer :post="$post"/>

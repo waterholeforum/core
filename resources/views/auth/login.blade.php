@@ -1,38 +1,62 @@
-<x-waterhole::layout-centered :title="__('waterhole::auth.login-title')">
-    <h1>{{ __('waterhole::auth.login-title') }}</h1>
+<x-waterhole::layout :title="__('waterhole::auth.login-title')">
+    <x-waterhole::dialog :title="__('waterhole::auth.login-title')" class="dialog--sm">
+        <form action="{{ route('waterhole.login') }}" method="POST" class="form">
+            @csrf
 
-    @if (session('status'))
-        <div>{{ session('status') }}</div>
-    @endif
+            <x-waterhole::validation-errors :errors="$errors"/>
 
-    <form action="{{ route('waterhole.login') }}" method="POST">
-        @csrf
+            <x-waterhole::field
+                name="email"
+                :label="__('waterhole::auth.email-label')"
+            >
+                <input
+                    class="input"
+                    type="email"
+                    id="{{ $component->id }}"
+                    name="email"
+                    value="{{ old('email') }}"
+                    required
+                    autofocus
+                >
+            </x-waterhole::field>
 
-        <div>
-            <label for="email">{{ __('waterhole::auth.email-label') }}</label>
-            <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus>
-            @error('email') <div>{{ $message }}</div> @enderror
-        </div>
+            <x-waterhole::field
+                name="password"
+                :label="__('waterhole::auth.password-label')"
+            >
+                <input
+                    class="input"
+                    type="password"
+                    id="{{ $component->id }}"
+                    name="password"
+                    required
+                    autocomplete="current-password"
+                >
+            </x-waterhole::field>
 
-        <div>
-            <label for="password">{{ __('waterhole::auth.password-label') }}</label>
-            <input type="password" id="password" name="password" required autocomplete="current-password">
-            @error('password') <div>{{ $message }}</div> @enderror
-        </div>
+            <div class="toolbar">
+                <div>
+                    <label for="remember_me">
+                        <input id="remember_me" type="checkbox" name="remember">
+                        {{ __('waterhole::auth.remember-me-label') }}
+                    </label>
+                </div>
 
-        <div>
-            <label for="remember_me">
-                <input id="remember_me" type="checkbox" name="remember">
-                {{ __('waterhole::auth.remember-me-label') }}
-            </label>
-        </div>
+                <div class="spacer"></div>
 
-        <div>
-            <a href="{{ route('waterhole.password.request') }}">{{ __('waterhole::auth.forgot-password-link') }}</a>
-        </div>
+                <div>
+                    <a href="{{ route('waterhole.password.request') }}">{{ __('waterhole::auth.forgot-password-link') }}</a>
+                </div>
+            </div>
 
-        <div>
-            <button type="submit" class="btn btn--primary">{{ __('waterhole::auth.login-submit') }}</button>
-        </div>
-    </form>
-</x-waterhole::layout-centered>
+            <div>
+                <button type="submit" class="btn btn--primary btn--block">{{ __('waterhole::auth.login-submit') }}</button>
+            </div>
+
+            <p class="text-center">
+                Don't have an account?
+                <a href="{{ route('waterhole.register') }}">Sign Up</a>
+            </p>
+        </form>
+    </x-waterhole::dialog>
+</x-waterhole::layout>

@@ -1,5 +1,3 @@
-@props(['breadcrumb' => null])
-
 <div>
     <a href="{{ route('waterhole.home') }}" class="forum-title" style="display: inline-block">
       @if ($customLogo = config('waterhole.forum.custom_logo_url'))
@@ -9,9 +7,9 @@
       @endif
     </a>
 
-    @if ($breadcrumb)
-        <span class="header-breadcrumb">
-            {{ $breadcrumb }}
-        </span>
-    @endif
+    <span
+        class="header-breadcrumb"
+        data-header-target="breadcrumb"
+        hidden
+    ></span>
 </div>

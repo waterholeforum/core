@@ -13,6 +13,8 @@ use Waterhole\Actions\Editable;
 use Waterhole\Models\Concerns\HasBody;
 use Waterhole\Models\Concerns\HasLikes;
 
+use function Tonysm\TurboLaravel\dom_id;
+
 class Post extends Model implements Deletable, Editable
 {
     use HasLikes;
@@ -72,6 +74,14 @@ class Post extends Model implements Deletable, Editable
         return $relation;
     }
 
+    public function isUnread(): bool
+    {
+        return $this->userState && (
+            ! $this->userState->last_read_at
+            || $this->userState->last_read_index < $this->comment_count
+        );
+    }
+
     public function getUrlAttribute(): string
     {
         return route('waterhole.posts.show', ['post' => $this]);
@@ -80,6 +90,18 @@ class Post extends Model implements Deletable, Editable
     public function getEditUrlAttribute(): string
     {
         return route('waterhole.posts.edit', ['post' => $this]);
+    }
+
+    public function url(array $options = []): string
+    {
+        $params = ['post' => $this];
+
+        if ($index = $options['index'] ?? null) {
+            $params['page'] = floor($index / (new Comment)->getPerPage()) + 1;
+            $fragment = 'unread';
+        }
+
+        return route('waterhole.posts.show', $params).(isset($fragment) ? '#'.$fragment : '');
     }
 
     public function wasEdited(): static

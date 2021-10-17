@@ -18,7 +18,7 @@ class PostUser extends Model
     public function read(?int $index): static
     {
         $this->last_read_at = now();
-        $this->last_read_index = $index;
+        $this->last_read_index = max($index, $this->last_read_index);
 
         return $this;
     }

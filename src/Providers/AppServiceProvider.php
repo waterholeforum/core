@@ -2,6 +2,7 @@
 
 namespace Waterhole\Providers;
 
+use BladeUI\Icons\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
@@ -17,6 +18,13 @@ class AppServiceProvider extends ServiceProvider
     {
         collect($this->configFiles)->each(function ($config) {
             $this->mergeConfigFrom(__DIR__."/../../config/$config.php", "waterhole.$config");
+        });
+
+        $this->callAfterResolving(Factory::class, function (Factory $factory) {
+            $factory->add('waterhole', [
+                'path' => __DIR__.'/../../resources/svg',
+                'prefix' => 'waterhole',
+            ]);
         });
 
         // $this->app->bind(

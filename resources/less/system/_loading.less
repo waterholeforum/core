@@ -1,0 +1,42 @@
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  padding: 40px 0;
+
+  &::before {
+    content: '';
+    display: block;
+    margin: 0 auto;
+    width: 2em;
+    height: 2em;
+    border: .35em solid var(--color-fill);
+    border-top-color: var(--color-stroke);
+    border-radius: 50%;
+    animation: loading-indicator .6s infinite linear;
+  }
+
+  &--inline {
+    display: inline-flex;
+    padding: 0;
+
+    &::before {
+      width: 1em;
+      height: 1em;
+      border-width: .2em;
+    }
+  }
+
+  &--overlay {
+    background: var(--color-bg-transparent);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@keyframes loading-indicator {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(359deg); }
+}

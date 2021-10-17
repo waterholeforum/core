@@ -3,6 +3,8 @@
 namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\ManagesComponents;
+use Waterhole\Views\Components\FeedChannel;
+use Waterhole\Views\Components\FeedToolbar;
 
 class FeedHeader
 {
@@ -11,8 +13,8 @@ class FeedHeader
     protected static function defaultComponents(): array
     {
         return [
-            'waterhole::feed-channel',
-            'waterhole::feed-toolbar',
+            FeedChannel::class,
+            FeedToolbar::class,
         ];
     }
 }

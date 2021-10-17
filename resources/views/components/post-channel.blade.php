@@ -1,3 +1,5 @@
 @props(['post'])
 
-<x-waterhole::channel-name :channel="$post->channel" link/>
+<span>
+    <x-waterhole::channel-label :channel="$post->channel" link/>
+</span>

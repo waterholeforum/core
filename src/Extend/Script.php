@@ -10,8 +10,8 @@ class Script
     use ManagesAssets;
 
     private static array $assets = [
-        'web' => [
-            __DIR__.'/../../resources/dist/app.js',
+        'forum' => [
+            __DIR__.'/../../resources/dist/index.js',
         ],
     ];
 

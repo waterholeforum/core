@@ -4,6 +4,7 @@ namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Validation\Rule;
+use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 use Waterhole\Actions\Deletable;
 use Waterhole\Actions\Editable;
 use Waterhole\Models\Concerns\HasLikes;
@@ -13,6 +14,7 @@ class Comment extends Model implements Deletable, Editable
 {
     use HasLikes;
     use HasBody;
+    use HasRecursiveRelationships;
 
     const UPDATED_AT = null;
 
@@ -55,12 +57,12 @@ class Comment extends Model implements Deletable, Editable
 
     public function replies()
     {
-        return $this->hasMany(self::class, 'parent_id');
+        return $this->hasMany(self::class, 'parent_id');//->with('replies', 'replies.user', 'replies.likedBy', 'replies.parent', 'replies.post');
     }
 
     public function parent()
     {
-        return $this->belongsTo(self::class, 'parent_id');
+        return $this->belongsTo(self::class, 'parent_id');//->with('parent');
     }
 
     public static function rules(): array
@@ -73,15 +75,12 @@ class Comment extends Model implements Deletable, Editable
 
     public function getUrlAttribute(): string
     {
-        return $this->post->url.'?'.http_build_query([
-            'comment' => $this->id,
-        ]);
-        // return route('waterhole.comments.show', ['comment' => $this]);
+        return route('waterhole.posts.comments.show', ['post' => $this->post, 'comment' => $this]);
     }
 
     public function getEditUrlAttribute(): string
     {
-        return route('waterhole.comments.edit', ['comment' => $this]);
+        return route('waterhole.posts.comments.edit', ['post' => $this->post, 'comment' => $this]);
     }
 
     public function wasEdited(): static

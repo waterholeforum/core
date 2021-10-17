@@ -44,7 +44,12 @@ abstract class Action
         return $this->name();
     }
 
-    public function confirmation(Collection $items): null|string|HtmlString
+    public function confirmation(Collection $items): null|string
+    {
+        return null;
+    }
+
+    public function confirmationBody(Collection $items): null|HtmlString
     {
         return null;
     }
@@ -68,8 +73,8 @@ abstract class Action
         if ($this->confirm) {
             $attributes = $attributes->merge([
                 'formmethod' => 'GET',
-                'formaction' => route('waterhole.action.confirm'),
-                'data-turbo-frame' => '_top',
+                'formaction' => route('waterhole.action.create'),
+                'data-turbo-frame' => 'modal',
             ]);
         }
 

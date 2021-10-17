@@ -1,5 +1,21 @@
 # Installation
 
+## Installing Waterhole Locally
+
+
+
+
+## Installing Waterhole into an Existing Laravel Application
+
+
+
+## Installing Waterhole on Ubuntu
+
+
+
+
+
+
 ## Server Requirements
 
 Before you install Waterhole, it's important to check that your server meets the requirements. To run Waterhole, you will need:

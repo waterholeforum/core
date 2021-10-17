@@ -5,19 +5,24 @@ use Waterhole\Http\Controllers\ActionController;
 use Waterhole\Http\Controllers\Forum\ChannelController;
 use Waterhole\Http\Controllers\Forum\CommentController;
 use Waterhole\Http\Controllers\Forum\HomeController;
-use Waterhole\Http\Controllers\Forum\LikeController;
 use Waterhole\Http\Controllers\Forum\PostController;
 
 Route::get('/', HomeController::class)->name('home');
 
-Route::get('confirm-action', [ActionController::class, 'confirm'])->name('action.confirm');
-Route::post('action', [ActionController::class, 'run'])->name('action');
+Route::get('confirm-action', [ActionController::class, 'confirm'])->name('action.create');
+Route::post('action', [ActionController::class, 'run'])->name('action.store');
 
-Route::resource('posts', PostController::class)->only(['show', 'create', 'store', 'edit', 'update']);
+Route::resource('posts', PostController::class)
+    ->only(['show', 'create', 'store', 'edit', 'update']);
 
-Route::resource('posts.comments', CommentController::class)->only(['show', 'create', 'store', 'edit', 'update'])->shallow();
+Route::resource('posts.comments', CommentController::class)
+    ->only(['show', 'store', 'edit', 'update'])
+    ->scoped();
 
-Route::resource('channels', ChannelController::class)->only(['show', 'create', 'store', 'edit', 'update'])->scoped(['channel' => 'slug']);
+Route::resource('channels', ChannelController::class)
+    ->only(['show', 'create', 'store', 'edit', 'update'])
+    ->scoped(['channel' => 'slug']);
+
 // Route::get('channels/{channel:slug}/delete', [ChannelController::class, 'delete'])->name('channels.delete');
 
 

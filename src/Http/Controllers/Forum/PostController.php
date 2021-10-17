@@ -31,51 +31,76 @@ class PostController extends Controller
 
         $query = $post->comments()->with(['user', 'parent.user', 'likedBy']);
 
-        $comment = $comments = null;
+        // $comment = $comments = null;
 
-        if ($cid = $request->query('comment')) {
-            if (! $comment = $query->find($cid)) {
-                return redirect($post->url);
-            }
-            $comment->setRelation('post', $post)->load('replies.user', 'replies.likedBy');
-            $comment->replies->each->setRelation('parent', $comment);
-            $comment->replies->each->setRelation('post', $post);
-        } else {
+        // if ($cid = $request->query('comment')) {
+        //     if (! $comment = $query->find($cid)) {
+        //         abort(404);
+        //         //return redirect($post->url);
+        //     }
+        //
+        //     $all = $comment->descendantsAndSelf
+        //         ->load('user', 'likedBy', 'parent.post', 'parent.user')
+        //         ->each->setRelation('post', $post);
+        //
+        //     $comment = $all->toTree()[0];
+        //     // $comment->setRelation('parent', null);
+        //
+        //     // $comment->setRelation('post', $post);//->load('replies.user', 'replies.likedBy');
+        //     // $comment->replies->each->setRelation('parent', $comment);
+        //     // $comment->replies->each->setRelation('post', $post);
+        // } else {
             $currentSort->apply($query/*->orderBy('is_pinned', 'desc')*/);
             $comments = $query->paginate();
             $comments->getCollection()->each(function (Comment $comment) use ($post) {
                 $comment->setRelation('post', $post);
                 $comment->parent?->setRelation('post', $post);
             });
-        }
+        // }
 
         // Mark the post as read for the current user
-        if ($comments) {
+        // if ($comments) {
             $post->userState?->read($comments->lastItem())->save();
-        }
+        // }
 
-        return view('waterhole::posts.show', compact('post', 'comments', 'comment', 'sorts', 'currentSort'));
+        return view('waterhole::posts.show', compact('post', 'comments', 'sorts', 'currentSort'));
     }
 
     public function create()
     {
         $this->authorize('create', Post::class);
 
-        return view('waterhole::posts.create');
+        if ($channelId = request('channel')) {
+            $channel = Channel::findOrFail($channelId);
+        }
+
+        return view('waterhole::posts.create', [
+            'channel' => $channel ?? null,
+        ]);
     }
 
     public function store(Request $request)
     {
         $this->authorize('create', Post::class);
 
-        $post = Post::byUser(
-            $request->user(),
-            $this->data($request)
-        );
+        if ($request->has('publish')) {
+            $post = Post::byUser(
+                $request->user(),
+                $this->data($request)
+            );
 
-        $post->save();
+            $post->save();
 
-        return redirect($post->url);
+            return redirect($post->url);
+        }
+
+        if ($request->has('channel_id')) {
+            $channel = Channel::findOrFail($request->input('channel_id'));
+        }
+
+        return redirect()
+            ->route('waterhole.posts.create', ['channel' => $channel->id ?? null])
+            ->withInput();
     }
 
     public function edit(Post $post)
@@ -91,7 +116,7 @@ class PostController extends Controller
 
         $post->fill($this->data($request, $post))->wasEdited()->save();
 
-        return redirect($request->get('redirect', $post->url));
+        return redirect($request->get('return', $post->url));
     }
 
     private function data(Request $request, Post $post = null): array

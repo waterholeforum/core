@@ -1,14 +1,14 @@
 @props(['user', 'date' => null])
 
 <div class="attribution">
-    <a href="{{ $user->url }}" class="attribution__user">
+    <a href="{{ $user?->url }}" class="attribution__user">
         <x-waterhole::avatar :user="$user"/>
-        <span>{{ $user->name }}</span>
+        <span>{{ $user ? $user->name : 'Anonymous' }}</span>
     </a>
-    <div class="attribution__info">
+    <span class="attribution__info">
         <span>Member</span>
         @if ($date)
             <time datetime="{{ $date }}">{{ $date->diffForHumans() }}</time>
         @endif
-    </div>
+    </span>
 </div>

@@ -1,0 +1,105 @@
+.btn {
+  height: var(--control-height);
+  background: var(--color-fill);
+  color: var(--color-text);
+  border-radius: var(--border-radius);
+  border: 0;
+  margin: 0;
+  display: inline-flex;
+  gap: var(--space-xs);
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm) var(--space-md);
+  text-decoration: none !important;
+  cursor: pointer;
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+  vertical-align: bottom;
+
+  .clickable();
+
+  .icon {
+    font-size: 120%;
+  }
+
+  &.is-loading {
+    &::before {
+      content: '';
+      flex-shrink: 0;
+      margin-right: .3em;
+      width: 1.2em;
+      height: 1.2em;
+      border: .15em currentColor solid;
+      border-top-color: transparent !important;
+      border-radius: 50%;
+      animation: loading-indicator .6s infinite linear;
+    }
+
+    > .icon:first-child {
+      display: none;
+    }
+  }
+}
+
+.btn--primary {
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+}
+
+.btn--danger {
+  background: var(--color-danger);
+  color: var(--color-danger-contrast);
+}
+
+.btn--link {
+  background: transparent;
+  color: var(--color-link);
+  padding-left: var(--space-xs) !important;
+  padding-right: var(--space-xs) !important;
+}
+
+:not([open]) > .btn--transparent:not(:hover, .is-hovered),
+.btn--transparent:is(:disabled, .is-disabled) {
+  background: transparent;
+  color: var(--color-text-muted);
+}
+
+.btn--icon {
+  width: var(--control-height);
+  padding: 0;
+  border-radius: 100px;
+
+  .avatar {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.btn--block {
+  width: 100%;
+}
+
+.btn--small {
+  --control-height: var(--control-height-small);
+  padding: 0 var(--space-sm);
+
+  &:not(.btn--icon) {
+    font-size: 90%;
+  }
+
+  &.btn--icon .icon {
+    font-size: 100%;
+  }
+}
+
+.btn.is-active {
+  color: var(--color-accent) !important;
+  background: var(--color-accent-light) !important;
+  border-color: transparent;
+}
+
+.btn--outline {
+  border: 1px solid var(--color-stroke);
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+}

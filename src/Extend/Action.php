@@ -14,8 +14,9 @@ class Action
     protected static function defaultComponents(): array
     {
         return [
-            Actions\Like::class,
+            Actions\React::class,
             Actions\Reply::class,
+            Actions\MarkAsRead::class,
             Actions\Follow::class,
             Actions\Unfollow::class,
             Actions\Pin::class,

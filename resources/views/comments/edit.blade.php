@@ -1,15 +1,21 @@
 <x-waterhole::layout title="Edit Comment">
-  <form method="POST" action="{{ route('waterhole.comments.update', ['comment' => $comment]) }}">
-    @csrf
-    @method('PATCH')
+    <turbo-frame id="@domid($comment)">
+        <form
+            method="POST"
+            action="{{ route('waterhole.comments.update', ['comment' => $comment]) }}"
+        >
+            @csrf
+            @method('PATCH')
+            <input type="hidden" name="return" value="{{ old('return', url()->previous($comment->url)) }}">
 
-    <x-waterhole::errors :errors="$errors"/>
+            <x-waterhole::validation-errors :errors="$errors"/>
 
-    <textarea name="body">{{ old('body', $comment->body) }}</textarea>
+            <textarea name="body">{{ old('body', $comment->body) }}</textarea>
 
-    <div>
-      <a href="{{ $comment->url }}">Cancel</a>
-      <button type="submit">Save</button>
-    </div>
-  </form>
+            <div>
+                <a href="{{ url()->previous($comment->url) }}">Cancel</a>
+                <button type="submit">Save</button>
+            </div>
+        </form>
+    </turbo-frame>
 </x-waterhole::layout>

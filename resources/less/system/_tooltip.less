@@ -1,0 +1,29 @@
+.tooltip {
+  background: var(--color-tooltip);
+  border-radius: var(--border-radius);
+  box-shadow: var(--space-md);
+  color: var(--color-tooltip-contrast);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+  max-width: 30ch;
+  padding: var(--space-xs) var(--space-sm);
+  pointer-events: none;
+  z-index: var(--z-index-overlay);
+  text-align: center;
+
+  small {
+    font-size: inherit;
+    opacity: 0.5;
+  }
+
+  &.enter-active,
+  &.leave-active {
+    transition: opacity .2s, transform .2s;
+  }
+
+  &.enter-from,
+  &.leave-to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}

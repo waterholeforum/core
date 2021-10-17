@@ -3,7 +3,7 @@
     @csrf
     @method('PATCH')
 
-    <x-waterhole::errors :errors="$errors"/>
+    <x-waterhole::validation-errors :errors="$errors"/>
 
     <!-- TODO: componentize -->
 

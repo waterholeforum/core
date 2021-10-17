@@ -1,3 +1,4 @@
+
 # Routes
 
 Extensions can add routes to Waterhole to create new pages and actions.

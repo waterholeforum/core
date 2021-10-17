@@ -1,7 +1,7 @@
 @props(['icon'])
 
 @php
-    $attributes = $attributes->merge(['class' => 'icon']);
+    $attributes = $attributes->class('icon');
 @endphp
 
 @if (! empty($icon))
@@ -12,6 +12,6 @@
     @elseif (mb_strlen($icon) === 1)
         <span {{ $attributes }}>{{ emojify($icon) }}</span>
     @else
-        {{ svg($icon, 'icon', $attributes->getAttributes()) }}
+        {{ svg($icon, '', $attributes->class('icon-'.$icon)->getAttributes()) }}
     @endif
 @endif

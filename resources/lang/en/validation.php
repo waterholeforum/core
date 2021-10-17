@@ -151,6 +151,8 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'channel_id' => 'channel',
+    ],
 
 ];
