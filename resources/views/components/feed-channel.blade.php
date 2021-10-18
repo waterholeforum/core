@@ -19,12 +19,13 @@
         <x-waterhole::action-buttons
             :for="$channel"
             :only="$buttonActions"
-            class="btn"
+            :button-attributes="['class' => 'btn channel-card__follow']"
         />
 
         <x-waterhole::action-menu
             :for="$channel"
-            :except="$buttonActions"
+            :exclude="$buttonActions"
+            placement="bottom-end"
         />
     </div>
 </div>

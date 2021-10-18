@@ -15,6 +15,7 @@ class Actionable
             'posts' => Models\Post::class,
             'channels' => Models\Channel::class,
             'comments' => Models\Comment::class,
+            'users' => Models\User::class,
         ];
     }
 

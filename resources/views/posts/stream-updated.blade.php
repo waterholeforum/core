@@ -1,7 +1,13 @@
 @foreach ($posts as $post)
-    <turbo-stream target="@domid($post)-summary" action="replace">
+    <turbo-stream target="@domid($post)-list-item" action="replace">
         <template>
-            <x-waterhole::post-summary :post="$post"/>
+            <x-waterhole::post-list-item :post="$post"/>
+        </template>
+    </turbo-stream>
+
+    <turbo-stream target="@domid($post)-card" action="replace">
+        <template>
+            <x-waterhole::post-card :post="$post"/>
         </template>
     </turbo-stream>
 

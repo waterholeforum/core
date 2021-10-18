@@ -31,6 +31,7 @@ class User extends Model implements AuthenticatableContract, MustVerifyEmailCont
         'notification_preferences' => 'json',
         'email_verified_at' => 'datetime',
         'last_seen_at' => 'datetime',
+        'marked_read_at' => 'datetime',
         'notifications_read_at' => 'datetime',
         'show_online' => 'boolean',
         'suspend_until' => 'datetime',
@@ -64,6 +65,13 @@ class User extends Model implements AuthenticatableContract, MustVerifyEmailCont
         }
 
         return $query->count();
+    }
+
+    public function markAllAsRead()
+    {
+        $this->marked_read_at = now();
+
+        return $this;
     }
 
     public function preferredLocale(): ?string

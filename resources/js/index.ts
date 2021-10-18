@@ -25,6 +25,7 @@ document.addEventListener('turbo:frame-render', async e => {
     }
 });
 
+
 import { Application } from '@hotwired/stimulus';
 
 import ChannelPickerController from './controllers/channel-picker';
@@ -42,6 +43,7 @@ window.Stimulus.register('load-backwards', LoadBackwards);
 window.Stimulus.register('post-page', PostPage);
 window.Stimulus.register('comment-replies', CommentReplies);
 window.Stimulus.register('comment', Comment);
+window.Stimulus.register('scrollspy', Scrollspy);
 
 // @ts-ignore
 import { StimulusInvokeController, StimulusInvokeElement } from 'stimulus-invoke';
@@ -59,6 +61,7 @@ declare global {
 
 import { PopupElement, MenuElement, ModalElement, TooltipElement, AlertsElement } from 'inclusive-elements';
 import { PostPage } from './controllers/post-page';
+import { Scrollspy } from './controllers/scrollspy';
 
 
 window.customElements.define('ui-popup', PopupElement);

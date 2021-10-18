@@ -24,8 +24,12 @@
 }
 
 .stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
   > * + * {
-    margin-top: var(--space-md);
+    margin-top: var(--space-sm);
   }
 }
 
@@ -42,6 +46,7 @@
 .with-sidebar-start > :nth-child(2),
 .with-sidebar-end > :nth-last-child(2) {
   flex-grow: 999;
+  min-width: 0;
 }
 
 @media (max-width: @breakpoint-sm) {

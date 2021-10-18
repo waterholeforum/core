@@ -35,7 +35,10 @@ class PostFeed
 
     public function posts(): CursorPaginator
     {
-        $query = Post::query()->with('user', 'channel', 'lastComment.user', 'userState', 'likedBy');
+        $query = Post::query()
+            ->with('user', 'channel', 'lastComment.user', 'userState', 'likedBy')
+            ->select('posts.*')
+            ->withUnreadCount();
 
         if ($this->scope) {
             ($this->scope)($query);

@@ -40,21 +40,14 @@
         </div>
 
         <footer class="comment__footer toolbar">
-            <div class="comment__meta toolbar">
-                @components(Waterhole\Extend\CommentMeta::getComponents(), compact('comment', 'withReplies'))
-            </div>
+            @components(Waterhole\Extend\CommentFooter::getComponents(), compact('comment', 'withReplies'))
 
-            <div class="spacer"></div>
-
-            <div class="comment__buttons toolbar">
-                @components(Waterhole\Extend\CommentButtons::getComponents(), compact('comment'))
-
-                <x-waterhole::action-menu
-                    :for="$comment"
-                    :button-attributes="['class' => 'btn--small']"
-                    placement="bottom-end"
-                />
-            </div>
+            <x-waterhole::action-menu
+                :for="$comment"
+                :button-attributes="['class' => 'btn--small']"
+                placement="bottom-end"
+                class="comment__control"
+            />
         </footer>
     </div>
 

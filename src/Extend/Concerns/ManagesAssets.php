@@ -31,12 +31,12 @@ trait ManagesAssets
     {
         $urls = [];
 
-        foreach ($groups as $group) {
+        foreach (['*', ...$groups] as $group) {
             if (empty(static::$assets[$group])) {
                 continue;
             }
 
-            $urls = array_merge($urls, self::compile(static::$assets[$group], $group));
+            $urls = array_merge($urls, self::compile(static::$assets[$group], $group === '*' ? 'global' : $group));
         }
 
         return $urls;

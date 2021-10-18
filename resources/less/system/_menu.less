@@ -1,7 +1,7 @@
 .menu {
   background: var(--color-bg);
   box-shadow: var(--shadow-md);
-  padding: .4rem;
+  padding: var(--space-sm);
   border-radius: var(--border-radius);
   min-width: 15ch;
   width: max-content;
@@ -23,15 +23,16 @@
   align-items: flex-start;
   padding: .5rem .6rem;
   text-decoration: none !important;
-  cursor: pointer;
   color: var(--color-text);
   transform: none !important;
   text-align: left;
 
-  .clickable();
+  &[role^=menuitem] {
+    .clickable();
 
-  &:is(:hover, .is-hovered, :focus, .is-focused) {
-    background: var(--color-fill);
+    &:is(:hover, .is-hovered, :focus, .is-focused) {
+      background: var(--color-fill);
+    }
   }
 
   &.is-destructive {
@@ -51,11 +52,32 @@
 .menu-item-title {
   display: block;
   font-weight: var(--font-weight-medium);
-  margin-bottom: .2em;
 }
 
 .menu-item-description {
   display: block;
   color: var(--color-text-muted);
   font-size: .9em;
+  margin-top: .2em;
+}
+
+.menu-item .badge,
+.menu-item-check {
+  margin-left: auto;
+}
+
+.menu-divider {
+  margin: var(--space-sm);
+}
+
+.menu-heading {
+  text-transform: uppercase;
+  font-size: var(--text-xxs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-muted);
+  padding: var(--space-sm);
+
+  &:not(:first-child) {
+    margin-top: var(--space-sm);
+  }
 }

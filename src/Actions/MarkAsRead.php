@@ -26,13 +26,18 @@ class MarkAsRead extends Action
 
     public function appliesTo($item): bool
     {
-        return $item instanceof Post && $item->isUnread();
+        return $item instanceof Post && ($item->is_unread ?? true);
     }
 
     public function run(Collection $items, Request $request)
     {
-        $items->each(function ($item) use ($request) {
-            $item->userState->read($item->comment_count)->save();
+        $items->each(function ($post) use ($request) {
+            $post->userState->read()->save();
+            $post->is_unread = false;
         });
+
+        if ($request->wantsTurboStream()) {
+            return response()->turboStreamView('waterhole::posts.stream-mark-as-read', ['posts' => $items]);
+        }
     }
 }

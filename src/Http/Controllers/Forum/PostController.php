@@ -20,8 +20,6 @@ class PostController extends Controller
 
     public function show(Post $post, Request $request)
     {
-        $this->authorize('view', $post);
-
         $post->load('likedBy');
 
         $sorts = CommentsSort::getInstances();
@@ -60,7 +58,7 @@ class PostController extends Controller
 
         // Mark the post as read for the current user
         // if ($comments) {
-            $post->userState?->read($comments->lastItem())->save();
+            $post->userState?->read()->save();
         // }
 
         return view('waterhole::posts.show', compact('post', 'comments', 'sorts', 'currentSort'));

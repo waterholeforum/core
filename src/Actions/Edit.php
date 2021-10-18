@@ -9,7 +9,7 @@ class Edit extends Link
 {
     public function name(): string
     {
-        return 'Edit Post';
+        return 'Edit';
     }
 
     public function icon(Collection $items): ?string

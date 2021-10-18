@@ -14,7 +14,6 @@
 @else
     <div class="placeholder">
         <x-heroicon-o-chat-alt-2 class="placeholder__visual"/>
-        <h3>There's nothing here.</h3>
-        <p>You can <a href="{{ route('waterhole.posts.create') }}?channel={{ $channel->id }}">post something new</a>.</p>
+        <h3>No Posts</h3>
     </div>
 @endif

@@ -1,4 +1,4 @@
-@if ($paginator->hasPages())
+{{--@if ($paginator->hasPages())--}}
 {{--    <nav class="pagination tabs">--}}
         {{-- First Page Link --}}
 {{--        @if ($paginator->onFirstPage())--}}
@@ -15,19 +15,19 @@
 {{--        @endif--}}
 
         {{-- Pagination Elements --}}
-        @foreach ($elements as $element)
-            {{-- "Three Dots" Separator --}}
-            @if (is_string($element))
-                <span class="tab" aria-disabled="true">{{ $element }}</span>
-            @endif
+{{--        @foreach ($elements as $element)--}}
+{{--            --}}{{-- "Three Dots" Separator --}}
+{{--            @if (is_string($element))--}}
+{{--                <span class="tab" aria-disabled="true">{{ $element }}</span>--}}
+{{--            @endif--}}
 
-            {{-- Array Of Links --}}
-            @if (is_array($element))
-                @foreach ($element as $page => $url)
-                    <a class="tab" href="{{ $url }}" @if ($page == $paginator->currentPage()) aria-current="page" @endif>{{ $page }}</a>
-                @endforeach
-            @endif
-        @endforeach
+{{--            --}}{{-- Array Of Links --}}
+{{--            @if (is_array($element))--}}
+{{--                @foreach ($element as $page => $url)--}}
+{{--                    <a class="tab" href="{{ $url }}" @if ($page == $paginator->currentPage()) aria-current="page" @endif>{{ $page }}</a>--}}
+{{--                @endforeach--}}
+{{--            @endif--}}
+{{--        @endforeach--}}
 
         {{-- Next Page Link --}}
 {{--        @if ($paginator->hasMorePages())--}}
@@ -43,4 +43,4 @@
 {{--            <a class="tab" href="{{ $paginator->fragment('bottom')->url($paginator->lastPage()) }}">@lang('pagination.last')</a>--}}
 {{--        @endif--}}
 {{--    </nav>--}}
-@endif
+{{--@endif--}}

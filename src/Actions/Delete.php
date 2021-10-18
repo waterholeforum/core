@@ -13,7 +13,7 @@ class Delete extends Action
 
     public function name(): string
     {
-        return 'Delete Post...';
+        return 'Delete...';
     }
 
     public function icon(Collection $items): ?string

@@ -3,6 +3,8 @@
 namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Intervention\Image\Image;
 use Waterhole\Actions\Editable;
@@ -27,9 +29,21 @@ class Channel extends Model implements Editable
 
     public function unreadPosts(): HasMany
     {
-        return $this->posts()->whereDoesntHave('userState', function ($query) {
-            $query->where('last_read_at', '>=', 'posts.last_comment_at');
-        });
+        return $this->posts()->unread();
+    }
+
+    public function userState(User $user = null): HasOne
+    {
+        $userId = $user ? $user->id : Auth::id();
+
+        $relation = $this->hasOne(ChannelUser::class);
+        $relation->where($relation->qualifyColumn('user_id'), $userId);
+
+        if ($userId) {
+            $relation->withDefault(['user_id' => $userId]);
+        }
+
+        return $relation;
     }
 
     public function getCoverUrlAttribute(): string

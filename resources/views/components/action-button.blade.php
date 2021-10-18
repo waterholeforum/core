@@ -1,5 +1,3 @@
-@props(['for', 'action', 'return' => null])
-
 @php
     $actionable = Waterhole\Extend\Actionable::getActionable($for);
     $action = collect(Waterhole\Extend\Action::for([$for]))

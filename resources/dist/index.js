@@ -5779,6 +5779,86 @@ PostPage.targets = ['post'];
 
 /***/ }),
 
+/***/ "./resources/js/controllers/scrollspy.ts":
+/*!***********************************************!*\
+  !*** ./resources/js/controllers/scrollspy.ts ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Scrollspy": () => (/* binding */ Scrollspy)
+/* harmony export */ });
+/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+var Scrollspy = /*#__PURE__*/function (_Controller) {
+  _inherits(Scrollspy, _Controller);
+
+  var _super = _createSuper(Scrollspy);
+
+  function Scrollspy() {
+    _classCallCheck(this, Scrollspy);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(Scrollspy, [{
+    key: "connect",
+    value: function connect() {
+      this.onScroll();
+    }
+  }, {
+    key: "onScroll",
+    value: function onScroll() {
+      var links = Array.from(this.links());
+      links.forEach(function (a) {
+        return a.removeAttribute('aria-current');
+      });
+      links.reverse().some(function (a) {
+        var id = a.hash.substr(1);
+        var el = document.getElementById(id);
+
+        if (el && el.getBoundingClientRect().top < window.innerHeight / 2) {
+          a.setAttribute('aria-current', 'page');
+          return true;
+        }
+      });
+    }
+  }, {
+    key: "links",
+    value: function links() {
+      return this.element.querySelectorAll('a[href*="#"]');
+    }
+  }]);
+
+  return Scrollspy;
+}(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
+
+/***/ }),
+
 /***/ "./node_modules/regenerator-runtime/runtime.js":
 /*!*****************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime.js ***!
@@ -8871,9 +8951,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _controllers_header__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./controllers/header */ "./resources/js/controllers/header.ts");
 /* harmony import */ var _controllers_load_backwards__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./controllers/load-backwards */ "./resources/js/controllers/load-backwards.ts");
 /* harmony import */ var _controllers_modal__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./controllers/modal */ "./resources/js/controllers/modal.ts");
-/* harmony import */ var stimulus_invoke__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! stimulus-invoke */ "./node_modules/stimulus-invoke/dist/stimulus-invoke.modern.js");
-/* harmony import */ var inclusive_elements__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! inclusive-elements */ "../../../packages/inclusive-elements/dist/index.js");
+/* harmony import */ var stimulus_invoke__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! stimulus-invoke */ "./node_modules/stimulus-invoke/dist/stimulus-invoke.modern.js");
+/* harmony import */ var inclusive_elements__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! inclusive-elements */ "../../../packages/inclusive-elements/dist/index.js");
 /* harmony import */ var _controllers_post_page__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./controllers/post-page */ "./resources/js/controllers/post-page.ts");
+/* harmony import */ var _controllers_scrollspy__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./controllers/scrollspy */ "./resources/js/controllers/scrollspy.ts");
 
 
 var __awaiter = undefined && undefined.__awaiter || function (thisArg, _arguments, P, generator) {
@@ -8957,18 +9038,20 @@ window.Stimulus.register('header', _controllers_header__WEBPACK_IMPORTED_MODULE_
 window.Stimulus.register('load-backwards', _controllers_load_backwards__WEBPACK_IMPORTED_MODULE_8__.LoadBackwards);
 window.Stimulus.register('post-page', _controllers_post_page__WEBPACK_IMPORTED_MODULE_10__.PostPage);
 window.Stimulus.register('comment-replies', _controllers_comment_replies__WEBPACK_IMPORTED_MODULE_6__.CommentReplies);
-window.Stimulus.register('comment', _controllers_comment__WEBPACK_IMPORTED_MODULE_5__.Comment); // @ts-ignore
+window.Stimulus.register('comment', _controllers_comment__WEBPACK_IMPORTED_MODULE_5__.Comment);
+window.Stimulus.register('scrollspy', _controllers_scrollspy__WEBPACK_IMPORTED_MODULE_11__.Scrollspy); // @ts-ignore
 
 
-window.Stimulus.register('invoke', stimulus_invoke__WEBPACK_IMPORTED_MODULE_11__.StimulusInvokeController);
-stimulus_invoke__WEBPACK_IMPORTED_MODULE_11__.StimulusInvokeElement.define();
+window.Stimulus.register('invoke', stimulus_invoke__WEBPACK_IMPORTED_MODULE_12__.StimulusInvokeController);
+stimulus_invoke__WEBPACK_IMPORTED_MODULE_12__.StimulusInvokeElement.define();
 
 
-window.customElements.define('ui-popup', inclusive_elements__WEBPACK_IMPORTED_MODULE_12__.PopupElement);
-window.customElements.define('ui-menu', inclusive_elements__WEBPACK_IMPORTED_MODULE_12__.MenuElement);
-window.customElements.define('ui-modal', inclusive_elements__WEBPACK_IMPORTED_MODULE_12__.ModalElement);
-window.customElements.define('ui-tooltip', inclusive_elements__WEBPACK_IMPORTED_MODULE_12__.TooltipElement);
-window.customElements.define('ui-alerts', inclusive_elements__WEBPACK_IMPORTED_MODULE_12__.AlertsElement);
+
+window.customElements.define('ui-popup', inclusive_elements__WEBPACK_IMPORTED_MODULE_13__.PopupElement);
+window.customElements.define('ui-menu', inclusive_elements__WEBPACK_IMPORTED_MODULE_13__.MenuElement);
+window.customElements.define('ui-modal', inclusive_elements__WEBPACK_IMPORTED_MODULE_13__.ModalElement);
+window.customElements.define('ui-tooltip', inclusive_elements__WEBPACK_IMPORTED_MODULE_13__.TooltipElement);
+window.customElements.define('ui-alerts', inclusive_elements__WEBPACK_IMPORTED_MODULE_13__.AlertsElement);
 })();
 
 /******/ })()

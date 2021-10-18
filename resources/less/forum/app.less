@@ -69,3 +69,17 @@
     }
   }
 }
+
+.ruler__unread {
+  color: var(--color-unread);
+  margin: var(--space-sm) 0;
+
+  &::before {
+    width: var(--space-md);
+    flex-grow: 0;
+  }
+
+  &::after {
+    display: none;
+  }
+}

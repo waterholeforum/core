@@ -24,6 +24,7 @@ return new class extends Migration
             $table->timestamp('created_at')->nullable()->index();
             $table->timestamp('last_seen_at')->nullable()->index();
             $table->boolean('show_online')->default(1);
+            $table->timestamp('marked_read_at')->nullable()->index();
             $table->json('notification_preferences')->nullable();
             $table->timestamp('notifications_read_at')->nullable();
             $table->timestamp('suspend_until')->nullable();

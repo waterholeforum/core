@@ -10,7 +10,7 @@
     @elseif (preg_match('/\.(svg|png|gif|jpg)$/i', $icon))
         <img src="{{ asset($icon) }}" alt="" {{ $attributes }}>
     @elseif (mb_strlen($icon) === 1)
-        <span {{ $attributes }}>{{ emojify($icon) }}</span>
+        {{ emojify($icon, $attributes->getAttributes()) }}
     @else
         {{ svg($icon, '', $attributes->class('icon-'.$icon)->getAttributes()) }}
     @endif

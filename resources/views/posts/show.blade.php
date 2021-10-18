@@ -7,12 +7,12 @@
                 <div style="display: flex; align-items: flex-start; justify-content: space-between">
                     <x-waterhole::post-full :post="$post"/>
                     <div class="" style="border-left: 1px solid var(--color-stroke); margin-top: 6rem; position: sticky; top: calc(var(--header-height) + var(--space-xl)); margin-left: var(--space-xxxl); width: 160px; flex-shrink: 0; padding: 0 0 0 var(--space-md); margin-bottom: 0">
-                        <div class="post-footer toolbar">
+                        <div class="toolbar toolbar--nospace">
 
                             <x-waterhole::action-menu :for="$post" style="margin-bottom: .5rem">
                                 <x-slot name="button">
                                     <button class="btn btn--small">
-                                        <x-waterhole::icon icon="heroicon-o-dots-circle-horizontal"/>
+                                        <x-waterhole::icon icon="heroicon-o-cog"/>
                                         <span>Controls</span>
                                         <x-waterhole::icon icon="heroicon-s-chevron-down"/>
                                     </button>
@@ -35,7 +35,7 @@
 {{--            </h1>--}}
             </div>
 
-            <section class="post-comments" tabindex="-1">
+            <section class="post-comments" tabindex="-1" id="comments">
 {{--                @if ($comment)--}}
 {{--                    <div>--}}
 {{--                        <a--}}
@@ -79,14 +79,21 @@
                                     ><div class="loading-indicator"></div></turbo-frame>
                                 @endif
 
-                                @if (! $comments->onFirstPage())
-                                    <div class="divider">
-                                        <span>Page {{ $comments->currentPage() }}</span>
-                                    </div>
-                                @endif
+                                <div id="page-{{ $comments->currentPage() }}" tabindex="-1">
+                                    @if (! $comments->onFirstPage())
+                                        <div class="divider">
+                                            <span>Page {{ $comments->currentPage() }}</span>
+                                        </div>
+                                    @endif
 
-                                <div id="comments" tabindex="-1">
                                     @foreach ($comments as $i => $comment)
+                                        @if ($comment->created_at > $post->userState->last_read_at)
+                                            @once
+                                                <div class="divider post-comments__unread" id="unread" tabindex="-1">
+                                                    <span>Unread</span>
+                                                </div>
+                                            @endonce
+                                        @endif
                                         <x-waterhole::comment-full :comment="$comment" :data-index="$comments->firstItem() - 1 + $i"/>
                                     @endforeach
                                 </div>
@@ -136,20 +143,39 @@
 {{--                                    {{ __('waterhole::forum.post-comment-count', ['count' => $post->comment_count]) }}--}}
 {{--                                </h4>--}}
 
-{{--                                    <button class="btn" style="margin-bottom: var(--space-sm)">--}}
-{{--                                        <x-waterhole::icon icon="heroicon-o-bell"/>--}}
-{{--                                        <span>Follow</span>--}}
+                                    <button class="btn btn--small" style="margin-bottom: var(--space-sm)">
+                                        <x-waterhole::icon icon="heroicon-o-bell"/>
+                                        <span>Follow</span>
 {{--                                        <x-waterhole::icon icon="heroicon-s-chevron-down"/>--}}
-{{--                                    </button>--}}
+                                    </button>
 
-                                    <nav class="pagination tabs">
+                                    <nav
+                                        class="pagination tabs"
+                                        data-controller="scrollspy"
+                                        data-action="scroll@window->scrollspy#onScroll"
+                                    >
 
                                 <a class="tab" href="{{ $post->url }}">
                                     <x-waterhole::icon icon="heroicon-s-chevron-double-up" style="font-size:90%; margin-left: -3px"/>
                                     <span>First</span>
                                 </a>
 
-                                {{ $comments->appends('direction', null)->fragment('comments')->links() }}
+                                @for ($page = 1; $page <= $comments->lastPage(); $page++)
+                                    <a
+                                        class="tab"
+                                        href="{{ $comments->appends('direction', null)->fragment('page-'.$page)->url($page) }}"
+                                        @if ($page == $comments->currentPage()) aria-current="page" @endif
+                                    >{{ $page }}</a>
+
+                                    @if ($post->unread_count && $comments->total() - $post->unread_count < $page * $comments->perPage())
+                                        <a
+                                            class="divider ruler__unread"
+                                            href="{{ $comments->appends('direction', null)->fragment('unread')->url($page) }}"
+                                        >Unread</a>
+                                    @endif
+                                @endfor
+
+{{--                                {{ $comments->appends('direction', null)->fragment('page-start')->onEachSide(INF)->links() }}--}}
 
                                         <a class="tab" href="{{ $comments->fragment('bottom')->url($comments->lastPage()) }}">
                                             <x-waterhole::icon icon="heroicon-s-chevron-double-down" style="font-size:90%; margin-left: -3px"/>

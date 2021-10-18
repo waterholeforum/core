@@ -1,5 +1,8 @@
 @php
-    $channels = Waterhole\Models\Channel::query()->when(Auth::user(), fn($query) => $query->withCount('unreadPosts'))->get();
+    $channels = Waterhole\Models\Channel::query()
+        //->when(Auth::user(), fn($query) => $query->withCount('unreadPosts'))
+        ->get();
+
     $structure = Waterhole\Models\Config::get('structure', []);
     $nav = [];
     $current = null;

@@ -41,8 +41,13 @@ h1, h2, h3, h4 {
     margin-top: 2em;
   }
 
-  a {
+  a:not([class]) {
     font-weight: var(--font-weight-bold);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   ol {
@@ -61,6 +66,12 @@ h1, h2, h3, h4 {
         list-style-type: square;
       }
     }
+  }
+
+  blockquote {
+    color: var(--color-text-muted);
+    border-left: 5px solid var(--color-fill);
+    padding-left: var(--space-md);
   }
 
   img {

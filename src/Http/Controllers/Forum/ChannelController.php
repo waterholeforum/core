@@ -22,7 +22,7 @@ class ChannelController extends Controller
         $feed = new PostFeed(
             request: $request,
             scope: function (Builder $query) use ($channel) {
-                $query->where('channel_id', $channel->id);
+                $query->where('posts.channel_id', $channel->id);
             },
             sorts: $channel->sorts,
             defaultSort: $channel->default_sort,

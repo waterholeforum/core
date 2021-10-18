@@ -4,7 +4,7 @@
   border-top: 1px solid var(--color-stroke);
   padding-top: var(--space-md);
 
-  .divider + * > &:first-child {
+  .divider + & {
     border-top: 0;
   }
 
@@ -18,7 +18,7 @@
   }
 
   &:not(:last-child) {
-    padding-bottom: var(--space-lg);
+    margin-bottom: var(--space-lg);
   }
 }
 

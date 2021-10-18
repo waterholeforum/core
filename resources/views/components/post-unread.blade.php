@@ -1,13 +1,11 @@
-@props(['post'])
-
-@if ($post->isUnread())
+@if ($post->is_unread)
     <x-waterhole::action-form
         :for="$post"
         :action="Waterhole\Actions\MarkAsRead::class"
     >
-        <button type="submit" class="post-summary__unread badge clickable">
-            @if ($post->userState->last_read_at && ($count = $post->comment_count - $post->userState->last_read_index))
-                {{ $count }}
+        <button type="submit" class="post-summary__unread badge clickable" title="Click to mark as read">
+            @if ($post->userState->last_read_at)
+                {{ $post->unread_comments_count }}
             @else
                 {{ __('waterhole::forum.post-new-post') }}
             @endif

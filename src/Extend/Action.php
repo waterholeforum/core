@@ -16,11 +16,10 @@ class Action
         return [
             Actions\React::class,
             Actions\Reply::class,
+            Actions\MarkAllAsRead::class,
             Actions\MarkAsRead::class,
             Actions\Follow::class,
             Actions\Unfollow::class,
-            Actions\Pin::class,
-            Actions\Unpin::class,
             Actions\Edit::class,
             Actions\MoveChannel::class,
             Actions\DeleteChannel::class,

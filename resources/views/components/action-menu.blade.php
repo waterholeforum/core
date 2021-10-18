@@ -1,11 +1,8 @@
-@props(['for', 'only' => null, 'except' => null, 'buttonAttributes' => []])
-
 <x-waterhole::action-buttons
     :for="$for"
     :only="$only"
-    :except="$except"
-    role="menuitem"
-    class="menu-item"
+    :exclude="$exclude"
+    :button-attributes="['class' => 'menu-item', 'role' => 'menuitem']"
 >
     <x-slot name="before">
         <ui-popup {{ $attributes->merge(['placement' => 'bottom-start']) }}>
@@ -13,7 +10,7 @@
                 {{ $button }}
             @else
                 <button {{ (new Illuminate\View\ComponentAttributeBag($buttonAttributes))->class('btn btn--icon btn--transparent btn--small') }}>
-                    <x-heroicon-s-dots-horizontal class="icon"/>
+                    <x-waterhole::icon icon="heroicon-o-dots-horizontal"/>
                 </button>
             @endif
             <ui-menu class="menu" hidden>
