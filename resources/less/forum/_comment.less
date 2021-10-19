@@ -17,9 +17,9 @@
     margin-left: var(--space-xs);
   }
 
-  &:not(:last-child) {
+  //&:not(:last-child) {
     margin-bottom: var(--space-lg);
-  }
+  //}
 }
 
 .comment[aria-expanded="false"] {
@@ -148,7 +148,7 @@
   border: 1px solid var(--color-stroke);
   padding-left: var(--space-md);
   padding-right: var(--space-md);
-  padding-bottom: var(--space-md);
+  //padding-bottom: var(--space-md);
   border-radius: var(--border-radius);
 
   .comment:first-child {
@@ -165,7 +165,7 @@
   .comment__buttons, .comment__control {
     transition: opacity .2s;
 
-    .comment__main:not(:hover) & {
+    .comment__main:not(:hover, :focus-within) & {
       opacity: 0;
     }
   }

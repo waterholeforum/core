@@ -34,11 +34,10 @@ class Action
         }
 
         if (! $items instanceof Collection) {
-            $items = collect($items);
+            $items = collect(is_array($items) ? $items : [$items]);
         }
 
-        return collect(static::getComponents())
-            ->map(fn($action) => app($action))
+        return collect(static::getInstances())
             ->when($items->count() > 1, function ($actions) {
                 return $actions->filter(fn(Actions\Action $action) => $action->bulk);
             })

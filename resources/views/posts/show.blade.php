@@ -87,7 +87,7 @@
                                     @endif
 
                                     @foreach ($comments as $i => $comment)
-                                        @if ($comment->created_at > $post->userState->last_read_at)
+                                        @if ($post->userState && $comment->created_at > $post->userState->last_read_at)
                                             @once
                                                 <div class="divider post-comments__unread" id="unread" tabindex="-1">
                                                     <span>Unread</span>

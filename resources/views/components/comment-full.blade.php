@@ -1,5 +1,3 @@
-@props(['comment', 'withReplies' => false])
-
 <turbo-frame
     id="@domid($comment)"
     class="comment {{ Waterhole\Extend\CommentClasses::getClasses($comment) }} @if ($withReplies) comment--with-replies @endif"
@@ -9,13 +7,12 @@
     data-id="{{ $comment->id }}"
     data-controller="comment"
     data-action="turbo:frame-render->comment#connect"
-    aria-expanded="true"
 >
-    <span
-        class="comment__line"
-        data-comment-target="line"
-        data-action="click->comment#toggle"
-    ></span>
+{{--    <span--}}
+{{--        class="comment__line"--}}
+{{--        data-comment-target="line"--}}
+{{--        data-action="click->comment#toggle"--}}
+{{--    ></span>--}}
 
     <div class="comment__main">
         <header class="comment__header">
@@ -53,32 +50,15 @@
 
     <turbo-frame id="@domid($comment, 'replies')" @unless ($withReplies) hidden @endunless class="comment__replies">
         @if ($withReplies && count($comment->children))
-            <div>
+            <ol role="list" tabindex="-1">
                 @foreach ($comment->children as $child)
-                    <x-waterhole::comment-full
-                        :comment="$child"
-                    />
+                    <li>
+                        <x-waterhole::comment-full :comment="$child"/>
+                    </li>
                 @endforeach
-            </div>
+            </ol>
         @else
             <div class="loading-indicator"></div>
         @endif
-
-    {{--            @can('reply', $comment->post)--}}
-    {{--                <div class="post-comments__reply comment" id="@domid($comment)-reply">--}}
-    {{--                    <div class="attribution">--}}
-    {{--                        <x-waterhole::avatar :user="Auth::user()"/>--}}
-    {{--                    </div>--}}
-
-    {{--                    <x-waterhole::comment-reply-composer :post="$comment->post" :parent="$comment"/>--}}
-    {{--                </div>--}}
-    {{--            @endcan--}}
-{{--        @elseif ($comment->reply_count)--}}
-    {{--        <div>--}}
-    {{--        <a href="{{ $comment->url }}" class="comment__view-replies btn btn--link btn--small">--}}
-    {{--            View {{ $comment->reply_count }} replies--}}
-    {{--        </a>--}}
-    {{--        </div>--}}
-{{--        @endif--}}
     </turbo-frame>
 </turbo-frame>

@@ -4,13 +4,13 @@
             :for="$model"
             :action="Waterhole\Actions\React::class"
         >
-            <button type="submit" {{ $attributes->class([
+            <{{ $component->isAuthorized ? 'button type="submit"' : 'span' }} {{ $attributes->class([
                 'btn btn--small btn--outline',
-                'is-active' => $model->likedBy->contains(Auth::id())
+                'is-active' => $model->likedBy->contains(Auth::id()),
             ]) }}>
                 <x-waterhole::icon icon="👍"/>
                 <span>{{ $model->score }}</span>
-            </button>
+            </{{ $component->isAuthorized ? 'button' : 'span' }}>
         </x-waterhole::action-form>
     @endif
 </div>

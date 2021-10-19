@@ -1,4 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
+import { FrameElement } from '@hotwired/turbo/dist/types/elements';
 
 export class CommentReplies extends Controller {
     connect() {
@@ -13,5 +14,11 @@ export class CommentReplies extends Controller {
                 e.preventDefault();
             }
         });
+    }
+
+    focusAfterLoad() {
+        addEventListener('turbo:frame-render', e => {
+            (e.target as FrameElement).querySelector<HTMLElement>('.comment__replies ol')?.focus();
+        }, { once: true });
     }
 }

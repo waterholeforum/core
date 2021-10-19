@@ -11,12 +11,9 @@
   justify-content: center;
   padding: var(--space-sm) var(--space-md);
   text-decoration: none !important;
-  cursor: pointer;
   font-weight: var(--font-weight-medium);
   white-space: nowrap;
   vertical-align: bottom;
-
-  .clickable();
 
   .icon {
     font-size: 120%;
@@ -38,6 +35,13 @@
     > .icon:first-child {
       display: none;
     }
+  }
+
+  button&,
+  a&,
+  &[role=button],
+  &[role=link] {
+    .clickable();
   }
 }
 

@@ -5305,6 +5305,17 @@ var CommentReplies = /*#__PURE__*/function (_Controller) {
         }
       });
     }
+  }, {
+    key: "focusAfterLoad",
+    value: function focusAfterLoad() {
+      addEventListener('turbo:frame-render', function (e) {
+        var _a;
+
+        (_a = e.target.querySelector('.comment__replies ol')) === null || _a === void 0 ? void 0 : _a.focus();
+      }, {
+        once: true
+      });
+    }
   }]);
 
   return CommentReplies;
