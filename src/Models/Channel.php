@@ -3,17 +3,19 @@
 namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Intervention\Image\Image;
 use Waterhole\Actions\Editable;
 use Waterhole\Extend\FeedSort;
+use Waterhole\Models\Concerns\Followable;
 use Waterhole\Models\Concerns\HasImageAttributes;
+use Waterhole\Models\Concerns\HasUserState;
 
 class Channel extends Model implements Editable
 {
     use HasImageAttributes;
+    use HasUserState;
+    use Followable;
 
     public $timestamps = false;
 
@@ -27,23 +29,24 @@ class Channel extends Model implements Editable
         return $this->hasMany(Post::class);
     }
 
-    public function unreadPosts(): HasMany
+    /**
+     * A relationship with posts that are new since this channel was followed.
+     */
+    public function newPosts(): HasMany
     {
-        return $this->posts()->unread();
+        return $this->posts()
+            ->whereDoesntHave('userState')
+            ->whereHas('channel.userState', function ($query) {
+                $query->whereColumn('posts.created_at', '>', 'followed_at');
+            });
     }
 
-    public function userState(User $user = null): HasOne
+    /**
+     * A relationship with posts that are followed and unread.
+     */
+    public function unreadPosts(): HasMany
     {
-        $userId = $user ? $user->id : Auth::id();
-
-        $relation = $this->hasOne(ChannelUser::class);
-        $relation->where($relation->qualifyColumn('user_id'), $userId);
-
-        if ($userId) {
-            $relation->withDefault(['user_id' => $userId]);
-        }
-
-        return $relation;
+        return $this->posts()->following()->unread();
     }
 
     public function getCoverUrlAttribute(): string

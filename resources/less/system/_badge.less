@@ -1,16 +1,27 @@
 .badge {
-  border-radius: 100px;
-  background: var(--color-accent);
-  color: var(--color-accent-contrast);
+  border-radius: var(--border-radius);
+  background: var(--color-fill);
+  color: var(--color-text-muted);
   border: 0;
   margin: 0;
   font-size: var(--text-xxs);
+  font-weight: var(--font-weight-medium);
   line-height: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 3ch;
-  min-height: 1.5em;
+  min-width: 2.5ch;
+  min-height: 1.7em;
   text-align: center;
   padding: 0 .5em;
+}
+
+.badge--primary {
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+}
+
+.badge--unread {
+  background: var(--color-unread);
+  color: var(--color-unread-contrast);
 }

@@ -16,8 +16,12 @@
   gap: var(--space-xs);
 }
 
-/*.is-read */.post-summary__title {
+.post-summary__title {
   font-weight: var(--font-weight-normal);
+}
+
+.is-read .post-summary__title {
+  color: var(--color-text-muted);
 }
 
 .post-summary__title a {
@@ -36,17 +40,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: .2rem 0;
+  gap: .2rem var(--space-sm);
   font-size: 80%;
   color: var(--color-text-muted);
-
-  > * + *::before {
-    content: '·';
-    margin: 0 var(--space-xs);
-  }
-}
-
-.post-summary__unread {
-  background: var(--color-unread);
-  font-weight: var(--font-weight-medium);
 }

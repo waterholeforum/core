@@ -1,7 +1,7 @@
 @if ($post->lastComment)
     <span>{{ __('waterhole::forum.post-activity-replied', [
         'userName' => $post->lastComment->user?->name ?? 'Anonymous',
-        'date' => $post->last_comment_at,
+        'date' => $post->last_activity_at,
     ]) }}</span>
 @elseif ($post->user)
     <span>{{ __('waterhole::forum.post-activity-posted', [

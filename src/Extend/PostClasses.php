@@ -13,10 +13,12 @@ class PostClasses
     protected static function defaultClasses(Post $post): array
     {
         return [
-            'is-unread' => $isUnread = Auth::check() && $post->userState->last_read_at < ($post->last_comment_at ?: $post->created_at),
-            'is-read' => ! $isUnread,
-            'is-new' => Auth::check() && ! $post->userState,
+            'is-unread' => $post->isUnread(),
+            'is-read' => $post->isRead(),
+            'is-new' => $post->isNew(),
             'is-mine' => $post->user_id === Auth::id(),
+            'is-followed' => $post->userState?->followed_at,
+            'is-ignored' => $post->userState?->ignored_at,
             'has-replies' => $post->comment_count,
             'is-locked' => $post->is_locked,
         ];

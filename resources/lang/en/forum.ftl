@@ -7,8 +7,8 @@ post-activity-posted = {$userName} posted 2 days ago
 post-new-post = New
 post-new-comments = {$count} New
 post-comment-count = {$count} {$count ->
-    [one] comment
-    *[other] comments
+    [one] Comment
+    *[other] Comments
 }
 
 comment-reply-count = {$count} {$count ->

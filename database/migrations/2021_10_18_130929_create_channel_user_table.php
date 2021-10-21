@@ -12,7 +12,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('channel_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamp('marked_read_at')->nullable();
-            $table->boolean('is_following')->default(0);
+            $table->timestamp('followed_at')->nullable();
         });
     }
 

@@ -5,7 +5,7 @@ namespace Waterhole\Views\Components;
 use Illuminate\View\Component;
 use Waterhole\Models\Post;
 
-class PostCard extends Component
+class PostCardsItem extends Component
 {
     public Post $post;
 

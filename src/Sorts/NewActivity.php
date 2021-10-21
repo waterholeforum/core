@@ -2,8 +2,6 @@
 
 namespace Waterhole\Sorts;
 
-use Illuminate\Database\Eloquent\Builder;
-
 class NewActivity extends Sort
 {
     public function name(): string
@@ -18,6 +16,6 @@ class NewActivity extends Sort
 
     public function apply($query): void
     {
-        $query->latest('last_comment_at');
+        $query->latest('last_activity_at');
     }
 }

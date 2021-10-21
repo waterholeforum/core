@@ -72,6 +72,21 @@ h1, h2, h3, h4 {
     color: var(--color-text-muted);
     border-left: 5px solid var(--color-fill);
     padding-left: var(--space-md);
+
+    > * + * {
+      margin-top: 1em;
+    }
+  }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 80%;
+  }
+
+  pre code {
+    background: var(--color-fill);
+    border-radius: var(--border-radius);
+    padding: var(--space-md) !important;
   }
 
   img {

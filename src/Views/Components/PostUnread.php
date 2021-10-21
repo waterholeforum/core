@@ -8,10 +8,18 @@ use Waterhole\Models\Post;
 class PostUnread extends Component
 {
     public Post $post;
+    public bool $isNotifiable;
 
     public function __construct(Post $post)
     {
         $this->post = $post;
+        $this->isNotifiable = ($post->userState?->followed_at && $post->last_activity_at > $post->userState->followed_at)
+            || ($post->channel->userState?->followed_at && $post->last_activity_at > $post->channel->userState->followed_at && ! $post->userState->last_read_at);
+    }
+
+    public function shouldRender()
+    {
+        return $this->post->isUnread() && (! $this->post->isNew() || $this->isNotifiable);
     }
 
     public function render()

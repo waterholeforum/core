@@ -20,11 +20,15 @@ class Unfollow extends Action
 
     public function appliesTo($item): bool
     {
-        return $item instanceof Post && $item->userState->followed_at;
+        return method_exists($item, 'unfollow') && $item->isFollowed();
     }
 
     public function run(Collection $items, Request $request)
     {
-        $items->each(fn($item) => $item->userState()->update(['followed_at' => null]));
+        $items->each->unfollow();
+
+        if ($request->wantsTurboStream() && $items[0] instanceof Post) {
+            return response()->turboStreamView('waterhole::posts.stream-updated', ['posts' => $items]);
+        }
     }
 }

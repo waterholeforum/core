@@ -2,6 +2,6 @@
 
 <div class="post-cards">
     @foreach ($posts as $post)
-        <x-waterhole::post-card :post="$post"/>
+        <x-waterhole::post-cards-item :post="$post"/>
     @endforeach
 </div>

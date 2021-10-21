@@ -20,6 +20,7 @@ class Action
             Actions\MarkAsRead::class,
             Actions\Follow::class,
             Actions\Unfollow::class,
+            Actions\Ignore::class,
             Actions\Edit::class,
             Actions\MoveChannel::class,
             Actions\DeleteChannel::class,

@@ -1,6 +1,6 @@
 @php
     $channels = Waterhole\Models\Channel::query()
-        //->when(Auth::user(), fn($query) => $query->withCount('unreadPosts'))
+        ->when(Auth::user(), fn($query) => $query->withCount('newPosts', 'unreadPosts'))
         ->get();
 
     $structure = Waterhole\Models\Config::get('structure', []);
@@ -18,7 +18,7 @@
                             'url' => $channel->url,
                             'icon' => $channel->icon,
                             'label' => $channel->name,
-                            'badge' => $channel->unread_posts_count ?: null,
+                            'badge' => ($channel->new_posts_count + $channel->unread_posts_count) ?: null,
                         ];
                         if (request()->fullUrlIs($channel->url.'*')) {
                             $current = $item;
@@ -80,7 +80,7 @@
                                 <x-waterhole::icon :icon="$child['icon']"/>
                                 <span class="label">{{ $child['label'] }}</span>
                                 @isset ($child['badge'])
-                                    <span class="badge">{{ $child['badge'] }}</span>
+                                    <span class="badge badge--primary">{{ $child['badge'] }}</span>
                                 @endisset
                             </a>
                         </li>

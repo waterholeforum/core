@@ -8,7 +8,7 @@
                 'btn btn--small btn--outline',
                 'is-active' => $model->likedBy->contains(Auth::id()),
             ]) }}>
-                <x-waterhole::icon icon="👍"/>
+                <x-waterhole::icon icon="emoji:👍"/>
                 <span>{{ $model->score }}</span>
             </{{ $component->isAuthorized ? 'button' : 'span' }}>
         </x-waterhole::action-form>

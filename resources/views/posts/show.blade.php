@@ -4,14 +4,14 @@
 
             {{--            @if (! $comment && $comments->onFirstPage())--}}
             <div @if (! $comments->onFirstPage()) hidden @endif data-action="turbo:frame-render@document->post-page#showPostOnFirstPage" data-post-page-target="post">
-                <div style="display: flex; align-items: flex-start; justify-content: space-between">
+                <div class="with-sidebar-end">
                     <x-waterhole::post-full :post="$post"/>
-                    <div class="" style="border-left: 1px solid var(--color-stroke); margin-top: 6rem; position: sticky; top: calc(var(--header-height) + var(--space-xl)); margin-left: var(--space-xxxl); width: 160px; flex-shrink: 0; padding: 0 0 0 var(--space-md); margin-bottom: 0">
+                    <div class="" style="margin-top: 6rem; position: sticky; top: calc(var(--header-height) + var(--space-xl)); margin-left: var(--space-xxxl); width: 160px; flex-shrink: 0; padding: 0 0 0 var(--space-md); margin-bottom: 0">
                         <div class="toolbar toolbar--nospace">
 
-                            <x-waterhole::action-menu :for="$post" style="margin-bottom: .5rem">
+                            <x-waterhole::action-menu :for="$post" style="margin-bottom: .5rem" class="btn--block">
                                 <x-slot name="button">
-                                    <button class="btn btn--small">
+                                    <button class="btn btn--block">
                                         <x-waterhole::icon icon="heroicon-o-cog"/>
                                         <span>Controls</span>
                                         <x-waterhole::icon icon="heroicon-s-chevron-down"/>
@@ -58,11 +58,11 @@
 {{--                    />--}}
 
                 <div class="container">
-                    <h2 style="margin-bottom: var(--space-xl); padding-top: var(--space-xl)">
+                    <h2 style="margin-bottom: var(--space-lg); padding-top: var(--space-xl)">
                         {{ __('waterhole::forum.post-comment-count', ['count' => $post->comment_count]) }}
                     </h2>
 
-                    <div style="display: flex; align-items: flex-start; justify-content: space-between">
+                    <div class="with-sidebar-end">
 
                         <div class="post-comments__comments">
                             <turbo-frame id="page_{{ $comments->currentPage() }}">
@@ -122,9 +122,9 @@
                             </turbo-frame>
                         </div>
 
-                        <div class="" style="border-left: 1px solid var(--color-stroke);position: sticky; top: calc(var(--header-height) + var(--space-xl)); margin-left: var(--space-xxxl); width: 160px; flex-shrink: 0; padding: 0 0 0 var(--space-md); margin-bottom: 0">
+                        <div class="" style="position: sticky; top: calc(var(--header-height) + var(--space-xl)); margin-left: var(--space-xxxl); width: 160px; flex-shrink: 0; padding: 0 0 0 var(--space-md); margin-bottom: 0">
                             <div class="toolbar ruler">
-{{--                                <a href="{{ $post->url }}" class="btn btn--small btn--transparent">--}}
+{{--                                <a href="{{ $post->url }}" class="btn btn--transparent">--}}
 {{--                                    <x-waterhole::icon icon="heroicon-s-arrow-up"/>--}}
 {{--                                    <span>Original Post</span>--}}
 {{--                                </a>--}}
@@ -143,11 +143,14 @@
 {{--                                    {{ __('waterhole::forum.post-comment-count', ['count' => $post->comment_count]) }}--}}
 {{--                                </h4>--}}
 
-                                    <button class="btn btn--small" style="margin-bottom: var(--space-sm)">
+                                @auth
+                                    <button class="btn btn--block" style="margin-bottom: var(--space-sm)">
                                         <x-waterhole::icon icon="heroicon-o-bell"/>
                                         <span>Follow</span>
-{{--                                        <x-waterhole::icon icon="heroicon-s-chevron-down"/>--}}
+                                        <x-waterhole::icon icon="heroicon-s-chevron-down"/>
                                     </button>
+                                @endauth
+                                @if ($comments->total())
 
                                     <nav
                                         class="pagination tabs"
@@ -155,7 +158,7 @@
                                         data-action="scroll@window->scrollspy#onScroll"
                                     >
 
-                                <a class="tab" href="{{ $post->url }}">
+                                <a class="tab" href="{{ $post->url }}#top" style="margin-bottom: var(--space-sm)">
                                     <x-waterhole::icon icon="heroicon-s-chevron-double-up" style="font-size:90%; margin-left: -3px"/>
                                     <span>First</span>
                                 </a>
@@ -177,11 +180,12 @@
 
 {{--                                {{ $comments->appends('direction', null)->fragment('page-start')->onEachSide(INF)->links() }}--}}
 
-                                        <a class="tab" href="{{ $comments->fragment('bottom')->url($comments->lastPage()) }}">
+                                        <a class="tab" href="{{ $comments->fragment('bottom')->url($comments->lastPage()) }}"  style="margin-top: var(--space-sm)">
                                             <x-waterhole::icon icon="heroicon-s-chevron-double-down" style="font-size:90%; margin-left: -3px"/>
                                             <span>Last</span>
                                         </a>
                                     </nav>
+                                    @endif
                             </div>
                         </div>
                     </div>
