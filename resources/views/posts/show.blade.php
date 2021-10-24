@@ -1,5 +1,10 @@
 <x-waterhole::layout :title="$post->title">
-        <div class="post-page" data-controller="post-page">
+        <div
+            class="post-page"
+            data-controller="post-page"
+            data-action="turbo:before-stream-render@document->post-page#beforeStreamRender"
+            data-post-page-id-value="{{ $post->id }}"
+        >
             <div class="container">
 
             {{--            @if (! $comment && $comments->onFirstPage())--}}
@@ -9,19 +14,19 @@
                     <div class="" style="margin-top: 6rem; position: sticky; top: calc(var(--header-height) + var(--space-xl)); margin-left: var(--space-xxxl); width: 160px; flex-shrink: 0; padding: 0 0 0 var(--space-md); margin-bottom: 0">
                         <div class="toolbar toolbar--nospace">
 
-                            <x-waterhole::action-menu :for="$post" style="margin-bottom: .5rem" class="btn--block">
-                                <x-slot name="button">
-                                    <button class="btn btn--block">
-                                        <x-waterhole::icon icon="heroicon-o-cog"/>
-                                        <span>Controls</span>
-                                        <x-waterhole::icon icon="heroicon-s-chevron-down"/>
-                                    </button>
-                                </x-slot>
-                            </x-waterhole::action-menu>
+
 
                             @components(Waterhole\Extend\PostFooter::getComponents(), compact('post') + ['interactive' => true])
 
-
+                            <x-waterhole::action-menu :for="$post">
+                                {{--                                <x-slot name="button">--}}
+                                {{--                                    <button class="btn">--}}
+                                {{--                                        <x-waterhole::icon icon="heroicon-o-dots-horizon"/>--}}
+                                {{--                                        <span>Controls</span>--}}
+                                {{--                                        <x-waterhole::icon icon="heroicon-s-chevron-down"/>--}}
+                                {{--                                    </button>--}}
+                                {{--                                </x-slot>--}}
+                            </x-waterhole::action-menu>
 
                         </div>
                     </div>
@@ -143,13 +148,11 @@
 {{--                                    {{ __('waterhole::forum.post-comment-count', ['count' => $post->comment_count]) }}--}}
 {{--                                </h4>--}}
 
-                                @auth
-                                    <button class="btn btn--block" style="margin-bottom: var(--space-sm)">
-                                        <x-waterhole::icon icon="heroicon-o-bell"/>
-                                        <span>Follow</span>
-                                        <x-waterhole::icon icon="heroicon-s-chevron-down"/>
-                                    </button>
-                                @endauth
+                                <x-waterhole::follow-button
+                                    :followable="$post"
+                                    style="margin-bottom: var(--space-sm)"
+                                />
+
                                 @if ($comments->total())
 
                                     <nav

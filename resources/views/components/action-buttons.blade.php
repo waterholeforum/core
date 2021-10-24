@@ -1,7 +1,6 @@
 @php
     $actionable = Waterhole\Extend\Actionable::getActionable($for);
-    $actions = collect(Waterhole\Extend\Action::for([$for]))
-        ->filter(fn($action) => ! $action->hidden);
+    $actions = collect(Waterhole\Extend\Action::for([$for]));
 
     if (isset($only)) {
         $actions = $actions->filter(fn($action) => in_array(get_class($action), $only));

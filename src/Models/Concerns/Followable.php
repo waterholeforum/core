@@ -8,33 +8,43 @@ trait Followable
 {
     public function scopeFollowing(Builder $query): void
     {
-        $query->whereHas('userState', fn($query) => $query->whereNotNull('followed_at'));
+        $query->whereHas('userState', fn($query) => $query->where('notifications', 'follow'));
     }
 
-    public function follow(): void
+    protected function setNotifications(?string $value): void
     {
-        $this->userState->followed_at = now();
+        $this->userState->notifications = $value;
+        $this->userState->followed_at = $value === 'follow' ? now() : null;
         $this->userState->save();
     }
 
-    public function unfollow(): void
+    public function follow()
     {
-        $this->userState->followed_at = null;
-        $this->userState->save();
+        $this->setNotifications('follow');
     }
 
-    public function ignore(): void
+    public function unfollow()
     {
+        $this->setNotifications(null);
+    }
 
+    public function ignore()
+    {
+        $this->setNotifications('ignore');
+    }
+
+    public function unignore()
+    {
+        $this->setNotifications(null);
     }
 
     public function isFollowed(): bool
     {
-        return (bool) $this->userState->followed_at;
+        return $this->userState?->notifications === 'follow';
     }
 
     public function isIgnored(): bool
     {
-        return false;
+        return $this->userState?->notifications === 'ignore';
     }
 }

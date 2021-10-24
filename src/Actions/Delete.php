@@ -5,6 +5,9 @@ namespace Waterhole\Actions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Waterhole\Models\User;
+use Waterhole\Views\Components\FollowButton;
+use Waterhole\Views\Components\PostListItem;
+use Waterhole\Views\TurboStream;
 
 class Delete extends Action
 {
@@ -26,9 +29,9 @@ class Delete extends Action
         return $item instanceof Deletable;
     }
 
-    public function authorize(User $user, $item): bool
+    public function authorize(?User $user, $item): bool
     {
-        return $user->can('delete', $item);
+        return $user && $user->can('delete', $item);
     }
 
     public function confirmation(Collection $items): string
@@ -45,8 +48,16 @@ class Delete extends Action
     {
         $items->each->delete();
 
-        if ($request->wantsTurboStream()) {
-            return response()->turboStreamView('waterhole::posts.stream-deleted', ['posts' => $items]);
+        if ($request->get('return') === $items[0]->url) {
+            return redirect('/');
         }
+    }
+
+    public function stream($item): array
+    {
+        return array_map(
+            fn($component) => TurboStream::remove($component),
+            $item->streamComponents()
+        );
     }
 }

@@ -1,6 +1,7 @@
 <ui-popup placement="bottom-end">
-    <button class="btn btn--icon btn--transparent" aria-label="search">
+    <button class="btn btn--icon btn--transparent">
         <x-waterhole::icon icon="heroicon-s-search"/>
+        <ui-tooltip>Search</ui-tooltip>
     </button>
 
     <div class="menu" hidden style="padding: .75rem">
@@ -20,3 +21,17 @@
         </div>
     </div>
 </ui-popup>
+
+<button class="btn btn--icon btn--transparent">
+    <x-waterhole::icon icon="heroicon-o-mail"/>
+    <ui-tooltip>Messages</ui-tooltip>
+</button>
+
+<button class="btn btn--icon btn--transparent">
+    <x-waterhole::icon icon="heroicon-o-bell"/>
+    <ui-tooltip>Notifications</ui-tooltip>
+</button>
+
+{{--<button class="btn btn--icon btn--transparent" aria-label="menu">--}}
+{{--    <x-waterhole::icon icon="heroicon-o-menu"/>--}}
+{{--</button>--}}

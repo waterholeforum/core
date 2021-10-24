@@ -15,6 +15,10 @@
   white-space: nowrap;
   vertical-align: bottom;
 
+  .icon {
+    flex-shrink: 0;
+  }
+
   &.is-loading {
     &::before {
       content: '';
@@ -54,12 +58,13 @@
 .btn--link {
   background: transparent;
   color: var(--color-link);
-  padding-left: var(--space-xs) !important;
-  padding-right: var(--space-xs) !important;
+  padding-left: var(--space-sm) !important;
+  padding-right: var(--space-sm) !important;
 }
 
 :not([open]) > .btn--transparent:not(:hover, .is-hovered),
-.btn--transparent:is(:disabled, .is-disabled) {
+.btn--transparent:is(:disabled, .is-disabled),
+.btn--transparent:not(button, a, [role=button], [role=link]) {
   background: transparent;
   color: var(--color-text-muted);
 }

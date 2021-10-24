@@ -5,7 +5,7 @@ namespace Waterhole\Extend;
 use Waterhole\Extend\Concerns\ManagesComponents;
 use Waterhole\Views\Components\PostActivity;
 use Waterhole\Views\Components\PostChannel;
-use Waterhole\Views\Components\PostFollowing;
+use Waterhole\Views\Components\PostNotifications;
 use Waterhole\Views\Components\PostUnread;
 
 class PostInfo
@@ -18,7 +18,7 @@ class PostInfo
             PostUnread::class,
             PostChannel::class,
             PostActivity::class,
-            PostFollowing::class,
+            PostNotifications::class,
         ];
     }
 }

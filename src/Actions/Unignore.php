@@ -7,31 +7,31 @@ use Illuminate\Support\Collection;
 use Waterhole\Views\Components\FollowButton;
 use Waterhole\Views\TurboStream;
 
-class Ignore extends Action
+class Unignore extends Action
 {
     public function name(): string
     {
-        return 'Ignore';
+        return 'Unignore';
     }
 
     public function icon(Collection $items): ?string
     {
-        return 'heroicon-o-volume-off';
+        return 'heroicon-o-x-circle';
     }
 
     public function appliesTo($item): bool
     {
-        return method_exists($item, 'ignore');
+        return method_exists($item, 'unignore');
     }
 
     public function visible(Collection $items): bool
     {
-        return $items->some(fn($item) => ! $item->userState->notifications);
+        return $items->some->isIgnored();
     }
 
     public function run(Collection $items, Request $request)
     {
-        $items->each->ignore();
+        $items->each->unignore();
     }
 
     public function stream($item): array

@@ -30,9 +30,9 @@ class DeleteChannel extends Action
         return $item instanceof Channel;
     }
 
-    public function authorize(User $user, $item): bool
+    public function authorize(?User $user, $item): bool
     {
-        return $user->can('delete', $item);
+        return $user && $user->can('delete', $item);
     }
 
     public function confirmationBody(Collection $items): HtmlString

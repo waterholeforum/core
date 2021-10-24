@@ -2,6 +2,7 @@
 
 namespace Waterhole\Views\Components;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 use Waterhole\Models\Comment;
 
@@ -12,6 +13,11 @@ class CommentButtonReact extends Component
     public function __construct(Comment $comment)
     {
         $this->comment = $comment;
+    }
+
+    public function shouldRender()
+    {
+        return Auth::check();
     }
 
     public function render()

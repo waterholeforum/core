@@ -23,6 +23,11 @@
   }
 }
 
+.block {
+  display: block;
+  width: 100%;
+}
+
 .scrollable {
   overflow: auto;
   position: relative;
@@ -82,7 +87,7 @@
   &:not(:disabled, .is-disabled) {
     cursor: pointer;
 
-    &:is(:hover, .is-hovered) {
+    &:is(:hover, .is-hovered, :focus, .is-focused) {
       filter: var(--filter-hover);
     }
 

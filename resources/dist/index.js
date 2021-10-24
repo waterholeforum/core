@@ -5715,7 +5715,9 @@ var ModalController = /*#__PURE__*/function (_Controller) {
   }, {
     key: "hide",
     value: function hide(e) {
-      e === null || e === void 0 ? void 0 : e.preventDefault();
+      if (e instanceof MouseEvent) {
+        e.preventDefault();
+      }
 
       if (this.element.open) {
         this.element.open = false;
@@ -5782,11 +5784,25 @@ var PostPage = /*#__PURE__*/function (_Controller) {
         this.postTarget.hidden = false;
       }
     }
+  }, {
+    key: "beforeStreamRender",
+    value: function beforeStreamRender(e) {
+      var _a;
+
+      var stream = e.target;
+
+      if (stream.action === 'remove' && ((_a = stream.target) === null || _a === void 0 ? void 0 : _a.endsWith('post_' + this.idValue))) {
+        window.history.back();
+      }
+    }
   }]);
 
   return PostPage;
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
 PostPage.targets = ['post'];
+PostPage.values = {
+  id: Number
+};
 
 /***/ }),
 
@@ -8572,7 +8588,7 @@ var l = /*#__PURE__*/function (_HTMLElement2) {
   }, {
     key: "disconnectedCallback",
     value: function disconnectedCallback() {
-      this.hide(), this.observer.disconnect(), this.parent && (this.parent.removeEventListener("mouseenter", this.handleMouseEnter), this.parent.removeEventListener("focus", this.handleFocus), this.parent.removeEventListener("mouseleave", this.handleMouseLeave), this.parent.removeEventListener("blur", this.handleBlur), this.parent.removeEventListener("click", this.handleBlur), this.parent = null), document.removeEventListener("keydown", this.handleKeyDown);
+      this.tooltip && (this.tooltip.remove(), this.tooltip = null), this.observer.disconnect(), this.parent && (this.parent.removeEventListener("mouseenter", this.handleMouseEnter), this.parent.removeEventListener("focus", this.handleFocus), this.parent.removeEventListener("mouseleave", this.handleMouseLeave), this.parent.removeEventListener("blur", this.handleBlur), this.parent.removeEventListener("click", this.handleBlur), this.parent = null), document.removeEventListener("keydown", this.handleKeyDown);
     }
   }, {
     key: "keyDown",
@@ -8691,7 +8707,7 @@ var u = /*#__PURE__*/function (_HTMLElement4) {
     });
 
     var i = document.createElement("template");
-    i.innerHTML = '<div part="backdrop" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0"></div><div part="content" style="position: relative"><slot></slot></div>', e.appendChild(i.content.cloneNode(!0)), null === (t = e.querySelector("[part=backdrop]")) || void 0 === t || t.addEventListener("click", function () {
+    i.innerHTML = '<div part="backdrop" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0"></div><div part="content" style="z-index: 1"><slot></slot></div>', e.appendChild(i.content.cloneNode(!0)), null === (t = e.querySelector("[part=backdrop]")) || void 0 === t || t.addEventListener("click", function () {
       _this8.hasAttribute("static") ? u.attention && u.attention(e.children[1]) : _this8.close();
     });
     return _this8;

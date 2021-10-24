@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\ValidationException;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
 
@@ -29,9 +28,9 @@ class MoveChannel extends Action
         return $item instanceof Post;
     }
 
-    public function authorize(User $user, $item): bool
+    public function authorize(?User $user, $item): bool
     {
-        return $user->can('move', $item);
+        return $user && $user->can('move', $item);
     }
 
     public function confirmation(Collection $items): string
@@ -60,9 +59,5 @@ class MoveChannel extends Action
         // TODO: check permission to post in this channel
 
         $items->each->update($data);
-
-        if ($request->wantsTurboStream()) {
-            return response()->turboStreamView('waterhole::posts.turbo-stream-updated', ['posts' => $items]);
-        }
     }
 }

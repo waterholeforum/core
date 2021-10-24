@@ -38,7 +38,10 @@ export class ModalController extends Controller {
     }
 
     hide(e?: Event) {
-        e?.preventDefault();
+        if (e instanceof MouseEvent) {
+            e.preventDefault();
+        }
+
         if ((this.element as ModalElement).open) {
             (this.element as ModalElement).open = false;
         }

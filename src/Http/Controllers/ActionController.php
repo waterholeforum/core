@@ -4,6 +4,7 @@ namespace Waterhole\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Tonysm\TurboLaravel\Http\TurboResponseFactory;
 use Waterhole\Actions\Action;
 use Waterhole\Extend;
 
@@ -56,7 +57,18 @@ class ActionController extends Controller
         }
 
         try {
-            if ($response = $action->run($items, $request)) {
+            $response = $action->run($items, $request);
+
+            if (
+                $request->wantsTurboStream()
+                && $streams = $items->flatMap(fn($item) => $action->stream($item))->all()
+            ) {
+                return TurboResponseFactory::makeStream(
+                    implode(PHP_EOL, $streams)
+                );
+            }
+
+            if ($response) {
                 return $response;
             }
         } catch (ValidationException $exception) {

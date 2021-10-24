@@ -7,7 +7,7 @@
   flex-grow: 1;
   display: flex;
   flex-wrap: nowrap;
-  gap: var(--space-md);
+  gap: var(--space-sm);
 
   > .post-summary {
     flex-grow: 1;
@@ -39,6 +39,12 @@
 @media (min-width: (@breakpoint-sm + 1)) {
   .post-list-item {
     align-items: center;
+  }
+}
+
+.post-cards {
+  > * + * {
+    margin-top: var(--space-lg);
   }
 }
 

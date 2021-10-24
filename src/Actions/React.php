@@ -41,9 +41,9 @@ class React extends Action
         return $item instanceof Post || $item instanceof Comment;
     }
 
-    public function authorize(User $user, $item): bool
+    public function authorize(?User $user, $item): bool
     {
-        return $user->can('like', $item);
+        return $user && $user->can('like', $item);
     }
 
     public function run(Collection $items, Request $request)

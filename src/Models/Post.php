@@ -16,6 +16,11 @@ use Waterhole\Models\Concerns\HasBody;
 use Waterhole\Models\Concerns\HasLikes;
 use Waterhole\Models\Concerns\HasUserState;
 use Waterhole\Models\Concerns\HasVisibility;
+use Waterhole\Views\Components\PostActions;
+use Waterhole\Views\Components\PostCardsItem;
+use Waterhole\Views\Components\PostListItem;
+use Waterhole\Views\Components\PostSummary;
+use Waterhole\Views\TurboStream;
 
 class Post extends Model implements Deletable, Editable
 {
@@ -163,5 +168,28 @@ class Post extends Model implements Deletable, Editable
     public function isNew(): bool
     {
         return $this->userState && ! $this->userState->last_read_at;
+    }
+
+    public function streamComponents(): array
+    {
+        return [
+            new PostSummary($this),
+        ];
+    }
+
+    public function streamUpdate(): array
+    {
+        return [
+            TurboStream::replace(new PostSummary($this)),
+            TurboStream::replace(new PostActions($this)),
+        ];
+    }
+
+    public function streamDelete(): array
+    {
+        return [
+            TurboStream::remove(new PostListItem($this)),
+            TurboStream::remove(new PostCardsItem($this)),
+        ];
     }
 }

@@ -4,7 +4,8 @@ namespace Waterhole\Actions;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Waterhole\Models\Post;
+use Waterhole\Views\Components\FollowButton;
+use Waterhole\Views\TurboStream;
 
 class Unfollow extends Action
 {
@@ -20,15 +21,24 @@ class Unfollow extends Action
 
     public function appliesTo($item): bool
     {
-        return method_exists($item, 'unfollow') && $item->isFollowed();
+        return method_exists($item, 'unfollow');
+    }
+
+    public function visible(Collection $items): bool
+    {
+        return $items->some->isFollowed();
     }
 
     public function run(Collection $items, Request $request)
     {
         $items->each->unfollow();
+    }
 
-        if ($request->wantsTurboStream() && $items[0] instanceof Post) {
-            return response()->turboStreamView('waterhole::posts.stream-updated', ['posts' => $items]);
-        }
+    public function stream($item): array
+    {
+        return [
+            ...parent::stream($item),
+            TurboStream::replace(new FollowButton($item)),
+        ];
     }
 }

@@ -12,14 +12,14 @@
         @php
             $buttonActions = [
                 Waterhole\Actions\Follow::class,
-                Waterhole\Actions\Unfollow::class
+                Waterhole\Actions\Unfollow::class,
+                Waterhole\Actions\Ignore::class,
+                Waterhole\Actions\Unignore::class,
             ];
         @endphp
 
-        <x-waterhole::action-buttons
-            :for="$channel"
-            :only="$buttonActions"
-            :button-attributes="['class' => 'btn channel-card__follow']"
+        <x-waterhole::follow-button
+            :followable="$channel"
         />
 
         <x-waterhole::action-menu

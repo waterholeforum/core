@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('channel_user', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('channel_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->timestamp('marked_read_at')->nullable();
+            $table->string('notifications')->nullable();
             $table->timestamp('followed_at')->nullable();
         });
     }

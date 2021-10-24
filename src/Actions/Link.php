@@ -8,12 +8,14 @@ use Illuminate\View\ComponentAttributeBag;
 
 abstract class Link extends Action
 {
-    public bool $bulk = false;
-
     abstract public function link($item);
 
-    public function render(Collection $items, ComponentAttributeBag $attributes): HtmlString
+    public function render(Collection $items, ComponentAttributeBag $attributes): HtmlString|null
     {
+        if (! $this->visible($items)) {
+            return null;
+        }
+
         $link = e($this->link($items[0]));
 
         $attributes = new ComponentAttributeBag(array_merge(

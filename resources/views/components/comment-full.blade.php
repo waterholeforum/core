@@ -48,9 +48,9 @@
         </footer>
     </div>
 
-    <turbo-frame id="@domid($comment, 'replies')" @unless ($withReplies) hidden @endunless class="comment__replies">
+    <turbo-frame id="@domid($comment, 'replies')" @unless ($withReplies) hidden @endunless>
         @if ($withReplies && count($comment->children))
-            <ol role="list" tabindex="-1">
+            <ol role="list" tabindex="-1" class="comment__replies">
                 @foreach ($comment->children as $child)
                     <li>
                         <x-waterhole::comment-full :comment="$child"/>

@@ -11,15 +11,8 @@ class ChannelUser extends Model
     protected $table = 'channel_user';
 
     protected $casts = [
-        'marked_read_at' => 'datetime',
+        'followed_at' => 'datetime',
     ];
-
-    public function markAsRead()
-    {
-        $this->marked_read_at = now();
-
-        return $this;
-    }
 
     public function channel(): BelongsTo
     {

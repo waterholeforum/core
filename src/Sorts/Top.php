@@ -21,7 +21,7 @@ class Top extends Sort
     public function apply($query): void
     {
         $query->orderByDesc('score')
-            ->orderByDesc($query->getModel() instanceof Post ? 'comment_count' : 'reply_count');
+            ->orderByDesc('comment_count');
 
         if ($period = $this->currentPeriod()) {
             $query->whereRaw('created_at > DATE_SUB(NOW(), INTERVAL 1 '.strtoupper($period).')');

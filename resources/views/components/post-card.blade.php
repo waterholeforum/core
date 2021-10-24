@@ -1,7 +1,7 @@
-<article class="card post-card {{ Waterhole\Extend\PostClasses::getClasses($post) }}" id="@domid($post, 'card')">
+<article {{ $attributes->class(['card post-card', Waterhole\Extend\PostClasses::getClasses($post)]) }}">
     <header class="post-card__header">
         <x-waterhole::post-summary :post="$post"/>
-        <x-waterhole::action-menu :for="$post" placement="bottom-end"/>
+        <x-waterhole::post-actions :post="$post"/>
     </header>
 
     <div class="post-card__content content">

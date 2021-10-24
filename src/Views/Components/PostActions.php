@@ -4,9 +4,12 @@ namespace Waterhole\Views\Components;
 
 use Illuminate\View\Component;
 use Waterhole\Models\Post;
+use Waterhole\Views\Components\Concerns\Streamable;
 
-class PostFollowing extends Component
+class PostActions extends Component
 {
+    use Streamable;
+
     public Post $post;
 
     public function __construct(Post $post)
@@ -14,13 +17,8 @@ class PostFollowing extends Component
         $this->post = $post;
     }
 
-    public function shouldRender()
-    {
-        return $this->post->userState?->followed_at;
-    }
-
     public function render()
     {
-        return view('waterhole::components.post-following');
+        return view('waterhole::components.post-actions');
     }
 }

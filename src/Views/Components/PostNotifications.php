@@ -4,12 +4,9 @@ namespace Waterhole\Views\Components;
 
 use Illuminate\View\Component;
 use Waterhole\Models\Post;
-use Waterhole\Views\Components\Concerns\Streamable;
 
-class PostSummary extends Component
+class PostNotifications extends Component
 {
-    use Streamable;
-
     public Post $post;
 
     public function __construct(Post $post)
@@ -17,8 +14,13 @@ class PostSummary extends Component
         $this->post = $post;
     }
 
+    public function shouldRender()
+    {
+        return $this->post->userState?->notifications;
+    }
+
     public function render()
     {
-        return view('waterhole::components.post-summary');
+        return view('waterhole::components.post-notifications');
     }
 }

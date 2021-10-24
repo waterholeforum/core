@@ -22,9 +22,9 @@ class Edit extends Link
         return $item instanceof Editable;
     }
 
-    public function authorize(User $user, $item): bool
+    public function authorize(?User $user, $item): bool
     {
-        return $user->can('update', $item);
+        return $user && $user->can('update', $item);
     }
 
     public function link($item)

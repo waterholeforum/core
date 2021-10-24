@@ -7,21 +7,26 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 use Illuminate\View\ComponentAttributeBag;
 use Waterhole\Models\User;
+use Waterhole\Views\Components\FollowButton;
 
 abstract class Action
 {
     public bool $hidden = false;
     public bool $destructive = false;
     public bool $confirm = false;
-    public bool $bulk = false;
 
     abstract public function name(): string;
 
     abstract public function appliesTo($item);
 
-    public function authorize(User $user, $item): bool
+    public function authorize(?User $user, $item): bool
     {
-        return true;
+        return (bool) $user;
+    }
+
+    public function visible(Collection $items): bool
+    {
+        return ! $this->hidden;
     }
 
     public function attributes(Collection $items): array
@@ -64,8 +69,21 @@ abstract class Action
         return null;
     }
 
-    public function render(Collection $items, ComponentAttributeBag $attributes): HtmlString
+    public function stream($item): array
     {
+        if (method_exists($item, 'streamUpdate')) {
+            return $item->streamUpdate();
+        }
+
+        return [];
+    }
+
+    public function render(Collection $items, ComponentAttributeBag $attributes): HtmlString|null
+    {
+        if (! $this->visible($items)) {
+            return null;
+        }
+
         $attributes = (new ComponentAttributeBag($attributes->getAttributes()))
             ->merge($this->attributes($items))
             ->class($this->classes($items));

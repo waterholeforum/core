@@ -14,26 +14,23 @@ class Action
     protected static function defaultComponents(): array
     {
         return [
-            Actions\React::class,
-            Actions\Reply::class,
-            Actions\MarkAllAsRead::class,
+            Actions\CopyLink::class,
             Actions\MarkAsRead::class,
             Actions\Follow::class,
             Actions\Unfollow::class,
             Actions\Ignore::class,
+            Actions\Unignore::class,
             Actions\Edit::class,
             Actions\MoveChannel::class,
             Actions\DeleteChannel::class,
             Actions\Delete::class,
+
+            Actions\React::class,
         ];
     }
 
     public static function for($items): array
     {
-        if (! Auth::check()) {
-            return [];
-        }
-
         if (! $items instanceof Collection) {
             $items = collect(is_array($items) ? $items : [$items]);
         }

@@ -1,7 +1,8 @@
 @auth
-    <ui-popup placement="bottom-end">
+    <ui-popup placement="bottom-end" style="margin-left: var(--space-sm)">
         <button class="btn btn--icon">
             <x-waterhole::avatar :user="Auth::user()"/>
+            <ui-tooltip>{{ Auth::user()->name }}</ui-tooltip>
         </button>
         <ui-menu class="menu" hidden>
             <span class="menu-item">

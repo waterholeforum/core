@@ -12,6 +12,7 @@ class PostUser extends Model
 
     protected $casts = [
         'last_read_at' => 'datetime',
+        'followed_at' => 'datetime',
     ];
 
     public function read(): static

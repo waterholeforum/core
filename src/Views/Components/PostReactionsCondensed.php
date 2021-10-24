@@ -4,12 +4,9 @@ namespace Waterhole\Views\Components;
 
 use Illuminate\View\Component;
 use Waterhole\Models\Post;
-use Waterhole\Views\Components\Concerns\Streamable;
 
-class PostSummary extends Component
+class PostReactionsCondensed extends Component
 {
-    use Streamable;
-
     public Post $post;
 
     public function __construct(Post $post)
@@ -19,6 +16,6 @@ class PostSummary extends Component
 
     public function render()
     {
-        return view('waterhole::components.post-summary');
+        return '<x-waterhole::reactions-condensed :model="$post"/>';
     }
 }

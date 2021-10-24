@@ -34,9 +34,9 @@ class Reply extends Link
         return $item instanceof Post || ($item instanceof Comment && $item->reply_count);
     }
 
-    public function authorize(User $user, $item): bool
+    public function authorize(?User $user, $item): bool
     {
-        return $user->can('reply', $item);
+        return $user && $user->can('reply', $item);
     }
 
     public function link($item)
