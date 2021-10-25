@@ -13,6 +13,7 @@ class PostClasses
     protected static function defaultClasses(Post $post): array
     {
         return [
+            'post',
             'is-unread' => $post->isUnread(),
             'is-read' => $post->isRead(),
             'is-new' => $post->isNew(),

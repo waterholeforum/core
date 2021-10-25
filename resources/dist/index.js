@@ -4754,6 +4754,8 @@ class FrameController {
         }
     }
     async loadSourceURL() {
+        console.log(this.reloadable, this.sourceURL, this.currentURL)
+
         if (!this.settingSourceURL && this.enabled && this.isActive && (this.reloadable || this.sourceURL != this.currentURL)) {
             const previousURL = this.currentURL;
             this.currentURL = this.sourceURL;
@@ -5402,7 +5404,7 @@ var CommentReplies = /*#__PURE__*/function (_Controller) {
       addEventListener('turbo:frame-render', function (e) {
         var _a;
 
-        (_a = e.target.querySelector('.comment__replies ol')) === null || _a === void 0 ? void 0 : _a.focus();
+        (_a = e.target.querySelector('.comment__replies')) === null || _a === void 0 ? void 0 : _a.focus();
       }, {
         once: true
       });
@@ -6010,6 +6012,67 @@ PostPage.targets = ['post'];
 PostPage.values = {
   id: Number
 };
+
+/***/ }),
+
+/***/ "./resources/js/controllers/post.ts":
+/*!******************************************!*\
+  !*** ./resources/js/controllers/post.ts ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "PostController": () => (/* binding */ PostController)
+/* harmony export */ });
+/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+var PostController = /*#__PURE__*/function (_Controller) {
+  _inherits(PostController, _Controller);
+
+  var _super = _createSuper(PostController);
+
+  function PostController() {
+    _classCallCheck(this, PostController);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(PostController, [{
+    key: "appearAsRead",
+    value: function appearAsRead() {
+      if (this.element.classList.contains('is-unread')) {
+        this.element.classList.remove('is-unread', 'is-new');
+        this.element.classList.add('is-read');
+      }
+    }
+  }]);
+
+  return PostController;
+}(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
 
 /***/ }),
 
@@ -7627,755 +7690,6 @@ try {
 
 /***/ }),
 
-/***/ "./node_modules/stimulus-invoke/dist/stimulus-invoke.modern.js":
-/*!*********************************************************************!*\
-  !*** ./node_modules/stimulus-invoke/dist/stimulus-invoke.modern.js ***!
-  \*********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StimulusInvokeController": () => (/* binding */ StimulusInvokeController),
-/* harmony export */   "StimulusInvokeElement": () => (/* binding */ StimulusInvokeElement),
-/* harmony export */   "StimulusInvokeElementReactive": () => (/* binding */ StimulusInvokeElementReactive)
-/* harmony export */ });
-/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
-
-
-function camelCase(str) {
-  return str.replace(/([_\s\t-])+([A-z])/g, (match, p1, p2) => p2.toUpperCase());
-}
-function removeAttributeValueFrom(element, attributeName, attributeValue) {
-  if (element.matches(`[${attributeName}~="${attributeValue}"]`)) {
-    element.setAttribute(attributeName, (element.getAttribute(attributeName) || '').split(' ').filter(value => value.trim() !== attributeValue).join(' '));
-  }
-}
-function findElement(selector) {
-  if (selector instanceof Element) {
-    return selector;
-  }
-
-  return document.getElementById(selector) || document.querySelector(selector);
-} // Try to get the element by first looking it up by ID.
-// If that fails, try using the selector as a CSS Selector.
-
-function findElements(selector) {
-  if (selector instanceof Element) {
-    return [selector];
-  }
-
-  const idTarget = document.getElementById(selector);
-
-  if (idTarget) {
-    return [idTarget];
-  }
-
-  const cssTarget = document.querySelectorAll(selector);
-
-  if (cssTarget.length) {
-    return [...cssTarget];
-  }
-
-  return [];
-} // Borrowed from: https://stackoverflow.com/a/63548167
-
-function findPrototypeProperty(object, propertyName) {
-  while (((_object = object) === null || _object === void 0 ? void 0 : (_object$constructor = _object.constructor) === null || _object$constructor === void 0 ? void 0 : _object$constructor.name) !== 'Object') {
-    var _object, _object$constructor;
-
-    const desc = Object.getOwnPropertyDescriptor(object, propertyName);
-
-    if (desc) {
-      return desc;
-    }
-
-    object = Object.getPrototypeOf(object);
-  }
-
-  return null;
-} // Test if a DOM element property is read-only or writable
-// Usage:
-//   const element = document.getElementById('my_element_id')
-//   isElementPropertyWritable(element, 'id') // -> true
-//   isElementPropertyWritable(element, 'children') // -> false
-//   Borrowed from: https://stackoverflow.com/a/63548167
-
-
-function isElementPropertyWritable(object, propertyName) {
-  const desc = findPrototypeProperty(object, propertyName);
-
-  if (!desc) {
-    return false;
-  }
-
-  if (desc.writable && typeof desc.value !== 'function') {
-    return true;
-  }
-
-  return !!desc.set;
-}
-function toggleAttributeFrom(element, attributeName, attributeValue) {
-  if (element) {
-    if (attributeValue) {
-      element.setAttribute(attributeName, attributeValue);
-    } else {
-      element.removeAttribute(attributeName);
-    }
-  }
-} // Stimulus private functions
-// Borrowed from https://github.com/hotwired/stimulus/blob/v3.0.1/src/core/action.ts
-
-const defaultEventNames = {
-  'a': e => 'click',
-  'button': e => 'click',
-  'details': e => 'toggle',
-  'form': e => 'submit',
-  'input': e => e.getAttribute('type') == 'submit' ? 'click' : 'input',
-  'select': e => 'change',
-  'textarea': e => 'input'
-};
-function getDefaultEventNameForElement(element) {
-  const tagName = element.tagName.toLowerCase();
-
-  if (tagName in defaultEventNames) {
-    return defaultEventNames[tagName](element);
-  }
-} // Borrowed from: https://github.com/hotwired/stimulus/blob/v3.0.1/src/core/action_descriptor.ts
-
-const descriptorPattern = /^((.+?)(@(window|document))?->)?(.+?)(#([^:]+?))(:(.+))?$/;
-function parseActionDescriptorString(descriptorString) {
-  const source = descriptorString.trim();
-  const matches = source.match(descriptorPattern) || [];
-  return {
-    eventTarget: parseEventTarget(matches[4]),
-    eventName: matches[2],
-    eventOptions: matches[9] ? parseEventOptions(matches[9]) : {},
-    identifier: matches[5],
-    methodName: matches[7]
-  };
-}
-
-function parseEventTarget(eventTargetName) {
-  if (eventTargetName == 'window') {
-    return window;
-  } else if (eventTargetName == 'document') {
-    return document;
-  }
-}
-
-function parseEventOptions(eventOptions) {
-  return eventOptions.split(':').reduce((options, token) => Object.assign(options, {
-    [token.replace(/^!/, '')]: !/^!/.test(token)
-  }), {});
-}
-
-class StimulusInvokeController extends _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller {
-  initialize() {
-    var _this$application, _this$application$get;
-
-    // Always call super.initialize()
-    super.initialize();
-    const getControllerForElementAndIdentifier = this === null || this === void 0 ? void 0 : (_this$application = this.application) === null || _this$application === void 0 ? void 0 : (_this$application$get = _this$application.getControllerForElementAndIdentifier) === null || _this$application$get === void 0 ? void 0 : _this$application$get.bind(this === null || this === void 0 ? void 0 : this.application);
-    this._getControllerForElementAndIdentifier = getControllerForElementAndIdentifier;
-
-    if (!this._getControllerForElementAndIdentifier || typeof this._getControllerForElementAndIdentifier !== 'function') {
-      this._error('Unable to find Stimulus controller(s) without the "getControllerForElementAndIdentifier()" method!');
-    }
-  }
-
-  connect() {
-    const customEvent = new CustomEvent(`${this.identifier}:connected`);
-    this.element.dispatchEvent(customEvent);
-  }
-
-  disconnect() {
-    const customEvent = new CustomEvent(`${this.identifier}:disconnected`);
-    this.element.dispatchEvent(customEvent);
-  } // Actions
-
-
-  apply() {
-    if (this.actionValue) {
-      const actions = this.actionValue.split(' ');
-      actions.forEach(action => {
-        this._invokeAction(action);
-      });
-    } else {
-      // TODO: Raise an error? Otherwise if an actionValue has the :once option,
-      // it'll raised an error, the second time it's called...
-      // this._error(`"data-${this.identifier}-action-value" HTML attribute must be set!`)
-      console.warn(`"data-${this.identifier}-action-value" HTML attribute should be set`);
-    }
-
-    const customEvent = new CustomEvent(`${this.identifier}:applied`);
-    this.element.dispatchEvent(customEvent);
-  }
-
-  remove() {
-    this.element.remove();
-    const customEvent = new CustomEvent(`${this.identifier}:removed`);
-    this.element.dispatchEvent(customEvent);
-  }
-
-  get sourceElement() {
-    return this.hasSourceTarget ? this.sourceTarget : this.sourceValue ? findElement(this.sourceValue) : null;
-  }
-
-  get domAccess() {
-    return this.constructor.config.domAccess;
-  }
-
-  get domIdentifier() {
-    return this.constructor.config.domIdentifier;
-  }
-
-  get propertyWritable() {
-    return this.constructor.config.propertyWritable;
-  } // Private
-
-
-  _error(message) {
-    throw new Error(message);
-  } // Borrowed from: https://github.com/hotwired/turbo/pull/113
-
-
-  get _targetElements() {
-    if (this.targetValue) {
-      const elements = findElements(this.targetValue);
-
-      if (elements !== null && elements !== void 0 && elements.length) {
-        return elements;
-      }
-
-      this._error(`Unable to find target with this selector: "${this.targetValue}"`);
-    }
-
-    return [];
-  }
-
-  _getTargetElements(identifier) {
-    if (this.targetValue) {
-      return this._targetElements;
-    }
-
-    const elements = [this.element.closest(`[data-controller~="${identifier}"]`)];
-
-    if ((elements === null || elements === void 0 ? void 0 : elements.length) === 0) {
-      const errorMessage = `Unable to find Stimulus controller(s) "${identifier}"!`;
-
-      this._error(errorMessage);
-    }
-
-    return elements;
-  }
-
-  _handleEvent(eventTarget, eventName, listener) {
-    const event = new Event(eventName, {
-      bubbles: true,
-      cancelable: true,
-      composed: true
-    }); // Remove previous event listeners, if any
-
-    eventTarget.removeEventListener(eventName, listener);
-    eventTarget.addEventListener(eventName, listener, {
-      once: true
-    });
-    eventTarget.dispatchEvent(event);
-  }
-
-  _invokeAction(action) {
-    const actionDescriptor = parseActionDescriptorString(action);
-    const controllerEventTarget = actionDescriptor.eventTarget;
-    const controllerEventName = actionDescriptor.eventName;
-    const controllerEventOptions = actionDescriptor.eventOptions;
-
-    const controllerIdentifier = actionDescriptor.identifier || this._error('missing identifier');
-
-    const controllerMethodName = actionDescriptor.methodName || this._error('missing method name');
-
-    const controllerElements = this._getTargetElements(controllerIdentifier);
-
-    controllerElements.forEach(controllerElement => {
-      if (!(controllerElement instanceof Element)) {
-        this._error(`Unable to find Stimulus controller "${controllerIdentifier}"!`);
-      }
-
-      let currentControllerEventTarget = controllerEventTarget;
-      let currentControllerEventName = controllerEventName;
-
-      if (this.sourceElement) {
-        currentControllerEventTarget = currentControllerEventTarget || this.sourceElement;
-        currentControllerEventName = currentControllerEventName || getDefaultEventNameForElement(controllerElement);
-      } // Handle target which is inside a Stimulus controller
-
-
-      if (this.targetValue && !controllerElement.matches(`[data-controller~="${controllerIdentifier}"]`)) {
-        currentControllerEventTarget = currentControllerEventTarget || controllerElement;
-        currentControllerEventName = currentControllerEventName || getDefaultEventNameForElement(controllerElement);
-
-        if (this.domAccess && controllerIdentifier !== this.domIdentifier || !this.domAccess) {
-          controllerElement = controllerElement.closest(`[data-controller~="${controllerIdentifier}"]`);
-        }
-
-        if (!controllerElement || !(controllerElement instanceof Element)) {
-          this._error(`Unable to find a parent Stimulus controller "${controllerIdentifier}", ` + `for the target with this selector: "${this.targetValue}"!`);
-        }
-      }
-
-      currentControllerEventTarget = currentControllerEventTarget || this.element;
-      currentControllerEventName = currentControllerEventName || getDefaultEventNameForElement(this.element);
-
-      const controller = (this.domAccess && controllerIdentifier === this.domIdentifier ? controllerElement : null) || this._getControllerForElementAndIdentifier(controllerElement, controllerIdentifier);
-
-      if (!controller) {
-        this._error(`Unable to find a Stimulus controller instance for "${controllerIdentifier}"!`);
-      }
-
-      if (!controller[controllerMethodName]) {
-        this._error(`Action "${action}" references undefined method${this.propertyWritable ? ' or property' : ''} "${controllerMethodName}"`);
-      }
-
-      if (typeof controller[controllerMethodName] !== 'function') {
-        if (!this.propertyWritable) {
-          this._error(`Action "${action}" doesn't reference a method named "${controllerMethodName}", maybe it's a property?`);
-        }
-
-        if (!isElementPropertyWritable(controller, controllerMethodName)) {
-          this._error(`Action "${action}" references undefined or read only property "${controllerMethodName}"`);
-        }
-      } // Without a currentControllerEventName value, it returns something like:
-      //   'current-identifier:controller-identifier:methodName'
-      //  e.g.
-      //   'invoke:bootstrap-modal:show'
-      //
-      // With a currentControllerEventName value, it returns something like:
-      //  'current-identifier:controller-identifier:methodName.eventName'
-      //  e.g.
-      //  'invoke:bootstrap-modal:show.click'
-
-
-      const controllerEventType = `${this.identifier}:${controllerIdentifier}:${controllerMethodName}${currentControllerEventName ? `.${currentControllerEventName}` : ''}`;
-
-      const listener = event => {
-        const params = [event, ...this.paramsValue];
-
-        if (this.domAccess && controllerIdentifier === this.domIdentifier) {
-          params.shift(); // event isn't used form DOM manipulation
-        }
-
-        if (typeof controller[controllerMethodName] === 'function') {
-          controller[controllerMethodName](...params);
-        } else {
-          const [param] = this.paramsValue;
-
-          if (param === undefined) {
-            console.warn(`No value given to set the property "${controllerMethodName}" in action "${action}"`);
-          } else {
-            controller[controllerMethodName] = param;
-          }
-        }
-      };
-
-      this._handleEvent(currentControllerEventTarget, controllerEventType, listener);
-    });
-
-    if (controllerEventOptions !== null && controllerEventOptions !== void 0 && controllerEventOptions.once) {
-      removeAttributeValueFrom(this.element, `data-${this.identifier}-action-value`, action);
-    }
-  }
-
-}
-StimulusInvokeController.targets = ['source'];
-StimulusInvokeController.values = {
-  action: String,
-  target: String,
-  source: String,
-  params: Array
-};
-StimulusInvokeController.config = {
-  domAccess: false,
-  domIdentifier: 'DOM',
-  propertyWritable: false
-};
-
-function _extends() {
-  _extends = Object.assign || function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
-    }
-
-    return target;
-  };
-
-  return _extends.apply(this, arguments);
-}
-
-class StimulusInvokeElement extends HTMLElement {
-  static get observedAttributes() {
-    return ['disabled', 'action', 'target', 'source', 'params', 'on', 'keep', 'once', 'data-controller-name', 'data-controller-action', 'id'];
-  }
-
-  static define() {
-    customElements.define(this.config.tagName, this);
-  }
-
-  constructor() {
-    // Always call super first in constructor
-    super();
-    this.config = _extends({}, this.constructor.config);
-    this.config.controllerApplyEvent = `${this.config.controllerName}:connected`;
-    this.config.controllerRemoveEvent = `${this.config.controllerName}:applied`;
-    this.config.controllerApplyAction = `${this.config.controllerApplyEvent}->${this.config.controllerName}#apply`;
-    this.config.controllerRemoveAction = `${this.config.controllerRemoveEvent}->${this.config.controllerName}#remove`;
-    this._controller = null;
-
-    if (this.hasAttribute('disabled')) {
-      return; // short circuit
-    }
-
-    this.render();
-  }
-
-  render() {
-    if (this.parentElement && !this.hasAttribute('action')) {
-      this.handleError('missing "action" attribute');
-    } // Create (nested) Stimulus controller
-
-
-    this._controller = document.createElement(this._controllerTagName);
-
-    if (this.innerHTML) {
-      this._controller.innerHTML = this.innerHTML;
-      this.innerHTML = null;
-    }
-
-    this._dataControllerNameChanged = this.dataControllerName;
-    this._dataControllerActionChanged = this.dataControllerAction;
-    this.append(this._controller);
-
-    this._handleDisconnectedElement();
-  }
-
-  get controller() {
-    var _this$_controller;
-
-    return (_this$_controller = this._controller) !== null && _this$_controller !== void 0 && _this$_controller.parentElement ? this._controller : null;
-  }
-
-  set controller(val) {
-    if (val && !(val instanceof Element)) {
-      this.handleError('controller property must be an HTML Element');
-    }
-
-    this._controller = val;
-  }
-
-  get dataControllerName() {
-    return this.getAttribute('data-controller-name') || this.config.controllerName;
-  }
-
-  get dataControllerAction() {
-    const controllerApplyAction = this.hasAttribute('on') ? this.getAttribute('on').split(' ').map(on => `${on}->${this.config.controllerName}#apply`).join(' ') : this.config.controllerApplyAction; // If the "keep" attribute is set, the invoke controller isn't removed
-    // after it applied delegated action
-
-    const controllerDefaultAction = this.getAttribute('data-controller-action') || controllerApplyAction;
-    const controllerAction = this.hasAttribute('keep') ? controllerDefaultAction : `${controllerDefaultAction} ${this.config.controllerRemoveAction}`;
-    return controllerAction;
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue !== newValue) {
-      this[`_${camelCase(name)}Changed`] = newValue;
-    }
-  }
-
-  handleError(message) {
-    throw new Error(`${this._description}: ${message}`);
-  } // Private
-
-
-  _handleDisconnectedElement() {
-    if (this._controller) {
-      const eventName = `${this.dataControllerName}:disconnected`;
-
-      const listener = () => {
-        this.remove();
-      }; // Remove previous event listeners, if any
-
-
-      this._controller.removeEventListener(eventName, listener);
-
-      this._controller.addEventListener(eventName, listener, {
-        once: true
-      });
-    }
-  }
-
-  get _controllerTagName() {
-    return this.getAttribute('tag') || this.config.controllerTagName;
-  }
-
-  set _disabledChanged(val) {
-    if (this.hasAttribute('disabled')) {
-      var _this$_controller2;
-
-      (_this$_controller2 = this._controller) === null || _this$_controller2 === void 0 ? void 0 : _this$_controller2.removeAttribute('data-action');
-    }
-  }
-
-  set _actionChanged(val) {
-    toggleAttributeFrom(this.controller, `data-${this.dataControllerName}-action-value`, val);
-  }
-
-  set _targetChanged(val) {
-    toggleAttributeFrom(this.controller, `data-${this.dataControllerName}-target-value`, val);
-  }
-
-  set _sourceChanged(val) {
-    toggleAttributeFrom(this.controller, `data-${this.dataControllerName}-source-value`, val);
-  }
-
-  set _paramsChanged(val) {
-    toggleAttributeFrom(this.controller, `data-${this.dataControllerName}-params-value`, val);
-  }
-
-  set _onChanged(val) {
-    if (!this.hasAttribute('once') && !this.hasAttribute('keep')) {
-      this.setAttribute('keep', '');
-    }
-
-    this._dataControllerActionChanged = this.dataControllerAction;
-  }
-
-  set _idChanged(val) {
-    toggleAttributeFrom(this.controller, 'id', val ? `${val}_controller` : val);
-  }
-
-  set _keepChanged(val) {
-    if (this.hasAttribute('keep')) {
-      if (this.hasAttribute('once')) {
-        this.removeAttribute('once');
-      }
-    }
-
-    this._dataControllerActionChanged = this.dataControllerAction;
-  }
-
-  set _onceChanged(val) {
-    if (this.hasAttribute('once')) {
-      if (this.hasAttribute('keep')) {
-        this.removeAttribute('keep');
-      }
-    }
-  }
-
-  set _dataControllerNameChanged(val) {
-    if (this._controller) {
-      this._controller.setAttribute('data-controller', this.dataControllerName);
-    }
-  }
-
-  set _dataControllerActionChanged(val) {
-    if (this._controller) {
-      this._controller.setAttribute('data-action', this.dataControllerAction);
-    }
-  }
-
-  get _description() {
-    var _, _this$outerHTML$match;
-
-    return (_ = ((_this$outerHTML$match = this.outerHTML.match(/<[^>]+>/)) != null ? _this$outerHTML$match : [])[0]) != null ? _ : `<${this.constructor.tagName}>`;
-  }
-
-}
-StimulusInvokeElement.config = {
-  tagName: 'stimulus-invoke',
-  controllerName: 'invoke',
-  controllerTagName: 'span'
-};
-
-class StimulusInvokeElementReactive extends StimulusInvokeElement {
-  refresh() {
-    this.render();
-    const observedAttributes = this.constructor.observedAttributes || [];
-    observedAttributes.forEach(attribute => {
-      this[`_${camelCase(attribute)}Changed`] = this[`${camelCase(attribute)}`];
-    });
-  }
-
-  get disabled() {
-    return this.hasAttribute('disabled');
-  }
-
-  set disabled(val) {
-    if (val !== null && val !== undefined && val !== false) {
-      this.setAttribute('disabled', '');
-    } else {
-      this.removeAttribute('disabled');
-    }
-  }
-
-  get action() {
-    return this.getAttribute('action');
-  }
-
-  set action(val) {
-    if (val) {
-      this.setAttribute('action', val);
-    } else {
-      this.removeAttribute('action');
-    }
-  }
-
-  get target() {
-    return this.getAttribute('target');
-  }
-
-  set target(val) {
-    if (val) {
-      this.setAttribute('target', val);
-    } else {
-      this.removeAttribute('target');
-    }
-  }
-
-  get source() {
-    return this.getAttribute('source');
-  }
-
-  set source(val) {
-    if (val) {
-      this.setAttribute('source', val);
-    } else {
-      this.removeAttribute('source');
-    }
-  }
-
-  get on() {
-    return this.getAttribute('on');
-  }
-
-  set on(val) {
-    if (val) {
-      this.setAttribute('on', val);
-    } else {
-      this.removeAttribute('on');
-    }
-  }
-
-  get params() {
-    return this.getAttribute('params');
-  }
-
-  set params(val) {
-    if (val) {
-      this.setAttribute('params', val);
-    } else {
-      this.removeAttribute('params');
-    }
-  }
-
-  get keep() {
-    return this.hasAttribute('keep');
-  }
-
-  set keep(val) {
-    if (val !== null && val !== undefined && val !== false) {
-      this.setAttribute('keep', '');
-    } else {
-      this.removeAttribute('keep');
-    }
-  }
-
-  get once() {
-    return this.hasAttribute('once');
-  }
-
-  set once(val) {
-    if (val !== null && val !== undefined && val !== false) {
-      this.setAttribute('once', '');
-    } else {
-      this.removeAttribute('once');
-    }
-  } // Dispatch the first invoke event, if any,
-  // to invoke the action delegated by the StimulusInvokeController
-  // Useful when an attribute or property of the StimulusInvokeElement changed
-
-
-  apply() {
-    if (!this.disabled) {
-      if (!this.parentElement) {
-        var _document, _document$body;
-
-        if (!this.hasAttribute('action')) {
-          this.handleError('missing "action" attribute');
-        }
-
-        (_document = document) === null || _document === void 0 ? void 0 : (_document$body = _document.body) === null || _document$body === void 0 ? void 0 : _document$body.append(this);
-
-        if (!this.on) {
-          return; // short circuit
-        }
-      }
-
-      if (this.controller) {
-        const actionDescriptor = parseActionDescriptorString(this.dataControllerAction);
-        const eventName = actionDescriptor.eventName || getDefaultEventNameForElement(this.controller);
-
-        if (eventName) {
-          const eventTarget = new Event(eventName, {
-            bubbles: true,
-            cancelable: true,
-            composed: true
-          });
-          this.controller.dispatchEvent(eventTarget);
-        }
-      }
-    }
-  }
-
-  destroy() {
-    try {
-      var _this$_controller;
-
-      (_this$_controller = this._controller) === null || _this$_controller === void 0 ? void 0 : _this$_controller.remove();
-      this.remove();
-    } catch (_unused) {// Do nothing
-    }
-  } // Private
-  // Override parent method to refresh the element
-  // when the disabled attribute is updated programmatically
-
-
-  set _disabledChanged(val) {
-    if (this.hasAttribute('disabled')) {
-      var _this$_controller2;
-
-      (_this$_controller2 = this._controller) === null || _this$_controller2 === void 0 ? void 0 : _this$_controller2.removeAttribute('data-action');
-    } else {
-      if (this.controller) {
-        this._controller.setAttribute('data-action', this.dataControllerAction);
-      } else {
-        this.refresh();
-      }
-    }
-  }
-
-}
-
-
-//# sourceMappingURL=stimulus-invoke.modern.js.map
-
-
-/***/ }),
-
 /***/ "./node_modules/wicg-inert/dist/inert.esm.js":
 /*!***************************************************!*\
   !*** ./node_modules/wicg-inert/dist/inert.esm.js ***!
@@ -9957,9 +9271,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _controllers_header__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./controllers/header */ "./resources/js/controllers/header.ts");
 /* harmony import */ var _controllers_load_backwards__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./controllers/load-backwards */ "./resources/js/controllers/load-backwards.ts");
 /* harmony import */ var _controllers_modal__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./controllers/modal */ "./resources/js/controllers/modal.ts");
-/* harmony import */ var stimulus_invoke__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! stimulus-invoke */ "./node_modules/stimulus-invoke/dist/stimulus-invoke.modern.js");
 /* harmony import */ var inclusive_elements__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! inclusive-elements */ "../../../packages/inclusive-elements/dist/index.js");
 /* harmony import */ var _controllers_page__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./controllers/page */ "./resources/js/controllers/page.ts");
+/* harmony import */ var _controllers_post__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./controllers/post */ "./resources/js/controllers/post.ts");
 /* harmony import */ var _controllers_post_page__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./controllers/post-page */ "./resources/js/controllers/post-page.ts");
 /* harmony import */ var _controllers_scrollspy__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./controllers/scrollspy */ "./resources/js/controllers/scrollspy.ts");
 
@@ -10010,9 +9324,10 @@ document.addEventListener('turbo:submit-end', function (e) {
   var submitter = e.detail.formSubmission.submitter;
   submitter.disabled = false;
 });
-document.addEventListener('turbo:frame-render', function (e) {
+document.addEventListener('turbo:before-fetch-response', function (e) {
   return __awaiter(void 0, void 0, void 0, /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-    var response;
+    var _a, _b, _c, response, alert;
+
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -10020,7 +9335,14 @@ document.addEventListener('turbo:frame-render', function (e) {
             response = e.detail.fetchResponse;
 
             if (response.statusCode >= 500 && response.statusCode <= 599) {
-              window.alert('Something went wrong');
+              alert = (_c = (_b = (_a = document.getElementById('fetch-error')) === null || _a === void 0 ? void 0 : _a.content) === null || _b === void 0 ? void 0 : _b.firstElementChild) === null || _c === void 0 ? void 0 : _c.cloneNode(true);
+
+              if (alert) {
+                document.getElementById('alerts').show(alert, {
+                  key: 'fetchError',
+                  duration: -1
+                });
+              }
             }
 
           case 2:
@@ -10060,11 +9382,9 @@ window.Stimulus.register('comment-replies', _controllers_comment_replies__WEBPAC
 window.Stimulus.register('comment', _controllers_comment__WEBPACK_IMPORTED_MODULE_7__.Comment);
 window.Stimulus.register('scrollspy', _controllers_scrollspy__WEBPACK_IMPORTED_MODULE_13__.Scrollspy);
 window.Stimulus.register('page', _controllers_page__WEBPACK_IMPORTED_MODULE_14__.PageController);
-window.Stimulus.register('alerts', _controllers_alerts__WEBPACK_IMPORTED_MODULE_5__.AlertsController); // @ts-ignore
+window.Stimulus.register('alerts', _controllers_alerts__WEBPACK_IMPORTED_MODULE_5__.AlertsController);
+window.Stimulus.register('post', _controllers_post__WEBPACK_IMPORTED_MODULE_15__.PostController);
 
-
-window.Stimulus.register('invoke', stimulus_invoke__WEBPACK_IMPORTED_MODULE_15__.StimulusInvokeController);
-stimulus_invoke__WEBPACK_IMPORTED_MODULE_15__.StimulusInvokeElement.define();
 
 
 

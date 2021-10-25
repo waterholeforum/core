@@ -41,7 +41,7 @@ class DeletePost extends Action
     public function confirmationBody(Collection $items): HtmlString
     {
         return new HtmlString(
-            view('waterhole::posts.confirm-delete', ['posts' => $items])
+            view('waterhole::posts.action-delete', ['posts' => $items])
         );
     }
 

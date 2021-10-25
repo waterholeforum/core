@@ -35,9 +35,5 @@ class MarkAsRead extends Action
             $post->userState->read()->save();
             $post->refresh();
         });
-
-        if ($request->wantsTurboStream()) {
-            return response()->turboStreamView('waterhole::posts.stream-updated', ['posts' => $items]);
-        }
     }
 }

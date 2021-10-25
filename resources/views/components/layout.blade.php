@@ -45,5 +45,11 @@
     data-controller="alerts"
 ></ui-alerts>
 
+<template id="fetch-error">
+    <x-waterhole::alert type="danger" dismissible>
+        Something went wrong! Please reload the page and try again.
+    </x-waterhole::alert>
+</template>
+
 </body>
 </html>

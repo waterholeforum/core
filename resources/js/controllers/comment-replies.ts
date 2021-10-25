@@ -18,7 +18,7 @@ export class CommentReplies extends Controller {
 
     focusAfterLoad() {
         addEventListener('turbo:frame-render', e => {
-            (e.target as FrameElement).querySelector<HTMLElement>('.comment__replies ol')?.focus();
+            (e.target as FrameElement).querySelector<HTMLElement>('.comment__replies')?.focus();
         }, { once: true });
     }
 }

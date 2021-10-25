@@ -1,4 +1,7 @@
-<article {{ $attributes->class(['card post-card', Waterhole\Extend\PostClasses::getClasses($post)]) }}>
+<article
+    {{ $attributes->class(['card post-card', Waterhole\Extend\PostClasses::getClasses($post)]) }}
+    data-controller="post"
+>
     <header class="post-card__header">
         <x-waterhole::post-summary :post="$post"/>
         <x-waterhole::post-actions :post="$post"/>

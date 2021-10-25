@@ -170,6 +170,11 @@ class Post extends Model
         return $this->userState && ! $this->userState->last_read_at;
     }
 
+    public function getPerPage(): int
+    {
+        return config('waterhole.forum.posts_per_page', $this->perPage);
+    }
+
     public function streamUpdated(): array
     {
         return [

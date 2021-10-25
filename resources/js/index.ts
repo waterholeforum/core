@@ -18,10 +18,13 @@ document.addEventListener('turbo:submit-end', e => {
     submitter.disabled = false;
 });
 
-document.addEventListener('turbo:frame-render', async e => {
+document.addEventListener('turbo:before-fetch-response', async e => {
     const response = (e as any).detail.fetchResponse;
     if (response.statusCode >= 500 && response.statusCode <= 599) {
-        window.alert('Something went wrong');
+        const alert = (document.getElementById('fetch-error') as HTMLTemplateElement)?.content?.firstElementChild?.cloneNode(true) as HTMLElement;
+        if (alert) {
+            (document.getElementById('alerts') as AlertsElement).show(alert, { key: 'fetchError', duration: -1 });
+        }
     }
 });
 
@@ -58,13 +61,7 @@ window.Stimulus.register('comment', Comment);
 window.Stimulus.register('scrollspy', Scrollspy);
 window.Stimulus.register('page', PageController);
 window.Stimulus.register('alerts', AlertsController);
-
-// @ts-ignore
-import { StimulusInvokeController, StimulusInvokeElement } from 'stimulus-invoke';
-
-window.Stimulus.register('invoke', StimulusInvokeController)
-
-StimulusInvokeElement.define();
+window.Stimulus.register('post', PostController);
 
 declare global {
     interface Window {
@@ -75,6 +72,7 @@ declare global {
 
 import { PopupElement, MenuElement, ModalElement, TooltipElement, AlertsElement } from 'inclusive-elements';
 import { PageController } from './controllers/page';
+import { PostController } from './controllers/post';
 import { PostPage } from './controllers/post-page';
 import { Scrollspy } from './controllers/scrollspy';
 

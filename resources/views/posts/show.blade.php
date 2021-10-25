@@ -13,22 +13,7 @@
                 @endif data-action="turbo:frame-render@document->post-page#showPostOnFirstPage"
                 data-post-page-target="post"
             >
-                <div class="with-sidebar-end">
-                    <x-waterhole::post-full :post="$post"/>
-                    <div
-                        class=""
-                        style="margin-top: 6rem; position: sticky; top: calc(var(--header-height) + var(--space-xl)); margin-left: var(--space-xxxl); width: 160px; flex-shrink: 0; padding: 0 0 0 var(--space-md); margin-bottom: 0"
-                    >
-                        <div class="toolbar toolbar--nospace">
-
-
-                            @components(Waterhole\Extend\PostFooter::getComponents(), compact('post') + ['interactive' => true])
-
-                            <x-waterhole::post-actions :post="$post"/>
-
-                        </div>
-                    </div>
-                </div>
+                <x-waterhole::post-full :post="$post"/>
                 <br><br><br><br>
             </div>
             {{--            @endif--}}
@@ -68,13 +53,14 @@
                 <div class="with-sidebar-end">
 
                     <div class="post-comments__comments">
-                        <turbo-frame id="page_{{ $comments->currentPage() }}">
+                        <turbo-frame id="page_{{ $comments->currentPage() }}" target="_top">
                             @if (! $comments->onFirstPage() && request()->query('direction') !== 'forwards')
                                 <turbo-frame
                                     id="page_{{ $comments->currentPage() - 1 }}"
                                     src="{{ $comments->appends('direction', 'backwards')->previousPageUrl() }}"
                                     loading="lazy"
                                     class="next-page"
+                                    target="_top"
                                     data-controller="load-backwards"
                                     data-action="
                                             turbo:before-fetch-response->load-backwards#lockScrollPosition
@@ -120,6 +106,7 @@
                                         src="{{ $comments->appends('direction', 'forwards')->nextPageUrl() }}"
                                         loading="lazy"
                                         class="next-page"
+                                        target="_top"
                                     >
                                         <div class="loading-indicator"></div>
                                     </turbo-frame>
