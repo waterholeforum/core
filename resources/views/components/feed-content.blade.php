@@ -25,7 +25,7 @@
     {{ $posts->withQueryString()->links() }}
 @else
     <div class="placeholder">
-        <x-heroicon-o-chat-alt-2 class="placeholder__visual"/>
+        <x-waterhole::icon icon="heroicon-o-chat-alt-2" class="placeholder__visual"/>
         <h3>No Posts</h3>
     </div>
 @endif

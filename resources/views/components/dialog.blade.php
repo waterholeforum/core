@@ -1,8 +1,6 @@
-@props(['title'])
-
 <div {{ $attributes->class('dialog') }}>
     <header class="dialog__header">
-        <h1 class="dialog__title">
+        <h1 class="dialog__title" id="dialog-title">
             {{ $title }}
         </h1>
     </header>

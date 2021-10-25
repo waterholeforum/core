@@ -5,13 +5,12 @@ namespace Waterhole\Models;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Validation\Rule;
 use Intervention\Image\Image;
-use Waterhole\Actions\Editable;
 use Waterhole\Extend\FeedSort;
 use Waterhole\Models\Concerns\Followable;
 use Waterhole\Models\Concerns\HasImageAttributes;
 use Waterhole\Models\Concerns\HasUserState;
 
-class Channel extends Model implements Editable
+class Channel extends Model
 {
     use HasImageAttributes;
     use HasUserState;

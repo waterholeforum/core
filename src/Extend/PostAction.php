@@ -19,10 +19,10 @@ class PostAction
             Actions\MarkAsRead::class,
             Actions\Follow::class,
             Actions\Unfollow::class,
-            Actions\Edit::class,
+            Actions\EditPost::class,
             Actions\MoveChannel::class,
             Spacer::class,
-            Actions\Delete::class,
+            Actions\DeletePost::class,
         ];
     }
 }

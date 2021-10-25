@@ -4,12 +4,11 @@ namespace Waterhole\Actions;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\HtmlString;
+use Waterhole\Models\Post;
 use Waterhole\Models\User;
-use Waterhole\Views\Components\FollowButton;
-use Waterhole\Views\Components\PostListItem;
-use Waterhole\Views\TurboStream;
 
-class Delete extends Action
+class DeletePost extends Action
 {
     public bool $destructive = true;
     public bool $confirm = true;
@@ -26,7 +25,7 @@ class Delete extends Action
 
     public function appliesTo($item): bool
     {
-        return $item instanceof Deletable;
+        return $item instanceof Post;
     }
 
     public function authorize(?User $user, $item): bool
@@ -36,7 +35,14 @@ class Delete extends Action
 
     public function confirmation(Collection $items): string
     {
-        return 'Are you sure you want to delete this?';
+        return 'Are you sure you want to delete this post?';
+    }
+
+    public function confirmationBody(Collection $items): HtmlString
+    {
+        return new HtmlString(
+            view('waterhole::posts.confirm-delete', ['posts' => $items])
+        );
     }
 
     public function buttonText(Collection $items): ?string
@@ -48,16 +54,10 @@ class Delete extends Action
     {
         $items->each->delete();
 
+        $request->session()->flash('success', 'Post deleted.');
+
         if ($request->get('return') === $items[0]->url) {
             return redirect('/');
         }
-    }
-
-    public function stream($item): array
-    {
-        return array_map(
-            fn($component) => TurboStream::remove($component),
-            $item->streamComponents()
-        );
     }
 }

@@ -15,14 +15,15 @@ export class ModalController extends Controller {
     }
 
     loading(e: any) {
-        this.loadingTarget!.hidden = false;
-        this.frameTarget!.hidden = true;
+        // this.loadingTarget!.hidden = false;
+        // this.frameTarget!.hidden = true;
         this.show();
     }
 
     loaded() {
-        this.loadingTarget!.hidden = true;
-        this.frameTarget!.hidden = false;
+        // this.loadingTarget!.hidden = true;
+        // this.frameTarget!.hidden = false;
+        // this.frameTarget!.focus();
 
         if (this.frameTarget?.children.length) {
             this.show();

@@ -7,7 +7,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 use Illuminate\View\ComponentAttributeBag;
 use Waterhole\Models\User;
-use Waterhole\Views\Components\FollowButton;
 
 abstract class Action
 {
@@ -71,8 +70,10 @@ abstract class Action
 
     public function stream($item): array
     {
-        if (method_exists($item, 'streamUpdate')) {
-            return $item->streamUpdate();
+        $method = $this->destructive ? 'streamRemoved' : 'streamUpdated';
+
+        if (method_exists($item, $method)) {
+            return $item->$method();
         }
 
         return [];
@@ -80,10 +81,6 @@ abstract class Action
 
     public function render(Collection $items, ComponentAttributeBag $attributes): HtmlString|null
     {
-        if (! $this->visible($items)) {
-            return null;
-        }
-
         $attributes = (new ComponentAttributeBag($attributes->getAttributes()))
             ->merge($this->attributes($items))
             ->class($this->classes($items));

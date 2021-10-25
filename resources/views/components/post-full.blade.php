@@ -1,6 +1,4 @@
-@props(['post'])
-
-<article class="post-full" id="@domid($post)-full">
+<article {{ $attributes->class('post-full') }}>
     <header class="post-header">
         @components(Waterhole\Extend\PostHeader::getComponents(), compact('post'))
     </header>

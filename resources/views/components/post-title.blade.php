@@ -1,3 +1,1 @@
-@props(['post'])
-
-<h1>{{ $post->title }}</h1>
+<h1 data-page-target="title">{{ $post->title }}</h1>

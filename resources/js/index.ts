@@ -25,8 +25,20 @@ document.addEventListener('turbo:frame-render', async e => {
     }
 });
 
+document.addEventListener('turbo:before-stream-render', e => {
+    const stream = e.target as StreamElement;
+    if (stream.action === 'replace') {
+        e.preventDefault();
+        stream.targetElements.forEach(el => {
+            morphdom(el, stream.templateContent.firstElementChild!);
+        });
+    }
+});
 
 import { Application } from '@hotwired/stimulus';
+import { StreamElement } from '@hotwired/turbo/dist/types/elements';
+import morphdom from 'morphdom';
+import { AlertsController } from './controllers/alerts';
 
 import ChannelPickerController from './controllers/channel-picker';
 import { Comment } from './controllers/comment';
@@ -44,6 +56,8 @@ window.Stimulus.register('post-page', PostPage);
 window.Stimulus.register('comment-replies', CommentReplies);
 window.Stimulus.register('comment', Comment);
 window.Stimulus.register('scrollspy', Scrollspy);
+window.Stimulus.register('page', PageController);
+window.Stimulus.register('alerts', AlertsController);
 
 // @ts-ignore
 import { StimulusInvokeController, StimulusInvokeElement } from 'stimulus-invoke';
@@ -60,6 +74,7 @@ declare global {
 }
 
 import { PopupElement, MenuElement, ModalElement, TooltipElement, AlertsElement } from 'inclusive-elements';
+import { PageController } from './controllers/page';
 import { PostPage } from './controllers/post-page';
 import { Scrollspy } from './controllers/scrollspy';
 

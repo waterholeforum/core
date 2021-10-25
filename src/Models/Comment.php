@@ -5,12 +5,10 @@ namespace Waterhole\Models;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Validation\Rule;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
-use Waterhole\Actions\Deletable;
-use Waterhole\Actions\Editable;
 use Waterhole\Models\Concerns\HasLikes;
 use Waterhole\Models\Concerns\HasBody;
 
-class Comment extends Model implements Deletable, Editable
+class Comment extends Model
 {
     use HasLikes;
     use HasBody;

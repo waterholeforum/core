@@ -7,6 +7,8 @@ use Illuminate\Validation\ValidationException;
 use Tonysm\TurboLaravel\Http\TurboResponseFactory;
 use Waterhole\Actions\Action;
 use Waterhole\Extend;
+use Waterhole\Views\Components\Alert;
+use Waterhole\Views\TurboStream;
 
 class ActionController extends Controller
 {
@@ -63,6 +65,12 @@ class ActionController extends Controller
                 $request->wantsTurboStream()
                 && $streams = $items->flatMap(fn($item) => $action->stream($item))->all()
             ) {
+                if ($success = session()->get('success')) {
+                    $streams[] = TurboStream::append(new Alert('success', $success), 'alerts');
+                }
+
+                session()->ageFlashData();
+
                 return TurboResponseFactory::makeStream(
                     implode(PHP_EOL, $streams)
                 );

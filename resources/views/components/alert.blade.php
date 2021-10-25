@@ -1,10 +1,17 @@
-@props(['type' => null])
-
 <div {{ $attributes->class(['alert', $type ? "alert--$type" : null]) }}>
-    <div class="alert__icon">
-        <x-waterhole::icon icon="heroicon-o-exclamation-circle"/>
-    </div>
+    @if ($icon)
+        <div class="alert__icon">
+            <x-waterhole::icon :icon="$icon"/>
+        </div>
+    @endif
     <div class="alert__message content">
         {{ $slot }}
+    </div>
+    <div class="alert__actions">
+        @if ($dismissible)
+            <button type="button" class="btn btn--transparent btn--icon" data-action="alerts#dismiss">
+                <x-waterhole::icon icon="heroicon-s-x"/>
+            </button>
+        @endif
     </div>
 </div>

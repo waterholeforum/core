@@ -2,20 +2,22 @@
 
 namespace Waterhole\Views;
 
+use Illuminate\View\Component;
+
 abstract class TurboStream
 {
-    public static function replace($component): ?string
+    public static function replace(Component $component): ?string
     {
-        if (! $id = $component->id()) {
+        if (! $id = static::getId($component)) {
             return null;
         }
 
         return static::stream($component, 'replace', $id);
     }
 
-    public static function remove($component): ?string
+    public static function remove(Component $component): ?string
     {
-        if (! $id = $component->id()) {
+        if (! $id = static::getId($component)) {
             return null;
         }
 
@@ -24,17 +26,17 @@ abstract class TurboStream
         html;
     }
 
-    public static function append($component, string $target): string
+    public static function append(Component $component, string $target): string
     {
         return static::stream($component, 'append', $target);
     }
 
-    public static function prepend($component, string $target): string
+    public static function prepend(Component $component, string $target): string
     {
         return static::stream($component, 'prepend', $target);
     }
 
-    private static function stream($component, string $action, string $target)
+    private static function stream(Component $component, string $action, string $target): string
     {
         $content = static::renderComponent($component);
 
@@ -47,7 +49,16 @@ abstract class TurboStream
         html;
     }
 
-    private static function renderComponent($component)
+    private static function getId(Component $component)
+    {
+        if (! method_exists($component, 'id')) {
+            return null;
+        }
+
+        return $component->id();
+    }
+
+    private static function renderComponent(Component $component): string
     {
         return $component->resolveView()->with($component->data())->render();
     }

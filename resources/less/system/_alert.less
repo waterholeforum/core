@@ -10,13 +10,35 @@
 .alert--danger {
   background: var(--color-danger);
   color: var(--color-danger-contrast);
+
+  --color-text: var(--color-danger-contrast);
+  --color-text-muted: var(--color-danger-contrast);
 }
 
 .alert--info {
   background: var(--color-info);
 }
 
+.alert--success {
+  background: var(--color-success);
+  color: var(--color-success-contrast);
+
+  --color-text: var(--color-success-contrast);
+  --color-text-muted: var(--color-success-contrast);
+}
+
 .alert__icon {
-  margin-right: var(--space-md);
   font-size: var(--text-md);
+  margin-right: var(--space-sm);
+  line-height: 1;
+}
+
+.alert__message {
+  margin-top: -2px;
+}
+
+.alert__actions {
+  display: flex;
+  margin: ~"calc(-1 * var(--space-sm))";
+  margin-left: var(--space-md);
 }

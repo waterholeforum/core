@@ -22,6 +22,7 @@
     "@hotwired/turbo": "^7.0.1",
     "inclusive-elements": "^0.1.0-beta.7",
     "laravel-echo": "^1.10.0",
+    "morphdom": "^2.6.1",
     "pusher-js": "^7.0.3",
     "stimulus-invoke": "^1.0.0-beta.2",
     "twemoji": "^13.1.0",

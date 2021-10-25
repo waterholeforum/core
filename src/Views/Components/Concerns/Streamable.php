@@ -24,11 +24,9 @@ trait Streamable
      */
     public function data(): array
     {
-        $data = parent::data();
-
         $this->setIdAttribute();
 
-        return $data;
+        return parent::data();
     }
 
     /**
@@ -45,6 +43,8 @@ trait Streamable
 
     private function setIdAttribute(): void
     {
+        $this->attributes = $this->attributes ?: $this->newAttributeBag();
+
         if ($id = $this->id()) {
             $this->attributes['id'] = $id;
         }

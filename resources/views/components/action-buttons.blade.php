@@ -9,6 +9,8 @@
     if (isset($exclude)) {
         $actions = $actions->filter(fn($action) => ! in_array(get_class($action), $exclude));
     }
+
+    $actions = $actions->filter(fn($action) => $action->visible(collect([$for])))->values();
 @endphp
 
 @if (count($actions))
@@ -19,7 +21,7 @@
         <input type="hidden" name="actionable" value="{{ $actionable }}">
         <input type="hidden" name="id[]" value="{{ $for->id }}">
 
-        @foreach ($actions as $action)
+        @foreach ($actions as $i => $action)
             {{ $action->render(collect([$for]), new Illuminate\View\ComponentAttributeBag($buttonAttributes)) }}
         @endforeach
     </form>

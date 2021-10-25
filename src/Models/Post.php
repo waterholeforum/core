@@ -9,20 +9,15 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use Waterhole\Actions\Deletable;
-use Waterhole\Actions\Editable;
 use Waterhole\Models\Concerns\Followable;
 use Waterhole\Models\Concerns\HasBody;
 use Waterhole\Models\Concerns\HasLikes;
 use Waterhole\Models\Concerns\HasUserState;
 use Waterhole\Models\Concerns\HasVisibility;
-use Waterhole\Views\Components\PostActions;
-use Waterhole\Views\Components\PostCardsItem;
-use Waterhole\Views\Components\PostListItem;
-use Waterhole\Views\Components\PostSummary;
+use Waterhole\Views\Components;
 use Waterhole\Views\TurboStream;
 
-class Post extends Model implements Deletable, Editable
+class Post extends Model
 {
     use HasLikes;
     use HasBody;
@@ -84,7 +79,10 @@ class Post extends Model implements Deletable, Editable
     public function unreadComments(): HasMany
     {
         return $this->comments()
-            ->whereRaw('created_at > COALESCE((select last_read_at from post_user where post_id = comments.post_id and post_user.user_id = ?), 0)', [Auth::id()]);
+            ->whereRaw(
+                'created_at > COALESCE((select last_read_at from post_user where post_id = comments.post_id and post_user.user_id = ?), 0)',
+                [Auth::id()]
+            );
     }
 
     public function lastComment(): HasOne
@@ -122,7 +120,9 @@ class Post extends Model implements Deletable, Editable
 
     public function refreshCommentMetadata(): static
     {
-        $this->last_activity_at = $this->comments()->latest()->value('created_at') ?: $this->created_at;
+        $this->last_activity_at = $this->comments()->latest()->value(
+            'created_at'
+        ) ?: $this->created_at;
         $this->comment_count = $this->comments()->count();
 
         return $this;
@@ -170,26 +170,20 @@ class Post extends Model implements Deletable, Editable
         return $this->userState && ! $this->userState->last_read_at;
     }
 
-    public function streamComponents(): array
+    public function streamUpdated(): array
     {
         return [
-            new PostSummary($this),
+            TurboStream::replace(new Components\PostListItem($this)),
+            TurboStream::replace(new Components\PostCardsItem($this)),
+            TurboStream::replace(new Components\PostFull($this)),
         ];
     }
 
-    public function streamUpdate(): array
+    public function streamRemoved(): array
     {
         return [
-            TurboStream::replace(new PostSummary($this)),
-            TurboStream::replace(new PostActions($this)),
-        ];
-    }
-
-    public function streamDelete(): array
-    {
-        return [
-            TurboStream::remove(new PostListItem($this)),
-            TurboStream::remove(new PostCardsItem($this)),
+            TurboStream::remove(new Components\PostListItem($this)),
+            TurboStream::remove(new Components\PostCardsItem($this)),
         ];
     }
 }

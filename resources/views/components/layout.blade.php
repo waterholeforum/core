@@ -6,7 +6,7 @@
 
 <body>
 
-<div id="waterhole">
+<div id="waterhole" data-controller="page">
     <a href="#main" class="skip-link">Skip to main content</a>
 
     @components(Waterhole\Extend\LayoutBefore::getComponents())
@@ -30,12 +30,20 @@
         class="modal__frame"
         data-modal-target="frame"
         data-action="turbo:before-fetch-request->modal#loading turbo:frame-render->modal#loaded"
-    ></turbo-frame>
-
-    <div data-modal-target="loading" class="dialog dialog--sm">
-        <div class="loading-indicator"></div>
-    </div>
+        aria-labelledby="dialog-title"
+    >
+        <div data-modal-target="loading" class="dialog dialog--sm">
+            <div class="loading-indicator"></div>
+        </div>
+    </turbo-frame>
 </ui-modal>
+
+<ui-alerts
+    id="alerts"
+    class="alerts"
+    data-turbo-permanent
+    data-controller="alerts"
+></ui-alerts>
 
 </body>
 </html>

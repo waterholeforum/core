@@ -3,8 +3,6 @@
 namespace Waterhole\Actions;
 
 use Illuminate\Support\Collection;
-use Waterhole\Models\Comment;
-use Waterhole\Models\Post;
 use Waterhole\Models\User;
 
 class CopyLink extends Link
@@ -29,7 +27,7 @@ class CopyLink extends Link
 
     public function appliesTo($item): bool
     {
-        return $item->url;
+        return (bool) $item->url;
     }
 
     public function authorize(?User $user, $item): bool

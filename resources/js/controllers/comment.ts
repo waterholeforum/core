@@ -7,7 +7,7 @@ try {
 } catch (e) {}
 
 export class Comment extends Controller {
-    static targets = ['line'];
+    // static targets = ['line'];
 
     lineTarget?: HTMLElement;
 

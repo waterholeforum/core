@@ -9,8 +9,7 @@
 
     <span
         class="header-breadcrumb"
-        id="header-breadcrumb"
-        data-header-target="breadcrumb"
+        data-page-target="breadcrumb"
         hidden
         data-turbo-permanent
     ></span>

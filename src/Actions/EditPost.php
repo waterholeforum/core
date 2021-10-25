@@ -3,9 +3,10 @@
 namespace Waterhole\Actions;
 
 use Illuminate\Support\Collection;
+use Waterhole\Models\Post;
 use Waterhole\Models\User;
 
-class Edit extends Link
+class EditPost extends Link
 {
     public function name(): string
     {
@@ -19,7 +20,7 @@ class Edit extends Link
 
     public function appliesTo($item): bool
     {
-        return $item instanceof Editable;
+        return $item instanceof Post;
     }
 
     public function authorize(?User $user, $item): bool
