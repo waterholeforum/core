@@ -1,0 +1,64 @@
+<?php
+
+namespace Waterhole\Providers;
+
+use Waterhole\Formatter\Formatter;
+use Waterhole\Formatter\Mentions;
+use Waterhole\Models\Comment;
+use Waterhole\Models\Post;
+use Illuminate\Support\ServiceProvider;
+use s9e\TextFormatter\Configurator;
+use s9e\TextFormatter\Renderer;
+
+class FormatterServiceProvider extends ServiceProvider
+{
+    public function register()
+    {
+        $this->app->singleton('waterhole.formatter', function () {
+            $formatter = new Formatter(
+                $this->app->storagePath().'/app/formatter',
+                $this->app->make('cache.store'),
+                'waterhole.formatter'
+            );
+
+            $formatter->configure(function (Configurator $config) {
+                $config->rootRules->enableAutoLineBreaks();
+                $config->urlConfig->allowScheme('mailto');
+                $config->Escaper;
+                $config->Autoemail;
+                $config->Autolink;
+                $config->Litedown;
+                $config->HTMLEntities;
+                $config->HTMLElements->allowElement('b');
+                $config->HTMLElements->allowElement('i');
+
+                $bbcodes = [
+                    'B', 'I', 'U', 'S', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6',
+                    'URL', 'IMG', 'EMAIL', 'CODE', 'QUOTE', 'LIST', 'DEL', '*'
+                ];
+
+                foreach ($bbcodes as $tag) {
+                    $config->BBCodes->addFromRepository($tag);
+                }
+            });
+
+            $formatter->configure([Mentions::class, 'configure']);
+
+            $formatter->rendering(function (Renderer $renderer, $xml, $context) {
+                $renderer->setParameter('USER_ID', $context['actor']->id ?? null);
+            });
+
+            $formatter->rendering([Mentions::class, 'rendering']);
+
+            return $formatter;
+        });
+    }
+
+    public function boot()
+    {
+        $formatter = $this->app->make('waterhole.formatter');
+
+        Post::setFormatter($formatter);
+        Comment::setFormatter($formatter);
+    }
+}

@@ -1,5 +1,5 @@
 <article {{ $attributes->class('post-full with-sidebar-end') }}>
-    <div>
+    <div class="post-full__main">
         <header class="post-header">
             @components(Waterhole\Extend\PostHeader::getComponents(), compact('post'))
         </header>

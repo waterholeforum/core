@@ -20,14 +20,13 @@
         "nyholm/psr7": "^1.4",
         "owenvoke/blade-fontawesome": "^1.9",
         "pragmarx/yaml": "^1.2",
+        "s9e/text-formatter": "^2.11",
         "staudenmeir/eloquent-eager-limit": "^1.0",
         "staudenmeir/laravel-adjacency-list": "^1.7",
         "symfony/psr-http-message-bridge": "^2.1",
         "tonysm/turbo-laravel": "^0.15",
         "vanderlee/php-stable-sort-functions": "^2.0",
         "wikimedia/less.php": "^3.1"
-    },
-    "require-dev": {
     },
     "autoload": {
         "psr-4": {

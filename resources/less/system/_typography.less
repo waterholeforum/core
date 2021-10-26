@@ -38,7 +38,7 @@ h1, h2, h3, h4 {
   }
 
   > * + :is(h1, h2, h3, h4) {
-    margin-top: 2em;
+    margin-top: 1.8em;
   }
 
   a:not([class]) {
@@ -93,4 +93,23 @@ h1, h2, h3, h4 {
   img {
     max-width: 100%;
   }
+
+  hr {
+    border: 0;
+    border-top: 3px solid var(--color-stroke);
+    margin: var(--space-xxxl) 0;
+  }
+}
+
+.mention {
+  color: inherit;
+  border-radius: var(--border-radius);
+  font-weight: var(--font-weight-bold);
+}
+
+.mention--self {
+  background: var(--color-info);
+  border-radius: 4px;
+  margin: -2px;
+  padding: 2px;
 }

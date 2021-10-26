@@ -22,16 +22,14 @@
     </div>
 </ui-popup>
 
-<button class="btn btn--icon btn--transparent">
-    <x-waterhole::icon icon="heroicon-o-mail"/>
-    <ui-tooltip>Messages</ui-tooltip>
-</button>
+@auth
+    <button class="btn btn--icon btn--transparent">
+        <x-waterhole::icon icon="heroicon-o-mail"/>
+        <ui-tooltip>Messages</ui-tooltip>
+    </button>
 
-<button class="btn btn--icon btn--transparent">
-    <x-waterhole::icon icon="heroicon-o-bell"/>
-    <ui-tooltip>Notifications</ui-tooltip>
-</button>
-
-{{--<button class="btn btn--icon btn--transparent" aria-label="menu">--}}
-{{--    <x-waterhole::icon icon="heroicon-o-menu"/>--}}
-{{--</button>--}}
+    <button class="btn btn--icon btn--transparent">
+        <x-waterhole::icon icon="heroicon-o-bell"/>
+        <ui-tooltip>Notifications</ui-tooltip>
+    </button>
+@endauth
