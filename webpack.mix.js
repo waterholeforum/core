@@ -1,6 +1,6 @@
 const mix = require('laravel-mix');
 
-mix.ts('resources/js/index.ts', 'resources/dist');
+mix.ts('resources/js/index.ts', 'resources/dist/index.js');
 
 /*
 const mix = require('laravel-mix');

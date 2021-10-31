@@ -17,7 +17,9 @@
     label="Body"
     description="Include all the information someone would need to answer your question"
 >
-    <div class="input composer">
-        <textarea name="body" id="{{ $component->id }}">{{ old('body', $post->body ?? '') }}</textarea>
-    </div>
+    <x-waterhole::text-editor
+        name="body"
+        :id="$component->id"
+        :value="old('body', $post->body ?? '')"
+    />
 </x-waterhole::field>

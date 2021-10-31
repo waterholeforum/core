@@ -2,6 +2,7 @@
 
 namespace Waterhole\Providers;
 
+use Waterhole\Extend\Script;
 use Waterhole\Formatter\Formatter;
 use Waterhole\Formatter\Mentions;
 use Waterhole\Models\Comment;
@@ -29,17 +30,6 @@ class FormatterServiceProvider extends ServiceProvider
                 $config->Autolink;
                 $config->Litedown;
                 $config->HTMLEntities;
-                $config->HTMLElements->allowElement('b');
-                $config->HTMLElements->allowElement('i');
-
-                $bbcodes = [
-                    'B', 'I', 'U', 'S', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6',
-                    'URL', 'IMG', 'EMAIL', 'CODE', 'QUOTE', 'LIST', 'DEL', '*'
-                ];
-
-                foreach ($bbcodes as $tag) {
-                    $config->BBCodes->addFromRepository($tag);
-                }
             });
 
             $formatter->configure([Mentions::class, 'configure']);

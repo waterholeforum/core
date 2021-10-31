@@ -1,5 +1,3 @@
-@props(['errors'])
-
 @if ($errors->any())
     <x-waterhole::alert type="danger">
         @if ($errors->count() === 1)

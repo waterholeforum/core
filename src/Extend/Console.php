@@ -4,13 +4,15 @@ namespace Waterhole\Extend;
 
 use Illuminate\Console\Application as Artisan;
 
-class Command
+class Console
 {
     private string $command;
 
-    public function __construct(string $command)
+    public static function addCommand(string $command): static
     {
-        $this->command = $command;
+        $instance = new static();
+        $instance->command = $command;
+        return $instance;
     }
 
     public function register(): void

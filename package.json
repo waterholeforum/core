@@ -10,6 +10,7 @@
     "production": "mix --production"
   },
   "devDependencies": {
+    "@types/textarea-caret": "^3.0.1",
     "laravel-mix": "^6.0",
     "less": "^4.1.1",
     "less-loader": "^9.0.0",
@@ -18,13 +19,21 @@
     "typescript": "^4.4.4"
   },
   "dependencies": {
+    "@github/hotkey": "^1.6.0",
+    "@github/mini-throttle": "^2.1.0",
+    "@github/paste-markdown": "^1.1.1",
     "@hotwired/stimulus": "^3.0.1",
     "@hotwired/turbo": "^7.0.1",
+    "fit-textarea": "^2.0.0",
     "inclusive-elements": "^0.1.0-beta.7",
     "laravel-echo": "^1.10.0",
+    "mdarea": "^2.0.12",
     "morphdom": "^2.6.1",
+    "placement.js": "^1.0.0-beta.5",
     "pusher-js": "^7.0.3",
-    "stimulus-invoke": "^1.0.0-beta.2",
+    "text-field-edit": "^3.1.1",
+    "textarea-caret": "^3.1.0",
+    "textarea-editor": "^2.1.1",
     "twemoji": "^13.1.0",
     "wicg-inert": "^3.1.1"
   }

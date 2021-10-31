@@ -1,4 +1,5 @@
 import * as Turbo from '@hotwired/turbo';
+import { install } from '@github/hotkey';
 
 // import './bootstrap';
 // import './elements/turbo-echo-stream-tag';
@@ -38,6 +39,12 @@ document.addEventListener('turbo:before-stream-render', e => {
     }
 });
 
+document.addEventListener('turbo:load', () => {
+    document.querySelectorAll<HTMLElement>('[data-hotkey]').forEach(el => {
+        install(el);
+    });
+});
+
 import { Application } from '@hotwired/stimulus';
 import { StreamElement } from '@hotwired/turbo/dist/types/elements';
 import morphdom from 'morphdom';
@@ -62,6 +69,8 @@ window.Stimulus.register('scrollspy', Scrollspy);
 window.Stimulus.register('page', PageController);
 window.Stimulus.register('alerts', AlertsController);
 window.Stimulus.register('post', PostController);
+window.Stimulus.register('text-editor', TextEditor);
+
 
 declare global {
     interface Window {
@@ -75,6 +84,7 @@ import { PageController } from './controllers/page';
 import { PostController } from './controllers/post';
 import { PostPage } from './controllers/post-page';
 import { Scrollspy } from './controllers/scrollspy';
+import { TextEditor } from './controllers/text-editor';
 
 
 window.customElements.define('ui-popup', PopupElement);

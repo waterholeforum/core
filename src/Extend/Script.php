@@ -21,8 +21,12 @@ class Script
 
         $content = '';
 
-        foreach ($assets as $file) {
-            $content .= file_get_contents($file);
+        foreach ($assets as $source) {
+            if (is_callable($source)) {
+                $content .= $source();
+            } else {
+                $content .= file_get_contents($source);
+            }
         }
 
         Storage::disk('public')->put($compiled = 'js/'.$group.'.js', $content);

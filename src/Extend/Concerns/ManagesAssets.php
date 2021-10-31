@@ -14,24 +14,24 @@ namespace Waterhole\Extend\Concerns;
 trait ManagesAssets
 {
     private string $group;
-    private string $file;
+    private $source;
 
-    public function __construct(string $group, string $file)
+    public function __construct(string $group, $source)
     {
         $this->group = $group;
-        $this->file = $file;
+        $this->source = $source;
     }
 
     public function register(): void
     {
-        static::$assets[$this->group][] = $this->file;
+        static::$assets[$this->group][] = $this->source;
     }
 
     public static function urls(array $groups): array
     {
         $urls = [];
 
-        foreach (['*', ...$groups] as $group) {
+        foreach ($groups as $group) {
             if (empty(static::$assets[$group])) {
                 continue;
             }

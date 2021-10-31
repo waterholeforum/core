@@ -62,7 +62,7 @@
   padding-right: var(--space-sm) !important;
 }
 
-:not([open]) > .btn--transparent:not(:hover, .is-hovered),
+:not([open]) > .btn--transparent:not(:hover, .is-hovered, :focus, .is-focused, [selected=true], [aria-pressed=true]),
 .btn--transparent:is(:disabled, .is-disabled),
 .btn--transparent:not(button, a, [role=button], [role=link]) {
   background: transparent;

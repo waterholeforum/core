@@ -9,16 +9,16 @@ use s9e\TextFormatter\Utils;
 
 class Mentions
 {
-    const TEMPLATE = '<a href="{$MENTION_URL}{@name}" data-user-id="{@id}">
-        <xsl:attribute name="class">mention<xsl:if test="@id = $USER_ID"> mention--self</xsl:if></xsl:attribute>
-        @<xsl:value-of select="@name"/>
-    </a>';
+    const TEMPLATE = '<a href="{$MENTION_URL}{@name}" data-user-id="{@id}" data-mention="" data-id="{@name}">'.
+        '<xsl:attribute name="class">mention<xsl:if test="@id = $USER_ID"> mention--self</xsl:if></xsl:attribute>'.
+        '@<xsl:value-of select="@name"/>'.
+        '</a>';
 
     public static function configure(Configurator $config): void
     {
         $config->rendering->parameters['MENTION_URL'] = url('u').'/';
 
-        $config->Preg->match('/\B@(?<name>[a-z0-9_-]+)(?!#)/i', 'MENTION');
+        $config->Preg->match('/\B@(?<name>[a-z0-9_-]+)/i', 'MENTION');
 
         $tag = $config->tags->add('MENTION');
         $tag->attributes->add('name');

@@ -12,6 +12,350 @@ module.exports = __webpack_require__(/*! regenerator-runtime */ "./node_modules/
 
 /***/ }),
 
+/***/ "./node_modules/@github/mini-throttle/dist/index.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/@github/mini-throttle/dist/index.js ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "throttle": () => (/* binding */ throttle),
+/* harmony export */   "debounce": () => (/* binding */ debounce)
+/* harmony export */ });
+function throttle(callback, wait = 0, { start = true, middle = true, once = false } = {}) {
+    let last = 0;
+    let timer;
+    let cancelled = false;
+    function fn(...args) {
+        if (cancelled)
+            return;
+        const delta = Date.now() - last;
+        last = Date.now();
+        if (start) {
+            start = false;
+            callback.apply(this, args);
+            if (once)
+                fn.cancel();
+        }
+        else if ((middle && delta < wait) || !middle) {
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+                last = Date.now();
+                callback.apply(this, args);
+                if (once)
+                    fn.cancel();
+            }, !middle ? wait : wait - delta);
+        }
+    }
+    fn.cancel = () => {
+        clearTimeout(timer);
+        cancelled = true;
+    };
+    return fn;
+}
+function debounce(callback, wait = 0, { start = false, middle = false, once = false } = {}) {
+    return throttle(callback, wait, { start, middle, once });
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@github/paste-markdown/dist/index.esm.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/@github/paste-markdown/dist/index.esm.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "installImageLink": () => (/* binding */ install$3),
+/* harmony export */   "installLink": () => (/* binding */ install$2),
+/* harmony export */   "installTable": () => (/* binding */ install$1),
+/* harmony export */   "installText": () => (/* binding */ install),
+/* harmony export */   "subscribe": () => (/* binding */ subscribe),
+/* harmony export */   "uninstallImageLink": () => (/* binding */ uninstall$3),
+/* harmony export */   "uninstallLink": () => (/* binding */ uninstall$2),
+/* harmony export */   "uninstallTable": () => (/* binding */ uninstall$1),
+/* harmony export */   "uninstallText": () => (/* binding */ uninstall)
+/* harmony export */ });
+function insertText(textarea, text) {
+    var _a, _b, _c;
+    const before = textarea.value.slice(0, (_a = textarea.selectionStart) !== null && _a !== void 0 ? _a : undefined);
+    const after = textarea.value.slice((_b = textarea.selectionEnd) !== null && _b !== void 0 ? _b : undefined);
+    let canInsertText = true;
+    textarea.contentEditable = 'true';
+    try {
+        canInsertText = document.execCommand('insertText', false, text);
+    }
+    catch (error) {
+        canInsertText = false;
+    }
+    textarea.contentEditable = 'false';
+    if (canInsertText && !textarea.value.slice(0, (_c = textarea.selectionStart) !== null && _c !== void 0 ? _c : undefined).endsWith(text)) {
+        canInsertText = false;
+    }
+    if (!canInsertText) {
+        try {
+            document.execCommand('ms-beginUndoUnit');
+        }
+        catch (e) {
+        }
+        textarea.value = before + text + after;
+        try {
+            document.execCommand('ms-endUndoUnit');
+        }
+        catch (e) {
+        }
+        textarea.dispatchEvent(new CustomEvent('change', { bubbles: true, cancelable: true }));
+    }
+}
+
+function install$3(el) {
+    el.addEventListener('dragover', onDragover$1);
+    el.addEventListener('drop', onDrop$1);
+    el.addEventListener('paste', onPaste$3);
+}
+function uninstall$3(el) {
+    el.removeEventListener('dragover', onDragover$1);
+    el.removeEventListener('drop', onDrop$1);
+    el.removeEventListener('paste', onPaste$3);
+}
+function onDrop$1(event) {
+    const transfer = event.dataTransfer;
+    if (!transfer)
+        return;
+    if (hasFile$1(transfer))
+        return;
+    if (!hasLink(transfer))
+        return;
+    const links = extractLinks(transfer);
+    if (!links.some(isImageLink))
+        return;
+    event.stopPropagation();
+    event.preventDefault();
+    const field = event.currentTarget;
+    if (!(field instanceof HTMLTextAreaElement))
+        return;
+    insertText(field, links.map(linkify$1).join(''));
+}
+function onDragover$1(event) {
+    const transfer = event.dataTransfer;
+    if (transfer)
+        transfer.dropEffect = 'link';
+}
+function onPaste$3(event) {
+    const transfer = event.clipboardData;
+    if (!transfer || !hasLink(transfer))
+        return;
+    const links = extractLinks(transfer);
+    if (!links.some(isImageLink))
+        return;
+    event.stopPropagation();
+    event.preventDefault();
+    const field = event.currentTarget;
+    if (!(field instanceof HTMLTextAreaElement))
+        return;
+    insertText(field, links.map(linkify$1).join(''));
+}
+function linkify$1(link) {
+    return isImageLink(link) ? `\n![](${link})\n` : link;
+}
+function hasFile$1(transfer) {
+    return Array.from(transfer.types).indexOf('Files') >= 0;
+}
+function hasLink(transfer) {
+    return Array.from(transfer.types).indexOf('text/uri-list') >= 0;
+}
+function extractLinks(transfer) {
+    return (transfer.getData('text/uri-list') || '').split('\r\n');
+}
+const IMAGE_RE = /\.(gif|png|jpe?g)$/i;
+function isImageLink(url) {
+    return IMAGE_RE.test(url);
+}
+
+function install$2(el) {
+    el.addEventListener('paste', onPaste$2);
+}
+function uninstall$2(el) {
+    el.removeEventListener('paste', onPaste$2);
+}
+function onPaste$2(event) {
+    const transfer = event.clipboardData;
+    if (!transfer || !hasPlainText(transfer))
+        return;
+    const field = event.currentTarget;
+    if (!(field instanceof HTMLTextAreaElement))
+        return;
+    const text = transfer.getData('text/plain');
+    if (!text)
+        return;
+    if (!isURL(text))
+        return;
+    if (isWithinLink(field))
+        return;
+    const selectedText = field.value.substring(field.selectionStart, field.selectionEnd);
+    if (!selectedText.length)
+        return;
+    if (isURL(selectedText.trim()))
+        return;
+    event.stopPropagation();
+    event.preventDefault();
+    insertText(field, linkify(selectedText, text));
+}
+function hasPlainText(transfer) {
+    return Array.from(transfer.types).includes('text/plain');
+}
+function isWithinLink(textarea) {
+    const selectionStart = textarea.selectionStart || 0;
+    if (selectionStart > 1) {
+        const previousChars = textarea.value.substring(selectionStart - 2, selectionStart);
+        return previousChars === '](';
+    }
+    else {
+        return false;
+    }
+}
+function linkify(selectedText, text) {
+    return `[${selectedText}](${text})`;
+}
+function isURL(url) {
+    return /^https?:\/\//i.test(url);
+}
+
+function install$1(el) {
+    el.addEventListener('dragover', onDragover);
+    el.addEventListener('drop', onDrop);
+    el.addEventListener('paste', onPaste$1);
+}
+function uninstall$1(el) {
+    el.removeEventListener('dragover', onDragover);
+    el.removeEventListener('drop', onDrop);
+    el.removeEventListener('paste', onPaste$1);
+}
+function onDrop(event) {
+    const transfer = event.dataTransfer;
+    if (!transfer)
+        return;
+    if (hasFile(transfer))
+        return;
+    const textToPaste = generateText(transfer);
+    if (!textToPaste)
+        return;
+    event.stopPropagation();
+    event.preventDefault();
+    const field = event.currentTarget;
+    if (field instanceof HTMLTextAreaElement) {
+        insertText(field, textToPaste);
+    }
+}
+function onDragover(event) {
+    const transfer = event.dataTransfer;
+    if (transfer)
+        transfer.dropEffect = 'copy';
+}
+function onPaste$1(event) {
+    if (!event.clipboardData)
+        return;
+    const textToPaste = generateText(event.clipboardData);
+    if (!textToPaste)
+        return;
+    event.stopPropagation();
+    event.preventDefault();
+    const field = event.currentTarget;
+    if (field instanceof HTMLTextAreaElement) {
+        insertText(field, textToPaste);
+    }
+}
+function hasFile(transfer) {
+    return Array.from(transfer.types).indexOf('Files') >= 0;
+}
+function columnText(column) {
+    const noBreakSpace = '\u00A0';
+    const text = (column.textContent || '').trim().replace(/\|/g, '\\|').replace(/\n/g, ' ');
+    return text || noBreakSpace;
+}
+function tableHeaders(row) {
+    return Array.from(row.querySelectorAll('td, th')).map(columnText);
+}
+function tableMarkdown(node) {
+    const rows = Array.from(node.querySelectorAll('tr'));
+    const firstRow = rows.shift();
+    if (!firstRow)
+        return '';
+    const headers = tableHeaders(firstRow);
+    const spacers = headers.map(() => '--');
+    const header = `${headers.join(' | ')}\n${spacers.join(' | ')}\n`;
+    const body = rows
+        .map(row => {
+        return Array.from(row.querySelectorAll('td')).map(columnText).join(' | ');
+    })
+        .join('\n');
+    return `\n${header}${body}\n\n`;
+}
+function generateText(transfer) {
+    if (Array.from(transfer.types).indexOf('text/html') === -1)
+        return;
+    const html = transfer.getData('text/html');
+    if (!/<table/i.test(html))
+        return;
+    const parser = new DOMParser();
+    const parsedDocument = parser.parseFromString(html, 'text/html');
+    let table = parsedDocument.querySelector('table');
+    table = !table || table.closest('[data-paste-markdown-skip]') ? null : table;
+    if (!table)
+        return;
+    const formattedTable = tableMarkdown(table);
+    return html.replace(/<meta.*?>/, '').replace(/<table[.\S\s]*<\/table>/, `\n${formattedTable}`);
+}
+
+function install(el) {
+    el.addEventListener('paste', onPaste);
+}
+function uninstall(el) {
+    el.removeEventListener('paste', onPaste);
+}
+function onPaste(event) {
+    const transfer = event.clipboardData;
+    if (!transfer || !hasMarkdown(transfer))
+        return;
+    const field = event.currentTarget;
+    if (!(field instanceof HTMLTextAreaElement))
+        return;
+    const text = transfer.getData('text/x-gfm');
+    if (!text)
+        return;
+    event.stopPropagation();
+    event.preventDefault();
+    insertText(field, text);
+}
+function hasMarkdown(transfer) {
+    return Array.from(transfer.types).indexOf('text/x-gfm') >= 0;
+}
+
+function subscribe(el) {
+    install$1(el);
+    install$3(el);
+    install$2(el);
+    install(el);
+    return {
+        unsubscribe: () => {
+            uninstall$1(el);
+            uninstall$3(el);
+            uninstall$2(el);
+            uninstall(el);
+        }
+    };
+}
+
+
+
+
+/***/ }),
+
 /***/ "./node_modules/@hotwired/stimulus/dist/stimulus.js":
 /*!**********************************************************!*\
   !*** ./node_modules/@hotwired/stimulus/dist/stimulus.js ***!
@@ -4754,8 +5098,6 @@ class FrameController {
         }
     }
     async loadSourceURL() {
-        console.log(this.reloadable, this.sourceURL, this.currentURL)
-
         if (!this.settingSourceURL && this.enabled && this.isActive && (this.reloadable || this.sourceURL != this.currentURL)) {
             const previousURL = this.currentURL;
             this.currentURL = this.sourceURL;
@@ -5165,6 +5507,124 @@ start();
 
 
 
+
+/***/ }),
+
+/***/ "../../../packages/placement.js/dist/index.es.js":
+/*!*******************************************************!*\
+  !*** ../../../packages/placement.js/dist/index.es.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var t = {
+  x: {
+    start: "left",
+    Start: "Left",
+    end: "right",
+    End: "Right",
+    size: "width",
+    Size: "Width"
+  },
+  y: {
+    start: "top",
+    Start: "Top",
+    end: "bottom",
+    End: "Bottom",
+    size: "height",
+    Size: "Height"
+  }
+};
+
+function e(e, n, i) {
+  var _Object$assign, _Object$assign2;
+
+  var o;
+  var a = n.style;
+  Object.assign(a, {
+    position: "absolute",
+    maxWidth: "",
+    maxHeight: ""
+  });
+
+  var _i$placement$split = i.placement.split("-"),
+      _i$placement$split2 = _slicedToArray(_i$placement$split, 2),
+      _i$placement$split2$ = _i$placement$split2[0],
+      s = _i$placement$split2$ === void 0 ? "bottom" : _i$placement$split2$,
+      _i$placement$split2$2 = _i$placement$split2[1],
+      d = _i$placement$split2$2 === void 0 ? "center" : _i$placement$split2$2;
+
+  var r = ["top", "bottom"].includes(s) ? "y" : "x";
+  var c = s === t[r].start ? t[r].end : t[r].start;
+  var l = "x" === r ? "y" : "x",
+      p = e instanceof DOMRect ? e : e.getBoundingClientRect(),
+      f = (null === (o = function (t) {
+    for (; (t = t.parentNode) && t instanceof Element;) {
+      var _e2 = getComputedStyle(t).overflow;
+      if (["auto", "scroll"].includes(_e2)) return t;
+    }
+  }(n)) || void 0 === o ? void 0 : o.getBoundingClientRect()) || new DOMRect(0, 0, window.innerWidth, window.innerHeight),
+      g = n.offsetParent || document.body,
+      u = g === document.body ? new DOMRect(-pageXOffset, -pageYOffset, window.innerWidth, window.innerHeight) : g.getBoundingClientRect(),
+      m = getComputedStyle(g),
+      h = getComputedStyle(n);
+
+  if (i.flip || void 0 === i.flip) {
+    var _ref;
+
+    var _e3 = function _e3(t) {
+      return Math.abs(p[t] - f[t]);
+    },
+        _i2 = _e3(s);
+
+    n["offset" + t[r].Size] > _i2 && _e3(c) > _i2 && (_ref = [c, s], s = _ref[0], c = _ref[1], _ref);
+  }
+
+  if (n.dataset.placement = "".concat(s, "-").concat(d), i.cap || void 0 === i.cap) {
+    var _e4 = function _e4(e, i) {
+      var o = h["max" + t[e].Size];
+      i -= parseInt(h["margin" + t[e].Start]) + parseInt(h["margin" + t[e].End]), ("none" === o || i < parseInt(o)) && (n.style["max" + t[e].Size] = i + "px");
+    };
+
+    _e4(r, Math.abs(f[s] - p[s])), _e4(l, f[t[l].size]);
+  }
+
+  Object.assign(a, (_Object$assign = {}, _defineProperty(_Object$assign, s, "auto"), _defineProperty(_Object$assign, c, (s === t[r].start ? u[t[r].end] - p[t[r].start] : p[t[r].end] - u[t[r].start]) - parseInt(m["border" + t[r].Start + "Width"]) + "px"), _Object$assign));
+  var b = "end" === d ? "end" : "start",
+      S = "end" === d ? "start" : "end",
+      x = p[l] - u[l],
+      w = p[t[l].size],
+      z = n["offset" + t[l].Size];
+  var y = "end" === d ? u[t[l].size] - x - w : x + ("start" !== d ? w / 2 - z / 2 : 0);
+
+  if (i.bound || void 0 === i.bound) {
+    var _e5 = "end" === d ? -1 : 1;
+
+    y = Math.max(_e5 * (f[t[l][b]] - u[t[l][b]]), Math.min(y, _e5 * (f[t[l][S]] - u[t[l][b]]) - z));
+  }
+
+  Object.assign(a, (_Object$assign2 = {}, _defineProperty(_Object$assign2, t[l][S], "auto"), _defineProperty(_Object$assign2, t[l][b], y - parseInt(m["border" + t[l].Start + "Width"]) + "px"), _Object$assign2));
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (e);
 
 /***/ }),
 
@@ -6153,6 +6613,445 @@ var Scrollspy = /*#__PURE__*/function (_Controller) {
 
   return Scrollspy;
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
+
+/***/ }),
+
+/***/ "./resources/js/controllers/text-editor.ts":
+/*!*************************************************!*\
+  !*** ./resources/js/controllers/text-editor.ts ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TextEditor": () => (/* binding */ TextEditor)
+/* harmony export */ });
+/* harmony import */ var _github_paste_markdown__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @github/paste-markdown */ "./node_modules/@github/paste-markdown/dist/index.esm.js");
+/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
+/* harmony import */ var fit_textarea__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! fit-textarea */ "./node_modules/fit-textarea/index.js");
+/* harmony import */ var textarea_editor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! textarea-editor */ "./node_modules/textarea-editor/build/editor.js");
+/* harmony import */ var _suggestions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../suggestions */ "./resources/js/suggestions.ts");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+
+
+
+var TextEditor = /*#__PURE__*/function (_Controller) {
+  _inherits(TextEditor, _Controller);
+
+  var _super = _createSuper(TextEditor);
+
+  function TextEditor() {
+    _classCallCheck(this, TextEditor);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(TextEditor, [{
+    key: "connect",
+    value: function connect() {
+      if (this.inputTarget) {
+        // textarea-editor
+        this.editor = new textarea_editor__WEBPACK_IMPORTED_MODULE_3__["default"](this.inputTarget); // fit-textarea
+
+        fit_textarea__WEBPACK_IMPORTED_MODULE_2__["default"].watch(this.inputTarget); // @github/paste-markdown
+
+        (0,_github_paste_markdown__WEBPACK_IMPORTED_MODULE_0__.subscribe)(this.inputTarget); // @mentions
+
+        new _suggestions__WEBPACK_IMPORTED_MODULE_4__["default"](this.inputTarget, {
+          character: '@',
+          items: function items(query) {
+            if (query.length < 2) return [];
+            return fetch("/user-lookup?q=".concat(encodeURIComponent(query))).then(function (response) {
+              return response.json();
+            }).then(function (json) {
+              return json.map(function (_ref) {
+                var name = _ref.name,
+                    html = _ref.html;
+                return {
+                  html: html,
+                  replacement: '@' + name
+                };
+              });
+            });
+          },
+          listboxClass: 'menu',
+          optionClass: 'menu-item'
+        });
+      }
+    }
+  }, {
+    key: "format",
+    value: function format(e) {
+      var _a;
+
+      e.preventDefault();
+      (_a = this.editor) === null || _a === void 0 ? void 0 : _a.toggle(e.params.format);
+    }
+  }, {
+    key: "togglePreview",
+    value: function togglePreview() {
+      var _this = this;
+
+      var _a;
+
+      if (!this.inputTarget || !this.previewTarget) return;
+      var previewing = !this.inputTarget.hidden;
+      this.inputTarget.hidden = previewing;
+      this.previewTarget.hidden = !previewing;
+      this.previewTarget.innerHTML = '<div class="loading-indicator"></div>';
+      (_a = this.previewButtonTarget) === null || _a === void 0 ? void 0 : _a.setAttribute('aria-pressed', String(previewing));
+
+      if (this.toolbarTarget) {
+        Array.from(this.toolbarTarget.children).filter(function (el) {
+          return el !== _this.previewButtonTarget && el.className !== 'spacer';
+        }).forEach(function (el) {
+          return el.hidden = previewing;
+        });
+      }
+
+      if (previewing) {
+        fetch('/format', {
+          method: 'POST',
+          body: this.inputTarget.value
+        }).then(function (response) {
+          return response.text();
+        }).then(function (text) {
+          _this.previewTarget.hidden = false;
+          _this.previewTarget.innerHTML = text;
+        });
+      }
+    }
+  }]);
+
+  return TextEditor;
+}(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_1__.Controller);
+TextEditor.targets = ['input', 'preview', 'toolbar', 'previewButton'];
+
+/***/ }),
+
+/***/ "./resources/js/suggestions.ts":
+/*!*************************************!*\
+  !*** ./resources/js/suggestions.ts ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Suggestions)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var placement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! placement.js */ "../../../packages/placement.js/dist/index.es.js");
+/* harmony import */ var text_field_edit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! text-field-edit */ "./node_modules/text-field-edit/index.js");
+/* harmony import */ var textarea_caret__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! textarea-caret */ "./node_modules/textarea-caret/index.js");
+/* harmony import */ var textarea_caret__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(textarea_caret__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _github_mini_throttle__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @github/mini-throttle */ "./node_modules/@github/mini-throttle/dist/index.js");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var __awaiter = undefined && undefined.__awaiter || function (thisArg, _arguments, P, generator) {
+  function adopt(value) {
+    return value instanceof P ? value : new P(function (resolve) {
+      resolve(value);
+    });
+  }
+
+  return new (P || (P = Promise))(function (resolve, reject) {
+    function fulfilled(value) {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function rejected(value) {
+      try {
+        step(generator["throw"](value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function step(result) {
+      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+    }
+
+    step((generator = generator.apply(thisArg, _arguments || [])).next());
+  });
+};
+
+
+
+
+
+
+var Suggestions = /*#__PURE__*/function () {
+  function Suggestions(textbox, options) {
+    _classCallCheck(this, Suggestions);
+
+    this.textbox = textbox;
+    this.options = Object.assign({
+      debounce: 200
+    }, options);
+    this.debouncedLoad = (0,_github_mini_throttle__WEBPACK_IMPORTED_MODULE_3__.debounce)(this.load, this.options.debounce);
+    textbox.addEventListener('keyup', this.handleKeyUp.bind(this));
+    textbox.addEventListener('click', this.update.bind(this));
+    textbox.addEventListener('input', this.update.bind(this));
+    textbox.addEventListener('focus', this.update.bind(this));
+    textbox.addEventListener('keydown', this.handleKeyDown.bind(this));
+    textbox.addEventListener('blur', this.hide.bind(this));
+  }
+
+  _createClass(Suggestions, [{
+    key: "handleKeyUp",
+    value: function handleKeyUp(e) {
+      if (e.key !== 'Escape') {
+        this.update();
+      }
+    }
+  }, {
+    key: "update",
+    value: function update() {
+      var start = this.textbox.selectionStart; // Search backwards from the cursor for a symbol. As long as
+      // there is no space in the interim, we will show the
+      // suggestions listbox if one is found.
+
+      if (start !== null && this.textbox.selectionEnd === start) {
+        for (var i = start - 1; i >= Math.max(0, start - 30); i--) {
+          var _char = this.textbox.value.substr(i, 1);
+
+          if (_char === this.options.character) {
+            this.suggestionStart = i;
+            var query = this.textbox.value.substring(i + 1, start);
+
+            if (this.query !== query) {
+              this.query = query;
+              this.debouncedLoad(query);
+            }
+
+            return;
+          }
+
+          if (_char.match(/\s/) || i === 0) {
+            break;
+          }
+        }
+      }
+
+      this.hide();
+    }
+  }, {
+    key: "handleKeyDown",
+    value: function handleKeyDown(e) {
+      var _a;
+
+      if (!this.listbox) return;
+
+      switch (e.key) {
+        case 'ArrowUp':
+          this.navigate(-1);
+          e.preventDefault();
+          break;
+
+        case 'ArrowDown':
+          this.navigate(1);
+          e.preventDefault();
+          break;
+
+        case 'Escape':
+          this.hide();
+          e.preventDefault();
+          break;
+
+        case 'Enter':
+          (_a = this.listbox.querySelector('[aria-selected="true"]')) === null || _a === void 0 ? void 0 : _a.click();
+          e.preventDefault();
+      }
+    }
+  }, {
+    key: "navigate",
+    value: function navigate(step) {
+      if (!this.listbox) return;
+      var current = this.listbox.querySelector('[aria-selected="true"]') || this.listbox.children[0];
+      current.removeAttribute('aria-selected');
+      var currentIndex = Array.from(this.listbox.children).indexOf(current);
+      var newIndex = currentIndex + step;
+      var max = this.listbox.children.length - 1;
+      if (newIndex < 0) newIndex = max;else if (newIndex > max) newIndex = 0;
+      this.listbox.children[newIndex].setAttribute('aria-selected', 'true');
+    }
+  }, {
+    key: "load",
+    value: function load(query) {
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var items;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                items = this.options.items(query);
+
+                if (!(items instanceof Promise)) {
+                  _context.next = 5;
+                  break;
+                }
+
+                _context.next = 4;
+                return items;
+
+              case 4:
+                items = _context.sent;
+
+              case 5:
+                this.show(items);
+
+              case 6:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+    }
+  }, {
+    key: "show",
+    value: function show(items) {
+      var _this$listbox,
+          _this = this;
+
+      if (this.suggestionStart === undefined) return;
+
+      if (!items.length) {
+        this.hide();
+        return;
+      }
+
+      if (!this.listbox) {
+        this.listbox = document.createElement('div');
+        this.listbox.className = this.options.listboxClass || '';
+        document.body.appendChild(this.listbox);
+      }
+
+      this.listbox.innerHTML = '';
+
+      (_this$listbox = this.listbox).append.apply(_this$listbox, _toConsumableArray(items.map(function (item) {
+        var option = document.createElement('button');
+        option.className = _this.options.optionClass || '';
+        option.innerHTML = item.html;
+        option.addEventListener('click', function () {
+          _this.replace(item.replacement);
+        });
+        option.addEventListener('mousedown', function (e) {
+          return e.preventDefault();
+        });
+        return option;
+      })));
+
+      this.listbox.children[0].setAttribute('aria-selected', 'true');
+
+      var _getCaretCoordinates = textarea_caret__WEBPACK_IMPORTED_MODULE_2___default()(this.textbox, this.suggestionStart + 1),
+          left = _getCaretCoordinates.left,
+          top = _getCaretCoordinates.top,
+          height = _getCaretCoordinates.height;
+
+      var _this$textbox$getBoun = this.textbox.getBoundingClientRect(),
+          x = _this$textbox$getBoun.x,
+          y = _this$textbox$getBoun.y;
+
+      var anchor = new DOMRect(x + left, y + top - this.textbox.scrollTop, 0, height);
+      (0,placement_js__WEBPACK_IMPORTED_MODULE_4__["default"])(anchor, this.listbox, {
+        placement: 'bottom-start'
+      });
+    }
+  }, {
+    key: "hide",
+    value: function hide() {
+      this.suggestionStart = undefined;
+      this.query = undefined;
+
+      if (this.listbox) {
+        this.listbox.remove();
+        this.listbox = undefined;
+      }
+    }
+  }, {
+    key: "replace",
+    value: function replace(replacement) {
+      if (this.suggestionStart === undefined) return;
+      this.textbox.selectionStart = this.suggestionStart;
+      (0,text_field_edit__WEBPACK_IMPORTED_MODULE_1__.insert)(this.textbox, replacement + ' ');
+    }
+  }]);
+
+  return Suggestions;
+}();
+
+
+
+/***/ }),
+
+/***/ "./node_modules/escape-string-regexp/index.js":
+/*!****************************************************!*\
+  !*** ./node_modules/escape-string-regexp/index.js ***!
+  \****************************************************/
+/***/ ((module) => {
+
+"use strict";
+
+
+var matchOperatorsRe = /[|\\{}()[\]^$+*?.]/g;
+
+module.exports = function (str) {
+	if (typeof str !== 'string') {
+		throw new TypeError('Expected a string');
+	}
+
+	return str.replace(matchOperatorsRe, '\\$&');
+};
+
 
 /***/ }),
 
@@ -7690,6 +8589,915 @@ try {
 
 /***/ }),
 
+/***/ "./node_modules/textarea-caret/index.js":
+/*!**********************************************!*\
+  !*** ./node_modules/textarea-caret/index.js ***!
+  \**********************************************/
+/***/ ((module) => {
+
+/* jshint browser: true */
+
+(function () {
+
+// We'll copy the properties below into the mirror div.
+// Note that some browsers, such as Firefox, do not concatenate properties
+// into their shorthand (e.g. padding-top, padding-bottom etc. -> padding),
+// so we have to list every single property explicitly.
+var properties = [
+  'direction',  // RTL support
+  'boxSizing',
+  'width',  // on Chrome and IE, exclude the scrollbar, so the mirror div wraps exactly as the textarea does
+  'height',
+  'overflowX',
+  'overflowY',  // copy the scrollbar for IE
+
+  'borderTopWidth',
+  'borderRightWidth',
+  'borderBottomWidth',
+  'borderLeftWidth',
+  'borderStyle',
+
+  'paddingTop',
+  'paddingRight',
+  'paddingBottom',
+  'paddingLeft',
+
+  // https://developer.mozilla.org/en-US/docs/Web/CSS/font
+  'fontStyle',
+  'fontVariant',
+  'fontWeight',
+  'fontStretch',
+  'fontSize',
+  'fontSizeAdjust',
+  'lineHeight',
+  'fontFamily',
+
+  'textAlign',
+  'textTransform',
+  'textIndent',
+  'textDecoration',  // might not make a difference, but better be safe
+
+  'letterSpacing',
+  'wordSpacing',
+
+  'tabSize',
+  'MozTabSize'
+
+];
+
+var isBrowser = (typeof window !== 'undefined');
+var isFirefox = (isBrowser && window.mozInnerScreenX != null);
+
+function getCaretCoordinates(element, position, options) {
+  if (!isBrowser) {
+    throw new Error('textarea-caret-position#getCaretCoordinates should only be called in a browser');
+  }
+
+  var debug = options && options.debug || false;
+  if (debug) {
+    var el = document.querySelector('#input-textarea-caret-position-mirror-div');
+    if (el) el.parentNode.removeChild(el);
+  }
+
+  // The mirror div will replicate the textarea's style
+  var div = document.createElement('div');
+  div.id = 'input-textarea-caret-position-mirror-div';
+  document.body.appendChild(div);
+
+  var style = div.style;
+  var computed = window.getComputedStyle ? window.getComputedStyle(element) : element.currentStyle;  // currentStyle for IE < 9
+  var isInput = element.nodeName === 'INPUT';
+
+  // Default textarea styles
+  style.whiteSpace = 'pre-wrap';
+  if (!isInput)
+    style.wordWrap = 'break-word';  // only for textarea-s
+
+  // Position off-screen
+  style.position = 'absolute';  // required to return coordinates properly
+  if (!debug)
+    style.visibility = 'hidden';  // not 'display: none' because we want rendering
+
+  // Transfer the element's properties to the div
+  properties.forEach(function (prop) {
+    if (isInput && prop === 'lineHeight') {
+      // Special case for <input>s because text is rendered centered and line height may be != height
+      style.lineHeight = computed.height;
+    } else {
+      style[prop] = computed[prop];
+    }
+  });
+
+  if (isFirefox) {
+    // Firefox lies about the overflow property for textareas: https://bugzilla.mozilla.org/show_bug.cgi?id=984275
+    if (element.scrollHeight > parseInt(computed.height))
+      style.overflowY = 'scroll';
+  } else {
+    style.overflow = 'hidden';  // for Chrome to not render a scrollbar; IE keeps overflowY = 'scroll'
+  }
+
+  div.textContent = element.value.substring(0, position);
+  // The second special handling for input type="text" vs textarea:
+  // spaces need to be replaced with non-breaking spaces - http://stackoverflow.com/a/13402035/1269037
+  if (isInput)
+    div.textContent = div.textContent.replace(/\s/g, '\u00a0');
+
+  var span = document.createElement('span');
+  // Wrapping must be replicated *exactly*, including when a long word gets
+  // onto the next line, with whitespace at the end of the line before (#7).
+  // The  *only* reliable way to do that is to copy the *entire* rest of the
+  // textarea's content into the <span> created at the caret position.
+  // For inputs, just '.' would be enough, but no need to bother.
+  span.textContent = element.value.substring(position) || '.';  // || because a completely empty faux span doesn't render at all
+  div.appendChild(span);
+
+  var coordinates = {
+    top: span.offsetTop + parseInt(computed['borderTopWidth']),
+    left: span.offsetLeft + parseInt(computed['borderLeftWidth']),
+    height: parseInt(computed['lineHeight'])
+  };
+
+  if (debug) {
+    span.style.backgroundColor = '#aaa';
+  } else {
+    document.body.removeChild(div);
+  }
+
+  return coordinates;
+}
+
+if ( true && typeof module.exports != 'undefined') {
+  module.exports = getCaretCoordinates;
+} else if(isBrowser) {
+  window.getCaretCoordinates = getCaretCoordinates;
+}
+
+}());
+
+
+/***/ }),
+
+/***/ "./node_modules/textarea-editor/build/editor.js":
+/*!******************************************************!*\
+  !*** ./node_modules/textarea-editor/build/editor.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.Formats = undefined;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _escapeStringRegexp = __webpack_require__(/*! escape-string-regexp */ "./node_modules/escape-string-regexp/index.js");
+
+var _escapeStringRegexp2 = _interopRequireDefault(_escapeStringRegexp);
+
+var _formats = __webpack_require__(/*! ./formats */ "./node_modules/textarea-editor/build/formats.js");
+
+var _formats2 = _interopRequireDefault(_formats);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * TextareaEditor class.
+ *
+ * @param {HTMLElement} el - the textarea element to wrap around
+ */
+
+var TextareaEditor = function () {
+  function TextareaEditor(el) {
+    _classCallCheck(this, TextareaEditor);
+
+    this.el = el;
+  }
+
+  /**
+   * Set or get selection range.
+   *
+   * @param {Array} [range]
+   * @return {Array|TextareaEditor}
+   */
+
+  _createClass(TextareaEditor, [{
+    key: 'range',
+    value: function range(_range) {
+      var el = this.el;
+
+      if (_range == null) {
+        return [el.selectionStart || 0, el.selectionEnd || 0];
+      }
+
+      this.focus();
+
+      var _range2 = _slicedToArray(_range, 2);
+
+      el.selectionStart = _range2[0];
+      el.selectionEnd = _range2[1];
+
+      return this;
+    }
+
+    /**
+     * Insert given text at the current cursor position.
+     *
+     * @param {String} text - text to insert
+     * @return {TextareaEditor}
+     */
+
+  }, {
+    key: 'insert',
+    value: function insert(text) {
+      var inserted = true;
+      this.el.contentEditable = true;
+      this.focus();
+
+      try {
+        document.execCommand('insertText', false, text);
+      } catch (e) {
+        inserted = false;
+      }
+
+      this.el.contentEditable = false;
+
+      if (inserted) return this;
+
+      try {
+        document.execCommand('ms-beginUndoUnit');
+      } catch (e) {}
+
+      var _selection = this.selection(),
+          before = _selection.before,
+          after = _selection.after;
+
+      this.el.value = before + text + after;
+
+      try {
+        document.execCommand('ms-endUndoUnit');
+      } catch (e) {}
+
+      var event = document.createEvent('Event');
+      event.initEvent('input', true, true);
+      this.el.dispatchEvent(event);
+      return this;
+    }
+
+    /**
+     * Set foucs on the TextareaEditor's element.
+     *
+     * @return {TextareaEditor}
+     */
+
+  }, {
+    key: 'focus',
+    value: function focus() {
+      if (document.activeElement !== this.el) this.el.focus();
+      return this;
+    }
+
+    /**
+     * Get selected text.
+     *
+     * @return {Object}
+     * @private
+     */
+
+  }, {
+    key: 'selection',
+    value: function selection() {
+      var _range3 = this.range(),
+          _range4 = _slicedToArray(_range3, 2),
+          start = _range4[0],
+          end = _range4[1];
+
+      var value = normalizeNewlines(this.el.value);
+      return {
+        before: value.slice(0, start),
+        content: value.slice(start, end),
+        after: value.slice(end)
+      };
+    }
+
+    /**
+     * Get format by name.
+     *
+     * @param {String|Object} format
+     * @return {Object}
+     * @private
+     */
+
+  }, {
+    key: 'getFormat',
+    value: function getFormat(format) {
+      if ((typeof format === 'undefined' ? 'undefined' : _typeof(format)) == 'object') {
+        return normalizeFormat(format);
+      }
+
+      if (!_formats2.default.hasOwnProperty(format)) {
+        throw new Error('Invalid format ' + format);
+      }
+
+      return normalizeFormat(_formats2.default[format]);
+    }
+
+    /**
+     * Toggle given `format` on current selection.
+     * Any additional arguments are passed on to `.format()`.
+     *
+     * @param {String|Object} format - name of format or an object
+     * @return {TextareaEditor}
+     */
+
+  }, {
+    key: 'toggle',
+    value: function toggle(format) {
+      if (this.hasFormat(format)) return this.unformat(format);
+
+      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        args[_key - 1] = arguments[_key];
+      }
+
+      return this.format.apply(this, [format].concat(args));
+    }
+
+    /**
+     * Format current selcetion with given `format`.
+     *
+     * @param {String|Object} name - name of format or an object
+     * @return {TextareaEditor}
+     */
+
+  }, {
+    key: 'format',
+    value: function format(name) {
+      for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+        args[_key2 - 1] = arguments[_key2];
+      }
+
+      var format = this.getFormat(name);
+      var prefix = format.prefix,
+          suffix = format.suffix,
+          multiline = format.multiline;
+
+      var _selection2 = this.selection(),
+          before = _selection2.before,
+          content = _selection2.content,
+          after = _selection2.after;
+
+      var lines = multiline ? content.split('\n') : [content];
+
+      var _range5 = this.range(),
+          _range6 = _slicedToArray(_range5, 2),
+          start = _range6[0],
+          end = _range6[1];
+
+      // format lines
+
+
+      lines = lines.map(function (line, i) {
+        var pval = maybeCall.apply(undefined, [prefix.value, line, i + 1].concat(args));
+        var sval = maybeCall.apply(undefined, [suffix.value, line, i + 1].concat(args));
+
+        if (!multiline || !content.length) {
+          start += pval.length;
+          end += pval.length;
+        } else {
+          end += pval.length + sval.length;
+        }
+
+        return pval + line + sval;
+      });
+
+      var insert = lines.join('\n');
+
+      // newlines before and after block
+      if (format.block) {
+        var nlb = matchLength(before, /\n+$/);
+        var nla = matchLength(after, /^\n+/);
+
+        if (before) {
+          while (nlb < 2) {
+            insert = '\n' + insert;
+            start++;
+            end++;
+            nlb++;
+          }
+        }
+
+        if (after) {
+          while (nla < 2) {
+            insert = insert + '\n';
+            nla++;
+          }
+        }
+      }
+
+      this.insert(insert);
+      this.range([start, end]);
+      return this;
+    }
+
+    /**
+     * Remove given `format` from current selection.
+     *
+     * @param {String|Object} name - name of format or an object
+     * @return {TextareaEditor}
+     */
+
+  }, {
+    key: 'unformat',
+    value: function unformat(name) {
+      if (!this.hasFormat(name)) return this;
+
+      var format = this.getFormat(name);
+
+      var prefix = format.prefix,
+          suffix = format.suffix,
+          multiline = format.multiline;
+
+      var _selection3 = this.selection(),
+          before = _selection3.before,
+          content = _selection3.content,
+          after = _selection3.after;
+
+      var lines = multiline ? content.split('\n') : [content];
+
+      var _range7 = this.range(),
+          _range8 = _slicedToArray(_range7, 2),
+          start = _range8[0],
+          end = _range8[1];
+
+      // If this is not a multiline format, include prefixes and suffixes just
+      // outside the selection.
+
+
+      if ((!multiline || lines.length == 1) && hasSuffix(before, prefix) && hasPrefix(after, suffix)) {
+        start -= suffixLength(before, prefix);
+        end += prefixLength(after, suffix);
+        this.range([start, end]);
+        lines = [this.selection().content];
+      }
+
+      // remove formatting from lines
+      lines = lines.map(function (line) {
+        var plen = prefixLength(line, prefix);
+        var slen = suffixLength(line, suffix);
+        return line.slice(plen, line.length - slen);
+      });
+
+      // insert and set selection
+      var insert = lines.join('\n');
+      this.insert(insert);
+      this.range([start, start + insert.length]);
+
+      return this;
+    }
+
+    /**
+     * Check if current seletion has given format.
+     *
+     * @param {String|Object} name - name of format or an object
+     * @return {Boolean}
+     */
+
+  }, {
+    key: 'hasFormat',
+    value: function hasFormat(name) {
+      var format = this.getFormat(name);
+      var prefix = format.prefix,
+          suffix = format.suffix,
+          multiline = format.multiline;
+
+      var _selection4 = this.selection(),
+          before = _selection4.before,
+          content = _selection4.content,
+          after = _selection4.after;
+
+      var lines = content.split('\n');
+
+      // prefix and suffix outside selection
+      if (!multiline || lines.length == 1) {
+        return hasSuffix(before, prefix) && hasPrefix(after, suffix) || hasPrefix(content, prefix) && hasSuffix(content, suffix);
+      }
+
+      // check which line(s) are formatted
+      var formatted = lines.filter(function (line) {
+        return hasPrefix(line, prefix) && hasSuffix(line, suffix);
+      });
+
+      return formatted.length === lines.length;
+    }
+  }]);
+
+  return TextareaEditor;
+}();
+
+// Expose formats
+
+
+exports["default"] = TextareaEditor;
+exports.Formats = _formats2.default;
+
+/**
+ * Check if given prefix is present.
+ * @private
+ */
+
+function hasPrefix(text, prefix) {
+  var exp = new RegExp('^' + prefix.pattern);
+  var result = exp.test(text);
+
+  if (prefix.antipattern) {
+    var _exp = new RegExp('^' + prefix.antipattern);
+    result = result && !_exp.test(text);
+  }
+
+  return result;
+}
+
+/**
+ * Check if given suffix is present.
+ * @private
+ */
+
+function hasSuffix(text, suffix) {
+  var exp = new RegExp(suffix.pattern + '$');
+  var result = exp.test(text);
+
+  if (suffix.antipattern) {
+    var _exp2 = new RegExp(suffix.antipattern + '$');
+    result = result && !_exp2.test(text);
+  }
+
+  return result;
+}
+
+/**
+ * Get length of match.
+ * @private
+ */
+
+function matchLength(text, exp) {
+  var match = text.match(exp);
+  return match ? match[0].length : 0;
+}
+
+/**
+ * Get prefix length.
+ * @private
+ */
+
+function prefixLength(text, prefix) {
+  var exp = new RegExp('^' + prefix.pattern);
+  return matchLength(text, exp);
+}
+
+/**
+ * Get suffix length.
+ * @private
+ */
+
+function suffixLength(text, suffix) {
+  var exp = new RegExp(suffix.pattern + '$');
+  return matchLength(text, exp);
+}
+
+/**
+ * Normalize newlines.
+ * @private
+ */
+
+function normalizeNewlines(str) {
+  return str.replace('\r\n', '\n');
+}
+
+/**
+ * Normalize format.
+ * @private
+ */
+
+function normalizeFormat(format) {
+  var clone = Object.assign({}, format);
+  clone.prefix = normalizePrefixSuffix(format.prefix);
+  clone.suffix = normalizePrefixSuffix(format.suffix);
+  return clone;
+}
+
+/**
+ * Normalize prefixes and suffixes.
+ * @private
+ */
+
+function normalizePrefixSuffix() {
+  var value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+
+  if ((typeof value === 'undefined' ? 'undefined' : _typeof(value)) == 'object') return value;
+  return {
+    value: value,
+    pattern: (0, _escapeStringRegexp2.default)(value)
+  };
+}
+
+/**
+ * Call if function.
+ * @private
+ */
+
+function maybeCall(value) {
+  for (var _len3 = arguments.length, args = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+    args[_key3 - 1] = arguments[_key3];
+  }
+
+  return typeof value == 'function' ? value.apply(undefined, args) : value;
+}
+
+/***/ }),
+
+/***/ "./node_modules/textarea-editor/build/formats.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/textarea-editor/build/formats.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+/**
+ * Default formats.
+ */
+
+var Formats = {
+  /**
+   * Bold text.
+   *
+   * @example
+   * editor.format('bold');
+   * assert(textarea.value == '**Hello World**')
+   */
+
+  bold: {
+    prefix: '**',
+    suffix: '**'
+  },
+
+  /**
+   * Italic text.
+   *
+   * @example
+   * editor.format('italic');
+   * assert(textarea.value == '_Hello World_')
+   */
+
+  italic: {
+    prefix: '_',
+    suffix: '_'
+  },
+
+  /**
+   * Strikethrough text.
+   *
+   * @example
+   * editor.format('strikethrough');
+   * assert(textarea.value == '~~Hello World~~')
+   */
+
+  strikethrough: {
+    prefix: '~~',
+    suffix: '~~'
+  },
+
+  /**
+   * Insert link.
+   *
+   * @example
+   * editor.format('link', '/example');
+   * assert(textarea.value == '[Hello World](/example)')
+   */
+
+  link: {
+    prefix: {
+      value: '[',
+      pattern: '\\[',
+      antipattern: '\\!\\['
+    },
+    suffix: {
+      value: function value(text, n, url) {
+        return '](' + url + ')';
+      },
+      pattern: '\\]\\([^()]*?\\)'
+    }
+  },
+
+  /**
+   * Insert image.
+   *
+   * @example
+   * editor.format('image', '/example.png');
+   * assert(textarea.value == '![Hello World](/example.png)')
+   */
+
+  image: {
+    prefix: '![',
+    suffix: {
+      value: function value(text, n, url) {
+        return '](' + url + ')';
+      },
+      pattern: '\\]\\([^()]*?\\)'
+    }
+  },
+
+  /**
+   * Header 1.
+   *
+   * @example
+   * editor.format('header1');
+   * assert(textarea.value == '# Hello World')
+   */
+
+  header1: {
+    prefix: {
+      value: '# ',
+      pattern: '# ',
+      antipattern: '[#]{2,} '
+    }
+  },
+
+  /**
+   * Header 2.
+   *
+   * @example
+   * editor.format('header2');
+   * assert(textarea.value == '## Hello World')
+   */
+
+  header2: {
+    prefix: {
+      value: '## ',
+      pattern: '## ',
+      antipattern: '[#]{3,} '
+    }
+  },
+
+  /**
+   * Header 3.
+   *
+   * @example
+   * editor.format('header3');
+   * assert(textarea.value == '### Hello World')
+   */
+
+  header3: {
+    prefix: {
+      value: '### ',
+      pattern: '### ',
+      antipattern: '[#]{4,} '
+    }
+  },
+
+  /**
+   * Header 4.
+   *
+   * @example
+   * editor.format('header4');
+   * assert(textarea.value == '#### Hello World')
+   */
+
+  header4: {
+    prefix: {
+      value: '#### ',
+      pattern: '#### ',
+      antipattern: '[#]{5,} '
+    }
+  },
+
+  /**
+   * Header 5.
+   *
+   * @example
+   * editor.format('header5');
+   * assert(textarea.value == '##### Hello World')
+   */
+
+  header5: {
+    prefix: {
+      value: '##### ',
+      pattern: '##### ',
+      antipattern: '[#]{6,} '
+    }
+  },
+
+  /**
+   * Header 6.
+   *
+   * @example
+   * editor.format('header6');
+   * assert(textarea.value == '###### Hello World')
+   */
+
+  header6: {
+    prefix: {
+      value: '###### ',
+      pattern: '###### ',
+      antipattern: '[#]{7,} '
+    }
+  },
+
+  /**
+   * Insert code block.
+   *
+   * @example
+   * editor.format('code');
+   * assert(textarea.value == '```\nHello World\n```')
+   */
+
+  code: {
+    block: true,
+    prefix: '```\n',
+    suffix: '\n```'
+  },
+
+  /**
+   * Ordered list.
+   *
+   * @example
+   * editor.format('orderedList');
+   * assert(textarea.value == '1. Hello World')
+   */
+
+  orderedList: {
+    block: true,
+    multiline: true,
+    prefix: {
+      value: function value(line, n) {
+        return n + '. ';
+      },
+      pattern: '[0-9]+\\. '
+    }
+  },
+
+  /**
+   * Unordered list.
+   *
+   * @example
+   * editor.format('unorderedList');
+   * assert(textarea.value == '- Hello World')
+   */
+
+  unorderedList: {
+    block: true,
+    multiline: true,
+    prefix: '- '
+  },
+
+  /**
+   * Task list.
+   *
+   * @example
+   * editor.format('taskList');
+   * assert(textarea.value == '- [ ] Hello World')
+   */
+
+  taskList: {
+    block: true,
+    multiline: true,
+    prefix: {
+      value: '- [ ] ',
+      pattern: '- \\[[x ]{1}\\] '
+    }
+  },
+
+  /**
+   * Blockquote.
+   *
+   * @example
+   * editor.format('blockquote');
+   * assert(textarea.value == '> Hello World')
+   */
+
+  blockquote: {
+    block: true,
+    multiline: true,
+    prefix: '> '
+  }
+};
+
+exports["default"] = Formats;
+
+/***/ }),
+
 /***/ "./node_modules/wicg-inert/dist/inert.esm.js":
 /*!***************************************************!*\
   !*** ./node_modules/wicg-inert/dist/inert.esm.js ***!
@@ -8532,10 +10340,261 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /***/ }),
 
-/***/ "../../../packages/inclusive-elements/dist/index.js":
-/*!**********************************************************!*\
-  !*** ../../../packages/inclusive-elements/dist/index.js ***!
-  \**********************************************************/
+/***/ "./node_modules/@github/hotkey/dist/index.js":
+/*!***************************************************!*\
+  !*** ./node_modules/@github/hotkey/dist/index.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Leaf": () => (/* binding */ Leaf),
+/* harmony export */   "RadixTrie": () => (/* binding */ RadixTrie),
+/* harmony export */   "eventToHotkeyString": () => (/* binding */ hotkey),
+/* harmony export */   "install": () => (/* binding */ install),
+/* harmony export */   "uninstall": () => (/* binding */ uninstall)
+/* harmony export */ });
+class Leaf {
+    constructor(trie) {
+        this.children = [];
+        this.parent = trie;
+    }
+    delete(value) {
+        const index = this.children.indexOf(value);
+        if (index === -1)
+            return false;
+        this.children = this.children.slice(0, index).concat(this.children.slice(index + 1));
+        if (this.children.length === 0) {
+            this.parent.delete(this);
+        }
+        return true;
+    }
+    add(value) {
+        this.children.push(value);
+        return this;
+    }
+}
+class RadixTrie {
+    constructor(trie) {
+        this.parent = null;
+        this.children = {};
+        this.parent = trie || null;
+    }
+    get(edge) {
+        return this.children[edge];
+    }
+    insert(edges) {
+        let currentNode = this;
+        for (let i = 0; i < edges.length; i += 1) {
+            const edge = edges[i];
+            let nextNode = currentNode.get(edge);
+            if (i === edges.length - 1) {
+                if (nextNode instanceof RadixTrie) {
+                    currentNode.delete(nextNode);
+                    nextNode = null;
+                }
+                if (!nextNode) {
+                    nextNode = new Leaf(currentNode);
+                    currentNode.children[edge] = nextNode;
+                }
+                return nextNode;
+            }
+            else {
+                if (nextNode instanceof Leaf)
+                    nextNode = null;
+                if (!nextNode) {
+                    nextNode = new RadixTrie(currentNode);
+                    currentNode.children[edge] = nextNode;
+                }
+            }
+            currentNode = nextNode;
+        }
+        return currentNode;
+    }
+    delete(node) {
+        for (const edge in this.children) {
+            const currentNode = this.children[edge];
+            if (currentNode === node) {
+                const success = delete this.children[edge];
+                if (Object.keys(this.children).length === 0 && this.parent) {
+                    this.parent.delete(this);
+                }
+                return success;
+            }
+        }
+        return false;
+    }
+}
+
+function isFormField(element) {
+    if (!(element instanceof HTMLElement)) {
+        return false;
+    }
+    const name = element.nodeName.toLowerCase();
+    const type = (element.getAttribute('type') || '').toLowerCase();
+    return (name === 'select' ||
+        name === 'textarea' ||
+        (name === 'input' && type !== 'submit' && type !== 'reset' && type !== 'checkbox' && type !== 'radio') ||
+        element.isContentEditable);
+}
+function fireDeterminedAction(el, path) {
+    const delegateEvent = new CustomEvent('hotkey-fire', { cancelable: true, detail: { path } });
+    const cancelled = !el.dispatchEvent(delegateEvent);
+    if (cancelled)
+        return;
+    if (isFormField(el)) {
+        el.focus();
+    }
+    else {
+        el.click();
+    }
+}
+function expandHotkeyToEdges(hotkey) {
+    return hotkey.split(',').map(edge => edge.split(' '));
+}
+
+function hotkey(event) {
+    const elideShift = event.code.startsWith('Key') && event.shiftKey && event.key.toUpperCase() === event.key;
+    return `${event.ctrlKey ? 'Control+' : ''}${event.altKey ? 'Alt+' : ''}${event.metaKey ? 'Meta+' : ''}${event.shiftKey && !elideShift ? 'Shift+' : ''}${event.key}`;
+}
+
+const hotkeyRadixTrie = new RadixTrie();
+const elementsLeaves = new WeakMap();
+let currentTriePosition = hotkeyRadixTrie;
+let resetTriePositionTimer = null;
+let path = [];
+function resetTriePosition() {
+    path = [];
+    resetTriePositionTimer = null;
+    currentTriePosition = hotkeyRadixTrie;
+}
+function keyDownHandler(event) {
+    if (event.defaultPrevented)
+        return;
+    if (!(event.target instanceof Node))
+        return;
+    if (isFormField(event.target)) {
+        const target = event.target;
+        if (!target.id)
+            return;
+        if (!target.ownerDocument.querySelector(`[data-hotkey-scope=${target.id}]`))
+            return;
+    }
+    if (resetTriePositionTimer != null) {
+        window.clearTimeout(resetTriePositionTimer);
+    }
+    resetTriePositionTimer = window.setTimeout(resetTriePosition, 1500);
+    const newTriePosition = currentTriePosition.get(hotkey(event));
+    if (!newTriePosition) {
+        resetTriePosition();
+        return;
+    }
+    path.push(hotkey(event));
+    currentTriePosition = newTriePosition;
+    if (newTriePosition instanceof Leaf) {
+        const target = event.target;
+        let shouldFire = false;
+        let elementToFire;
+        const formField = isFormField(target);
+        for (let i = newTriePosition.children.length - 1; i >= 0; i -= 1) {
+            elementToFire = newTriePosition.children[i];
+            const scope = elementToFire.getAttribute('data-hotkey-scope');
+            if ((!formField && !scope) || (formField && target.id === scope)) {
+                shouldFire = true;
+                break;
+            }
+        }
+        if (elementToFire && shouldFire) {
+            fireDeterminedAction(elementToFire, path);
+            event.preventDefault();
+        }
+        resetTriePosition();
+    }
+}
+function install(element, hotkey) {
+    if (Object.keys(hotkeyRadixTrie.children).length === 0) {
+        document.addEventListener('keydown', keyDownHandler);
+    }
+    const hotkeys = expandHotkeyToEdges(hotkey || element.getAttribute('data-hotkey') || '');
+    const leaves = hotkeys.map(h => hotkeyRadixTrie.insert(h).add(element));
+    elementsLeaves.set(element, leaves);
+}
+function uninstall(element) {
+    const leaves = elementsLeaves.get(element);
+    if (leaves && leaves.length) {
+        for (const leaf of leaves) {
+            leaf && leaf.delete(element);
+        }
+    }
+    if (Object.keys(hotkeyRadixTrie.children).length === 0) {
+        document.removeEventListener('keydown', keyDownHandler);
+    }
+}
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/fit-textarea/index.js":
+/*!********************************************!*\
+  !*** ./node_modules/fit-textarea/index.js ***!
+  \********************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function fitTextarea(textarea) {
+    // Resetting the height will change the page height and might change the scroll
+    const positions = new Map();
+    let element = textarea;
+    while (element === null || element === void 0 ? void 0 : element.parentElement) {
+        element = element.parentElement;
+        positions.set(element, element.scrollTop);
+    }
+    // Reset the height to get the smallest possible height
+    textarea.style.height = 'auto';
+    const style = getComputedStyle(textarea);
+    textarea.style.height = String(textarea.scrollHeight + parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth)) + 'px';
+    // Restore any scrollTop that was lost
+    for (const [element, position] of positions) {
+        if (position && element.scrollTop !== position) {
+            element.scrollTop = position;
+        }
+    }
+}
+function listener(event) {
+    fitTextarea(event.target);
+}
+function watchAndFit(elements) {
+    if (typeof elements === 'string') {
+        elements = document.querySelectorAll(elements);
+    }
+    else if (elements instanceof HTMLTextAreaElement) {
+        elements = [elements];
+    }
+    for (const element of elements) {
+        element.addEventListener('input', listener);
+        if (element.form) {
+            element.form.addEventListener('reset', listener);
+        }
+        fitTextarea(element);
+    }
+}
+fitTextarea.watch = watchAndFit;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (fitTextarea);
+
+
+/***/ }),
+
+/***/ "./node_modules/inclusive-elements/dist/index.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/inclusive-elements/dist/index.js ***!
+  \*******************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -8547,636 +10606,91 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "PopupElement": () => (/* binding */ d),
 /* harmony export */   "TooltipElement": () => (/* binding */ l)
 /* harmony export */ });
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+const t={x:{start:"left",Start:"Left",end:"right",End:"Right",size:"width",Size:"Width"},y:{start:"top",Start:"Top",end:"bottom",End:"Bottom",size:"height",Size:"Height"}};function e(e,i,n){var s;const o=i.style;Object.assign(o,{position:"absolute",maxWidth:"",maxHeight:""});let[r="bottom",a="center"]=n.placement.split("-");const h=["top","bottom"].includes(r)?"y":"x";let d=r===t[h].start?t[h].end:t[h].start;const l="x"===h?"y":"x",c=e.getBoundingClientRect(),u=(null===(s=function(t){for(;(t=t.parentNode)&&t instanceof Element;){const e=getComputedStyle(t).overflow;if(["auto","scroll"].includes(e))return t}}(i))||void 0===s?void 0:s.getBoundingClientRect())||new DOMRect(0,0,window.innerWidth,window.innerHeight),m=i.offsetParent||document.body,p=m===document.body?new DOMRect(-pageXOffset,-pageYOffset,window.innerWidth,window.innerHeight):m.getBoundingClientRect(),f=getComputedStyle(m),v=getComputedStyle(i);if(n.flip||void 0===n.flip){const e=t=>Math.abs(c[t]-u[t]),n=e(r);i["offset"+t[h].Size]>n&&e(d)>n&&([r,d]=[d,r])}if(i.dataset.placement=`${r}-${a}`,n.cap||void 0===n.cap){const e=(e,n)=>{const s=v["max"+t[e].Size];n-=parseInt(v["margin"+t[e].Start])+parseInt(v["margin"+t[e].End]),("none"===s||n<parseInt(s))&&(i.style["max"+t[e].Size]=n+"px")};e(h,Math.abs(u[r]-c[r])),e(l,u[t[l].size])}Object.assign(o,{[r]:"auto",[d]:(r===t[h].start?p[t[h].end]-c[t[h].start]:c[t[h].end]-p[t[h].start])-parseInt(f["border"+t[h].Start+"Width"])+"px"});const b="end"===a?"end":"start",E="end"===a?"start":"end",g=c[l]-p[l],w=c[t[l].size],y=i["offset"+t[l].Size];let L="end"===a?p[t[l].size]-g-w:g+("start"!==a?w/2-y/2:0);if(n.bound||void 0===n.bound){const e="end"===a?-1:1;L=Math.max(e*(u[t[l][b]]-p[t[l][b]]),Math.min(L,e*(u[t[l][E]]-p[t[l][b]])-y))}Object.assign(o,{[t[l][E]]:"auto",[t[l][b]]:L-parseInt(f["border"+t[l].Start+"Width"])+"px"})}function i(t,e,i={}){const n=new WeakMap,s=h(i);t instanceof HTMLCollection&&(t=Array.from(t)),t.forEach((t=>{"none"!==getComputedStyle(t).display&&n.set(t,t.getBoundingClientRect())})),e(),t.forEach((t=>{const e=n.get(t);if(!e)return;const i=e.left-t.getBoundingClientRect().left,o=e.top-t.getBoundingClientRect().top;if(!i&&!o)return;const r=t.style;r.transitionDuration="0s",r.transform=`translate(${i}px, ${o}px)`,document.body.offsetWidth,r.transitionDuration=r.transform="",t.classList.add(s+"move"),a(t,(()=>{t.classList.remove(s+"move")}))}))}function n(t){t._currentTransition&&(t.classList.remove(...["active","from","to"].map((e=>t._currentTransition+e))),t._currentTransition=null)}function s(t,e,i={}){const s=h(i)+e+"-",o=t.classList;var r;n(t),t._currentTransition=s,o.add(s+"active",s+"from"),r=()=>{o.add(s+"to"),o.remove(s+"from"),a(t,(()=>{o.remove(s+"to",s+"active"),t._currentTransition===s&&(i.finish&&i.finish(),t._currentTransition=null)}))},requestAnimationFrame((()=>{requestAnimationFrame(r)}))}function o(t,e={}){s(t,"enter",e)}function r(t,e={}){s(t,"leave",e)}function a(t,e){if(getComputedStyle(t).transitionDuration.startsWith("0s"))e();else{const i=()=>{e(),t.removeEventListener("transitionend",i),t.removeEventListener("transitioncancel",i)};t.addEventListener("transitionend",i),t.addEventListener("transitioncancel",i)}}function h(t){return t.prefix?t.prefix+"-":""}class d extends HTMLElement{constructor(){super();let t=this.attachShadow({mode:"open"});const e=document.createElement("template");e.innerHTML='<div part="backdrop" hidden style="position: fixed; top: 0; left: 0; right: 0; bottom: 0"></div><slot></slot>',t.appendChild(e.content.cloneNode(!0)),this.shadowRoot.firstElementChild.onclick=()=>this.open=!1}static get observedAttributes(){return["open"]}connectedCallback(){this.shadowRoot.firstElementChild.hidden=!0,this.menu.hidden=!0,this.button.setAttribute("aria-haspopup","true"),this.button.setAttribute("aria-expanded","false"),this.button.addEventListener("click",(()=>{this.open=!0})),this.button.addEventListener("keydown",(t=>{"ArrowDown"===t.key&&(t.preventDefault(),this.open=!0)})),this.addEventListener("keydown",(t=>{"Escape"===t.key&&this.open&&(t.preventDefault(),t.stopPropagation(),this.open=!1,this.button.focus())})),this.menu.addEventListener("click",(t=>{const e=t.target instanceof Element?t.target:null;("menuitem"===(null==e?void 0:e.getAttribute("role"))||"menuitemradio"===(null==e?void 0:e.getAttribute("role"))||(null==e?void 0:e.closest("[role=menuitem], [role=menuitemradio]")))&&(this.open=!1)})),this.open=!1}disconnectedCallback(){n(this.shadowRoot.firstElementChild),n(this.menu)}get button(){return this.querySelector("button, [role=button]")}get menu(){return this.children[1]}get open(){return this.hasAttribute("open")}set open(t){t?this.setAttribute("open",""):this.removeAttribute("open")}attributeChangedCallback(t,i,n){if("open"===t)if(null!==n){if(!this.menu.hidden)return;this.menu.hidden=!1,o(this.menu),this.button.setAttribute("aria-expanded","true"),e(this.button,this.menu,{placement:this.getAttribute("placement")||"bottom"});const t=this.shadowRoot.firstElementChild;t.hidden=!1,o(t),this.dispatchEvent(new Event("open"))}else if(!this.menu.hidden){this.button.setAttribute("aria-expanded","false");const t=this.shadowRoot.firstElementChild;r(t,{finish:()=>t.hidden=!0}),r(this.menu,{finish:()=>this.menu.hidden=!0}),this.dispatchEvent(new Event("close"))}}}class l extends HTMLElement{constructor(){super(...arguments),this.handleMouseEnter=this.afterDelay.bind(this,this.show),this.handleFocus=this.show.bind(this),this.handleMouseLeave=this.afterDelay.bind(this,this.hide),this.handleBlur=this.hide.bind(this),this.handleTouch=this.touched.bind(this),this.wasTouched=!1}connectedCallback(){this.parent&&(this.parent.tabIndex=this.parent.tabIndex||0,this.parent.addEventListener("touchstart",this.handleTouch),this.parent.addEventListener("mouseenter",this.handleMouseEnter),this.parent.addEventListener("focus",this.handleFocus),this.parent.addEventListener("mouseleave",this.handleMouseLeave),this.parent.addEventListener("blur",this.handleBlur),this.parent.addEventListener("click",this.handleBlur),this.observer=new MutationObserver((t=>{t.forEach((t=>{"disabled"===t.attributeName&&this.hide()}))})),this.observer.observe(this.parent,{attributes:!0})),document.addEventListener("touchstart",this.handleBlur)}disconnectedCallback(){this.hide(),this.observer.disconnect(),this.parent&&(this.parent.removeEventListener("touchstart",this.handleTouch),this.parent.removeEventListener("mouseenter",this.handleMouseEnter),this.parent.removeEventListener("focus",this.handleFocus),this.parent.removeEventListener("mouseleave",this.handleMouseLeave),this.parent.removeEventListener("blur",this.handleBlur),this.parent.removeEventListener("click",this.handleBlur)),document.removeEventListener("touchstart",this.handleBlur)}get parent(){return this.parentNode}touched(t){t.stopPropagation(),this.show(),this.wasTouched=!0}show(){const t=this.createTooltip();clearTimeout(this.timeout),t.hidden=!1,o(t),t.innerHTML=this.innerHTML,e(this.parent,t,{placement:this.getAttribute("placement")||l.placement})}hide(){this.wasTouched?this.wasTouched=!1:(clearTimeout(this.timeout),this.tooltip&&r(this.tooltip,{finish:()=>{this.tooltip&&(this.tooltip.hidden=!0)}}))}afterDelay(t){clearTimeout(this.timeout);const e=parseInt(this.getAttribute("delay")||"");this.timeout=window.setTimeout(t.bind(this),isNaN(e)?l.delay:e)}createTooltip(){return this.tooltip||(this.tooltip=document.createElement("div"),this.tooltip.className=this.getAttribute("tooltip-class")||l.tooltipClass,this.tooltip.hidden=!0,document.body.appendChild(this.tooltip)),this.tooltip}}l.delay=100,l.placement="top",l.tooltipClass="tooltip";class c extends HTMLElement{constructor(){super(...arguments),this.search="",this.handleKeydown=t=>{if(!this.hidden)if("ArrowUp"===t.key)this.navigate(-1),t.preventDefault();else if("ArrowDown"===t.key)this.navigate(1),t.preventDefault();else{if(t.key.length>1)return;if(t.ctrlKey||t.metaKey||t.altKey)return;t.preventDefault(),this.search+=t.key.toLowerCase(),clearTimeout(this.searchTimeout),this.searchTimeout=window.setTimeout((()=>{this.search=""}),c.searchDelay),this.focusableItems.some((t=>{var e;if(0===(null===(e=t.textContent)||void 0===e?void 0:e.trim().toLowerCase().indexOf(this.search)))return t.focus(),!0}))}}}connectedCallback(){this.setAttribute("role","menu"),Array.from(this.focusableItems).forEach((t=>{t.setAttribute("tabindex","-1")})),document.addEventListener("keydown",this.handleKeydown)}disconnectedCallback(){document.removeEventListener("keydown",this.handleKeydown)}navigate(t){const e=this.focusableItems;let i=document.activeElement instanceof HTMLElement?e.indexOf(document.activeElement):-1;i+=t,i<0&&(i=e.length-1),i>=e.length&&(i=0),e[i]&&e[i].focus()}get focusableItems(){return Array.from(this.querySelectorAll("[role^=menuitem]"))}}c.searchDelay=800;class u extends HTMLElement{constructor(){var t;super(),this.inertCache=new Map;let e=this.attachShadow({mode:"open"});const i=document.createElement("template");i.innerHTML='<div part="backdrop" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0"></div><div part="content" style="position: relative"><slot></slot></div>',e.appendChild(i.content.cloneNode(!0)),null===(t=e.querySelector("[part=backdrop]"))||void 0===t||t.addEventListener("click",(()=>{this.hasAttribute("static")?u.attention&&u.attention(e.children[1]):this.close()}))}static get observedAttributes(){return["open"]}connectedCallback(){this.firstElementChild&&(this.firstElementChild.setAttribute("role","dialog"),this.firstElementChild.setAttribute("aria-modal","true"),this.firstElementChild.setAttribute("tabindex","-1")),this.addEventListener("keydown",(t=>{"Escape"!==t.key||this.hidden||(t.preventDefault(),t.stopPropagation(),this.close())}))}disconnectedCallback(){this.undoInert()}get open(){return this.hasAttribute("open")}set open(t){t?this.setAttribute("open",""):this.removeAttribute("open")}close(){if(!this.open)return;const t=new Event("beforeclose",{cancelable:!0});this.dispatchEvent(t)&&(this.open=!1)}undoInert(){this.inertCache.forEach(((t,e)=>{e.inert=!1})),this.inertCache.clear()}attributeChangedCallback(t,e,i){var n,s,a;if("open"===t)if(null!==i){this.trigger=document.activeElement,this.hidden=!1,o(this);const t=this.querySelector("[autofocus]");t?t.focus():null===(n=this.firstElementChild)||void 0===n||n.focus(),Array.from(document.body.children).filter((t=>t!==this)).forEach((t=>{this.inertCache.set(t,t.inert),t.inert=!0})),this.dispatchEvent(new Event("open"))}else this.undoInert(),this.trigger&&("menuitem"===this.trigger.getAttribute("role")?null===(a=null===(s=this.trigger.parentElement)||void 0===s?void 0:s.previousElementSibling)||void 0===a||a.focus():this.trigger.focus()),r(this,{finish:()=>this.hidden=!0}),this.dispatchEvent(new Event("close"))}}u.attention=t=>t.animate([{transform:"scale(1)"},{transform:"scale(1.1)"},{transform:"scale(1)"}],300);class m extends HTMLElement{constructor(){super(...arguments),this.timeouts=new Map,this.index=0}connectedCallback(){this.setAttribute("role","status"),this.setAttribute("aria-live","polite"),this.setAttribute("aria-relevant","additions")}show(t,e={}){const n=e.key||String(this.index++);this.dismiss(n),t.dataset.key=n,i(this.children,(()=>{this.append(t),o(t)}));const s=void 0!==e.duration?Number(e.duration):m.duration;return s>0&&(this.startTimeout(t,s),t.addEventListener("mouseenter",this.clearTimeout.bind(this,t)),t.addEventListener("focusin",this.clearTimeout.bind(this,t)),t.addEventListener("mouseleave",this.startTimeout.bind(this,t,s)),t.addEventListener("focusout",this.startTimeout.bind(this,t,s))),n}dismiss(t){if("string"!=typeof t)i(this.children,(()=>{r(t,{finish:()=>this.removeChild(t)})})),this.clearTimeout(t);else{const e=this.querySelector(`[data-key="${t}"]`);e&&this.dismiss(e)}}speak(t){const e=document.createElement("div");Object.assign(e.style,{clip:"rect(0 0 0 0)",clipPath:"inset(50%)",height:"1px",overflow:"hidden",position:"absolute",whiteSpace:"nowrap",width:"1px"}),e.textContent=t,this.show(e)}startTimeout(t,e){this.clearTimeout(t),this.timeouts.set(t,window.setTimeout((()=>{this.dismiss(t)}),e))}clearTimeout(t){this.timeouts.has(t)&&clearTimeout(this.timeouts.get(t))}}m.duration=1e4;
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+/***/ }),
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+/***/ "./node_modules/text-field-edit/index.js":
+/*!***********************************************!*\
+  !*** ./node_modules/text-field-edit/index.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
-
-function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-var t = {
-  x: {
-    start: "left",
-    Start: "Left",
-    end: "right",
-    End: "Right",
-    size: "width",
-    Size: "Width"
-  },
-  y: {
-    start: "top",
-    Start: "Top",
-    end: "bottom",
-    End: "Bottom",
-    size: "height",
-    Size: "Height"
-  }
-};
-
-function e(e, i, n) {
-  var _Object$assign, _Object$assign2;
-
-  var s;
-  var o = i.style;
-  Object.assign(o, {
-    position: "absolute",
-    maxWidth: "",
-    maxHeight: ""
-  });
-
-  var _n$placement$split = n.placement.split("-"),
-      _n$placement$split2 = _slicedToArray(_n$placement$split, 2),
-      _n$placement$split2$ = _n$placement$split2[0],
-      r = _n$placement$split2$ === void 0 ? "bottom" : _n$placement$split2$,
-      _n$placement$split2$2 = _n$placement$split2[1],
-      a = _n$placement$split2$2 === void 0 ? "center" : _n$placement$split2$2;
-
-  var h = ["top", "bottom"].includes(r) ? "y" : "x";
-  var d = r === t[h].start ? t[h].end : t[h].start;
-  var l = "x" === h ? "y" : "x",
-      c = e.getBoundingClientRect(),
-      u = (null === (s = function (t) {
-    for (; (t = t.parentNode) && t instanceof Element;) {
-      var _e2 = getComputedStyle(t).overflow;
-      if (["auto", "scroll"].includes(_e2)) return t;
-    }
-  }(i)) || void 0 === s ? void 0 : s.getBoundingClientRect()) || new DOMRect(0, 0, window.innerWidth, window.innerHeight),
-      m = i.offsetParent || document.body,
-      p = m === document.body ? new DOMRect(-pageXOffset, -pageYOffset, window.innerWidth, window.innerHeight) : m.getBoundingClientRect(),
-      f = getComputedStyle(m),
-      v = getComputedStyle(i);
-
-  if (n.flip || void 0 === n.flip) {
-    var _ref;
-
-    var _e3 = function _e3(t) {
-      return Math.abs(c[t] - u[t]);
-    },
-        _n2 = _e3(r);
-
-    i["offset" + t[h].Size] > _n2 && _e3(d) > _n2 && (_ref = [d, r], r = _ref[0], d = _ref[1], _ref);
-  }
-
-  if (i.dataset.placement = "".concat(r, "-").concat(a), n.cap || void 0 === n.cap) {
-    var _e4 = function _e4(e, n) {
-      var s = v["max" + t[e].Size];
-      n -= parseInt(v["margin" + t[e].Start]) + parseInt(v["margin" + t[e].End]), ("none" === s || n < parseInt(s)) && (i.style["max" + t[e].Size] = n + "px");
-    };
-
-    _e4(h, Math.abs(u[r] - c[r])), _e4(l, u[t[l].size]);
-  }
-
-  Object.assign(o, (_Object$assign = {}, _defineProperty(_Object$assign, r, "auto"), _defineProperty(_Object$assign, d, (r === t[h].start ? p[t[h].end] - c[t[h].start] : c[t[h].end] - p[t[h].start]) - parseInt(f["border" + t[h].Start + "Width"]) + "px"), _Object$assign));
-  var b = "end" === a ? "end" : "start",
-      E = "end" === a ? "start" : "end",
-      g = c[l] - p[l],
-      y = c[t[l].size],
-      w = i["offset" + t[l].Size];
-  var C = "end" === a ? p[t[l].size] - g - y : g + ("start" !== a ? y / 2 - w / 2 : 0);
-
-  if (n.bound || void 0 === n.bound) {
-    var _e5 = "end" === a ? -1 : 1;
-
-    C = Math.max(_e5 * (u[t[l][b]] - p[t[l][b]]), Math.min(C, _e5 * (u[t[l][E]] - p[t[l][b]]) - w));
-  }
-
-  Object.assign(o, (_Object$assign2 = {}, _defineProperty(_Object$assign2, t[l][E], "auto"), _defineProperty(_Object$assign2, t[l][b], C - parseInt(f["border" + t[l].Start + "Width"]) + "px"), _Object$assign2));
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "insert": () => (/* binding */ insert),
+/* harmony export */   "set": () => (/* binding */ set),
+/* harmony export */   "getSelection": () => (/* binding */ getSelection),
+/* harmony export */   "wrapSelection": () => (/* binding */ wrapSelection),
+/* harmony export */   "replace": () => (/* binding */ replace)
+/* harmony export */ });
+function insertTextFirefox(field, text) {
+    // Found on https://www.everythingfrontend.com/posts/insert-text-into-textarea-at-cursor-position.html 🎈
+    field.setRangeText(text, field.selectionStart || 0, field.selectionEnd || 0, 'end');
+    field.dispatchEvent(new InputEvent('input', {
+        data: text,
+        inputType: 'insertText',
+    }));
 }
-
-function i(t, e) {
-  var i = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-  var n = new WeakMap(),
-      s = h(i);
-  t instanceof HTMLCollection && (t = Array.from(t)), t.forEach(function (t) {
-    "none" !== getComputedStyle(t).display && n.set(t, t.getBoundingClientRect());
-  }), e(), t.forEach(function (t) {
-    var e = n.get(t);
-    if (!e) return;
-    var i = e.left - t.getBoundingClientRect().left,
-        o = e.top - t.getBoundingClientRect().top;
-    if (!i && !o) return;
-    var r = t.style;
-    r.transitionDuration = "0s", r.transform = "translate(".concat(i, "px, ").concat(o, "px)"), document.body.offsetWidth, r.transitionDuration = r.transform = "", t.classList.add(s + "move"), a(t, function () {
-      t.classList.remove(s + "move");
-    });
-  });
+/** Inserts `text` at the cursor’s position, replacing any selection, with **undo** support and by firing the `input` event. */
+function insert(field, text) {
+    var document = field.ownerDocument;
+    var initialFocus = document.activeElement;
+    if (initialFocus !== field) {
+        field.focus();
+    }
+    if (!document.execCommand('insertText', false, text)) {
+        insertTextFirefox(field, text);
+    }
+    if (initialFocus === document.body) {
+        field.blur();
+    }
+    else if (initialFocus instanceof HTMLElement && initialFocus !== field) {
+        initialFocus.focus();
+    }
 }
-
-function n(t) {
-  var _t$classList;
-
-  t._currentTransition && ((_t$classList = t.classList).remove.apply(_t$classList, _toConsumableArray(["active", "from", "to"].map(function (e) {
-    return t._currentTransition + e;
-  }))), t._currentTransition = null);
+/** Replaces the entire content, equivalent to `field.value = text` but with **undo** support and by firing the `input` event. */
+function set(field, text) {
+    field.select();
+    insert(field, text);
 }
-
-function s(t, e) {
-  var i = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-  var s = h(i) + e + "-",
-      o = t.classList;
-  var r;
-  n(t), t._currentTransition = s, o.add(s + "active", s + "from"), r = function r() {
-    o.add(s + "to"), o.remove(s + "from"), a(t, function () {
-      o.remove(s + "to", s + "active"), t._currentTransition === s && (i.finish && i.finish(), t._currentTransition = null);
-    });
-  }, requestAnimationFrame(function () {
-    requestAnimationFrame(r);
-  });
+/** Get the selected text in a field or an empty string if nothing is selected. */
+function getSelection(field) {
+    return field.value.slice(field.selectionStart, field.selectionEnd);
 }
-
-function o(t) {
-  var e = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  s(t, "enter", e);
+/** Adds the `wrappingText` before and after field’s selection (or cursor). If `endWrappingText` is provided, it will be used instead of `wrappingText` at on the right. */
+function wrapSelection(field, wrap, wrapEnd) {
+    var selectionStart = field.selectionStart, selectionEnd = field.selectionEnd;
+    var selection = getSelection(field);
+    insert(field, wrap + selection + (wrapEnd !== null && wrapEnd !== void 0 ? wrapEnd : wrap));
+    // Restore the selection around the previously-selected text
+    field.selectionStart = selectionStart + wrap.length;
+    field.selectionEnd = selectionEnd + wrap.length;
 }
-
-function r(t) {
-  var e = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  s(t, "leave", e);
-}
-
-function a(t, e) {
-  if (getComputedStyle(t).transitionDuration.startsWith("0s")) e();else {
-    var _i2 = function _i2() {
-      e(), t.removeEventListener("transitionend", _i2), t.removeEventListener("transitioncancel", _i2);
-    };
-
-    t.addEventListener("transitionend", _i2), t.addEventListener("transitioncancel", _i2);
-  }
-}
-
-function h(t) {
-  return t.prefix ? t.prefix + "-" : "";
-}
-
-var d = /*#__PURE__*/function (_HTMLElement) {
-  _inherits(d, _HTMLElement);
-
-  var _super = _createSuper(d);
-
-  function d() {
-    var _this;
-
-    _classCallCheck(this, d);
-
-    _this = _super.call(this);
-
-    var t = _this.attachShadow({
-      mode: "open"
-    });
-
-    var e = document.createElement("template");
-    e.innerHTML = '<div part="backdrop" hidden style="position: fixed; top: 0; left: 0; right: 0; bottom: 0"></div><slot></slot>', t.appendChild(e.content.cloneNode(!0)), _this.shadowRoot.firstElementChild.onclick = function () {
-      return _this.open = !1;
-    };
-    return _this;
-  }
-
-  _createClass(d, [{
-    key: "connectedCallback",
-    value: function connectedCallback() {
-      var _this2 = this;
-
-      this.shadowRoot.firstElementChild.hidden = !0, this.menu.hidden = !0, this.button.setAttribute("aria-haspopup", "true"), this.button.setAttribute("aria-expanded", "false"), this.button.addEventListener("click", function () {
-        _this2.open = !0;
-      }), this.button.addEventListener("keydown", function (t) {
-        "ArrowDown" === t.key && (t.preventDefault(), _this2.open = !0);
-      }), this.addEventListener("keydown", function (t) {
-        "Escape" === t.key && _this2.open && (t.preventDefault(), t.stopPropagation(), _this2.open = !1, _this2.button.focus());
-      }), this.menu.addEventListener("click", function (t) {
-        var e = t.target instanceof Element ? t.target : null;
-        ("menuitem" === (null == e ? void 0 : e.getAttribute("role")) || "menuitemradio" === (null == e ? void 0 : e.getAttribute("role")) || (null == e ? void 0 : e.closest("[role=menuitem], [role=menuitemradio]"))) && (_this2.open = !1, _this2.button.focus());
-      }), this.open = !1;
-    }
-  }, {
-    key: "disconnectedCallback",
-    value: function disconnectedCallback() {
-      n(this.shadowRoot.firstElementChild), n(this.menu);
-    }
-  }, {
-    key: "button",
-    get: function get() {
-      return this.querySelector("button, [role=button]");
-    }
-  }, {
-    key: "menu",
-    get: function get() {
-      return this.children[1];
-    }
-  }, {
-    key: "open",
-    get: function get() {
-      return this.hasAttribute("open");
-    },
-    set: function set(t) {
-      t ? this.setAttribute("open", "") : this.removeAttribute("open");
-    }
-  }, {
-    key: "attributeChangedCallback",
-    value: function attributeChangedCallback(t, i, n) {
-      var _this3 = this;
-
-      if ("open" === t) if (null !== n) {
-        if (!this.menu.hidden) return;
-        this.menu.hidden = !1, o(this.menu), this.button.setAttribute("aria-expanded", "true"), e(this.button, this.menu, {
-          placement: this.getAttribute("placement") || "bottom"
-        });
-        var _t = this.shadowRoot.firstElementChild;
-        _t.hidden = !1, o(_t), this.dispatchEvent(new Event("open"));
-      } else if (!this.menu.hidden) {
-        this.button.setAttribute("aria-expanded", "false");
-        var _t2 = this.shadowRoot.firstElementChild;
-        r(_t2, {
-          finish: function finish() {
-            return _t2.hidden = !0;
-          }
-        }), r(this.menu, {
-          finish: function finish() {
-            return _this3.menu.hidden = !0;
-          }
-        }), this.dispatchEvent(new Event("close"));
-      }
-    }
-  }], [{
-    key: "observedAttributes",
-    get: function get() {
-      return ["open"];
-    }
-  }]);
-
-  return d;
-}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
-
-var l = /*#__PURE__*/function (_HTMLElement2) {
-  _inherits(l, _HTMLElement2);
-
-  var _super2 = _createSuper(l);
-
-  function l() {
-    var _this4;
-
-    _classCallCheck(this, l);
-
-    _this4 = _super2.apply(this, arguments), _this4.handleMouseEnter = _this4.afterDelay.bind(_assertThisInitialized(_this4), _this4.show), _this4.handleFocus = _this4.show.bind(_assertThisInitialized(_this4)), _this4.handleMouseLeave = _this4.afterDelay.bind(_assertThisInitialized(_this4), _this4.hide), _this4.handleBlur = _this4.hide.bind(_assertThisInitialized(_this4)), _this4.handleKeyDown = _this4.keyDown.bind(_assertThisInitialized(_this4));
-    return _this4;
-  }
-
-  _createClass(l, [{
-    key: "connectedCallback",
-    value: function connectedCallback() {
-      var _this5 = this;
-
-      this.parent = this.parentNode, this.parent && (this.parent.matches("a, button, input, select, textarea, button, iframe") || (this.parent.tabIndex = this.parent.tabIndex || 0), this.parent.addEventListener("mouseenter", this.handleMouseEnter), this.parent.addEventListener("focus", this.handleFocus), this.parent.addEventListener("mouseleave", this.handleMouseLeave), this.parent.addEventListener("blur", this.handleBlur), this.parent.addEventListener("click", this.handleBlur), this.observer = new MutationObserver(function (t) {
-        t.forEach(function (t) {
-          "disabled" === t.attributeName && _this5.hide();
-        });
-      }), this.observer.observe(this.parent, {
-        attributes: !0
-      })), document.addEventListener("keydown", this.handleKeyDown);
-    }
-  }, {
-    key: "disconnectedCallback",
-    value: function disconnectedCallback() {
-      this.tooltip && (this.tooltip.remove(), this.tooltip = null), this.observer.disconnect(), this.parent && (this.parent.removeEventListener("mouseenter", this.handleMouseEnter), this.parent.removeEventListener("focus", this.handleFocus), this.parent.removeEventListener("mouseleave", this.handleMouseLeave), this.parent.removeEventListener("blur", this.handleBlur), this.parent.removeEventListener("click", this.handleBlur), this.parent = null), document.removeEventListener("keydown", this.handleKeyDown);
-    }
-  }, {
-    key: "keyDown",
-    value: function keyDown(t) {
-      "Escape" === t.key && this.hide();
-    }
-  }, {
-    key: "show",
-    value: function show() {
-      var t = this.createTooltip();
-      clearTimeout(this.timeout), t.hidden = !1, o(t), t.innerHTML = this.innerHTML, e(this.parent, t, {
-        placement: this.getAttribute("placement") || l.placement
-      });
-    }
-  }, {
-    key: "hide",
-    value: function hide() {
-      var _this6 = this;
-
-      clearTimeout(this.timeout), this.tooltip && r(this.tooltip, {
-        finish: function finish() {
-          _this6.tooltip && (_this6.tooltip.hidden = !0);
+/** Finds and replaces strings and regex in the field’s value, like `field.value = field.value.replace()` but better */
+function replace(field, searchValue, replacer) {
+    /** Remembers how much each match offset should be adjusted */
+    var drift = 0;
+    field.value.replace(searchValue, function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
         }
-      });
-    }
-  }, {
-    key: "afterDelay",
-    value: function afterDelay(t) {
-      clearTimeout(this.timeout);
-      var e = parseInt(this.getAttribute("delay") || "");
-      this.timeout = window.setTimeout(t.bind(this), isNaN(e) ? l.delay : e);
-    }
-  }, {
-    key: "createTooltip",
-    value: function createTooltip() {
-      return this.tooltip || (this.tooltip = document.createElement("div"), this.tooltip.className = this.getAttribute("tooltip-class") || l.tooltipClass, this.tooltip.hidden = !0, document.body.appendChild(this.tooltip)), this.tooltip;
-    }
-  }]);
-
-  return l;
-}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
-
-l.delay = 100, l.placement = "top", l.tooltipClass = "tooltip";
-
-var c = /*#__PURE__*/function (_HTMLElement3) {
-  _inherits(c, _HTMLElement3);
-
-  var _super3 = _createSuper(c);
-
-  function c() {
-    var _this7;
-
-    _classCallCheck(this, c);
-
-    _this7 = _super3.apply(this, arguments), _this7.search = "", _this7.handleKeydown = function (t) {
-      if (!_this7.hidden) if ("ArrowUp" === t.key) _this7.navigate(-1), t.preventDefault();else if ("ArrowDown" === t.key) _this7.navigate(1), t.preventDefault();else {
-        if (t.key.length > 1) return;
-        if (t.ctrlKey || t.metaKey || t.altKey) return;
-        t.preventDefault(), _this7.search += t.key.toLowerCase(), clearTimeout(_this7.searchTimeout), _this7.searchTimeout = window.setTimeout(function () {
-          _this7.search = "";
-        }, c.searchDelay), _this7.focusableItems.some(function (t) {
-          var e;
-          if (0 === (null === (e = t.textContent) || void 0 === e ? void 0 : e.trim().toLowerCase().indexOf(_this7.search))) return t.focus(), !0;
-        });
-      }
-    };
-    return _this7;
-  }
-
-  _createClass(c, [{
-    key: "connectedCallback",
-    value: function connectedCallback() {
-      this.setAttribute("role", "menu"), Array.from(this.focusableItems).forEach(function (t) {
-        t.setAttribute("tabindex", "-1");
-      }), document.addEventListener("keydown", this.handleKeydown);
-    }
-  }, {
-    key: "disconnectedCallback",
-    value: function disconnectedCallback() {
-      document.removeEventListener("keydown", this.handleKeydown);
-    }
-  }, {
-    key: "navigate",
-    value: function navigate(t) {
-      var e = this.focusableItems;
-      var i = document.activeElement instanceof HTMLElement ? e.indexOf(document.activeElement) : -1;
-      i += t, i < 0 && (i = e.length - 1), i >= e.length && (i = 0), e[i] && e[i].focus();
-    }
-  }, {
-    key: "focusableItems",
-    get: function get() {
-      return Array.from(this.querySelectorAll("[role^=menuitem]"));
-    }
-  }]);
-
-  return c;
-}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
-
-c.searchDelay = 800;
-
-var u = /*#__PURE__*/function (_HTMLElement4) {
-  _inherits(u, _HTMLElement4);
-
-  var _super4 = _createSuper(u);
-
-  function u() {
-    var _this8;
-
-    _classCallCheck(this, u);
-
-    var t;
-    _this8 = _super4.call(this), _this8.inertCache = new Map();
-
-    var e = _this8.attachShadow({
-      mode: "open"
+        // Select current match to replace it later
+        var matchStart = drift + args[args.length - 2];
+        var matchLength = args[0].length;
+        field.selectionStart = matchStart;
+        field.selectionEnd = matchStart + matchLength;
+        var replacement = typeof replacer === 'string' ? replacer : replacer.apply(void 0, args);
+        insert(field, replacement);
+        // Select replacement. Without this, the cursor would be after the replacement
+        field.selectionStart = matchStart;
+        drift += replacement.length - matchLength;
+        return replacement;
     });
-
-    var i = document.createElement("template");
-    i.innerHTML = '<div part="backdrop" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0"></div><div part="content" style="z-index: 1"><slot></slot></div>', e.appendChild(i.content.cloneNode(!0)), null === (t = e.querySelector("[part=backdrop]")) || void 0 === t || t.addEventListener("click", function () {
-      _this8.hasAttribute("static") ? u.attention && u.attention(e.children[1]) : _this8.close();
-    });
-    return _this8;
-  }
-
-  _createClass(u, [{
-    key: "connectedCallback",
-    value: function connectedCallback() {
-      var _this9 = this;
-
-      this.firstElementChild && (this.firstElementChild.setAttribute("role", "dialog"), this.firstElementChild.setAttribute("aria-modal", "true"), this.firstElementChild.setAttribute("tabindex", "-1")), this.addEventListener("keydown", function (t) {
-        "Escape" !== t.key || _this9.hidden || (t.preventDefault(), t.stopPropagation(), _this9.close());
-      });
-    }
-  }, {
-    key: "disconnectedCallback",
-    value: function disconnectedCallback() {
-      this.open = !1, this.hidden = !0;
-    }
-  }, {
-    key: "open",
-    get: function get() {
-      return this.hasAttribute("open");
-    },
-    set: function set(t) {
-      t ? this.setAttribute("open", "") : this.removeAttribute("open");
-    }
-  }, {
-    key: "close",
-    value: function close() {
-      if (!this.open) return;
-      var t = new Event("beforeclose", {
-        cancelable: !0
-      });
-      this.dispatchEvent(t) && (this.open = !1);
-    }
-  }, {
-    key: "undoInert",
-    value: function undoInert() {
-      this.inertCache.forEach(function (t, e) {
-        e.inert = !1;
-      }), this.inertCache.clear();
-    }
-  }, {
-    key: "attributeChangedCallback",
-    value: function attributeChangedCallback(t, e, i) {
-      var _this10 = this;
-
-      var n, s, a;
-      if ("open" === t) if (null !== i) {
-        this.trigger = document.activeElement, this.hidden = !1, o(this);
-
-        var _t3 = this.querySelector("[autofocus]");
-
-        _t3 ? _t3.focus() : null === (n = this.firstElementChild) || void 0 === n || n.focus(), Array.from(document.body.children).filter(function (t) {
-          return t !== _this10;
-        }).forEach(function (t) {
-          _this10.inertCache.set(t, t.inert), t.inert = !0;
-        }), this.dispatchEvent(new Event("open"));
-      } else this.undoInert(), this.trigger && ("menuitem" === this.trigger.getAttribute("role") ? null === (a = null === (s = this.trigger.parentElement) || void 0 === s ? void 0 : s.previousElementSibling) || void 0 === a || a.focus() : this.trigger.focus()), r(this, {
-        finish: function finish() {
-          return _this10.hidden = !0;
-        }
-      }), this.dispatchEvent(new Event("close"));
-    }
-  }], [{
-    key: "observedAttributes",
-    get: function get() {
-      return ["open"];
-    }
-  }]);
-
-  return u;
-}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
-
-u.attention = function (t) {
-  return t.animate([{
-    transform: "scale(1)"
-  }, {
-    transform: "scale(1.1)"
-  }, {
-    transform: "scale(1)"
-  }], 300);
-};
-
-var m = /*#__PURE__*/function (_HTMLElement5) {
-  _inherits(m, _HTMLElement5);
-
-  var _super5 = _createSuper(m);
-
-  function m() {
-    var _this11;
-
-    _classCallCheck(this, m);
-
-    _this11 = _super5.apply(this, arguments), _this11.timeouts = new Map(), _this11.index = 0;
-    return _this11;
-  }
-
-  _createClass(m, [{
-    key: "connectedCallback",
-    value: function connectedCallback() {
-      this.setAttribute("role", "status"), this.setAttribute("aria-live", "polite"), this.setAttribute("aria-relevant", "additions");
-    }
-  }, {
-    key: "show",
-    value: function show(t) {
-      var _this12 = this;
-
-      var e = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var n = e.key || String(this.index++);
-      this.dismiss(n), t.dataset.key = n, i(this.children, function () {
-        _this12.append(t), o(t);
-      });
-      var s = void 0 !== e.duration ? Number(e.duration) : m.duration;
-      return s > 0 && (this.startTimeout(t, s), t.addEventListener("mouseenter", this.clearTimeout.bind(this, t)), t.addEventListener("focusin", this.clearTimeout.bind(this, t)), t.addEventListener("mouseleave", this.startTimeout.bind(this, t, s)), t.addEventListener("focusout", this.startTimeout.bind(this, t, s))), n;
-    }
-  }, {
-    key: "dismiss",
-    value: function dismiss(t) {
-      var _this13 = this;
-
-      if ("string" != typeof t) i(this.children, function () {
-        r(t, {
-          finish: function finish() {
-            return _this13.removeChild(t);
-          }
-        });
-      }), this.clearTimeout(t);else {
-        var _e6 = this.querySelector("[data-key=\"".concat(t, "\"]"));
-
-        _e6 && this.dismiss(_e6);
-      }
-    }
-  }, {
-    key: "speak",
-    value: function speak(t) {
-      var e = document.createElement("div");
-      Object.assign(e.style, {
-        clip: "rect(0 0 0 0)",
-        clipPath: "inset(50%)",
-        height: "1px",
-        overflow: "hidden",
-        position: "absolute",
-        whiteSpace: "nowrap",
-        width: "1px"
-      }), e.textContent = t, this.show(e);
-    }
-  }, {
-    key: "startTimeout",
-    value: function startTimeout(t, e) {
-      var _this14 = this;
-
-      this.clearTimeout(t), this.timeouts.set(t, window.setTimeout(function () {
-        _this14.dismiss(t);
-      }, e));
-    }
-  }, {
-    key: "clearTimeout",
-    value: function (_clearTimeout) {
-      function clearTimeout(_x) {
-        return _clearTimeout.apply(this, arguments);
-      }
-
-      clearTimeout.toString = function () {
-        return _clearTimeout.toString();
-      };
-
-      return clearTimeout;
-    }(function (t) {
-      this.timeouts.has(t) && clearTimeout(this.timeouts.get(t));
-    })
-  }]);
-
-  return m;
-}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
-
-m.duration = 1e4;
+}
 
 
 /***/ })
@@ -9260,22 +10774,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _hotwired_turbo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @hotwired/turbo */ "./node_modules/@hotwired/turbo/dist/turbo.es2017-esm.js");
-/* harmony import */ var wicg_inert__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! wicg-inert */ "./node_modules/wicg-inert/dist/inert.esm.js");
-/* harmony import */ var wicg_inert__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(wicg_inert__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
-/* harmony import */ var morphdom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! morphdom */ "./node_modules/morphdom/dist/morphdom-esm.js");
-/* harmony import */ var _controllers_alerts__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./controllers/alerts */ "./resources/js/controllers/alerts.ts");
-/* harmony import */ var _controllers_channel_picker__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./controllers/channel-picker */ "./resources/js/controllers/channel-picker.ts");
-/* harmony import */ var _controllers_comment__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./controllers/comment */ "./resources/js/controllers/comment.ts");
-/* harmony import */ var _controllers_comment_replies__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./controllers/comment-replies */ "./resources/js/controllers/comment-replies.ts");
-/* harmony import */ var _controllers_header__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./controllers/header */ "./resources/js/controllers/header.ts");
-/* harmony import */ var _controllers_load_backwards__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./controllers/load-backwards */ "./resources/js/controllers/load-backwards.ts");
-/* harmony import */ var _controllers_modal__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./controllers/modal */ "./resources/js/controllers/modal.ts");
-/* harmony import */ var inclusive_elements__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! inclusive-elements */ "../../../packages/inclusive-elements/dist/index.js");
-/* harmony import */ var _controllers_page__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./controllers/page */ "./resources/js/controllers/page.ts");
-/* harmony import */ var _controllers_post__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./controllers/post */ "./resources/js/controllers/post.ts");
-/* harmony import */ var _controllers_post_page__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./controllers/post-page */ "./resources/js/controllers/post-page.ts");
-/* harmony import */ var _controllers_scrollspy__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./controllers/scrollspy */ "./resources/js/controllers/scrollspy.ts");
+/* harmony import */ var _github_hotkey__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @github/hotkey */ "./node_modules/@github/hotkey/dist/index.js");
+/* harmony import */ var wicg_inert__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! wicg-inert */ "./node_modules/wicg-inert/dist/inert.esm.js");
+/* harmony import */ var wicg_inert__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(wicg_inert__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
+/* harmony import */ var morphdom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! morphdom */ "./node_modules/morphdom/dist/morphdom-esm.js");
+/* harmony import */ var _controllers_alerts__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./controllers/alerts */ "./resources/js/controllers/alerts.ts");
+/* harmony import */ var _controllers_channel_picker__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./controllers/channel-picker */ "./resources/js/controllers/channel-picker.ts");
+/* harmony import */ var _controllers_comment__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./controllers/comment */ "./resources/js/controllers/comment.ts");
+/* harmony import */ var _controllers_comment_replies__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./controllers/comment-replies */ "./resources/js/controllers/comment-replies.ts");
+/* harmony import */ var _controllers_header__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./controllers/header */ "./resources/js/controllers/header.ts");
+/* harmony import */ var _controllers_load_backwards__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./controllers/load-backwards */ "./resources/js/controllers/load-backwards.ts");
+/* harmony import */ var _controllers_modal__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./controllers/modal */ "./resources/js/controllers/modal.ts");
+/* harmony import */ var inclusive_elements__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! inclusive-elements */ "./node_modules/inclusive-elements/dist/index.js");
+/* harmony import */ var _controllers_page__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./controllers/page */ "./resources/js/controllers/page.ts");
+/* harmony import */ var _controllers_post__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./controllers/post */ "./resources/js/controllers/post.ts");
+/* harmony import */ var _controllers_post_page__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./controllers/post-page */ "./resources/js/controllers/post-page.ts");
+/* harmony import */ var _controllers_scrollspy__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./controllers/scrollspy */ "./resources/js/controllers/scrollspy.ts");
+/* harmony import */ var _controllers_text_editor__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./controllers/text-editor */ "./resources/js/controllers/text-editor.ts");
 
 
 var __awaiter = undefined && undefined.__awaiter || function (thisArg, _arguments, P, generator) {
@@ -9309,6 +10825,7 @@ var __awaiter = undefined && undefined.__awaiter || function (thisArg, _argument
     step((generator = generator.apply(thisArg, _arguments || [])).next());
   });
 };
+
 
  // import './bootstrap';
 // import './elements/turbo-echo-stream-tag';
@@ -9359,9 +10876,14 @@ document.addEventListener('turbo:before-stream-render', function (e) {
   if (stream.action === 'replace') {
     e.preventDefault();
     stream.targetElements.forEach(function (el) {
-      (0,morphdom__WEBPACK_IMPORTED_MODULE_3__.default)(el, stream.templateContent.firstElementChild);
+      (0,morphdom__WEBPACK_IMPORTED_MODULE_4__["default"])(el, stream.templateContent.firstElementChild);
     });
   }
+});
+document.addEventListener('turbo:load', function () {
+  document.querySelectorAll('[data-hotkey]').forEach(function (el) {
+    (0,_github_hotkey__WEBPACK_IMPORTED_MODULE_2__.install)(el);
+  });
 });
 
 
@@ -9372,28 +10894,30 @@ document.addEventListener('turbo:before-stream-render', function (e) {
 
 
 
-window.Stimulus = _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_4__.Application.start();
-window.Stimulus.register('channel-picker', _controllers_channel_picker__WEBPACK_IMPORTED_MODULE_6__.default);
-window.Stimulus.register('modal', _controllers_modal__WEBPACK_IMPORTED_MODULE_11__.ModalController);
-window.Stimulus.register('header', _controllers_header__WEBPACK_IMPORTED_MODULE_9__.HeaderController);
-window.Stimulus.register('load-backwards', _controllers_load_backwards__WEBPACK_IMPORTED_MODULE_10__.LoadBackwards);
-window.Stimulus.register('post-page', _controllers_post_page__WEBPACK_IMPORTED_MODULE_12__.PostPage);
-window.Stimulus.register('comment-replies', _controllers_comment_replies__WEBPACK_IMPORTED_MODULE_8__.CommentReplies);
-window.Stimulus.register('comment', _controllers_comment__WEBPACK_IMPORTED_MODULE_7__.Comment);
-window.Stimulus.register('scrollspy', _controllers_scrollspy__WEBPACK_IMPORTED_MODULE_13__.Scrollspy);
-window.Stimulus.register('page', _controllers_page__WEBPACK_IMPORTED_MODULE_14__.PageController);
-window.Stimulus.register('alerts', _controllers_alerts__WEBPACK_IMPORTED_MODULE_5__.AlertsController);
-window.Stimulus.register('post', _controllers_post__WEBPACK_IMPORTED_MODULE_15__.PostController);
+window.Stimulus = _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_5__.Application.start();
+window.Stimulus.register('channel-picker', _controllers_channel_picker__WEBPACK_IMPORTED_MODULE_7__["default"]);
+window.Stimulus.register('modal', _controllers_modal__WEBPACK_IMPORTED_MODULE_12__.ModalController);
+window.Stimulus.register('header', _controllers_header__WEBPACK_IMPORTED_MODULE_10__.HeaderController);
+window.Stimulus.register('load-backwards', _controllers_load_backwards__WEBPACK_IMPORTED_MODULE_11__.LoadBackwards);
+window.Stimulus.register('post-page', _controllers_post_page__WEBPACK_IMPORTED_MODULE_13__.PostPage);
+window.Stimulus.register('comment-replies', _controllers_comment_replies__WEBPACK_IMPORTED_MODULE_9__.CommentReplies);
+window.Stimulus.register('comment', _controllers_comment__WEBPACK_IMPORTED_MODULE_8__.Comment);
+window.Stimulus.register('scrollspy', _controllers_scrollspy__WEBPACK_IMPORTED_MODULE_14__.Scrollspy);
+window.Stimulus.register('page', _controllers_page__WEBPACK_IMPORTED_MODULE_15__.PageController);
+window.Stimulus.register('alerts', _controllers_alerts__WEBPACK_IMPORTED_MODULE_6__.AlertsController);
+window.Stimulus.register('post', _controllers_post__WEBPACK_IMPORTED_MODULE_16__.PostController);
+window.Stimulus.register('text-editor', _controllers_text_editor__WEBPACK_IMPORTED_MODULE_17__.TextEditor);
 
 
 
 
 
-window.customElements.define('ui-popup', inclusive_elements__WEBPACK_IMPORTED_MODULE_16__.PopupElement);
-window.customElements.define('ui-menu', inclusive_elements__WEBPACK_IMPORTED_MODULE_16__.MenuElement);
-window.customElements.define('ui-modal', inclusive_elements__WEBPACK_IMPORTED_MODULE_16__.ModalElement);
-window.customElements.define('ui-tooltip', inclusive_elements__WEBPACK_IMPORTED_MODULE_16__.TooltipElement);
-window.customElements.define('ui-alerts', inclusive_elements__WEBPACK_IMPORTED_MODULE_16__.AlertsElement);
+
+window.customElements.define('ui-popup', inclusive_elements__WEBPACK_IMPORTED_MODULE_18__.PopupElement);
+window.customElements.define('ui-menu', inclusive_elements__WEBPACK_IMPORTED_MODULE_18__.MenuElement);
+window.customElements.define('ui-modal', inclusive_elements__WEBPACK_IMPORTED_MODULE_18__.ModalElement);
+window.customElements.define('ui-tooltip', inclusive_elements__WEBPACK_IMPORTED_MODULE_18__.TooltipElement);
+window.customElements.define('ui-alerts', inclusive_elements__WEBPACK_IMPORTED_MODULE_18__.AlertsElement);
 })();
 
 /******/ })()
