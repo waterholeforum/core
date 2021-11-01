@@ -21,7 +21,7 @@
             @if ($comment->parent)
                 <div>
                     <a href="{{ $comment->parent->url }}#comment-{{ $comment->parent->id }}" class="comment__parent with-icon" data-turbo-frame="_top">
-                        <x-waterhole::icon icon="heroicon-o-reply" class="rotate-180"/>
+                        <x-waterhole::icon icon="heroicon-s-reply" class="rotate-180"/>
                         <span>In reply to</span>
                         <span class="user-label">
                             <x-waterhole::avatar :user="$comment->parent->user"/>

@@ -4,17 +4,35 @@
   padding: 0;
   height: auto;
   min-height: 300px;
+  position: relative;
 }
 
 .text-editor__toolbar {
   padding: var(--space-xs);
+  padding-left: var(--space-sm);
   font-size: 80%;
+
+  .is-previewing & {
+    //position: absolute;
+    //right: 0;
+    //z-index: 1;
+    justify-content: flex-end;
+    z-index: 1;
+
+    > :not(.text-editor__preview-button) {
+      display: none;
+    }
+  }
 }
 
-.text-editor__content {
+.text-editor__content,
+.text-editor__expander {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+}
+
+.text-editor__expander {
   position: relative;
 }
 
@@ -22,11 +40,12 @@
   width: 100%;
   flex-grow: 1;
   outline: none;
-  padding: var(--space-md);
-  resize: none;
+  padding: var(--space-sm) var(--space-md);
+  resize: vertical;
   border: 0;
   background: transparent;
   max-height: 70vh;
+  position: relative;
 
   &[hidden] {
     display: initial !important;

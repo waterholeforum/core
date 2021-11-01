@@ -1,4 +1,6 @@
-<div class="input text-editor" data-controller="text-editor">
+<div data-controller="text-editor" {{ $attributes->class('text-editor') }}>
+    {{ $start ?? '' }}
+
     <ui-toolbar
         class="toolbar toolbar--compact text-editor__toolbar js-only"
         data-text-editor-target="toolbar"
@@ -111,7 +113,7 @@
 
         <button
             type="button"
-            class="btn btn--transparent"
+            class="btn btn--transparent text-editor__preview-button"
             aria-pressed="false"
             data-action="text-editor#togglePreview"
             data-text-editor-target="previewButton"
@@ -119,12 +121,19 @@
     </ui-toolbar>
 
     <div class="text-editor__content">
-        <textarea
-            name="{{ $name }}"
-            id="{{ $id }}"
-            class="text-editor__input content"
-            data-text-editor-target="input"
-        >{{ $value }}</textarea>
+        <text-expander
+            keys="@"
+            data-text-editor-target="expander"
+            class="text-editor__expander"
+        >
+            <textarea
+                name="{{ $name }}"
+                id="{{ $id }}"
+                class="text-editor__input content js-session-resumable"
+                data-text-editor-target="input"
+                placeholder="{{ $placeholder }}"
+            >{{ $value }}</textarea>
+        </text-expander>
 
         <div
             class="text-editor__preview content"

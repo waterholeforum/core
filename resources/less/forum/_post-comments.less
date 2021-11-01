@@ -2,18 +2,104 @@
   margin-top: var(--space-lg);
 }
 
-.post-comments__reply {
-  //margin-top: var(--space-xl);
+.composer {
+  --height-transition-duration: 0s;
+  border-radius: var(--border-radius);
+  background: var(--color-bg);
+  transition: box-shadow .2s, border .2s, height var(--height-transition-duration), bottom .2s;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  max-height: 90vh;
+  margin-right: ~"calc(160px + var(--space-xxxl))";
 
-  .attribution {
-    min-height: 0;
-  }
-
-  &::before {
+  &:not(.is-open) .composer__form,
+  &.is-open .composer__placeholder {
     display: none;
   }
 
-  form {
-    margin-top: 0;
+  &:not(.is-open) {
+    --height-transition-duration: .2s;
+    height: 4.75em !important; // override user resizing
+    bottom: -4.75em;
+  }
+
+  &.is-open {
+    --focus-shadow: 0 0 0 transparent;
+    border: 1px solid var(--color-stroke);
+    bottom: ~"calc(-1 * var(--border-radius))";
+    box-shadow: var(--focus-shadow);
+    height: 300px;
+    min-height: 200px;
+
+    &:focus-within {
+      --focus-shadow: 0 0 0 2px var(--color-accent);
+      border-color: transparent;
+    }
+  }
+
+  &.is-sticky {
+    border-color: transparent;
+    box-shadow: var(--focus-shadow), var(--shadow-md);
+    padding-bottom: var(--border-radius);
+    z-index: var(--z-index-overlay);
+  }
+}
+
+.composer__placeholder {
+  display: flex;
+  align-items: center;
+  border: 2px dashed var(--color-stroke);
+  border-radius: var(--border-radius);
+  padding: var(--space-md);
+  gap: var(--space-md);
+  cursor: text;
+  color: var(--color-text-muted);
+  transition: box-shadow .2s, border .2s, color .2s;
+  text-decoration: none !important;
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+    border-color: transparent;
+    color: inherit;
+  }
+
+  .avatar {
+    width: var(--control-height);
+  }
+}
+
+.composer__form {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .text-editor {
+    border: 0;
+    box-shadow: none;
+    min-height: 0;
+    flex-grow: 1;
+  }
+
+  .text-editor__input {
+    resize: none;
+  }
+}
+
+.composer__toolbar {
+  padding: var(--space-xs);
+  border-bottom: 1px solid var(--color-stroke);
+  position: relative;
+  cursor: ns-resize;
+
+  &:before {
+    content: '';
+    position: absolute;
+    left: ~"calc(50% - 50px)";
+    width: 100px;
+    height: 5px;
+    top: 5px;
+    background: var(--color-fill);
+    border-radius: 3px;
   }
 }

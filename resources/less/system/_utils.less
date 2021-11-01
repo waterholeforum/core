@@ -94,15 +94,48 @@
     &:is(
       :hover, .is-hovered,
       :focus, .is-focused,
-      [aria-selected=true],
-      [aria-pressed=true]
+      [aria-selected=true]
     ) {
       filter: var(--filter-hover);
     }
 
-    &:active {
+    &:is(:active, [aria-pressed=true]) {
       filter: var(--filter-active);
+    }
+
+    &:active {
       transform: scale(0.97);
     }
+  }
+}
+
+.text-danger {
+  color: var(--color-danger);
+  font-weight: var(--font-weight-bold);
+}
+
+.text-xs {
+  font-size: var(--text-xs);
+}
+
+.animate-shake {
+  animation: shake .8s;
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translateX(-1px);
+  }
+
+  20%, 80% {
+    transform: translateX(2px);
+  }
+
+  30%, 50%, 70% {
+    transform: translateX(-4px);
+  }
+
+  40%, 60% {
+    transform: translateX(4px);
   }
 }

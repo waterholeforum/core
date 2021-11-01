@@ -4,6 +4,38 @@ import { install } from '@github/hotkey';
 // import './bootstrap';
 // import './elements/turbo-echo-stream-tag';
 import 'wicg-inert';
+import '@github/text-expander-element'
+
+import { persistResumableFields, restoreResumableFields, setForm } from '@github/session-resume';
+
+let pageId: string;
+
+function updatePageId() {
+    pageId = window.location.pathname;
+}
+
+// Listen for all form submit events and to see if their default submission
+// behavior is invoked.
+window.addEventListener('submit', setForm, { capture: true });
+
+window.addEventListener('pageshow', updatePageId);
+window.addEventListener('pagehide', updatePageId);
+window.addEventListener('turbo:load', updatePageId);
+
+
+const restore = (e: Event) => {
+    restoreResumableFields(pageId);
+};
+window.addEventListener('pageshow', restore);
+window.addEventListener('turbo:load', restore);
+
+const persist = (e: Event) => {
+    persistResumableFields(pageId);
+};
+window.addEventListener('turbo:before-visit', persist);
+window.addEventListener('popstate', persist);
+window.addEventListener('pagehide', persist);
+
 
 Turbo.start();
 
@@ -53,7 +85,9 @@ import { AlertsController } from './controllers/alerts';
 import ChannelPickerController from './controllers/channel-picker';
 import { Comment } from './controllers/comment';
 import { CommentReplies } from './controllers/comment-replies';
+import { Composer } from './controllers/composer';
 import { HeaderController } from './controllers/header';
+import { WatchSticky } from './controllers/watch-sticky';
 import { LoadBackwards } from './controllers/load-backwards';
 import { ModalController } from './controllers/modal';
 
@@ -61,6 +95,8 @@ window.Stimulus = Application.start();
 window.Stimulus.register('channel-picker', ChannelPickerController);
 window.Stimulus.register('modal', ModalController);
 window.Stimulus.register('header', HeaderController);
+window.Stimulus.register('watch-sticky', WatchSticky);
+window.Stimulus.register('composer', Composer);
 window.Stimulus.register('load-backwards', LoadBackwards);
 window.Stimulus.register('post-page', PostPage);
 window.Stimulus.register('comment-replies', CommentReplies);
@@ -85,7 +121,6 @@ import { PostController } from './controllers/post';
 import { PostPage } from './controllers/post-page';
 import { Scrollspy } from './controllers/scrollspy';
 import { TextEditor } from './controllers/text-editor';
-
 
 window.customElements.define('ui-popup', PopupElement);
 window.customElements.define('ui-menu', MenuElement);

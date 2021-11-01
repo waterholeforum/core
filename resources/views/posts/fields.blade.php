@@ -21,5 +21,6 @@
         name="body"
         :id="$component->id"
         :value="old('body', $post->body ?? '')"
+        class="input"
     />
 </x-waterhole::field>

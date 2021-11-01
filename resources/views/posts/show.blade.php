@@ -6,46 +6,17 @@
         data-post-page-id-value="{{ $post->id }}"
     >
         <div class="container">
-
-            {{--            @if (! $comment && $comments->onFirstPage())--}}
             <div
-                @if (! $comments->onFirstPage()) hidden
-                @endif data-action="turbo:frame-render@document->post-page#showPostOnFirstPage"
+                @if (! $comments->onFirstPage()) hidden @endif
+                data-action="turbo:frame-render@document->post-page#showPostOnFirstPage"
                 data-post-page-target="post"
             >
                 <x-waterhole::post-full :post="$post"/>
                 <br><br><br><br>
             </div>
-            {{--            @endif--}}
 
-            {{--            <h1 class="h2" hidden>--}}
-            {{--                <a href="{{ $post->url }}" style="color: inherit">{{ $post->title }}</a>--}}
-            {{--            </h1>--}}
-        </div>
+            <section class="post-comments" tabindex="-1" id="comments">
 
-        <section class="post-comments" tabindex="-1" id="comments">
-            {{--                @if ($comment)--}}
-            {{--                    <div>--}}
-            {{--                        <a--}}
-            {{--                            href="{{ request()->fullUrlWithQuery(['comment' => null]) }}#comments"--}}
-            {{--                            class="with-icon"--}}
-            {{--                        >--}}
-            {{--                            <x-waterhole::icon icon="heroicon-s-arrow-sm-left"/>--}}
-            {{--                            <span>Back to all comments</span>--}}
-            {{--                        </a>--}}
-            {{--                    </div>--}}
-
-            {{--                    <x-waterhole::comment :comment="$comment" with-replies/>--}}
-            {{--                @else--}}
-            {{--                    <x-waterhole::comments-toolbar--}}
-            {{--                        :post="$post"--}}
-            {{--                        :comments="$comments"--}}
-            {{--                        :sorts="$sorts"--}}
-            {{--                        :current-sort="$currentSort"--}}
-            {{--                        top--}}
-            {{--                    />--}}
-
-            <div class="container">
                 <h2 style="margin-bottom: var(--space-lg); padding-top: var(--space-xl)">
                     {{ __('waterhole::forum.post-comment-count', ['count' => $post->comment_count]) }}
                 </h2>
@@ -112,20 +83,6 @@
                                     </turbo-frame>
                                 @endif
                             @else
-                                <div
-                                    class="post-comments__reply comment"
-                                    id="reply"
-                                >
-                                    <div class="attribution">
-                                        <x-waterhole::avatar :user="Auth::user()"/>
-                                    </div>
-
-                                    <turbo-frame id="reply-composer">
-                                        <x-waterhole::comment-reply-composer
-                                            :post="$post"
-                                        />
-                                    </turbo-frame>
-                                </div>
                                 <div id="bottom" tabindex="-1"></div>
                             @endif
                         </turbo-frame>
@@ -136,24 +93,6 @@
                         style="position: sticky; top: calc(var(--header-height) + var(--space-xl)); margin-left: var(--space-xxxl); width: 160px; flex-shrink: 0; padding: 0 0 0 var(--space-md); margin-bottom: 0"
                     >
                         <div class="toolbar ruler">
-                            {{--                                <a href="{{ $post->url }}" class="btn btn--transparent">--}}
-                            {{--                                    <x-waterhole::icon icon="heroicon-s-arrow-up"/>--}}
-                            {{--                                    <span>Original Post</span>--}}
-                            {{--                                </a>--}}
-
-                            {{--                                <x-waterhole::action-menu :for="$post" style="margin-bottom: var(--space-sm)">--}}
-                            {{--                                    <x-slot name="button">--}}
-                            {{--                                        <button class="btn">--}}
-                            {{--                                            <x-waterhole::icon icon="heroicon-o-dots-circle-horizontal"/>--}}
-                            {{--                                            <span>Controls</span>--}}
-                            {{--                                            <x-waterhole::icon icon="heroicon-s-chevron-down"/>--}}
-                            {{--                                        </button>--}}
-                            {{--                                    </x-slot>--}}
-                            {{--                                </x-waterhole::action-menu>--}}
-
-                            {{--                                <h4 style="margin-top: 1rem">--}}
-                            {{--                                    {{ __('waterhole::forum.post-comment-count', ['count' => $post->comment_count]) }}--}}
-                            {{--                                </h4>--}}
 
                             <div
                                 style="margin-bottom: var(--space-sm)"
@@ -198,8 +137,6 @@
                                         @endif
                                     @endfor
 
-                                    {{--                                {{ $comments->appends('direction', null)->fragment('page-start')->onEachSide(INF)->links() }}--}}
-
                                     <a
                                         class="tab"
                                         href="{{ $comments->fragment('bottom')->url($comments->lastPage()) }}"
@@ -216,17 +153,12 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            {{--                    @if ($comments->hasMorePages())--}}
-            {{--                        <x-waterhole::comments-toolbar--}}
-            {{--                            :post="$post"--}}
-            {{--                            :comments="$comments"--}}
-            {{--                            :sorts="$sorts"--}}
-            {{--                            :current-sort="$currentSort"--}}
-            {{--                        />--}}
-            {{--                    @endif--}}
-            {{--                @endif--}}
-        </section>
+            </section>
+
+            @can('reply', $post)
+                <x-waterhole::composer :post="$post" :errors="$errors"/>
+            @endcan
+        </div>
     </div>
 </x-waterhole::layout>

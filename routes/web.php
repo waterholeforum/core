@@ -18,7 +18,7 @@ Route::resource('posts', PostController::class)
     ->only(['show', 'create', 'store', 'edit', 'update']);
 
 Route::resource('posts.comments', CommentController::class)
-    ->only(['show', 'store', 'edit', 'update'])
+    ->only(['show', 'create', 'store', 'edit', 'update'])
     ->scoped();
 
 Route::resource('channels', ChannelController::class)
