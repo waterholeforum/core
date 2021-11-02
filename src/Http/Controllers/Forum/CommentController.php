@@ -4,12 +4,18 @@ namespace Waterhole\Http\Controllers\Forum;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Tonysm\TurboLaravel\Http\TurboResponseFactory;
 use Waterhole\Extend\CommentsSort;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
 use Waterhole\Sorts\Oldest;
 use Waterhole\Sorts\Sort;
+use Waterhole\Views\Components\CommentFull;
+use Waterhole\Views\Components\Composer;
+use Waterhole\Views\TurboStream;
+
+use function Tonysm\TurboLaravel\dom_id;
 
 class CommentController extends Controller
 {
@@ -37,7 +43,7 @@ class CommentController extends Controller
 
         $parent = null;
 
-        if ($parentId = $request->get('parent')) {
+        if ($parentId = $request->get('parent', $request->old('parent_id'))) {
             $parent = $post->comments()->find($parentId);
         }
 
@@ -46,22 +52,37 @@ class CommentController extends Controller
 
     public function store(Post $post, Request $request)
     {
+        if (! $request->has('commit')) {
+            return redirect()->route('waterhole.posts.comments.create', compact('post'))->withInput();
+        }
+
         $this->authorize('create', Comment::class);
         $this->authorize('reply', $post);
 
-        $data = $request->validate(Comment::rules());
+        $data = $request->validate(Comment::rules(), Comment::messages());
 
-        if (isset($data['parent_id'])) {
-            $parent = Comment::find($data['parent_id']);
-
+        if ($parentId = $data['parent_id'] ?? null) {
+            $parent = Comment::find($parentId);
 
             abort_if($parent->post_id !== $post->id, 400);
-            // abort_if($parent->ancestors()->count() === config('waterhole.forum.comment_depth', 1), 403);
         }
 
         $comment = Comment::byUser($request->user(), $data);
 
         $post->comments()->save($comment);
+
+        if ($request->wantsTurboStream()) {
+            $streams = [
+                TurboStream::before(new CommentFull($comment), 'bottom'),
+                TurboStream::replace((new Composer($post))->withAttributes(['class' => 'can-sticky'])),
+            ];
+
+            if (isset($parent)) {
+                $streams[] = TurboStream::replace(new CommentFull($parent->fresh()));
+            }
+
+            return TurboResponseFactory::makeStream(implode($streams));
+        }
 
         if (isset($parent)) {
             return redirect($parent->url.'#comment-'.$parent->id);

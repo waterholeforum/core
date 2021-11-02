@@ -36,6 +36,16 @@ abstract class TurboStream
         return static::stream($component, 'prepend', $target);
     }
 
+    public static function before(Component $component, string $target): string
+    {
+        return static::stream($component, 'before', $target);
+    }
+
+    public static function after(Component $component, string $target): string
+    {
+        return static::stream($component, 'after', $target);
+    }
+
     private static function stream(Component $component, string $action, string $target): string
     {
         $content = static::renderComponent($component);

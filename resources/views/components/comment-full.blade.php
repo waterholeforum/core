@@ -1,9 +1,11 @@
 <turbo-frame
-    id="@domid($comment)"
-    class="comment {{ Waterhole\Extend\CommentClasses::getClasses($comment) }} @if ($withReplies) comment--with-replies @endif"
     role="article"
     tabindex="-1"
-    {{ $attributes }}
+    {{ $attributes->class([
+        'comment',
+        'comment--with-replies' => $withReplies,
+        Waterhole\Extend\CommentClasses::getClasses($comment),
+    ]) }}
     data-id="{{ $comment->id }}"
     data-controller="comment"
     data-action="turbo:frame-render->comment#connect"
@@ -49,14 +51,16 @@
     </div>
 
     <turbo-frame id="@domid($comment, 'replies')" @unless ($withReplies) hidden @endunless>
-        @if ($withReplies && count($comment->children))
-            <ol role="list" tabindex="-1" class="comment__replies">
-                @foreach ($comment->children as $child)
-                    <li>
-                        <x-waterhole::comment-full :comment="$child"/>
-                    </li>
-                @endforeach
-            </ol>
+        @if ($withReplies)
+            @if (count($comment->children))
+                <ol role="list" tabindex="-1" class="comment__replies">
+                    @foreach ($comment->children as $child)
+                        <li>
+                            <x-waterhole::comment-full :comment="$child"/>
+                        </li>
+                    @endforeach
+                </ol>
+            @endif
         @else
             <div class="loading-indicator"></div>
         @endif

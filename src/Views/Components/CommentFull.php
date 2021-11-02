@@ -4,9 +4,14 @@ namespace Waterhole\Views\Components;
 
 use Illuminate\View\Component;
 use Waterhole\Models\Comment;
+use Waterhole\Views\Components\Concerns\Streamable;
+
+use function Tonysm\TurboLaravel\dom_id;
 
 class CommentFull extends Component
 {
+    use Streamable;
+
     public Comment $comment;
     public bool $withReplies;
 
@@ -19,5 +24,10 @@ class CommentFull extends Component
     public function render()
     {
         return view('waterhole::components.comment-full');
+    }
+
+    public function id(): string
+    {
+        return dom_id($this->comment);
     }
 }

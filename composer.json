@@ -25,8 +25,9 @@
         "staudenmeir/eloquent-eager-limit": "^1.0",
         "staudenmeir/laravel-adjacency-list": "^1.7",
         "symfony/psr-http-message-bridge": "^2.1",
-        "tonysm/turbo-laravel": "^0.15",
-        "vanderlee/php-stable-sort-functions": "^2.0"
+        "tonysm/turbo-laravel": "dev-invalid-forms-with-422",
+        "vanderlee/php-stable-sort-functions": "^2.0",
+        "wikimedia/less.php": "^3.1"
     },
     "autoload": {
         "psr-4": {

@@ -1,7 +1,21 @@
+#waterhole {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+#main {
+  flex-grow: 1;
+}
+
 .container {
   margin-inline: auto;
   padding-inline: ~"min(2rem, 5vw)";
   max-width: @breakpoint-md;
+}
+
+.section {
+  padding-block: var(--space-xl);
 }
 
 .toolbar {
@@ -23,14 +37,25 @@
   gap: 0;
 }
 
-.stack {
+.stack-sm,
+.stack-md,
+.stack-lg,
+.stack-xl {
   display: flex;
   flex-direction: column;
   align-items: stretch;
+}
 
-  > * + * {
-    margin-top: var(--space-sm);
-  }
+.stack-sm {
+  gap: var(--space-sm);
+}
+
+.stack-md {
+  gap: var(--space-md);
+}
+
+.stack-lg {
+  gap: var(--space-lg);
 }
 
 .spacer {

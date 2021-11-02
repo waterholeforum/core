@@ -1,16 +1,18 @@
 <turbo-frame
-    id="reply"
-    {{ $attributes->class(['composer', 'is-open' => $open]) }}
+    {{ $attributes->class('composer') }}
     data-controller="composer watch-sticky"
-    data-turbo-permanent
+    data-action="turbo:before-fetch-request->composer#open
+        turbo:frame-render->composer#open
+        turbo:submit-end->composer#submitEnd"
 >
     <a
-        href="{{ route('waterhole.posts.comments.create', compact('post')) }}"
+        href="{{ route('waterhole.posts.comments.create', compact('post', 'parent')) }}"
         class="composer__placeholder"
-        data-action="composer#open"
+        data-action="composer#placeholderClick"
+        data-hotkey="r"
     >
         <x-waterhole::avatar :user="Auth::user()"/>
-        <span>Write a comment...</span>
+        <span>{{ $parent ? 'Reply to '.($parent->user->name ?? 'Anonymous').'...' : 'Write a comment...' }}</span>
     </a>
 
     <form
@@ -21,14 +23,45 @@
         @csrf
 
         <div
-            class="composer__toolbar toolbar"
+            class="composer__handle"
             data-composer-target="handle"
             data-action="mousedown->composer#startResize"
-        >
-            <button type="button" class="btn btn--transparent btn--icon" data-action="composer#close">
-                <x-waterhole::icon icon="heroicon-o-x"/>
+            hidden
+        ></div>
+
+        <div class="composer__toolbar toolbar">
+            <button
+                type="button"
+                class="btn btn--transparent btn--icon composer__close"
+                data-action="composer#close"
+                data-hotkey="Escape"
+                data-hotkey-scope="new-comment"
+            >
+                <x-waterhole::icon icon="heroicon-o-chevron-down"/>
             </button>
+
             <div class="h4">Write a Comment</div>
+
+            <turbo-frame
+                class="composer__parent"
+                id="@domid($post, 'comment_parent')"
+            >
+                @if ($parent)
+                    <input type="hidden" name="parent_id" value="{{ $parent->id }}">
+
+                    <a href="{{ $parent->post_url }}" data-turbo-frame="_top">
+                        Replying to <x-waterhole::user-label :user="$parent->user"/>
+                    </a>
+
+                    <button
+                        class="btn btn--small btn--transparent btn--icon"
+                        name="parent_id"
+                    >
+                        <x-waterhole::icon icon="heroicon-o-x"/>
+                    </button>
+                @endif
+            </turbo-frame>
+
             <div class="spacer"></div>
 
             @if ($errors->any())
@@ -37,7 +70,12 @@
                 </div>
             @endif
 
-            <button class="btn btn--primary">
+            <button
+                class="btn btn--primary"
+                name="commit"
+                data-hotkey="Meta+Enter,Ctrl+Enter"
+                data-hotkey-scope="new-comment"
+            >
                 Post
             </button>
         </div>

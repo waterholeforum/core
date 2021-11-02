@@ -23,7 +23,7 @@
 
                 <div class="with-sidebar-end">
 
-                    <div class="post-comments__comments">
+                    <div class="post-comments__comments" id="@domid($post, 'comments')">
                         <turbo-frame id="page_{{ $comments->currentPage() }}" target="_top">
                             @if (! $comments->onFirstPage() && request()->query('direction') !== 'forwards')
                                 <turbo-frame
@@ -157,7 +157,11 @@
             </section>
 
             @can('reply', $post)
-                <x-waterhole::composer :post="$post" :errors="$errors"/>
+                <x-waterhole::composer
+                    :post="$post"
+                    class="can-sticky"
+                    data-turbo-permanent
+                />
             @endcan
         </div>
     </div>

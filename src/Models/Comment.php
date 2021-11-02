@@ -8,6 +8,8 @@ use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 use Waterhole\Models\Concerns\HasLikes;
 use Waterhole\Models\Concerns\HasBody;
 
+use function Tonysm\TurboLaravel\dom_id;
+
 class Comment extends Model
 {
     use HasLikes;
@@ -55,12 +57,12 @@ class Comment extends Model
 
     public function replies()
     {
-        return $this->hasMany(self::class, 'parent_id');//->with('replies', 'replies.user', 'replies.likedBy', 'replies.parent', 'replies.post');
+        return $this->hasMany(self::class, 'parent_id');
     }
 
     public function parent()
     {
-        return $this->belongsTo(self::class, 'parent_id');//->with('parent');
+        return $this->belongsTo(self::class, 'parent_id');
     }
 
     public static function rules(): array
@@ -68,6 +70,13 @@ class Comment extends Model
         return [
             'parent_id' => ['nullable', Rule::exists('comments', 'id')],
             'body' => ['required', 'string'],
+        ];
+    }
+
+    public static function messages(): array
+    {
+        return [
+            'body.required' => "Don't forget to write something!",
         ];
     }
 
@@ -79,6 +88,16 @@ class Comment extends Model
     public function getEditUrlAttribute(): string
     {
         return route('waterhole.posts.comments.edit', ['post' => $this->post, 'comment' => $this]);
+    }
+
+    public function getPostUrlAttribute(): string
+    {
+        return $this->post->url(['index' => $this->index()]).'#'.dom_id($this);
+    }
+
+    public function index(): int
+    {
+        return $this->post->comments()->where('created_at', '<', $this->created_at)->count();
     }
 
     public function wasEdited(): static

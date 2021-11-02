@@ -1,7 +1,16 @@
-<x-waterhole::layout title="Post Comment">
-    <div class="container">
-        <h1>Reply to {{ $post->title }}</h1>
+<x-waterhole::layout :title="$post->title">
+    <div class="section container stack-lg">
+        <h1 class="h3">
+            <a href="{{ $parent ? $parent->post_url : $post->url }}" class="with-icon">
+                <x-waterhole::icon icon="heroicon-o-arrow-left"/>
+                <span data-page-target="title">{{ $post->title }}</span>
+            </a>
+        </h1>
 
-        <x-waterhole::composer :post="$post" :errors="$errors" open/>
+        <x-waterhole::composer
+            :post="$post"
+            :parent="$parent"
+            class="is-open"
+        />
     </div>
 </x-waterhole::layout>

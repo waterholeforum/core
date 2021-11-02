@@ -6276,6 +6276,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
 /* harmony import */ var animated_scroll_to__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! animated-scroll-to */ "../../node_modules/animated-scroll-to/lib/animated-scroll-to.js");
 /* harmony import */ var animated_scroll_to__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(animated_scroll_to__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./resources/js/utils.ts");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -6300,6 +6301,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
 var Composer = /*#__PURE__*/function (_Controller) {
   _inherits(Composer, _Controller);
 
@@ -6319,20 +6321,34 @@ var Composer = /*#__PURE__*/function (_Controller) {
       if (height) {
         this.element.style.height = height + 'px';
       }
+
+      if (window.location.hash.substr(1) === this.element.id) {
+        this.open();
+      }
     }
   }, {
-    key: "open",
-    value: function open(e) {
-      var _a; // TODO: if opening in new table, exit
-
-
+    key: "handleTargetConnected",
+    value: function handleTargetConnected(element) {
+      element.hidden = false;
+    }
+  }, {
+    key: "placeholderClick",
+    value: function placeholderClick(e) {
+      if ((0,_utils__WEBPACK_IMPORTED_MODULE_2__.shouldOpenInNewTab)(e)) return;
       e.preventDefault();
-      this.element.classList.add('is-open');
-      (_a = this.element.querySelector('textarea')) === null || _a === void 0 ? void 0 : _a.focus();
+      this.open();
       animated_scroll_to__WEBPACK_IMPORTED_MODULE_1___default()(document.documentElement.offsetHeight, {
         minDuration: 200,
         maxDuration: 200
       });
+    }
+  }, {
+    key: "open",
+    value: function open() {
+      var _a;
+
+      this.element.classList.add('is-open');
+      (_a = this.element.querySelector('textarea')) === null || _a === void 0 ? void 0 : _a.focus();
     }
   }, {
     key: "close",
@@ -6340,9 +6356,19 @@ var Composer = /*#__PURE__*/function (_Controller) {
       this.element.classList.remove('is-open');
     }
   }, {
+    key: "submitEnd",
+    value: function submitEnd(e) {
+      if (e.detail.fetchResponse.contentType.startsWith('text/vnd.turbo-stream.html')) {
+        this.close(); // const comments = document.querySelectorAll('.comment');
+        // const comment = comments[comments.length - 1];
+        // if (comment) {
+        //     animateScrollTo(comment);
+        // }
+      }
+    }
+  }, {
     key: "startResize",
     value: function startResize(e) {
-      if (e.target !== this.handleTarget) return;
       e.preventDefault();
       var el = this.element;
       var startY = e.clientY;
@@ -7231,6 +7257,23 @@ var WatchSticky = /*#__PURE__*/function (_Controller) {
 
   return WatchSticky;
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
+
+/***/ }),
+
+/***/ "./resources/js/utils.ts":
+/*!*******************************!*\
+  !*** ./resources/js/utils.ts ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "shouldOpenInNewTab": () => (/* binding */ shouldOpenInNewTab)
+/* harmony export */ });
+function shouldOpenInNewTab(e) {
+  return e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || e.button !== undefined && e.button !== 0;
+}
 
 /***/ }),
 

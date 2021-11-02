@@ -2,6 +2,10 @@
   margin-top: var(--space-lg);
 }
 
+.post-page .composer {
+  margin-right: ~"calc(160px + var(--space-xxxl))";
+}
+
 .composer {
   --height-transition-duration: 0s;
   border-radius: var(--border-radius);
@@ -9,9 +13,20 @@
   transition: box-shadow .2s, border .2s, height var(--height-transition-duration), bottom .2s;
   display: flex;
   flex-direction: column;
-  position: sticky;
   max-height: 90vh;
-  margin-right: ~"calc(160px + var(--space-xxxl))";
+
+  &.can-sticky {
+    position: sticky;
+  }
+
+  &:not(.can-sticky) {
+    height: 70vh !important;
+
+    .composer__close {
+      visibility: hidden;
+      width: var(--space-sm);
+    }
+  }
 
   &:not(.is-open) .composer__form,
   &.is-open .composer__placeholder {
@@ -86,20 +101,30 @@
   }
 }
 
+.composer__handle {
+  position: absolute;
+  left: 100px;
+  right: 100px;
+  top: -5px;
+  height: 20px;
+  cursor: ns-resize;
+}
+
 .composer__toolbar {
   padding: var(--space-xs);
   border-bottom: 1px solid var(--color-stroke);
-  position: relative;
-  cursor: ns-resize;
+}
 
-  &:before {
-    content: '';
-    position: absolute;
-    left: ~"calc(50% - 50px)";
-    width: 100px;
-    height: 5px;
-    top: 5px;
-    background: var(--color-fill);
-    border-radius: 3px;
+.composer__parent {
+  background: var(--color-info);
+  border-radius: 999px;
+  padding-left: var(--space-sm);
+  font-size: var(--text-xs);
+  margin-left: var(--space-sm);
+  display: flex;
+  align-items: center;
+
+  a {
+    color: inherit;
   }
 }

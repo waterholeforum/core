@@ -2,21 +2,22 @@
 
 namespace Waterhole\Views\Components;
 
-use Illuminate\Support\ViewErrorBag;
 use Illuminate\View\Component;
+use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
+use Waterhole\Views\Components\Concerns\Streamable;
 
 class Composer extends Component
 {
-    public Post $post;
-    public ?ViewErrorBag $errors;
-    public bool $open;
+    use Streamable;
 
-    public function __construct(Post $post, ViewErrorBag $errors = null, bool $open = false)
+    public Post $post;
+    public ?Comment $parent;
+
+    public function __construct(Post $post, Comment $parent = null)
     {
         $this->post = $post;
-        $this->errors = $errors;
-        $this->open = $open;
+        $this->parent = $parent?->exists ? $parent : null;
     }
 
     public function render()

@@ -1,24 +1,31 @@
 import { Controller } from '@hotwired/stimulus';
 import animateScrollTo from 'animated-scroll-to';
+import { shouldOpenInNewTab } from '../utils';
 
 export class Composer extends Controller {
     static targets = ['handle'];
-
-    handleTarget?: HTMLElement;
 
     connect() {
         const height = Number(localStorage.getItem('composer_height'));
         if (height) {
             (this.element as HTMLElement).style.height = height + 'px';
         }
+
+        if (window.location.hash.substr(1) === this.element.id) {
+            this.open();
+        }
     }
 
-    open(e: MouseEvent) {
-        // TODO: if opening in new table, exit
+    handleTargetConnected(element: HTMLElement) {
+        element.hidden = false;
+    }
+
+    placeholderClick(e: MouseEvent) {
+        if (shouldOpenInNewTab(e)) return;
+
         e.preventDefault();
 
-        this.element.classList.add('is-open');
-        this.element.querySelector('textarea')?.focus();
+        this.open();
 
         animateScrollTo(document.documentElement.offsetHeight, {
             minDuration: 200,
@@ -26,12 +33,27 @@ export class Composer extends Controller {
         });
     }
 
+    open() {
+        this.element.classList.add('is-open');
+        this.element.querySelector('textarea')?.focus();
+    }
+
     close() {
         this.element.classList.remove('is-open');
     }
 
+    submitEnd(e: CustomEvent) {
+        if (e.detail.fetchResponse.contentType.startsWith('text/vnd.turbo-stream.html')) {
+            this.close();
+            // const comments = document.querySelectorAll('.comment');
+            // const comment = comments[comments.length - 1];
+            // if (comment) {
+            //     animateScrollTo(comment);
+            // }
+        }
+    }
+
     startResize(e: MouseEvent) {
-        if (e.target !== this.handleTarget) return;
         e.preventDefault();
 
         const el = this.element as HTMLElement;

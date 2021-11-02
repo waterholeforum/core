@@ -120,9 +120,7 @@ class Post extends Model
 
     public function refreshCommentMetadata(): static
     {
-        $this->last_activity_at = $this->comments()->latest()->value(
-            'created_at'
-        ) ?: $this->created_at;
+        $this->last_activity_at = $this->comments()->latest()->value('created_at') ?: $this->created_at;
         $this->comment_count = $this->comments()->count();
 
         return $this;
