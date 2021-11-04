@@ -25,6 +25,7 @@
     "@hotwired/stimulus": "^3.0.1",
     "@hotwired/turbo": "^7.0.1",
     "fit-textarea": "^2.0.0",
+    "hello-goodbye": "^0.1.0-beta.5",
     "inclusive-elements": "^0.1.0-beta.7",
     "laravel-echo": "^1.10.0",
     "mdarea": "^2.0.12",

@@ -104,8 +104,11 @@ class Post extends Model
     {
         $params = ['post' => $this];
 
-        if ($index = $options['index'] ?? null) {
-            $params['page'] = floor($index / (new Comment)->getPerPage()) + 1;
+        if (
+            ($index = $options['index'] ?? null)
+            && (($page = floor($index / (new Comment)->getPerPage()) + 1) > 1)
+        ) {
+            $params['page'] = $page;
         }
 
         return route('waterhole.posts.show', $params);

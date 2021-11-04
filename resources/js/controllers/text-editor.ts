@@ -103,4 +103,12 @@ export class TextEditor extends Controller {
                 });
         }
     }
+
+    insertQuote(e: CustomEvent) {
+        if (! this.inputTarget || ! this.editor) return;
+
+        let text = (this.inputTarget.selectionStart > 0 ? '\n\n' : '') + '> ';
+
+        this.editor.insert(text + e.detail.text.replace(/\n/g, '\n> ') + '\n\n');
+    }
 }

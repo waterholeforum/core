@@ -3,7 +3,8 @@
   position: relative;
   border-top: 1px solid var(--color-stroke);
   padding-top: var(--space-md);
-  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-md);
+  transition: background .2s;
 
   .divider + & {
     border-top: 0;
@@ -16,6 +17,10 @@
   .attribution__info {
     display: inline;
     margin-left: var(--space-xs);
+  }
+
+  &.is-highlighted {
+    background: var(--color-info);
   }
 
   //&:not(:last-child) {
@@ -128,13 +133,39 @@
 }
 
 .comment__parent {
-  color: var(--color-text-muted);
-  font-size: var(--text-xs);
-  font-weight: var(--font-weight-medium);
+  width: fit-content;
 
-  &:not(:hover) {
-    text-decoration: none;
+  > a {
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-medium);
+
+    &:not(:hover) {
+      text-decoration: none;
+    }
   }
+}
+
+.comment__parent-preview {
+  max-width: 80ch;
+  max-height: 10em;
+  overflow: hidden;
+  text-align: left;
+  padding: var(--space-md);
+
+  .comment {
+    padding-top: 0;
+    padding-bottom: 0;
+    border: 0;
+
+    > * + * {
+      margin-top: var(--space-sm);
+    }
+  }
+}
+
+.comment__quote-button {
+  margin: var(--space-sm) 0;
 }
 
 .comment__meta {

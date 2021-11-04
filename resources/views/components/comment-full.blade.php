@@ -6,23 +6,28 @@
         'comment--with-replies' => $withReplies,
         Waterhole\Extend\CommentClasses::getClasses($comment),
     ]) }}
-    data-id="{{ $comment->id }}"
+    data-comment-id="{{ $comment->id }}"
+    data-parent-id="{{ $comment->parent?->id }}"
     data-controller="comment"
-    data-action="turbo:frame-render->comment#connect"
+    data-action="selectionchange@document->comment#showQuoteButton"
 >
-{{--    <span--}}
-{{--        class="comment__line"--}}
-{{--        data-comment-target="line"--}}
-{{--        data-action="click->comment#toggle"--}}
-{{--    ></span>--}}
-
     <div class="comment__main">
         <header class="comment__header">
-            <x-waterhole::attribution :user="$comment->user" :date="$comment->created_at"/>
+            <x-waterhole::attribution
+                :user="$comment->user"
+                :date="$comment->created_at"
+            />
 
             @if ($comment->parent)
-                <div>
-                    <a href="{{ $comment->parent->url }}#comment-{{ $comment->parent->id }}" class="comment__parent with-icon" data-turbo-frame="_top">
+                <div
+                    class="comment__parent"
+                    data-action="mouseenter->comment#highlightParent mouseleave->comment#stopHighlightingParent click->comment#stopHighlightingParent"
+                >
+                    <a
+                        href="{{ $comment->parent->post_url }}"
+                        class="with-icon"
+                        data-turbo-frame="_top"
+                    >
                         <x-waterhole::icon icon="heroicon-s-reply" class="rotate-180"/>
                         <span>In reply to</span>
                         <span class="user-label">
@@ -30,11 +35,29 @@
                             <span>{{ $comment->parent->user?->name ?: 'Anonymous' }}</span>
                         </span>
                     </a>
+
+                    <ui-tooltip
+                        placement="top-start"
+                        tooltip-class="tooltip comment__parent-preview"
+                        data-comment-target="parentTooltip"
+                        hidden
+                    >
+                        <div class="comment">
+                            <x-waterhole::attribution
+                                :user="$comment->parent->user"
+                                :date="$comment->parent->created_at"
+                            />
+
+                            <div class="content">
+                                {!! Str::limit(strip_tags($comment->parent->body), 300) !!}
+                            </div>
+                        </div>
+                    </ui-tooltip>
                 </div>
             @endif
         </header>
 
-        <div class="comment__body content">
+        <div class="comment__body content" data-comment-target="body">
             {{ emojify($comment->body_html) }}
         </div>
 
@@ -65,4 +88,19 @@
             <div class="loading-indicator"></div>
         @endif
     </turbo-frame>
+
+    <a
+        href="{{ route('waterhole.posts.comments.create', [
+            'post' => $comment->post,
+            'parent' => $comment->id
+        ]) }}"
+        class="comment__quote-button btn btn--tooltip"
+        data-turbo-frame="@domid($comment->post, 'comment_parent')"
+        data-comment-target="quoteButton"
+        data-action="comment#quoteSelectedText"
+        hidden
+    >
+        <x-waterhole::icon icon="heroicon-o-annotation"/>
+        <span>Quote</span>
+    </a>
 </turbo-frame>

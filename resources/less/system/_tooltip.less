@@ -15,9 +15,13 @@ ui-tooltip {
   z-index: var(--z-index-overlay);
   text-align: center;
 
+  --color-text: var(--color-tooltip-contrast);
+  --color-text-muted: rgba(255, 255, 255, 0.5);
+  --color-link: var(--color-text);
+
   small {
     font-size: var(--text-xxs);
-    opacity: 0.5;
+    color: var(--color-text-muted);
   }
 
   &.enter-active,

@@ -3,6 +3,7 @@
     data-controller="composer watch-sticky"
     data-action="turbo:before-fetch-request->composer#open
         turbo:frame-render->composer#open
+        comment:quote-text@document->text-editor#insertQuote
         turbo:submit-end->composer#submitEnd"
 >
     <a
@@ -85,6 +86,7 @@
             :value="old('body')"
             placeholder="Write a comment..."
             id="new-comment"
+            data-action="comment:quote-text@document->text-editor#insertQuote"
         />
     </form>
 </turbo-frame>

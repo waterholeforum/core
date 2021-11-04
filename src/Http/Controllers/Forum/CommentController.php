@@ -11,6 +11,7 @@ use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
 use Waterhole\Sorts\Oldest;
 use Waterhole\Sorts\Sort;
+use Waterhole\Views\Components\CommentCard;
 use Waterhole\Views\Components\CommentFull;
 use Waterhole\Views\Components\Composer;
 use Waterhole\Views\TurboStream;

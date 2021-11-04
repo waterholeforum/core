@@ -1,5 +1,3 @@
-@props(['user', 'date' => null])
-
 <div class="attribution">
     <a href="{{ $user?->url }}" class="attribution__user">
         <x-waterhole::avatar :user="$user"/>

@@ -1,6 +1,7 @@
-<div data-controller="text-editor" {{ $attributes->class('text-editor') }}>
-    {{ $start ?? '' }}
-
+<div
+    data-controller="text-editor"
+    {{ $attributes->class('text-editor') }}
+>
     <ui-toolbar
         class="toolbar toolbar--compact text-editor__toolbar js-only"
         data-text-editor-target="toolbar"
