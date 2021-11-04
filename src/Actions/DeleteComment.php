@@ -5,10 +5,10 @@ namespace Waterhole\Actions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
-use Waterhole\Models\Post;
+use Waterhole\Models\Comment;
 use Waterhole\Models\User;
 
-class DeletePost extends Action
+class DeleteComment extends Action
 {
     public bool $destructive = true;
     public bool $confirm = true;
@@ -25,7 +25,7 @@ class DeletePost extends Action
 
     public function appliesTo($item): bool
     {
-        return $item instanceof Post;
+        return $item instanceof Comment;
     }
 
     public function authorize(?User $user, $item): bool
@@ -35,7 +35,7 @@ class DeletePost extends Action
 
     public function confirmation(Collection $items): string
     {
-        return 'Are you sure you want to delete this post?';
+        return 'Are you sure you want to delete this comment?';
     }
 
     public function confirmationBody(Collection $items): HtmlString
@@ -52,7 +52,7 @@ class DeletePost extends Action
     {
         $items->each->delete();
 
-        $request->session()->flash('success', 'Post deleted.');
+        $request->session()->flash('success', 'Comment deleted.');
 
         if ($request->get('return') === $items[0]->url) {
             return redirect('/');

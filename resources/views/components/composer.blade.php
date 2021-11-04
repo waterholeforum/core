@@ -86,7 +86,7 @@
             :value="old('body')"
             placeholder="Write a comment..."
             id="new-comment"
-            data-action="comment:quote-text@document->text-editor#insertQuote"
+            data-action="quotable:quote-text@document->text-editor#insertQuote"
         />
     </form>
 </turbo-frame>

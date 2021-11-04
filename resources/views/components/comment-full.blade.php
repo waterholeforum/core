@@ -9,7 +9,6 @@
     data-comment-id="{{ $comment->id }}"
     data-parent-id="{{ $comment->parent?->id }}"
     data-controller="comment"
-    data-action="selectionchange@document->comment#showQuoteButton"
 >
     <div class="comment__main">
         <header class="comment__header">
@@ -57,8 +56,26 @@
             @endif
         </header>
 
-        <div class="comment__body content" data-comment-target="body">
+        <div
+            class="comment__body content"
+            data-controller="quotable"
+        >
             {{ emojify($comment->body_html) }}
+
+            <a
+                href="{{ route('waterhole.posts.comments.create', [
+                    'post' => $comment->post,
+                    'parent' => $comment->id
+                ]) }}"
+                class="quotable-button btn btn--tooltip"
+                data-turbo-frame="@domid($comment->post, 'comment_parent')"
+                data-quotable-target="button"
+                data-action="quotable#quoteSelectedText"
+                hidden
+            >
+                <x-waterhole::icon icon="heroicon-o-annotation"/>
+                <span>Quote</span>
+            </a>
         </div>
 
         <footer class="comment__footer toolbar">
@@ -88,19 +105,4 @@
             <div class="loading-indicator"></div>
         @endif
     </turbo-frame>
-
-    <a
-        href="{{ route('waterhole.posts.comments.create', [
-            'post' => $comment->post,
-            'parent' => $comment->id
-        ]) }}"
-        class="comment__quote-button btn btn--tooltip"
-        data-turbo-frame="@domid($comment->post, 'comment_parent')"
-        data-comment-target="quoteButton"
-        data-action="comment#quoteSelectedText"
-        hidden
-    >
-        <x-waterhole::icon icon="heroicon-o-annotation"/>
-        <span>Quote</span>
-    </a>
 </turbo-frame>

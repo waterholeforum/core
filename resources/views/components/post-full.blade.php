@@ -4,8 +4,23 @@
             @components(Waterhole\Extend\PostHeader::getComponents(), compact('post'))
         </header>
 
-        <div class="post-body content">
+        <div
+            class="post-body content"
+            data-controller="quotable"
+        >
             {{ emojify($post->body_html) }}
+
+            <a
+                href="{{ route('waterhole.posts.comments.create', compact('post')) }}"
+                class="quotable-button btn btn--tooltip"
+                data-turbo-frame="@domid($post, 'comment_parent')"
+                data-quotable-target="button"
+                data-action="quotable#quoteSelectedText"
+                hidden
+            >
+                <x-waterhole::icon icon="heroicon-o-annotation"/>
+                <span>Quote</span>
+            </a>
         </div>
     </div>
 

@@ -1,21 +1,43 @@
 <x-waterhole::layout title="Edit Comment">
-    <turbo-frame id="@domid($comment)">
-        <form
-            method="POST"
-            action="{{ route('waterhole.comments.update', ['comment' => $comment]) }}"
+    <div class="container section">
+        <turbo-frame
+            id="@domid($comment)"
+            class="comment"
         >
-            @csrf
-            @method('PATCH')
-            <input type="hidden" name="return" value="{{ old('return', url()->previous($comment->url)) }}">
+            <form
+                method="POST"
+                action="{{ $comment->url }}"
+                class="comment__main"
+            >
+                <x-waterhole::attribution
+                    :user="$comment->user"
+                    :date="$comment->created_at"
+                />
 
-            <x-waterhole::validation-errors :errors="$errors"/>
+                @csrf
+                @method('PATCH')
+                <input type="hidden" name="return" value="{{ old('return', $comment->post_url) }}">
 
-            <textarea name="body">{{ old('body', $comment->body) }}</textarea>
+                <x-waterhole::validation-errors :errors="$errors"/>
 
-            <div>
-                <a href="{{ url()->previous($comment->url) }}">Cancel</a>
-                <button type="submit">Save</button>
-            </div>
-        </form>
-    </turbo-frame>
+                <x-waterhole::text-editor
+                    name="body"
+                    value="{{ old('body', $comment->body) }}"
+                    class="input"
+                />
+
+                <div class="toolbar toolbar--right">
+                    <a
+                        href="{{ $comment->post_url }}"
+                        class="btn"
+                    >Cancel</a>
+
+                    <button
+                        type="submit"
+                        class="btn btn--primary"
+                    >Save</button>
+                </div>
+            </form>
+        </turbo-frame>
+    </div>
 </x-waterhole::layout>

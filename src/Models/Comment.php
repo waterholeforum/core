@@ -7,6 +7,8 @@ use Illuminate\Validation\Rule;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 use Waterhole\Models\Concerns\HasLikes;
 use Waterhole\Models\Concerns\HasBody;
+use Waterhole\Views\Components;
+use Waterhole\Views\TurboStream;
 
 use function Tonysm\TurboLaravel\dom_id;
 
@@ -117,5 +119,19 @@ class Comment extends Model
     public function getPerPage(): int
     {
         return config('waterhole.forum.comments_per_page', $this->perPage);
+    }
+
+    public function streamUpdated(): array
+    {
+        return [
+            TurboStream::replace(new Components\CommentFull($this)),
+        ];
+    }
+
+    public function streamRemoved(): array
+    {
+        return [
+            TurboStream::remove(new Components\CommentFull($this)),
+        ];
     }
 }

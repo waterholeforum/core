@@ -87,6 +87,7 @@ import { Comment } from './controllers/comment';
 import { CommentReplies } from './controllers/comment-replies';
 import { Composer } from './controllers/composer';
 import { HeaderController } from './controllers/header';
+import { Quotable } from './controllers/quotable';
 import { WatchSticky } from './controllers/watch-sticky';
 import { LoadBackwards } from './controllers/load-backwards';
 import { ModalController } from './controllers/modal';
@@ -106,6 +107,7 @@ window.Stimulus.register('page', PageController);
 window.Stimulus.register('alerts', AlertsController);
 window.Stimulus.register('post', PostController);
 window.Stimulus.register('text-editor', TextEditor);
+window.Stimulus.register('quotable', Quotable);
 
 
 declare global {

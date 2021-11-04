@@ -2,7 +2,7 @@
     <turbo-frame id="modal">
         <x-waterhole::dialog
             :title="$confirmation"
-            class="dialog--md confirm-action"
+            class="dialog--sm confirm-action"
         >
             <form action="{{ route('waterhole.action.store') }}" method="POST">
                 @csrf
@@ -43,7 +43,7 @@
                             type="submit"
                             name="confirmed"
                             value="1"
-                            class="btn {{ $action->destructive ? 'btn--danger' : 'btn--primary' }}"
+                            class="btn {{ $action->destructive ? 'btn--danger' : 'btn--primary' }} btn--wide"
                         >{{ $action->buttonText($items) }}</button>
                     </div>
                 </div>

@@ -92,14 +92,14 @@ class CommentController extends Controller
         return redirect($post->url.'?page='.ceil($post->comment_count / $comment->getPerPage()).'#comment-'.$comment->id);
     }
 
-    public function edit(Comment $comment)
+    public function edit(Post $post, Comment $comment)
     {
         $this->authorize('update', $comment);
 
         return view('waterhole::comments.edit', ['comment' => $comment]);
     }
 
-    public function update(Comment $comment, Request $request)
+    public function update(Post $post, Comment $comment, Request $request)
     {
         $this->authorize('update', $comment);
 
@@ -107,6 +107,6 @@ class CommentController extends Controller
 
         $comment->update($data);
 
-        return redirect($request->get('return', $comment->url));
+        return redirect($request->get('return', $comment->post_url));
     }
 }

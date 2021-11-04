@@ -6278,14 +6278,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Comment": () => (/* binding */ Comment)
 /* harmony export */ });
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./resources/js/utils.ts");
-/* harmony import */ var placement_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! placement.js */ "../../../packages/placement.js/dist/index.es.js");
+/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ "./resources/js/utils.ts");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6306,39 +6301,6 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-var __awaiter = undefined && undefined.__awaiter || function (thisArg, _arguments, P, generator) {
-  function adopt(value) {
-    return value instanceof P ? value : new P(function (resolve) {
-      resolve(value);
-    });
-  }
-
-  return new (P || (P = Promise))(function (resolve, reject) {
-    function fulfilled(value) {
-      try {
-        step(generator.next(value));
-      } catch (e) {
-        reject(e);
-      }
-    }
-
-    function rejected(value) {
-      try {
-        step(generator["throw"](value));
-      } catch (e) {
-        reject(e);
-      }
-    }
-
-    function step(result) {
-      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-    }
-
-    step((generator = generator.apply(thisArg, _arguments || [])).next());
-  });
-};
-
 
 
  // let collapsed: string[] = [];
@@ -6382,7 +6344,7 @@ var Comment = /*#__PURE__*/function (_Controller) {
 
       if (this.parentTooltipTarget) {
         this.parentTooltipTarget.disabled = this.parentElements.some(function (el) {
-          return (0,_utils__WEBPACK_IMPORTED_MODULE_2__.isElementInViewport)(el, .5);
+          return (0,_utils__WEBPACK_IMPORTED_MODULE_1__.isElementInViewport)(el, .5);
         });
       }
     }
@@ -6393,123 +6355,11 @@ var Comment = /*#__PURE__*/function (_Controller) {
         el.classList.remove('is-highlighted');
       });
     }
-  }, {
-    key: "showQuoteButton",
-    value: function showQuoteButton(e) {
-      return __awaiter(this, void 0, void 0, /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var _this = this;
-
-        var selection, range, parent, position, rects, anchor, side, rect, _rect;
-
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                if (this.quoteButtonTarget) {
-                  _context.next = 2;
-                  break;
-                }
-
-                return _context.abrupt("return");
-
-              case 2:
-                clearTimeout(this.selectionChangeTimeout);
-                _context.next = 5;
-                return new Promise(function (resolve) {
-                  return _this.selectionChangeTimeout = window.setTimeout(resolve, 100);
-                });
-
-              case 5:
-                this.quoteButtonTarget.hidden = true;
-
-                if (this.bodyTarget) {
-                  _context.next = 8;
-                  break;
-                }
-
-                return _context.abrupt("return");
-
-              case 8:
-                selection = window.getSelection();
-
-                if (!(!selection || !selection.rangeCount || !selection.anchorNode || !selection.focusNode)) {
-                  _context.next = 11;
-                  break;
-                }
-
-                return _context.abrupt("return");
-
-              case 11:
-                range = selection.getRangeAt(0);
-                parent = range.commonAncestorContainer; // If the selection spans outside of the content area, or there
-                // is no selection at all, we will not proceed.
-
-                if (!(parent !== this.bodyTarget && !this.bodyTarget.contains(parent) || range.collapsed)) {
-                  _context.next = 15;
-                  break;
-                }
-
-                return _context.abrupt("return");
-
-              case 15:
-                this.quoteButtonTarget.hidden = false; // Place the quote button according to where the focus of the
-                // selection is (ie. where the selection began).
-
-                position = selection.anchorNode.compareDocumentPosition(selection.focusNode);
-                rects = range.getClientRects();
-
-                if (position & Node.DOCUMENT_POSITION_PRECEDING || !position && selection.focusOffset < selection.anchorOffset) {
-                  rect = rects[0];
-                  anchor = new DOMRect(rect.left, rect.top);
-                  side = 'top';
-                } else {
-                  _rect = rects[rects.length - 1];
-                  anchor = new DOMRect(_rect.right, _rect.bottom);
-                  side = 'bottom';
-                }
-
-                (0,placement_js__WEBPACK_IMPORTED_MODULE_3__["default"])(anchor, this.quoteButtonTarget, {
-                  placement: side
-                });
-
-              case 20:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-    }
-  }, {
-    key: "quoteSelectedText",
-    value: function quoteSelectedText() {
-      var _this2 = this;
-
-      var container = document.createElement('div');
-      var selection = window.getSelection();
-      if (!selection) return;
-      container.appendChild(selection.getRangeAt(0).cloneContents());
-      container.querySelectorAll('img').forEach(function (el) {
-        return el.replaceWith(el.alt);
-      });
-      selection.removeAllRanges(); // Wait until the next tick so that the composer has had a chance to
-      // open (via turbo:before-fetch-request) before we dispatch the event.
-
-      setTimeout(function () {
-        _this2.dispatch('quote-text', {
-          detail: {
-            text: container.textContent
-          },
-          bubbles: true,
-          cancelable: true
-        });
-      });
-    }
   }]);
 
   return Comment;
-}(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_1__.Controller);
-Comment.targets = ['parentTooltip', 'body', 'quoteButton'];
+}(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
+Comment.targets = ['parentTooltip'];
 
 /***/ }),
 
@@ -7194,6 +7044,210 @@ var PostController = /*#__PURE__*/function (_Controller) {
 
   return PostController;
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
+
+/***/ }),
+
+/***/ "./resources/js/controllers/quotable.ts":
+/*!**********************************************!*\
+  !*** ./resources/js/controllers/quotable.ts ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Quotable": () => (/* binding */ Quotable)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
+/* harmony import */ var placement_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! placement.js */ "../../../packages/placement.js/dist/index.es.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+var __awaiter = undefined && undefined.__awaiter || function (thisArg, _arguments, P, generator) {
+  function adopt(value) {
+    return value instanceof P ? value : new P(function (resolve) {
+      resolve(value);
+    });
+  }
+
+  return new (P || (P = Promise))(function (resolve, reject) {
+    function fulfilled(value) {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function rejected(value) {
+      try {
+        step(generator["throw"](value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function step(result) {
+      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+    }
+
+    step((generator = generator.apply(thisArg, _arguments || [])).next());
+  });
+};
+
+
+
+var Quotable = /*#__PURE__*/function (_Controller) {
+  _inherits(Quotable, _Controller);
+
+  var _super = _createSuper(Quotable);
+
+  function Quotable() {
+    var _this;
+
+    _classCallCheck(this, Quotable);
+
+    _this = _super.apply(this, arguments);
+
+    _this.handleSelectionChange = function () {
+      setTimeout(_this.updateQuoteButton.bind(_assertThisInitialized(_this)), 100);
+    };
+
+    return _this;
+  }
+
+  _createClass(Quotable, [{
+    key: "connect",
+    value: function connect() {
+      document.addEventListener('mouseup', this.handleSelectionChange);
+    }
+  }, {
+    key: "disconnect",
+    value: function disconnect() {
+      document.removeEventListener('mouseup', this.handleSelectionChange);
+    }
+  }, {
+    key: "updateQuoteButton",
+    value: function updateQuoteButton() {
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var selection, range, parent, position, rects, anchor, side, rect, _rect;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (this.buttonTarget) {
+                  _context.next = 2;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 2:
+                this.buttonTarget.hidden = true;
+                selection = window.getSelection();
+
+                if (!(!selection || selection.isCollapsed || !selection.anchorNode || !selection.focusNode)) {
+                  _context.next = 6;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 6:
+                range = selection.getRangeAt(0);
+                parent = range.commonAncestorContainer; // If the selection spans outside of the content area, or there
+                // is no selection at all, we will not proceed.
+
+                if (!(parent !== this.element && !this.element.contains(parent))) {
+                  _context.next = 10;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 10:
+                this.buttonTarget.hidden = false; // Place the quote button according to where the focus of the
+                // selection is (ie. where the selection began).
+
+                position = selection.anchorNode.compareDocumentPosition(selection.focusNode);
+                rects = range.getClientRects();
+
+                if (position & Node.DOCUMENT_POSITION_PRECEDING || !position && selection.focusOffset < selection.anchorOffset) {
+                  rect = rects[0];
+                  anchor = new DOMRect(rect.left, rect.top);
+                  side = 'top';
+                } else {
+                  _rect = rects[rects.length - 1];
+                  anchor = new DOMRect(_rect.right, _rect.bottom);
+                  side = 'bottom';
+                }
+
+                (0,placement_js__WEBPACK_IMPORTED_MODULE_2__["default"])(anchor, this.buttonTarget, {
+                  placement: side
+                });
+
+              case 15:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+    }
+  }, {
+    key: "quoteSelectedText",
+    value: function quoteSelectedText() {
+      var _this2 = this;
+
+      var container = document.createElement('div');
+      var selection = window.getSelection();
+      if (!selection) return;
+      container.appendChild(selection.getRangeAt(0).cloneContents());
+      container.querySelectorAll('img').forEach(function (el) {
+        return el.replaceWith(el.alt);
+      });
+      selection.removeAllRanges(); // Wait until the next tick so that the composer has had a chance to
+      // open (via turbo:before-fetch-request) before we dispatch the event.
+
+      setTimeout(function () {
+        _this2.dispatch('quote-text', {
+          detail: {
+            text: container.textContent
+          },
+          bubbles: true,
+          cancelable: true
+        });
+      });
+    }
+  }]);
+
+  return Quotable;
+}(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_1__.Controller);
+Quotable.targets = ['button'];
 
 /***/ }),
 
@@ -12199,15 +12253,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _controllers_comment_replies__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./controllers/comment-replies */ "./resources/js/controllers/comment-replies.ts");
 /* harmony import */ var _controllers_composer__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./controllers/composer */ "./resources/js/controllers/composer.ts");
 /* harmony import */ var _controllers_header__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./controllers/header */ "./resources/js/controllers/header.ts");
-/* harmony import */ var _controllers_watch_sticky__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./controllers/watch-sticky */ "./resources/js/controllers/watch-sticky.ts");
-/* harmony import */ var _controllers_load_backwards__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./controllers/load-backwards */ "./resources/js/controllers/load-backwards.ts");
-/* harmony import */ var _controllers_modal__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./controllers/modal */ "./resources/js/controllers/modal.ts");
-/* harmony import */ var inclusive_elements__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! inclusive-elements */ "../../../packages/inclusive-elements/dist/index.js");
-/* harmony import */ var _controllers_page__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./controllers/page */ "./resources/js/controllers/page.ts");
-/* harmony import */ var _controllers_post__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./controllers/post */ "./resources/js/controllers/post.ts");
-/* harmony import */ var _controllers_post_page__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./controllers/post-page */ "./resources/js/controllers/post-page.ts");
-/* harmony import */ var _controllers_scrollspy__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./controllers/scrollspy */ "./resources/js/controllers/scrollspy.ts");
-/* harmony import */ var _controllers_text_editor__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./controllers/text-editor */ "./resources/js/controllers/text-editor.ts");
+/* harmony import */ var _controllers_quotable__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./controllers/quotable */ "./resources/js/controllers/quotable.ts");
+/* harmony import */ var _controllers_watch_sticky__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./controllers/watch-sticky */ "./resources/js/controllers/watch-sticky.ts");
+/* harmony import */ var _controllers_load_backwards__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./controllers/load-backwards */ "./resources/js/controllers/load-backwards.ts");
+/* harmony import */ var _controllers_modal__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./controllers/modal */ "./resources/js/controllers/modal.ts");
+/* harmony import */ var inclusive_elements__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! inclusive-elements */ "../../../packages/inclusive-elements/dist/index.js");
+/* harmony import */ var _controllers_page__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./controllers/page */ "./resources/js/controllers/page.ts");
+/* harmony import */ var _controllers_post__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./controllers/post */ "./resources/js/controllers/post.ts");
+/* harmony import */ var _controllers_post_page__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./controllers/post-page */ "./resources/js/controllers/post-page.ts");
+/* harmony import */ var _controllers_scrollspy__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./controllers/scrollspy */ "./resources/js/controllers/scrollspy.ts");
+/* harmony import */ var _controllers_text_editor__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./controllers/text-editor */ "./resources/js/controllers/text-editor.ts");
 
 
 var __awaiter = undefined && undefined.__awaiter || function (thisArg, _arguments, P, generator) {
@@ -12343,32 +12398,34 @@ document.addEventListener('turbo:load', function () {
 
 
 
+
 window.Stimulus = _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_7__.Application.start();
 window.Stimulus.register('channel-picker', _controllers_channel_picker__WEBPACK_IMPORTED_MODULE_9__["default"]);
-window.Stimulus.register('modal', _controllers_modal__WEBPACK_IMPORTED_MODULE_16__.ModalController);
+window.Stimulus.register('modal', _controllers_modal__WEBPACK_IMPORTED_MODULE_17__.ModalController);
 window.Stimulus.register('header', _controllers_header__WEBPACK_IMPORTED_MODULE_13__.HeaderController);
-window.Stimulus.register('watch-sticky', _controllers_watch_sticky__WEBPACK_IMPORTED_MODULE_14__.WatchSticky);
+window.Stimulus.register('watch-sticky', _controllers_watch_sticky__WEBPACK_IMPORTED_MODULE_15__.WatchSticky);
 window.Stimulus.register('composer', _controllers_composer__WEBPACK_IMPORTED_MODULE_12__.Composer);
-window.Stimulus.register('load-backwards', _controllers_load_backwards__WEBPACK_IMPORTED_MODULE_15__.LoadBackwards);
-window.Stimulus.register('post-page', _controllers_post_page__WEBPACK_IMPORTED_MODULE_17__.PostPage);
+window.Stimulus.register('load-backwards', _controllers_load_backwards__WEBPACK_IMPORTED_MODULE_16__.LoadBackwards);
+window.Stimulus.register('post-page', _controllers_post_page__WEBPACK_IMPORTED_MODULE_18__.PostPage);
 window.Stimulus.register('comment-replies', _controllers_comment_replies__WEBPACK_IMPORTED_MODULE_11__.CommentReplies);
 window.Stimulus.register('comment', _controllers_comment__WEBPACK_IMPORTED_MODULE_10__.Comment);
-window.Stimulus.register('scrollspy', _controllers_scrollspy__WEBPACK_IMPORTED_MODULE_18__.Scrollspy);
-window.Stimulus.register('page', _controllers_page__WEBPACK_IMPORTED_MODULE_19__.PageController);
+window.Stimulus.register('scrollspy', _controllers_scrollspy__WEBPACK_IMPORTED_MODULE_19__.Scrollspy);
+window.Stimulus.register('page', _controllers_page__WEBPACK_IMPORTED_MODULE_20__.PageController);
 window.Stimulus.register('alerts', _controllers_alerts__WEBPACK_IMPORTED_MODULE_8__.AlertsController);
-window.Stimulus.register('post', _controllers_post__WEBPACK_IMPORTED_MODULE_20__.PostController);
-window.Stimulus.register('text-editor', _controllers_text_editor__WEBPACK_IMPORTED_MODULE_21__.TextEditor);
+window.Stimulus.register('post', _controllers_post__WEBPACK_IMPORTED_MODULE_21__.PostController);
+window.Stimulus.register('text-editor', _controllers_text_editor__WEBPACK_IMPORTED_MODULE_22__.TextEditor);
+window.Stimulus.register('quotable', _controllers_quotable__WEBPACK_IMPORTED_MODULE_14__.Quotable);
 
 
 
 
 
 
-window.customElements.define('ui-popup', inclusive_elements__WEBPACK_IMPORTED_MODULE_22__.PopupElement);
-window.customElements.define('ui-menu', inclusive_elements__WEBPACK_IMPORTED_MODULE_22__.MenuElement);
-window.customElements.define('ui-modal', inclusive_elements__WEBPACK_IMPORTED_MODULE_22__.ModalElement);
-window.customElements.define('ui-tooltip', inclusive_elements__WEBPACK_IMPORTED_MODULE_22__.TooltipElement);
-window.customElements.define('ui-alerts', inclusive_elements__WEBPACK_IMPORTED_MODULE_22__.AlertsElement);
+window.customElements.define('ui-popup', inclusive_elements__WEBPACK_IMPORTED_MODULE_23__.PopupElement);
+window.customElements.define('ui-menu', inclusive_elements__WEBPACK_IMPORTED_MODULE_23__.MenuElement);
+window.customElements.define('ui-modal', inclusive_elements__WEBPACK_IMPORTED_MODULE_23__.ModalElement);
+window.customElements.define('ui-tooltip', inclusive_elements__WEBPACK_IMPORTED_MODULE_23__.TooltipElement);
+window.customElements.define('ui-alerts', inclusive_elements__WEBPACK_IMPORTED_MODULE_23__.AlertsElement);
 })();
 
 /******/ })()
