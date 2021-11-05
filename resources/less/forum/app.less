@@ -91,6 +91,25 @@
   color: var(--color-accent);
 }
 
+.feed__new-activity {
+  position: sticky;
+  top: ~"calc(var(--header-height) + var(--space-md))";
+  animation: appear .5s;
+  margin: 0;
+
+  > * {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .btn {
+    box-shadow: var(--shadow-md);
+    background-color: var(--color-unread);
+    color: var(--color-unread-contrast);
+  }
+}
+
 .channel-picker__menu {
   max-width: 50ch;
 

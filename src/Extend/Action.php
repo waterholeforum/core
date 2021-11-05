@@ -37,7 +37,7 @@ class Action
             Actions\DeletePost::class,
 
             // Hidden actions
-            Actions\React::class,
+            Actions\Like::class,
         ];
     }
 

@@ -2,12 +2,12 @@
 
 namespace Waterhole\Models\Concerns;
 
-use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Waterhole\Models\User;
 
 trait HasLikes
 {
-    public function likedBy()
+    public function likedBy(): MorphToMany
     {
         return $this->morphToMany(User::class, 'content', 'likes')->withPivot('created_at');
     }

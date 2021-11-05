@@ -3,15 +3,11 @@
 namespace Waterhole\Http\Controllers\Forum;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Tonysm\TurboLaravel\Http\TurboResponseFactory;
-use Waterhole\Extend\CommentsSort;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
-use Waterhole\Sorts\Oldest;
-use Waterhole\Sorts\Sort;
-use Waterhole\Views\Components\CommentCard;
+use Waterhole\Views\Components\CommentFrame;
 use Waterhole\Views\Components\CommentFull;
 use Waterhole\Views\Components\Composer;
 use Waterhole\Views\TurboStream;
@@ -74,7 +70,7 @@ class CommentController extends Controller
 
         if ($request->wantsTurboStream()) {
             $streams = [
-                TurboStream::before(new CommentFull($comment), 'bottom'),
+                TurboStream::before(new CommentFrame($comment), dom_id($post, 'bottom')),
                 TurboStream::replace((new Composer($post))->withAttributes(['class' => 'can-sticky'])),
             ];
 

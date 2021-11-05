@@ -30,7 +30,6 @@
     >
         <div class="toolbar toolbar--nospace">
 
-
             @components(Waterhole\Extend\PostFooter::getComponents(), compact('post') + ['interactive' => true])
 
             <x-waterhole::post-actions :post="$post"/>

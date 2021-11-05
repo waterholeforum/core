@@ -1,12 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Broadcast;
-use Waterhole\Models\Group;
 
-Broadcast::channel('Waterhole.User.{id}', function ($user, $id) {
+Broadcast::channel('Waterhole.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-Broadcast::channel('Waterhole.Group.{id}', function ($user, $id) {
-    return (int) $id == Group::MEMBER_ID || $user->groups->contains($id);
+Broadcast::channel('Waterhole.Models.Channel.{id}', function ($user, $id) {
+    return true;
+});
+
+Broadcast::channel('Waterhole.Models.Post.{id}', function ($user, $id) {
+    return true;
 });

@@ -16,7 +16,7 @@
         @components(Waterhole\Extend\IndexNav::getComponents())
     </div>
 
-    <main id="main">
+    <div>
         {{ $slot }}
-    </main>
+    </div>
 </div>

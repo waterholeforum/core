@@ -5,7 +5,7 @@ namespace Waterhole\Views\Components;
 use Illuminate\View\Component;
 use Waterhole\Models\Comment;
 
-class CommentButtonReply extends Component
+class CommentReplyButton extends Component
 {
     public Comment $comment;
 
@@ -16,6 +16,6 @@ class CommentButtonReply extends Component
 
     public function render()
     {
-        return view('waterhole::components.comment-button-reply');
+        return view('waterhole::components.comment-reply-button');
     }
 }

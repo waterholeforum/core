@@ -2,10 +2,11 @@
 
 namespace Waterhole\Views\Components;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 use Waterhole\Models\Comment;
 
-class CommentReactions extends Component
+class CommentReactButton extends Component
 {
     public Comment $comment;
 
@@ -14,10 +15,15 @@ class CommentReactions extends Component
         $this->comment = $comment;
     }
 
+    public function shouldRender()
+    {
+        return Auth::check();
+    }
+
     public function render()
     {
         return <<<'blade'
-            <x-waterhole::reactions :model="$comment"/>
+            <x-waterhole::react-button :model="$comment" class="comment__control"/>
         blade;
     }
 }

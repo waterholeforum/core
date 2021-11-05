@@ -16,6 +16,8 @@ class PostReactionsCondensed extends Component
 
     public function render()
     {
-        return '<x-waterhole::reactions-condensed :model="$post"/>';
+        return <<<'blade'
+            <x-waterhole::reactions-condensed :model="$post"/>
+        blade;
     }
 }

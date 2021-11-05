@@ -6,7 +6,7 @@
   padding-bottom: var(--space-md);
   transition: background .2s;
 
-  .divider + & {
+  .divider + * > & {
     border-top: 0;
   }
 
@@ -23,9 +23,14 @@
     background: var(--color-info);
   }
 
-  //&:not(:last-child) {
+  &.is-new {
+    animation: appear .5s;
+  }
+}
 
-  //}
+@keyframes appear {
+  0% { transform: scale(.9); opacity: 0 }
+  100% { transform: none; opacity: 1 }
 }
 
 //.comment[aria-expanded="false"] {

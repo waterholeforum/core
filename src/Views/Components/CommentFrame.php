@@ -2,11 +2,10 @@
 
 namespace Waterhole\Views\Components;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 use Waterhole\Models\Comment;
 
-class CommentButtonReact extends Component
+class CommentFrame extends Component
 {
     public Comment $comment;
 
@@ -15,13 +14,12 @@ class CommentButtonReact extends Component
         $this->comment = $comment;
     }
 
-    public function shouldRender()
-    {
-        return Auth::check();
-    }
-
     public function render()
     {
-        return view('waterhole::components.comment-button-react');
+        return <<<'blade'
+            <turbo-frame id="@domid($comment)">
+                <x-waterhole::comment-full :comment="$comment"/>
+            </turbo-frame>
+        blade;
     }
 }

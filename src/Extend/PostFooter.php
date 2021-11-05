@@ -3,10 +3,9 @@
 namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\ManagesComponents;
-use Waterhole\Views\Components\CommentButtonReact;
+use Waterhole\Views\Components\PostReactButton;
 use Waterhole\Views\Components\PostReactions;
 use Waterhole\Views\Components\PostReplies;
-use Waterhole\Views\Components\Spacer;
 
 class PostFooter
 {
@@ -16,9 +15,8 @@ class PostFooter
     {
         return [
             PostReactions::class,
-            // Spacer::class,
             PostReplies::class,
-            CommentButtonReact::class,
+            PostReactButton::class,
         ];
     }
 }

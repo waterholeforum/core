@@ -5,8 +5,10 @@ namespace Waterhole\Models;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Validation\Rule;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
-use Waterhole\Models\Concerns\HasLikes;
+use Waterhole\Events\NewComment;
+use Waterhole\Events\NewPostActivity;
 use Waterhole\Models\Concerns\HasBody;
+use Waterhole\Models\Concerns\HasLikes;
 use Waterhole\Views\Components;
 use Waterhole\Views\TurboStream;
 
@@ -40,6 +42,10 @@ class Comment extends Model
 
         static::created($refreshMetadata);
         static::deleted($refreshMetadata);
+
+        static::created(function (self $comment) {
+            broadcast(new NewComment($comment))->toOthers();
+        });
     }
 
     public static function byUser(User $user, array $attributes = []): static

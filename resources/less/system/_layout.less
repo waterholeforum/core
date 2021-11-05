@@ -37,25 +37,16 @@
   gap: 0;
 }
 
-.stack-sm,
-.stack-md,
-.stack-lg,
-.stack-xl {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
+.stack-sm > * + * {
+  margin-top: var(--space-sm);
 }
 
-.stack-sm {
-  gap: var(--space-sm);
+.stack-md > * + * {
+  margin-top: var(--space-md);
 }
 
-.stack-md {
-  gap: var(--space-md);
-}
-
-.stack-lg {
-  gap: var(--space-lg);
+.stack-lg > * + * {
+  margin-top: var(--space-lg);
 }
 
 .spacer {

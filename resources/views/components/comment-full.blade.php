@@ -1,14 +1,13 @@
-<turbo-frame
+<div
     role="article"
-    tabindex="-1"
     {{ $attributes->class([
         'comment',
-        'comment--with-replies' => $withReplies,
         Waterhole\Extend\CommentClasses::getClasses($comment),
     ]) }}
     data-comment-id="{{ $comment->id }}"
     data-parent-id="{{ $comment->parent?->id }}"
     data-controller="comment"
+    tabindex="-1"
 >
     <div class="comment__main">
         <header class="comment__header">
@@ -105,4 +104,4 @@
             <div class="loading-indicator"></div>
         @endif
     </turbo-frame>
-</turbo-frame>
+</div>

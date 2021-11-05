@@ -4,22 +4,22 @@ namespace Waterhole\Actions;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\HtmlString;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
+use Waterhole\Views\Components\Reactions;
+use Waterhole\Views\TurboStream;
 
-class React extends Action
+class Like extends Action
 {
     public bool $hidden = true;
 
     public function name(): string
     {
-        return 'React';
+        return 'Like';
     }
 
-    public function label(Collection $items): string|HtmlString
+    public function label(Collection $items): string
     {
         return 'Like';
     }
@@ -28,13 +28,6 @@ class React extends Action
     {
         return 'heroicon-o-thumb-up';
     }
-
-    // public function classes(Collection $items): array
-    // {
-    //     return [
-    //         'is-liked' => $items[0]->likedBy->contains(Auth::user()->id),
-    //     ];
-    // }
 
     public function appliesTo($item): bool
     {
@@ -52,9 +45,12 @@ class React extends Action
             $item->likedBy()->toggle([$request->user()->id]);
             $item->refreshLikeMetadata()->save();
         });
+    }
 
-        if ($request->wantsTurboStream()) {
-            return response()->turboStreamView('waterhole::comments.stream-reactions', ['comments' => $items]);
-        }
+    public function stream($item): array
+    {
+        return [
+            TurboStream::replace(new Reactions($item)),
+        ];
     }
 }

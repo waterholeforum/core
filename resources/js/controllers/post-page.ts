@@ -1,15 +1,16 @@
 import { Controller } from '@hotwired/stimulus';
 import { renderStreamMessage } from '@hotwired/turbo';
-import { StreamElement } from '@hotwired/turbo/dist/types/elements';
+import { FrameElement, StreamElement } from '@hotwired/turbo/dist/types/elements';
 
 export class PostPage extends Controller {
-    static targets = ['post'];
+    static targets = ['post', 'bottom'];
 
     static values = {
         id: Number,
     };
 
     postTarget?: HTMLElement;
+    bottomTarget?: HTMLElement;
     idValue?: number;
 
     showPostOnFirstPage() {
@@ -28,6 +29,20 @@ export class PostPage extends Controller {
                 });
             }, { once: true });
             e.preventDefault();
+        }
+    }
+
+    connect() {
+        if (this.idValue) {
+            window.Echo.private(`Waterhole.Models.Post.${this.idValue}`)
+                .listen('NewComment', (data: any) => {
+                    if (this.bottomTarget) {
+                        const frame = document.createElement('turbo-frame') as FrameElement;
+                        frame.id = data.dom_id;
+                        frame.src = data.url;
+                        this.bottomTarget.before(frame);
+                    }
+                });
         }
     }
 }

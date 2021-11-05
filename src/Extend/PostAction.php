@@ -15,7 +15,7 @@ class PostAction
     protected static function defaultComponents(): array
     {
         return [
-            Actions\React::class,
+            Actions\Like::class,
             Actions\MarkAsRead::class,
             Actions\Follow::class,
             Actions\Unfollow::class,

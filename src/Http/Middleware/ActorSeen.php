@@ -15,7 +15,7 @@ class ActorSeen
     public function handle(Request $request, Closure $next)
     {
         if ($actor = Auth::user()) {
-            if (! $request->session()->has('previously_seen_at')) {
+            if (! $request->session()->has('previously_seen_at') || $request->has('update_previously_seen_at')) {
                 $request->session()->put('previously_seen_at', $actor->last_seen_at);
             }
 

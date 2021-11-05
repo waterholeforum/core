@@ -8,7 +8,7 @@ use Waterhole\PostFeed;
 use Waterhole\Sorts\Latest;
 use Waterhole\Sorts\NewActivity;
 
-class FeedContent extends Component
+class Feed extends Component
 {
     public PostFeed $feed;
     public ?Channel $channel;
@@ -17,7 +17,7 @@ class FeedContent extends Component
     public function __construct(PostFeed $feed, Channel $channel = null)
     {
         $this->feed = $feed;
-        $this->channel = $channel;
+        $this->channel = $channel?->exists ? $channel : null;
 
         $sort = $feed->currentSort();
         $this->showLastVisit = $sort instanceof Latest || $sort instanceof NewActivity;
@@ -25,6 +25,6 @@ class FeedContent extends Component
 
     public function render()
     {
-        return view('waterhole::components.feed-content');
+        return view('waterhole::components.feed');
     }
 }

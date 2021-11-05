@@ -14,6 +14,7 @@ ui-tooltip {
   pointer-events: none;
   z-index: var(--z-index-overlay);
   text-align: center;
+  overflow: hidden;
 
   --color-text: var(--color-tooltip-contrast);
   --color-text-muted: rgba(255, 255, 255, 0.5);
@@ -34,4 +35,14 @@ ui-tooltip {
     opacity: 0;
     transform: scale(0.95);
   }
+}
+
+.tooltip--interactive {
+  pointer-events: auto;
+}
+
+.tooltip--block {
+  text-align: left;
+  padding: var(--space-sm) ~"calc(var(--space-sm) + var(--space-xs))";
+  font-size: var(--text-xxs);
 }

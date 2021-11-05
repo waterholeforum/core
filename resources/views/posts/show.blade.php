@@ -63,10 +63,12 @@
                                             </div>
                                         @endonce
                                     @endif
-                                    <x-waterhole::comment-full
-                                        :comment="$comment"
-                                        :data-index="$comments->firstItem() - 1 + $i"
-                                    />
+                                    <turbo-frame id="@domid($comment)">
+                                        <x-waterhole::comment-full
+                                            :comment="$comment"
+                                            :data-index="$comments->firstItem() - 1 + $i"
+                                        />
+                                    </turbo-frame>
                                 @endforeach
                             </div>
 
@@ -83,7 +85,7 @@
                                     </turbo-frame>
                                 @endif
                             @else
-                                <div id="bottom" tabindex="-1"></div>
+                                <div id="@domid($post, 'bottom')" tabindex="-1" data-post-page-target="bottom"></div>
                             @endif
                         </turbo-frame>
                     </div>
@@ -139,7 +141,7 @@
 
                                     <a
                                         class="tab"
-                                        href="{{ $comments->fragment('bottom')->url($comments->lastPage()) }}"
+                                        href="{{ $comments->fragment(Tonysm\TurboLaravel\dom_id($post, 'bottom'))->url($comments->lastPage()) }}"
                                         style="margin-top: var(--space-sm)"
                                     >
                                         <x-waterhole::icon

@@ -1,59 +1,41 @@
 <?php
 
-/*
- * This file is part of Waterhole.
- *
- * (c) Toby Zerner <toby.zerner@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Waterhole\Events;
 
-use Waterhole\Models\CategoryAuthorizer;
-use Waterhole\Models\Group;
-use Waterhole\Models\Post;
+use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Foundation\Events\Dispatchable;
 use Neves\Events\Contracts\TransactionalEvent;
+use Waterhole\Models\Comment;
+
+use function Tonysm\TurboLaravel\dom_id;
 
 class NewComment implements ShouldBroadcast, TransactionalEvent
 {
-    protected $post;
+    use Dispatchable;
+    use InteractsWithSockets;
 
-    public function __construct(Post $post)
+    protected Comment $comment;
+
+    public function __construct(Comment $comment)
     {
-        $this->post = $post;
+        $this->comment = $comment;
     }
 
     public function broadcastOn()
     {
-        // Broadcast to channels for all groups who are allowed to see the
-        // category which the discussion is in.
-        $category = $this->post->discussion->category;
-        $groups = app(CategoryAuthorizer::class)->groupsWhoCan('view-discussions', $category);
-
-        return $groups->map(function (Group $group) {
-            switch ($group->id) {
-                case Group::GUEST_ID:
-                    return new Channel('Waterhole.Public');
-
-                case Group::MEMBER_ID:
-                    return new PrivateChannel('Waterhole.Members');
-
-                default:
-                    return new PrivateChannel('Waterhole.Group.'.$group->id);
-            }
-        })->all();
+        return [
+            new PrivateChannel('Waterhole.Models.Channel.'.$this->comment->post->channel->id),
+            new PrivateChannel('Waterhole.Models.Post.'.$this->comment->post->id),
+        ];
     }
 
-    public function broadcastWith()
+    public function broadcastWith(): array
     {
         return [
-            'discussionId' => (string) $this->post->discussion_id,
-            'categoryId' => (string) $this->post->discussion->category_id
+            'url' => $this->comment->url,
+            'dom_id' => dom_id($this->comment),
         ];
     }
 }

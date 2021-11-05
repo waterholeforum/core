@@ -9,3 +9,7 @@ export function isElementInViewport(el: HTMLElement, proportion: number = 1): bo
     return -rect.top / rect.height < proportion
         && (rect.bottom - window.innerHeight) / rect.height < proportion;
 }
+
+export function getHeaderHeight(): number {
+    return document.querySelector<HTMLElement>('.header')?.offsetHeight || 0;
+}

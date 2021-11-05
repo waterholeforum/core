@@ -29,37 +29,16 @@ class PostController extends Controller
 
         $query = $post->comments()->with(['user', 'parent.user', 'likedBy']);
 
-        // $comment = $comments = null;
+        $currentSort->apply($query);
 
-        // if ($cid = $request->query('comment')) {
-        //     if (! $comment = $query->find($cid)) {
-        //         abort(404);
-        //         //return redirect($post->url);
-        //     }
-        //
-        //     $all = $comment->descendantsAndSelf
-        //         ->load('user', 'likedBy', 'parent.post', 'parent.user')
-        //         ->each->setRelation('post', $post);
-        //
-        //     $comment = $all->toTree()[0];
-        //     // $comment->setRelation('parent', null);
-        //
-        //     // $comment->setRelation('post', $post);//->load('replies.user', 'replies.likedBy');
-        //     // $comment->replies->each->setRelation('parent', $comment);
-        //     // $comment->replies->each->setRelation('post', $post);
-        // } else {
-            $currentSort->apply($query/*->orderBy('is_pinned', 'desc')*/);
-            $comments = $query->paginate();
-            $comments->getCollection()->each(function (Comment $comment) use ($post) {
-                $comment->setRelation('post', $post);
-                $comment->parent?->setRelation('post', $post);
-            });
-        // }
+        $comments = $query->paginate();
 
-        // Mark the post as read for the current user
-        // if ($comments) {
-            $post->userState?->read()->save();
-        // }
+        $comments->getCollection()->each(function (Comment $comment) use ($post) {
+            $comment->setRelation('post', $post);
+            $comment->parent?->setRelation('post', $post);
+        });
+
+        $post->userState?->read()->save();
 
         return view('waterhole::posts.show', compact('post', 'comments', 'sorts', 'currentSort'));
     }

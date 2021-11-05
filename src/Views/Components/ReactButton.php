@@ -4,12 +4,9 @@ namespace Waterhole\Views\Components;
 
 use Illuminate\View\Component;
 use Waterhole\Models\Model;
-use Waterhole\Views\Components\Concerns\Streamable;
 
-class Reactions extends Component
+class ReactButton extends Component
 {
-    use Streamable;
-
     public Model $model;
 
     public function __construct(Model $model)
@@ -19,6 +16,6 @@ class Reactions extends Component
 
     public function render()
     {
-        return view('waterhole::components.reactions');
+        return view('waterhole::components.react-button');
     }
 }

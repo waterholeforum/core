@@ -1,7 +1,7 @@
 import * as Turbo from '@hotwired/turbo';
 import { install } from '@github/hotkey';
 
-// import './bootstrap';
+import './bootstrap';
 // import './elements/turbo-echo-stream-tag';
 import 'wicg-inert';
 import '@github/text-expander-element'
@@ -86,6 +86,7 @@ import ChannelPickerController from './controllers/channel-picker';
 import { Comment } from './controllers/comment';
 import { CommentReplies } from './controllers/comment-replies';
 import { Composer } from './controllers/composer';
+import { Feed } from './controllers/feed';
 import { HeaderController } from './controllers/header';
 import { Quotable } from './controllers/quotable';
 import { WatchSticky } from './controllers/watch-sticky';
@@ -108,12 +109,14 @@ window.Stimulus.register('alerts', AlertsController);
 window.Stimulus.register('post', PostController);
 window.Stimulus.register('text-editor', TextEditor);
 window.Stimulus.register('quotable', Quotable);
+window.Stimulus.register('feed', Feed);
 
 
 declare global {
     interface Window {
         Turbo: any;
         Stimulus: Application;
+        Echo: Echo;
     }
 }
 
@@ -123,6 +126,7 @@ import { PostController } from './controllers/post';
 import { PostPage } from './controllers/post-page';
 import { Scrollspy } from './controllers/scrollspy';
 import { TextEditor } from './controllers/text-editor';
+import Echo from 'laravel-echo';
 
 window.customElements.define('ui-popup', PopupElement);
 window.customElements.define('ui-menu', MenuElement);

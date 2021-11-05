@@ -10,7 +10,12 @@
         <div class="stack-md">
             <h2 class="h4 color-muted">Comment #{{ $comment->index() + 1 }}</h2>
 
-            <x-waterhole::comment-full :comment="$comment" with-replies/>
+            <turbo-frame id="@domid($comment)">
+                <x-waterhole::comment-full
+                    :comment="$comment"
+                    with-replies
+                />
+            </turbo-frame>
         </div>
 
         <x-waterhole::composer

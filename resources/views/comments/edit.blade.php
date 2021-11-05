@@ -1,41 +1,40 @@
 <x-waterhole::layout title="Edit Comment">
     <div class="container section">
-        <turbo-frame
-            id="@domid($comment)"
-            class="comment"
-        >
+        <turbo-frame id="@domid($comment)">
             <form
                 method="POST"
                 action="{{ $comment->url }}"
-                class="comment__main"
+                class="comment"
             >
-                <x-waterhole::attribution
-                    :user="$comment->user"
-                    :date="$comment->created_at"
-                />
-
                 @csrf
                 @method('PATCH')
                 <input type="hidden" name="return" value="{{ old('return', $comment->post_url) }}">
 
-                <x-waterhole::validation-errors :errors="$errors"/>
+                <div class="comment__main">
+                    <x-waterhole::attribution
+                        :user="$comment->user"
+                        :date="$comment->created_at"
+                    />
 
-                <x-waterhole::text-editor
-                    name="body"
-                    value="{{ old('body', $comment->body) }}"
-                    class="input"
-                />
+                    <x-waterhole::validation-errors :errors="$errors"/>
 
-                <div class="toolbar toolbar--right">
-                    <a
-                        href="{{ $comment->post_url }}"
-                        class="btn"
-                    >Cancel</a>
+                    <x-waterhole::text-editor
+                        name="body"
+                        value="{{ old('body', $comment->body) }}"
+                        class="input"
+                    />
 
-                    <button
-                        type="submit"
-                        class="btn btn--primary"
-                    >Save</button>
+                    <div class="toolbar toolbar--right">
+                        <a
+                            href="{{ $comment->post_url }}"
+                            class="btn"
+                        >Cancel</a>
+
+                        <button
+                            type="submit"
+                            class="btn btn--primary"
+                        >Save</button>
+                    </div>
                 </div>
             </form>
         </turbo-frame>
