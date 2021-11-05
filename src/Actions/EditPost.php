@@ -10,7 +10,7 @@ class EditPost extends Link
 {
     public function name(): string
     {
-        return 'Edit';
+        return 'Edit Post';
     }
 
     public function icon(Collection $items): ?string

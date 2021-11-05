@@ -28,9 +28,13 @@ class Action
             Actions\Ignore::class,
             Actions\Unignore::class,
 
+            MenuDivider::class,
+
             // Super actions
             Actions\EditComment::class,
             Actions\EditPost::class,
+            Actions\Lock::class,
+            Actions\Unlock::class,
             Actions\MoveChannel::class,
             Actions\DeleteChannel::class,
             Actions\DeleteComment::class,
@@ -49,9 +53,9 @@ class Action
 
         return collect(static::getInstances())
             ->when($items->count() > 1, function ($actions) {
-                return $actions->filter(fn($action) => $action->bulk);
+                return $actions->filter(fn($action) => ! $action instanceof Actions\Action || $action->bulk);
             })
-            ->filter(fn($action) => $items->every(fn($item) => $action->appliesTo($item) && $action->authorize(Auth::user(), $item)))
+            ->filter(fn($action) => $items->every(fn($item) => ! $action instanceof Actions\Action || ($action->appliesTo($item) && $action->authorize(Auth::user(), $item))))
             ->values()
             ->all();
     }

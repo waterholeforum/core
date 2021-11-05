@@ -38,11 +38,16 @@
 .header-breadcrumb {
   color: var(--color-text-muted);
   transition: opacity .2s, transform .2s;
-  display: inline-block !important;
+  display: inline-flex !important;
+  align-items: center;
+
+  > * + * {
+    margin-left: var(--space-sm);
+  }
 
   &::before {
     content: ' › ';
-    margin: 0 5px;
+    margin: 0 var(--space-sm);
   }
 
   &[hidden], [data-turbo-preview] & {

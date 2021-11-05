@@ -24,7 +24,7 @@ export class AlertsController extends Controller {
         if (stream.targetElements.includes(this.element) && stream.action === 'append') {
             const alert = stream.templateContent.firstElementChild as HTMLElement;
             if (alert) {
-                this.alertsElement.show(alert);
+                this.alertsElement.show(alert, { key: 'flash' });
                 e.preventDefault();
             }
         }

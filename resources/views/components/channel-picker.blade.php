@@ -20,7 +20,7 @@
                         type="submit"
                         name="{{ $name }}"
                         value="{{ $channel->id }}"
-                        class="menu-item"
+                        class="menu-item @if ($channel->id == $value) is-active @endif"
                         role="menuitemradio"
                     >
                         <x-waterhole::icon :icon="$channel->icon"/>

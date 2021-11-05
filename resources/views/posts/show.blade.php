@@ -86,6 +86,8 @@
                                 @endif
                             @else
                                 <div id="@domid($post, 'bottom')" tabindex="-1" data-post-page-target="bottom"></div>
+
+                                <x-waterhole::comments-locked :post="$post"/>
                             @endif
                         </turbo-frame>
                     </div>
@@ -94,18 +96,12 @@
                         class=""
                         style="position: sticky; top: calc(var(--header-height) + var(--space-xl)); margin-left: var(--space-xxxl); width: 160px; flex-shrink: 0; padding: 0 0 0 var(--space-md); margin-bottom: 0"
                     >
-                        <div class="toolbar ruler">
+                        <div class="stack-lg ruler">
 
-                            <div
-                                style="margin-bottom: var(--space-sm)"
-                            >
-                                <x-waterhole::follow-button
-                                    :followable="$post"
-                                />
-                            </div>
+                            <x-waterhole::follow-button :followable="$post"/>
 
                             @if ($comments->total())
-
+                                <div>
                                 <nav
                                     class="pagination tabs"
                                     data-controller="scrollspy"
@@ -151,6 +147,7 @@
                                         <span>Last</span>
                                     </a>
                                 </nav>
+                                </div>
                             @endif
                         </div>
                     </div>
@@ -165,6 +162,7 @@
                     data-turbo-permanent
                 />
             @endcan
+
         </div>
     </div>
 </x-waterhole::layout>

@@ -67,6 +67,7 @@ class CommentController extends Controller
         $comment = Comment::byUser($request->user(), $data);
 
         $post->comments()->save($comment);
+        $post->userState?->read()->save();
 
         if ($request->wantsTurboStream()) {
             $streams = [

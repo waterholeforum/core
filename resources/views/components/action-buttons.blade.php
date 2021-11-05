@@ -10,21 +10,21 @@
         $actions = $actions->filter(fn($action) => ! in_array(get_class($action), $exclude));
     }
 
-    $actions = $actions->filter(fn($action) => $action->visible(collect([$for])))->values();
+    $actions = $actions->filter(fn($action) => ! $action instanceof Waterhole\Actions\Action || $action->visible(collect([$for])))->values();
 @endphp
 
 @if (count($actions))
-    {{ $before ?? '' }}
-
     <form action="{{ route('waterhole.action.store') }}" method="POST" {{ $attributes }}>
         @csrf
         <input type="hidden" name="actionable" value="{{ $actionable }}">
         <input type="hidden" name="id[]" value="{{ $for->id }}">
 
+        {{ $before ?? '' }}
+
         @foreach ($actions as $i => $action)
             {{ $action->render(collect([$for]), new Illuminate\View\ComponentAttributeBag($buttonAttributes)) }}
         @endforeach
-    </form>
 
-    {{ $after ?? '' }}
+        {{ $after ?? '' }}
+    </form>
 @endif

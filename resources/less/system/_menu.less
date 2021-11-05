@@ -43,6 +43,11 @@
     }
   }
 
+  &.is-active {
+    color: var(--color-accent);
+    background: var(--color-accent-light);
+  }
+
   > .icon {
     flex-shrink: 0;
   }
@@ -81,8 +86,4 @@
   font-weight: var(--font-weight-bold);
   color: var(--color-text-muted);
   padding: var(--space-sm);
-
-  //&:not(:first-child) {
-  //  margin-top: var(--space-sm);
-  //}
 }

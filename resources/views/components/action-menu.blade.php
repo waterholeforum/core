@@ -3,13 +3,14 @@
     :only="$only"
     :exclude="$exclude"
     :button-attributes="['class' => 'menu-item', 'role' => 'menuitem']"
+    {{ $attributes }}
 >
     <x-slot name="before">
-        <ui-popup {{ $attributes->merge(['placement' => 'bottom-start']) }}>
+        <ui-popup placement="bottom-start">
             @if (isset($button))
                 {{ $button }}
             @else
-                <button {{ (new Illuminate\View\ComponentAttributeBag($buttonAttributes))->class('btn btn--icon btn--transparent btn--small') }}>
+                <button type="button" {{ (new Illuminate\View\ComponentAttributeBag($buttonAttributes))->class('btn btn--icon btn--transparent btn--small') }}>
                     <x-waterhole::icon icon="heroicon-o-dots-horizontal"/>
                 </button>
             @endif

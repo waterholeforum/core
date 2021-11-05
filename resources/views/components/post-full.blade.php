@@ -30,9 +30,19 @@
     >
         <div class="toolbar toolbar--nospace">
 
+            <x-waterhole::action-menu :for="$post" placement="bottom-end" style="margin-bottom: 1rem;">
+                <x-slot name="button">
+                    <button type="button" class="btn block">
+                        <x-waterhole::icon icon="heroicon-o-cog"/>
+                        <span>Controls</span>
+                        <x-waterhole::icon icon="heroicon-s-chevron-down"/>
+                    </button>
+                </x-slot>
+            </x-waterhole::action-menu>
+
             @components(Waterhole\Extend\PostFooter::getComponents(), compact('post') + ['interactive' => true])
 
-            <x-waterhole::post-actions :post="$post"/>
+{{--            <x-waterhole::post-actions :post="$post"/>--}}
 
         </div>
     </div>

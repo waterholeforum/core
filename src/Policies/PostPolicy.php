@@ -43,11 +43,16 @@ class PostPolicy
 
     public function reply(User $user, Post $post)
     {
-        return $this->allow();
+        return ! $post->is_locked;
     }
 
     public function like(User $user, Post $post)
     {
         return $this->allow();
+    }
+
+    public function moderate(User $user, Post $post)
+    {
+        return false;
     }
 }

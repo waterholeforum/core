@@ -5,6 +5,7 @@ namespace Waterhole\Extend;
 use Waterhole\Extend\Concerns\ManagesComponents;
 use Waterhole\Views\Components\PostActivity;
 use Waterhole\Views\Components\PostChannel;
+use Waterhole\Views\Components\PostLocked;
 use Waterhole\Views\Components\PostNotifications;
 use Waterhole\Views\Components\PostUnread;
 
@@ -17,6 +18,7 @@ class PostInfo
         return [
             PostUnread::class,
             PostChannel::class,
+            PostLocked::class,
             PostActivity::class,
             PostNotifications::class,
         ];

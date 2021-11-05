@@ -44,6 +44,10 @@ window.Turbo = Turbo;
 document.addEventListener('turbo:submit-start', e => {
     const submitter = (e as any).detail.formSubmission.submitter;
     submitter.disabled = true;
+    const popupButton = submitter.closest('ui-popup')?.children[0] as HTMLButtonElement;
+    if (popupButton) {
+        popupButton.disabled = true;
+    }
 });
 
 document.addEventListener('turbo:submit-end', e => {

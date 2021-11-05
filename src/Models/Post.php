@@ -182,6 +182,7 @@ class Post extends Model
             TurboStream::replace(new Components\PostListItem($this)),
             TurboStream::replace(new Components\PostCardsItem($this)),
             TurboStream::replace(new Components\PostFull($this)),
+            TurboStream::replace(new Components\PostActions($this)),
         ];
     }
 
