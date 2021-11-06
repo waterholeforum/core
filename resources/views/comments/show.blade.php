@@ -8,7 +8,7 @@
         </h1>
 
         <div class="stack-md">
-            <h2 class="h4 color-muted">Comment #{{ $comment->index() + 1 }}</h2>
+            <h2 class="h4 color-muted">Comment #{{ $comment->index + 1 }}</h2>
 
             <turbo-frame id="@domid($comment)">
                 <x-waterhole::comment-full

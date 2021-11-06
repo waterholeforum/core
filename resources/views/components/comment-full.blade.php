@@ -95,7 +95,9 @@
                 <ol role="list" tabindex="-1" class="comment__replies">
                     @foreach ($comment->children as $child)
                         <li>
-                            <x-waterhole::comment-full :comment="$child"/>
+                            <turbo-frame id="@domid($child)">
+                                <x-waterhole::comment-full :comment="$child"/>
+                            </turbo-frame>
                         </li>
                     @endforeach
                 </ol>

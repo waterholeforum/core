@@ -50,7 +50,7 @@ class Comment extends Model
 
         static::addGlobalScope('index', function ($query) {
             if (! $query->getQuery()->columns) {
-                $query->select('comments.*')->withIndex();
+                $query->select($query->qualifyColumn('*'))->withIndex();
             }
         });
     }
@@ -116,11 +116,11 @@ class Comment extends Model
 
     public function scopeWithIndex(Builder $query)
     {
-        $query->selectSub(function ($query) {
-            $query->selectRaw('count(*)')
+        $query->selectSub(function ($sub) use ($query) {
+            $sub->selectRaw('count(*)')
                 ->from('comments as before')
-                ->whereColumn('before.post_id', 'comments.post_id')
-                ->whereColumn('before.created_at', '<', 'comments.created_at');
+                ->whereColumn('before.post_id', $query->qualifyColumn('post_id'))
+                ->whereColumn('before.created_at', '<', $query->qualifyColumn('created_at'));
         }, 'index');
     }
 
