@@ -10,8 +10,8 @@ remember-me-label = Remember me
 forgot-password-link = Forgot your password?
 
 forgot-password-title = Forgot your password?
-forgot-password-introduction = Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.
-forgot-password-submit = Email Password Reset Link
+forgot-password-introduction = Request a password reset link by entering your email address below.
+forgot-password-submit = Send Password Reset Link
 
 reset-password-title = Reset Password
 new-password-label = Password

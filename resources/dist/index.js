@@ -6561,7 +6561,7 @@ var Feed = /*#__PURE__*/function (_Controller) {
       var _a;
 
       (_a = this.channelsValue) === null || _a === void 0 ? void 0 : _a.forEach(function (id) {
-        window.Echo["private"]("Waterhole.Models.Channel.".concat(id)).listen('NewComment', function () {
+        window.Echo.channel("Waterhole.Models.Channel.".concat(id)).listen('NewComment', function () {
           if (_this.sortValue === 'new-activity') {
             _this.showNewActivity();
           }
@@ -7088,7 +7088,7 @@ var PostPage = /*#__PURE__*/function (_Controller) {
       var _this = this;
 
       if (this.idValue) {
-        window.Echo["private"]("Waterhole.Models.Post.".concat(this.idValue)).listen('NewComment', function (data) {
+        window.Echo.channel("Waterhole.Models.Post.".concat(this.idValue)).listen('NewComment', function (data) {
           if (_this.bottomTarget) {
             var frame = document.createElement('turbo-frame');
             frame.id = data.dom_id;

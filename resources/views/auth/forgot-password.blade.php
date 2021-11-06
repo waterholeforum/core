@@ -1,23 +1,32 @@
-<x-waterhole::layout-centered :title="__('waterhole::auth.forgot-password-title')">
-    <h1>{{ __('waterhole::auth.forgot-password-title') }}</h1>
+<x-waterhole::layout :title="__('waterhole::auth.forgot-password-title')">
+    <x-waterhole::dialog :title="__('waterhole::auth.forgot-password-title')" class="dialog--sm">
+        <div class="stack-lg">
+            <p class="content">{{ __('waterhole::auth.forgot-password-introduction') }}</p>
 
-    <p>{{ __('waterhole::auth.forgot-password-introduction') }}</p>
+            @if (session('status'))
+                <x-waterhole::alert type="success">{{ session('status') }}</x-waterhole::alert>
+            @else
+                <form action="{{ route('waterhole.password.email') }}" method="POST" class="form">
+                    @csrf
 
-    @if (session('status'))
-        <div>{{ session('status') }}</div>
-    @endif
+                    <x-waterhole::field
+                        name="email"
+                        :label="__('waterhole::auth.email-label')"
+                    >
+                        <input
+                            class="input"
+                            type="email"
+                            id="{{ $component->id }}"
+                            name="email"
+                            value="{{ old('email') }}"
+                            required
+                            autofocus
+                        >
+                    </x-waterhole::field>
 
-    <form action="{{ route('waterhole.password.email') }}" method="POST">
-        @csrf
-
-        <div>
-            <label for="email">{{ __('waterhole::auth.email-label') }}</label>
-            <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus>
-            @error('email') <div>{{ $message }}</div> @enderror
+                    <button type="submit" class="btn btn--primary block">{{ __('waterhole::auth.forgot-password-submit') }}</button>
+                </form>
+            @endif
         </div>
-
-        <div>
-            <button type="submit">{{ __('waterhole::auth.forgot-password-submit') }}</button>
-        </div>
-    </form>
-</x-waterhole::layout-centered>
+    </x-waterhole::dialog>
+</x-waterhole::layout>

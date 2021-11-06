@@ -16,7 +16,7 @@ export class Feed extends Controller {
 
     connect() {
         this.channelsValue?.forEach(id => {
-            window.Echo.private(`Waterhole.Models.Channel.${id}`)
+            window.Echo.channel(`Waterhole.Models.Channel.${id}`)
                 .listen('NewComment', () => {
                     if (this.sortValue === 'new-activity') {
                         this.showNewActivity();

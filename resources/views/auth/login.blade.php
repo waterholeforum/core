@@ -1,6 +1,6 @@
 <x-waterhole::layout :title="__('waterhole::auth.login-title')">
     <x-waterhole::dialog :title="__('waterhole::auth.login-title')" class="dialog--sm">
-        <form action="{{ route('waterhole.login') }}" method="POST" class="form">
+        <form action="{{ route('waterhole.login') }}" method="POST" class="form" data-controller="login">
             @csrf
 
             <x-waterhole::validation-errors :errors="$errors"/>
@@ -45,7 +45,9 @@
                 <div class="spacer"></div>
 
                 <div>
-                    <a href="{{ route('waterhole.password.request') }}">{{ __('waterhole::auth.forgot-password-link') }}</a>
+                    <a href="{{ route('waterhole.password.request') }}" data->
+                        {{ __('waterhole::auth.forgot-password-link') }}
+                    </a>
                 </div>
             </div>
 

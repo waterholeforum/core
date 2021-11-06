@@ -2,8 +2,8 @@
 
 namespace Waterhole\Events;
 
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Neves\Events\Contracts\TransactionalEvent;
@@ -26,8 +26,9 @@ class NewComment implements ShouldBroadcast, TransactionalEvent
     public function broadcastOn()
     {
         return [
-            new PrivateChannel('Waterhole.Models.Channel.'.$this->comment->post->channel->id),
-            new PrivateChannel('Waterhole.Models.Post.'.$this->comment->post->id),
+            // TODO: private channel depending on permissions
+            new Channel('Waterhole.Models.Channel.'.$this->comment->post->channel->id),
+            new Channel('Waterhole.Models.Post.'.$this->comment->post->id),
         ];
     }
 

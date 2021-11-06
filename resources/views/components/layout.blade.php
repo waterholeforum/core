@@ -4,7 +4,7 @@
     <x-waterhole::head :title="$title"/>
 </head>
 
-<body>
+<body class="{{ Auth::check() ? 'logged-in' : 'not-logged-in' }}">
 
 <div id="waterhole" data-controller="page">
     <a href="#main" class="skip-link">Skip to main content</a>

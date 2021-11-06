@@ -34,7 +34,7 @@ export class PostPage extends Controller {
 
     connect() {
         if (this.idValue) {
-            window.Echo.private(`Waterhole.Models.Post.${this.idValue}`)
+            window.Echo.channel(`Waterhole.Models.Post.${this.idValue}`)
                 .listen('NewComment', (data: any) => {
                     if (this.bottomTarget) {
                         const frame = document.createElement('turbo-frame') as FrameElement;
