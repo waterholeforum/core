@@ -55,6 +55,7 @@ class SearchController extends Controller
             'exhaustiveTotal' => $results->exhaustiveTotal,
             'channels' => Channel::all(),
             'channelHits' => $results->channelHits,
+            'error' => $results->error,
             'sorts' => $sorts,
             'currentSort' => $currentSort,
         ]);

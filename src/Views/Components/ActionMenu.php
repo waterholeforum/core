@@ -10,13 +10,15 @@ class ActionMenu extends Component
     public array $buttonAttributes;
     public ?array $only;
     public ?array $exclude;
+    public string $placement;
 
-    public function __construct($for, array $only = null, array $exclude = null, array $buttonAttributes = [])
+    public function __construct($for, array $only = null, array $exclude = null, array $buttonAttributes = [], string $placement = 'bottom-start')
     {
         $this->for = $for;
         $this->only = $only;
         $this->exclude = $exclude;
         $this->buttonAttributes = $buttonAttributes;
+        $this->placement = $placement;
     }
 
     public function render()

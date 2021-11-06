@@ -119,6 +119,9 @@
             <div class="placeholder">
                 <x-waterhole::icon icon="heroicon-o-search" class="placeholder__visual"/>
                 <h2 class="h3">No Results Found</h2>
+                @if ($error)
+                    <p>{{ $error }}</p>
+                @endif
             </div>
         @endif
     </div>

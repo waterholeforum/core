@@ -16,6 +16,9 @@ class MySqlEngine
         string $sort = null,
         array $filters = [],
     ) {
+        preg_match_all('/\w+/', $q, $matches);
+        $wordsTooShort = collect($matches[0])->some(fn($word) => strlen($word) < 3);
+
         $inner = Post::query()
             ->leftJoinRelationship('comments')
             ->where(function ($query) use ($q) {
@@ -86,6 +89,7 @@ class MySqlEngine
             total: $total,
             exhaustiveTotal: true,
             channelHits: $channels->pluck('hits', 'id')->toArray(),
+            error: $wordsTooShort ? 'Your keywords are too short – try something longer!' : null,
         );
     }
 }
