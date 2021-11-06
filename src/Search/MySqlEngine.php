@@ -1,189 +1,91 @@
 <?php
 
-/*
- * This file is part of Waterhole.
- *
- * (c) Toby Zerner <toby.zerner@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Waterhole\Search;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use Laravel\Scout\Builder;
-use Laravel\Scout\Engines\Engine;
+use s9e\TextFormatter\Utils;
+use Waterhole\Models\Channel;
+use Waterhole\Models\Post;
 
-class MySqlEngine extends Engine
+class MySqlEngine
 {
-    public function update($models)
-    {
-        if ($models->isEmpty()) {
-            return;
-        }
-
-        $objects = $models->map(function ($model) {
-            if (empty($searchableData = $model->toSearchableArray())) {
-                return null;
-            }
-
-            return array_merge(
-                ['id' => $model->getScoutKey()],
-                $searchableData
-            );
-        })->filter()->values()->all();
-
-        $table = $models->first()->searchableAs().'_search_index';
-
-        foreach ($objects as $object) {
-            DB::table($table)
-                ->updateOrInsert(
-                    Arr::only($object, 'id'),
-                    Arr::except($object, 'id')
-                );
-        }
-    }
-
-    public function delete($models)
-    {
-        $table = $models->first()->searchableAs().'_search_index';
-
-        $ids = $models->map(function ($model) {
-            return $model->getScoutKey();
-        })->values()->all();
-
-        DB::table($table)
-            ->whereIn('id', $ids)
-            ->delete();
-    }
-
-    public function search(Builder $builder)
-    {
-        $index = $builder->index ?: $builder->model->searchableAs();
-        $table = $index.'_search_index';
-
-        $fullText = $builder->model->fullTextColumns();
-
-        $query = DB::table("$table as a")
-            ->where(function ($query) use ($fullText, $builder) {
-                foreach ($fullText as $column => $weight) {
-                    $query->orWhereRaw('MATCH('.$column.') AGAINST (? IN BOOLEAN MODE)', [$builder->query]);
-                }
+    public function search(
+        string $q,
+        int $limit,
+        int $offset = 0,
+        string $sort = null,
+        array $filters = [],
+    ) {
+        $inner = Post::query()
+            ->leftJoinRelationship('comments')
+            ->where(function ($query) use ($q) {
+                $query->whereRaw("MATCH (posts.title) AGAINST (? IN BOOLEAN MODE)", [$q])
+                    ->orWhereRaw("MATCH (posts.body) AGAINST (? IN BOOLEAN MODE)", [$q])
+                    ->orWhereRaw("MATCH (comments.body) AGAINST (? IN BOOLEAN MODE)", [$q]);
             });
 
-        foreach ($builder->wheres as $field => $value) {
-            $query->where($field, $value);
-        }
+        $channels = Channel::query()
+            ->select('id')
+            ->selectSub(
+                $inner->clone()
+                    ->select(DB::raw('count(distinct posts.id)'))
+                    ->whereColumn('posts.channel_id', 'channels.id'),
+                'hits'
+            )
+            ->get();
 
-        if ($builder->callback) {
-            $query = call_user_func($builder->callback, $query, $this);
-        }
-
-        $countQuery = clone $query;
-
-        // Construct an SQL phrase to determine the 'score' of a row. This is
-        // calculated by adding up the full-text ranking of each column
-        // multiplied by its weight.
-        $score = [
-            'sql' => collect($fullText)
-                ->map(function ($weight, $column) {
-                    return 'MATCH('.$column.') AGAINST (? IN BOOLEAN MODE) * '.$weight;
-                })
-                ->implode(' + '),
-            'bindings' => array_fill(0, count($fullText), $builder->query)
-        ];
-
-        if (isset($builder->group)) {
-            $group = $builder->group;
-
-            $query->joinSub(function ($query) use ($score, $table, $group, $fullText, $builder) {
-                $query->selectRaw("id, row_number() over (partition by $group order by $score[sql]) as r", $score['bindings'])
-                    ->from($table)
-                    ->where(function ($query) use ($fullText, $builder) {
-                        foreach ($fullText as $column => $weight) {
-                            $query->orWhereRaw('MATCH('.$column.') AGAINST (? IN BOOLEAN MODE)', [$builder->query]);
-                        }
-                    });
-            }, 'b', 'a.id', '=', 'b.id');
-
-            $query->where('r', 1);
-
-            $countQuery->groupBy($group);
-        }
-
-        // $results['nbHits'] = $countQuery->count();
-
-        if (count($builder->orders)) {
-            foreach ($builder->orders as $order) {
-                $query->orderBy($order['column'], $order['direction']);
-            }
+        if ($channel = $filters['channel'] ?? null) {
+            $inner->where('channel_id', $channel);
+            $total = $channels->find($channel)->hits;
         } else {
-            $query->orderByRaw("$score[sql] desc", $score['bindings']);
+            $total = $channels->sum('hits');
         }
 
-        if ($builder->limit) {
-            $query = $query->take($builder->limit);
+        $inner->select(
+            'posts.id as post_id',
+            'comments.id as comment_id',
+            'posts.title',
+            'posts.body as post_body',
+            'comments.body as comment_body'
+        )
+            ->selectRaw('ROW_NUMBER() OVER (PARTITION BY posts.id ORDER BY MATCH (comments.body) AGAINST (?) DESC) as r', [$q])
+            ->selectRaw("MATCH (posts.title) AGAINST (?) * 10 as tscore", [$q])
+            ->selectRaw("MATCH (posts.body) AGAINST (?) as pscore", [$q])
+            ->selectRaw("MATCH (comments.body) AGAINST (?) as cscore", [$q]);
+
+        switch ($sort) {
+            case 'latest':
+                $inner->orderByDesc('posts.created_at');
+                break;
+
+            case 'top':
+                $inner->orderByDesc('posts.score');
+                break;
+
+            default:
+                $inner->orderByRaw('tscore + pscore + cscore desc');
         }
 
-        $results['hits'] = $query->pluck('a.id')->all();
+        $hits = DB::table($inner, 'p')
+            ->where('r', 1)
+            ->take($limit)
+            ->skip($offset)
+            ->get()
+            ->map(function ($row) use ($q) {
+                $title = highlight_words($row->title, $q);
 
-        return $results;
-    }
+                $body = $row->pscore >= $row->cscore ? $row->post_body : $row->comment_body;
+                $body = Utils::removeFormatting($body);
+                $body = highlight_words(truncate_around($body, $q), $q);
 
-    public function paginate(Builder $builder, $perPage, $page)
-    {
-        // not implemented
-    }
+                return new Hit($row->post_id, $title, $body);
+            });
 
-    public function mapIds($results)
-    {
-        return $results['hits'];
-    }
-
-    public function map(Builder $builder, $results, $model)
-    {
-        if (count($results['hits']) === 0) {
-            return $model->newCollection();
-        }
-
-        $objectIds = $results['hits'];
-        $objectIdPositions = array_flip($objectIds);
-
-        return $model->getScoutModelsByIds(
-            $builder, $objectIds
-        )->filter(function ($model) use ($objectIds) {
-            return in_array($model->getScoutKey(), $objectIds);
-        })->sortBy(function ($model) use ($objectIdPositions) {
-            return $objectIdPositions[$model->getScoutKey()];
-        })->values();
-    }
-
-    public function getTotalCount($results)
-    {
-        return $results['nbHits'];
-    }
-
-    public function flush($model)
-    {
-        $table = $model->searchableAs().'_search_index';
-
-        DB::table($table)->delete();
-    }
-
-    public function lazyMap(Builder $builder, $results, $model)
-    {
-        // TODO: Implement lazyMap() method.
-    }
-
-    public function createIndex($name, array $options = [])
-    {
-        // TODO: Implement createIndex() method.
-    }
-
-    public function deleteIndex($name)
-    {
-        // TODO: Implement deleteIndex() method.
+        return new SearchResults(
+            hits: $hits->all(),
+            total: $total,
+            exhaustiveTotal: true,
+            channelHits: $channels->pluck('hits', 'id')->toArray(),
+        );
     }
 }
