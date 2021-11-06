@@ -26,45 +26,6 @@ class AppServiceProvider extends ServiceProvider
                 'prefix' => 'waterhole',
             ]);
         });
-
-        // $this->app->bind(
-        //     \Laravel\Scout\Builder::class,
-        //     Builder::class
-        // );
-        //
-        // $this->app->resolving(EngineManager::class, function (EngineManager $manager) {
-        //     $manager->extend('mysql', function () {
-        //         return new MySqlEngine;
-        //     });
-        // });
-        //
-        // $this->app->instance('waterhole.discussionListQuery', [
-        //     'include' => 'user,lastCommentBy,subscription,bookmark,category.ancestors,reactionCounts.reactionType'
-        // ]);
-        //
-        // $this->app->instance('waterhole.discussionListDefaultFilter', 'latest');
-        //
-        // $this->app->instance('waterhole.discussionQuery', ['include' => 'category.ancestors,bookmark,subscription,user,lastCommentBy,reactionCounts.reactionType']);
-        // $this->app->instance('waterhole.postsQuery', ['include' => 'discussion.category.ancestors,user.groups,reactions.reactionType,highlights,flags.user']);
-        // $this->app->instance('waterhole.userQuery', ['include' => 'groups']);
-        //
-        // $this->app->instance('waterhole.userPostsFilters', [
-        //     'latest' => ['sort' => '-createdAt'],
-        //     'top' => ['sort' => '-reactionCount'],
-        // ]);
-        //
-        // $this->app->instance('waterhole.userPostsDefaultFilter', 'latest');
-        //
-        // $this->app->instance('waterhole.userDiscussionsDefaultFilter', 'new');
-        //
-        // $this->app->instance('waterhole.categoryListQuery', [
-        //     'include' => 'subscription,latestDiscussions,latestDiscussions.lastCommentBy,children',
-        //     'filter' => ['root' => 1]
-        // ]);
-        //
-        // $this->app->singleton('waterhole.reactionTypes', function () {
-        //     return waterhole_api(new ServerRequest('GET', 'reactionTypes'));
-        // });
     }
 
     public function boot()
@@ -84,7 +45,6 @@ class AppServiceProvider extends ServiceProvider
         // resolve(ChannelManager::class)->extend('database', function () {
         //     return new DatabaseChannel;
         // });
-        //
 
         //
         // Blade::directive('fluent', function ($expression) {
@@ -92,7 +52,7 @@ class AppServiceProvider extends ServiceProvider
         // });
         //
 
-        Paginator::useBootstrap();
+        // Paginator::useBootstrap();
 
         // Paginator::defaultView('pagination');
         // Paginator::defaultSimpleView('pagination-simple');

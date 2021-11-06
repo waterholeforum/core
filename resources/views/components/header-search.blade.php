@@ -1,24 +1,14 @@
-<ui-popup placement="bottom-end">
+<ui-popup placement="bottom-end" class="header-search">
     <button class="btn btn--icon btn--transparent">
         <x-waterhole::icon icon="heroicon-s-search"/>
         <ui-tooltip>Search</ui-tooltip>
     </button>
 
     <div class="menu" hidden style="padding: .75rem">
-        <div class="toolbar" style="font-size: 1.2em">
-            <input type="text" class="input" placeholder="Search" autofocus style="width: 20em">
+        <form action="{{ route('waterhole.search') }}" class="lead toolbar toolbar--nowrap">
+            <input type="text" class="input" placeholder="Search" autofocus style="width: 20em" name="q">
             <button class="btn btn--primary">Go</button>
-        </div>
-        <div class="toolbar" style="margin-top: 1em">
-        <label class="radio">
-            <input type="radio" checked>
-            In this discussion
-        </label>
-        <label class="radio">
-            <input type="radio">
-            All posts
-        </label>
-        </div>
+        </form>
     </div>
 </ui-popup>
 

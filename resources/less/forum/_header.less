@@ -57,7 +57,18 @@
     transition: opacity .2s, transform .2s, visibility 0s .2s;
   }
 
-  a:not(:hover) {
+  > a:not(:hover) {
     text-decoration: none;
+  }
+
+  > a {
+    color: inherit;
+  }
+}
+
+
+.header-search {
+  .menu {
+    max-width: none;
   }
 }

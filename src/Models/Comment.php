@@ -2,11 +2,12 @@
 
 namespace Waterhole\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Validation\Rule;
+use RuntimeException;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 use Waterhole\Events\NewComment;
-use Waterhole\Events\NewPostActivity;
 use Waterhole\Models\Concerns\HasBody;
 use Waterhole\Models\Concerns\HasLikes;
 use Waterhole\Views\Components;
@@ -45,6 +46,12 @@ class Comment extends Model
 
         static::created(function (self $comment) {
             broadcast(new NewComment($comment))->toOthers();
+        });
+
+        static::addGlobalScope('index', function ($query) {
+            if (! $query->getQuery()->columns) {
+                $query->select('comments.*')->withIndex();
+            }
         });
     }
 
@@ -100,12 +107,21 @@ class Comment extends Model
 
     public function getPostUrlAttribute(): string
     {
-        return $this->post->url(['index' => $this->index()]).'#'.dom_id($this);
+        if (! isset($this->index)) {
+            throw new RuntimeException('post_url requires the withIndex() scope to be present');
+        }
+
+        return $this->post->url(['index' => $this->index]).'#'.dom_id($this);
     }
 
-    public function index(): int
+    public function scopeWithIndex(Builder $query)
     {
-        return $this->post->comments()->where('created_at', '<', $this->created_at)->count();
+        $query->selectSub(function ($query) {
+            $query->selectRaw('count(*)')
+                ->from('comments as before')
+                ->whereColumn('before.post_id', 'comments.post_id')
+                ->whereColumn('before.created_at', '<', 'comments.created_at');
+        }, 'index');
     }
 
     public function wasEdited(): static

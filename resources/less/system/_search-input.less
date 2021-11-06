@@ -1,8 +1,12 @@
 .search-input {
-  .input {
-    width: 100%;
-    border-radius: 100px;
-    padding-left: var(--space-lg);
-    padding-right: var(--space-lg);
+  //.input {
+  //  width: 100%;
+  //  border-radius: 100px;
+  //  padding-left: var(--space-lg);
+  //  padding-right: var(--space-lg);
+  //}
+
+  > .input:invalid + * {
+    display: none;
   }
 }

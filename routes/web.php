@@ -7,6 +7,7 @@ use Waterhole\Http\Controllers\Forum\ChannelController;
 use Waterhole\Http\Controllers\Forum\CommentController;
 use Waterhole\Http\Controllers\Forum\HomeController;
 use Waterhole\Http\Controllers\Forum\PostController;
+use Waterhole\Http\Controllers\Forum\SearchController;
 use Waterhole\Http\Controllers\UserLookupController;
 
 Route::get('/', HomeController::class)->name('home');
@@ -24,6 +25,8 @@ Route::resource('posts.comments', CommentController::class)
 Route::resource('channels', ChannelController::class)
     ->only(['show', 'create', 'store', 'edit', 'update'])
     ->scoped(['channel' => 'slug']);
+
+Route::get('search', SearchController::class)->name('search');
 
 Route::get('user-lookup', UserLookupController::class)->name('user-lookup');
 Route::post('format', FormatController::class)->name('format');

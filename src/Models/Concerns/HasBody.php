@@ -2,7 +2,7 @@
 
 namespace Waterhole\Models\Concerns;
 
-use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use Waterhole\Formatter\Formatter;
@@ -13,9 +13,9 @@ trait HasBody
     protected static Formatter $formatter;
     private array $renderCache = [];
 
-    public function mentions(): MorphMany
+    public function mentions(): MorphToMany
     {
-        return $this->morphMany(User::class, 'mentions');
+        return $this->morphToMany(User::class, 'content', 'mentions');
     }
 
     public function getBodyAttribute(string $value): string

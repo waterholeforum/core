@@ -91,13 +91,13 @@ function full_time($date): string
     ]);
 }
 
-function highlight_words(string $string, ?string $search): HtmlString|string
+function search_re(string $q): ?string
 {
-    if (! $search) {
-        return $string;
+    if (! trim($q)) {
+        return null;
     }
 
-    preg_match_all('/"[^"]+"|[\w*]+/', $search, $phrases);
+    preg_match_all('/"[^"]+"|[\w*]+/', $q, $phrases);
 
     $phrases = array_map(function ($phrase) {
         $phrase = preg_replace('/^"|"$/', '', $phrase);
@@ -107,13 +107,42 @@ function highlight_words(string $string, ?string $search): HtmlString|string
         return '\b'.$phrase.'\b';
     }, $phrases[0]);
 
-    $re = '/'.implode('|', $phrases).'/i';
+    return '/'.implode('|', $phrases).'/i';
+}
+
+function highlight_words(string $string, string $q): HtmlString
+{
+    if (! $re = search_re($q)) {
+        return new HtmlString(e($string));
+    }
 
     return new HtmlString(
         preg_replace_callback($re, function (array $matches) {
             return "<mark>$matches[0]</mark>";
         }, e($string))
     );
+}
+
+function truncate_around(string $text, string $q, int $chars = 100): string
+{
+    $start = 0;
+
+    if ($re = search_re($q)) {
+        preg_match($re, $text, $matches, PREG_OFFSET_CAPTURE);
+        if (isset($matches[0][1])) {
+            $start = max(0, $matches[0][1] - $chars);
+        }
+    }
+
+    if ($start > 0) {
+        $text = '...'.substr($text, strpos($text, ' ', $start) + 1);
+    }
+
+    if (strlen($text) > $chars * 2) {
+        $text = substr($text, 0, strrpos(substr($text, 0, $chars * 2), ' ')).'...';
+    }
+
+    return $text;
 }
 
 function emojify(string $text, array $attributes = []): HtmlString|string

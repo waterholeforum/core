@@ -79,6 +79,7 @@ class Post extends Model
     public function unreadComments(): HasMany
     {
         return $this->comments()
+            ->withoutGlobalScopes()
             ->whereRaw(
                 'created_at > COALESCE((select last_read_at from post_user where post_id = comments.post_id and post_user.user_id = ?), 0)',
                 [Auth::id()]

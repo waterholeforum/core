@@ -18103,7 +18103,11 @@ var d = /*#__PURE__*/function (_HTMLElement) {
           placement: this.getAttribute("placement") || "bottom"
         });
         var _t = this.shadowRoot.firstElementChild;
-        _t.hidden = !1, o(_t), this.dispatchEvent(new Event("open"));
+        _t.hidden = !1, o(_t);
+
+        var _i3 = this.menu.querySelector("[autofocus]");
+
+        _i3 && _i3.focus(), this.dispatchEvent(new Event("open"));
       } else if (!this.menu.hidden) {
         this.button.setAttribute("aria-expanded", "false");
         var _t2 = this.shadowRoot.firstElementChild;

@@ -47,3 +47,34 @@ select.input,
 .full-width {
   width: 100%;
 }
+
+.input-container {
+  display: flex;
+  align-items: center;
+
+  > :not(.input) {
+    width: 3em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    &:first-child {
+      margin-right: -3em;
+    }
+
+    &:last-child {
+      margin-left: -3em;
+    }
+  }
+
+  > .input {
+    &:nth-child(2) {
+      padding-left: 3em;
+    }
+
+    &:nth-last-child(2) {
+      padding-right: 3em;
+    }
+  }
+}
