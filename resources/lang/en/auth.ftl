@@ -14,7 +14,7 @@ forgot-password-introduction = Request a password reset link by entering your em
 forgot-password-submit = Send Password Reset Link
 
 reset-password-title = Reset Password
-new-password-label = Password
+new-password-label = New Password
 confirm-password-label = Confirm Password
 reset-password-submit = Reset Password
 

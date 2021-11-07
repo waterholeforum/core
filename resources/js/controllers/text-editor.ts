@@ -3,7 +3,7 @@ import TextExpanderElement from '@github/text-expander-element';
 import { ActionEvent, Controller } from '@hotwired/stimulus';
 import TextareaEditor from 'textarea-editor';
 
-export class TextEditor extends Controller {
+export default class extends Controller {
     static targets = ['input', 'preview', 'toolbar', 'previewButton', 'expander'];
 
     inputTarget?: HTMLTextAreaElement;

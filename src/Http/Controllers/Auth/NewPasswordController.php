@@ -58,8 +58,8 @@ class NewPasswordController extends Controller
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
         return $status == Password::PASSWORD_RESET
-                    ? redirect()->route('waterhole.login')->with('status', __($status))
+                    ? redirect()->route('waterhole.login')->with('success', __($status))
                     : back()->withInput($request->only('email'))
-                            ->withErrors(['email' => __($status)]);
+                            ->withErrors(['token' => __($status)]);
     }
 }

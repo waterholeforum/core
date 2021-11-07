@@ -2,7 +2,7 @@ import { Controller } from '@hotwired/stimulus';
 import animateScrollTo from 'animated-scroll-to';
 import { getHeaderHeight } from '../utils';
 
-export class Feed extends Controller {
+export default class extends Controller {
     static targets = ['newActivity'];
 
     static values = {

@@ -1,6 +1,6 @@
 import { Controller } from '@hotwired/stimulus';
 
-export class LoadBackwards extends Controller {
+export default class extends Controller {
     anchor?: HTMLElement;
     top?: number;
     observer?: MutationObserver;

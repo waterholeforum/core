@@ -1,3 +1,4 @@
+import { definitionsFromContext } from '@hotwired/stimulus-webpack-helpers';
 import * as Turbo from '@hotwired/turbo';
 import { install } from '@github/hotkey';
 
@@ -83,37 +84,17 @@ document.addEventListener('turbo:load', () => {
 
 import { Application } from '@hotwired/stimulus';
 import { StreamElement } from '@hotwired/turbo/dist/types/elements';
-import morphdom from 'morphdom';
-import { AlertsController } from './controllers/alerts';
-
-import ChannelPickerController from './controllers/channel-picker';
-import { Comment } from './controllers/comment';
-import { CommentReplies } from './controllers/comment-replies';
-import { Composer } from './controllers/composer';
-import { Feed } from './controllers/feed';
-import { HeaderController } from './controllers/header';
-import { Quotable } from './controllers/quotable';
-import { WatchSticky } from './controllers/watch-sticky';
-import { LoadBackwards } from './controllers/load-backwards';
-import { ModalController } from './controllers/modal';
 
 window.Stimulus = Application.start();
-window.Stimulus.register('channel-picker', ChannelPickerController);
-window.Stimulus.register('modal', ModalController);
-window.Stimulus.register('header', HeaderController);
-window.Stimulus.register('watch-sticky', WatchSticky);
-window.Stimulus.register('composer', Composer);
-window.Stimulus.register('load-backwards', LoadBackwards);
-window.Stimulus.register('post-page', PostPage);
-window.Stimulus.register('comment-replies', CommentReplies);
-window.Stimulus.register('comment', Comment);
-window.Stimulus.register('scrollspy', Scrollspy);
-window.Stimulus.register('page', PageController);
-window.Stimulus.register('alerts', AlertsController);
-window.Stimulus.register('post', PostController);
-window.Stimulus.register('text-editor', TextEditor);
-window.Stimulus.register('quotable', Quotable);
-window.Stimulus.register('feed', Feed);
+const context = require.context('./controllers', true, /\.ts$/);
+window.Stimulus.load(
+    context.keys().map(key => ({
+        identifier: (key.match(/^(?:\.\/)?(.+)(\..+?)$/) || [])[1],
+        controllerConstructor: context(key).default,
+    }))
+);
+
+import morphdom from 'morphdom';
 
 
 declare global {
@@ -125,11 +106,6 @@ declare global {
 }
 
 import { PopupElement, MenuElement, ModalElement, TooltipElement, AlertsElement } from 'inclusive-elements';
-import { PageController } from './controllers/page';
-import { PostController } from './controllers/post';
-import { PostPage } from './controllers/post-page';
-import { Scrollspy } from './controllers/scrollspy';
-import { TextEditor } from './controllers/text-editor';
 import Echo from 'laravel-echo';
 
 window.customElements.define('ui-popup', PopupElement);

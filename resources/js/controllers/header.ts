@@ -1,6 +1,6 @@
 import { Controller } from '@hotwired/stimulus';
 
-export class HeaderController extends Controller {
+export default class extends Controller {
     connect() {
         window.addEventListener('scroll', this.handleScroll);
         this.handleScroll();

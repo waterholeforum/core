@@ -45,15 +45,13 @@
                 <div class="spacer"></div>
 
                 <div>
-                    <a href="{{ route('waterhole.password.request') }}" data->
+                    <a href="{{ route('waterhole.password.request') }}">
                         {{ __('waterhole::auth.forgot-password-link') }}
                     </a>
                 </div>
             </div>
 
-            <div>
-                <button type="submit" class="btn btn--primary btn--block">{{ __('waterhole::auth.login-submit') }}</button>
-            </div>
+            <button type="submit" class="btn btn--primary btn--block">{{ __('waterhole::auth.login-submit') }}</button>
 
             <p class="text-center">
                 Don't have an account?

@@ -1,6 +1,6 @@
 import { Controller } from '@hotwired/stimulus';
 
-export class WatchSticky extends Controller {
+export default class extends Controller {
     observer?: IntersectionObserver;
 
     connect() {

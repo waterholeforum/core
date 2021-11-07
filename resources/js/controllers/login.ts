@@ -1,7 +1,24 @@
 import { Controller } from '@hotwired/stimulus';
-import { StreamElement } from '@hotwired/turbo/dist/types/elements';
-import { AlertsElement } from '../../../../../../packages/inclusive-elements';
 
-export class Login extends Controller {
+export default class extends Controller {
+    email: string = '';
 
+    connect() {
+        const input = this.element.querySelector<HTMLInputElement>('input[name=email]');
+        if (input) {
+            this.email = input.value;
+            input.addEventListener('input', () => {
+                this.email = input.value;
+            });
+        }
+    }
+
+    disconnect() {
+        document.addEventListener('turbo:load', () => {
+            const input = document.querySelector<HTMLInputElement>('input[name=email]');
+            if (input) {
+                input.value = this.email;
+            }
+        }, { once: true });
+    }
 }

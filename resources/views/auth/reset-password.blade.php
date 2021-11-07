@@ -1,31 +1,56 @@
-<x-waterhole::layout-centered :title="__('waterhole::auth.reset-password-title')">
-    <h1>{{ __('waterhole::auth.reset-password-title') }}</h1>
+<x-waterhole::layout :title="__('waterhole::auth.reset-password-title')">
+    <x-waterhole::dialog :title="__('waterhole::auth.reset-password-title')" class="dialog--sm">
+        <form action="{{ route('waterhole.password.update') }}" method="POST" class="form">
+            @csrf
 
-    <form action="{{ route('waterhole.password.update') }}" method="POST">
-        @csrf
+            <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
-        <input type="hidden" name="token" value="{{ $request->route('token') }}">
+            <x-waterhole::validation-errors :errors="$errors"/>
 
-        <div>
-            <label for="email">{{ __('waterhole::auth.email-label') }}</label>
-            <input type="email" id="email" name="email" value="{{ old('email', $request->email) }}" required autofocus>
-            @error('email') <div>{{ $message }}</div> @enderror
-        </div>
+            <x-waterhole::field
+                name="email"
+                :label="__('waterhole::auth.email-label')"
+            >
+                <input
+                    class="input"
+                    type="email"
+                    id="{{ $component->id }}"
+                    name="email"
+                    value="{{ old('email', $request->email) }}"
+                    required
+                    autofocus
+                >
+            </x-waterhole::field>
 
-        <div>
-            <label for="password">{{ __('waterhole::auth.new-password-label') }}</label>
-            <input type="password" id="password" name="password" required autocomplete="new-password">
-            @error('password') <div>{{ $message }}</div> @enderror
-        </div>
+            <x-waterhole::field
+                name="password"
+                :label="__('waterhole::auth.new-password-label')"
+            >
+                <input
+                    class="input"
+                    type="password"
+                    id="{{ $component->id }}"
+                    name="password"
+                    required
+                    autocomplete="new-password"
+                >
+            </x-waterhole::field>
 
-        <div>
-            <label for="password_confirmation">{{ __('waterhole::auth.confirm-password-label') }}</label>
-            <input type="password" id="password_confirmation" name="password_confirmation" required autocomplete="new-password">
-            @error('password_confirmation') <div>{{ $message }}</div> @enderror
-        </div>
+            <x-waterhole::field
+                name="password_confirmation"
+                :label="__('waterhole::auth.confirm-password-label')"
+            >
+                <input
+                    class="input"
+                    type="password"
+                    id="{{ $component->id }}"
+                    name="password_confirmation"
+                    required
+                    autocomplete="new-password"
+                >
+            </x-waterhole::field>
 
-        <div>
-            <button type="submit">{{ __('waterhole::auth.reset-password-submit') }}</button>
-        </div>
-    </form>
-</x-waterhole::layout-centered>
+            <button type="submit" class="btn btn--primary btn--block">{{ __('waterhole::auth.reset-password-submit') }}</button>
+        </form>
+    </x-waterhole::dialog>
+</x-waterhole::layout>

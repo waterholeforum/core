@@ -1,6 +1,6 @@
 import { Controller } from '@hotwired/stimulus';
 
-export class PageController extends Controller {
+export default class extends Controller {
     static targets = ['header', 'breadcrumb', 'title'];
 
     headerTarget?: HTMLElement;

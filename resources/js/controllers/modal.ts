@@ -2,7 +2,7 @@ import { Controller } from '@hotwired/stimulus';
 import { FrameElement } from '@hotwired/turbo/dist/types/elements';
 import { ModalElement } from 'inclusive-elements';
 
-export class ModalController extends Controller {
+export default class extends Controller {
     static targets = ['loading', 'frame'];
 
     loadingTarget?: HTMLDivElement;

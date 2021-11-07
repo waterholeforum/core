@@ -2,7 +2,7 @@ import { Controller } from '@hotwired/stimulus';
 import animateScrollTo from 'animated-scroll-to';
 import { shouldOpenInNewTab } from '../utils';
 
-export class Composer extends Controller {
+export default class extends Controller {
     static targets = ['handle'];
 
     connect() {

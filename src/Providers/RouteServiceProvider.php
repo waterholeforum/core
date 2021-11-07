@@ -13,7 +13,7 @@ use Waterhole\Models\Channel;
 
 class RouteServiceProvider extends ServiceProvider
 {
-    const HOME = '';
+    const HOME = '/';
 
     /**
      * Define your route model bindings, pattern filters, etc.

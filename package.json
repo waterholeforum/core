@@ -10,7 +10,9 @@
     "production": "mix --production"
   },
   "devDependencies": {
+    "@hotwired/stimulus-webpack-helpers": "^1.0.1",
     "@types/textarea-caret": "^3.0.1",
+    "@types/webpack-env": "^1.16.3",
     "laravel-mix": "^6.0",
     "less": "^4.1.1",
     "less-loader": "^9.0.0",

@@ -2,7 +2,7 @@ import { Controller } from '@hotwired/stimulus';
 import { renderStreamMessage } from '@hotwired/turbo';
 import { FrameElement, StreamElement } from '@hotwired/turbo/dist/types/elements';
 
-export class PostPage extends Controller {
+export default class extends Controller {
     static targets = ['post', 'bottom'];
 
     static values = {

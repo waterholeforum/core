@@ -2,6 +2,7 @@
 
 namespace Waterhole\Http\Controllers\Auth;
 
+use Illuminate\Validation\ValidationException;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\User;
 use Waterhole\Providers\RouteServiceProvider;
@@ -20,6 +21,10 @@ class RegisteredUserController extends Controller
      */
     public function create()
     {
+        if (! session()->has('url.intended')) {
+            session()->put('url.intended', url()->previous());
+        }
+
         return view('waterhole::auth.register');
     }
 
@@ -33,11 +38,15 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => ['required', Rules\Password::defaults()],
-        ]);
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => ['required', Rules\Password::defaults()],
+            ]);
+        } catch (ValidationException $e) {
+            throw $e->redirectTo(route('waterhole.register'));
+        }
 
         $user = User::create([
             'name' => $request->name,

@@ -8,7 +8,7 @@ import { isElementInViewport } from '../utils';
 //     collapsed = JSON.parse(window.localStorage.getItem('collapsed_comments') || '[]');
 // } catch (e) {}
 
-export class Comment extends Controller {
+export default class extends Controller {
     static targets = ['parentTooltip'];
 
     parentTooltipTarget?: TooltipElement;

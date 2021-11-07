@@ -1,7 +1,7 @@
 import { Controller } from '@hotwired/stimulus';
 import placement from 'placement.js';
 
-export class Quotable extends Controller {
+export default class extends Controller {
     static targets = ['button'];
 
     buttonTarget?: HTMLButtonElement;

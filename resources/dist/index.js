@@ -6019,16 +6019,16 @@ function e(e, n, i) {
 
 /***/ }),
 
-/***/ "./resources/js/controllers/alerts.ts":
-/*!********************************************!*\
-  !*** ./resources/js/controllers/alerts.ts ***!
-  \********************************************/
+/***/ "./resources/js/controllers/alerts-append.ts":
+/*!***************************************************!*\
+  !*** ./resources/js/controllers/alerts-append.ts ***!
+  \***************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "AlertsController": () => (/* binding */ AlertsController)
+/* harmony export */   "default": () => (/* binding */ _default)
 /* harmony export */ });
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -6054,15 +6054,81 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
-var AlertsController = /*#__PURE__*/function (_Controller) {
-  _inherits(AlertsController, _Controller);
 
-  var _super = _createSuper(AlertsController);
+var _default = /*#__PURE__*/function (_Controller) {
+  _inherits(_default, _Controller);
 
-  function AlertsController() {
+  var _super = _createSuper(_default);
+
+  function _default() {
+    _classCallCheck(this, _default);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(_default, [{
+    key: "connect",
+    value: function connect() {
+      var alerts = document.getElementById('alerts');
+      Array.from(this.element.children).forEach(function (el) {
+        alerts.show(el);
+      });
+      this.element.remove();
+    }
+  }]);
+
+  return _default;
+}(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
+
+
+
+/***/ }),
+
+/***/ "./resources/js/controllers/alerts.ts":
+/*!********************************************!*\
+  !*** ./resources/js/controllers/alerts.ts ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _default)
+/* harmony export */ });
+/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+var _default = /*#__PURE__*/function (_Controller) {
+  _inherits(_default, _Controller);
+
+  var _super = _createSuper(_default);
+
+  function _default() {
     var _this;
 
-    _classCallCheck(this, AlertsController);
+    _classCallCheck(this, _default);
 
     _this = _super.apply(this, arguments);
 
@@ -6085,7 +6151,7 @@ var AlertsController = /*#__PURE__*/function (_Controller) {
     return _this;
   }
 
-  _createClass(AlertsController, [{
+  _createClass(_default, [{
     key: "connect",
     value: function connect() {
       document.addEventListener('turbo:before-stream-render', this.streamAlerts);
@@ -6107,8 +6173,10 @@ var AlertsController = /*#__PURE__*/function (_Controller) {
     }
   }]);
 
-  return AlertsController;
+  return _default;
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
+
+
 
 /***/ }),
 
@@ -6191,7 +6259,7 @@ default_1.targets = ['instructions', 'instructionsContent'];
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "CommentReplies": () => (/* binding */ CommentReplies)
+/* harmony export */   "default": () => (/* binding */ _default)
 /* harmony export */ });
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -6217,18 +6285,19 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
-var CommentReplies = /*#__PURE__*/function (_Controller) {
-  _inherits(CommentReplies, _Controller);
 
-  var _super = _createSuper(CommentReplies);
+var _default = /*#__PURE__*/function (_Controller) {
+  _inherits(_default, _Controller);
 
-  function CommentReplies() {
-    _classCallCheck(this, CommentReplies);
+  var _super = _createSuper(_default);
+
+  function _default() {
+    _classCallCheck(this, _default);
 
     return _super.apply(this, arguments);
   }
 
-  _createClass(CommentReplies, [{
+  _createClass(_default, [{
     key: "connect",
     value: function connect() {
       var _this = this;
@@ -6264,8 +6333,10 @@ var CommentReplies = /*#__PURE__*/function (_Controller) {
     }
   }]);
 
-  return CommentReplies;
+  return _default;
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
+
+
 
 /***/ }),
 
@@ -6278,7 +6349,7 @@ var CommentReplies = /*#__PURE__*/function (_Controller) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Comment": () => (/* binding */ Comment)
+/* harmony export */   "default": () => (/* binding */ default_1)
 /* harmony export */ });
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ "./resources/js/utils.ts");
@@ -6311,18 +6382,18 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 //     collapsed = JSON.parse(window.localStorage.getItem('collapsed_comments') || '[]');
 // } catch (e) {}
 
-var Comment = /*#__PURE__*/function (_Controller) {
-  _inherits(Comment, _Controller);
+var default_1 = /*#__PURE__*/function (_Controller) {
+  _inherits(default_1, _Controller);
 
-  var _super = _createSuper(Comment);
+  var _super = _createSuper(default_1);
 
-  function Comment() {
-    _classCallCheck(this, Comment);
+  function default_1() {
+    _classCallCheck(this, default_1);
 
     return _super.apply(this, arguments);
   }
 
-  _createClass(Comment, [{
+  _createClass(default_1, [{
     key: "commentId",
     get: function get() {
       return this.element.getAttribute('data-comment-id') || '';
@@ -6359,9 +6430,11 @@ var Comment = /*#__PURE__*/function (_Controller) {
     }
   }]);
 
-  return Comment;
+  return default_1;
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
-Comment.targets = ['parentTooltip'];
+
+
+default_1.targets = ['parentTooltip'];
 
 /***/ }),
 
@@ -6374,7 +6447,7 @@ Comment.targets = ['parentTooltip'];
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Composer": () => (/* binding */ Composer)
+/* harmony export */   "default": () => (/* binding */ default_1)
 /* harmony export */ });
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
 /* harmony import */ var animated_scroll_to__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! animated-scroll-to */ "./node_modules/animated-scroll-to/lib/animated-scroll-to.js");
@@ -6405,18 +6478,19 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-var Composer = /*#__PURE__*/function (_Controller) {
-  _inherits(Composer, _Controller);
 
-  var _super = _createSuper(Composer);
+var default_1 = /*#__PURE__*/function (_Controller) {
+  _inherits(default_1, _Controller);
 
-  function Composer() {
-    _classCallCheck(this, Composer);
+  var _super = _createSuper(default_1);
+
+  function default_1() {
+    _classCallCheck(this, default_1);
 
     return _super.apply(this, arguments);
   }
 
-  _createClass(Composer, [{
+  _createClass(default_1, [{
     key: "connect",
     value: function connect() {
       var height = Number(localStorage.getItem('composer_height'));
@@ -6496,9 +6570,11 @@ var Composer = /*#__PURE__*/function (_Controller) {
     }
   }]);
 
-  return Composer;
+  return default_1;
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
-Composer.targets = ['handle'];
+
+
+default_1.targets = ['handle'];
 
 /***/ }),
 
@@ -6511,7 +6587,7 @@ Composer.targets = ['handle'];
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Feed": () => (/* binding */ Feed)
+/* harmony export */   "default": () => (/* binding */ default_1)
 /* harmony export */ });
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
 /* harmony import */ var animated_scroll_to__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! animated-scroll-to */ "./node_modules/animated-scroll-to/lib/animated-scroll-to.js");
@@ -6542,18 +6618,19 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-var Feed = /*#__PURE__*/function (_Controller) {
-  _inherits(Feed, _Controller);
 
-  var _super = _createSuper(Feed);
+var default_1 = /*#__PURE__*/function (_Controller) {
+  _inherits(default_1, _Controller);
 
-  function Feed() {
-    _classCallCheck(this, Feed);
+  var _super = _createSuper(default_1);
+
+  function default_1() {
+    _classCallCheck(this, default_1);
 
     return _super.apply(this, arguments);
   }
 
-  _createClass(Feed, [{
+  _createClass(default_1, [{
     key: "connect",
     value: function connect() {
       var _this = this;
@@ -6597,10 +6674,12 @@ var Feed = /*#__PURE__*/function (_Controller) {
     }
   }]);
 
-  return Feed;
+  return default_1;
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
-Feed.targets = ['newActivity'];
-Feed.values = {
+
+
+default_1.targets = ['newActivity'];
+default_1.values = {
   sort: String,
   channels: Array
 };
@@ -6616,7 +6695,7 @@ Feed.values = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "HeaderController": () => (/* binding */ HeaderController)
+/* harmony export */   "default": () => (/* binding */ _default)
 /* harmony export */ });
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -6642,15 +6721,16 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
-var HeaderController = /*#__PURE__*/function (_Controller) {
-  _inherits(HeaderController, _Controller);
 
-  var _super = _createSuper(HeaderController);
+var _default = /*#__PURE__*/function (_Controller) {
+  _inherits(_default, _Controller);
 
-  function HeaderController() {
+  var _super = _createSuper(_default);
+
+  function _default() {
     var _this;
 
-    _classCallCheck(this, HeaderController);
+    _classCallCheck(this, _default);
 
     _this = _super.apply(this, arguments);
 
@@ -6661,7 +6741,7 @@ var HeaderController = /*#__PURE__*/function (_Controller) {
     return _this;
   }
 
-  _createClass(HeaderController, [{
+  _createClass(_default, [{
     key: "connect",
     value: function connect() {
       window.addEventListener('scroll', this.handleScroll);
@@ -6674,8 +6754,10 @@ var HeaderController = /*#__PURE__*/function (_Controller) {
     }
   }]);
 
-  return HeaderController;
+  return _default;
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
+
+
 
 /***/ }),
 
@@ -6688,7 +6770,7 @@ var HeaderController = /*#__PURE__*/function (_Controller) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "LoadBackwards": () => (/* binding */ LoadBackwards)
+/* harmony export */   "default": () => (/* binding */ _default)
 /* harmony export */ });
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -6714,18 +6796,19 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
-var LoadBackwards = /*#__PURE__*/function (_Controller) {
-  _inherits(LoadBackwards, _Controller);
 
-  var _super = _createSuper(LoadBackwards);
+var _default = /*#__PURE__*/function (_Controller) {
+  _inherits(_default, _Controller);
 
-  function LoadBackwards() {
-    _classCallCheck(this, LoadBackwards);
+  var _super = _createSuper(_default);
+
+  function _default() {
+    _classCallCheck(this, _default);
 
     return _super.apply(this, arguments);
   }
 
-  _createClass(LoadBackwards, [{
+  _createClass(_default, [{
     key: "lockScrollPosition",
     value: function lockScrollPosition(e) {
       var _this = this;
@@ -6773,21 +6856,23 @@ var LoadBackwards = /*#__PURE__*/function (_Controller) {
     }
   }]);
 
-  return LoadBackwards;
+  return _default;
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
+
+
 
 /***/ }),
 
-/***/ "./resources/js/controllers/modal.ts":
+/***/ "./resources/js/controllers/login.ts":
 /*!*******************************************!*\
-  !*** ./resources/js/controllers/modal.ts ***!
+  !*** ./resources/js/controllers/login.ts ***!
   \*******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ModalController": () => (/* binding */ ModalController)
+/* harmony export */   "default": () => (/* binding */ _default)
 /* harmony export */ });
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -6813,18 +6898,108 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
-var ModalController = /*#__PURE__*/function (_Controller) {
-  _inherits(ModalController, _Controller);
 
-  var _super = _createSuper(ModalController);
+var _default = /*#__PURE__*/function (_Controller) {
+  _inherits(_default, _Controller);
 
-  function ModalController() {
-    _classCallCheck(this, ModalController);
+  var _super = _createSuper(_default);
+
+  function _default() {
+    var _this;
+
+    _classCallCheck(this, _default);
+
+    _this = _super.apply(this, arguments);
+    _this.email = '';
+    return _this;
+  }
+
+  _createClass(_default, [{
+    key: "connect",
+    value: function connect() {
+      var _this2 = this;
+
+      var input = this.element.querySelector('input[name=email]');
+
+      if (input) {
+        this.email = input.value;
+        input.addEventListener('input', function () {
+          _this2.email = input.value;
+        });
+      }
+    }
+  }, {
+    key: "disconnect",
+    value: function disconnect() {
+      var _this3 = this;
+
+      document.addEventListener('turbo:load', function () {
+        var input = document.querySelector('input[name=email]');
+
+        if (input) {
+          input.value = _this3.email;
+        }
+      }, {
+        once: true
+      });
+    }
+  }]);
+
+  return _default;
+}(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
+
+
+
+/***/ }),
+
+/***/ "./resources/js/controllers/modal.ts":
+/*!*******************************************!*\
+  !*** ./resources/js/controllers/modal.ts ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ default_1)
+/* harmony export */ });
+/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+var default_1 = /*#__PURE__*/function (_Controller) {
+  _inherits(default_1, _Controller);
+
+  var _super = _createSuper(default_1);
+
+  function default_1() {
+    _classCallCheck(this, default_1);
 
     return _super.apply(this, arguments);
   }
 
-  _createClass(ModalController, [{
+  _createClass(default_1, [{
     key: "connect",
     value: function connect() {
       var _this = this;
@@ -6874,9 +7049,11 @@ var ModalController = /*#__PURE__*/function (_Controller) {
     }
   }]);
 
-  return ModalController;
+  return default_1;
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
-ModalController.targets = ['loading', 'frame'];
+
+
+default_1.targets = ['loading', 'frame'];
 
 /***/ }),
 
@@ -6889,7 +7066,7 @@ ModalController.targets = ['loading', 'frame'];
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "PageController": () => (/* binding */ PageController)
+/* harmony export */   "default": () => (/* binding */ default_1)
 /* harmony export */ });
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -6915,18 +7092,19 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
-var PageController = /*#__PURE__*/function (_Controller) {
-  _inherits(PageController, _Controller);
 
-  var _super = _createSuper(PageController);
+var default_1 = /*#__PURE__*/function (_Controller) {
+  _inherits(default_1, _Controller);
 
-  function PageController() {
-    _classCallCheck(this, PageController);
+  var _super = _createSuper(default_1);
+
+  function default_1() {
+    _classCallCheck(this, default_1);
 
     return _super.apply(this, arguments);
   }
 
-  _createClass(PageController, [{
+  _createClass(default_1, [{
     key: "initialize",
     value: function initialize() {
       var _this = this;
@@ -6952,9 +7130,11 @@ var PageController = /*#__PURE__*/function (_Controller) {
     }
   }]);
 
-  return PageController;
+  return default_1;
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
-PageController.targets = ['header', 'breadcrumb', 'title'];
+
+
+default_1.targets = ['header', 'breadcrumb', 'title'];
 
 /***/ }),
 
@@ -6967,7 +7147,7 @@ PageController.targets = ['header', 'breadcrumb', 'title'];
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "PostPage": () => (/* binding */ PostPage)
+/* harmony export */   "default": () => (/* binding */ default_1)
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
@@ -7031,18 +7211,19 @@ var __awaiter = undefined && undefined.__awaiter || function (thisArg, _argument
 
 
 
-var PostPage = /*#__PURE__*/function (_Controller) {
-  _inherits(PostPage, _Controller);
 
-  var _super = _createSuper(PostPage);
+var default_1 = /*#__PURE__*/function (_Controller) {
+  _inherits(default_1, _Controller);
 
-  function PostPage() {
-    _classCallCheck(this, PostPage);
+  var _super = _createSuper(default_1);
+
+  function default_1() {
+    _classCallCheck(this, default_1);
 
     return _super.apply(this, arguments);
   }
 
-  _createClass(PostPage, [{
+  _createClass(default_1, [{
     key: "showPostOnFirstPage",
     value: function showPostOnFirstPage() {
       if (document.querySelector('[data-index="0"]')) {
@@ -7101,10 +7282,12 @@ var PostPage = /*#__PURE__*/function (_Controller) {
     }
   }]);
 
-  return PostPage;
+  return default_1;
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_1__.Controller);
-PostPage.targets = ['post', 'bottom'];
-PostPage.values = {
+
+
+default_1.targets = ['post', 'bottom'];
+default_1.values = {
   id: Number
 };
 
@@ -7119,7 +7302,7 @@ PostPage.values = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "PostController": () => (/* binding */ PostController)
+/* harmony export */   "default": () => (/* binding */ _default)
 /* harmony export */ });
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -7145,18 +7328,19 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
-var PostController = /*#__PURE__*/function (_Controller) {
-  _inherits(PostController, _Controller);
 
-  var _super = _createSuper(PostController);
+var _default = /*#__PURE__*/function (_Controller) {
+  _inherits(_default, _Controller);
 
-  function PostController() {
-    _classCallCheck(this, PostController);
+  var _super = _createSuper(_default);
+
+  function _default() {
+    _classCallCheck(this, _default);
 
     return _super.apply(this, arguments);
   }
 
-  _createClass(PostController, [{
+  _createClass(_default, [{
     key: "appearAsRead",
     value: function appearAsRead() {
       if (this.element.classList.contains('is-unread')) {
@@ -7166,8 +7350,10 @@ var PostController = /*#__PURE__*/function (_Controller) {
     }
   }]);
 
-  return PostController;
+  return _default;
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
+
+
 
 /***/ }),
 
@@ -7180,7 +7366,7 @@ var PostController = /*#__PURE__*/function (_Controller) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Quotable": () => (/* binding */ Quotable)
+/* harmony export */   "default": () => (/* binding */ default_1)
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
@@ -7244,15 +7430,16 @@ var __awaiter = undefined && undefined.__awaiter || function (thisArg, _argument
 
 
 
-var Quotable = /*#__PURE__*/function (_Controller) {
-  _inherits(Quotable, _Controller);
 
-  var _super = _createSuper(Quotable);
+var default_1 = /*#__PURE__*/function (_Controller) {
+  _inherits(default_1, _Controller);
 
-  function Quotable() {
+  var _super = _createSuper(default_1);
+
+  function default_1() {
     var _this;
 
-    _classCallCheck(this, Quotable);
+    _classCallCheck(this, default_1);
 
     _this = _super.apply(this, arguments);
 
@@ -7263,7 +7450,7 @@ var Quotable = /*#__PURE__*/function (_Controller) {
     return _this;
   }
 
-  _createClass(Quotable, [{
+  _createClass(default_1, [{
     key: "connect",
     value: function connect() {
       document.addEventListener('mouseup', this.handleSelectionChange);
@@ -7369,9 +7556,11 @@ var Quotable = /*#__PURE__*/function (_Controller) {
     }
   }]);
 
-  return Quotable;
+  return default_1;
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_1__.Controller);
-Quotable.targets = ['button'];
+
+
+default_1.targets = ['button'];
 
 /***/ }),
 
@@ -7384,7 +7573,7 @@ Quotable.targets = ['button'];
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Scrollspy": () => (/* binding */ Scrollspy)
+/* harmony export */   "default": () => (/* binding */ _default)
 /* harmony export */ });
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -7410,18 +7599,19 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
-var Scrollspy = /*#__PURE__*/function (_Controller) {
-  _inherits(Scrollspy, _Controller);
 
-  var _super = _createSuper(Scrollspy);
+var _default = /*#__PURE__*/function (_Controller) {
+  _inherits(_default, _Controller);
 
-  function Scrollspy() {
-    _classCallCheck(this, Scrollspy);
+  var _super = _createSuper(_default);
+
+  function _default() {
+    _classCallCheck(this, _default);
 
     return _super.apply(this, arguments);
   }
 
-  _createClass(Scrollspy, [{
+  _createClass(_default, [{
     key: "connect",
     value: function connect() {
       this.onScroll();
@@ -7450,8 +7640,10 @@ var Scrollspy = /*#__PURE__*/function (_Controller) {
     }
   }]);
 
-  return Scrollspy;
+  return _default;
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
+
+
 
 /***/ }),
 
@@ -7464,7 +7656,7 @@ var Scrollspy = /*#__PURE__*/function (_Controller) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TextEditor": () => (/* binding */ TextEditor)
+/* harmony export */   "default": () => (/* binding */ default_1)
 /* harmony export */ });
 /* harmony import */ var _github_paste_markdown__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @github/paste-markdown */ "./node_modules/@github/paste-markdown/dist/index.esm.js");
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
@@ -7506,18 +7698,19 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-var TextEditor = /*#__PURE__*/function (_Controller) {
-  _inherits(TextEditor, _Controller);
 
-  var _super = _createSuper(TextEditor);
+var default_1 = /*#__PURE__*/function (_Controller) {
+  _inherits(default_1, _Controller);
 
-  function TextEditor() {
-    _classCallCheck(this, TextEditor);
+  var _super = _createSuper(default_1);
+
+  function default_1() {
+    _classCallCheck(this, default_1);
 
     return _super.apply(this, arguments);
   }
 
-  _createClass(TextEditor, [{
+  _createClass(default_1, [{
     key: "connect",
     value: function connect() {
       var _a, _b;
@@ -7618,9 +7811,11 @@ var TextEditor = /*#__PURE__*/function (_Controller) {
     }
   }]);
 
-  return TextEditor;
+  return default_1;
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_1__.Controller);
-TextEditor.targets = ['input', 'preview', 'toolbar', 'previewButton', 'expander'];
+
+
+default_1.targets = ['input', 'preview', 'toolbar', 'previewButton', 'expander'];
 
 /***/ }),
 
@@ -7633,7 +7828,7 @@ TextEditor.targets = ['input', 'preview', 'toolbar', 'previewButton', 'expander'
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "WatchSticky": () => (/* binding */ WatchSticky)
+/* harmony export */   "default": () => (/* binding */ _default)
 /* harmony export */ });
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -7659,18 +7854,19 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
-var WatchSticky = /*#__PURE__*/function (_Controller) {
-  _inherits(WatchSticky, _Controller);
 
-  var _super = _createSuper(WatchSticky);
+var _default = /*#__PURE__*/function (_Controller) {
+  _inherits(_default, _Controller);
 
-  function WatchSticky() {
-    _classCallCheck(this, WatchSticky);
+  var _super = _createSuper(_default);
+
+  function _default() {
+    _classCallCheck(this, _default);
 
     return _super.apply(this, arguments);
   }
 
-  _createClass(WatchSticky, [{
+  _createClass(_default, [{
     key: "connect",
     value: function connect() {
       this.observer = new IntersectionObserver(function (entries) {
@@ -7691,8 +7887,10 @@ var WatchSticky = /*#__PURE__*/function (_Controller) {
     }
   }]);
 
-  return WatchSticky;
+  return _default;
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
+
+
 
 /***/ }),
 
@@ -17062,6 +17260,55 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /***/ }),
 
+/***/ "./resources/js/controllers sync recursive \\.ts$":
+/*!**********************************************!*\
+  !*** ./resources/js/controllers/ sync \.ts$ ***!
+  \**********************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var map = {
+	"./alerts-append.ts": "./resources/js/controllers/alerts-append.ts",
+	"./alerts.ts": "./resources/js/controllers/alerts.ts",
+	"./channel-picker.ts": "./resources/js/controllers/channel-picker.ts",
+	"./comment-replies.ts": "./resources/js/controllers/comment-replies.ts",
+	"./comment.ts": "./resources/js/controllers/comment.ts",
+	"./composer.ts": "./resources/js/controllers/composer.ts",
+	"./feed.ts": "./resources/js/controllers/feed.ts",
+	"./header.ts": "./resources/js/controllers/header.ts",
+	"./load-backwards.ts": "./resources/js/controllers/load-backwards.ts",
+	"./login.ts": "./resources/js/controllers/login.ts",
+	"./modal.ts": "./resources/js/controllers/modal.ts",
+	"./page.ts": "./resources/js/controllers/page.ts",
+	"./post-page.ts": "./resources/js/controllers/post-page.ts",
+	"./post.ts": "./resources/js/controllers/post.ts",
+	"./quotable.ts": "./resources/js/controllers/quotable.ts",
+	"./scrollspy.ts": "./resources/js/controllers/scrollspy.ts",
+	"./text-editor.ts": "./resources/js/controllers/text-editor.ts",
+	"./watch-sticky.ts": "./resources/js/controllers/watch-sticky.ts"
+};
+
+
+function webpackContext(req) {
+	var id = webpackContextResolve(req);
+	return __webpack_require__(id);
+}
+function webpackContextResolve(req) {
+	if(!__webpack_require__.o(map, req)) {
+		var e = new Error("Cannot find module '" + req + "'");
+		e.code = 'MODULE_NOT_FOUND';
+		throw e;
+	}
+	return map[req];
+}
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = "./resources/js/controllers sync recursive \\.ts$";
+
+/***/ }),
+
 /***/ "./node_modules/@github/combobox-nav/dist/index.js":
 /*!*********************************************************!*\
   !*** ./node_modules/@github/combobox-nav/dist/index.js ***!
@@ -18560,23 +18807,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _github_session_resume__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @github/session-resume */ "./node_modules/@github/session-resume/dist/index.js");
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
 /* harmony import */ var morphdom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! morphdom */ "./node_modules/morphdom/dist/morphdom-esm.js");
-/* harmony import */ var _controllers_alerts__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./controllers/alerts */ "./resources/js/controllers/alerts.ts");
-/* harmony import */ var _controllers_channel_picker__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./controllers/channel-picker */ "./resources/js/controllers/channel-picker.ts");
-/* harmony import */ var _controllers_comment__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./controllers/comment */ "./resources/js/controllers/comment.ts");
-/* harmony import */ var _controllers_comment_replies__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./controllers/comment-replies */ "./resources/js/controllers/comment-replies.ts");
-/* harmony import */ var _controllers_composer__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./controllers/composer */ "./resources/js/controllers/composer.ts");
-/* harmony import */ var _controllers_feed__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./controllers/feed */ "./resources/js/controllers/feed.ts");
-/* harmony import */ var _controllers_header__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./controllers/header */ "./resources/js/controllers/header.ts");
-/* harmony import */ var _controllers_quotable__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./controllers/quotable */ "./resources/js/controllers/quotable.ts");
-/* harmony import */ var _controllers_watch_sticky__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./controllers/watch-sticky */ "./resources/js/controllers/watch-sticky.ts");
-/* harmony import */ var _controllers_load_backwards__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./controllers/load-backwards */ "./resources/js/controllers/load-backwards.ts");
-/* harmony import */ var _controllers_modal__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./controllers/modal */ "./resources/js/controllers/modal.ts");
-/* harmony import */ var inclusive_elements__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! inclusive-elements */ "../../../packages/inclusive-elements/dist/index.js");
-/* harmony import */ var _controllers_page__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./controllers/page */ "./resources/js/controllers/page.ts");
-/* harmony import */ var _controllers_post__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./controllers/post */ "./resources/js/controllers/post.ts");
-/* harmony import */ var _controllers_post_page__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./controllers/post-page */ "./resources/js/controllers/post-page.ts");
-/* harmony import */ var _controllers_scrollspy__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./controllers/scrollspy */ "./resources/js/controllers/scrollspy.ts");
-/* harmony import */ var _controllers_text_editor__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./controllers/text-editor */ "./resources/js/controllers/text-editor.ts");
+/* harmony import */ var inclusive_elements__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! inclusive-elements */ "../../../packages/inclusive-elements/dist/index.js");
 
 
 var __awaiter = undefined && undefined.__awaiter || function (thisArg, _arguments, P, generator) {
@@ -18709,46 +18940,23 @@ document.addEventListener('turbo:load', function () {
   });
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
 window.Stimulus = _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_8__.Application.start();
-window.Stimulus.register('channel-picker', _controllers_channel_picker__WEBPACK_IMPORTED_MODULE_10__["default"]);
-window.Stimulus.register('modal', _controllers_modal__WEBPACK_IMPORTED_MODULE_19__.ModalController);
-window.Stimulus.register('header', _controllers_header__WEBPACK_IMPORTED_MODULE_15__.HeaderController);
-window.Stimulus.register('watch-sticky', _controllers_watch_sticky__WEBPACK_IMPORTED_MODULE_17__.WatchSticky);
-window.Stimulus.register('composer', _controllers_composer__WEBPACK_IMPORTED_MODULE_13__.Composer);
-window.Stimulus.register('load-backwards', _controllers_load_backwards__WEBPACK_IMPORTED_MODULE_18__.LoadBackwards);
-window.Stimulus.register('post-page', _controllers_post_page__WEBPACK_IMPORTED_MODULE_20__.PostPage);
-window.Stimulus.register('comment-replies', _controllers_comment_replies__WEBPACK_IMPORTED_MODULE_12__.CommentReplies);
-window.Stimulus.register('comment', _controllers_comment__WEBPACK_IMPORTED_MODULE_11__.Comment);
-window.Stimulus.register('scrollspy', _controllers_scrollspy__WEBPACK_IMPORTED_MODULE_21__.Scrollspy);
-window.Stimulus.register('page', _controllers_page__WEBPACK_IMPORTED_MODULE_22__.PageController);
-window.Stimulus.register('alerts', _controllers_alerts__WEBPACK_IMPORTED_MODULE_9__.AlertsController);
-window.Stimulus.register('post', _controllers_post__WEBPACK_IMPORTED_MODULE_23__.PostController);
-window.Stimulus.register('text-editor', _controllers_text_editor__WEBPACK_IMPORTED_MODULE_24__.TextEditor);
-window.Stimulus.register('quotable', _controllers_quotable__WEBPACK_IMPORTED_MODULE_16__.Quotable);
-window.Stimulus.register('feed', _controllers_feed__WEBPACK_IMPORTED_MODULE_14__.Feed);
+
+var context = __webpack_require__("./resources/js/controllers sync recursive \\.ts$");
+
+window.Stimulus.load(context.keys().map(function (key) {
+  return {
+    identifier: (key.match(/^(?:\.\/)?(.+)(\..+?)$/) || [])[1],
+    controllerConstructor: context(key)["default"]
+  };
+}));
 
 
-
-
-
-
-window.customElements.define('ui-popup', inclusive_elements__WEBPACK_IMPORTED_MODULE_25__.PopupElement);
-window.customElements.define('ui-menu', inclusive_elements__WEBPACK_IMPORTED_MODULE_25__.MenuElement);
-window.customElements.define('ui-modal', inclusive_elements__WEBPACK_IMPORTED_MODULE_25__.ModalElement);
-window.customElements.define('ui-tooltip', inclusive_elements__WEBPACK_IMPORTED_MODULE_25__.TooltipElement);
-window.customElements.define('ui-alerts', inclusive_elements__WEBPACK_IMPORTED_MODULE_25__.AlertsElement);
+window.customElements.define('ui-popup', inclusive_elements__WEBPACK_IMPORTED_MODULE_9__.PopupElement);
+window.customElements.define('ui-menu', inclusive_elements__WEBPACK_IMPORTED_MODULE_9__.MenuElement);
+window.customElements.define('ui-modal', inclusive_elements__WEBPACK_IMPORTED_MODULE_9__.ModalElement);
+window.customElements.define('ui-tooltip', inclusive_elements__WEBPACK_IMPORTED_MODULE_9__.TooltipElement);
+window.customElements.define('ui-alerts', inclusive_elements__WEBPACK_IMPORTED_MODULE_9__.AlertsElement);
 })();
 
 /******/ })()

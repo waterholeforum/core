@@ -1,6 +1,6 @@
 import { Controller } from '@hotwired/stimulus';
 
-export class Scrollspy extends Controller {
+export default class extends Controller {
     connect() {
         this.onScroll();
     }

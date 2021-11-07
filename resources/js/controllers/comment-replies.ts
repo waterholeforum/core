@@ -1,7 +1,7 @@
 import { Controller } from '@hotwired/stimulus';
 import { FrameElement } from '@hotwired/turbo/dist/types/elements';
 
-export class CommentReplies extends Controller {
+export default class extends Controller {
     connect() {
         this.element.addEventListener('click', e => {
             const expanded = this.element.getAttribute('aria-expanded') === 'false';

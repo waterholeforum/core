@@ -45,6 +45,14 @@
     data-controller="alerts"
 ></ui-alerts>
 
+@if (session('success'))
+    <ui-alerts class="alerts" data-controller="alerts-append">
+        <x-waterhole::alert type="success">
+            {{ session('success') }}
+        </x-waterhole::alert>
+    </ui-alerts>
+@endif
+
 <template id="fetch-error">
     <x-waterhole::alert type="danger" dismissible>
         Something went wrong! Please reload the page and try again.
