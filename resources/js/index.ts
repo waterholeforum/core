@@ -96,12 +96,19 @@ window.Stimulus.load(
 
 import morphdom from 'morphdom';
 
+interface Waterhole {
+    alerts: AlertsElement;
+}
+
 
 declare global {
+    const Waterhole: Waterhole;
+
     interface Window {
         Turbo: any;
         Stimulus: Application;
         Echo: Echo;
+        Waterhole: Waterhole;
     }
 }
 
@@ -113,3 +120,9 @@ window.customElements.define('ui-menu', MenuElement);
 window.customElements.define('ui-modal', ModalElement);
 window.customElements.define('ui-tooltip', TooltipElement);
 window.customElements.define('ui-alerts', AlertsElement);
+
+window.Waterhole = {
+    get alerts(): AlertsElement {
+        return document.getElementById('alerts') as AlertsElement;
+    }
+};

@@ -18,8 +18,12 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
-    public function showRegistrationForm()
+    public function showRegistrationForm(Request $request)
     {
+        if (! session()->has('url.intended')) {
+            session()->put('url.intended', $request->query('return', url()->previous()));
+        }
+
         return view('waterhole::auth.register');
     }
 
@@ -41,6 +45,8 @@ class RegisterController extends Controller
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        // Remove the fragment so that the email verification notice at the top
+        // of the page is visible.
+        return redirect()->intended(RouteServiceProvider::HOME)->withoutFragment();
     }
 }

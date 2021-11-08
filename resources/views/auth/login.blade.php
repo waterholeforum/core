@@ -1,6 +1,7 @@
 <x-waterhole::layout :title="__('waterhole::auth.login-title')">
     <x-waterhole::dialog :title="__('waterhole::auth.login-title')" class="dialog--sm">
-        <form action="{{ route('waterhole.login') }}" method="POST" class="form" data-controller="login">
+        {{-- Opt-out of Turbo so that any fragment that may be present in the redirect URL will be followed --}}
+        <form action="{{ route('waterhole.login') }}" method="POST" class="form" data-controller="login" data-turbo="false">
             @csrf
 
             <x-waterhole::validation-errors :errors="$errors"/>

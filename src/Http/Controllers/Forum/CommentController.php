@@ -71,7 +71,7 @@ class CommentController extends Controller
 
         if ($request->wantsTurboStream()) {
             $streams = [
-                TurboStream::before(new CommentFrame($comment), dom_id($post, 'bottom')),
+                TurboStream::before(new CommentFrame($comment), 'bottom'),
                 TurboStream::replace((new Composer($post))->withAttributes(['class' => 'can-sticky'])),
             ];
 

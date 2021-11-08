@@ -85,9 +85,26 @@
                                     </turbo-frame>
                                 @endif
                             @else
-                                <div id="@domid($post, 'bottom')" tabindex="-1" data-post-page-target="bottom"></div>
+                                <div id="bottom" tabindex="-1" data-post-page-target="bottom"></div>
 
-                                <x-waterhole::comments-locked :post="$post"/>
+                                <div class="stack-md">
+                                    <x-waterhole::comments-locked :post="$post"/>
+
+                                    @guest
+                                        <x-waterhole::alert
+                                            type="info"
+                                            class="alert--lg"
+                                            icon="heroicon-o-light-bulb"
+                                        >
+                                            <h3>Sign up to participate in this discussion!</h3>
+                                            <p>Lorem ipsum dolor sit amet, has choro debitis ne, debet harum quando ex his. Cu elit noster usu, atqui mucius eum no. Et vix stet purto, quem propriae eam ne. Mea verear sapientem ea, ut laudem apeirian sit. Pro placerat oporteat ex.</p>
+                                            <p class="toolbar">
+                                                <a href="{{ route('waterhole.register', ['return' => $comments->appends('direction', null)->fragment('bottom')->url($comments->lastPage())]) }}" class="btn btn--primary">Sign Up</a>
+                                                <a href="{{ route('waterhole.login', ['return' => $comments->appends('direction', null)->fragment('bottom')->url($comments->lastPage())]) }}" class="btn btn--link">Log In</a>
+                                            </p>
+                                        </x-waterhole::alert>
+                                    @endguest
+                                </div>
                             @endif
                         </turbo-frame>
                     </div>
@@ -137,7 +154,7 @@
 
                                     <a
                                         class="tab"
-                                        href="{{ $comments->fragment(Tonysm\TurboLaravel\dom_id($post, 'bottom'))->url($comments->lastPage()) }}"
+                                        href="{{ $comments->fragment('bottom')->url($comments->lastPage()) }}"
                                         style="margin-top: var(--space-sm)"
                                     >
                                         <x-waterhole::icon

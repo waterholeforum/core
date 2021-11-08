@@ -18,8 +18,12 @@ class LoginController extends Controller
         $this->middleware('guest');
     }
 
-    public function showLoginForm()
+    public function showLoginForm(Request $request)
     {
+        if (! session()->has('url.intended')) {
+            session()->put('url.intended', $request->query('return', url()->previous()));
+        }
+
         return view('waterhole::auth.login');
     }
 
