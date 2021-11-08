@@ -45,7 +45,7 @@
                 <div class="spacer"></div>
 
                 <div>
-                    <a href="{{ route('waterhole.password.request') }}">
+                    <a href="{{ route('waterhole.forgot-password') }}">
                         {{ __('waterhole::auth.forgot-password-link') }}
                     </a>
                 </div>

@@ -1,9 +1,7 @@
 <x-waterhole::layout :title="__('waterhole::auth.reset-password-title')">
     <x-waterhole::dialog :title="__('waterhole::auth.reset-password-title')" class="dialog--sm">
-        <form action="{{ route('waterhole.password.update') }}" method="POST" class="form">
+        <form action="{{ route('waterhole.reset-password', ['token' => $request->route('token')]) }}" method="POST" class="form">
             @csrf
-
-            <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
             <x-waterhole::validation-errors :errors="$errors"/>
 

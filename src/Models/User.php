@@ -16,10 +16,21 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Intervention\Image\Image;
 use Waterhole\Models\Concerns\HasImageAttributes;
+use Waterhole\Notifications\ResetPassword;
+use Waterhole\Notifications\VerifyEmail;
 
-class User extends Model implements AuthenticatableContract, MustVerifyEmailContract, CanResetPasswordContract, HasLocalePreference
+class User extends Model implements
+    AuthenticatableContract,
+    MustVerifyEmailContract,
+    CanResetPasswordContract,
+    HasLocalePreference
 {
-    use Authenticatable, Authorizable, CanResetPassword, MustVerifyEmail, Notifiable, HasImageAttributes;
+    use Authenticatable;
+    use Authorizable;
+    use CanResetPassword;
+    use MustVerifyEmail;
+    use Notifiable;
+    use HasImageAttributes;
 
     const UPDATED_AT = null;
 
@@ -108,5 +119,15 @@ class User extends Model implements AuthenticatableContract, MustVerifyEmailCont
         $this->uploadImage($image, 'cover', 'user-covers', function (Image $image) {
             return $image->crop(1000, 300)->encode('jpg');
         });
+    }
+
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmail($this, $this->email));
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPassword($token));
     }
 }

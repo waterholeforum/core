@@ -2,29 +2,44 @@
 
 namespace Waterhole\Http\Controllers\Auth;
 
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Http\Request;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Providers\RouteServiceProvider;
-use Illuminate\Auth\Events\Verified;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 class VerifyEmailController extends Controller
 {
-    /**
-     * Mark the authenticated user's email address as verified.
-     *
-     * @param  \Illuminate\Foundation\Auth\EmailVerificationRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function __invoke(EmailVerificationRequest $request)
+    public function __construct()
+    {
+        $this->middleware(['auth', 'throttle:6,1']);
+        $this->middleware('signed')->only('verify');
+    }
+
+    public function verify(Request $request)
+    {
+        if (! hash_equals((string) $request->route('id'), (string) $request->user()->getKey())) {
+            throw new AuthorizationException();
+        }
+
+        $user = $request->user();
+        $user->email = $request->query('email');
+        $user->markEmailAsVerified();
+
+        event(new Verified($request->user()));
+
+        return redirect()->intended(RouteServiceProvider::HOME)
+            ->with('success', 'Thanks for verifying your email!');
+    }
+
+    public function resend(Request $request)
     {
         if ($request->user()->hasVerifiedEmail()) {
-            return redirect()->intended(RouteServiceProvider::HOME.'?verified=1');
+            return redirect()->intended(RouteServiceProvider::HOME);
         }
 
-        if ($request->user()->markEmailAsVerified()) {
-            event(new Verified($request->user()));
-        }
+        $request->user()->sendEmailVerificationNotification();
 
-        return redirect()->intended(RouteServiceProvider::HOME.'?verified=1');
+        return back()->with('success', 'Email verification sent.');
     }
 }

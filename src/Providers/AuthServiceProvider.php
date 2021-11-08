@@ -16,12 +16,5 @@ class AuthServiceProvider extends ServiceProvider
                 return true;
             }
         });
-
-        ResetPassword::createUrlUsing(function ($notifiable, string $token) {
-            return url(route('waterhole.password.reset', [
-                'token' => $token,
-                'email' => $notifiable->getEmailForPasswordReset(),
-            ], false));
-        });
     }
 }

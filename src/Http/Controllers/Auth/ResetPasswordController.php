@@ -2,39 +2,29 @@
 
 namespace Waterhole\Http\Controllers\Auth;
 
-use Waterhole\Http\Controllers\Controller;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
+use Waterhole\Http\Controllers\Controller;
 
-class NewPasswordController extends Controller
+class ResetPasswordController extends Controller
 {
-    /**
-     * Display the password reset view.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\View\View
-     */
-    public function create(Request $request)
+    public function __construct()
+    {
+        $this->middleware('guest');
+    }
+
+    public function showResetForm(Request $request)
     {
         return view('waterhole::auth.reset-password', ['request' => $request]);
     }
 
-    /**
-     * Handle an incoming new password request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function store(Request $request)
+    public function reset(Request $request)
     {
         $request->validate([
-            'token' => 'required',
             'email' => 'required|email',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
@@ -43,7 +33,7 @@ class NewPasswordController extends Controller
         // will update the password on an actual user model and persist it to the
         // database. Otherwise we will parse the error and return the response.
         $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
+            $request->only('email', 'password', 'password_confirmation') + ['token' => $request->route('token')],
             function ($user) use ($request) {
                 $user->forceFill([
                     'password' => Hash::make($request->password),
@@ -58,8 +48,8 @@ class NewPasswordController extends Controller
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
         return $status == Password::PASSWORD_RESET
-                    ? redirect()->route('waterhole.login')->with('success', __($status))
-                    : back()->withInput($request->only('email'))
-                            ->withErrors(['token' => __($status)]);
+            ? redirect()->route('waterhole.login')->with('success', __($status))
+            : back()->withInput($request->only('email'))
+                ->withErrors(['token' => __($status)]);
     }
 }

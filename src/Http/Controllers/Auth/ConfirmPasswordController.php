@@ -8,25 +8,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
-class ConfirmablePasswordController extends Controller
+class ConfirmPasswordController extends Controller
 {
-    /**
-     * Show the confirm password view.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function show()
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    public function showConfirmForm()
     {
         return view('waterhole::auth.confirm-password');
     }
 
-    /**
-     * Confirm the user's password.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return mixed
-     */
-    public function store(Request $request)
+    public function confirm(Request $request)
     {
         if (! Auth::guard('web')->validate([
             'email' => $request->user()->email,

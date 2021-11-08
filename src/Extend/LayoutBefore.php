@@ -3,6 +3,7 @@
 namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\ManagesComponents;
+use Waterhole\Views\Components\EmailVerification;
 use Waterhole\Views\Components\Header;
 
 class LayoutBefore
@@ -13,6 +14,7 @@ class LayoutBefore
     {
         return [
             Header::class,
+            EmailVerification::class,
         ];
     }
 }

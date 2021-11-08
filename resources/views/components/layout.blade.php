@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ config('app.locale') }}">
+<html lang="{{ config('app.locale') }}" class="no-js">
 <head>
     <x-waterhole::head :title="$title"/>
 </head>
@@ -46,7 +46,7 @@
 ></ui-alerts>
 
 @if (session('success'))
-    <ui-alerts class="alerts" data-controller="alerts-append">
+    <ui-alerts class="alerts js-hidden" data-controller="alerts-append">
         <x-waterhole::alert type="success">
             {{ session('success') }}
         </x-waterhole::alert>

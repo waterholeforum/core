@@ -2,7 +2,7 @@ import { Controller } from '@hotwired/stimulus';
 import { StreamElement } from '@hotwired/turbo/dist/types/elements';
 import { AlertsElement } from '../../../../../../packages/inclusive-elements';
 
-export class AlertsController extends Controller {
+export default class extends Controller {
     connect() {
         document.addEventListener('turbo:before-stream-render', this.streamAlerts);
     }

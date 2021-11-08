@@ -6,7 +6,7 @@
             @if (session('status'))
                 <x-waterhole::alert type="success">{{ session('status') }}</x-waterhole::alert>
             @else
-                <form action="{{ route('waterhole.password.email') }}" method="POST" class="form">
+                <form action="{{ route('waterhole.forgot-password') }}" method="POST" class="form">
                     @csrf
 
                     <x-waterhole::field
