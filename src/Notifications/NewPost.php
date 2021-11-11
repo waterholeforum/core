@@ -1,25 +1,12 @@
 <?php
 
-/*
- * This file is part of Waterhole.
- *
- * (c) Toby Zerner <toby.zerner@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Waterhole\Notifications;
 
 use Waterhole\Models\Post;
-use Illuminate\Support\Facades\URL;
 
-class NewPost extends Notification implements Mailable
+class NewPost extends Notification// implements Mailable
 {
-    /**
-     * @var Post
-     */
-    protected $post;
+    protected Post $post;
 
     public function __construct(Post $post)
     {
@@ -33,7 +20,7 @@ class NewPost extends Notification implements Mailable
 
     public function subject($notifiable)
     {
-        return $this->post->discussion;
+        return $this->post->channel;
     }
 
     public function content($notifiable)
@@ -41,48 +28,47 @@ class NewPost extends Notification implements Mailable
         return $this->post;
     }
 
-    public function mailText($notifiable): string
-    {
-        return trans('notifications.new_post', [
-            'user' => '**'.$this->post->user->username.'**',
-            'discussion' => '['.$this->post->discussion->title.']('.$this->mailActionUrl($notifiable).')'
-        ]);
-    }
-
-    public function mailActionText($notifiable): ?string
-    {
-        return trans('notifications.new_post_view');
-    }
-
-    public function mailActionUrl($notifiable): ?string
-    {
-        // return route('discussion', [
-        //     'id' => $this->post->discussion->id,
-        //     'slug' => $this->post->discussion->slug,
-        //     'number' => $this->post->number
-        // ]);
-    }
-
-    public function mailExcerpt($notifiable): ?string
-    {
-        return $this->post->render();
-    }
-
-    public function mailReason($notifiable): ?string
-    {
-        return trans('notifications.new_post_reason');
-    }
-
-    public function mailUnsubscribeText($notifiable): ?string
-    {
-        return trans('notifications.new_post_unsubscribe');
-    }
-
-    public function mailUnsubscribeUrl($notifiable): ?string
-    {
-        return URL::signedRoute('unsubscribe.discussion', [
-            'actor' => $notifiable->getKey(),
-            'discussion' => $this->post->discussion->getKey()
-        ]);
-    }
+    // public function mailText($notifiable): string
+    // {
+    //     return trans('notifications.new_discussion', [
+    //         'user' => '**'.$this->discussion->user->username.'**',
+    //         'category' => '**'.$this->category->name.'**'
+    //     ]);
+    // }
+    //
+    // public function mailActionText($notifiable): ?string
+    // {
+    //     return trans('notifications.new_discussion_view');
+    // }
+    //
+    // public function mailActionUrl($notifiable): ?string
+    // {
+    //     // return route('discussion', [
+    //     //     'id' => $this->discussion->id,
+    //     //     'slug' => $this->discussion->slug,
+    //     // ]);
+    // }
+    //
+    // public function mailExcerpt($notifiable): ?string
+    // {
+    //     return '<h1>'.$this->discussion->title.'</h1>'.$this->discussion->firstComment->render;
+    // }
+    //
+    // public function mailReason($notifiable): ?string
+    // {
+    //     return trans('notifications.new_discussion_reason');
+    // }
+    //
+    // public function mailUnsubscribeText($notifiable): ?string
+    // {
+    //     return trans('notifications.new_discussion_unsubscribe');
+    // }
+    //
+    // public function mailUnsubscribeUrl($notifiable): ?string
+    // {
+    //     return URL::signedRoute('unsubscribe.category', [
+    //         'user' => $notifiable->getKey(),
+    //         'category' => $this->category->getKey()
+    //     ]);
+    // }
 }

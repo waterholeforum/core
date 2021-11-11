@@ -39,7 +39,7 @@ class User extends Model implements
     ];
 
     protected $casts = [
-        'notification_preferences' => 'json',
+        'notification_channels' => 'json',
         'email_verified_at' => 'datetime',
         'last_seen_at' => 'datetime',
         'notifications_read_at' => 'datetime',
@@ -63,7 +63,21 @@ class User extends Model implements
      */
     public function notifications(): MorphMany
     {
-        return $this->morphMany(Notification::class, 'notifiable');
+        return $this->morphMany(Notification::class, 'notifiable')
+            ->orderBy('notifications.created_at', 'desc');
+    }
+
+    public function markNotificationsRead(Model $model): static
+    {
+        $this->notifications()
+            ->where(function ($query) use ($model) {
+                $query->whereMorphedTo('subject', $model)
+                    ->orWhereMorphedTo('content', $model);
+            })
+            ->whereNull('read_at')
+            ->update(['read_at' => now()]);
+
+        return $this;
     }
 
     public function getUnreadNotificationCountAttribute()

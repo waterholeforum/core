@@ -2,18 +2,28 @@
 
 namespace Waterhole\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Waterhole\Notifications\Notification as LaravelNotification;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Waterhole\Notifications\Notification as NotificationTemplate;
 
 class Notification extends DatabaseNotification
 {
+    protected NotificationTemplate $template;
+
+    public function getTemplateAttribute()
+    {
+        if (! isset($this->template)) {
+            $this->template = new $this->type($this->content);
+        }
+
+        return $this->template;
+    }
+
     public function sender(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -59,9 +69,8 @@ class Notification extends DatabaseNotification
         $sub = static::query()
             ->select('type', 'subject_type', 'subject_id')
             ->selectRaw('MAX(created_at) as created_at')
-            ->selectRaw('COUNT(sender_id) as content_count')
-            ->selectRaw('COUNT(DISTINCT sender_id) as sender_count')
-            ->groupBy('type', 'subject_type', 'subject_id', DB::raw('read_at IS NULL'));
+            ->selectRaw('COUNT(IF(read_at IS NULL, 1, NULL)) as unread_count')
+            ->groupBy('type', 'subject_type', 'subject_id');
 
         $base = $query->getQuery();
         $sub->mergeWheres($base->wheres, $base->bindings['where']);
@@ -79,9 +88,15 @@ class Notification extends DatabaseNotification
      */
     public function scopeGroupedWith(Builder $query, Notification $notification): void
     {
-        $query->where(
-            Arr::only($notification->getAttributes(), ['type', 'subject_type', 'subject_id'])
-        );
+        $query->where($notification->only(['type', 'subject_type', 'subject_id']));
+    }
+
+    public function resolveRouteBinding($value, $field = null)
+    {
+        return $this
+            ->where('id', $value)
+            ->whereMorphedTo('notifiable', Auth::user())
+            ->firstOrFail();
     }
 
     // public static function sync(LaravelNotification $notification, Collection $users)

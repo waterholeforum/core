@@ -1,17 +1,8 @@
 <?php
 
-/*
- * This file is part of Waterhole.
- *
- * (c) Toby Zerner <toby.zerner@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Waterhole\Events;
 
-use Waterhole\Notification;
+use Waterhole\Models\Notification;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Neves\Events\Contracts\TransactionalEvent;

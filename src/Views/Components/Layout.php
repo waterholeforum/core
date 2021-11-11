@@ -15,6 +15,12 @@ class Layout extends Component
 
     public function render()
     {
+        // If the current request is intended to retrieve the contents of a
+        // Turbo Frame, then don't bother rendering the layout chrome.
+        if (request()->header('Turbo-Frame')) {
+            return '{{ $slot }}';
+        }
+
         return view('waterhole::components.layout');
     }
 }

@@ -58,11 +58,12 @@ document.addEventListener('turbo:submit-end', e => {
 
 document.addEventListener('turbo:before-fetch-response', async e => {
     const response = (e as any).detail.fetchResponse;
-    if (response.statusCode >= 500 && response.statusCode <= 599) {
+    if (response.statusCode >= 400 && response.statusCode <= 599) {
         const alert = (document.getElementById('fetch-error') as HTMLTemplateElement)?.content?.firstElementChild?.cloneNode(true) as HTMLElement;
         if (alert) {
             (document.getElementById('alerts') as AlertsElement).show(alert, { key: 'fetchError', duration: -1 });
         }
+        e.preventDefault();
     }
 });
 

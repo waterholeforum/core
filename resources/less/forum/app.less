@@ -11,6 +11,7 @@
 @import '../system/_badge';
 @import '../system/_btn';
 @import '../system/_card';
+@import '../system/_checkbox';
 @import '../system/_dialog';
 @import '../system/_divider';
 @import '../system/_form';
@@ -146,5 +147,37 @@
 
   .btn {
     height: auto;
+  }
+}
+
+.notifications-menu {
+  width: 50ch;
+  max-width: none;
+
+  .menu-item {
+    margin-top: 2px;
+
+    > .icon {
+      color: var(--color-text-muted);
+      font-size: 1.2em;
+    }
+
+    strong {
+      font-weight: var(--font-weight-medium);
+    }
+
+    &.is-unread {
+      background: var(--color-unread-light);
+
+      > .icon, time {
+        color: var(--color-unread);
+      }
+    }
+  }
+
+  .menu-item-description {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }

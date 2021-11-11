@@ -6,6 +6,8 @@ return [
 
     'route' => '',
 
+    'admin_route' => 'admin',
+
     'sorts' => ['latest', 'new-activity', 'oldest', 'top'],
 
     'default_sort' => 'latest',

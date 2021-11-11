@@ -1,62 +1,52 @@
 <?php
 
-/*
- * This file is part of Waterhole.
- *
- * (c) Toby Zerner <toby.zerner@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Waterhole\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Mail\Markdown;
-use Illuminate\Notifications\Notification as BaseNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Markdown;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Support\Traits\Macroable;
+use Illuminate\Notifications\Notification as BaseNotification;
 
 abstract class Notification extends BaseNotification implements ShouldQueue
 {
-    use Queueable, Macroable;
+    use Queueable;
 
     public function via($notifiable): array
     {
-        return array_merge(['database'], $notifiable->notification_channels[get_class($this)] ?? []);
+        return array_merge(
+            ['database'],
+            $notifiable->notification_channels[get_class($this)] ?? []
+        );
     }
 
     public function toArray($notifiable)
     {
         return [
-            'sender' => $this->sender($notifiable),
-            'subject' => $this->subject($notifiable),
-            'content' => $this->content($notifiable),
+            'sender' => $this->sender(),
+            'subject' => $this->subject(),
+            'content' => $this->content(),
         ];
     }
 
     public function toMail($notifiable)
     {
-        if ($this instanceof Mailable) {
-            $html = Markdown::parse($this->mailText($notifiable));
+        $html = Markdown::parse($this->title());
 
-            return (new MailMessage)
-                ->subject(strip_tags($html))
-                ->markdown('mail.notification', [
-                    'avatar' => $this->sender($notifiable)->avatar,
-                    'html' => $html,
-                    'actionText' => $this->mailActionText($notifiable),
-                    'actionUrl' => $this->mailActionUrl($notifiable),
-                    'excerpt' => $this->mailExcerpt($notifiable),
-                    'reason' => $this->mailReason($notifiable),
-                    'unsubscribeText' => $this->mailUnsubscribeText($notifiable),
-                    'unsubscribeUrl' => $this->mailUnsubscribeUrl($notifiable),
-                    'notificationSettingsUrl' => route('settings.notifications')
-                ]);
-        }
-
-        return null;
+        return (new MailMessage())
+            ->subject(strip_tags($html))
+            ->markdown('waterhole::mail.notification', [
+                'avatar' => $this->sender()->avatar,
+                'name' => $this->sender()->name,
+                'html' => $html,
+                'actionText' => $this->button(),
+                'actionUrl' => $this->url(),
+                'excerpt' => $this->excerpt(),
+                'reason' => $this->reason(),
+                'unsubscribeText' => $this->unsubscribeText(),
+                'unsubscribeUrl' => '',
+                // 'notificationSettingsUrl' => route('waterhole::settings.notifications')
+            ]);
     }
 
     /**
@@ -65,17 +55,23 @@ abstract class Notification extends BaseNotification implements ShouldQueue
      * For example, if Bob reacts to Jane's post, causing a notification to be
      * sent to Jane, then Bob is the notification sender.
      */
-    abstract public function sender($notifiable);
+    public function sender()
+    {
+        return null;
+    }
 
     /**
-     * The model that is the overarching subject of the notification.
+     * The model that is the subject of the notification.
      *
      * Notifications of the same type will be grouped by subject so that only
      * one is displayed in the list. For example, if Bob, Fred, and Maria react
      * to Jane's post, then the post is the subject, and Jane will only see
      * one notification about it ("Fred and 2 others reacted to your post").
      */
-    abstract public function subject($notifiable);
+    public function subject()
+    {
+        return null;
+    }
 
     /**
      * The model associated with the individual notification instance.
@@ -83,5 +79,8 @@ abstract class Notification extends BaseNotification implements ShouldQueue
      * For example, if Bob reacts to Jane's post, then the reaction is the
      * content of the notification.
      */
-    abstract public function content($notifiable);
+    public function content()
+    {
+        return null;
+    }
 }

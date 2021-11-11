@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of Waterhole.
- *
- * (c) Toby Zerner <toby.zerner@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Waterhole\Notifications;
 
 interface Mailable
@@ -45,7 +36,7 @@ interface Mailable
     public function mailUnsubscribeText($notifiable): ?string;
 
     /**
-     * The URL that the unsubscribe link links to.
+     * The URL that the unsubscribe link refers to.
      */
     public function mailUnsubscribeUrl($notifiable): ?string;
 }

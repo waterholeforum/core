@@ -13,3 +13,12 @@ export function isElementInViewport(el: HTMLElement, proportion: number = 1): bo
 export function getHeaderHeight(): number {
     return document.querySelector<HTMLElement>('.header')?.offsetHeight || 0;
 }
+
+export function getCookieValue(name: string): string|undefined {
+    const cookies = document.cookie ? document.cookie.split('; ') : [];
+    const cookie = cookies.find((cookie) => cookie.startsWith(name));
+    if (cookie) {
+        const value = cookie.split('=').slice(1).join('=');
+        return value ? decodeURIComponent(value) : undefined;
+    }
+}

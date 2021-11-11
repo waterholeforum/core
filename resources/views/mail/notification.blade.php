@@ -1,25 +1,25 @@
-@component('mail::components.layout-centered.php')
-  <div class="notification-text">
-    @isset($avatar)
-      <img src="{{ $avatar }}" class="avatar">
-    @endisset
-    {{ $html }}
-  </div>
+@component('mail::message')
+{{ $html }}
 
-  @isset($actionText)
-    @component('mail::button', ['url' => $actionUrl, 'color' => 'primary'])
-      {{ $actionText }}
-    @endcomponent
-  @endisset
+@component('mail::panel')
+@isset($avatar)
+<img src="{{ $avatar }}" class="avatar">
+@endisset
+{{ $name }}:
+{!! preg_replace('/<script.*?\/script>/s', '', $excerpt) !!}
+@endcomponent
 
-  @component('mail::panel')
-    {!! preg_replace('/<script.*?\/script>/s', '', $excerpt) !!}
-  @endcomponent
 
-  @slot('subcopy')
-    {{ $reason }}<br>
-    [{{ $unsubscribeText }}]({{ $unsubscribeUrl }}) &nbsp;
-    [Manage notification preferences]({{ route('settings.notifications') }})
-  @endslot
+@isset($actionText)
+@component('mail::button', ['url' => $actionUrl, 'color' => 'primary'])
+{{ $actionText }}
+@endcomponent
+@endisset
+
+@slot('subcopy')
+{{ $reason }}<br>
+[{{ $unsubscribeText }}]({{ $unsubscribeUrl }}) &nbsp;
+[Manage notification preferences]()
+@endslot
 @endcomponent
 

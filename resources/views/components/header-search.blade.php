@@ -11,15 +11,3 @@
         </form>
     </div>
 </ui-popup>
-
-@auth
-    <button class="btn btn--icon btn--transparent">
-        <x-waterhole::icon icon="heroicon-o-mail"/>
-        <ui-tooltip>Messages</ui-tooltip>
-    </button>
-
-    <button class="btn btn--icon btn--transparent">
-        <x-waterhole::icon icon="heroicon-o-bell"/>
-        <ui-tooltip>Notifications</ui-tooltip>
-    </button>
-@endauth

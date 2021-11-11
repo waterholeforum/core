@@ -2,6 +2,7 @@
 
 namespace Waterhole\Providers;
 
+use Illuminate\Auth\Middleware\RequirePassword;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Middleware\ThrottleRequests;
@@ -41,6 +42,7 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::aliasMiddleware('waterhole.auth', Authenticate::class);
         Route::aliasMiddleware('waterhole.throttle', ThrottleRequests::class);
+        Route::aliasMiddleware('waterhole.confirm-password', RequirePassword::class);
 
         $this->configureRateLimiting();
 
@@ -49,6 +51,11 @@ class RouteServiceProvider extends ServiceProvider
                 ->name('waterhole.')
                 ->prefix(config('waterhole.forum.route'))
                 ->group(__DIR__.'/../../routes/web.php');
+
+            Route::middleware(['waterhole.web', 'waterhole.confirm-password:waterhole.confirm-password'])
+                ->name('waterhole.admin.')
+                ->prefix(config('waterhole.forum.admin_route'))
+                ->group(__DIR__.'/../../routes/admin.php');
         });
     }
 

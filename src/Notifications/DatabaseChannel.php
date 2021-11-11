@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of Waterhole.
- *
- * (c) Toby Zerner <toby.zerner@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Waterhole\Notifications;
 
 use Waterhole\Events\NotificationReceived;
@@ -20,7 +11,7 @@ class DatabaseChannel extends BaseDatabaseChannel
 {
     public function send($notifiable, Notification $notification)
     {
-        /** @var \Waterhole\Notification $model */
+        /** @var \Waterhole\Models\Notification $model */
         $model = parent::send($notifiable, $notification);
 
         event(new NotificationReceived($model));
@@ -40,12 +31,12 @@ class DatabaseChannel extends BaseDatabaseChannel
         }
 
         if ($subject = Arr::pull($payload['data'], 'subject')) {
-            $payload['subject_type'] = get_class($subject);
+            $payload['subject_type'] = $subject->getMorphClass();
             $payload['subject_id'] = $subject->getKey();
         }
 
         if ($content = Arr::pull($payload['data'], 'content')) {
-            $payload['content_type'] = get_class($content);
+            $payload['content_type'] = $content->getMorphClass();
             $payload['content_id'] = $content->getKey();
         }
 

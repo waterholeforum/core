@@ -21,3 +21,7 @@ reset-password-submit = Reset Password
 register-title = Create an Account
 name-label = Your Name
 register-submit = Create Account
+
+confirm-password-title = Confirm Your Password
+confirm-password-introduction = Please confirm your password before continuing.
+confirm-password-submit = Confirm

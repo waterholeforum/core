@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Waterhole\Http\Controllers\ActionController;
+use Waterhole\Http\Controllers\Auth\ConfirmPasswordController;
 use Waterhole\Http\Controllers\Auth\ForgotPasswordController;
 use Waterhole\Http\Controllers\Auth\LoginController;
 use Waterhole\Http\Controllers\Auth\LogoutController;
@@ -12,6 +13,7 @@ use Waterhole\Http\Controllers\FormatController;
 use Waterhole\Http\Controllers\Forum\ChannelController;
 use Waterhole\Http\Controllers\Forum\CommentController;
 use Waterhole\Http\Controllers\Forum\HomeController;
+use Waterhole\Http\Controllers\Forum\NotificationController;
 use Waterhole\Http\Controllers\Forum\PostController;
 use Waterhole\Http\Controllers\Forum\SearchController;
 use Waterhole\Http\Controllers\UserLookupController;
@@ -31,6 +33,9 @@ Route::resource('posts.comments', CommentController::class)
 Route::resource('channels', ChannelController::class)
     ->only(['show', 'create', 'store', 'edit', 'update'])
     ->scoped(['channel' => 'slug']);
+
+Route::resource('notifications', NotificationController::class)->only(['index', 'show']);
+Route::post('notifications/read', [NotificationController::class, 'read'])->name('notifications.read');
 
 Route::get('search', SearchController::class)->name('search');
 
@@ -52,33 +57,11 @@ Route::post('reset-password/{token}', [ResetPasswordController::class, 'reset'])
 Route::get('verify-email/{id}', [VerifyEmailController::class, 'verify'])->name('verify-email');
 Route::post('verify-email', [VerifyEmailController::class, 'resend'])->name('verify-email.resend');
 
-// Route::get('/confirm-password', [ConfirmPasswordController::class, 'showConfirmForm'])->name('confirm-password');
-// Route::post('/confirm-password', [ConfirmPasswordController::class, 'confirm']);
+Route::get('/confirm-password', [ConfirmPasswordController::class, 'showConfirmForm'])->name('confirm-password');
+Route::post('/confirm-password', [ConfirmPasswordController::class, 'confirm']);
 
 Route::post('logout', [LogoutController::class, 'logout'])->name('logout');
 
-
-
-// Route::get('channels/{channel:slug}/delete', [ChannelController::class, 'delete'])->name('channels.delete');
-
-
-// $discussionListFilters = implode('|', array_keys(DiscussionListFilter::getItems()));
-//
-// Route::get('{filter?}', 'DiscussionListController')->where('filter', $discussionListFilters)->name('discussionList');
-// Route::get('c/{slug}/{filter?}', 'DiscussionListController')->where('filter', $discussionListFilters)->name('discussionList.category');
-//
-// foreach (DiscussionListRoute::getItems() as $path => $filter) {
-//     $route = Route::get($path.'/{filter?}', 'DiscussionListController')->where('filter', $discussionListFilters)->name('discussionList.'.$path);
-// }
-//
-// Route::get('categories', 'CategoriesController')->name('categories');
-//
-// Route::get('d/new', 'NewDiscussionController@show')->name('discussion.new');
-// Route::post('d/new', 'NewDiscussionController@post');
-//
-// Route::get('d/{category}/{id}-{slug?}', 'DiscussionController@show')->name('discussion');
-// Route::get('post/{post}', 'PostController@show')->name('post');
-//
 // $userPostsFilters = implode('|', array_keys(app('waterhole.userPostsFilters')));
 //
 // Route::get('u/{username}', 'User')->name('user');

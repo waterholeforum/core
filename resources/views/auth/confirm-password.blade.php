@@ -1,36 +1,30 @@
-<x-guest-layout>
-    <x-auth-card>
-        <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
-        </x-slot>
+<x-waterhole::layout :title="__('waterhole::auth.confirm-password-title')">
+    <x-waterhole::dialog :title="__('waterhole::auth.confirm-password-title')" class="dialog--sm">
 
-        <div class="mb-4 text-sm text-gray-600">
-            {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
-        </div>
-
-        <!-- Validation Errors -->
-        <x-auth-validation-errors class="mb-4" :errors="$errors" />
-
+        {{-- Opt-out of Turbo so that any fragment that may be present in the redirect URL will be followed --}}
         <form method="POST" action="{{ route('waterhole.confirm-password') }}">
             @csrf
 
-            <!-- Password -->
-            <div>
-                <x-label for="password" :value="__('Password')" />
+            <div class="form">
+                <p class="content">{{ __('waterhole::auth.confirm-password-introduction') }}</p>
 
-                <x-input id="password" class="block mt-1 w-full"
-                                type="password"
-                                name="password"
-                                required autocomplete="current-password" />
-            </div>
+                <x-waterhole::field
+                    name="password"
+                    :label="__('waterhole::auth.password-label')"
+                >
+                    <input
+                        class="input"
+                        type="password"
+                        id="{{ $component->id }}"
+                        name="password"
+                        required
+                        autocomplete="current-password"
+                        autofocus
+                    >
+                </x-waterhole::field>
 
-            <div class="flex justify-end mt-4">
-                <x-button>
-                    {{ __('Confirm') }}
-                </x-button>
+                <button type="submit" class="btn btn--primary btn--block">{{ __('waterhole::auth.confirm-password-submit') }}</button>
             </div>
         </form>
-    </x-auth-card>
-</x-guest-layout>
+    </x-waterhole::dialog>
+</x-waterhole::layout>

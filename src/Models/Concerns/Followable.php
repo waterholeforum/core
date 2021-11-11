@@ -3,9 +3,16 @@
 namespace Waterhole\Models\Concerns;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Waterhole\Models\User;
 
 trait Followable
 {
+    public function followedBy(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class)->wherePivot('notifications', 'follow');
+    }
+
     public function scopeFollowing(Builder $query): void
     {
         $query->whereHas('userState', fn($query) => $query->where('notifications', 'follow'));

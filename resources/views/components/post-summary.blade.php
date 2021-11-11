@@ -3,7 +3,7 @@
     <div class="post-summary__content">
         <h3 class="post-summary__title">
             <a
-                href="{{ $post->isUnread() ? $post->url(['index' => $post->comment_count - $post->unread_comments_count]).($post->isNew() ? '' : '#unread') : $post->url }}"
+                href="{{ $post->isUnread() ? $post->unread_url : $post->url }}"
                 data-action="post#appearAsRead"
             >{{ $post->title }}</a>
         </h3>

@@ -3,6 +3,7 @@
 namespace Waterhole\Http\Controllers\Forum;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Waterhole\Extend\CommentsSort;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Channel;
@@ -27,10 +28,7 @@ class PostController extends Controller
             return $sort->handle() === $request->query('sort');
         }, $sorts[0]);
 
-        $query = $post->comments()
-            ->with(['user', 'parent.user', 'likedBy', 'mentions'])
-            ->select('comments.*')
-            ->withIndex();
+        $query = $post->comments()->with(['user', 'parent.user', 'likedBy', 'mentions']);
 
         $currentSort->apply($query);
 
@@ -41,9 +39,12 @@ class PostController extends Controller
             $comment->parent?->setRelation('post', $post);
         });
 
+        $lastReadAt = $post->userState?->last_read_at;
         $post->userState?->read()->save();
 
-        return view('waterhole::posts.show', compact('post', 'comments', 'sorts', 'currentSort'));
+        $request->user()?->markNotificationsRead($post);
+
+        return view('waterhole::posts.show', compact('post', 'comments', 'sorts', 'currentSort', 'lastReadAt'));
     }
 
     public function create()

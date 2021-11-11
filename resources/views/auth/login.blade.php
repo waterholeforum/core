@@ -37,7 +37,7 @@
 
             <div class="toolbar">
                 <div>
-                    <label for="remember_me">
+                    <label for="remember_me" class="checkbox">
                         <input id="remember_me" type="checkbox" name="remember">
                         {{ __('waterhole::auth.remember-me-label') }}
                     </label>

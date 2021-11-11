@@ -3,16 +3,16 @@
 namespace Waterhole\Http\Controllers\Forum;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Tonysm\TurboLaravel\Http\TurboResponseFactory;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
+use Waterhole\Notifications\NewComment;
 use Waterhole\Views\Components\CommentFrame;
 use Waterhole\Views\Components\CommentFull;
 use Waterhole\Views\Components\Composer;
 use Waterhole\Views\TurboStream;
-
-use function Tonysm\TurboLaravel\dom_id;
 
 class CommentController extends Controller
 {
@@ -22,13 +22,15 @@ class CommentController extends Controller
         $this->middleware('waterhole.throttle:waterhole.create')->only('store', 'update');
     }
 
-    public function show(Post $post, Comment $comment)
+    public function show(Post $post, Comment $comment, Request $request)
     {
         $all = $comment->childrenAndSelf
             ->load('user', 'likedBy', 'parent.post', 'parent.user')
             ->each->setRelation('post', $post);
 
         $comment = $all->toTree()[0];
+
+        $request->user()?->markNotificationsRead($comment);
 
         return view('waterhole::comments.show', compact('post', 'comment'));
     }
@@ -49,7 +51,7 @@ class CommentController extends Controller
 
     public function store(Post $post, Request $request)
     {
-        if (! $request->has('commit')) {
+        if (! $request->input('commit')) {
             return redirect()->route('waterhole.posts.comments.create', compact('post'))->withInput();
         }
 
@@ -68,6 +70,11 @@ class CommentController extends Controller
 
         $post->comments()->save($comment);
         $post->userState?->read()->save();
+
+        Notification::send(
+            $post->followedBy->except($request->user()->id),
+            new NewComment($comment)
+        );
 
         if ($request->wantsTurboStream()) {
             $streams = [

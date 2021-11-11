@@ -74,6 +74,7 @@
             <button
                 class="btn btn--primary"
                 name="commit"
+                value="1"
                 data-hotkey="Meta+Enter,Ctrl+Enter"
                 data-hotkey-scope="new-comment"
             >

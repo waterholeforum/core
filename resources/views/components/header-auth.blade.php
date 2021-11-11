@@ -17,8 +17,8 @@
             </a>
 
             <a href="#" class="menu-item" role="menuitem">
-                <x-waterhole::icon icon="heroicon-o-cog"/>
-                <span>Settings</span>
+                <x-waterhole::icon icon="heroicon-o-adjustments"/>
+                <span>Preferences</span>
             </a>
 
             <a href="#" class="menu-item" role="menuitem">
@@ -29,7 +29,13 @@
 
             <hr class="menu-divider">
 
-            <form action="{{ route('waterhole.logout') }}" method="POST">
+            <a href="{{ route('waterhole.admin.home') }}" class="menu-item" role="menuitem">
+                <x-waterhole::icon icon="heroicon-o-cog"/>
+                <span>Administration</span>
+            </a>
+
+            {{-- Disable Turbo as a means of clearing out the Drive cache --}}
+            <form action="{{ route('waterhole.logout') }}" method="POST" data-turbo="false">
                 @csrf
                 <button type="submit" class="menu-item" role="menuitem">
                     <x-waterhole::icon icon="heroicon-o-logout"/>

@@ -115,6 +115,17 @@ class Post extends Model
         return route('waterhole.posts.show', $params);
     }
 
+    public function getUnreadUrlAttribute(): string
+    {
+        $fragment = match (true) {
+            $this->isNew() => '',
+            (bool) $this->unread_comments_count => '#unread',
+            default => '#bottom',
+        };
+
+        return $this->url(['index' => $this->comment_count - $this->unread_comments_count]).$fragment;
+    }
+
     public function wasEdited(): static
     {
         $this->edited_at = now();
