@@ -23,7 +23,7 @@
     <span class="label">Users</span>
 </a>
 
-<a href="{{ route('waterhole.admin.permissions') }}" class="nav-link {{ request()->routeIs('waterhole.admin.permissions') === 'permissions' ? 'is-active' : '' }}">
+<a href="{{ route('waterhole.admin.permissions') }}" class="nav-link {{ request()->routeIs('waterhole.admin.permissions') ? 'is-active' : '' }}">
     <x-waterhole::icon icon="heroicon-o-key"/>
     <span class="label">Permissions</span>
 </a>

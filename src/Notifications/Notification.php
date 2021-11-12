@@ -22,16 +22,12 @@ abstract class Notification extends BaseNotification implements ShouldQueue
         );
     }
 
-    public function toArray($notifiable)
+    public function toArray(): array
     {
-        return [
-            'sender' => $this->sender(),
-            'subject' => $this->subject(),
-            'content' => $this->content(),
-        ];
+        return [];
     }
 
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
         $html = Markdown::parse($this->title());
 
@@ -76,7 +72,7 @@ abstract class Notification extends BaseNotification implements ShouldQueue
      * to Jane's post, then the post is the subject, and Jane will only see
      * one notification about it ("Fred and 2 others reacted to your post").
      */
-    public function subject()
+    public function group()
     {
         return null;
     }
@@ -102,7 +98,7 @@ abstract class Notification extends BaseNotification implements ShouldQueue
         $type = get_class($this);
 
         if ($channels = $user->notification_channels[$type] ?? null) {
-            $user->notification_channels[$type] = $channels[$type]->reject('mail');
+            $user->notification_channels[$type] = collect($channels)->reject('mail');
             $user->save();
         }
     }

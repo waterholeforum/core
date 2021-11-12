@@ -9,7 +9,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Contracts\Translation\HasLocalePreference;
-use Illuminate\Database\Eloquent\Casts\AsCollection;
+use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -41,7 +41,7 @@ class User extends Model implements
     ];
 
     protected $casts = [
-        'notification_channels' => AsCollection::class,
+        'notification_channels' => AsArrayObject::class,
         'email_verified_at' => 'datetime',
         'last_seen_at' => 'datetime',
         'notifications_read_at' => 'datetime',
@@ -71,7 +71,7 @@ class User extends Model implements
     public function markNotificationsRead(Model $model): static
     {
         $this->unreadNotifications()
-            ->whereMorphedTo('subject', $model)
+            ->whereMorphedTo('group', $model)
             ->orWhereMorphedTo('content', $model)
             ->update(['read_at' => now()]);
 
@@ -88,8 +88,8 @@ class User extends Model implements
 
         return $query->distinct()->count([
             'type',
-            new Expression('COALESCE(subject_type, id)'),
-            new Expression('COALESCE(subject_id, id)')
+            new Expression('COALESCE(group_type, id)'),
+            new Expression('COALESCE(group_id, id)')
         ]);
     }
 

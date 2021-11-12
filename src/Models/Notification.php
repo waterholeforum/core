@@ -32,7 +32,7 @@ class Notification extends DatabaseNotification
         return $this->belongsTo(User::class);
     }
 
-    public function subject(): MorphTo
+    public function group(): MorphTo
     {
         return $this->morphTo();
     }
@@ -46,8 +46,8 @@ class Notification extends DatabaseNotification
     {
         $query
             ->where(function (Builder $query) use ($model) {
-                $query->where('subject_type', $model->getMorphClass())
-                    ->where('subject_id', $model->getKey());
+                $query->where('group_type', $model->getMorphClass())
+                    ->where('group_id', $model->getKey());
             })
             ->orWhere(function (Builder $query) use ($model) {
                 $query->where('content_type', $model->getMorphClass())
@@ -56,8 +56,8 @@ class Notification extends DatabaseNotification
 
         if ($model instanceof Post) {
             $query->orWhere(function (Builder $query) use ($model) {
-                $query->where('subject_type', Comment::class)
-                    ->whereIn('subject_id', function ($query) use ($model) {
+                $query->where('group_type', Comment::class)
+                    ->whereIn('group_id', function ($query) use ($model) {
                         $query->select('id')->from('comments')->where('post_id', $model->getKey());
                     });
             });
@@ -69,8 +69,8 @@ class Notification extends DatabaseNotification
      */
     public function scopeGroupedWith(Builder $query, Notification $notification): void
     {
-        if ($notification->subject_type && $notification->subject_id) {
-            $query->where($notification->only(['type', 'subject_type', 'subject_id']));
+        if ($notification->group_type && $notification->group_id) {
+            $query->where($notification->only(['type', 'group_type', 'group_id']));
         } else {
             $query->whereKey($notification->getKey());
         }
@@ -83,42 +83,4 @@ class Notification extends DatabaseNotification
             ->whereMorphedTo('notifiable', Auth::user())
             ->firstOrFail();
     }
-
-    // public static function sync(LaravelNotification $notification, Collection $users)
-    // {
-    //     $data = $notification->toArray(null);
-    //
-    //     $query = static::query()
-    //         ->withTrashed()
-    //         ->where('type', get_class($notification));
-    //
-    //     if ($sender = Arr::pull($data, 'sender')) {
-    //         $query->where('sender_id', $sender->getKey());
-    //     }
-    //
-    //     if ($subject = Arr::pull($data, 'subject')) {
-    //         $query->where('subject_type', get_class($subject));
-    //         $query->where('subject_id', $subject->getKey());
-    //     }
-    //
-    //     if ($content = Arr::pull($data, 'content')) {
-    //         $query->where('content_type', get_class($content));
-    //         $query->where('content_id', $content->getKey());
-    //     }
-    //
-    //     $notifications = $query->get(['id', 'notifiable_id']);
-    //
-    //     list($undeleted, $deleted) = $notifications->partition(function ($notification) use ($users) {
-    //         return $users->contains($notification->notifiable_id);
-    //     });
-    //
-    //     static::whereIn('id', $undeleted->modelKeys())->restore();
-    //     static::whereIn('id', $deleted->modelKeys())->delete();
-    //
-    //     $users
-    //         ->filter(function ($user) use ($notifications) {
-    //             return ! $notifications->firstWhere('notifiable_id', $user->id);
-    //         })
-    //         ->each->notify($notification);
-    // }
 }

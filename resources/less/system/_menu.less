@@ -6,9 +6,9 @@
   min-width: 15ch;
   width: max-content;
   max-width: 30ch;
-  margin: .5rem 0;
+  margin: var(--space-sm) 0;
   z-index: var(--z-index-overlay);
-  font-size: 90%;
+  font-size: var(--text-xs);
   overflow: auto;
 }
 
@@ -86,4 +86,13 @@
   font-weight: var(--font-weight-bold);
   color: var(--color-text-muted);
   padding: var(--space-sm);
+}
+
+.menu-sticky {
+  position: sticky;
+  top: ~"calc(-1 * var(--space-sm))";
+  margin-top: ~"calc(-1 * var(--space-sm))";
+  padding-top: var(--space-sm);
+  background: var(--color-bg);
+  z-index: 1;
 }

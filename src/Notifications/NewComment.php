@@ -26,7 +26,7 @@ class NewComment extends Notification
         return $this->comment->user;
     }
 
-    public function subject()
+    public function group()
     {
         return $this->comment->post;
     }

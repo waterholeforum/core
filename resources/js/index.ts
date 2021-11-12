@@ -59,7 +59,7 @@ document.addEventListener('turbo:submit-end', e => {
 document.addEventListener('turbo:before-fetch-response', async e => {
     const response = (e as any).detail.fetchResponse;
     const alerts = document.getElementById('alerts') as AlertsElement;
-    if (response.statusCode >= 400 && response.statusCode <= 599) {
+    if (response.statusCode >= 400 && response.statusCode !== 422 && response.statusCode <= 599) {
         const alert = (document.getElementById('fetch-error') as HTMLTemplateElement)?.content?.firstElementChild?.cloneNode(true) as HTMLElement;
         if (alert) {
             alerts.show(alert, { key: 'fetchError', duration: -1 });
@@ -86,8 +86,12 @@ document.addEventListener('turbo:load', () => {
     });
 });
 
+document.addEventListener('turbo:frame-load', function({ srcElement }) {
+    (srcElement as FrameElement).removeAttribute('src');
+});
+
 import { Application } from '@hotwired/stimulus';
-import { StreamElement } from '@hotwired/turbo/dist/types/elements';
+import { FrameElement, StreamElement } from '@hotwired/turbo/dist/types/elements';
 
 window.Stimulus = Application.start();
 const context = require.context('./controllers', true, /\.ts$/);

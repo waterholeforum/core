@@ -12,14 +12,14 @@
             <ui-tooltip>Notifications</ui-tooltip>
         </a>
 
-        <turbo-frame
-            hidden
-            id="notifications"
-            class="menu notifications-menu"
-            src="{{ route('waterhole.notifications.index') }}"
-            loading="lazy"
-        >
-            <div class="loading-indicator"></div>
-        </turbo-frame>
+        <ui-menu hidden class="menu notifications-menu">
+            <turbo-frame
+                id="notifications"
+                src="{{ route('waterhole.notifications.index') }}"
+                loading="lazy"
+            >
+                <div class="loading-indicator"></div>
+            </turbo-frame>
+        </ui-menu>
     </ui-popup>
 @endauth

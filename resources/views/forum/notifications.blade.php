@@ -1,7 +1,7 @@
 <x-waterhole::layout>
     <div class="container section">
         <turbo-frame id="notifications">
-            <div class="toolbar">
+            <div class="toolbar menu-sticky">
                 <h1 class="menu-heading">Notifications</h1>
 
                 <div class="spacer"></div>
@@ -15,10 +15,14 @@
                         </button>
                     </form>
 
-                    <button class="btn btn--icon btn--transparent">
+                    <a
+                        href="{{ route('waterhole.settings.notifications') }}"
+                        class="btn btn--icon btn--transparent"
+                        data-turbo-frame="_top"
+                    >
                         <x-waterhole::icon icon="heroicon-o-cog"/>
                         <ui-tooltip>Notification Preferences</ui-tooltip>
-                    </button>
+                    </a>
                 </div>
             </div>
 

@@ -19126,28 +19126,31 @@ document.addEventListener('turbo:submit-end', function (e) {
 });
 document.addEventListener('turbo:before-fetch-response', function (e) {
   return __awaiter(void 0, void 0, void 0, /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-    var _a, _b, _c, response, alert;
+    var _a, _b, _c, response, alerts, alert;
 
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             response = e.detail.fetchResponse;
+            alerts = document.getElementById('alerts');
 
-            if (response.statusCode >= 400 && response.statusCode <= 599) {
+            if (response.statusCode >= 400 && response.statusCode !== 422 && response.statusCode <= 599) {
               alert = (_c = (_b = (_a = document.getElementById('fetch-error')) === null || _a === void 0 ? void 0 : _a.content) === null || _b === void 0 ? void 0 : _b.firstElementChild) === null || _c === void 0 ? void 0 : _c.cloneNode(true);
 
               if (alert) {
-                document.getElementById('alerts').show(alert, {
+                alerts.show(alert, {
                   key: 'fetchError',
                   duration: -1
                 });
               }
 
               e.preventDefault();
+            } else {
+              alerts.dismiss('fetchError');
             }
 
-          case 2:
+          case 3:
           case "end":
             return _context.stop();
         }
@@ -19169,6 +19172,10 @@ document.addEventListener('turbo:load', function () {
   document.querySelectorAll('[data-hotkey]').forEach(function (el) {
     (0,_github_hotkey__WEBPACK_IMPORTED_MODULE_2__.install)(el);
   });
+});
+document.addEventListener('turbo:frame-load', function (_ref) {
+  var srcElement = _ref.srcElement;
+  srcElement.removeAttribute('src');
 });
 
 window.Stimulus = _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_8__.Application.start();

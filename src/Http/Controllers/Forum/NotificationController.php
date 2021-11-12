@@ -22,11 +22,11 @@ class NotificationController extends Controller
 
         $query = $user->notifications()
             ->select('*')
-            ->selectRaw('ROW_NUMBER() OVER(PARTITION BY type, COALESCE(subject_type, id), COALESCE(subject_id, id) ORDER BY created_at DESC) AS r');
+            ->selectRaw('ROW_NUMBER() OVER(PARTITION BY type, COALESCE(group_type, id), COALESCE(group_id, id) ORDER BY created_at DESC) AS r');
 
         $notifications = Notification::from('notifications')
             ->withExpression('notifications', $query)
-            ->with('subject', 'content')
+            ->with('content')
             ->where('r', 1)
             ->latest()
             ->paginate(10);

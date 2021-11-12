@@ -15,15 +15,15 @@
                 <br><br><br><br>
             </div>
 
-            <section class="post-comments" tabindex="-1" id="comments">
-
-                <h2 style="margin-bottom: var(--space-lg); padding-top: var(--space-xl)">
-                    {{ __('waterhole::forum.post-comment-count', ['count' => $post->comment_count]) }}
-                </h2>
+            <section class="post-comments" tabindex="-1" id="comments" style="padding-top: var(--space-xl)">
 
                 <div class="with-sidebar-end">
 
                     <div class="post-comments__comments" id="@domid($post, 'comments')">
+                        <h2 style="margin-bottom: var(--space-lg)">
+                            {{ __('waterhole::forum.post-comment-count', ['count' => $post->comment_count]) }}
+                        </h2>
+
                         <turbo-frame id="page_{{ $comments->currentPage() }}" target="_top">
                             @if (! $comments->onFirstPage() && request()->query('direction') !== 'forwards')
                                 <turbo-frame
