@@ -5,7 +5,6 @@ namespace Waterhole\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Validation\Rule;
-use RuntimeException;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 use Waterhole\Events\NewComment;
 use Waterhole\Models\Concerns\HasBody;
@@ -107,11 +106,11 @@ class Comment extends Model
 
     public function getPostUrlAttribute(): string
     {
-        if (! isset($this->index)) {
-            throw new RuntimeException('post_url requires the withIndex() scope to be present');
+        if (isset($this->index)) {
+            return $this->post->url(['index' => $this->index]).'#'.dom_id($this);
         }
 
-        return $this->post->url(['index' => $this->index]).'#'.dom_id($this);
+        return $this->post->url.'?comment='.$this->id;
     }
 
     public function scopeWithIndex(Builder $query)

@@ -4,11 +4,13 @@ namespace Waterhole\Http\Controllers\Forum;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Notification;
 use Waterhole\Extend\CommentsSort;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
+use Waterhole\Notifications\NewPost;
 use Waterhole\Sorts\Sort;
 
 class PostController extends Controller
@@ -21,6 +23,14 @@ class PostController extends Controller
 
     public function show(Post $post, Request $request)
     {
+        if ($cid = $request->query('comment')) {
+            $comment = $post->comments()->findOrFail($cid);
+
+            $request->user()?->markNotificationsRead($comment);
+
+            return redirect($comment->post_url);
+        }
+
         $post->load('likedBy');
 
         $sorts = CommentsSort::getInstances();
@@ -64,13 +74,18 @@ class PostController extends Controller
     {
         $this->authorize('create', Post::class);
 
-        if ($request->has('publish')) {
+        if ($request->input('publish')) {
             $post = Post::byUser(
                 $request->user(),
                 $this->data($request)
             );
 
             $post->save();
+
+            Notification::send(
+                $post->channel->followedBy->except($request->user()->id),
+                new NewPost($post)
+            );
 
             return redirect($post->url);
         }

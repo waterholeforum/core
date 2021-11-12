@@ -5,6 +5,7 @@ namespace Waterhole\Notifications;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\HtmlString;
 use Waterhole\Models\Comment;
+use Waterhole\Models\User;
 
 class NewComment extends Notification
 {
@@ -15,11 +16,9 @@ class NewComment extends Notification
         $this->comment = $comment;
     }
 
-    public static function fromDatabase(Collection $notifications)
+    public static function load(Collection $notifications): void
     {
-        return $notifications
-            ->load('content.post', 'content.user')
-            ->map(fn($notification) => new static($notification->content));
+        $notifications->load('content.post', 'content.user');
     }
 
     public function sender()
@@ -39,7 +38,7 @@ class NewComment extends Notification
 
     public function icon()
     {
-        return 'waterhole-o-comment';
+        return 'heroicon-o-annotation';
     }
 
     public function title(): string
@@ -52,19 +51,19 @@ class NewComment extends Notification
         return $this->comment->body_html;
     }
 
-    public function button(): string
-    {
-        return 'View Comment';
-    }
-
     public function url(): string
     {
-        return $this->comment->url;
+        return $this->comment->post_url;
     }
 
     public function groupedUrl(): string
     {
         return $this->comment->post->unread_url;
+    }
+
+    public function button(): string
+    {
+        return 'View Comment';
     }
 
     public function reason(): string
@@ -77,8 +76,8 @@ class NewComment extends Notification
         return 'Unfollow this post';
     }
 
-    public function unsubscribe(): void
+    public function unsubscribe(User $user): void
     {
-        // do something
+        $this->comment->post->loadUserState($user)->unfollow();
     }
 }

@@ -7,6 +7,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Markdown;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification as BaseNotification;
+use Illuminate\Support\Facades\URL;
+use Waterhole\Models\User;
 
 abstract class Notification extends BaseNotification implements ShouldQueue
 {
@@ -36,6 +38,7 @@ abstract class Notification extends BaseNotification implements ShouldQueue
         return (new MailMessage())
             ->subject(strip_tags($html))
             ->markdown('waterhole::mail.notification', [
+                'notification' => $this,
                 'avatar' => $this->sender()->avatar,
                 'name' => $this->sender()->name,
                 'html' => $html,
@@ -44,8 +47,13 @@ abstract class Notification extends BaseNotification implements ShouldQueue
                 'excerpt' => $this->excerpt(),
                 'reason' => $this->reason(),
                 'unsubscribeText' => $this->unsubscribeText(),
-                'unsubscribeUrl' => '',
-                // 'notificationSettingsUrl' => route('waterhole::settings.notifications')
+                'unsubscribeUrl' => URL::signedRoute('waterhole.notifications.unsubscribe', [
+                    'type' => get_class($this),
+                    'notifiable_type' => $notifiable->getMorphClass(),
+                    'notifiable_id' => $notifiable->getKey(),
+                    'content_type' => $this->content()?->getMorphClass(),
+                    'content_id' => $this->content()?->getKey(),
+                ]),
             ]);
     }
 
@@ -82,5 +90,20 @@ abstract class Notification extends BaseNotification implements ShouldQueue
     public function content()
     {
         return null;
+    }
+
+    public function groupedUrl(): string
+    {
+        return $this->url();
+    }
+
+    public function unsubscribe(User $user)
+    {
+        $type = get_class($this);
+
+        if ($channels = $user->notification_channels[$type] ?? null) {
+            $user->notification_channels[$type] = $channels[$type]->reject('mail');
+            $user->save();
+        }
     }
 }

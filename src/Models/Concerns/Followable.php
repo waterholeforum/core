@@ -13,6 +13,11 @@ trait Followable
         return $this->belongsToMany(User::class)->wherePivot('notifications', 'follow');
     }
 
+    public function ignoredBy(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class)->wherePivot('notifications', 'ignore');
+    }
+
     public function scopeFollowing(Builder $query): void
     {
         $query->whereHas('userState', fn($query) => $query->where('notifications', 'follow'));

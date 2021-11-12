@@ -13,11 +13,17 @@ class PostUnread extends Component
     public function __construct(Post $post)
     {
         $this->post = $post;
-        $this->isNotifiable = $post->isFollowed() || (
-            $post->channel->isFollowed()
-            && $post->last_activity_at > $post->channel->userState->followed_at
-            && ! $post->userState->last_read_at
-        );
+
+        $this->isNotifiable = $post->isFollowed()
+            || (
+                ! $post->isIgnored()
+                && $post->userState->mentioned_at > $post->userState->last_read_at
+            )
+            || (
+                $post->channel->isFollowed()
+                && $post->last_activity_at > $post->channel->userState->followed_at
+                && ! $post->userState->last_read_at
+            );
     }
 
     public function shouldRender()

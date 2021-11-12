@@ -9,9 +9,11 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Contracts\Translation\HasLocalePreference;
+use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Query\Expression;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Intervention\Image\Image;
@@ -39,7 +41,7 @@ class User extends Model implements
     ];
 
     protected $casts = [
-        'notification_channels' => 'json',
+        'notification_channels' => AsCollection::class,
         'email_verified_at' => 'datetime',
         'last_seen_at' => 'datetime',
         'notifications_read_at' => 'datetime',
@@ -63,18 +65,14 @@ class User extends Model implements
      */
     public function notifications(): MorphMany
     {
-        return $this->morphMany(Notification::class, 'notifiable')
-            ->orderBy('notifications.created_at', 'desc');
+        return $this->morphMany(Notification::class, 'notifiable');
     }
 
     public function markNotificationsRead(Model $model): static
     {
-        $this->notifications()
-            ->where(function ($query) use ($model) {
-                $query->whereMorphedTo('subject', $model)
-                    ->orWhereMorphedTo('content', $model);
-            })
-            ->whereNull('read_at')
+        $this->unreadNotifications()
+            ->whereMorphedTo('subject', $model)
+            ->orWhereMorphedTo('content', $model)
             ->update(['read_at' => now()]);
 
         return $this;
@@ -82,13 +80,17 @@ class User extends Model implements
 
     public function getUnreadNotificationCountAttribute()
     {
-        $query = $this->unreadNotifications()->groupBySubject();
+        $query = $this->unreadNotifications();
 
         if ($this->notifications_read_at) {
             $query->where('notifications.created_at', '>', $this->notifications_read_at);
         }
 
-        return $query->count();
+        return $query->distinct()->count([
+            'type',
+            new Expression('COALESCE(subject_type, id)'),
+            new Expression('COALESCE(subject_id, id)')
+        ]);
     }
 
     public function preferredLocale(): ?string

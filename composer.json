@@ -24,6 +24,7 @@
         "s9e/text-formatter": "^2.11",
         "staudenmeir/eloquent-eager-limit": "^1.0",
         "staudenmeir/laravel-adjacency-list": "^1.7",
+        "staudenmeir/laravel-cte": "^1.0",
         "symfony/psr-http-message-bridge": "^2.1",
         "tonysm/turbo-laravel": "dev-invalid-forms-with-422",
         "vanderlee/php-stable-sort-functions": "^2.0",

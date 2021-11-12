@@ -24,7 +24,7 @@
                 @include('waterhole::posts.fields')
 
                 <div>
-                    <button type="submit" class="btn btn--primary" name="publish">Post</button>
+                    <button type="submit" class="btn btn--primary" name="publish" value="1">Post</button>
                 </div>
             </div>
         </form>

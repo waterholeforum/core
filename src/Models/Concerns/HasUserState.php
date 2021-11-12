@@ -20,4 +20,11 @@ trait HasUserState
 
         return $relation;
     }
+
+    public function loadUserState(User $user): static
+    {
+        $this->setRelation('userState', $this->userState($user)->getResults());
+
+        return $this;
+    }
 }

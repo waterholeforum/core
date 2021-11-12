@@ -34,13 +34,15 @@ Route::resource('channels', ChannelController::class)
     ->only(['show', 'create', 'store', 'edit', 'update'])
     ->scoped(['channel' => 'slug']);
 
-Route::resource('notifications', NotificationController::class)->only(['index', 'show']);
+// Route::get('u/{username}', 'User')->name('user');
+Route::get('settings')->name('settings');
+Route::get('settings/notifications')->name('settings.notifications');
+
+Route::get('notifications/unsubscribe', [NotificationController::class, 'unsubscribe'])->name('notifications.unsubscribe');
 Route::post('notifications/read', [NotificationController::class, 'read'])->name('notifications.read');
+Route::resource('notifications', NotificationController::class)->only(['index', 'show']);
 
 Route::get('search', SearchController::class)->name('search');
-
-Route::get('user-lookup', UserLookupController::class)->name('user-lookup');
-Route::post('format', FormatController::class)->name('format');
 
 Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('register', [RegisterController::class, 'register']);
@@ -62,12 +64,6 @@ Route::post('/confirm-password', [ConfirmPasswordController::class, 'confirm']);
 
 Route::post('logout', [LogoutController::class, 'logout'])->name('logout');
 
-// $userPostsFilters = implode('|', array_keys(app('waterhole.userPostsFilters')));
-//
-// Route::get('u/{username}', 'User')->name('user');
-// Route::get('u/{username}/{filter?}', 'User')->where('filter', $userPostsFilters)->name('user.posts');
-// Route::get('u/{username}/discussions/{filter?}', 'User')->where('filter', $discussionListFilters)->name('user.discussions');
-//
-// Route::get('unsubscribe/{actor}/{type}', 'Unsubscribe@type')->name('unsubscribe.notifications')->middleware('signed');
-// Route::get('unsubscribe/{actor}/discussion/{discussion}', 'Unsubscribe@discussion')->name('unsubscribe.discussion')->middleware('signed');
-// Route::get('unsubscribe/{actor}/category/{category}', 'Unsubscribe@category')->name('unsubscribe.category')->middleware('signed');
+// Utils
+Route::get('user-lookup', UserLookupController::class)->name('user-lookup');
+Route::post('format', FormatController::class)->name('format');

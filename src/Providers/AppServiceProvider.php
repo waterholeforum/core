@@ -4,10 +4,10 @@ namespace Waterhole\Providers;
 
 use BladeUI\Icons\Factory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Notifications\ChannelManager;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
-use PragmaRX\Yaml\Package\Facade as Yaml;
+use Waterhole\Models;
 use Waterhole\Notifications\DatabaseChannel;
 
 class AppServiceProvider extends ServiceProvider
@@ -33,6 +33,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Model::preventLazyLoading();
+
+        Relation::enforceMorphMap([
+            'channel' => Models\Channel::class,
+            'comment' => Models\Comment::class,
+            'group' => Models\Group::class,
+            'post' => Models\Post::class,
+            'user' => Models\User::class,
+        ]);
 
         $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
 

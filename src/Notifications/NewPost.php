@@ -2,9 +2,11 @@
 
 namespace Waterhole\Notifications;
 
+use Illuminate\Database\Eloquent\Collection;
 use Waterhole\Models\Post;
+use Waterhole\Models\User;
 
-class NewPost extends Notification// implements Mailable
+class NewPost extends Notification
 {
     protected Post $post;
 
@@ -13,62 +15,58 @@ class NewPost extends Notification// implements Mailable
         $this->post = $post;
     }
 
-    public function sender($notifiable)
+    public static function load(Collection $notifications): void
+    {
+        $notifications->load('content.user', 'content.channel');
+    }
+
+    public function sender()
     {
         return $this->post->user;
     }
 
-    public function subject($notifiable)
-    {
-        return $this->post->channel;
-    }
-
-    public function content($notifiable)
+    public function content()
     {
         return $this->post;
     }
 
-    // public function mailText($notifiable): string
-    // {
-    //     return trans('notifications.new_discussion', [
-    //         'user' => '**'.$this->discussion->user->username.'**',
-    //         'category' => '**'.$this->category->name.'**'
-    //     ]);
-    // }
-    //
-    // public function mailActionText($notifiable): ?string
-    // {
-    //     return trans('notifications.new_discussion_view');
-    // }
-    //
-    // public function mailActionUrl($notifiable): ?string
-    // {
-    //     // return route('discussion', [
-    //     //     'id' => $this->discussion->id,
-    //     //     'slug' => $this->discussion->slug,
-    //     // ]);
-    // }
-    //
-    // public function mailExcerpt($notifiable): ?string
-    // {
-    //     return '<h1>'.$this->discussion->title.'</h1>'.$this->discussion->firstComment->render;
-    // }
-    //
-    // public function mailReason($notifiable): ?string
-    // {
-    //     return trans('notifications.new_discussion_reason');
-    // }
-    //
-    // public function mailUnsubscribeText($notifiable): ?string
-    // {
-    //     return trans('notifications.new_discussion_unsubscribe');
-    // }
-    //
-    // public function mailUnsubscribeUrl($notifiable): ?string
-    // {
-    //     return URL::signedRoute('unsubscribe.category', [
-    //         'user' => $notifiable->getKey(),
-    //         'category' => $this->category->getKey()
-    //     ]);
-    // }
+    public function icon()
+    {
+        return $this->post->channel->icon;
+    }
+
+    public function title(): string
+    {
+        return "New post in {$this->post->channel->name}: **{$this->post->title}**";
+    }
+
+    public function excerpt(): string
+    {
+        return $this->post->body_html;
+    }
+
+    public function url(): string
+    {
+        return $this->post->url;
+    }
+
+    public function button(): string
+    {
+        return 'View Post';
+    }
+
+    public function reason(): string
+    {
+        return 'You received this because you are following this channel.';
+    }
+
+    public function unsubscribeText(): string
+    {
+        return 'Unfollow this channel';
+    }
+
+    public function unsubscribe(User $user): void
+    {
+        $this->post->channel->loadUserState($user)->unfollow();
+    }
 }

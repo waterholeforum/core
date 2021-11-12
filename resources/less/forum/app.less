@@ -153,6 +153,7 @@
 .notifications-menu {
   width: 50ch;
   max-width: none;
+  max-height: 30em;
 
   .menu-item {
     margin-top: 2px;
@@ -167,7 +168,18 @@
     }
 
     &.is-unread {
-      background: var(--color-unread-light);
+      background-image:
+        /* Transparent color on top */
+        linear-gradient(
+          var(--color-unread-light),
+          var(--color-unread-light)
+        ),
+          /* Solid color underneath */
+        linear-gradient(
+          var(--color-bg),
+          var(--color-bg)
+        );
+      //background: var(--color-unread-light);
 
       > .icon, time {
         color: var(--color-unread);

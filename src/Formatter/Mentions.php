@@ -9,6 +9,8 @@ use s9e\TextFormatter\Utils;
 
 class Mentions
 {
+    const TAG_NAME = 'MENTION';
+
     const TEMPLATE = '<a href="{$MENTION_URL}{@name}" data-user-id="{@id}" data-mention="" data-id="{@name}">'.
         '<xsl:attribute name="class">mention<xsl:if test="@id = $USER_ID"> mention--self</xsl:if></xsl:attribute>'.
         '@<xsl:value-of select="@name"/>'.
@@ -18,9 +20,9 @@ class Mentions
     {
         $config->rendering->parameters['MENTION_URL'] = url('u').'/';
 
-        $config->Preg->match('/\B@(?<name>[a-z0-9_-]+)/i', 'MENTION');
+        $config->Preg->match('/\B@(?<name>[a-z0-9_-]+)/i', static::TAG_NAME);
 
-        $tag = $config->tags->add('MENTION');
+        $tag = $config->tags->add(static::TAG_NAME);
         $tag->attributes->add('name');
         $tag->attributes->add('id');
         $tag->filterChain->prepend([static::class, 'filterMention']);
@@ -47,5 +49,10 @@ class Mentions
 
             return $attributes;
         });
+    }
+
+    public static function getMentionedUsers(string $xml): array
+    {
+        return Utils::getAttributeValues($xml, static::TAG_NAME, 'id');
     }
 }

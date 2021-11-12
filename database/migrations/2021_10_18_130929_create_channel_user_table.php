@@ -9,10 +9,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('channel_user', function (Blueprint $table) {
-            $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('channel_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('notifications')->nullable();
             $table->timestamp('followed_at')->nullable();
+
+            $table->primary(['channel_id', 'user_id']);
         });
     }
 

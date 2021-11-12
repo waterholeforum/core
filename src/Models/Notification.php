@@ -9,10 +9,13 @@ use Illuminate\Database\Query\JoinClause;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Staudenmeir\LaravelCte\Eloquent\QueriesExpressions;
 use Waterhole\Notifications\Notification as NotificationTemplate;
 
 class Notification extends DatabaseNotification
 {
+    use QueriesExpressions;
+
     protected NotificationTemplate $template;
 
     public function getTemplateAttribute()
@@ -62,33 +65,15 @@ class Notification extends DatabaseNotification
     }
 
     /**
-     * Get the latest notification for each distinct subject
-     */
-    public function scopeGroupBySubject(Builder $query): void
-    {
-        $sub = static::query()
-            ->select('type', 'subject_type', 'subject_id')
-            ->selectRaw('MAX(created_at) as created_at')
-            ->selectRaw('COUNT(IF(read_at IS NULL, 1, NULL)) as unread_count')
-            ->groupBy('type', 'subject_type', 'subject_id');
-
-        $base = $query->getQuery();
-        $sub->mergeWheres($base->wheres, $base->bindings['where']);
-
-        $query->joinSub($sub, 'latest_notifications', function (JoinClause $join) {
-            $join->on('notifications.type', '=', 'latest_notifications.type')
-                ->on('notifications.subject_type', '=', 'latest_notifications.subject_type')
-                ->on('notifications.subject_id', '=', 'latest_notifications.subject_id')
-                ->on('notifications.created_at', '=', 'latest_notifications.created_at');
-        });
-    }
-
-    /**
      * Match notifications that have the same type and subject as a notification
      */
     public function scopeGroupedWith(Builder $query, Notification $notification): void
     {
-        $query->where($notification->only(['type', 'subject_type', 'subject_id']));
+        if ($notification->subject_type && $notification->subject_id) {
+            $query->where($notification->only(['type', 'subject_type', 'subject_id']));
+        } else {
+            $query->whereKey($notification->getKey());
+        }
     }
 
     public function resolveRouteBinding($value, $field = null)

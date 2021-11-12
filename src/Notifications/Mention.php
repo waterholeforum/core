@@ -2,63 +2,75 @@
 
 namespace Waterhole\Notifications;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\HtmlString;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
 
 class Mention extends Notification
 {
-    protected Post|Comment $model;
+    protected Post|Comment $content;
+    protected Post $post;
 
-    public function __construct(Post|Comment $model)
+    public function __construct(Post|Comment $content)
     {
-        $this->model = $model;
+        $this->content = $content;
+        $this->post = $this->content instanceof Post ? $this->content : $this->content->post;
     }
 
-    public function sender($notifiable)
+    public static function load(Collection $notifications): void
     {
-        return $this->model->user;
+        $notifications->load('content.post', 'content.user');
     }
 
-    public function subject($notifiable)
+    public function shouldSend($notifiable): bool
     {
-        return $this->model;
+        return ! $this->post->ignoredBy->contains($notifiable)
+            && ! $this->post->channel->ignoredBy->contains($notifiable);
+    }
+
+    public function sender()
+    {
+        return $this->content->user;
+    }
+
+    public function content()
+    {
+        return $this->content;
+    }
+
+    public function icon()
+    {
+        return 'heroicon-o-at-symbol';
     }
 
     public function title(): string
     {
-        $post = $this->model instanceof Post ? $this->model : $this->model->post;
-
-        return "{$this->model->user->name} mentioned you in **{$post->title}**";
+        return "Mentioned in **{$this->post->title}**";
     }
 
     public function excerpt(): HtmlString
     {
-        return $this->model->body_html;
-    }
-
-    public function button(): string
-    {
-        return 'View '.($this->model instanceof Post ? 'Post' : 'Comment');
+        return $this->content->body_html;
     }
 
     public function url(): string
     {
-        return $this->model->url;
+        return $this->content->post_url;
+    }
+
+    public function button(): string
+    {
+        return 'View '.($this->content instanceof Post ? 'Post' : 'Comment');
     }
 
     public function reason(): string
     {
-        return 'You received this because you subscribed to notifications for mentions.';
+        return 'You received this because you are subscribed to mention notifications.';
     }
 
     public function unsubscribeText(): string
     {
         return 'Unsubscribe from mention notifications';
-    }
-
-    public function unsubscribe(): void
-    {
-        // do something
     }
 }
