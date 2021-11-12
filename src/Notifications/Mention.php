@@ -20,7 +20,10 @@ class Mention extends Notification
 
     public static function load(Collection $notifications): void
     {
-        $notifications->load('content.post', 'content.user');
+        $notifications->loadMorph('content', [
+            Post::class => ['user'],
+            Comment::class => ['post', 'user'],
+        ]);
     }
 
     public function shouldSend($notifiable): bool
@@ -56,7 +59,7 @@ class Mention extends Notification
 
     public function url(): string
     {
-        return $this->content->post_url;
+        return $this->content instanceof Post ? $this->content->url : $this->content->post_url;
     }
 
     public function button(): string

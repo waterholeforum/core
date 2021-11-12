@@ -1,6 +1,6 @@
 <ui-popup placement="bottom-end" class="header-search">
     <button class="btn btn--icon btn--transparent">
-        <x-waterhole::icon icon="heroicon-s-search"/>
+        <x-waterhole::icon icon="heroicon-o-search"/>
         <ui-tooltip>Search</ui-tooltip>
     </button>
 

@@ -1,7 +1,10 @@
 <?php
 
+use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
+use Illuminate\View\Component;
 use Tobyz\Fluent\Overlay;
 use Waterhole\Support\TimeAgo;
 
@@ -148,4 +151,21 @@ function truncate_around(string $text, string $q, int $chars = 100): string
 function emojify(string $text, array $attributes = []): HtmlString|string
 {
     return Waterhole\Extend\Emoji::emojify($text, $attributes);
+}
+
+/**
+ * Render a component instance to HTML.
+ */
+function render_component(Component $component): string
+{
+    $data = $component->data();
+    $view = value($component->resolveView(), $data);
+
+    if ($view instanceof View) {
+        return $view->with($data)->render();
+    } elseif ($view instanceof Htmlable) {
+        return $view->toHtml();
+    } else {
+        return view($view, $data)->render();
+    }
 }

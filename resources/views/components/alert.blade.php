@@ -4,7 +4,7 @@
             <x-waterhole::icon :icon="$icon"/>
         </div>
     @endif
-    <div class="alert__message content">
+    <div class="alert__message">
         {{ $slot }}
     </div>
     <div class="alert__actions">

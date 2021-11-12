@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
-import { TooltipElement } from '../../../../../../packages/inclusive-elements';
+import { TooltipElement } from 'inclusive-elements';
 import { isElementInViewport } from '../utils';
 
 // let collapsed: string[] = [];

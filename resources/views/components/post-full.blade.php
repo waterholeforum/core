@@ -25,12 +25,12 @@
     </div>
 
     <div
-        class=""
-        style="margin-top: 6rem; position: sticky; top: calc(var(--header-height) + var(--space-xl)); margin-left: var(--space-xxxl); width: 160px; flex-shrink: 0; padding: 0 0 0 var(--space-md); margin-bottom: 0"
+        class="sidebar--sticky"
+        style="overflow: visible; margin-top: 6rem; position: sticky; top: calc(var(--header-height) + var(--space-xl)); margin-left: var(--space-xxxl); width: 160px; flex-shrink: 0; padding: 0 0 0 var(--space-md); margin-bottom: 0"
     >
         <div class="toolbar toolbar--nospace">
 
-            <x-waterhole::action-menu :for="$post" placement="bottom-end" style="margin-bottom: 1rem;">
+            <x-waterhole::action-menu :for="$post" style="margin-bottom: 1rem;">
                 <x-slot name="button">
                     <button type="button" class="btn block">
                         <x-waterhole::icon icon="heroicon-o-cog"/>

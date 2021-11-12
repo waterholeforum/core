@@ -45,10 +45,24 @@
 .alert__message {
   margin-top: -2px;
   margin-right: auto;
+  line-height: 1.5;
+  min-width: 0;
 }
 
 .alert__actions {
   display: flex;
   margin: ~"calc(-1 * var(--space-sm))";
   margin-left: var(--space-md);
+}
+
+.alert--notification {
+  max-width: 50ch;
+  background-image:
+    linear-gradient(var(--color-unread-light), var(--color-unread-light)),
+    linear-gradient(var(--color-bg), var(--color-bg));
+
+  .alert__message {
+    line-height: inherit;
+    margin: ~"calc(-1 * var(--space-sm))";
+  }
 }

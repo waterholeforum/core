@@ -7176,6 +7176,38 @@ var default_1 = /*#__PURE__*/function (_Controller) {
   }
 
   _createClass(default_1, [{
+    key: "connect",
+    value: function connect() {
+      var _this = this;
+
+      window.Echo["private"]('Waterhole.Models.User.' + Waterhole.userId).listen('NotificationReceived', function (_ref) {
+        var unreadCount = _ref.unreadCount,
+            html = _ref.html;
+
+        if (_this.hasBadgeTarget) {
+          _this.badgeTarget.hidden = !unreadCount;
+          _this.badgeTarget.innerText = unreadCount;
+        }
+
+        if (_this.hasFrameTarget) {
+          _this.frameTarget.reload();
+        }
+
+        var alert = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.htmlToElement)(html);
+
+        if (alert) {
+          Waterhole.alerts.show(alert, {
+            key: 'notification'
+          });
+        }
+      });
+    }
+  }, {
+    key: "disconnect",
+    value: function disconnect() {
+      window.Echo.leave('Waterhole.Models.User.' + Waterhole.userId);
+    }
+  }, {
     key: "open",
     value: function open(e) {
       // TODO: maybe move this functionality into inclusive-elements
@@ -7188,6 +7220,8 @@ var default_1 = /*#__PURE__*/function (_Controller) {
       if (this.hasBadgeTarget) {
         this.badgeTarget.hidden = true;
       }
+
+      Waterhole.alerts.dismiss('notification');
     }
   }]);
 
@@ -7195,7 +7229,7 @@ var default_1 = /*#__PURE__*/function (_Controller) {
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
 
 
-default_1.targets = ['badge'];
+default_1.targets = ['badge', 'frame'];
 
 /***/ }),
 
@@ -8048,7 +8082,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "shouldOpenInNewTab": () => (/* binding */ shouldOpenInNewTab),
 /* harmony export */   "isElementInViewport": () => (/* binding */ isElementInViewport),
 /* harmony export */   "getHeaderHeight": () => (/* binding */ getHeaderHeight),
-/* harmony export */   "getCookieValue": () => (/* binding */ getCookieValue)
+/* harmony export */   "getCookieValue": () => (/* binding */ getCookieValue),
+/* harmony export */   "htmlToElement": () => (/* binding */ htmlToElement)
 /* harmony export */ });
 function shouldOpenInNewTab(e) {
   return e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || e.button !== undefined && e.button !== 0;
@@ -8073,6 +8108,11 @@ function getCookieValue(name) {
     var value = cookie.split('=').slice(1).join('=');
     return value ? decodeURIComponent(value) : undefined;
   }
+}
+function htmlToElement(html) {
+  var template = document.createElement('template');
+  template.innerHTML = html;
+  return template.content.firstElementChild;
 }
 
 /***/ }),
@@ -19172,11 +19212,11 @@ document.addEventListener('turbo:load', function () {
   document.querySelectorAll('[data-hotkey]').forEach(function (el) {
     (0,_github_hotkey__WEBPACK_IMPORTED_MODULE_2__.install)(el);
   });
-});
-document.addEventListener('turbo:frame-load', function (_ref) {
-  var srcElement = _ref.srcElement;
-  srcElement.removeAttribute('src');
-});
+}); // don't want to do this for everything, some frames are reloadable
+// document.addEventListener('turbo:frame-load', function({ srcElement }) {
+//     (srcElement as FrameElement).removeAttribute('src');
+// });
+
 
 window.Stimulus = _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_8__.Application.start();
 
@@ -19195,12 +19235,7 @@ window.customElements.define('ui-menu', inclusive_elements__WEBPACK_IMPORTED_MOD
 window.customElements.define('ui-modal', inclusive_elements__WEBPACK_IMPORTED_MODULE_9__.ModalElement);
 window.customElements.define('ui-tooltip', inclusive_elements__WEBPACK_IMPORTED_MODULE_9__.TooltipElement);
 window.customElements.define('ui-alerts', inclusive_elements__WEBPACK_IMPORTED_MODULE_9__.AlertsElement);
-window.Waterhole = {
-  get alerts() {
-    return document.getElementById('alerts');
-  }
-
-};
+window.Waterhole.alerts = document.getElementById('alerts');
 })();
 
 /******/ })()

@@ -15,4 +15,10 @@
     <script src="{{ $url }}" defer data-turbo-track="reload"></script>
 @endforeach
 
+<script>
+    window.Waterhole = @json([
+        'userId' => Auth::id(),
+    ]);
+</script>
+
 @components(Waterhole\Extend\DocumentHead::getComponents(), ['title' => $title])

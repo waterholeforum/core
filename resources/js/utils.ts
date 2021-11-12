@@ -22,3 +22,10 @@ export function getCookieValue(name: string): string|undefined {
         return value ? decodeURIComponent(value) : undefined;
     }
 }
+
+export function htmlToElement(html: string): Element|null {
+    const template = document.createElement('template');
+    template.innerHTML = html;
+
+    return template.content.firstElementChild;
+}

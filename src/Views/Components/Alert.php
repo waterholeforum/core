@@ -2,6 +2,7 @@
 
 namespace Waterhole\Views\Components;
 
+use Illuminate\Support\HtmlString;
 use Illuminate\View\Component;
 
 class Alert extends Component
@@ -12,11 +13,11 @@ class Alert extends Component
     ];
 
     public ?string $type;
-    public string $slot;
+    public string|HtmlString $slot;
     public ?string $icon;
     public bool $dismissible;
 
-    public function __construct(string $type = null, string $message = '', string $icon = null, bool $dismissible = false)
+    public function __construct(string $type = null, string|HtmlString $message = '', string $icon = null, bool $dismissible = false)
     {
         $this->type = $type;
         $this->slot = $message;

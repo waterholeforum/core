@@ -86,9 +86,10 @@ document.addEventListener('turbo:load', () => {
     });
 });
 
-document.addEventListener('turbo:frame-load', function({ srcElement }) {
-    (srcElement as FrameElement).removeAttribute('src');
-});
+// don't want to do this for everything, some frames are reloadable
+// document.addEventListener('turbo:frame-load', function({ srcElement }) {
+//     (srcElement as FrameElement).removeAttribute('src');
+// });
 
 import { Application } from '@hotwired/stimulus';
 import { FrameElement, StreamElement } from '@hotwired/turbo/dist/types/elements';
@@ -105,6 +106,7 @@ window.Stimulus.load(
 import morphdom from 'morphdom';
 
 interface Waterhole {
+    userId: number;
     alerts: AlertsElement;
 }
 
@@ -129,8 +131,4 @@ window.customElements.define('ui-modal', ModalElement);
 window.customElements.define('ui-tooltip', TooltipElement);
 window.customElements.define('ui-alerts', AlertsElement);
 
-window.Waterhole = {
-    get alerts(): AlertsElement {
-        return document.getElementById('alerts') as AlertsElement;
-    }
-};
+window.Waterhole.alerts = document.getElementById('alerts') as AlertsElement;

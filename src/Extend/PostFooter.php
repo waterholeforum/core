@@ -6,8 +6,10 @@ use Waterhole\Extend\Concerns\ManagesComponents;
 use Waterhole\Views\Components\PostReactButton;
 use Waterhole\Views\Components\PostReactions;
 use Waterhole\Views\Components\PostReplies;
+use Waterhole\Views\Components\Spacer;
 
-class PostFooter
+class
+PostFooter
 {
     use ManagesComponents;
 
@@ -16,6 +18,7 @@ class PostFooter
         return [
             PostReactions::class,
             PostReplies::class,
+            Spacer::class,
             PostReactButton::class,
         ];
     }

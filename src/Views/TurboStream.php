@@ -2,9 +2,9 @@
 
 namespace Waterhole\Views;
 
-use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+
+use function render_component;
 
 abstract class TurboStream
 {
@@ -50,7 +50,7 @@ abstract class TurboStream
 
     private static function stream(Component $component, string $action, string $target): string
     {
-        $content = static::renderComponent($component);
+        $content = render_component($component);
 
         return <<<html
             <turbo-stream action="$action" target="$target">
@@ -68,19 +68,5 @@ abstract class TurboStream
         }
 
         return $component->id();
-    }
-
-    private static function renderComponent(Component $component): string
-    {
-        $data = $component->data();
-        $view = value($component->resolveView(), $data);
-
-        if ($view instanceof View) {
-            return $view->with($data)->render();
-        } elseif ($view instanceof Htmlable) {
-            return $view->toHtml();
-        } else {
-            return view($view, $data)->render();
-        }
     }
 }

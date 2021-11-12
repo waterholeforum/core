@@ -1,6 +1,6 @@
 import { Controller } from '@hotwired/stimulus';
 import { StreamElement } from '@hotwired/turbo/dist/types/elements';
-import { AlertsElement } from '../../../../../../packages/inclusive-elements';
+import { AlertsElement } from 'inclusive-elements';
 
 export default class extends Controller {
     connect() {

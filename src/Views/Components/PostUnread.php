@@ -17,7 +17,7 @@ class PostUnread extends Component
         $this->isNotifiable = $post->isFollowed()
             || (
                 ! $post->isIgnored()
-                && $post->userState->mentioned_at > $post->userState->last_read_at
+                && $post->userState?->mentioned_at > $post->userState?->last_read_at
             )
             || (
                 $post->channel->isFollowed()

@@ -110,8 +110,8 @@
                     </div>
 
                     <div
-                        class=""
-                        style="position: sticky; top: calc(var(--header-height) + var(--space-xl)); margin-left: var(--space-xxxl); width: 160px; flex-shrink: 0; padding: 0 0 0 var(--space-md); margin-bottom: 0"
+                        class="sidebar--sticky"
+                        style="overflow: visible; position: sticky; top: calc(var(--header-height) + var(--space-xl)); margin-left: var(--space-xxxl); width: 160px; flex-shrink: 0; padding: 0 0 0 var(--space-md); margin-bottom: 0"
                     >
                         <div class="stack-lg ruler">
 
