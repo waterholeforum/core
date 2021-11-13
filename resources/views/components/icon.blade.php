@@ -1,5 +1,3 @@
-@props(['icon'])
-
 @php
     $attributes = $attributes->class('icon');
 @endphp

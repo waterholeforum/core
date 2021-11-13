@@ -1,5 +1,3 @@
-@props(['comment', 'withReplies'])
-
 @if ($comment->reply_count)
     <a
         href="{{ $comment->url }}"

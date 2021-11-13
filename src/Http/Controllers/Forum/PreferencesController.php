@@ -20,7 +20,7 @@ class PreferencesController extends Controller
 
     public function index()
     {
-        return redirect()->route('waterhole.preferences.account');
+        return redirect()->route('waterhole.preferences.profile');
     }
 
     public function account()

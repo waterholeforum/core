@@ -36,7 +36,6 @@ class Action
             Actions\Lock::class,
             Actions\Unlock::class,
             Actions\MoveChannel::class,
-            Actions\DeleteChannel::class,
             Actions\DeleteComment::class,
             Actions\DeletePost::class,
 

@@ -1,5 +1,3 @@
-@props(['feed'])
-
 <div class="tabs">
     @foreach ($feed->sorts() as $sort)
         <a

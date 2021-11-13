@@ -1,5 +1,3 @@
-@props(['channel' => null, 'link' => false])
-
 @php
     $tag = 'span';
     $attributes = $attributes->class('channel-label');

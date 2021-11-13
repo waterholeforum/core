@@ -53,6 +53,9 @@
                     loading="lazy"
                     class="next-page"
                     target="_top"
+                    data-controller="attribute"
+                    data-action="turbo:frame-load->attribute#remove"
+                    data-attribute-name-param="src"
                 >
                     <div class="loading-indicator"></div>
                 </turbo-frame>

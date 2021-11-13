@@ -5,10 +5,12 @@ import { AlertsElement } from 'inclusive-elements';
 export default class extends Controller {
     connect() {
         document.addEventListener('turbo:before-stream-render', this.streamAlerts);
+        document.addEventListener('turbo:visit', this.dismissFlash);
     }
 
     disconnect() {
         document.removeEventListener('turbo:before-stream-render', this.streamAlerts);
+        document.removeEventListener('turbo:visit', this.dismissFlash);
     }
 
     dismiss(e: MouseEvent) {
@@ -28,5 +30,9 @@ export default class extends Controller {
                 e.preventDefault();
             }
         }
+    };
+
+    private dismissFlash = () => {
+        Waterhole.alerts.dismiss('flash');
     };
 }

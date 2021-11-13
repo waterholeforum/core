@@ -59,7 +59,7 @@ Route::get('preferences/profile', [PreferencesController::class, 'profile'])->na
 Route::post('preferences/profile', [PreferencesController::class, 'saveProfile']);
 
 Route::get('preferences/notifications', [PreferencesController::class, 'notifications'])->name('preferences.notifications');
-Route::post('preferences/notifications', [PreferencesController::class, 'saveNotifications'])->name('preferences.notifications');
+Route::post('preferences/notifications', [PreferencesController::class, 'saveNotifications']);
 
 // Notifications
 Route::get('notifications/unsubscribe', [NotificationController::class, 'unsubscribe'])->name('notifications.unsubscribe');
