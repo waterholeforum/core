@@ -6071,7 +6071,9 @@ var _default = /*#__PURE__*/function (_Controller) {
     value: function connect() {
       var alerts = document.getElementById('alerts');
       Array.from(this.element.children).forEach(function (el) {
-        alerts.show(el);
+        alerts.show(el, {
+          key: 'appended'
+        });
       });
       this.element.remove();
     }

@@ -76,4 +76,9 @@ class Mention extends Notification
     {
         return 'Unsubscribe from mention notifications';
     }
+
+    public static function description(): string
+    {
+        return 'Mentions';
+    }
 }

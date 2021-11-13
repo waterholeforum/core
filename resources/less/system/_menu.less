@@ -1,12 +1,12 @@
 .menu {
   background: var(--color-bg);
   box-shadow: var(--shadow-md);
-  padding: var(--space-sm);
+  padding: var(--space-xs);
   border-radius: var(--border-radius);
   min-width: 15ch;
   width: max-content;
   max-width: 30ch;
-  margin: var(--space-sm) 0;
+  margin: var(--space-xs) 0;
   z-index: var(--z-index-overlay);
   font-size: var(--text-xs);
   overflow: auto;
@@ -19,10 +19,10 @@
   appearance: none;
   margin: 0;
   display: flex;
-  gap: var(--space-sm);
+  gap: var(--space-xs);
   width: 100%;
   align-items: flex-start;
-  padding: var(--space-sm);
+  padding: var(--space-xs);
   text-decoration: none !important;
   color: var(--color-text);
   transform: none !important;
@@ -62,7 +62,7 @@
   display: block;
   color: var(--color-text-muted);
   font-size: var(--text-xxs);
-  margin-top: var(--space-xs);
+  margin-top: var(--space-xxs);
 }
 
 .menu-item .badge,
@@ -71,7 +71,7 @@
 }
 
 .menu-divider {
-  margin: var(--space-sm);
+  margin: var(--space-xs);
 
   + .menu-divider,
   .menu > &:first-child,
@@ -85,14 +85,14 @@
   font-size: var(--text-xxs);
   font-weight: var(--font-weight-bold);
   color: var(--color-text-muted);
-  padding: var(--space-sm);
+  padding: var(--space-xs);
 }
 
 .menu-sticky {
   position: sticky;
   top: ~"calc(-1 * var(--space-sm))";
   margin-top: ~"calc(-1 * var(--space-sm))";
-  padding-top: var(--space-sm);
+  padding-top: var(--space-xs);
   background: var(--color-bg);
   z-index: 1;
 }

@@ -96,12 +96,14 @@
                                             class="alert--lg"
                                             icon="heroicon-o-light-bulb"
                                         >
-                                            <h3>Sign up to participate in this discussion!</h3>
-                                            <p>Lorem ipsum dolor sit amet, has choro debitis ne, debet harum quando ex his. Cu elit noster usu, atqui mucius eum no. Et vix stet purto, quem propriae eam ne. Mea verear sapientem ea, ut laudem apeirian sit. Pro placerat oporteat ex.</p>
-                                            <p class="toolbar">
-                                                <a href="{{ route('waterhole.register', ['return' => $comments->appends('direction', null)->fragment('bottom')->url($comments->lastPage())]) }}" class="btn btn--primary">Sign Up</a>
-                                                <a href="{{ route('waterhole.login', ['return' => $comments->appends('direction', null)->fragment('bottom')->url($comments->lastPage())]) }}" class="btn btn--link">Log In</a>
-                                            </p>
+                                            <div class="content">
+                                                <h3>Sign up to participate in this discussion!</h3>
+                                                <p>Lorem ipsum dolor sit amet, has choro debitis ne, debet harum quando ex his. Cu elit noster usu, atqui mucius eum no. Et vix stet purto, quem propriae eam ne. Mea verear sapientem ea, ut laudem apeirian sit. Pro placerat oporteat ex.</p>
+                                                <p class="toolbar">
+                                                    <a href="{{ route('waterhole.register', ['return' => $comments->appends('direction', null)->fragment('bottom')->url($comments->lastPage())]) }}" class="btn btn--primary">Sign Up</a>
+                                                    <a href="{{ route('waterhole.login', ['return' => $comments->appends('direction', null)->fragment('bottom')->url($comments->lastPage())]) }}" class="btn btn--link">Log In</a>
+                                                </p>
+                                            </div>
                                         </x-waterhole::alert>
                                     @endguest
                                 </div>
@@ -128,7 +130,7 @@
                                     <a
                                         class="tab"
                                         href="{{ $post->url }}#top"
-                                        style="margin-bottom: var(--space-sm)"
+                                        style="margin-bottom: var(--space-xs)"
                                     >
                                         <x-waterhole::icon
                                             icon="heroicon-s-chevron-double-up"
@@ -155,7 +157,7 @@
                                     <a
                                         class="tab"
                                         href="{{ $comments->fragment('bottom')->url($comments->lastPage()) }}"
-                                        style="margin-top: var(--space-sm)"
+                                        style="margin-top: var(--space-xs)"
                                     >
                                         <x-waterhole::icon
                                             icon="heroicon-s-chevron-double-down"

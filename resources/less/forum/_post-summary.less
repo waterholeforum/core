@@ -7,13 +7,14 @@
   width: 2.6em;
   height: 2.6em;
   flex-shrink: 0;
+  text-decoration: none !important;
 }
 
 .post-summary__content {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  gap: var(--space-xs);
+  gap: var(--space-xxs);
 }
 
 .post-summary__title {
@@ -43,8 +44,8 @@
 .post-summary__info {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: .2rem var(--space-sm);
+  align-items: baseline;
+  gap: .2rem var(--space-xs);
   font-size: 80%;
   color: var(--color-text-muted);
 }

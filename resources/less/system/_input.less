@@ -7,7 +7,7 @@
   height: var(--control-height);
   box-sizing: border-box;
   border-radius: var(--border-radius);
-  padding: 0 .7em;
+  padding: .55em .7em;
   -webkit-appearance: none;
 
   &::placeholder,
@@ -24,6 +24,25 @@
 
   .has-error & {
     border-color: var(--color-danger);
+  }
+
+  &[type="file"] {
+    overflow: hidden;
+
+    &:not(:disabled):not([readonly]) {
+      cursor: pointer;
+    }
+  }
+
+  &::file-selector-button {
+    padding: 0 var(--space-md) 0 0;
+    margin: 0;
+    width: auto;
+    background: none;
+    color: var(--color-accent);
+    font-weight: var(--font-weight-bold);
+    pointer-events: none;
+    border: 0;
   }
 }
 

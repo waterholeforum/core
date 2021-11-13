@@ -12,6 +12,7 @@ use Waterhole\Notifications\NewComment;
 use Waterhole\Views\Components\CommentFrame;
 use Waterhole\Views\Components\CommentFull;
 use Waterhole\Views\Components\Composer;
+use Waterhole\Views\Components\FollowButton;
 use Waterhole\Views\TurboStream;
 
 class CommentController extends Controller
@@ -69,7 +70,13 @@ class CommentController extends Controller
         $comment = Comment::byUser($request->user(), $data);
 
         $post->comments()->save($comment);
-        $post->userState?->read()->save();
+
+        $post->userState->read()->save();
+
+        if ($request->user()->follow_on_comment) {
+            $post->follow();
+            $didFollow = true;
+        }
 
         Notification::send(
             $post->followedBy->except($request->user()->id),
@@ -84,6 +91,10 @@ class CommentController extends Controller
 
             if (isset($parent)) {
                 $streams[] = TurboStream::replace(new CommentFull($parent->fresh()));
+            }
+
+            if (isset($didFollow)) {
+                $streams[] = TurboStream::replace(new FollowButton($post));
             }
 
             return TurboResponseFactory::makeStream(implode($streams));

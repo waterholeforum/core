@@ -14,6 +14,11 @@ class Notification extends Component
         $this->notification = $notification;
     }
 
+    public function shouldRender()
+    {
+        return $this->notification->template;
+    }
+
     public function render()
     {
         return view('waterhole::components.notification');

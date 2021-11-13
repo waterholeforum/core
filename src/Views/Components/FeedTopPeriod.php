@@ -9,12 +9,12 @@ use Waterhole\Sorts\Top;
 
 class FeedTopPeriod extends Component
 {
-    public PostFeed $feed;
+    public PostFeed|\Waterhole\Feed $feed;
     public ?Channel $channel;
     public ?array $periods = null;
     public ?string $currentPeriod = null;
 
-    public function __construct(PostFeed $feed, Channel $channel = null)
+    public function __construct(PostFeed|\Waterhole\Feed $feed, Channel $channel = null)
     {
         $this->feed = $feed;
         $this->channel = $channel;

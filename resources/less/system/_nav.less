@@ -8,8 +8,8 @@
   color: var(--color-text-muted);
   font-size: .8rem;
   text-transform: uppercase;
-  margin-bottom: var(--space-sm);
-  padding: 0 var(--space-sm);
+  margin-bottom: var(--space-xs);
+  padding: 0 var(--space-xs);
 
   * + & {
     margin-top: var(--space-lg);
@@ -20,23 +20,23 @@
   display: flex;
   width: 100%;
   align-items: center;
-  gap: var(--space-sm);
+  gap: var(--space-xs);
   min-height: var(--control-height);
-  padding: var(--space-sm);
+  padding: var(--space-xs);
   font-weight: var(--font-weight-medium);
   text-decoration: none !important;
   color: var(--color-text);
   border-radius: var(--border-radius);
 
-  .icon {
+  > .icon {
     font-size: 120%;
   }
 
-  [class^="icon-fa"] {
+  > [class^="icon-fa"] {
     padding: 2px;
   }
 
-  .badge {
+  > .badge {
     margin-left: auto;
   }
 
@@ -52,9 +52,14 @@
   &[aria-current=page] {
     color: var(--color-accent);
     background: var(--color-accent-light);
+
+    > .badge {
+      background: none;
+      color: var(--color-accent);
+    }
   }
 }
 
 .nav-text {
-  padding: var(--space-sm);
+  padding: var(--space-xs);
 }

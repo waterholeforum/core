@@ -16,10 +16,7 @@ abstract class Notification extends BaseNotification implements ShouldQueue
 
     public function via($notifiable): array
     {
-        return array_merge(
-            ['database', 'broadcast'],
-            $notifiable->notification_channels[get_class($this)] ?? []
-        );
+        return $notifiable->notification_channels[get_class($this)] ?? [];
     }
 
     public function toArray(): array

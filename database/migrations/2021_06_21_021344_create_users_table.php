@@ -26,6 +26,7 @@ return new class extends Migration
             $table->boolean('show_online')->default(1);
             $table->json('notification_preferences')->nullable();
             $table->timestamp('notifications_read_at')->nullable();
+            $table->boolean('follow_on_comment')->default(0);
             $table->timestamp('suspend_until')->nullable();
         });
     }

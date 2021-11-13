@@ -2,6 +2,7 @@
 
 namespace Waterhole\Sorts;
 
+use Illuminate\Database\Eloquent\Builder;
 use Waterhole\Models\Post;
 
 class Top extends Sort
@@ -18,10 +19,13 @@ class Top extends Sort
         return 'Description';
     }
 
-    public function apply($query): void
+    public function apply(Builder $query): void
     {
-        $query->orderByDesc('score')
-            ->orderByDesc('comment_count');
+        $query->orderByDesc('score');
+
+        if ($query->getModel() instanceof Post) {
+            $query->orderByDesc('comment_count');
+        }
 
         if ($period = $this->currentPeriod()) {
             $query->whereRaw('created_at > DATE_SUB(NOW(), INTERVAL 1 '.strtoupper($period).')');

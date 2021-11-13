@@ -16,7 +16,7 @@
                     </form>
 
                     <a
-                        href="{{ route('waterhole.settings.notifications') }}"
+                        href="{{ route('waterhole.preferences.notifications') }}"
                         class="btn btn--icon btn--transparent"
                         data-turbo-frame="_top"
                     >

@@ -17,6 +17,11 @@ class FeedNewPost extends Component
         $this->channel = $channel;
     }
 
+    public function shouldRender()
+    {
+        return ! request()->routeIs('waterhole.user.*');
+    }
+
     public function render()
     {
         return view('waterhole::components.feed-new-post');

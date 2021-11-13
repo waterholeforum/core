@@ -2,7 +2,7 @@
   cursor: pointer;
   display: flex;
   align-items: flex-start;
-  gap: var(--space-sm);
+  gap: var(--space-xs);
 
   &.is-disabled {
     color: var(--color-text-muted);
@@ -12,7 +12,7 @@
 input[type="checkbox"] {
   -webkit-appearance: none;
   appearance: none;
-  background-color: #fff;
+  background-color: var(--color-bg);
   margin: 0;
   font: inherit;
   color: currentColor;
@@ -35,7 +35,7 @@ input[type="checkbox"] {
   }
 
   &:not(:disabled) {
-    & :active {
+    &:active {
       filter: var(--filter-active);
     }
 

@@ -1,10 +1,12 @@
 <div class="attribution">
-    <a href="{{ $user?->url }}" class="attribution__user">
+    <x-waterhole::user-link :user="$user" class="attribution__user">
         <x-waterhole::avatar :user="$user"/>
-        <span>{{ $user ? $user->name : 'Anonymous' }}</span>
-    </a>
+        <span>{{ $user?->name ?? 'Anonymous' }}</span>
+    </x-waterhole::user-link>
     <span class="attribution__info">
-        <span>Member</span>
+        @if ($user?->headline)
+            <span>{{ $user->headline }}</span>
+        @endif
         @if ($date)
             <time datetime="{{ $date }}">{{ $date->diffForHumans() }}</time>
         @endif

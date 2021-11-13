@@ -64,5 +64,9 @@ class RouteServiceProvider extends ServiceProvider
         RateLimiter::for('waterhole.create', function (Request $request) {
             // return Limit::perMinute(2)->by($request->user()->id);
         });
+
+        RateLimiter::for('waterhole.search', function (Request $request) {
+            return $request->input('q') ? Limit::perMinute(10) : Limit::none();
+        });
     }
 }

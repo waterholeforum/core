@@ -8,10 +8,10 @@ use Waterhole\PostFeed;
 
 class FeedSort extends Component
 {
-    public PostFeed $feed;
+    public PostFeed|\Waterhole\Feed $feed;
     public ?Channel $channel;
 
-    public function __construct(PostFeed $feed, Channel $channel = null)
+    public function __construct(PostFeed|\Waterhole\Feed $feed, Channel $channel = null)
     {
         $this->feed = $feed;
         $this->channel = $channel;

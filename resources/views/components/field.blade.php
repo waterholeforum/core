@@ -1,5 +1,3 @@
-@props(['name', 'label' => null, 'description' => null])
-
 <div {{ $attributes->class(['field', 'has-error' => $errors->has($name)]) }}>
     @if ($label)
         <label for="{{ $name }}" class="field__label">{{ $label }}</label>
@@ -9,9 +7,11 @@
         <p class="field__description">{{ $description }}</p>
     @endif
 
-    {{ $slot }}
+    <div class="stack-sm">
+        {{ $slot }}
 
-    @error($name)
-        <div class="field__status color-danger">{{ $message }}</div>
-    @enderror
+        @error($name)
+            <div class="field__status color-danger">{{ $message }}</div>
+        @enderror
+    </div>
 </div>

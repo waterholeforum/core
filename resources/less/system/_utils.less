@@ -17,10 +17,24 @@
 
 .with-icon {
   display: inline-flex;
+  align-items: baseline;
 
   > * + * {
     margin-left: .2em;
   }
+
+  .icon {
+    align-self: center;
+    margin-top: -1px;
+  }
+}
+
+.align-center {
+  align-items: center;
+}
+
+.grow {
+  flex-grow: 1;
 }
 
 .hide-icon {
@@ -127,6 +141,11 @@
 
 .text-unread {
   color: var(--color-unread);
+  font-weight: var(--font-weight-bold);
+}
+
+.text-success {
+  color: var(--color-success);
   font-weight: var(--font-weight-bold);
 }
 

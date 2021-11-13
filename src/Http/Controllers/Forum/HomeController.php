@@ -23,7 +23,7 @@ class HomeController extends Controller
 
         $feed = new PostFeed(
             request: $request,
-            scope: $scope
+            scope: $scope,
         );
 
         return view('waterhole::forum.home')->with(compact('feed'));

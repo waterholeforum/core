@@ -2,6 +2,7 @@
 
 namespace Waterhole\Sorts;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use ReflectionClass;
 
@@ -16,5 +17,5 @@ abstract class Sort
 
     abstract public function description(): string;
 
-    abstract public function apply($query): void;
+    abstract public function apply(Builder $query): void;
 }

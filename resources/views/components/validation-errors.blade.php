@@ -1,7 +1,6 @@
 @if ($errors->any())
     <x-waterhole::alert type="danger">
         @if ($errors->count() === 1)
-            <h4>Error</h4>
             <p>{{ $errors->first() }}</p>
         @else
             <h4>The following errors were found:</h4>

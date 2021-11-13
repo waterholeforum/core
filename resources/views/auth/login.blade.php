@@ -4,8 +4,6 @@
         <form action="{{ route('waterhole.login') }}" method="POST" class="form" data-controller="login" data-turbo="false">
             @csrf
 
-            <x-waterhole::validation-errors :errors="$errors"/>
-
             <x-waterhole::field
                 name="email"
                 :label="__('waterhole::auth.email-label')"

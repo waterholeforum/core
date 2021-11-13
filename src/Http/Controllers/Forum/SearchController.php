@@ -12,6 +12,11 @@ use Waterhole\Search\MySqlEngine;
 
 class SearchController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('waterhole.throttle:waterhole.search');
+    }
+
     public function __invoke(Request $request)
     {
         if ($q = $request->input('q')) {

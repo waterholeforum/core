@@ -1,5 +1,5 @@
 <ui-popup placement="bottom-start">
-    <button class="btn btn--small" style="margin-left: var(--space-sm)">
+    <button class="btn btn--small" style="margin-left: var(--space-xs)">
         <span>{{ ucfirst($currentPeriod) ?: 'All Time' }}</span>
         <x-waterhole::icon icon="heroicon-s-chevron-down"/>
     </button>

@@ -46,12 +46,18 @@ class User extends Model implements
         'last_seen_at' => 'datetime',
         'notifications_read_at' => 'datetime',
         'show_online' => 'boolean',
+        'follow_on_comment' => 'boolean',
         'suspend_until' => 'datetime',
     ];
 
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
     }
 
     public function groups(): BelongsToMany
@@ -100,7 +106,7 @@ class User extends Model implements
 
     public function getUrlAttribute(): ?string
     {
-        return null;
+        return route('waterhole.users.show', ['user' => $this]);
     }
 
     public function getAvatarUrlAttribute()
@@ -116,7 +122,7 @@ class User extends Model implements
     public function uploadAvatar(Image $image)
     {
         $this->uploadImage($image, 'avatar', 'avatars', function (Image $image) {
-            return $image->crop(200, 200)->encode('png');
+            return $image->fit(200)->encode('png');
         });
     }
 
@@ -133,7 +139,7 @@ class User extends Model implements
     public function uploadCover(Image $image)
     {
         $this->uploadImage($image, 'cover', 'user-covers', function (Image $image) {
-            return $image->crop(1000, 300)->encode('jpg');
+            return $image->fit(1000, 300)->encode('jpg');
         });
     }
 
@@ -145,5 +151,10 @@ class User extends Model implements
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPassword($token));
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'name';
     }
 }

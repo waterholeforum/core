@@ -1,5 +1,9 @@
 <div {{ $attributes->class('post-summary') }}>
-    <x-waterhole::avatar :user="$post->user" class="post-summary__avatar"/>
+    <x-waterhole::user-link :user="$post->user" class="post-summary__avatar">
+        <x-waterhole::avatar :user="$post->user"/>
+        <ui-tooltip>{{ $post->user->name ?? 'Anonymous' }} posted 2 days ago</ui-tooltip>
+    </x-waterhole::user-link>
+
     <div class="post-summary__content">
         <h3 class="post-summary__title">
             <a

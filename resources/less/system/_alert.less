@@ -1,10 +1,14 @@
 .alert {
   border-radius: var(--border-radius);
-  padding: var(--space-md);
+  padding: var(--space-xs) var(--space-md);
+  min-height: var(--control-height);
   background: var(--color-fill);
   display: flex;
   align-items: flex-start;
-  font-size: var(--text-xs);
+
+  &.inline {
+    display: inline-flex;
+  }
 }
 
 .alert--lg {
@@ -19,6 +23,7 @@
 .alert--danger {
   background: var(--color-danger);
   color: var(--color-danger-contrast);
+  font-weight: var(--font-weight-medium);
 
   --color-text: var(--color-danger-contrast);
   --color-text-muted: var(--color-danger-contrast);
@@ -31,6 +36,7 @@
 .alert--success {
   background: var(--color-success);
   color: var(--color-success-contrast);
+  font-weight: var(--font-weight-medium);
 
   --color-text: var(--color-success-contrast);
   --color-text-muted: var(--color-success-contrast);
@@ -38,31 +44,35 @@
 
 .alert__icon {
   font-size: var(--text-md);
-  margin-right: var(--space-sm);
+  margin-right: var(--space-xs);
   line-height: 1;
+  margin-top: 2px;
 }
 
 .alert__message {
-  margin-top: -2px;
   margin-right: auto;
   line-height: 1.5;
   min-width: 0;
+  font-size: var(--text-xs);
+  align-self: center;
 }
 
 .alert__actions {
   display: flex;
-  margin: ~"calc(-1 * var(--space-sm))";
+  margin: ~"calc(-1 * var(--space-xxs))" ~"calc(-1 * var(--space-sm))";
   margin-left: var(--space-md);
+  font-size: var(--text-xs);
 }
 
 .alert--notification {
   max-width: 50ch;
+  background: var(--color-bg);
   background-image:
     linear-gradient(var(--color-unread-light), var(--color-unread-light)),
     linear-gradient(var(--color-bg), var(--color-bg));
 
   .alert__message {
     line-height: inherit;
-    margin: ~"calc(-1 * var(--space-sm))";
+    margin: 0 ~"calc(-1 * var(--space-xs))";
   }
 }

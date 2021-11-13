@@ -69,4 +69,9 @@ class NewPost extends Notification
     {
         $this->post->channel->loadUserState($user)->unfollow();
     }
+
+    public static function description(): string
+    {
+        return 'New posts in followed channels';
+    }
 }

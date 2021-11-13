@@ -38,7 +38,7 @@ class NewComment extends Notification
 
     public function icon()
     {
-        return 'heroicon-o-annotation';
+        return 'heroicon-o-chat-alt';
     }
 
     public function title(): string
@@ -79,5 +79,10 @@ class NewComment extends Notification
     public function unsubscribe(User $user): void
     {
         $this->comment->post->loadUserState($user)->unfollow();
+    }
+
+    public static function description(): string
+    {
+        return 'New comments on followed posts';
     }
 }

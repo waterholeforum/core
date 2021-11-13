@@ -1,31 +1,27 @@
 @auth
-    <ui-popup placement="bottom-end" style="margin-left: var(--space-sm)">
+    <ui-popup placement="bottom-end" style="margin-left: var(--space-xs)">
         <button class="btn btn--icon">
             <x-waterhole::avatar :user="Auth::user()"/>
             <ui-tooltip>{{ Auth::user()->name }}</ui-tooltip>
         </button>
         <ui-menu class="menu" hidden>
-            <span class="menu-item">
-                <span class="menu-item-title">{{ Auth::user()->name }}</span>
-            </span>
+            <h3 class="menu-heading">{{ Auth::user()->name }}</h3>
 
-            <hr class="menu-divider">
-
-            <a href="#" class="menu-item" role="menuitem">
+            <a href="{{ Auth::user()->url }}" class="menu-item" role="menuitem">
                 <x-waterhole::icon icon="heroicon-o-user"/>
                 <span>Profile</span>
             </a>
 
-            <a href="#" class="menu-item" role="menuitem">
+            <a href="{{ route('waterhole.preferences') }}" class="menu-item" role="menuitem">
                 <x-waterhole::icon icon="heroicon-o-adjustments"/>
                 <span>Preferences</span>
             </a>
 
-            <a href="#" class="menu-item" role="menuitem">
-                <x-waterhole::icon icon="heroicon-o-bell"/>
-                <span>Followed Posts</span>
-                <span class="badge">5</span>
-            </a>
+{{--            <a href="#" class="menu-item" role="menuitem">--}}
+{{--                <x-waterhole::icon icon="heroicon-o-bell"/>--}}
+{{--                <span>Followed Posts</span>--}}
+{{--                <span class="badge">5</span>--}}
+{{--            </a>--}}
 
             <hr class="menu-divider">
 
