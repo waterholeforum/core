@@ -30,7 +30,7 @@ class FeedControlsLayout extends Component
                 @endif
             </a>
             <a href="{{ request()->fullUrlWithQuery(['layout' => 'cards']) }}" class="menu-item" role="menuitemradio">
-                <x-waterhole::icon icon="heroicon-o-view-boards" class="rotate-90"/>
+                <x-waterhole::icon icon="heroicon-o-collection"/>
                 <span>Cards</span>
                 @if ($feed->currentLayout() === 'cards')
                     <x-waterhole::icon icon="heroicon-o-check" class="menu-item-check"/>

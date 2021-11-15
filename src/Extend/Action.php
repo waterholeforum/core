@@ -39,6 +39,11 @@ class Action
             Actions\DeleteComment::class,
             Actions\DeletePost::class,
 
+            // Admin actions
+            Actions\EditChannel::class,
+            Actions\DeleteChannel::class,
+            Actions\DeleteStructure::class,
+
             // Hidden actions
             Actions\Like::class,
         ];

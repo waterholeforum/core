@@ -258,7 +258,7 @@ Use the `.Checkbox` or `.Radio` class on a `label` element wrapping an `input` o
 </div>
 
 <div class="Field Field--error">
-  <label class="Checkbox">
+  <label class="choice">
     <input type="checkbox">
     Agree to the terms
   </label>

@@ -1,7 +1,30 @@
 <!doctype html>
 <html lang="{{ config('app.locale') }}" class="no-js">
 <head>
-    <x-waterhole::head :title="$title"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <title>{{ $title ? $title.' - ' : '' }}{{ config('waterhole.forum.title', 'Waterhole') }}</title>
+
+    <script>
+      document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+    </script>
+
+    @foreach (Waterhole\Extend\Stylesheet::urls(['*', 'forum', 'forum-'.App::getLocale(), ...$assets]) as $url)
+        <link href="{{ $url }}" rel="stylesheet" data-turbo-track="reload">
+    @endforeach
+
+    @foreach (Waterhole\Extend\Script::urls(['*', 'forum', 'forum-'.App::getLocale(), ...$assets]) as $url)
+        <script src="{{ $url }}" defer data-turbo-track="reload"></script>
+    @endforeach
+
+    <script>
+      window.Waterhole = @json([
+        'userId' => Auth::id(),
+    ]);
+    </script>
+
+    @components(Waterhole\Extend\DocumentHead::getComponents(), compact('title', 'assets'))
 </head>
 
 <body class="{{ Auth::check() ? 'logged-in' : 'not-logged-in' }}">

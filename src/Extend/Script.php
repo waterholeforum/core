@@ -13,6 +13,9 @@ class Script
         'forum' => [
             __DIR__.'/../../resources/dist/index.js',
         ],
+        'admin' => [
+            __DIR__.'/../../resources/dist/admin.js',
+        ],
     ];
 
     public static function compile(array $assets, string $group): array
@@ -31,6 +34,6 @@ class Script
 
         Storage::disk('public')->put($compiled = 'js/'.$group.'.js', $content);
 
-        return [Storage::disk('public')->url($compiled)];
+        return [asset(Storage::disk('public')->url($compiled))];
     }
 }

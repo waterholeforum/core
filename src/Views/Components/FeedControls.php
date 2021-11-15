@@ -2,10 +2,8 @@
 
 namespace Waterhole\Views\Components;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 use Waterhole\Models\Channel;
-use Waterhole\Models\User;
 use Waterhole\PostFeed;
 
 class FeedControls extends Component

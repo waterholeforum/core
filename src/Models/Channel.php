@@ -3,6 +3,7 @@
 namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Validation\Rule;
 use Intervention\Image\Image;
 use Waterhole\Extend\FeedSort;
@@ -48,6 +49,11 @@ class Channel extends Model
         return $this->posts()->following()->unread();
     }
 
+    public function structure(): MorphOne
+    {
+        return $this->morphOne(Structure::class, 'content');
+    }
+
     public function getCoverUrlAttribute(): string
     {
         return $this->resolvePublicUrl($this->cover, 'channel-covers');
@@ -72,7 +78,7 @@ class Channel extends Model
 
     public function getEditUrlAttribute(): string
     {
-        return route('waterhole.channels.edit', ['channel' => $this]);
+        return route('waterhole.admin.structure.channels.edit', ['channel' => $this]);
     }
 
     public function getDisplayNameAttribute(): string
@@ -85,15 +91,13 @@ class Channel extends Model
         return [
             'name' => ['required', 'string', 'max:255'],
             'slug' => ['required', 'string', 'max:255', Rule::unique('channels')->ignore($channel)],
-            'emoji' => ['nullable', 'string'],
+            'icon' => ['nullable', 'string'],
             'description' => ['nullable', 'string'],
             'instructions' => ['nullable', 'string'],
-            'hide_sidebar' => ['nullable', 'boolean'],
             'sandbox' => ['nullable', 'boolean'],
             'default_layout' => ['in:list,cards'],
             'sorts' => ['required_with:custom_sorts', 'array'],
             'sorts.*' => ['string', 'distinct', Rule::in(FeedSort::getInstances()->map->handle())],
-            'default_sort' => ['required_with:custom_sorts', 'in_array:sorts.*'],
         ];
     }
 }

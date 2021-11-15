@@ -10,7 +10,9 @@
         $actions = $actions->filter(fn($action) => ! in_array(get_class($action), $exclude));
     }
 
-    $actions = $actions->filter(fn($action) => ! $action instanceof Waterhole\Actions\Action || $action->visible(collect([$for])))->values();
+    $actions = $actions
+        ->filter(fn($action) => ! $action instanceof Waterhole\Actions\Action || $action->visible(collect([$for]), $context))->values()
+        ->reject(fn($action, $i) => $action instanceof Waterhole\Views\Components\MenuDivider && $i === 0);
 @endphp
 
 @if (count($actions))
@@ -21,7 +23,7 @@
 
         {{ $before ?? '' }}
 
-        @foreach ($actions as $i => $action)
+        @foreach ($actions as $action)
             {{ $action->render(collect([$for]), new Illuminate\View\ComponentAttributeBag($buttonAttributes)) }}
         @endforeach
 

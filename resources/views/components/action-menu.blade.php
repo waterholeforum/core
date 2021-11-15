@@ -3,6 +3,7 @@
     :only="$only"
     :exclude="$exclude"
     :button-attributes="['class' => 'menu-item', 'role' => 'menuitem']"
+    :context="$context"
     {{ $attributes }}
 >
     <x-slot name="before">

@@ -1,61 +1,63 @@
 <x-waterhole::layout :title="__('waterhole::auth.login-title')">
-    <x-waterhole::dialog :title="__('waterhole::auth.login-title')" class="dialog--sm">
-        {{-- Opt-out of Turbo so that any fragment that may be present in the redirect URL will be followed --}}
-        <form action="{{ route('waterhole.login') }}" method="POST" class="form" data-controller="login" data-turbo="false">
-            @csrf
+    <div class="section">
+        <x-waterhole::dialog :title="__('waterhole::auth.login-title')" class="dialog--sm">
+            {{-- Opt-out of Turbo so that any fragment that may be present in the redirect URL will be followed --}}
+            <form action="{{ route('waterhole.login') }}" method="POST" class="form" data-controller="login" data-turbo="false">
+                @csrf
 
-            <x-waterhole::field
-                name="email"
-                :label="__('waterhole::auth.email-label')"
-            >
-                <input
-                    class="input"
-                    type="email"
-                    id="{{ $component->id }}"
+                <x-waterhole::field
                     name="email"
-                    value="{{ old('email') }}"
-                    required
-                    autofocus
+                    :label="__('waterhole::auth.email-label')"
                 >
-            </x-waterhole::field>
+                    <input
+                        class="input"
+                        type="email"
+                        id="{{ $component->id }}"
+                        name="email"
+                        value="{{ old('email') }}"
+                        required
+                        autofocus
+                    >
+                </x-waterhole::field>
 
-            <x-waterhole::field
-                name="password"
-                :label="__('waterhole::auth.password-label')"
-            >
-                <input
-                    class="input"
-                    type="password"
-                    id="{{ $component->id }}"
+                <x-waterhole::field
                     name="password"
-                    required
-                    autocomplete="current-password"
+                    :label="__('waterhole::auth.password-label')"
                 >
-            </x-waterhole::field>
+                    <input
+                        class="input"
+                        type="password"
+                        id="{{ $component->id }}"
+                        name="password"
+                        required
+                        autocomplete="current-password"
+                    >
+                </x-waterhole::field>
 
-            <div class="toolbar">
-                <div>
-                    <label for="remember_me" class="checkbox">
-                        <input id="remember_me" type="checkbox" name="remember">
-                        {{ __('waterhole::auth.remember-me-label') }}
-                    </label>
+                <div class="toolbar">
+                    <div>
+                        <label for="remember_me" class="choice">
+                            <input id="remember_me" type="checkbox" name="remember">
+                            {{ __('waterhole::auth.remember-me-label') }}
+                        </label>
+                    </div>
+
+                    <div class="spacer"></div>
+
+                    <div>
+                        <a href="{{ route('waterhole.forgot-password') }}">
+                            {{ __('waterhole::auth.forgot-password-link') }}
+                        </a>
+                    </div>
                 </div>
 
-                <div class="spacer"></div>
+                <button type="submit" class="btn btn--primary btn--block">{{ __('waterhole::auth.login-submit') }}</button>
 
-                <div>
-                    <a href="{{ route('waterhole.forgot-password') }}">
-                        {{ __('waterhole::auth.forgot-password-link') }}
-                    </a>
-                </div>
-            </div>
-
-            <button type="submit" class="btn btn--primary btn--block">{{ __('waterhole::auth.login-submit') }}</button>
-
-            <p class="text-center">
-                Don't have an account?
-                <a href="{{ route('waterhole.register') }}">Sign Up</a>
-            </p>
-        </form>
-    </x-waterhole::dialog>
+                <p class="text-center">
+                    Don't have an account?
+                    <a href="{{ route('waterhole.register') }}">Sign Up</a>
+                </p>
+            </form>
+        </x-waterhole::dialog>
+    </div>
 </x-waterhole::layout>

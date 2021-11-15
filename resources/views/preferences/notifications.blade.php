@@ -13,10 +13,10 @@
                             @php $channels = (array) old('notification_channels.'.$type, Auth::user()->notification_channels[$type] ?? []) @endphp
                             <div>
                                 <div>{{ $type::description() }}</div>
-                                <label class="checkbox">
+                                <label class="choice">
                                     <input type="checkbox" name="notification_channels[{{ $type }}][]" value="database" @if (in_array('database', $channels)) checked @endif> Web
                                 </label>
-                                <label class="checkbox">
+                                <label class="choice">
                                     <input type="checkbox" name="notification_channels[{{ $type }}][]" value="mail" @if (in_array('mail', $channels)) checked @endif> Email
                                 </label>
                             </div>
@@ -28,7 +28,7 @@
                     <h4 class="field__label">Following</h4>
                     <div>
                         <input type="hidden" name="follow_on_comment" value="0">
-                        <label class="checkbox">
+                        <label class="choice">
                             <input type="checkbox" name="follow_on_comment" value="1" @if (Auth::user()->follow_on_comment) checked @endif> Automatically follow posts I comment on
                         </label>
                     </div>

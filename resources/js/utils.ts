@@ -29,3 +29,14 @@ export function htmlToElement(html: string): Element|null {
 
     return template.content.firstElementChild;
 }
+
+/**
+ * Create a slug out of the given string. Non-alphanumeric characters are
+ * converted to hyphens.
+ */
+export function slug(string: string): string {
+    return string.toLowerCase()
+        .replace(/[^a-z0-9]/gi, '-')
+        .replace(/-+/g, '-')
+        .replace(/-$|^-/g, '');
+}

@@ -24,9 +24,9 @@ class Unfollow extends Action
         return method_exists($item, 'unfollow');
     }
 
-    public function visible(Collection $items): bool
+    public function visible(Collection $items, string $context = null): bool
     {
-        return $items->some->isFollowed();
+        return parent::visible($items, $context) && $items->some->isFollowed();
     }
 
     public function run(Collection $items, Request $request)

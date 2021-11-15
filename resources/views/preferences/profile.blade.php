@@ -10,7 +10,7 @@
                     <div class="stack-md">
                         <input type="file" class="input" name="avatar" accept="image/*,.jpg,.png,.gif,.bmp" capture="user">
                         @if (Auth::user()->avatar)
-                            <label class="checkbox">
+                            <label class="choice">
                                 <input type="checkbox" name="remove_avatar" value="1">
                                 Remove avatar
                             </label>
@@ -45,7 +45,7 @@
                 <div class="field__label">Privacy</div>
                 <div>
                     <input type="hidden" name="show_online" value="0">
-                    <label for="show_online" class="checkbox">
+                    <label for="show_online" class="choice">
                         <input id="show_online" type="checkbox" name="show_online" value="1" @if (Auth::user()->show_online) checked @endif>
                         Show when I was last online
                     </label>

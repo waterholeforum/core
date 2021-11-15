@@ -7,10 +7,12 @@ use Illuminate\View\Component;
 class Layout extends Component
 {
     public ?string $title;
+    public array $assets;
 
-    public function __construct(string $title = null)
+    public function __construct(string $title = null, array $assets = [])
     {
         $this->title = $title;
+        $this->assets = $assets;
     }
 
     public function render()

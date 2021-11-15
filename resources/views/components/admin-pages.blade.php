@@ -8,7 +8,7 @@
     <span class="label">Settings</span>
 </a>
 
-<a href="{{ route('waterhole.admin.structure') }}" class="nav-link {{ request()->routeIs('waterhole.admin.structure') ? 'is-active' : '' }}">
+<a href="{{ route('waterhole.admin.structure') }}" class="nav-link {{ request()->routeIs('waterhole.admin.structure*') ? 'is-active' : '' }}">
     <x-waterhole::icon icon="heroicon-o-collection"/>
     <span class="label">Structure</span>
 </a>

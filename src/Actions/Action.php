@@ -10,6 +10,7 @@ use Waterhole\Models\User;
 
 abstract class Action
 {
+    public ?array $context = null;
     public bool $hidden = false;
     public bool $destructive = false;
     public bool $confirm = false;
@@ -23,9 +24,9 @@ abstract class Action
         return (bool) $user;
     }
 
-    public function visible(Collection $items): bool
+    public function visible(Collection $items, string $context = null): bool
     {
-        return ! $this->hidden;
+        return ! $this->hidden && (! $context || in_array($context, $this->context ?? []));
     }
 
     public function attributes(Collection $items): array

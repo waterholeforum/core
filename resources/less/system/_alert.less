@@ -12,11 +12,19 @@
 }
 
 .alert--lg {
+  padding: var(--space-md);
+}
+
+.alert--xl {
   padding: var(--space-lg);
 
   .alert__icon {
     font-size: var(--text-xl);
     margin-right: var(--space-lg);
+
+    path {
+      stroke-width: 1.5px;
+    }
   }
 }
 
@@ -59,7 +67,7 @@
 
 .alert__actions {
   display: flex;
-  margin: ~"calc(-1 * var(--space-xxs))" ~"calc(-1 * var(--space-sm))";
+  margin: ~"calc(-1 * var(--space-xxs))" ~"calc(-1 * var(--space-xs))";
   margin-left: var(--space-md);
   font-size: var(--text-xs);
 }

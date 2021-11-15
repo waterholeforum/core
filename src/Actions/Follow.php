@@ -24,9 +24,9 @@ class Follow extends Action
         return method_exists($item, 'follow');
     }
 
-    public function visible(Collection $items): bool
+    public function visible(Collection $items, string $context = null): bool
     {
-        return $items->some(fn($item) => ! $item->userState->notifications);
+        return parent::visible($items, $context) && $items->some(fn($item) => ! $item->userState->notifications);
     }
 
     public function run(Collection $items, Request $request)

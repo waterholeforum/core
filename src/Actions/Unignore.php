@@ -24,9 +24,9 @@ class Unignore extends Action
         return method_exists($item, 'unignore');
     }
 
-    public function visible(Collection $items): bool
+    public function visible(Collection $items, string $context = null): bool
     {
-        return $items->some->isIgnored();
+        return parent::visible($items, $context) && $items->some->isIgnored();
     }
 
     public function run(Collection $items, Request $request)

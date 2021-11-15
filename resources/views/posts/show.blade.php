@@ -93,7 +93,7 @@
                                     @guest
                                         <x-waterhole::alert
                                             type="info"
-                                            class="alert--lg"
+                                            class="alert--xl"
                                             icon="heroicon-o-light-bulb"
                                         >
                                             <div class="content">

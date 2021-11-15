@@ -13,6 +13,9 @@ class Stylesheet
         'forum' => [
             __DIR__.'/../../resources/less/forum/app.less',
         ],
+        'admin' => [
+            __DIR__.'/../../resources/less/admin/app.less',
+        ],
     ];
 
     public static function compile(array $assets, string $group): array
@@ -27,6 +30,6 @@ class Stylesheet
             'prefix' => "$group-",
         ]);
 
-        return [asset('css/'.$compiled)];
+        return [asset('storage/css/'.$compiled)];
     }
 }

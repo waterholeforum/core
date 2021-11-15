@@ -1,4 +1,4 @@
-<x-waterhole::layout :title="$title">
+<x-waterhole::layout :title="$title" :assets="['admin']">
     <h1 hidden data-page-target="title">Administration</h1>
 
     <div class="section container with-sidebar-start">

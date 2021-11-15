@@ -10,9 +10,8 @@ use Waterhole\Http\Controllers\Auth\RegisterController;
 use Waterhole\Http\Controllers\Auth\ResetPasswordController;
 use Waterhole\Http\Controllers\Auth\VerifyEmailController;
 use Waterhole\Http\Controllers\FormatController;
-use Waterhole\Http\Controllers\Forum\ChannelController;
 use Waterhole\Http\Controllers\Forum\CommentController;
-use Waterhole\Http\Controllers\Forum\HomeController;
+use Waterhole\Http\Controllers\Forum\FeedController;
 use Waterhole\Http\Controllers\Forum\NotificationController;
 use Waterhole\Http\Controllers\Forum\PostController;
 use Waterhole\Http\Controllers\Forum\PreferencesController;
@@ -20,8 +19,9 @@ use Waterhole\Http\Controllers\Forum\SearchController;
 use Waterhole\Http\Controllers\Forum\UserController;
 use Waterhole\Http\Controllers\UserLookupController;
 
-// Home
-Route::get('/', HomeController::class)->name('home');
+// Feed
+Route::get('/', [FeedController::class, 'home'])->name('home');
+Route::get('channels/{channel:slug}', [FeedController::class, 'channel'])->name('channels.show');
 
 // Actions
 Route::get('confirm-action', [ActionController::class, 'confirm'])->name('action.create');
@@ -35,11 +35,6 @@ Route::resource('posts', PostController::class)
 Route::resource('posts.comments', CommentController::class)
     ->only(['show', 'create', 'store', 'edit', 'update'])
     ->scoped();
-
-// Channels
-Route::resource('channels', ChannelController::class)
-    ->only(['show', 'create', 'store', 'edit', 'update'])
-    ->scoped(['channel' => 'slug']);
 
 // Users
 Route::get('users/{user}/posts', [UserController::class, 'posts'])->name('user.posts');
@@ -73,21 +68,27 @@ Route::get('search', SearchController::class)->name('search');
 Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('register', [RegisterController::class, 'register']);
 
+// Login
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
 
+// Forgot Password
 Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('forgot-password');
 Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail']);
 
+// Reset Password
 Route::get('reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('reset-password');
 Route::post('reset-password/{token}', [ResetPasswordController::class, 'reset']);
 
+// Verify Email
 Route::get('verify-email/{id}', [VerifyEmailController::class, 'verify'])->name('verify-email');
 Route::post('verify-email', [VerifyEmailController::class, 'resend'])->name('verify-email.resend');
 
-Route::get('/confirm-password', [ConfirmPasswordController::class, 'showConfirmForm'])->name('confirm-password');
-Route::post('/confirm-password', [ConfirmPasswordController::class, 'confirm']);
+// Confirm Password
+Route::get('confirm-password', [ConfirmPasswordController::class, 'showConfirmForm'])->name('confirm-password');
+Route::post('confirm-password', [ConfirmPasswordController::class, 'confirm']);
 
+// Logout
 Route::post('logout', [LogoutController::class, 'logout'])->name('logout');
 
 // Utils

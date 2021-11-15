@@ -11,6 +11,7 @@ use Waterhole\Models\User;
 
 class DeleteChannel extends Action
 {
+    public ?array $context = ['admin'];
     public bool $destructive = true;
     public bool $confirm = true;
     public bool $bulk = false;
@@ -38,7 +39,7 @@ class DeleteChannel extends Action
     public function confirmationBody(Collection $items): HtmlString
     {
         return new HtmlString(
-            view('waterhole::channels.delete', [
+            view('waterhole::admin.channels.delete', [
                 'channel' => $items[0]
             ])
         );
