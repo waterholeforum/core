@@ -12,14 +12,18 @@ Route::post('structure', [Admin\StructureController::class, 'saveOrder']);
 
 Route::prefix('structure')->name('structure.')->group(function () {
     Route::resource('headings', Admin\StructureHeadingController::class)
-        ->except('index', 'show')
+        ->only('create', 'store', 'edit', 'update')
         ->parameter('heading', 'structure_heading');
 
+    Route::resource('links', Admin\StructureLinkController::class)
+        ->only('create', 'store', 'edit', 'update')
+        ->parameter('link', 'structure_link');
+
     Route::resource('channels', Admin\ChannelController::class)
-        ->except('index', 'show');
+        ->only('create', 'store', 'edit', 'update');
 
     Route::resource('pages', Admin\PageController::class)
-        ->except('index', 'show');
+        ->only('create', 'store', 'edit', 'update');
 });
 
 Route::resource('groups', Admin\GroupController::class)

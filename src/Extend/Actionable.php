@@ -12,13 +12,14 @@ class Actionable
     protected static function defaultItems(): array
     {
         return [
-            'posts' => Models\Post::class,
-            'channels' => Models\Channel::class,
-            'comments' => Models\Comment::class,
+            'page' => Models\Page::class,
+            'post' => Models\Post::class,
+            'channel' => Models\Channel::class,
+            'comment' => Models\Comment::class,
             'group' => Models\Group::class,
             'structureGroup' => Models\StructureHeading::class,
             'structureLink' => Models\StructureLink::class,
-            'users' => Models\User::class,
+            'user' => Models\User::class,
         ];
     }
 

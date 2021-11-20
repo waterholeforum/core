@@ -10,6 +10,12 @@
     @elseif (str_starts_with($icon, 'emoji:'))
         <span {{ $attributes }}>{{ emojify(substr($icon, 6)) }}</span>
     @else
-        {{ svg($icon, '', $attributes->class('icon-'.$icon)->getAttributes()) }}
+        @php
+            try {
+                echo svg($icon, '', $attributes->class('icon-'.$icon)->getAttributes())->toHtml();
+            } catch (BladeUI\Icons\Exceptions\SvgNotFound $e) {
+                //
+            }
+        @endphp
     @endif
 @endif

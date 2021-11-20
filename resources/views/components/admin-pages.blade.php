@@ -40,7 +40,7 @@
 
 <br>
 
-<div class="nav-text text-xs stack-sm">
+<div class="nav-text text-xs stack-xs">
     <p><a href="" class="color-muted">Waterhole 0.1.0</a></p>
     <p><a href="" class="text-unread">2 Updates Available</a></p>
 </div>

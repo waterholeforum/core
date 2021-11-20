@@ -6,6 +6,7 @@ use Waterhole\Extend\Script;
 use Waterhole\Formatter\Formatter;
 use Waterhole\Formatter\Mentions;
 use Waterhole\Models\Comment;
+use Waterhole\Models\Page;
 use Waterhole\Models\Post;
 use Illuminate\Support\ServiceProvider;
 use s9e\TextFormatter\Configurator;
@@ -50,5 +51,6 @@ class FormatterServiceProvider extends ServiceProvider
 
         Post::setFormatter($formatter);
         Comment::setFormatter($formatter);
+        Page::setFormatter($formatter);
     }
 }

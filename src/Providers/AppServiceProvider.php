@@ -38,6 +38,7 @@ class AppServiceProvider extends ServiceProvider
             'channel' => Models\Channel::class,
             'comment' => Models\Comment::class,
             'group' => Models\Group::class,
+            'page' => Models\Page::class,
             'post' => Models\Post::class,
             'structureHeading' => Models\StructureHeading::class,
             'structureLink' => Models\StructureLink::class,

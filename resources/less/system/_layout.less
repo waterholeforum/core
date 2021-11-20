@@ -46,8 +46,16 @@
   flex-wrap: nowrap;
 }
 
-.stack-sm > * + * {
+.stack-xxs > * + * {
+  margin-top: var(--space-xxs);
+}
+
+.stack-xs > * + * {
   margin-top: var(--space-xs);
+}
+
+.stack-sm > * + * {
+  margin-top: var(--space-sm);
 }
 
 .stack-md > * + * {
@@ -56,6 +64,10 @@
 
 .stack-lg > * + * {
   margin-top: var(--space-lg);
+}
+
+.stack-xl > * + * {
+  margin-top: var(--space-xl);
 }
 
 .spacer {

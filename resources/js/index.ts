@@ -2,39 +2,38 @@ import * as Turbo from '@hotwired/turbo';
 import { install } from '@github/hotkey';
 
 import './bootstrap';
-// import './elements/turbo-echo-stream-tag';
 import 'wicg-inert';
-import '@github/text-expander-element'
+import '@github/text-expander-element';
 
-import { persistResumableFields, restoreResumableFields, setForm } from '@github/session-resume';
-
-let pageId: string;
-
-function updatePageId() {
-    pageId = window.location.pathname;
-}
-
+// import { persistResumableFields, restoreResumableFields, setForm } from '@github/session-resume';
+//
+// let pageId: string;
+//
+// function updatePageId() {
+//     pageId = window.location.pathname;
+// }
+//
 // Listen for all form submit events and to see if their default submission
 // behavior is invoked.
-window.addEventListener('submit', setForm, { capture: true });
-
-window.addEventListener('pageshow', updatePageId);
-window.addEventListener('pagehide', updatePageId);
-window.addEventListener('turbo:load', updatePageId);
-
-
-const restore = (e: Event) => {
-    restoreResumableFields(pageId);
-};
-window.addEventListener('pageshow', restore);
-window.addEventListener('turbo:load', restore);
-
-const persist = (e: Event) => {
-    persistResumableFields(pageId);
-};
-window.addEventListener('turbo:before-visit', persist);
-window.addEventListener('popstate', persist);
-window.addEventListener('pagehide', persist);
+// window.addEventListener('submit', setForm, { capture: true });
+//
+// window.addEventListener('pageshow', updatePageId);
+// window.addEventListener('pagehide', updatePageId);
+// window.addEventListener('turbo:load', updatePageId);
+//
+//
+// const restore = (e: Event) => {
+//     restoreResumableFields(pageId);
+// };
+// window.addEventListener('pageshow', restore);
+// window.addEventListener('turbo:load', restore);
+//
+// const persist = (e: Event) => {
+//     persistResumableFields(pageId);
+// };
+// window.addEventListener('turbo:before-visit', persist);
+// window.addEventListener('popstate', persist);
+// window.addEventListener('pagehide', persist);
 
 
 Turbo.start();

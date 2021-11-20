@@ -1,5 +1,4 @@
-.channel-label,
-.group-label {
+.channel-label {
   display: inline-flex;
   align-items: center;
   gap: var(--space-xxs);
@@ -10,13 +9,9 @@
   a&:hover > :last-child {
     text-decoration: underline;
   }
-
-  //.icon {
-  //  vertical-align: -.2em;
-  //}
 }
 
 .group-label {
-  background: var(--group-color) !important;
-  color: var(--group-color-constrast) !important;
+  background: var(--group-color, var(--color-fill)) !important;
+  color: var(--group-color-constrast, var(--color-text-muted)) !important;
 }

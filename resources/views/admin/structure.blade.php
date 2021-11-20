@@ -1,11 +1,11 @@
 <x-waterhole::admin title="Structure">
     <div class="stack-md" data-controller="admin-structure dragon-nest">
-        <x-waterhole::alert type="info" class="alert--xl" icon="heroicon-o-collection">
-            <div class="content">
-                <h3>Giving your forum structure</h3>
-                <p>Lorem ipsum dolor sit amet, has choro debitis ne, debet harum quando ex his. Cu elit noster usu, atqui mucius eum no. Et vix stet purto, quem propriae eam ne. Mea verear sapientem ea, ut laudem apeirian sit. Pro placerat oporteat ex.</p>
-            </div>
-        </x-waterhole::alert>
+{{--        <x-waterhole::alert type="info" class="alert--xl" icon="heroicon-o-collection">--}}
+{{--            <div class="content">--}}
+{{--                <h3>Giving your forum structure</h3>--}}
+{{--                <p>Lorem ipsum dolor sit amet, has choro debitis ne, debet harum quando ex his. Cu elit noster usu, atqui mucius eum no. Et vix stet purto, quem propriae eam ne. Mea verear sapientem ea, ut laudem apeirian sit. Pro placerat oporteat ex.</p>--}}
+{{--            </div>--}}
+{{--        </x-waterhole::alert>--}}
 
         <div class="toolbar toolbar--right">
             <ui-popup placement="bottom-end">
@@ -20,14 +20,14 @@
                         <x-waterhole::icon icon="heroicon-o-chat-alt-2"/>
                         <span>Channel</span>
                     </a>
-                    <button type="button" class="menu-item" role="menuitem">
+                    <a href="{{ route('waterhole.admin.structure.pages.create') }}" type="button" class="menu-item" role="menuitem">
                         <x-waterhole::icon icon="heroicon-o-document-text"/>
                         <span>Page</span>
-                    </button>
-                    <button type="button" class="menu-item" role="menuitem">
+                    </a>
+                    <a href="{{ route('waterhole.admin.structure.links.create') }}" class="menu-item" role="menuitem">
                         <x-waterhole::icon icon="heroicon-o-link"/>
                         <span>Link</span>
-                    </button>
+                    </a>
                     <a href="{{ route('waterhole.admin.structure.headings.create') }}" class="menu-item" role="menuitem">
                         <x-waterhole::icon icon="heroicon-o-hashtag"/>
                         <span>Heading</span>

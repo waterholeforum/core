@@ -3,7 +3,6 @@
 namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Auth;
 use Waterhole\Models\Concerns\HasVisibility;
 use Waterhole\Models\Concerns\ReceivesPermissions;
 
@@ -14,6 +13,7 @@ class Group extends Model
 
     public const GUEST_ID = 1;
     public const MEMBER_ID = 2;
+    public const ADMIN_ID = 3;
 
     public $timestamps = false;
 
@@ -27,9 +27,14 @@ class Group extends Model
         return $this->id === static::MEMBER_ID;
     }
 
+    public function isAdmin(): bool
+    {
+        return $this->id === static::ADMIN_ID;
+    }
+
     public function isCustom(): bool
     {
-        return ! $this->isGuest() && ! $this->isMember();
+        return ! $this->isGuest() && ! $this->isMember() && ! $this->isAdmin();
     }
 
     public static function guest(): static
@@ -42,9 +47,14 @@ class Group extends Model
         return (new static())->newInstance(['id' => static::MEMBER_ID], true);
     }
 
+    public static function admin(): static
+    {
+        return (new static())->newInstance(['id' => static::ADMIN_ID], true);
+    }
+
     public function scopeCustom(Builder $query)
     {
-        $query->whereNotIn('id', [static::GUEST_ID, static::MEMBER_ID]);
+        $query->whereNotIn('id', [static::GUEST_ID, static::MEMBER_ID, static::ADMIN_ID]);
     }
 
     public function getEditUrlAttribute(): string

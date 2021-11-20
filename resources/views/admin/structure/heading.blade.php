@@ -1,15 +1,15 @@
 @php
-    $title = isset($group) ? 'Edit Heading' : 'Create a Heading';
+    $title = isset($heading) ? 'Edit Heading' : 'Create a Heading';
 @endphp
 
 <x-waterhole::admin :title="$title">
-    <x-waterhole::dialog :title="$title" class="dialog--md">
+    <x-waterhole::dialog :title="$title" class="dialog--sm">
         <form
             method="POST"
             action="{{ isset($heading) ? route('waterhole.admin.structure.headings.update', compact('heading')) : route('waterhole.admin.structure.headings.store') }}"
         >
             @csrf
-            @if (isset($group)) @method('PATCH') @endif
+            @if (isset($heading)) @method('PATCH') @endif
 
             <div class="stack-lg">
                 <x-waterhole::validation-errors/>
@@ -20,7 +20,7 @@
                         name="name"
                         id="{{ $component->id }}"
                         class="input"
-                        value="{{ old('name', $group->name ?? null) }}"
+                        value="{{ old('name', $heading->name ?? null) }}"
                         autofocus
                     >
                 </x-waterhole::field>
@@ -28,7 +28,7 @@
                 <div>
                     <div class="toolbar">
                         <button type="submit" class="btn btn--primary btn--wide">
-                            {{ isset($group) ? 'Save Changes' : 'Create' }}
+                            {{ isset($heading) ? 'Save Changes' : 'Create' }}
                         </button>
                         <a href="{{ route('waterhole.admin.structure') }}" class="btn">Cancel</a>
                     </div>

@@ -12,10 +12,6 @@ abstract class Link extends Action
 
     public function render(Collection $items, ComponentAttributeBag $attributes): HtmlString|null
     {
-        if (! $this->visible($items)) {
-            return null;
-        }
-
         $link = e($this->link($items[0]));
 
         $attributes = new ComponentAttributeBag(array_merge(

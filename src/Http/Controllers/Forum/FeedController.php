@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Channel;
+use Waterhole\Models\Page;
 use Waterhole\PostFeed;
 
 class FeedController extends Controller
@@ -45,5 +46,10 @@ class FeedController extends Controller
         );
 
         return view('waterhole::forum.channel', compact('channel', 'feed'));
+    }
+
+    public function page(Page $page)
+    {
+        return view('waterhole::forum.page', compact('page'));
     }
 }

@@ -27,10 +27,12 @@
                         data-turbo-frame="_top"
                     >
                         <x-waterhole::icon icon="heroicon-s-reply" class="rotate-180"/>
-                        <span>In reply to</span>
-                        <span class="user-label">
-                            <x-waterhole::avatar :user="$comment->parent->user"/>
-                            <span>{{ $comment->parent->user?->name ?: 'Anonymous' }}</span>
+                        <span>
+                            In reply to
+                            <span class="user-label">
+                                <x-waterhole::avatar :user="$comment->parent->user"/>
+                                <span>{{ $comment->parent->user?->name ?: 'Anonymous' }}</span>
+                            </span>
                         </span>
                     </a>
 

@@ -2,7 +2,7 @@
     <div class="section container">
         <div style="display: flex; align-items: flex-start; gap: var(--space-xl)">
             <x-waterhole::avatar :user="$user" style="width: 12ch"/>
-            <div style="flex-grow: 1" class="stack-sm">
+            <div style="flex-grow: 1" class="stack-xs">
                 <h1 class="h1" data-page-target="title">
                     {{ $user->name }}
                 </h1>

@@ -13,6 +13,8 @@ export default class extends Controller {
     frameTarget?: FrameElement;
 
     connect() {
+        this.frameTarget!.removeAttribute('disabled');
+
         window.Echo.private('Waterhole.Models.User.' + Waterhole.userId)
             .listen('NotificationReceived', ({ unreadCount, html }: any) => {
                 if (this.hasBadgeTarget) {

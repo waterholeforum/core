@@ -7,7 +7,7 @@
 
         <x-waterhole::feed2 :feed="$comments">
             @foreach ($component->items as $comment)
-                <div class="stack-sm card comment-card" style="margin-bottom: var(--space-lg)">
+                <div class="stack-xs card comment-card" style="margin-bottom: var(--space-lg)">
                     <div class="color-muted text-xs comment-card__post">
                         <x-waterhole::channel-label :channel="$comment->post->channel"/> ›
                         <a href="{{ $comment->post_url }}" style="font-weight: var(--font-weight-medium)">

@@ -20,9 +20,8 @@
         data-slugger-target="slug"
     >
     <p class="field__description">
-        This channel will be accessible
-        at {!! preg_replace('~^https?://~', '', str_replace('*', '<span data-slugger-target="mirror">'.old('slug', $channel->slug ?? '').'</span>', route('waterhole.channels.show', ['channel' => '*']))) !!}
-        .
+        This channel will be accessible at
+        {!! preg_replace('~^https?://~', '', str_replace('*', '<span data-slugger-target="mirror">'.old('slug', $channel->slug ?? '').'</span>', route('waterhole.channels.show', ['channel' => '*']))) !!}.
     </p>
 </x-waterhole::field>
 
@@ -71,8 +70,8 @@
                 value="1"
                 @if (old('sandbox', $channel->sandbox ?? false)) checked @endif
             >
-            <span>
-                Hide posts from Home
+            <span class="stack-xxs">
+                <span>Hide posts from Home</span>
                 <small class="field__description">Only show this channel's posts on its page.</small>
             </span>
         </label>
@@ -81,7 +80,7 @@
 
 <div role="group" class="field">
     <div class="field__label">Default Layout</div>
-    <div class="stack-sm">
+    <div class="stack-xs">
         @foreach (['list' => ['List', 'heroicon-o-view-list'], 'cards' => ['Cards', 'heroicon-o-collection']] as $key => [$name, $icon])
             <label class="choice">
                 <input
@@ -115,8 +114,8 @@
                 data-reveal-target="if"
                 @if (old('custom_sorts', $channel->sorts ?? false)) checked @endif
             >
-            <span>
-                Use custom sort options
+            <span class="stack-xxs">
+                <span>Use custom sort options</span>
                 <small class="field__description">Override the global sort options for this channel.</small>
             </span>
         </label>
@@ -165,7 +164,6 @@
         <x-waterhole::admin.permission-grid
             :abilities="['view', 'comment', 'post', 'moderate']"
             :permissions="$channel->permissions ?? null"
-            :parent-permissions="$channel->structure->parent->content->permissions ?? null"
             :defaults="['view', 'comment', 'post']"
         />
     </div>

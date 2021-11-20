@@ -1,63 +1,3 @@
-@php
-    $channels = Waterhole\Models\Channel::query()
-        ->when(Auth::user(), fn($query) => $query->withCount('newPosts', 'unreadPosts'))
-        ->get();
-
-    $structure = Waterhole\Models\Config::get('structure', []);
-    $nav = [];
-    $current = null;
-
-    foreach ($structure as $group) {
-        $children = [];
-
-        foreach ($group['children'] as $child) {
-            switch ($child['type'] ?? null) {
-                case 'channel':
-                    if ($channel = $channels->find($child['id'])) {
-                        $children[] = $item = [
-                            'url' => $channel->url,
-                            'icon' => $channel->icon,
-                            'label' => $channel->name,
-                            'badge' => ($channel->new_posts_count + $channel->unread_posts_count) ?: null,
-                        ];
-                        if (request()->fullUrlIs($channel->url.'*')) {
-                            $current = $item;
-                        }
-                    }
-                    break;
-
-                case 'link':
-                    if (! empty($child['url']) && ! empty($child['label'])) {
-                        $children[] = $item = [
-                            'url' => $child['url'],
-                            'icon' => $child['icon'] ?? null,
-                            'label' => $child['label'],
-                        ];
-                        if (request()->fullUrlIs($child['url'].'*')) {
-                            $current = $item;
-                        }
-                    }
-                    break;
-
-                case 'home':
-                    $children[] = $item = [
-                        'url' => route('waterhole.home'),
-                        'icon' => 'heroicon-o-home',
-                        'label' => $child['label'] ?? __('waterhole::forum.home'),
-                    ];
-                    if (request()->routeIs('waterhole.home')) {
-                        $current = $item;
-                    }
-            }
-        }
-
-        $nav[] = [
-            'title' => $group['title'] ?? null,
-            'children' => $children,
-        ];
-    }
-@endphp
-
 <ui-popup placement="bottom-start" class="index-nav-structure">
     <button class="btn">
         <x-waterhole::icon :icon="$current['icon'] ?? null"/>
@@ -69,24 +9,23 @@
         <nav aria-labelledby="nav-title">
             <h2 id="nav-title" class="visually-hidden">Forum Navigation</h2>
 
-            @foreach ($nav as $group)
-                @if (! empty($group['title']))
-                    <h3 class="nav-heading">{{ $group['title'] }}</h3>
-                @endif
-                <ul class="nav">
-                    @foreach ($group['children'] as $child)
+            <ul class="nav">
+                @foreach ($nav as $item)
+                    @if (! empty($item['heading']))
+                        <li class="nav-heading">{{ $item['heading'] }}</li>
+                    @else
                         <li>
-                            <a href="{{ $child['url'] }}" class="nav-link {{ $current === $child ? 'is-active' : '' }}">
-                                <x-waterhole::icon :icon="$child['icon']"/>
-                                <span class="label">{{ $child['label'] }}</span>
-                                @isset ($child['badge'])
-                                    <span class="badge badge--primary">{{ $child['badge'] }}</span>
+                            <a href="{{ isset($item['route']) ? route($item['route']) : $item['url'] ?? null }}" class="nav-link {{ $current === $item ? 'is-active' : '' }}">
+                                <x-waterhole::icon :icon="$item['icon']"/>
+                                <span class="label">{{ $item['label'] }}</span>
+                                @isset ($item['badge'])
+                                    <span class="badge badge--primary">{{ $item['badge'] }}</span>
                                 @endisset
                             </a>
                         </li>
-                    @endforeach
-                </ul>
-            @endforeach
+                    @endif
+                @endforeach
+            </ul>
         </nav>
     </ui-menu>
 </ui-popup>

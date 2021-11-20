@@ -6,25 +6,39 @@ use Illuminate\Database\Eloquent\Collection;
 
 class PermissionCollection extends Collection
 {
-    public function group($id): static
+
+    public function user(?User $user): static
     {
-        if ($id instanceof Group) {
-            $id = $id->id;
-        }
-
-        $ids = [$id];
-
-        if ($id !== Group::GUEST_ID) {
-            $ids[] = Group::GUEST_ID;
-
-            if ($id !== Group::MEMBER_ID) {
-                $ids[] = Group::MEMBER_ID;
-            }
+        if (! $user) {
+            return $this->guest();
         }
 
         return $this
-            ->where('recipient_type', (new Group())->getMorphClass())
-            ->whereIn('recipient_id', $ids);
+            ->group($user->groups)
+            ->merge($this
+                ->where('recipient_type', $user->getMorphClass())
+                ->where('recipient_id', $user->getKey()));
+    }
+
+    public function groups(): static
+    {
+        return $this->where('recipient_type', (new Group())->getMorphClass());
+    }
+
+    public function group($group): static
+    {
+        $ids = collect($group instanceof Group ? [$group] : $group)
+            ->map(fn($group) => $group instanceof Group ? $group->id : $group);
+
+        if (! $ids->contains(Group::GUEST_ID)) {
+            $ids->push(Group::GUEST_ID);
+
+            if (! $ids->contains(Group::MEMBER_ID)) {
+                $ids->push(Group::MEMBER_ID);
+            }
+        }
+
+        return $this->groups()->whereIn('recipient_id', $ids);
     }
 
     public function guest(): static
@@ -49,8 +63,21 @@ class PermissionCollection extends Collection
         return $this->where('ability', $ability);
     }
 
-    public function can(string $ability): bool
+    public function allows(string $ability): bool
     {
         return $this->ability($ability)->isNotEmpty();
+    }
+
+    public function can(?User $user, string $ability): bool
+    {
+        if (! $user) {
+            return $this->guest()->allows($ability);
+        }
+
+        if ($user->groups->contains(Group::ADMIN_ID)) {
+            return true;
+        }
+
+        return $this->user($user)->allows($ability);
     }
 }

@@ -1,5 +1,5 @@
 @php
-    $title = isset($group) ? 'Edit User Group' : 'Create a User Group';
+    $title = isset($group) ? 'Edit Group' : 'Create a Group';
 @endphp
 
 <x-waterhole::admin :title="$title">
@@ -34,27 +34,29 @@
                                 <input type="hidden" name="is_public" value="0">
                                 <label class="choice">
                                     <input type="checkbox" data-reveal-target="if" name="is_public" value="1" @if (old('is_public', $group->is_public ?? null)) checked @endif>
-                                    Show this group as a badge
+                                    Show this group as a user badge
                                 </label>
                             </div>
 
-                            <x-waterhole::field name="icon" label="Icon" data-reveal-target="then">
-                                <input
-                                    type="text"
-                                    name="icon"
-                                    id="{{ $component->id }}"
-                                    class="input"
-                                    value="{{ old('icon', $group->icon ?? null) }}"
-                                >
-                            </x-waterhole::field>
+                            <div class="toolbar toolbar--nowrap" data-reveal-target="then">
+                                <x-waterhole::field name="icon" label="Icon" style="flex-basis: 50%">
+                                    <input
+                                        type="text"
+                                        name="icon"
+                                        id="{{ $component->id }}"
+                                        class="input"
+                                        value="{{ old('icon', $group->icon ?? null) }}"
+                                    >
+                                </x-waterhole::field>
 
-                            <x-waterhole::field name="color" label="Color" data-reveal-target="then">
-                                <x-waterhole::admin.color-picker
-                                    name="color"
-                                    id="{{ $component->id }}"
-                                    value="{{ old('color', $group->color ?? null) }}"
-                                />
-                            </x-waterhole::field>
+                                <x-waterhole::field name="color" label="Color" style="flex-basis: 50%">
+                                    <x-waterhole::admin.color-picker
+                                        name="color"
+                                        id="{{ $component->id }}"
+                                        value="{{ old('color', $group->color ?? null) }}"
+                                    />
+                                </x-waterhole::field>
+                            </div>
                         </div>
                     </div>
 
@@ -101,15 +103,15 @@
                                                                 <input
                                                                     type="hidden"
                                                                     name="permissions[{{ $node->content->getMorphClass() }}:{{ $node->content->getKey() }}][{{ $ability }}]"
-                                                                    value="{{ $node->content->permissions->member()->can($ability) ? 1 : 0 }}"
+                                                                    value="{{ $node->content->permissions->member()->allows($ability) ? 1 : 0 }}"
                                                                 >
                                                                 <input
                                                                     type="checkbox"
                                                                     name="permissions[{{ $node->content->getMorphClass() }}:{{ $node->content->getKey() }}][{{ $ability }}]"
                                                                     value="1"
-                                                                    @if ($node->content->permissions->member()->can($ability)) disabled
+                                                                    @if ($node->content->permissions->member()->allows($ability)) disabled
                                                                     @endif
-                                                                    @if (old("permissions.{$node->content->getMorphClass()}:{$node->content->getKey()}.$ability", $node->content->permissions->group($group ?? Waterhole\Models\Group::member())->can($ability))) checked
+                                                                    @if (old("permissions.{$node->content->getMorphClass()}:{$node->content->getKey()}.$ability", $node->content->permissions->group($group ?? Waterhole\Models\Group::member())->allows($ability))) checked
                                                                     @endif
                                                                     data-depends-on="
                                                                         @if ($ability !== 'view') permissions[{{ $node->content->getMorphClass() }}:{{ $node->content->getKey() }}][view] @endif

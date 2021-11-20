@@ -9,18 +9,15 @@ class PermissionGrid extends Component
 {
     public array $abilities;
     public ?PermissionCollection $permissions;
-    public ?PermissionCollection $parentPermissions;
     public array $defaults;
 
     public function __construct(
         array $abilities,
         ?PermissionCollection $permissions,
-        ?PermissionCollection $parentPermissions,
         array $defaults = []
     ) {
         $this->abilities = $abilities;
         $this->permissions = $permissions;
-        $this->parentPermissions = $parentPermissions;
         $this->defaults = $defaults;
     }
 

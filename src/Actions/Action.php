@@ -26,7 +26,7 @@ abstract class Action
 
     public function visible(Collection $items, string $context = null): bool
     {
-        return ! $this->hidden && (! $context || in_array($context, $this->context ?? []));
+        return ! $this->hidden && ($context === $this->context || in_array($context, $this->context ?? []));
     }
 
     public function attributes(Collection $items): array

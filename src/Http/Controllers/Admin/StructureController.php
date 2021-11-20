@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\Request;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Channel;
+use Waterhole\Models\Page;
 use Waterhole\Models\Structure;
+use Waterhole\Models\StructureLink;
 
 class StructureController extends Controller
 {
@@ -15,6 +17,8 @@ class StructureController extends Controller
         $structure = Structure::with(['content' => function (MorphTo $morphTo) {
             $morphTo->morphWith([
                 Channel::class => ['permissions.recipient'],
+                Page::class => ['permissions.recipient'],
+                StructureLink::class => ['permissions.recipient'],
             ]);
         }])
             ->orderBy('position')

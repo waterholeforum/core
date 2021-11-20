@@ -22,6 +22,7 @@ use Waterhole\Http\Controllers\UserLookupController;
 // Feed
 Route::get('/', [FeedController::class, 'home'])->name('home');
 Route::get('channels/{channel:slug}', [FeedController::class, 'channel'])->name('channels.show');
+Route::get('pages/{page:slug}', [FeedController::class, 'page'])->name('page');
 
 // Actions
 Route::get('confirm-action', [ActionController::class, 'confirm'])->name('action.create');

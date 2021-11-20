@@ -14,6 +14,16 @@
                 <span>Channel</span>
             </span>
 
+        @elseif ($node->content instanceof Waterhole\Models\Page)
+            <a href="{{ $node->content->url }}" class="admin-structure__label with-icon color-text" target="_blank">
+                <x-waterhole::icon :icon="$node->content->icon ?? null"/>
+                <span>{{ $node->content->name ?? 'Page' }}</span>
+            </a>
+            <span class="with-icon text-xs color-muted">
+                <x-waterhole::icon icon="heroicon-o-document-text"/>
+                <span>Page</span>
+            </span>
+
         @elseif ($node->content instanceof Waterhole\Models\StructureHeading)
             <span class="admin-structure__label color-muted">
                 {{ $node->content->name ?? 'Heading' }}
@@ -33,20 +43,23 @@
         <div class="spacer"></div>
 
         @if (method_exists($node->content, 'permissions'))
-            @if ($node->content->permissions->guest()->can('view'))
+            @if ($node->content->permissions->guest()->allows('view'))
                 <span class="with-icon text-xs color-muted">
                     <x-waterhole::icon icon="heroicon-o-globe"/>
                     Public
                 </span>
-            @elseif ($node->content->permissions->member()->can('view'))
+            @elseif ($node->content->permissions->member()->allows('view'))
                 <span class="with-icon text-xs color-muted">
                     <x-waterhole::icon icon="heroicon-o-user"/>
                     Member
                 </span>
             @else
-                <span class="with-icon text-xs color-muted">
-                    <x-waterhole::icon icon="heroicon-o-key"/>
-                    {{ $node->content->permissions->ability('view')->map(fn($p) => $p->recipient->name)->join(', ') ?: 'Admin' }}
+                <span>
+                    @forelse ($node->content->permissions->ability('view')->groups()->map->recipient as $group)
+                        <x-waterhole::group-label :group="$group"/>
+                    @empty
+                        <span class="badge">Admin</span>
+                    @endforelse
                 </span>
             @endif
         @endif

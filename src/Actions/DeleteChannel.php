@@ -39,7 +39,7 @@ class DeleteChannel extends Action
     public function confirmationBody(Collection $items): HtmlString
     {
         return new HtmlString(
-            view('waterhole::admin.channels.delete', [
+            view('waterhole::admin.structure.channels.delete', [
                 'channel' => $items[0]
             ])
         );
@@ -59,9 +59,5 @@ class DeleteChannel extends Action
 
             $channel->delete();
         });
-
-        // TODO: update nav
-
-        return redirect('/');
     }
 }

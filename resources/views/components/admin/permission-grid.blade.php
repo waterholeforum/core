@@ -19,9 +19,15 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (Waterhole\Models\Group::all() as $group)
+            @foreach (Waterhole\Models\Group::where('id', '!=', Waterhole\Models\Group::ADMIN_ID)->get() as $group)
                 <tr data-group-id="{{ $group->getKey() }}">
-                    <th>{{ $group->name }}</th>
+                    <th>
+                        @if ($group->isCustom())
+                            <x-waterhole::group-label :group="$group"/>
+                        @else
+                            {{ $group->name }}
+                        @endif
+                    </th>
                     @foreach ($abilities as $ability)
                         @if (($group->isGuest() && $ability !== 'view') || ($group->isMember() && $ability === 'moderate'))
                             <td></td>
@@ -37,7 +43,7 @@
                                         type="checkbox"
                                         name="permissions[{{ $group->getMorphClass() }}:{{ $group->getKey() }}][{{ $ability }}]"
                                         value="1"
-                                        @if (old("permissions.{$group->getMorphClass()}:{$group->getKey()}.$ability", isset($permissions) ? $permissions->group($group)->can($ability) : in_array($ability, $defaults))) checked @endif
+                                        @if (old("permissions.{$group->getMorphClass()}:{$group->getKey()}.$ability", isset($permissions) ? $permissions->group($group)->allows($ability) : in_array($ability, $defaults))) checked @endif
                                         data-implied-by="
                                             @if ($group->isMember()) permissions[group:1][{{ $ability }}] @endif
                                             @if ($group->isCustom()) permissions[group:2][{{ $ability }}] @endif

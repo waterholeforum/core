@@ -1081,112 +1081,6 @@ function subscribe(el) {
 
 /***/ }),
 
-/***/ "./node_modules/@github/session-resume/dist/index.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/@github/session-resume/dist/index.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "persistResumableFields": () => (/* binding */ persistResumableFields),
-/* harmony export */   "restoreResumableFields": () => (/* binding */ restoreResumableFields),
-/* harmony export */   "setForm": () => (/* binding */ setForm)
-/* harmony export */ });
-let submittedForm = null;
-function shouldResumeField(field) {
-    return !!field.id && field.value !== field.defaultValue && field.form !== submittedForm;
-}
-function persistResumableFields(id, options) {
-    var _a, _b;
-    const selector = (_a = options === null || options === void 0 ? void 0 : options.selector) !== null && _a !== void 0 ? _a : '.js-session-resumable';
-    const keyPrefix = (_b = options === null || options === void 0 ? void 0 : options.keyPrefix) !== null && _b !== void 0 ? _b : 'session-resume:';
-    const key = `${keyPrefix}${id}`;
-    const resumables = [];
-    for (const el of document.querySelectorAll(selector)) {
-        if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) {
-            resumables.push(el);
-        }
-    }
-    let fields = resumables.filter(field => shouldResumeField(field)).map(field => [field.id, field.value]);
-    if (fields.length) {
-        try {
-            const previouslyStoredFieldsJson = sessionStorage.getItem(key);
-            if (previouslyStoredFieldsJson !== null) {
-                const previouslyStoredFields = JSON.parse(previouslyStoredFieldsJson);
-                const fieldsNotReplaced = previouslyStoredFields.filter(function (oldField) {
-                    return !fields.some(field => field[0] === oldField[0]);
-                });
-                fields = fields.concat(fieldsNotReplaced);
-            }
-            sessionStorage.setItem(key, JSON.stringify(fields));
-        }
-        catch (_c) {
-        }
-    }
-}
-function restoreResumableFields(id, options) {
-    var _a;
-    const keyPrefix = (_a = options === null || options === void 0 ? void 0 : options.keyPrefix) !== null && _a !== void 0 ? _a : 'session-resume:';
-    const key = `${keyPrefix}${id}`;
-    let fields;
-    try {
-        fields = sessionStorage.getItem(key);
-    }
-    catch (_b) {
-    }
-    if (!fields)
-        return;
-    const changedFields = [];
-    const storedFieldsNotFound = [];
-    for (const [fieldId, value] of JSON.parse(fields)) {
-        const resumeEvent = new CustomEvent('session:resume', {
-            bubbles: true,
-            cancelable: true,
-            detail: { targetId: fieldId, targetValue: value }
-        });
-        if (document.dispatchEvent(resumeEvent)) {
-            const field = document.getElementById(fieldId);
-            if (field && (field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement)) {
-                if (field.value === field.defaultValue) {
-                    field.value = value;
-                    changedFields.push(field);
-                }
-            }
-            else {
-                storedFieldsNotFound.push([fieldId, value]);
-            }
-        }
-    }
-    if (storedFieldsNotFound.length === 0) {
-        try {
-            sessionStorage.removeItem(key);
-        }
-        catch (_c) {
-        }
-    }
-    else {
-        sessionStorage.setItem(key, JSON.stringify(storedFieldsNotFound));
-    }
-    setTimeout(function () {
-        for (const el of changedFields) {
-            el.dispatchEvent(new CustomEvent('change', { bubbles: true, cancelable: true }));
-        }
-    }, 0);
-}
-function setForm(event) {
-    submittedForm = event.target;
-    setTimeout(function () {
-        if (event.defaultPrevented) {
-            submittedForm = null;
-        }
-    }, 0);
-}
-
-
-/***/ }),
-
 /***/ "./node_modules/@hotwired/stimulus/dist/stimulus.js":
 /*!**********************************************************!*\
   !*** ./node_modules/@hotwired/stimulus/dist/stimulus.js ***!
@@ -10855,6 +10749,7 @@ var default_1 = /*#__PURE__*/function (_Controller) {
     value: function connect() {
       var _this = this;
 
+      this.frameTarget.removeAttribute('disabled');
       window.Echo["private"]('Waterhole.Models.User.' + Waterhole.userId).listen('NotificationReceived', function (_ref) {
         var unreadCount = _ref.unreadCount,
             html = _ref.html;
@@ -22860,10 +22755,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var wicg_inert__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! wicg-inert */ "./node_modules/wicg-inert/dist/inert.esm.js");
 /* harmony import */ var wicg_inert__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(wicg_inert__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _github_text_expander_element__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @github/text-expander-element */ "./node_modules/@github/text-expander-element/dist/index.js");
-/* harmony import */ var _github_session_resume__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @github/session-resume */ "./node_modules/@github/session-resume/dist/index.js");
-/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
-/* harmony import */ var morphdom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! morphdom */ "./node_modules/morphdom/dist/morphdom-esm.js");
-/* harmony import */ var inclusive_elements__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! inclusive-elements */ "../../../packages/inclusive-elements/dist/index.js");
+/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
+/* harmony import */ var morphdom__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! morphdom */ "./node_modules/morphdom/dist/morphdom-esm.js");
+/* harmony import */ var inclusive_elements__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! inclusive-elements */ "../../../packages/inclusive-elements/dist/index.js");
 
 
 var __awaiter = undefined && undefined.__awaiter || function (thisArg, _arguments, P, generator) {
@@ -22900,40 +22794,38 @@ var __awaiter = undefined && undefined.__awaiter || function (thisArg, _argument
 
 
 
- // import './elements/turbo-echo-stream-tag';
 
 
-
-
-var pageId;
-
-function updatePageId() {
-  pageId = window.location.pathname;
-} // Listen for all form submit events and to see if their default submission
+ // import { persistResumableFields, restoreResumableFields, setForm } from '@github/session-resume';
+//
+// let pageId: string;
+//
+// function updatePageId() {
+//     pageId = window.location.pathname;
+// }
+//
+// Listen for all form submit events and to see if their default submission
 // behavior is invoked.
+// window.addEventListener('submit', setForm, { capture: true });
+//
+// window.addEventListener('pageshow', updatePageId);
+// window.addEventListener('pagehide', updatePageId);
+// window.addEventListener('turbo:load', updatePageId);
+//
+//
+// const restore = (e: Event) => {
+//     restoreResumableFields(pageId);
+// };
+// window.addEventListener('pageshow', restore);
+// window.addEventListener('turbo:load', restore);
+//
+// const persist = (e: Event) => {
+//     persistResumableFields(pageId);
+// };
+// window.addEventListener('turbo:before-visit', persist);
+// window.addEventListener('popstate', persist);
+// window.addEventListener('pagehide', persist);
 
-
-window.addEventListener('submit', _github_session_resume__WEBPACK_IMPORTED_MODULE_6__.setForm, {
-  capture: true
-});
-window.addEventListener('pageshow', updatePageId);
-window.addEventListener('pagehide', updatePageId);
-window.addEventListener('turbo:load', updatePageId);
-
-var restore = function restore(e) {
-  (0,_github_session_resume__WEBPACK_IMPORTED_MODULE_6__.restoreResumableFields)(pageId);
-};
-
-window.addEventListener('pageshow', restore);
-window.addEventListener('turbo:load', restore);
-
-var persist = function persist(e) {
-  (0,_github_session_resume__WEBPACK_IMPORTED_MODULE_6__.persistResumableFields)(pageId);
-};
-
-window.addEventListener('turbo:before-visit', persist);
-window.addEventListener('popstate', persist);
-window.addEventListener('pagehide', persist);
 _hotwired_turbo__WEBPACK_IMPORTED_MODULE_1__.start();
 window.Turbo = _hotwired_turbo__WEBPACK_IMPORTED_MODULE_1__;
 document.addEventListener('turbo:submit-start', function (e) {
@@ -22998,7 +22890,7 @@ document.addEventListener('turbo:before-stream-render', function (e) {
   if (stream.action === 'replace') {
     e.preventDefault();
     stream.targetElements.forEach(function (el) {
-      (0,morphdom__WEBPACK_IMPORTED_MODULE_7__["default"])(el, stream.templateContent.firstElementChild);
+      (0,morphdom__WEBPACK_IMPORTED_MODULE_6__["default"])(el, stream.templateContent.firstElementChild);
     });
   }
 });
@@ -23045,7 +22937,7 @@ document.addEventListener('turbo:frame-missing', function (_ref) {
 // });
 
 
-window.Stimulus = _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_8__.Application.start();
+window.Stimulus = _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_7__.Application.start();
 
 var context = __webpack_require__("./resources/js/controllers sync recursive \\.ts$");
 
@@ -23057,11 +22949,11 @@ window.Stimulus.load(context.keys().map(function (key) {
 }));
 
 
-window.customElements.define('ui-popup', inclusive_elements__WEBPACK_IMPORTED_MODULE_9__.PopupElement);
-window.customElements.define('ui-menu', inclusive_elements__WEBPACK_IMPORTED_MODULE_9__.MenuElement);
-window.customElements.define('ui-modal', inclusive_elements__WEBPACK_IMPORTED_MODULE_9__.ModalElement);
-window.customElements.define('ui-tooltip', inclusive_elements__WEBPACK_IMPORTED_MODULE_9__.TooltipElement);
-window.customElements.define('ui-alerts', inclusive_elements__WEBPACK_IMPORTED_MODULE_9__.AlertsElement);
+window.customElements.define('ui-popup', inclusive_elements__WEBPACK_IMPORTED_MODULE_8__.PopupElement);
+window.customElements.define('ui-menu', inclusive_elements__WEBPACK_IMPORTED_MODULE_8__.MenuElement);
+window.customElements.define('ui-modal', inclusive_elements__WEBPACK_IMPORTED_MODULE_8__.ModalElement);
+window.customElements.define('ui-tooltip', inclusive_elements__WEBPACK_IMPORTED_MODULE_8__.TooltipElement);
+window.customElements.define('ui-alerts', inclusive_elements__WEBPACK_IMPORTED_MODULE_8__.AlertsElement);
 window.Waterhole.alerts = document.getElementById('alerts');
 })();
 

@@ -4,6 +4,7 @@ namespace Waterhole\Actions;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Waterhole\Models\Page;
 use Waterhole\Models\StructureHeading;
 use Waterhole\Models\StructureLink;
 use Waterhole\Models\User;
@@ -27,7 +28,7 @@ class DeleteStructure extends Action
 
     public function appliesTo($item): bool
     {
-        return $item instanceof StructureHeading || $item instanceof StructureLink;
+        return $item instanceof StructureHeading || $item instanceof StructureLink || $item instanceof Page;
     }
 
     public function authorize(?User $user, $item): bool

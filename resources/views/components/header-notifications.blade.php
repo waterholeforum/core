@@ -23,6 +23,7 @@
                 src="{{ route('waterhole.notifications.index') }}"
                 loading="lazy"
                 data-notifications-popup-target="frame"
+                disabled
             >
                 <div class="loading-indicator"></div>
             </turbo-frame>

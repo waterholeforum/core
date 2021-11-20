@@ -20,14 +20,14 @@
             </div>
 
             <x-waterhole::field name="headline" label="Headline">
-                <div class="stack-sm">
+                <div class="stack-xs">
                     <input id="{{ $component->id }}" type="text" name="headline" value="{{ old('headline', Auth::user()->headline) }}" class="input block" maxlength="30">
                     <p class="field__description">Describe yourself in a few words. This will be displayed next to your name.</p>
                 </div>
             </x-waterhole::field>
 
             <x-waterhole::field name="bio" label="Bio">
-                <div class="stack-sm">
+                <div class="stack-xs">
                     <textarea id="{{ $component->id }}" type="text" name="bio" class="input block" maxlength="255">{{ old('bio', Auth::user()->bio) }}</textarea>
                     <p class="field__description">Write more about yourself. This will be displayed on your profile.</p>
                 </div>
