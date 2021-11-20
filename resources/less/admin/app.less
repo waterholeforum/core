@@ -34,6 +34,83 @@
 
 @import '_structure';
 
-.radio-card {
+.table {
+  border-spacing: 0;
+  font-size: var(--text-xs);
 
+  td, th {
+    padding: var(--space-sm);
+  }
+
+  th {
+    font-weight: var(--font-weight-bold);
+  }
+
+  tbody td,
+  tbody th {
+    border-top: 1px solid var(--color-stroke);
+  }
+
+  tbody th {
+    text-align: left;
+  }
+}
+
+td.choice-cell {
+  padding: 0;
+
+  .choice {
+    padding: var(--space-sm);
+    justify-content: center;
+
+    &:not(.is-disabled):hover,
+    &.is-highlighted {
+      background: var(--color-fill);
+    }
+  }
+}
+
+.is-highlighted {
+  background: var(--color-fill);
+}
+
+.permission-grid {
+  thead th {
+    height: 10ch;
+    vertical-align: bottom;
+
+    span {
+      display: block;
+      width: 20px;
+      transform: rotate(-90deg);
+      pointer-events: none;
+    }
+  }
+}
+
+.table-container {
+  overflow: auto;
+  width: fit-content;
+  border: 1px solid var(--color-stroke);
+  border-radius: var(--border-radius);
+}
+
+.color-picker__swatch {
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 4px;
+  border: 1px solid var(--color-stroke);
+}
+
+.color-picker {
+  position: relative;
+}
+
+.color-picker__picker {
+  position: absolute;
+  top: 100%;
+  z-index: var(--z-index-overlay);
+  box-shadow: var(--shadow-md);
+  margin-top: 6px;
+  border-radius: var(--border-radius);
 }

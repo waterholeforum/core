@@ -12,6 +12,8 @@ export default class extends Controller {
         this.element.addEventListener('close', () => {
             this.frameTarget!.src = null;
         });
+
+        this.frameTarget!.removeAttribute('disabled');
     }
 
     loading(e: any) {

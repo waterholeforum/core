@@ -2,27 +2,23 @@
 
 namespace Waterhole\Actions;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Waterhole\Models\StructureHeading;
 use Waterhole\Models\StructureLink;
 use Waterhole\Models\User;
 
-class DeleteStructure extends Action
+class EditStructure extends Link
 {
     public ?array $context = ['admin'];
-    public bool $destructive = true;
-    public bool $confirm = true;
-    public bool $bulk = false;
 
     public function name(): string
     {
-        return 'Delete...';
+        return 'Edit';
     }
 
     public function icon(Collection $items): ?string
     {
-        return 'heroicon-o-trash';
+        return 'heroicon-o-pencil';
     }
 
     public function appliesTo($item): bool
@@ -32,16 +28,11 @@ class DeleteStructure extends Action
 
     public function authorize(?User $user, $item): bool
     {
-        return $user && $user->can('delete', $item);
+        return $user && $user->can('update', $item);
     }
 
-    public function confirmation(Collection $items): null|string
+    public function link($item)
     {
-        return 'Are you sure you want to delete this?';
-    }
-
-    public function run(Collection $items, Request $request)
-    {
-        $items->each->delete();
+        return $item->edit_url;
     }
 }

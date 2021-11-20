@@ -169,3 +169,13 @@ function render_component(Component $component): string
         return view($view, $data)->render();
     }
 }
+
+function get_contrast_color(string $hex): string
+{
+    $r = hexdec(substr($hex, 1, 2));
+    $g = hexdec(substr($hex, 3, 2));
+    $b = hexdec(substr($hex, 5, 2));
+    $yiq = (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
+
+    return ($yiq >= 128) ? 'black' : 'white';
+}

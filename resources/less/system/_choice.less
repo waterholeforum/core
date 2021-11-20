@@ -1,6 +1,5 @@
 .choice {
   cursor: pointer;
-  display: block;
   display: flex;
   align-items: baseline;
   gap: var(--space-xs);
@@ -27,6 +26,11 @@ input[type="radio"] {
   border: 2px solid var(--color-stroke);
   vertical-align: -.2em;
   position: relative;
+  cursor: pointer;
+
+  &:checked {
+    border: 0;
+  }
 
   &:checked::before {
     content: '';
@@ -37,22 +41,23 @@ input[type="radio"] {
     background: var(--color-accent-contrast);
   }
 
-  &:not(:disabled) {
+  &:not(:disabled, [aria-disabled="true"]) {
     &:active {
       filter: var(--filter-active);
     }
 
     &:checked {
       background: var(--color-accent);
-      border: 0;
     }
   }
 
-  &:disabled {
-    background: var(--color-fill);
+  &:disabled,
+  &[aria-disabled="true"] {
+    background: var(--color-stroke);
+    border: 0;
 
     &:checked::before {
-      background: var(--color-stroke);
+      background: var(--color-text-muted);
     }
   }
 }

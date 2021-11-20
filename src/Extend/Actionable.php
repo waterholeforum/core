@@ -15,7 +15,9 @@ class Actionable
             'posts' => Models\Post::class,
             'channels' => Models\Channel::class,
             'comments' => Models\Comment::class,
-            'structure' => Models\Structure::class,
+            'group' => Models\Group::class,
+            'structureGroup' => Models\StructureHeading::class,
+            'structureLink' => Models\StructureLink::class,
             'users' => Models\User::class,
         ];
     }

@@ -4,11 +4,10 @@ namespace Waterhole\Actions;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Waterhole\Models\StructureHeading;
-use Waterhole\Models\StructureLink;
+use Waterhole\Models\Group;
 use Waterhole\Models\User;
 
-class DeleteStructure extends Action
+class DeleteGroup extends Action
 {
     public ?array $context = ['admin'];
     public bool $destructive = true;
@@ -27,7 +26,7 @@ class DeleteStructure extends Action
 
     public function appliesTo($item): bool
     {
-        return $item instanceof StructureHeading || $item instanceof StructureLink;
+        return $item instanceof Group;
     }
 
     public function authorize(?User $user, $item): bool

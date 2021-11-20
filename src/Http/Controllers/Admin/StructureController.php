@@ -2,46 +2,42 @@
 
 namespace Waterhole\Http\Controllers\Admin;
 
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\Request;
 use Waterhole\Http\Controllers\Controller;
+use Waterhole\Models\Channel;
 use Waterhole\Models\Structure;
 
 class StructureController extends Controller
 {
-    public function __invoke()
+    public function index()
     {
-        $structure = Structure::with('content')
-            ->tree()
+        $structure = Structure::with(['content' => function (MorphTo $morphTo) {
+            $morphTo->morphWith([
+                Channel::class => ['permissions.recipient'],
+            ]);
+        }])
             ->orderBy('position')
-            ->get()
-            ->toTree();
+            ->get();
 
         return view('waterhole::admin.structure', compact('structure'));
     }
 
-    public function save(Request $request)
+    public function saveOrder(Request $request)
     {
         $request['order'] = json_decode($request->input('order'), true);
 
         $data = $request->validate([
             'order' => 'array',
-            'order.*' => 'array:id,position,parent_id',
-            'order.*.id' => 'required|integer',
-            'order.*.position' => 'required|integer|min:0',
-            'order.*.parent_id' => 'nullable|integer|exists:structure,id',
+            'order.*' => 'integer',
         ]);
 
         if ($data['order']) {
-            foreach ($data['order'] as $node) {
-                Structure::whereKey($node['id'])->update([
-                    'position' => $node['position'],
-                    'parent_id' => $node['parent_id'] ?? null,
-                ]);
+            foreach ($data['order'] as $position => $node) {
+                Structure::whereKey($node)->update(compact('position'));
             }
         }
 
-        return redirect()
-            ->route('waterhole.admin.structure')
-            ->with('success', 'Structure saved.');
+        return redirect()->route('waterhole.admin.structure');
     }
 }

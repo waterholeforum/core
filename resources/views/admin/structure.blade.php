@@ -8,12 +8,6 @@
         </x-waterhole::alert>
 
         <div class="toolbar toolbar--right">
-            <form action="{{ route('waterhole.admin.structure') }}" method="post" data-admin-structure-target="orderForm" hidden>
-                @csrf
-                <input type="hidden" name="order" data-dragon-nest-target="orderInput">
-                <button type="submit" class="btn is-active">Save Order</button>
-            </form>
-
             <ui-popup placement="bottom-end">
                 <button type="button" class="btn btn--primary">
                     <x-waterhole::icon icon="heroicon-s-plus"/>
@@ -21,7 +15,7 @@
                     <x-waterhole::icon icon="heroicon-s-chevron-down"/>
                 </button>
 
-                <ui-menu class="menu">
+                <ui-menu class="menu" hidden>
                     <a href="{{ route('waterhole.admin.structure.channels.create') }}" type="button" class="menu-item" role="menuitem">
                         <x-waterhole::icon icon="heroicon-o-chat-alt-2"/>
                         <span>Channel</span>
@@ -34,10 +28,10 @@
                         <x-waterhole::icon icon="heroicon-o-link"/>
                         <span>Link</span>
                     </button>
-                    <button type="button" class="menu-item" role="menuitem">
-                        <x-waterhole::icon icon="heroicon-o-folder"/>
-                        <span>Group</span>
-                    </button>
+                    <a href="{{ route('waterhole.admin.structure.headings.create') }}" class="menu-item" role="menuitem">
+                        <x-waterhole::icon icon="heroicon-o-hashtag"/>
+                        <span>Heading</span>
+                    </a>
                 </ui-menu>
             </ui-popup>
         </div>
@@ -46,11 +40,17 @@
             class="card admin-structure"
             role="list"
             data-dragon-nest-target="list"
-            data-action="dragend->admin-structure#showOrderForm"
+            data-admin-structure-target="list"
+            data-action="dragend->admin-structure#saveOrder"
         >
             @foreach ($structure as $node)
                 <x-waterhole::admin.structure-node :node="$node"/>
             @endforeach
         </ul>
+
+        <form action="{{ route('waterhole.admin.structure') }}" method="post" data-admin-structure-target="orderForm" hidden>
+            @csrf
+            <input type="hidden" name="order" data-dragon-nest-target="orderInput">
+        </form>
     </div>
 </x-waterhole::admin>

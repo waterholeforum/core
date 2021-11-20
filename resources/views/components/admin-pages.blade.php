@@ -8,24 +8,24 @@
     <span class="label">Settings</span>
 </a>
 
-<a href="{{ route('waterhole.admin.structure') }}" class="nav-link {{ request()->routeIs('waterhole.admin.structure*') ? 'is-active' : '' }}">
-    <x-waterhole::icon icon="heroicon-o-collection"/>
-    <span class="label">Structure</span>
-</a>
-
 <a href="{{ route('waterhole.admin.design') }}" class="nav-link {{ request()->routeIs('waterhole.admin.design') ? 'is-active' : '' }}">
     <x-waterhole::icon icon="heroicon-o-template"/>
     <span class="label">Design</span>
 </a>
 
-<a href="{{ route('waterhole.admin.users') }}" class="nav-link {{ request()->routeIs('waterhole.admin.users') ? 'is-active' : '' }}">
-    <x-waterhole::icon icon="heroicon-o-users"/>
-    <span class="label">Users</span>
+<a href="{{ route('waterhole.admin.structure') }}" class="nav-link {{ request()->routeIs('waterhole.admin.structure*') ? 'is-active' : '' }}">
+    <x-waterhole::icon icon="heroicon-o-collection"/>
+    <span class="label">Structure</span>
 </a>
 
-<a href="{{ route('waterhole.admin.permissions') }}" class="nav-link {{ request()->routeIs('waterhole.admin.permissions') ? 'is-active' : '' }}">
-    <x-waterhole::icon icon="heroicon-o-key"/>
-    <span class="label">Permissions</span>
+<a href="{{ route('waterhole.admin.groups.index') }}" class="nav-link {{ request()->routeIs('waterhole.admin.groups*') ? 'is-active' : '' }}">
+    <x-waterhole::icon icon="heroicon-o-user-group"/>
+    <span class="label">Groups</span>
+</a>
+
+<a href="{{ route('waterhole.admin.users') }}" class="nav-link {{ request()->routeIs('waterhole.admin.users') ? 'is-active' : '' }}">
+    <x-waterhole::icon icon="heroicon-o-user"/>
+    <span class="label">Users</span>
 </a>
 
 <a href="{{ route('waterhole.admin.utilities') }}" class="nav-link {{ request()->routeIs('waterhole.admin.utilities') ? 'is-active' : '' }}">

@@ -18,6 +18,7 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Intervention\Image\Image;
 use Waterhole\Models\Concerns\HasImageAttributes;
+use Waterhole\Models\Concerns\ReceivesPermissions;
 use Waterhole\Notifications\ResetPassword;
 use Waterhole\Notifications\VerifyEmail;
 
@@ -33,6 +34,7 @@ class User extends Model implements
     use MustVerifyEmail;
     use Notifiable;
     use HasImageAttributes;
+    use ReceivesPermissions;
 
     const UPDATED_AT = null;
 
@@ -62,7 +64,7 @@ class User extends Model implements
 
     public function groups(): BelongsToMany
     {
-        return $this->belongsToMany(Group::class);
+        return $this->belongsToMany(Group::class)->orderBy('name');
     }
 
     /**

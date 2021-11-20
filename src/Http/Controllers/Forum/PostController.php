@@ -38,7 +38,7 @@ class PostController extends Controller
             return $sort->handle() === $request->query('sort');
         }, $sorts[0]);
 
-        $query = $post->comments()->with(['user', 'parent.user', 'likedBy', 'mentions']);
+        $query = $post->comments()->with(['user.groups', 'parent.user.groups', 'likedBy', 'mentions']);
 
         $currentSort->apply($query);
 

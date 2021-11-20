@@ -42,6 +42,7 @@
 </div>
 
 <ui-modal
+    id="modal-element"
     data-controller="modal"
     hidden
     class="modal"
@@ -54,6 +55,7 @@
         data-modal-target="frame"
         data-action="turbo:before-fetch-request->modal#loading turbo:frame-render->modal#loaded"
         aria-labelledby="dialog-title"
+        disabled
     >
         <div data-modal-target="loading" class="dialog dialog--sm">
             <div class="loading-indicator"></div>

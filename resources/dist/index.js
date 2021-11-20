@@ -1,6 +1,781 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "../../../packages/turbo/node_modules/@babel/runtime/regenerator/index.js":
+/*!********************************************************************************!*\
+  !*** ../../../packages/turbo/node_modules/@babel/runtime/regenerator/index.js ***!
+  \********************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! regenerator-runtime */ "../../../packages/turbo/node_modules/regenerator-runtime/runtime.js");
+
+
+/***/ }),
+
+/***/ "../../../packages/turbo/node_modules/regenerator-runtime/runtime.js":
+/*!***************************************************************************!*\
+  !*** ../../../packages/turbo/node_modules/regenerator-runtime/runtime.js ***!
+  \***************************************************************************/
+/***/ ((module) => {
+
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+var runtime = (function (exports) {
+  "use strict";
+
+  var Op = Object.prototype;
+  var hasOwn = Op.hasOwnProperty;
+  var undefined; // More compressible than void 0.
+  var $Symbol = typeof Symbol === "function" ? Symbol : {};
+  var iteratorSymbol = $Symbol.iterator || "@@iterator";
+  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
+  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+
+  function define(obj, key, value) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+    return obj[key];
+  }
+  try {
+    // IE 8 has a broken Object.defineProperty that only works on DOM objects.
+    define({}, "");
+  } catch (err) {
+    define = function(obj, key, value) {
+      return obj[key] = value;
+    };
+  }
+
+  function wrap(innerFn, outerFn, self, tryLocsList) {
+    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+    var generator = Object.create(protoGenerator.prototype);
+    var context = new Context(tryLocsList || []);
+
+    // The ._invoke method unifies the implementations of the .next,
+    // .throw, and .return methods.
+    generator._invoke = makeInvokeMethod(innerFn, self, context);
+
+    return generator;
+  }
+  exports.wrap = wrap;
+
+  // Try/catch helper to minimize deoptimizations. Returns a completion
+  // record like context.tryEntries[i].completion. This interface could
+  // have been (and was previously) designed to take a closure to be
+  // invoked without arguments, but in all the cases we care about we
+  // already have an existing method we want to call, so there's no need
+  // to create a new function object. We can even get away with assuming
+  // the method takes exactly one argument, since that happens to be true
+  // in every case, so we don't have to touch the arguments object. The
+  // only additional allocation required is the completion record, which
+  // has a stable shape and so hopefully should be cheap to allocate.
+  function tryCatch(fn, obj, arg) {
+    try {
+      return { type: "normal", arg: fn.call(obj, arg) };
+    } catch (err) {
+      return { type: "throw", arg: err };
+    }
+  }
+
+  var GenStateSuspendedStart = "suspendedStart";
+  var GenStateSuspendedYield = "suspendedYield";
+  var GenStateExecuting = "executing";
+  var GenStateCompleted = "completed";
+
+  // Returning this object from the innerFn has the same effect as
+  // breaking out of the dispatch switch statement.
+  var ContinueSentinel = {};
+
+  // Dummy constructor functions that we use as the .constructor and
+  // .constructor.prototype properties for functions that return Generator
+  // objects. For full spec compliance, you may wish to configure your
+  // minifier not to mangle the names of these two functions.
+  function Generator() {}
+  function GeneratorFunction() {}
+  function GeneratorFunctionPrototype() {}
+
+  // This is a polyfill for %IteratorPrototype% for environments that
+  // don't natively support it.
+  var IteratorPrototype = {};
+  define(IteratorPrototype, iteratorSymbol, function () {
+    return this;
+  });
+
+  var getProto = Object.getPrototypeOf;
+  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+  if (NativeIteratorPrototype &&
+      NativeIteratorPrototype !== Op &&
+      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
+    // This environment has a native %IteratorPrototype%; use it instead
+    // of the polyfill.
+    IteratorPrototype = NativeIteratorPrototype;
+  }
+
+  var Gp = GeneratorFunctionPrototype.prototype =
+    Generator.prototype = Object.create(IteratorPrototype);
+  GeneratorFunction.prototype = GeneratorFunctionPrototype;
+  define(Gp, "constructor", GeneratorFunctionPrototype);
+  define(GeneratorFunctionPrototype, "constructor", GeneratorFunction);
+  GeneratorFunction.displayName = define(
+    GeneratorFunctionPrototype,
+    toStringTagSymbol,
+    "GeneratorFunction"
+  );
+
+  // Helper for defining the .next, .throw, and .return methods of the
+  // Iterator interface in terms of a single ._invoke method.
+  function defineIteratorMethods(prototype) {
+    ["next", "throw", "return"].forEach(function(method) {
+      define(prototype, method, function(arg) {
+        return this._invoke(method, arg);
+      });
+    });
+  }
+
+  exports.isGeneratorFunction = function(genFun) {
+    var ctor = typeof genFun === "function" && genFun.constructor;
+    return ctor
+      ? ctor === GeneratorFunction ||
+        // For the native GeneratorFunction constructor, the best we can
+        // do is to check its .name property.
+        (ctor.displayName || ctor.name) === "GeneratorFunction"
+      : false;
+  };
+
+  exports.mark = function(genFun) {
+    if (Object.setPrototypeOf) {
+      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
+    } else {
+      genFun.__proto__ = GeneratorFunctionPrototype;
+      define(genFun, toStringTagSymbol, "GeneratorFunction");
+    }
+    genFun.prototype = Object.create(Gp);
+    return genFun;
+  };
+
+  // Within the body of any async function, `await x` is transformed to
+  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
+  // `hasOwn.call(value, "__await")` to determine if the yielded value is
+  // meant to be awaited.
+  exports.awrap = function(arg) {
+    return { __await: arg };
+  };
+
+  function AsyncIterator(generator, PromiseImpl) {
+    function invoke(method, arg, resolve, reject) {
+      var record = tryCatch(generator[method], generator, arg);
+      if (record.type === "throw") {
+        reject(record.arg);
+      } else {
+        var result = record.arg;
+        var value = result.value;
+        if (value &&
+            typeof value === "object" &&
+            hasOwn.call(value, "__await")) {
+          return PromiseImpl.resolve(value.__await).then(function(value) {
+            invoke("next", value, resolve, reject);
+          }, function(err) {
+            invoke("throw", err, resolve, reject);
+          });
+        }
+
+        return PromiseImpl.resolve(value).then(function(unwrapped) {
+          // When a yielded Promise is resolved, its final value becomes
+          // the .value of the Promise<{value,done}> result for the
+          // current iteration.
+          result.value = unwrapped;
+          resolve(result);
+        }, function(error) {
+          // If a rejected Promise was yielded, throw the rejection back
+          // into the async generator function so it can be handled there.
+          return invoke("throw", error, resolve, reject);
+        });
+      }
+    }
+
+    var previousPromise;
+
+    function enqueue(method, arg) {
+      function callInvokeWithMethodAndArg() {
+        return new PromiseImpl(function(resolve, reject) {
+          invoke(method, arg, resolve, reject);
+        });
+      }
+
+      return previousPromise =
+        // If enqueue has been called before, then we want to wait until
+        // all previous Promises have been resolved before calling invoke,
+        // so that results are always delivered in the correct order. If
+        // enqueue has not been called before, then it is important to
+        // call invoke immediately, without waiting on a callback to fire,
+        // so that the async generator function has the opportunity to do
+        // any necessary setup in a predictable way. This predictability
+        // is why the Promise constructor synchronously invokes its
+        // executor callback, and why async functions synchronously
+        // execute code before the first await. Since we implement simple
+        // async functions in terms of async generators, it is especially
+        // important to get this right, even though it requires care.
+        previousPromise ? previousPromise.then(
+          callInvokeWithMethodAndArg,
+          // Avoid propagating failures to Promises returned by later
+          // invocations of the iterator.
+          callInvokeWithMethodAndArg
+        ) : callInvokeWithMethodAndArg();
+    }
+
+    // Define the unified helper method that is used to implement .next,
+    // .throw, and .return (see defineIteratorMethods).
+    this._invoke = enqueue;
+  }
+
+  defineIteratorMethods(AsyncIterator.prototype);
+  define(AsyncIterator.prototype, asyncIteratorSymbol, function () {
+    return this;
+  });
+  exports.AsyncIterator = AsyncIterator;
+
+  // Note that simple async functions are implemented on top of
+  // AsyncIterator objects; they just return a Promise for the value of
+  // the final result produced by the iterator.
+  exports.async = function(innerFn, outerFn, self, tryLocsList, PromiseImpl) {
+    if (PromiseImpl === void 0) PromiseImpl = Promise;
+
+    var iter = new AsyncIterator(
+      wrap(innerFn, outerFn, self, tryLocsList),
+      PromiseImpl
+    );
+
+    return exports.isGeneratorFunction(outerFn)
+      ? iter // If outerFn is a generator, return the full iterator.
+      : iter.next().then(function(result) {
+          return result.done ? result.value : iter.next();
+        });
+  };
+
+  function makeInvokeMethod(innerFn, self, context) {
+    var state = GenStateSuspendedStart;
+
+    return function invoke(method, arg) {
+      if (state === GenStateExecuting) {
+        throw new Error("Generator is already running");
+      }
+
+      if (state === GenStateCompleted) {
+        if (method === "throw") {
+          throw arg;
+        }
+
+        // Be forgiving, per 25.3.3.3.3 of the spec:
+        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
+        return doneResult();
+      }
+
+      context.method = method;
+      context.arg = arg;
+
+      while (true) {
+        var delegate = context.delegate;
+        if (delegate) {
+          var delegateResult = maybeInvokeDelegate(delegate, context);
+          if (delegateResult) {
+            if (delegateResult === ContinueSentinel) continue;
+            return delegateResult;
+          }
+        }
+
+        if (context.method === "next") {
+          // Setting context._sent for legacy support of Babel's
+          // function.sent implementation.
+          context.sent = context._sent = context.arg;
+
+        } else if (context.method === "throw") {
+          if (state === GenStateSuspendedStart) {
+            state = GenStateCompleted;
+            throw context.arg;
+          }
+
+          context.dispatchException(context.arg);
+
+        } else if (context.method === "return") {
+          context.abrupt("return", context.arg);
+        }
+
+        state = GenStateExecuting;
+
+        var record = tryCatch(innerFn, self, context);
+        if (record.type === "normal") {
+          // If an exception is thrown from innerFn, we leave state ===
+          // GenStateExecuting and loop back for another invocation.
+          state = context.done
+            ? GenStateCompleted
+            : GenStateSuspendedYield;
+
+          if (record.arg === ContinueSentinel) {
+            continue;
+          }
+
+          return {
+            value: record.arg,
+            done: context.done
+          };
+
+        } else if (record.type === "throw") {
+          state = GenStateCompleted;
+          // Dispatch the exception by looping back around to the
+          // context.dispatchException(context.arg) call above.
+          context.method = "throw";
+          context.arg = record.arg;
+        }
+      }
+    };
+  }
+
+  // Call delegate.iterator[context.method](context.arg) and handle the
+  // result, either by returning a { value, done } result from the
+  // delegate iterator, or by modifying context.method and context.arg,
+  // setting context.delegate to null, and returning the ContinueSentinel.
+  function maybeInvokeDelegate(delegate, context) {
+    var method = delegate.iterator[context.method];
+    if (method === undefined) {
+      // A .throw or .return when the delegate iterator has no .throw
+      // method always terminates the yield* loop.
+      context.delegate = null;
+
+      if (context.method === "throw") {
+        // Note: ["return"] must be used for ES3 parsing compatibility.
+        if (delegate.iterator["return"]) {
+          // If the delegate iterator has a return method, give it a
+          // chance to clean up.
+          context.method = "return";
+          context.arg = undefined;
+          maybeInvokeDelegate(delegate, context);
+
+          if (context.method === "throw") {
+            // If maybeInvokeDelegate(context) changed context.method from
+            // "return" to "throw", let that override the TypeError below.
+            return ContinueSentinel;
+          }
+        }
+
+        context.method = "throw";
+        context.arg = new TypeError(
+          "The iterator does not provide a 'throw' method");
+      }
+
+      return ContinueSentinel;
+    }
+
+    var record = tryCatch(method, delegate.iterator, context.arg);
+
+    if (record.type === "throw") {
+      context.method = "throw";
+      context.arg = record.arg;
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    var info = record.arg;
+
+    if (! info) {
+      context.method = "throw";
+      context.arg = new TypeError("iterator result is not an object");
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    if (info.done) {
+      // Assign the result of the finished delegate to the temporary
+      // variable specified by delegate.resultName (see delegateYield).
+      context[delegate.resultName] = info.value;
+
+      // Resume execution at the desired location (see delegateYield).
+      context.next = delegate.nextLoc;
+
+      // If context.method was "throw" but the delegate handled the
+      // exception, let the outer generator proceed normally. If
+      // context.method was "next", forget context.arg since it has been
+      // "consumed" by the delegate iterator. If context.method was
+      // "return", allow the original .return call to continue in the
+      // outer generator.
+      if (context.method !== "return") {
+        context.method = "next";
+        context.arg = undefined;
+      }
+
+    } else {
+      // Re-yield the result returned by the delegate method.
+      return info;
+    }
+
+    // The delegate iterator is finished, so forget it and continue with
+    // the outer generator.
+    context.delegate = null;
+    return ContinueSentinel;
+  }
+
+  // Define Generator.prototype.{next,throw,return} in terms of the
+  // unified ._invoke helper method.
+  defineIteratorMethods(Gp);
+
+  define(Gp, toStringTagSymbol, "Generator");
+
+  // A Generator should always return itself as the iterator object when the
+  // @@iterator function is called on it. Some browsers' implementations of the
+  // iterator prototype chain incorrectly implement this, causing the Generator
+  // object to not be returned from this call. This ensures that doesn't happen.
+  // See https://github.com/facebook/regenerator/issues/274 for more details.
+  define(Gp, iteratorSymbol, function() {
+    return this;
+  });
+
+  define(Gp, "toString", function() {
+    return "[object Generator]";
+  });
+
+  function pushTryEntry(locs) {
+    var entry = { tryLoc: locs[0] };
+
+    if (1 in locs) {
+      entry.catchLoc = locs[1];
+    }
+
+    if (2 in locs) {
+      entry.finallyLoc = locs[2];
+      entry.afterLoc = locs[3];
+    }
+
+    this.tryEntries.push(entry);
+  }
+
+  function resetTryEntry(entry) {
+    var record = entry.completion || {};
+    record.type = "normal";
+    delete record.arg;
+    entry.completion = record;
+  }
+
+  function Context(tryLocsList) {
+    // The root entry object (effectively a try statement without a catch
+    // or a finally block) gives us a place to store values thrown from
+    // locations where there is no enclosing try statement.
+    this.tryEntries = [{ tryLoc: "root" }];
+    tryLocsList.forEach(pushTryEntry, this);
+    this.reset(true);
+  }
+
+  exports.keys = function(object) {
+    var keys = [];
+    for (var key in object) {
+      keys.push(key);
+    }
+    keys.reverse();
+
+    // Rather than returning an object with a next method, we keep
+    // things simple and return the next function itself.
+    return function next() {
+      while (keys.length) {
+        var key = keys.pop();
+        if (key in object) {
+          next.value = key;
+          next.done = false;
+          return next;
+        }
+      }
+
+      // To avoid creating an additional object, we just hang the .value
+      // and .done properties off the next function object itself. This
+      // also ensures that the minifier will not anonymize the function.
+      next.done = true;
+      return next;
+    };
+  };
+
+  function values(iterable) {
+    if (iterable) {
+      var iteratorMethod = iterable[iteratorSymbol];
+      if (iteratorMethod) {
+        return iteratorMethod.call(iterable);
+      }
+
+      if (typeof iterable.next === "function") {
+        return iterable;
+      }
+
+      if (!isNaN(iterable.length)) {
+        var i = -1, next = function next() {
+          while (++i < iterable.length) {
+            if (hasOwn.call(iterable, i)) {
+              next.value = iterable[i];
+              next.done = false;
+              return next;
+            }
+          }
+
+          next.value = undefined;
+          next.done = true;
+
+          return next;
+        };
+
+        return next.next = next;
+      }
+    }
+
+    // Return an iterator with no values.
+    return { next: doneResult };
+  }
+  exports.values = values;
+
+  function doneResult() {
+    return { value: undefined, done: true };
+  }
+
+  Context.prototype = {
+    constructor: Context,
+
+    reset: function(skipTempReset) {
+      this.prev = 0;
+      this.next = 0;
+      // Resetting context._sent for legacy support of Babel's
+      // function.sent implementation.
+      this.sent = this._sent = undefined;
+      this.done = false;
+      this.delegate = null;
+
+      this.method = "next";
+      this.arg = undefined;
+
+      this.tryEntries.forEach(resetTryEntry);
+
+      if (!skipTempReset) {
+        for (var name in this) {
+          // Not sure about the optimal order of these conditions:
+          if (name.charAt(0) === "t" &&
+              hasOwn.call(this, name) &&
+              !isNaN(+name.slice(1))) {
+            this[name] = undefined;
+          }
+        }
+      }
+    },
+
+    stop: function() {
+      this.done = true;
+
+      var rootEntry = this.tryEntries[0];
+      var rootRecord = rootEntry.completion;
+      if (rootRecord.type === "throw") {
+        throw rootRecord.arg;
+      }
+
+      return this.rval;
+    },
+
+    dispatchException: function(exception) {
+      if (this.done) {
+        throw exception;
+      }
+
+      var context = this;
+      function handle(loc, caught) {
+        record.type = "throw";
+        record.arg = exception;
+        context.next = loc;
+
+        if (caught) {
+          // If the dispatched exception was caught by a catch block,
+          // then let that catch block handle the exception normally.
+          context.method = "next";
+          context.arg = undefined;
+        }
+
+        return !! caught;
+      }
+
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        var record = entry.completion;
+
+        if (entry.tryLoc === "root") {
+          // Exception thrown outside of any try block that could handle
+          // it, so set the completion value of the entire function to
+          // throw the exception.
+          return handle("end");
+        }
+
+        if (entry.tryLoc <= this.prev) {
+          var hasCatch = hasOwn.call(entry, "catchLoc");
+          var hasFinally = hasOwn.call(entry, "finallyLoc");
+
+          if (hasCatch && hasFinally) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            } else if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else if (hasCatch) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            }
+
+          } else if (hasFinally) {
+            if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else {
+            throw new Error("try statement without catch or finally");
+          }
+        }
+      }
+    },
+
+    abrupt: function(type, arg) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc <= this.prev &&
+            hasOwn.call(entry, "finallyLoc") &&
+            this.prev < entry.finallyLoc) {
+          var finallyEntry = entry;
+          break;
+        }
+      }
+
+      if (finallyEntry &&
+          (type === "break" ||
+           type === "continue") &&
+          finallyEntry.tryLoc <= arg &&
+          arg <= finallyEntry.finallyLoc) {
+        // Ignore the finally entry if control is not jumping to a
+        // location outside the try/catch block.
+        finallyEntry = null;
+      }
+
+      var record = finallyEntry ? finallyEntry.completion : {};
+      record.type = type;
+      record.arg = arg;
+
+      if (finallyEntry) {
+        this.method = "next";
+        this.next = finallyEntry.finallyLoc;
+        return ContinueSentinel;
+      }
+
+      return this.complete(record);
+    },
+
+    complete: function(record, afterLoc) {
+      if (record.type === "throw") {
+        throw record.arg;
+      }
+
+      if (record.type === "break" ||
+          record.type === "continue") {
+        this.next = record.arg;
+      } else if (record.type === "return") {
+        this.rval = this.arg = record.arg;
+        this.method = "return";
+        this.next = "end";
+      } else if (record.type === "normal" && afterLoc) {
+        this.next = afterLoc;
+      }
+
+      return ContinueSentinel;
+    },
+
+    finish: function(finallyLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.finallyLoc === finallyLoc) {
+          this.complete(entry.completion, entry.afterLoc);
+          resetTryEntry(entry);
+          return ContinueSentinel;
+        }
+      }
+    },
+
+    "catch": function(tryLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc === tryLoc) {
+          var record = entry.completion;
+          if (record.type === "throw") {
+            var thrown = record.arg;
+            resetTryEntry(entry);
+          }
+          return thrown;
+        }
+      }
+
+      // The context.catch method must only be called with a location
+      // argument that corresponds to a known catch block.
+      throw new Error("illegal catch attempt");
+    },
+
+    delegateYield: function(iterable, resultName, nextLoc) {
+      this.delegate = {
+        iterator: values(iterable),
+        resultName: resultName,
+        nextLoc: nextLoc
+      };
+
+      if (this.method === "next") {
+        // Deliberately forget the last sent value so that we don't
+        // accidentally pass it on to the delegate.
+        this.arg = undefined;
+      }
+
+      return ContinueSentinel;
+    }
+  };
+
+  // Regardless of whether this script is executing as a CommonJS module
+  // or not, return the runtime object so that we can declare the variable
+  // regeneratorRuntime in the outer scope, which allows this module to be
+  // injected easily by `bin/regenerator --include-runtime script.js`.
+  return exports;
+
+}(
+  // If this script is executing as a CommonJS module, use module.exports
+  // as the regeneratorRuntime namespace. Otherwise create a new empty
+  // object. Either way, the resulting object will be used to initialize
+  // the regeneratorRuntime variable at the top of this file.
+   true ? module.exports : 0
+));
+
+try {
+  regeneratorRuntime = runtime;
+} catch (accidentalStrictMode) {
+  // This module should not be running in strict mode, so the above
+  // assignment should always work unless something is misconfigured. Just
+  // in case runtime.js accidentally runs in strict mode, in modern engines
+  // we can explicitly access globalThis. In older engines we can escape
+  // strict mode using a global Function call. This could conceivably fail
+  // if a Content Security Policy forbids using Function, but in that case
+  // the proper solution is to fix the accidental strict mode problem. If
+  // you've misconfigured your bundler to force strict mode and applied a
+  // CSP to forbid Function, and you're not willing to fix either of those
+  // problems, please detail your unique predicament in a GitHub issue.
+  if (typeof globalThis === "object") {
+    globalThis.regeneratorRuntime = runtime;
+  } else {
+    Function("r", "regeneratorRuntime = r")(runtime);
+  }
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime/regenerator/index.js":
 /*!**********************************************************!*\
   !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
@@ -2385,3187 +3160,6 @@ Controller.values = {};
 
 /***/ }),
 
-/***/ "./node_modules/@hotwired/turbo/dist/turbo.es2017-esm.js":
-/*!***************************************************************!*\
-  !*** ./node_modules/@hotwired/turbo/dist/turbo.es2017-esm.js ***!
-  \***************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "PageRenderer": () => (/* binding */ PageRenderer),
-/* harmony export */   "PageSnapshot": () => (/* binding */ PageSnapshot),
-/* harmony export */   "clearCache": () => (/* binding */ clearCache),
-/* harmony export */   "connectStreamSource": () => (/* binding */ connectStreamSource),
-/* harmony export */   "disconnectStreamSource": () => (/* binding */ disconnectStreamSource),
-/* harmony export */   "navigator": () => (/* binding */ navigator$1),
-/* harmony export */   "registerAdapter": () => (/* binding */ registerAdapter),
-/* harmony export */   "renderStreamMessage": () => (/* binding */ renderStreamMessage),
-/* harmony export */   "session": () => (/* binding */ session),
-/* harmony export */   "setProgressBarDelay": () => (/* binding */ setProgressBarDelay),
-/* harmony export */   "start": () => (/* binding */ start),
-/* harmony export */   "visit": () => (/* binding */ visit)
-/* harmony export */ });
-/*
-Turbo 7.0.0
-Copyright © 2021 Basecamp, LLC
- */
-(function () {
-    if (window.Reflect === undefined || window.customElements === undefined ||
-        window.customElements.polyfillWrapFlushCallback) {
-        return;
-    }
-    const BuiltInHTMLElement = HTMLElement;
-    const wrapperForTheName = {
-        'HTMLElement': function HTMLElement() {
-            return Reflect.construct(BuiltInHTMLElement, [], this.constructor);
-        }
-    };
-    window.HTMLElement =
-        wrapperForTheName['HTMLElement'];
-    HTMLElement.prototype = BuiltInHTMLElement.prototype;
-    HTMLElement.prototype.constructor = HTMLElement;
-    Object.setPrototypeOf(HTMLElement, BuiltInHTMLElement);
-})();
-
-const submittersByForm = new WeakMap;
-function findSubmitterFromClickTarget(target) {
-    const element = target instanceof Element ? target : target instanceof Node ? target.parentElement : null;
-    const candidate = element ? element.closest("input, button") : null;
-    return (candidate === null || candidate === void 0 ? void 0 : candidate.type) == "submit" ? candidate : null;
-}
-function clickCaptured(event) {
-    const submitter = findSubmitterFromClickTarget(event.target);
-    if (submitter && submitter.form) {
-        submittersByForm.set(submitter.form, submitter);
-    }
-}
-(function () {
-    if ("submitter" in Event.prototype)
-        return;
-    let prototype;
-    if ("SubmitEvent" in window && /Apple Computer/.test(navigator.vendor)) {
-        prototype = window.SubmitEvent.prototype;
-    }
-    else if ("SubmitEvent" in window) {
-        return;
-    }
-    else {
-        prototype = window.Event.prototype;
-    }
-    addEventListener("click", clickCaptured, true);
-    Object.defineProperty(prototype, "submitter", {
-        get() {
-            if (this.type == "submit" && this.target instanceof HTMLFormElement) {
-                return submittersByForm.get(this.target);
-            }
-        }
-    });
-})();
-
-var FrameLoadingStyle;
-(function (FrameLoadingStyle) {
-    FrameLoadingStyle["eager"] = "eager";
-    FrameLoadingStyle["lazy"] = "lazy";
-})(FrameLoadingStyle || (FrameLoadingStyle = {}));
-class FrameElement extends HTMLElement {
-    constructor() {
-        super();
-        this.loaded = Promise.resolve();
-        this.delegate = new FrameElement.delegateConstructor(this);
-    }
-    static get observedAttributes() {
-        return ["disabled", "loading", "src"];
-    }
-    connectedCallback() {
-        this.delegate.connect();
-    }
-    disconnectedCallback() {
-        this.delegate.disconnect();
-    }
-    reload() {
-        const { src } = this;
-        this.src = null;
-        this.src = src;
-    }
-    attributeChangedCallback(name) {
-        if (name == "loading") {
-            this.delegate.loadingStyleChanged();
-        }
-        else if (name == "src") {
-            this.delegate.sourceURLChanged();
-        }
-        else {
-            this.delegate.disabledChanged();
-        }
-    }
-    get src() {
-        return this.getAttribute("src");
-    }
-    set src(value) {
-        if (value) {
-            this.setAttribute("src", value);
-        }
-        else {
-            this.removeAttribute("src");
-        }
-    }
-    get loading() {
-        return frameLoadingStyleFromString(this.getAttribute("loading") || "");
-    }
-    set loading(value) {
-        if (value) {
-            this.setAttribute("loading", value);
-        }
-        else {
-            this.removeAttribute("loading");
-        }
-    }
-    get disabled() {
-        return this.hasAttribute("disabled");
-    }
-    set disabled(value) {
-        if (value) {
-            this.setAttribute("disabled", "");
-        }
-        else {
-            this.removeAttribute("disabled");
-        }
-    }
-    get autoscroll() {
-        return this.hasAttribute("autoscroll");
-    }
-    set autoscroll(value) {
-        if (value) {
-            this.setAttribute("autoscroll", "");
-        }
-        else {
-            this.removeAttribute("autoscroll");
-        }
-    }
-    get complete() {
-        return !this.delegate.isLoading;
-    }
-    get isActive() {
-        return this.ownerDocument === document && !this.isPreview;
-    }
-    get isPreview() {
-        var _a, _b;
-        return (_b = (_a = this.ownerDocument) === null || _a === void 0 ? void 0 : _a.documentElement) === null || _b === void 0 ? void 0 : _b.hasAttribute("data-turbo-preview");
-    }
-}
-function frameLoadingStyleFromString(style) {
-    switch (style.toLowerCase()) {
-        case "lazy": return FrameLoadingStyle.lazy;
-        default: return FrameLoadingStyle.eager;
-    }
-}
-
-function expandURL(locatable) {
-    return new URL(locatable.toString(), document.baseURI);
-}
-function getAnchor(url) {
-    let anchorMatch;
-    if (url.hash) {
-        return url.hash.slice(1);
-    }
-    else if (anchorMatch = url.href.match(/#(.*)$/)) {
-        return anchorMatch[1];
-    }
-}
-function getExtension(url) {
-    return (getLastPathComponent(url).match(/\.[^.]*$/) || [])[0] || "";
-}
-function isHTML(url) {
-    return !!getExtension(url).match(/^(?:|\.(?:htm|html|xhtml))$/);
-}
-function isPrefixedBy(baseURL, url) {
-    const prefix = getPrefix(url);
-    return baseURL.href === expandURL(prefix).href || baseURL.href.startsWith(prefix);
-}
-function getRequestURL(url) {
-    const anchor = getAnchor(url);
-    return anchor != null
-        ? url.href.slice(0, -(anchor.length + 1))
-        : url.href;
-}
-function toCacheKey(url) {
-    return getRequestURL(url);
-}
-function urlsAreEqual(left, right) {
-    return expandURL(left).href == expandURL(right).href;
-}
-function getPathComponents(url) {
-    return url.pathname.split("/").slice(1);
-}
-function getLastPathComponent(url) {
-    return getPathComponents(url).slice(-1)[0];
-}
-function getPrefix(url) {
-    return addTrailingSlash(url.origin + url.pathname);
-}
-function addTrailingSlash(value) {
-    return value.endsWith("/") ? value : value + "/";
-}
-
-class FetchResponse {
-    constructor(response) {
-        this.response = response;
-    }
-    get succeeded() {
-        return this.response.ok;
-    }
-    get failed() {
-        return !this.succeeded;
-    }
-    get clientError() {
-        return this.statusCode >= 400 && this.statusCode <= 499;
-    }
-    get serverError() {
-        return this.statusCode >= 500 && this.statusCode <= 599;
-    }
-    get redirected() {
-        return this.response.redirected;
-    }
-    get location() {
-        return expandURL(this.response.url);
-    }
-    get isHTML() {
-        return this.contentType && this.contentType.match(/^(?:text\/([^\s;,]+\b)?html|application\/xhtml\+xml)\b/);
-    }
-    get statusCode() {
-        return this.response.status;
-    }
-    get contentType() {
-        return this.header("Content-Type");
-    }
-    get responseText() {
-        return this.response.clone().text();
-    }
-    get responseHTML() {
-        if (this.isHTML) {
-            return this.response.clone().text();
-        }
-        else {
-            return Promise.resolve(undefined);
-        }
-    }
-    header(name) {
-        return this.response.headers.get(name);
-    }
-}
-
-function dispatch(eventName, { target, cancelable, detail } = {}) {
-    const event = new CustomEvent(eventName, { cancelable, bubbles: true, detail });
-    if (target && target.isConnected) {
-        target.dispatchEvent(event);
-    }
-    else {
-        document.documentElement.dispatchEvent(event);
-    }
-    return event;
-}
-function nextAnimationFrame() {
-    return new Promise(resolve => requestAnimationFrame(() => resolve()));
-}
-function nextEventLoopTick() {
-    return new Promise(resolve => setTimeout(() => resolve(), 0));
-}
-function nextMicrotask() {
-    return Promise.resolve();
-}
-function parseHTMLDocument(html = "") {
-    return new DOMParser().parseFromString(html, "text/html");
-}
-function unindent(strings, ...values) {
-    const lines = interpolate(strings, values).replace(/^\n/, "").split("\n");
-    const match = lines[0].match(/^\s+/);
-    const indent = match ? match[0].length : 0;
-    return lines.map(line => line.slice(indent)).join("\n");
-}
-function interpolate(strings, values) {
-    return strings.reduce((result, string, i) => {
-        const value = values[i] == undefined ? "" : values[i];
-        return result + string + value;
-    }, "");
-}
-function uuid() {
-    return Array.apply(null, { length: 36 }).map((_, i) => {
-        if (i == 8 || i == 13 || i == 18 || i == 23) {
-            return "-";
-        }
-        else if (i == 14) {
-            return "4";
-        }
-        else if (i == 19) {
-            return (Math.floor(Math.random() * 4) + 8).toString(16);
-        }
-        else {
-            return Math.floor(Math.random() * 15).toString(16);
-        }
-    }).join("");
-}
-
-var FetchMethod;
-(function (FetchMethod) {
-    FetchMethod[FetchMethod["get"] = 0] = "get";
-    FetchMethod[FetchMethod["post"] = 1] = "post";
-    FetchMethod[FetchMethod["put"] = 2] = "put";
-    FetchMethod[FetchMethod["patch"] = 3] = "patch";
-    FetchMethod[FetchMethod["delete"] = 4] = "delete";
-})(FetchMethod || (FetchMethod = {}));
-function fetchMethodFromString(method) {
-    switch (method.toLowerCase()) {
-        case "get": return FetchMethod.get;
-        case "post": return FetchMethod.post;
-        case "put": return FetchMethod.put;
-        case "patch": return FetchMethod.patch;
-        case "delete": return FetchMethod.delete;
-    }
-}
-class FetchRequest {
-    constructor(delegate, method, location, body = new URLSearchParams, target = null) {
-        this.abortController = new AbortController;
-        this.resolveRequestPromise = (value) => { };
-        this.delegate = delegate;
-        this.method = method;
-        this.headers = this.defaultHeaders;
-        if (this.isIdempotent) {
-            this.url = mergeFormDataEntries(location, [...body.entries()]);
-        }
-        else {
-            this.body = body;
-            this.url = location;
-        }
-        this.target = target;
-    }
-    get location() {
-        return this.url;
-    }
-    get params() {
-        return this.url.searchParams;
-    }
-    get entries() {
-        return this.body ? Array.from(this.body.entries()) : [];
-    }
-    cancel() {
-        this.abortController.abort();
-    }
-    async perform() {
-        var _a, _b;
-        const { fetchOptions } = this;
-        (_b = (_a = this.delegate).prepareHeadersForRequest) === null || _b === void 0 ? void 0 : _b.call(_a, this.headers, this);
-        await this.allowRequestToBeIntercepted(fetchOptions);
-        try {
-            this.delegate.requestStarted(this);
-            const response = await fetch(this.url.href, fetchOptions);
-            return await this.receive(response);
-        }
-        catch (error) {
-            if (error.name !== 'AbortError') {
-                this.delegate.requestErrored(this, error);
-                throw error;
-            }
-        }
-        finally {
-            this.delegate.requestFinished(this);
-        }
-    }
-    async receive(response) {
-        const fetchResponse = new FetchResponse(response);
-        const event = dispatch("turbo:before-fetch-response", { cancelable: true, detail: { fetchResponse }, target: this.target });
-        if (event.defaultPrevented) {
-            this.delegate.requestPreventedHandlingResponse(this, fetchResponse);
-        }
-        else if (fetchResponse.succeeded) {
-            this.delegate.requestSucceededWithResponse(this, fetchResponse);
-        }
-        else {
-            this.delegate.requestFailedWithResponse(this, fetchResponse);
-        }
-        return fetchResponse;
-    }
-    get fetchOptions() {
-        var _a;
-        return {
-            method: FetchMethod[this.method].toUpperCase(),
-            credentials: "same-origin",
-            headers: this.headers,
-            redirect: "follow",
-            body: this.body,
-            signal: this.abortSignal,
-            referrer: (_a = this.delegate.referrer) === null || _a === void 0 ? void 0 : _a.href
-        };
-    }
-    get defaultHeaders() {
-        return {
-            "Accept": "text/html, application/xhtml+xml"
-        };
-    }
-    get isIdempotent() {
-        return this.method == FetchMethod.get;
-    }
-    get abortSignal() {
-        return this.abortController.signal;
-    }
-    async allowRequestToBeIntercepted(fetchOptions) {
-        const requestInterception = new Promise(resolve => this.resolveRequestPromise = resolve);
-        const event = dispatch("turbo:before-fetch-request", {
-            cancelable: true,
-            detail: {
-                fetchOptions,
-                url: this.url.href,
-                resume: this.resolveRequestPromise
-            },
-            target: this.target
-        });
-        if (event.defaultPrevented)
-            await requestInterception;
-    }
-}
-function mergeFormDataEntries(url, entries) {
-    const currentSearchParams = new URLSearchParams(url.search);
-    for (const [name, value] of entries) {
-        if (value instanceof File)
-            continue;
-        if (currentSearchParams.has(name)) {
-            currentSearchParams.delete(name);
-            url.searchParams.set(name, value);
-        }
-        else {
-            url.searchParams.append(name, value);
-        }
-    }
-    return url;
-}
-
-class AppearanceObserver {
-    constructor(delegate, element) {
-        this.started = false;
-        this.intersect = entries => {
-            const lastEntry = entries.slice(-1)[0];
-            if (lastEntry === null || lastEntry === void 0 ? void 0 : lastEntry.isIntersecting) {
-                this.delegate.elementAppearedInViewport(this.element);
-            }
-        };
-        this.delegate = delegate;
-        this.element = element;
-        this.intersectionObserver = new IntersectionObserver(this.intersect);
-    }
-    start() {
-        if (!this.started) {
-            this.started = true;
-            this.intersectionObserver.observe(this.element);
-        }
-    }
-    stop() {
-        if (this.started) {
-            this.started = false;
-            this.intersectionObserver.unobserve(this.element);
-        }
-    }
-}
-
-class StreamMessage {
-    constructor(html) {
-        this.templateElement = document.createElement("template");
-        this.templateElement.innerHTML = html;
-    }
-    static wrap(message) {
-        if (typeof message == "string") {
-            return new this(message);
-        }
-        else {
-            return message;
-        }
-    }
-    get fragment() {
-        const fragment = document.createDocumentFragment();
-        for (const element of this.foreignElements) {
-            fragment.appendChild(document.importNode(element, true));
-        }
-        return fragment;
-    }
-    get foreignElements() {
-        return this.templateChildren.reduce((streamElements, child) => {
-            if (child.tagName.toLowerCase() == "turbo-stream") {
-                return [...streamElements, child];
-            }
-            else {
-                return streamElements;
-            }
-        }, []);
-    }
-    get templateChildren() {
-        return Array.from(this.templateElement.content.children);
-    }
-}
-StreamMessage.contentType = "text/vnd.turbo-stream.html";
-
-var FormSubmissionState;
-(function (FormSubmissionState) {
-    FormSubmissionState[FormSubmissionState["initialized"] = 0] = "initialized";
-    FormSubmissionState[FormSubmissionState["requesting"] = 1] = "requesting";
-    FormSubmissionState[FormSubmissionState["waiting"] = 2] = "waiting";
-    FormSubmissionState[FormSubmissionState["receiving"] = 3] = "receiving";
-    FormSubmissionState[FormSubmissionState["stopping"] = 4] = "stopping";
-    FormSubmissionState[FormSubmissionState["stopped"] = 5] = "stopped";
-})(FormSubmissionState || (FormSubmissionState = {}));
-var FormEnctype;
-(function (FormEnctype) {
-    FormEnctype["urlEncoded"] = "application/x-www-form-urlencoded";
-    FormEnctype["multipart"] = "multipart/form-data";
-    FormEnctype["plain"] = "text/plain";
-})(FormEnctype || (FormEnctype = {}));
-function formEnctypeFromString(encoding) {
-    switch (encoding.toLowerCase()) {
-        case FormEnctype.multipart: return FormEnctype.multipart;
-        case FormEnctype.plain: return FormEnctype.plain;
-        default: return FormEnctype.urlEncoded;
-    }
-}
-class FormSubmission {
-    constructor(delegate, formElement, submitter, mustRedirect = false) {
-        this.state = FormSubmissionState.initialized;
-        this.delegate = delegate;
-        this.formElement = formElement;
-        this.submitter = submitter;
-        this.formData = buildFormData(formElement, submitter);
-        this.fetchRequest = new FetchRequest(this, this.method, this.location, this.body, this.formElement);
-        this.mustRedirect = mustRedirect;
-    }
-    get method() {
-        var _a;
-        const method = ((_a = this.submitter) === null || _a === void 0 ? void 0 : _a.getAttribute("formmethod")) || this.formElement.getAttribute("method") || "";
-        return fetchMethodFromString(method.toLowerCase()) || FetchMethod.get;
-    }
-    get action() {
-        var _a;
-        const formElementAction = typeof this.formElement.action === 'string' ? this.formElement.action : null;
-        return ((_a = this.submitter) === null || _a === void 0 ? void 0 : _a.getAttribute("formaction")) || this.formElement.getAttribute("action") || formElementAction || "";
-    }
-    get location() {
-        return expandURL(this.action);
-    }
-    get body() {
-        if (this.enctype == FormEnctype.urlEncoded || this.method == FetchMethod.get) {
-            return new URLSearchParams(this.stringFormData);
-        }
-        else {
-            return this.formData;
-        }
-    }
-    get enctype() {
-        var _a;
-        return formEnctypeFromString(((_a = this.submitter) === null || _a === void 0 ? void 0 : _a.getAttribute("formenctype")) || this.formElement.enctype);
-    }
-    get isIdempotent() {
-        return this.fetchRequest.isIdempotent;
-    }
-    get stringFormData() {
-        return [...this.formData].reduce((entries, [name, value]) => {
-            return entries.concat(typeof value == "string" ? [[name, value]] : []);
-        }, []);
-    }
-    async start() {
-        const { initialized, requesting } = FormSubmissionState;
-        if (this.state == initialized) {
-            this.state = requesting;
-            return this.fetchRequest.perform();
-        }
-    }
-    stop() {
-        const { stopping, stopped } = FormSubmissionState;
-        if (this.state != stopping && this.state != stopped) {
-            this.state = stopping;
-            this.fetchRequest.cancel();
-            return true;
-        }
-    }
-    prepareHeadersForRequest(headers, request) {
-        if (!request.isIdempotent) {
-            const token = getCookieValue(getMetaContent("csrf-param")) || getMetaContent("csrf-token");
-            if (token) {
-                headers["X-CSRF-Token"] = token;
-            }
-            headers["Accept"] = [StreamMessage.contentType, headers["Accept"]].join(", ");
-        }
-    }
-    requestStarted(request) {
-        this.state = FormSubmissionState.waiting;
-        dispatch("turbo:submit-start", { target: this.formElement, detail: { formSubmission: this } });
-        this.delegate.formSubmissionStarted(this);
-    }
-    requestPreventedHandlingResponse(request, response) {
-        this.result = { success: response.succeeded, fetchResponse: response };
-    }
-    requestSucceededWithResponse(request, response) {
-        if (response.clientError || response.serverError) {
-            this.delegate.formSubmissionFailedWithResponse(this, response);
-        }
-        else if (this.requestMustRedirect(request) && responseSucceededWithoutRedirect(response)) {
-            const error = new Error("Form responses must redirect to another location");
-            this.delegate.formSubmissionErrored(this, error);
-        }
-        else {
-            this.state = FormSubmissionState.receiving;
-            this.result = { success: true, fetchResponse: response };
-            this.delegate.formSubmissionSucceededWithResponse(this, response);
-        }
-    }
-    requestFailedWithResponse(request, response) {
-        this.result = { success: false, fetchResponse: response };
-        this.delegate.formSubmissionFailedWithResponse(this, response);
-    }
-    requestErrored(request, error) {
-        this.result = { success: false, error };
-        this.delegate.formSubmissionErrored(this, error);
-    }
-    requestFinished(request) {
-        this.state = FormSubmissionState.stopped;
-        dispatch("turbo:submit-end", { target: this.formElement, detail: Object.assign({ formSubmission: this }, this.result) });
-        this.delegate.formSubmissionFinished(this);
-    }
-    requestMustRedirect(request) {
-        return !request.isIdempotent && this.mustRedirect;
-    }
-}
-function buildFormData(formElement, submitter) {
-    const formData = new FormData(formElement);
-    const name = submitter === null || submitter === void 0 ? void 0 : submitter.getAttribute("name");
-    const value = submitter === null || submitter === void 0 ? void 0 : submitter.getAttribute("value");
-    if (name && value != null && formData.get(name) != value) {
-        formData.append(name, value);
-    }
-    return formData;
-}
-function getCookieValue(cookieName) {
-    if (cookieName != null) {
-        const cookies = document.cookie ? document.cookie.split("; ") : [];
-        const cookie = cookies.find((cookie) => cookie.startsWith(cookieName));
-        if (cookie) {
-            const value = cookie.split("=").slice(1).join("=");
-            return value ? decodeURIComponent(value) : undefined;
-        }
-    }
-}
-function getMetaContent(name) {
-    const element = document.querySelector(`meta[name="${name}"]`);
-    return element && element.content;
-}
-function responseSucceededWithoutRedirect(response) {
-    return response.statusCode == 200 && !response.redirected;
-}
-
-class Snapshot {
-    constructor(element) {
-        this.element = element;
-    }
-    get children() {
-        return [...this.element.children];
-    }
-    hasAnchor(anchor) {
-        return this.getElementForAnchor(anchor) != null;
-    }
-    getElementForAnchor(anchor) {
-        return anchor ? this.element.querySelector(`[id='${anchor}'], a[name='${anchor}']`) : null;
-    }
-    get isConnected() {
-        return this.element.isConnected;
-    }
-    get firstAutofocusableElement() {
-        return this.element.querySelector("[autofocus]");
-    }
-    get permanentElements() {
-        return [...this.element.querySelectorAll("[id][data-turbo-permanent]")];
-    }
-    getPermanentElementById(id) {
-        return this.element.querySelector(`#${id}[data-turbo-permanent]`);
-    }
-    getPermanentElementMapForSnapshot(snapshot) {
-        const permanentElementMap = {};
-        for (const currentPermanentElement of this.permanentElements) {
-            const { id } = currentPermanentElement;
-            const newPermanentElement = snapshot.getPermanentElementById(id);
-            if (newPermanentElement) {
-                permanentElementMap[id] = [currentPermanentElement, newPermanentElement];
-            }
-        }
-        return permanentElementMap;
-    }
-}
-
-class FormInterceptor {
-    constructor(delegate, element) {
-        this.submitBubbled = ((event) => {
-            const form = event.target;
-            if (form instanceof HTMLFormElement && form.closest("turbo-frame, html") == this.element) {
-                const submitter = event.submitter || undefined;
-                if (this.delegate.shouldInterceptFormSubmission(form, submitter)) {
-                    event.preventDefault();
-                    event.stopImmediatePropagation();
-                    this.delegate.formSubmissionIntercepted(form, submitter);
-                }
-            }
-        });
-        this.delegate = delegate;
-        this.element = element;
-    }
-    start() {
-        this.element.addEventListener("submit", this.submitBubbled);
-    }
-    stop() {
-        this.element.removeEventListener("submit", this.submitBubbled);
-    }
-}
-
-class View {
-    constructor(delegate, element) {
-        this.resolveRenderPromise = (value) => { };
-        this.resolveInterceptionPromise = (value) => { };
-        this.delegate = delegate;
-        this.element = element;
-    }
-    scrollToAnchor(anchor) {
-        const element = this.snapshot.getElementForAnchor(anchor);
-        if (element) {
-            this.scrollToElement(element);
-            this.focusElement(element);
-        }
-        else {
-            this.scrollToPosition({ x: 0, y: 0 });
-        }
-    }
-    scrollToAnchorFromLocation(location) {
-        this.scrollToAnchor(getAnchor(location));
-    }
-    scrollToElement(element) {
-        element.scrollIntoView();
-    }
-    focusElement(element) {
-        if (element instanceof HTMLElement) {
-            if (element.hasAttribute("tabindex")) {
-                element.focus();
-            }
-            else {
-                element.setAttribute("tabindex", "-1");
-                element.focus();
-                element.removeAttribute("tabindex");
-            }
-        }
-    }
-    scrollToPosition({ x, y }) {
-        this.scrollRoot.scrollTo(x, y);
-    }
-    scrollToTop() {
-        this.scrollToPosition({ x: 0, y: 0 });
-    }
-    get scrollRoot() {
-        return window;
-    }
-    async render(renderer) {
-        const { isPreview, shouldRender, newSnapshot: snapshot } = renderer;
-        if (shouldRender) {
-            try {
-                this.renderPromise = new Promise(resolve => this.resolveRenderPromise = resolve);
-                this.renderer = renderer;
-                this.prepareToRenderSnapshot(renderer);
-                const renderInterception = new Promise(resolve => this.resolveInterceptionPromise = resolve);
-                const immediateRender = this.delegate.allowsImmediateRender(snapshot, this.resolveInterceptionPromise);
-                if (!immediateRender)
-                    await renderInterception;
-                await this.renderSnapshot(renderer);
-                this.delegate.viewRenderedSnapshot(snapshot, isPreview);
-                this.finishRenderingSnapshot(renderer);
-            }
-            finally {
-                delete this.renderer;
-                this.resolveRenderPromise(undefined);
-                delete this.renderPromise;
-            }
-        }
-        else {
-            this.invalidate();
-        }
-    }
-    invalidate() {
-        this.delegate.viewInvalidated();
-    }
-    prepareToRenderSnapshot(renderer) {
-        this.markAsPreview(renderer.isPreview);
-        renderer.prepareToRender();
-    }
-    markAsPreview(isPreview) {
-        if (isPreview) {
-            this.element.setAttribute("data-turbo-preview", "");
-        }
-        else {
-            this.element.removeAttribute("data-turbo-preview");
-        }
-    }
-    async renderSnapshot(renderer) {
-        await renderer.render();
-    }
-    finishRenderingSnapshot(renderer) {
-        renderer.finishRendering();
-    }
-}
-
-class FrameView extends View {
-    invalidate() {
-        this.element.innerHTML = "";
-    }
-    get snapshot() {
-        return new Snapshot(this.element);
-    }
-}
-
-class LinkInterceptor {
-    constructor(delegate, element) {
-        this.clickBubbled = (event) => {
-            if (this.respondsToEventTarget(event.target)) {
-                this.clickEvent = event;
-            }
-            else {
-                delete this.clickEvent;
-            }
-        };
-        this.linkClicked = ((event) => {
-            if (this.clickEvent && this.respondsToEventTarget(event.target) && event.target instanceof Element) {
-                if (this.delegate.shouldInterceptLinkClick(event.target, event.detail.url)) {
-                    this.clickEvent.preventDefault();
-                    event.preventDefault();
-                    this.delegate.linkClickIntercepted(event.target, event.detail.url);
-                }
-            }
-            delete this.clickEvent;
-        });
-        this.willVisit = () => {
-            delete this.clickEvent;
-        };
-        this.delegate = delegate;
-        this.element = element;
-    }
-    start() {
-        this.element.addEventListener("click", this.clickBubbled);
-        document.addEventListener("turbo:click", this.linkClicked);
-        document.addEventListener("turbo:before-visit", this.willVisit);
-    }
-    stop() {
-        this.element.removeEventListener("click", this.clickBubbled);
-        document.removeEventListener("turbo:click", this.linkClicked);
-        document.removeEventListener("turbo:before-visit", this.willVisit);
-    }
-    respondsToEventTarget(target) {
-        const element = target instanceof Element
-            ? target
-            : target instanceof Node
-                ? target.parentElement
-                : null;
-        return element && element.closest("turbo-frame, html") == this.element;
-    }
-}
-
-class Bardo {
-    constructor(permanentElementMap) {
-        this.permanentElementMap = permanentElementMap;
-    }
-    static preservingPermanentElements(permanentElementMap, callback) {
-        const bardo = new this(permanentElementMap);
-        bardo.enter();
-        callback();
-        bardo.leave();
-    }
-    enter() {
-        for (const id in this.permanentElementMap) {
-            const [, newPermanentElement] = this.permanentElementMap[id];
-            this.replaceNewPermanentElementWithPlaceholder(newPermanentElement);
-        }
-    }
-    leave() {
-        for (const id in this.permanentElementMap) {
-            const [currentPermanentElement] = this.permanentElementMap[id];
-            this.replaceCurrentPermanentElementWithClone(currentPermanentElement);
-            this.replacePlaceholderWithPermanentElement(currentPermanentElement);
-        }
-    }
-    replaceNewPermanentElementWithPlaceholder(permanentElement) {
-        const placeholder = createPlaceholderForPermanentElement(permanentElement);
-        permanentElement.replaceWith(placeholder);
-    }
-    replaceCurrentPermanentElementWithClone(permanentElement) {
-        const clone = permanentElement.cloneNode(true);
-        permanentElement.replaceWith(clone);
-    }
-    replacePlaceholderWithPermanentElement(permanentElement) {
-        const placeholder = this.getPlaceholderById(permanentElement.id);
-        placeholder === null || placeholder === void 0 ? void 0 : placeholder.replaceWith(permanentElement);
-    }
-    getPlaceholderById(id) {
-        return this.placeholders.find(element => element.content == id);
-    }
-    get placeholders() {
-        return [...document.querySelectorAll("meta[name=turbo-permanent-placeholder][content]")];
-    }
-}
-function createPlaceholderForPermanentElement(permanentElement) {
-    const element = document.createElement("meta");
-    element.setAttribute("name", "turbo-permanent-placeholder");
-    element.setAttribute("content", permanentElement.id);
-    return element;
-}
-
-class Renderer {
-    constructor(currentSnapshot, newSnapshot, isPreview) {
-        this.currentSnapshot = currentSnapshot;
-        this.newSnapshot = newSnapshot;
-        this.isPreview = isPreview;
-        this.promise = new Promise((resolve, reject) => this.resolvingFunctions = { resolve, reject });
-    }
-    get shouldRender() {
-        return true;
-    }
-    prepareToRender() {
-        return;
-    }
-    finishRendering() {
-        if (this.resolvingFunctions) {
-            this.resolvingFunctions.resolve();
-            delete this.resolvingFunctions;
-        }
-    }
-    createScriptElement(element) {
-        if (element.getAttribute("data-turbo-eval") == "false") {
-            return element;
-        }
-        else {
-            const createdScriptElement = document.createElement("script");
-            if (this.cspNonce) {
-                createdScriptElement.nonce = this.cspNonce;
-            }
-            createdScriptElement.textContent = element.textContent;
-            createdScriptElement.async = false;
-            copyElementAttributes(createdScriptElement, element);
-            return createdScriptElement;
-        }
-    }
-    preservingPermanentElements(callback) {
-        Bardo.preservingPermanentElements(this.permanentElementMap, callback);
-    }
-    focusFirstAutofocusableElement() {
-        const element = this.connectedSnapshot.firstAutofocusableElement;
-        if (elementIsFocusable(element)) {
-            element.focus();
-        }
-    }
-    get connectedSnapshot() {
-        return this.newSnapshot.isConnected ? this.newSnapshot : this.currentSnapshot;
-    }
-    get currentElement() {
-        return this.currentSnapshot.element;
-    }
-    get newElement() {
-        return this.newSnapshot.element;
-    }
-    get permanentElementMap() {
-        return this.currentSnapshot.getPermanentElementMapForSnapshot(this.newSnapshot);
-    }
-    get cspNonce() {
-        var _a;
-        return (_a = document.head.querySelector('meta[name="csp-nonce"]')) === null || _a === void 0 ? void 0 : _a.getAttribute("content");
-    }
-}
-function copyElementAttributes(destinationElement, sourceElement) {
-    for (const { name, value } of [...sourceElement.attributes]) {
-        destinationElement.setAttribute(name, value);
-    }
-}
-function elementIsFocusable(element) {
-    return element && typeof element.focus == "function";
-}
-
-class FrameRenderer extends Renderer {
-    get shouldRender() {
-        return true;
-    }
-    async render() {
-        await nextAnimationFrame();
-        this.preservingPermanentElements(() => {
-            this.loadFrameElement();
-        });
-        this.scrollFrameIntoView();
-        await nextAnimationFrame();
-        this.focusFirstAutofocusableElement();
-        await nextAnimationFrame();
-        this.activateScriptElements();
-    }
-    loadFrameElement() {
-        var _a;
-        const destinationRange = document.createRange();
-        destinationRange.selectNodeContents(this.currentElement);
-        destinationRange.deleteContents();
-        const frameElement = this.newElement;
-        const sourceRange = (_a = frameElement.ownerDocument) === null || _a === void 0 ? void 0 : _a.createRange();
-        if (sourceRange) {
-            sourceRange.selectNodeContents(frameElement);
-            this.currentElement.appendChild(sourceRange.extractContents());
-        }
-    }
-    scrollFrameIntoView() {
-        if (this.currentElement.autoscroll || this.newElement.autoscroll) {
-            const element = this.currentElement.firstElementChild;
-            const block = readScrollLogicalPosition(this.currentElement.getAttribute("data-autoscroll-block"), "end");
-            if (element) {
-                element.scrollIntoView({ block });
-                return true;
-            }
-        }
-        return false;
-    }
-    activateScriptElements() {
-        for (const inertScriptElement of this.newScriptElements) {
-            const activatedScriptElement = this.createScriptElement(inertScriptElement);
-            inertScriptElement.replaceWith(activatedScriptElement);
-        }
-    }
-    get newScriptElements() {
-        return this.currentElement.querySelectorAll("script");
-    }
-}
-function readScrollLogicalPosition(value, defaultValue) {
-    if (value == "end" || value == "start" || value == "center" || value == "nearest") {
-        return value;
-    }
-    else {
-        return defaultValue;
-    }
-}
-
-class ProgressBar {
-    constructor() {
-        this.hiding = false;
-        this.value = 0;
-        this.visible = false;
-        this.trickle = () => {
-            this.setValue(this.value + Math.random() / 100);
-        };
-        this.stylesheetElement = this.createStylesheetElement();
-        this.progressElement = this.createProgressElement();
-        this.installStylesheetElement();
-        this.setValue(0);
-    }
-    static get defaultCSS() {
-        return unindent `
-      .turbo-progress-bar {
-        position: fixed;
-        display: block;
-        top: 0;
-        left: 0;
-        height: 3px;
-        background: #0076ff;
-        z-index: 9999;
-        transition:
-          width ${ProgressBar.animationDuration}ms ease-out,
-          opacity ${ProgressBar.animationDuration / 2}ms ${ProgressBar.animationDuration / 2}ms ease-in;
-        transform: translate3d(0, 0, 0);
-      }
-    `;
-    }
-    show() {
-        if (!this.visible) {
-            this.visible = true;
-            this.installProgressElement();
-            this.startTrickling();
-        }
-    }
-    hide() {
-        if (this.visible && !this.hiding) {
-            this.hiding = true;
-            this.fadeProgressElement(() => {
-                this.uninstallProgressElement();
-                this.stopTrickling();
-                this.visible = false;
-                this.hiding = false;
-            });
-        }
-    }
-    setValue(value) {
-        this.value = value;
-        this.refresh();
-    }
-    installStylesheetElement() {
-        document.head.insertBefore(this.stylesheetElement, document.head.firstChild);
-    }
-    installProgressElement() {
-        this.progressElement.style.width = "0";
-        this.progressElement.style.opacity = "1";
-        document.documentElement.insertBefore(this.progressElement, document.body);
-        this.refresh();
-    }
-    fadeProgressElement(callback) {
-        this.progressElement.style.opacity = "0";
-        setTimeout(callback, ProgressBar.animationDuration * 1.5);
-    }
-    uninstallProgressElement() {
-        if (this.progressElement.parentNode) {
-            document.documentElement.removeChild(this.progressElement);
-        }
-    }
-    startTrickling() {
-        if (!this.trickleInterval) {
-            this.trickleInterval = window.setInterval(this.trickle, ProgressBar.animationDuration);
-        }
-    }
-    stopTrickling() {
-        window.clearInterval(this.trickleInterval);
-        delete this.trickleInterval;
-    }
-    refresh() {
-        requestAnimationFrame(() => {
-            this.progressElement.style.width = `${10 + (this.value * 90)}%`;
-        });
-    }
-    createStylesheetElement() {
-        const element = document.createElement("style");
-        element.type = "text/css";
-        element.textContent = ProgressBar.defaultCSS;
-        return element;
-    }
-    createProgressElement() {
-        const element = document.createElement("div");
-        element.className = "turbo-progress-bar";
-        return element;
-    }
-}
-ProgressBar.animationDuration = 300;
-
-class HeadSnapshot extends Snapshot {
-    constructor() {
-        super(...arguments);
-        this.detailsByOuterHTML = this.children
-            .filter((element) => !elementIsNoscript(element))
-            .map((element) => elementWithoutNonce(element))
-            .reduce((result, element) => {
-            const { outerHTML } = element;
-            const details = outerHTML in result
-                ? result[outerHTML]
-                : {
-                    type: elementType(element),
-                    tracked: elementIsTracked(element),
-                    elements: []
-                };
-            return Object.assign(Object.assign({}, result), { [outerHTML]: Object.assign(Object.assign({}, details), { elements: [...details.elements, element] }) });
-        }, {});
-    }
-    get trackedElementSignature() {
-        return Object.keys(this.detailsByOuterHTML)
-            .filter(outerHTML => this.detailsByOuterHTML[outerHTML].tracked)
-            .join("");
-    }
-    getScriptElementsNotInSnapshot(snapshot) {
-        return this.getElementsMatchingTypeNotInSnapshot("script", snapshot);
-    }
-    getStylesheetElementsNotInSnapshot(snapshot) {
-        return this.getElementsMatchingTypeNotInSnapshot("stylesheet", snapshot);
-    }
-    getElementsMatchingTypeNotInSnapshot(matchedType, snapshot) {
-        return Object.keys(this.detailsByOuterHTML)
-            .filter(outerHTML => !(outerHTML in snapshot.detailsByOuterHTML))
-            .map(outerHTML => this.detailsByOuterHTML[outerHTML])
-            .filter(({ type }) => type == matchedType)
-            .map(({ elements: [element] }) => element);
-    }
-    get provisionalElements() {
-        return Object.keys(this.detailsByOuterHTML).reduce((result, outerHTML) => {
-            const { type, tracked, elements } = this.detailsByOuterHTML[outerHTML];
-            if (type == null && !tracked) {
-                return [...result, ...elements];
-            }
-            else if (elements.length > 1) {
-                return [...result, ...elements.slice(1)];
-            }
-            else {
-                return result;
-            }
-        }, []);
-    }
-    getMetaValue(name) {
-        const element = this.findMetaElementByName(name);
-        return element
-            ? element.getAttribute("content")
-            : null;
-    }
-    findMetaElementByName(name) {
-        return Object.keys(this.detailsByOuterHTML).reduce((result, outerHTML) => {
-            const { elements: [element] } = this.detailsByOuterHTML[outerHTML];
-            return elementIsMetaElementWithName(element, name) ? element : result;
-        }, undefined);
-    }
-}
-function elementType(element) {
-    if (elementIsScript(element)) {
-        return "script";
-    }
-    else if (elementIsStylesheet(element)) {
-        return "stylesheet";
-    }
-}
-function elementIsTracked(element) {
-    return element.getAttribute("data-turbo-track") == "reload";
-}
-function elementIsScript(element) {
-    const tagName = element.tagName.toLowerCase();
-    return tagName == "script";
-}
-function elementIsNoscript(element) {
-    const tagName = element.tagName.toLowerCase();
-    return tagName == "noscript";
-}
-function elementIsStylesheet(element) {
-    const tagName = element.tagName.toLowerCase();
-    return tagName == "style" || (tagName == "link" && element.getAttribute("rel") == "stylesheet");
-}
-function elementIsMetaElementWithName(element, name) {
-    const tagName = element.tagName.toLowerCase();
-    return tagName == "meta" && element.getAttribute("name") == name;
-}
-function elementWithoutNonce(element) {
-    if (element.hasAttribute("nonce")) {
-        element.setAttribute("nonce", "");
-    }
-    return element;
-}
-
-class PageSnapshot extends Snapshot {
-    constructor(element, headSnapshot) {
-        super(element);
-        this.headSnapshot = headSnapshot;
-    }
-    static fromHTMLString(html = "") {
-        return this.fromDocument(parseHTMLDocument(html));
-    }
-    static fromElement(element) {
-        return this.fromDocument(element.ownerDocument);
-    }
-    static fromDocument({ head, body }) {
-        return new this(body, new HeadSnapshot(head));
-    }
-    clone() {
-        return new PageSnapshot(this.element.cloneNode(true), this.headSnapshot);
-    }
-    get headElement() {
-        return this.headSnapshot.element;
-    }
-    get rootLocation() {
-        var _a;
-        const root = (_a = this.getSetting("root")) !== null && _a !== void 0 ? _a : "/";
-        return expandURL(root);
-    }
-    get cacheControlValue() {
-        return this.getSetting("cache-control");
-    }
-    get isPreviewable() {
-        return this.cacheControlValue != "no-preview";
-    }
-    get isCacheable() {
-        return this.cacheControlValue != "no-cache";
-    }
-    get isVisitable() {
-        return this.getSetting("visit-control") != "reload";
-    }
-    getSetting(name) {
-        return this.headSnapshot.getMetaValue(`turbo-${name}`);
-    }
-}
-
-var TimingMetric;
-(function (TimingMetric) {
-    TimingMetric["visitStart"] = "visitStart";
-    TimingMetric["requestStart"] = "requestStart";
-    TimingMetric["requestEnd"] = "requestEnd";
-    TimingMetric["visitEnd"] = "visitEnd";
-})(TimingMetric || (TimingMetric = {}));
-var VisitState;
-(function (VisitState) {
-    VisitState["initialized"] = "initialized";
-    VisitState["started"] = "started";
-    VisitState["canceled"] = "canceled";
-    VisitState["failed"] = "failed";
-    VisitState["completed"] = "completed";
-})(VisitState || (VisitState = {}));
-const defaultOptions = {
-    action: "advance",
-    historyChanged: false
-};
-var SystemStatusCode;
-(function (SystemStatusCode) {
-    SystemStatusCode[SystemStatusCode["networkFailure"] = 0] = "networkFailure";
-    SystemStatusCode[SystemStatusCode["timeoutFailure"] = -1] = "timeoutFailure";
-    SystemStatusCode[SystemStatusCode["contentTypeMismatch"] = -2] = "contentTypeMismatch";
-})(SystemStatusCode || (SystemStatusCode = {}));
-class Visit {
-    constructor(delegate, location, restorationIdentifier, options = {}) {
-        this.identifier = uuid();
-        this.timingMetrics = {};
-        this.followedRedirect = false;
-        this.historyChanged = false;
-        this.scrolled = false;
-        this.snapshotCached = false;
-        this.state = VisitState.initialized;
-        this.delegate = delegate;
-        this.location = location;
-        this.restorationIdentifier = restorationIdentifier || uuid();
-        const { action, historyChanged, referrer, snapshotHTML, response } = Object.assign(Object.assign({}, defaultOptions), options);
-        this.action = action;
-        this.historyChanged = historyChanged;
-        this.referrer = referrer;
-        this.snapshotHTML = snapshotHTML;
-        this.response = response;
-        this.isSamePage = this.delegate.locationWithActionIsSamePage(this.location, this.action);
-    }
-    get adapter() {
-        return this.delegate.adapter;
-    }
-    get view() {
-        return this.delegate.view;
-    }
-    get history() {
-        return this.delegate.history;
-    }
-    get restorationData() {
-        return this.history.getRestorationDataForIdentifier(this.restorationIdentifier);
-    }
-    get silent() {
-        return this.isSamePage;
-    }
-    start() {
-        if (this.state == VisitState.initialized) {
-            this.recordTimingMetric(TimingMetric.visitStart);
-            this.state = VisitState.started;
-            this.adapter.visitStarted(this);
-            this.delegate.visitStarted(this);
-        }
-    }
-    cancel() {
-        if (this.state == VisitState.started) {
-            if (this.request) {
-                this.request.cancel();
-            }
-            this.cancelRender();
-            this.state = VisitState.canceled;
-        }
-    }
-    complete() {
-        if (this.state == VisitState.started) {
-            this.recordTimingMetric(TimingMetric.visitEnd);
-            this.state = VisitState.completed;
-            this.adapter.visitCompleted(this);
-            this.delegate.visitCompleted(this);
-            this.followRedirect();
-        }
-    }
-    fail() {
-        if (this.state == VisitState.started) {
-            this.state = VisitState.failed;
-            this.adapter.visitFailed(this);
-        }
-    }
-    changeHistory() {
-        var _a;
-        if (!this.historyChanged) {
-            const actionForHistory = this.location.href === ((_a = this.referrer) === null || _a === void 0 ? void 0 : _a.href) ? "replace" : this.action;
-            const method = this.getHistoryMethodForAction(actionForHistory);
-            this.history.update(method, this.location, this.restorationIdentifier);
-            this.historyChanged = true;
-        }
-    }
-    issueRequest() {
-        if (this.hasPreloadedResponse()) {
-            this.simulateRequest();
-        }
-        else if (this.shouldIssueRequest() && !this.request) {
-            this.request = new FetchRequest(this, FetchMethod.get, this.location);
-            this.request.perform();
-        }
-    }
-    simulateRequest() {
-        if (this.response) {
-            this.startRequest();
-            this.recordResponse();
-            this.finishRequest();
-        }
-    }
-    startRequest() {
-        this.recordTimingMetric(TimingMetric.requestStart);
-        this.adapter.visitRequestStarted(this);
-    }
-    recordResponse(response = this.response) {
-        this.response = response;
-        if (response) {
-            const { statusCode } = response;
-            if (isSuccessful(statusCode)) {
-                this.adapter.visitRequestCompleted(this);
-            }
-            else {
-                this.adapter.visitRequestFailedWithStatusCode(this, statusCode);
-            }
-        }
-    }
-    finishRequest() {
-        this.recordTimingMetric(TimingMetric.requestEnd);
-        this.adapter.visitRequestFinished(this);
-    }
-    loadResponse() {
-        if (this.response) {
-            const { statusCode, responseHTML } = this.response;
-            this.render(async () => {
-                this.cacheSnapshot();
-                if (this.view.renderPromise)
-                    await this.view.renderPromise;
-                if (isSuccessful(statusCode) && responseHTML != null) {
-                    await this.view.renderPage(PageSnapshot.fromHTMLString(responseHTML));
-                    this.adapter.visitRendered(this);
-                    this.complete();
-                }
-                else {
-                    await this.view.renderError(PageSnapshot.fromHTMLString(responseHTML));
-                    this.adapter.visitRendered(this);
-                    this.fail();
-                }
-            });
-        }
-    }
-    getCachedSnapshot() {
-        const snapshot = this.view.getCachedSnapshotForLocation(this.location) || this.getPreloadedSnapshot();
-        if (snapshot && (!getAnchor(this.location) || snapshot.hasAnchor(getAnchor(this.location)))) {
-            if (this.action == "restore" || snapshot.isPreviewable) {
-                return snapshot;
-            }
-        }
-    }
-    getPreloadedSnapshot() {
-        if (this.snapshotHTML) {
-            return PageSnapshot.fromHTMLString(this.snapshotHTML);
-        }
-    }
-    hasCachedSnapshot() {
-        return this.getCachedSnapshot() != null;
-    }
-    loadCachedSnapshot() {
-        const snapshot = this.getCachedSnapshot();
-        if (snapshot) {
-            const isPreview = this.shouldIssueRequest();
-            this.render(async () => {
-                this.cacheSnapshot();
-                if (this.isSamePage) {
-                    this.adapter.visitRendered(this);
-                }
-                else {
-                    if (this.view.renderPromise)
-                        await this.view.renderPromise;
-                    await this.view.renderPage(snapshot, isPreview);
-                    this.adapter.visitRendered(this);
-                    if (!isPreview) {
-                        this.complete();
-                    }
-                }
-            });
-        }
-    }
-    followRedirect() {
-        if (this.redirectedToLocation && !this.followedRedirect) {
-            this.adapter.visitProposedToLocation(this.redirectedToLocation, {
-                action: 'replace',
-                response: this.response
-            });
-            this.followedRedirect = true;
-        }
-    }
-    goToSamePageAnchor() {
-        if (this.isSamePage) {
-            this.render(async () => {
-                this.cacheSnapshot();
-                this.adapter.visitRendered(this);
-            });
-        }
-    }
-    requestStarted() {
-        this.startRequest();
-    }
-    requestPreventedHandlingResponse(request, response) {
-    }
-    async requestSucceededWithResponse(request, response) {
-        const responseHTML = await response.responseHTML;
-        if (responseHTML == undefined) {
-            this.recordResponse({ statusCode: SystemStatusCode.contentTypeMismatch });
-        }
-        else {
-            this.redirectedToLocation = response.redirected ? response.location : undefined;
-            this.recordResponse({ statusCode: response.statusCode, responseHTML });
-        }
-    }
-    async requestFailedWithResponse(request, response) {
-        const responseHTML = await response.responseHTML;
-        if (responseHTML == undefined) {
-            this.recordResponse({ statusCode: SystemStatusCode.contentTypeMismatch });
-        }
-        else {
-            this.recordResponse({ statusCode: response.statusCode, responseHTML });
-        }
-    }
-    requestErrored(request, error) {
-        this.recordResponse({ statusCode: SystemStatusCode.networkFailure });
-    }
-    requestFinished() {
-        this.finishRequest();
-    }
-    performScroll() {
-        if (!this.scrolled) {
-            if (this.action == "restore") {
-                this.scrollToRestoredPosition() || this.scrollToAnchor() || this.view.scrollToTop();
-            }
-            else {
-                this.scrollToAnchor() || this.view.scrollToTop();
-            }
-            if (this.isSamePage) {
-                this.delegate.visitScrolledToSamePageLocation(this.view.lastRenderedLocation, this.location);
-            }
-            this.scrolled = true;
-        }
-    }
-    scrollToRestoredPosition() {
-        const { scrollPosition } = this.restorationData;
-        if (scrollPosition) {
-            this.view.scrollToPosition(scrollPosition);
-            return true;
-        }
-    }
-    scrollToAnchor() {
-        const anchor = getAnchor(this.location);
-        if (anchor != null) {
-            this.view.scrollToAnchor(anchor);
-            return true;
-        }
-    }
-    recordTimingMetric(metric) {
-        this.timingMetrics[metric] = new Date().getTime();
-    }
-    getTimingMetrics() {
-        return Object.assign({}, this.timingMetrics);
-    }
-    getHistoryMethodForAction(action) {
-        switch (action) {
-            case "replace": return history.replaceState;
-            case "advance":
-            case "restore": return history.pushState;
-        }
-    }
-    hasPreloadedResponse() {
-        return typeof this.response == "object";
-    }
-    shouldIssueRequest() {
-        if (this.isSamePage) {
-            return false;
-        }
-        else if (this.action == "restore") {
-            return !this.hasCachedSnapshot();
-        }
-        else {
-            return true;
-        }
-    }
-    cacheSnapshot() {
-        if (!this.snapshotCached) {
-            this.view.cacheSnapshot();
-            this.snapshotCached = true;
-        }
-    }
-    async render(callback) {
-        this.cancelRender();
-        await new Promise(resolve => {
-            this.frame = requestAnimationFrame(() => resolve());
-        });
-        await callback();
-        delete this.frame;
-        this.performScroll();
-    }
-    cancelRender() {
-        if (this.frame) {
-            cancelAnimationFrame(this.frame);
-            delete this.frame;
-        }
-    }
-}
-function isSuccessful(statusCode) {
-    return statusCode >= 200 && statusCode < 300;
-}
-
-class BrowserAdapter {
-    constructor(session) {
-        this.progressBar = new ProgressBar;
-        this.showProgressBar = () => {
-            this.progressBar.show();
-        };
-        this.session = session;
-    }
-    visitProposedToLocation(location, options) {
-        this.navigator.startVisit(location, uuid(), options);
-    }
-    visitStarted(visit) {
-        visit.issueRequest();
-        visit.changeHistory();
-        visit.goToSamePageAnchor();
-        visit.loadCachedSnapshot();
-    }
-    visitRequestStarted(visit) {
-        this.progressBar.setValue(0);
-        if (visit.hasCachedSnapshot() || visit.action != "restore") {
-            this.showVisitProgressBarAfterDelay();
-        }
-        else {
-            this.showProgressBar();
-        }
-    }
-    visitRequestCompleted(visit) {
-        visit.loadResponse();
-    }
-    visitRequestFailedWithStatusCode(visit, statusCode) {
-        switch (statusCode) {
-            case SystemStatusCode.networkFailure:
-            case SystemStatusCode.timeoutFailure:
-            case SystemStatusCode.contentTypeMismatch:
-                return this.reload();
-            default:
-                return visit.loadResponse();
-        }
-    }
-    visitRequestFinished(visit) {
-        this.progressBar.setValue(1);
-        this.hideVisitProgressBar();
-    }
-    visitCompleted(visit) {
-    }
-    pageInvalidated() {
-        this.reload();
-    }
-    visitFailed(visit) {
-    }
-    visitRendered(visit) {
-    }
-    formSubmissionStarted(formSubmission) {
-        this.progressBar.setValue(0);
-        this.showFormProgressBarAfterDelay();
-    }
-    formSubmissionFinished(formSubmission) {
-        this.progressBar.setValue(1);
-        this.hideFormProgressBar();
-    }
-    showVisitProgressBarAfterDelay() {
-        this.visitProgressBarTimeout = window.setTimeout(this.showProgressBar, this.session.progressBarDelay);
-    }
-    hideVisitProgressBar() {
-        this.progressBar.hide();
-        if (this.visitProgressBarTimeout != null) {
-            window.clearTimeout(this.visitProgressBarTimeout);
-            delete this.visitProgressBarTimeout;
-        }
-    }
-    showFormProgressBarAfterDelay() {
-        if (this.formProgressBarTimeout == null) {
-            this.formProgressBarTimeout = window.setTimeout(this.showProgressBar, this.session.progressBarDelay);
-        }
-    }
-    hideFormProgressBar() {
-        this.progressBar.hide();
-        if (this.formProgressBarTimeout != null) {
-            window.clearTimeout(this.formProgressBarTimeout);
-            delete this.formProgressBarTimeout;
-        }
-    }
-    reload() {
-        window.location.reload();
-    }
-    get navigator() {
-        return this.session.navigator;
-    }
-}
-
-class CacheObserver {
-    constructor() {
-        this.started = false;
-    }
-    start() {
-        if (!this.started) {
-            this.started = true;
-            addEventListener("turbo:before-cache", this.removeStaleElements, false);
-        }
-    }
-    stop() {
-        if (this.started) {
-            this.started = false;
-            removeEventListener("turbo:before-cache", this.removeStaleElements, false);
-        }
-    }
-    removeStaleElements() {
-        const staleElements = [...document.querySelectorAll('[data-turbo-cache="false"]')];
-        for (const element of staleElements) {
-            element.remove();
-        }
-    }
-}
-
-class FormSubmitObserver {
-    constructor(delegate) {
-        this.started = false;
-        this.submitCaptured = () => {
-            removeEventListener("submit", this.submitBubbled, false);
-            addEventListener("submit", this.submitBubbled, false);
-        };
-        this.submitBubbled = ((event) => {
-            if (!event.defaultPrevented) {
-                const form = event.target instanceof HTMLFormElement ? event.target : undefined;
-                const submitter = event.submitter || undefined;
-                if (form) {
-                    const method = (submitter === null || submitter === void 0 ? void 0 : submitter.getAttribute("formmethod")) || form.method;
-                    if (method != "dialog" && this.delegate.willSubmitForm(form, submitter)) {
-                        event.preventDefault();
-                        this.delegate.formSubmitted(form, submitter);
-                    }
-                }
-            }
-        });
-        this.delegate = delegate;
-    }
-    start() {
-        if (!this.started) {
-            addEventListener("submit", this.submitCaptured, true);
-            this.started = true;
-        }
-    }
-    stop() {
-        if (this.started) {
-            removeEventListener("submit", this.submitCaptured, true);
-            this.started = false;
-        }
-    }
-}
-
-class FrameRedirector {
-    constructor(element) {
-        this.element = element;
-        this.linkInterceptor = new LinkInterceptor(this, element);
-        this.formInterceptor = new FormInterceptor(this, element);
-    }
-    start() {
-        this.linkInterceptor.start();
-        this.formInterceptor.start();
-    }
-    stop() {
-        this.linkInterceptor.stop();
-        this.formInterceptor.stop();
-    }
-    shouldInterceptLinkClick(element, url) {
-        return this.shouldRedirect(element);
-    }
-    linkClickIntercepted(element, url) {
-        const frame = this.findFrameElement(element);
-        if (frame) {
-            frame.setAttribute("reloadable", "");
-            frame.src = url;
-        }
-    }
-    shouldInterceptFormSubmission(element, submitter) {
-        return this.shouldRedirect(element, submitter);
-    }
-    formSubmissionIntercepted(element, submitter) {
-        const frame = this.findFrameElement(element, submitter);
-        if (frame) {
-            frame.removeAttribute("reloadable");
-            frame.delegate.formSubmissionIntercepted(element, submitter);
-        }
-    }
-    shouldRedirect(element, submitter) {
-        const frame = this.findFrameElement(element, submitter);
-        return frame ? frame != element.closest("turbo-frame") : false;
-    }
-    findFrameElement(element, submitter) {
-        const id = (submitter === null || submitter === void 0 ? void 0 : submitter.getAttribute("data-turbo-frame")) || element.getAttribute("data-turbo-frame");
-        if (id && id != "_top") {
-            const frame = this.element.querySelector(`#${id}:not([disabled])`);
-            if (frame instanceof FrameElement) {
-                return frame;
-            }
-        }
-    }
-}
-
-class History {
-    constructor(delegate) {
-        this.restorationIdentifier = uuid();
-        this.restorationData = {};
-        this.started = false;
-        this.pageLoaded = false;
-        this.onPopState = (event) => {
-            if (this.shouldHandlePopState()) {
-                const { turbo } = event.state || {};
-                if (turbo) {
-                    this.location = new URL(window.location.href);
-                    const { restorationIdentifier } = turbo;
-                    this.restorationIdentifier = restorationIdentifier;
-                    this.delegate.historyPoppedToLocationWithRestorationIdentifier(this.location, restorationIdentifier);
-                }
-            }
-        };
-        this.onPageLoad = async (event) => {
-            await nextMicrotask();
-            this.pageLoaded = true;
-        };
-        this.delegate = delegate;
-    }
-    start() {
-        if (!this.started) {
-            addEventListener("popstate", this.onPopState, false);
-            addEventListener("load", this.onPageLoad, false);
-            this.started = true;
-            this.replace(new URL(window.location.href));
-        }
-    }
-    stop() {
-        if (this.started) {
-            removeEventListener("popstate", this.onPopState, false);
-            removeEventListener("load", this.onPageLoad, false);
-            this.started = false;
-        }
-    }
-    push(location, restorationIdentifier) {
-        this.update(history.pushState, location, restorationIdentifier);
-    }
-    replace(location, restorationIdentifier) {
-        this.update(history.replaceState, location, restorationIdentifier);
-    }
-    update(method, location, restorationIdentifier = uuid()) {
-        const state = { turbo: { restorationIdentifier } };
-        method.call(history, state, "", location.href);
-        this.location = location;
-        this.restorationIdentifier = restorationIdentifier;
-    }
-    getRestorationDataForIdentifier(restorationIdentifier) {
-        return this.restorationData[restorationIdentifier] || {};
-    }
-    updateRestorationData(additionalData) {
-        const { restorationIdentifier } = this;
-        const restorationData = this.restorationData[restorationIdentifier];
-        this.restorationData[restorationIdentifier] = Object.assign(Object.assign({}, restorationData), additionalData);
-    }
-    assumeControlOfScrollRestoration() {
-        var _a;
-        if (!this.previousScrollRestoration) {
-            this.previousScrollRestoration = (_a = history.scrollRestoration) !== null && _a !== void 0 ? _a : "auto";
-            history.scrollRestoration = "manual";
-        }
-    }
-    relinquishControlOfScrollRestoration() {
-        if (this.previousScrollRestoration) {
-            history.scrollRestoration = this.previousScrollRestoration;
-            delete this.previousScrollRestoration;
-        }
-    }
-    shouldHandlePopState() {
-        return this.pageIsLoaded();
-    }
-    pageIsLoaded() {
-        return this.pageLoaded || document.readyState == "complete";
-    }
-}
-
-class LinkClickObserver {
-    constructor(delegate) {
-        this.started = false;
-        this.clickCaptured = () => {
-            removeEventListener("click", this.clickBubbled, false);
-            addEventListener("click", this.clickBubbled, false);
-        };
-        this.clickBubbled = (event) => {
-            if (this.clickEventIsSignificant(event)) {
-                const target = (event.composedPath && event.composedPath()[0]) || event.target;
-                const link = this.findLinkFromClickTarget(target);
-                if (link) {
-                    const location = this.getLocationForLink(link);
-                    if (this.delegate.willFollowLinkToLocation(link, location)) {
-                        event.preventDefault();
-                        this.delegate.followedLinkToLocation(link, location);
-                    }
-                }
-            }
-        };
-        this.delegate = delegate;
-    }
-    start() {
-        if (!this.started) {
-            addEventListener("click", this.clickCaptured, true);
-            this.started = true;
-        }
-    }
-    stop() {
-        if (this.started) {
-            removeEventListener("click", this.clickCaptured, true);
-            this.started = false;
-        }
-    }
-    clickEventIsSignificant(event) {
-        return !((event.target && event.target.isContentEditable)
-            || event.defaultPrevented
-            || event.which > 1
-            || event.altKey
-            || event.ctrlKey
-            || event.metaKey
-            || event.shiftKey);
-    }
-    findLinkFromClickTarget(target) {
-        if (target instanceof Element) {
-            return target.closest("a[href]:not([target^=_]):not([download])");
-        }
-    }
-    getLocationForLink(link) {
-        return expandURL(link.getAttribute("href") || "");
-    }
-}
-
-function isAction(action) {
-    return action == "advance" || action == "replace" || action == "restore";
-}
-
-class Navigator {
-    constructor(delegate) {
-        this.delegate = delegate;
-    }
-    proposeVisit(location, options = {}) {
-        if (this.delegate.allowsVisitingLocationWithAction(location, options.action)) {
-            this.delegate.visitProposedToLocation(location, options);
-        }
-    }
-    startVisit(locatable, restorationIdentifier, options = {}) {
-        this.stop();
-        this.currentVisit = new Visit(this, expandURL(locatable), restorationIdentifier, Object.assign({ referrer: this.location }, options));
-        this.currentVisit.start();
-    }
-    submitForm(form, submitter) {
-        this.stop();
-        this.formSubmission = new FormSubmission(this, form, submitter, true);
-        if (this.formSubmission.isIdempotent) {
-            this.proposeVisit(this.formSubmission.fetchRequest.url, { action: this.getActionForFormSubmission(this.formSubmission) });
-        }
-        else {
-            this.formSubmission.start();
-        }
-    }
-    stop() {
-        if (this.formSubmission) {
-            this.formSubmission.stop();
-            delete this.formSubmission;
-        }
-        if (this.currentVisit) {
-            this.currentVisit.cancel();
-            delete this.currentVisit;
-        }
-    }
-    get adapter() {
-        return this.delegate.adapter;
-    }
-    get view() {
-        return this.delegate.view;
-    }
-    get history() {
-        return this.delegate.history;
-    }
-    formSubmissionStarted(formSubmission) {
-        if (typeof this.adapter.formSubmissionStarted === 'function') {
-            this.adapter.formSubmissionStarted(formSubmission);
-        }
-    }
-    async formSubmissionSucceededWithResponse(formSubmission, fetchResponse) {
-        if (formSubmission == this.formSubmission) {
-            const responseHTML = await fetchResponse.responseHTML;
-            if (responseHTML) {
-                if (formSubmission.method != FetchMethod.get) {
-                    this.view.clearSnapshotCache();
-                }
-                const { statusCode } = fetchResponse;
-                const visitOptions = { response: { statusCode, responseHTML } };
-                this.proposeVisit(fetchResponse.location, visitOptions);
-            }
-        }
-    }
-    async formSubmissionFailedWithResponse(formSubmission, fetchResponse) {
-        const responseHTML = await fetchResponse.responseHTML;
-        if (responseHTML) {
-            const snapshot = PageSnapshot.fromHTMLString(responseHTML);
-            if (fetchResponse.serverError) {
-                await this.view.renderError(snapshot);
-            }
-            else {
-                await this.view.renderPage(snapshot);
-            }
-            this.view.scrollToTop();
-            this.view.clearSnapshotCache();
-        }
-    }
-    formSubmissionErrored(formSubmission, error) {
-        console.error(error);
-    }
-    formSubmissionFinished(formSubmission) {
-        if (typeof this.adapter.formSubmissionFinished === 'function') {
-            this.adapter.formSubmissionFinished(formSubmission);
-        }
-    }
-    visitStarted(visit) {
-        this.delegate.visitStarted(visit);
-    }
-    visitCompleted(visit) {
-        this.delegate.visitCompleted(visit);
-    }
-    locationWithActionIsSamePage(location, action) {
-        const anchor = getAnchor(location);
-        const currentAnchor = getAnchor(this.view.lastRenderedLocation);
-        const isRestorationToTop = action === 'restore' && typeof anchor === 'undefined';
-        return action !== "replace" &&
-            getRequestURL(location) === getRequestURL(this.view.lastRenderedLocation) &&
-            (isRestorationToTop || (anchor != null && anchor !== currentAnchor));
-    }
-    visitScrolledToSamePageLocation(oldURL, newURL) {
-        this.delegate.visitScrolledToSamePageLocation(oldURL, newURL);
-    }
-    get location() {
-        return this.history.location;
-    }
-    get restorationIdentifier() {
-        return this.history.restorationIdentifier;
-    }
-    getActionForFormSubmission(formSubmission) {
-        const { formElement, submitter } = formSubmission;
-        const action = (submitter === null || submitter === void 0 ? void 0 : submitter.getAttribute("data-turbo-action")) || formElement.getAttribute("data-turbo-action");
-        return isAction(action) ? action : "advance";
-    }
-}
-
-var PageStage;
-(function (PageStage) {
-    PageStage[PageStage["initial"] = 0] = "initial";
-    PageStage[PageStage["loading"] = 1] = "loading";
-    PageStage[PageStage["interactive"] = 2] = "interactive";
-    PageStage[PageStage["complete"] = 3] = "complete";
-})(PageStage || (PageStage = {}));
-class PageObserver {
-    constructor(delegate) {
-        this.stage = PageStage.initial;
-        this.started = false;
-        this.interpretReadyState = () => {
-            const { readyState } = this;
-            if (readyState == "interactive") {
-                this.pageIsInteractive();
-            }
-            else if (readyState == "complete") {
-                this.pageIsComplete();
-            }
-        };
-        this.pageWillUnload = () => {
-            this.delegate.pageWillUnload();
-        };
-        this.delegate = delegate;
-    }
-    start() {
-        if (!this.started) {
-            if (this.stage == PageStage.initial) {
-                this.stage = PageStage.loading;
-            }
-            document.addEventListener("readystatechange", this.interpretReadyState, false);
-            addEventListener("pagehide", this.pageWillUnload, false);
-            this.started = true;
-        }
-    }
-    stop() {
-        if (this.started) {
-            document.removeEventListener("readystatechange", this.interpretReadyState, false);
-            removeEventListener("pagehide", this.pageWillUnload, false);
-            this.started = false;
-        }
-    }
-    pageIsInteractive() {
-        if (this.stage == PageStage.loading) {
-            this.stage = PageStage.interactive;
-            this.delegate.pageBecameInteractive();
-        }
-    }
-    pageIsComplete() {
-        this.pageIsInteractive();
-        if (this.stage == PageStage.interactive) {
-            this.stage = PageStage.complete;
-            this.delegate.pageLoaded();
-        }
-    }
-    get readyState() {
-        return document.readyState;
-    }
-}
-
-class ScrollObserver {
-    constructor(delegate) {
-        this.started = false;
-        this.onScroll = () => {
-            this.updatePosition({ x: window.pageXOffset, y: window.pageYOffset });
-        };
-        this.delegate = delegate;
-    }
-    start() {
-        if (!this.started) {
-            addEventListener("scroll", this.onScroll, false);
-            this.onScroll();
-            this.started = true;
-        }
-    }
-    stop() {
-        if (this.started) {
-            removeEventListener("scroll", this.onScroll, false);
-            this.started = false;
-        }
-    }
-    updatePosition(position) {
-        this.delegate.scrollPositionChanged(position);
-    }
-}
-
-class StreamObserver {
-    constructor(delegate) {
-        this.sources = new Set;
-        this.started = false;
-        this.inspectFetchResponse = ((event) => {
-            const response = fetchResponseFromEvent(event);
-            if (response && fetchResponseIsStream(response)) {
-                event.preventDefault();
-                this.receiveMessageResponse(response);
-            }
-        });
-        this.receiveMessageEvent = (event) => {
-            if (this.started && typeof event.data == "string") {
-                this.receiveMessageHTML(event.data);
-            }
-        };
-        this.delegate = delegate;
-    }
-    start() {
-        if (!this.started) {
-            this.started = true;
-            addEventListener("turbo:before-fetch-response", this.inspectFetchResponse, false);
-        }
-    }
-    stop() {
-        if (this.started) {
-            this.started = false;
-            removeEventListener("turbo:before-fetch-response", this.inspectFetchResponse, false);
-        }
-    }
-    connectStreamSource(source) {
-        if (!this.streamSourceIsConnected(source)) {
-            this.sources.add(source);
-            source.addEventListener("message", this.receiveMessageEvent, false);
-        }
-    }
-    disconnectStreamSource(source) {
-        if (this.streamSourceIsConnected(source)) {
-            this.sources.delete(source);
-            source.removeEventListener("message", this.receiveMessageEvent, false);
-        }
-    }
-    streamSourceIsConnected(source) {
-        return this.sources.has(source);
-    }
-    async receiveMessageResponse(response) {
-        const html = await response.responseHTML;
-        if (html) {
-            this.receiveMessageHTML(html);
-        }
-    }
-    receiveMessageHTML(html) {
-        this.delegate.receivedMessageFromStream(new StreamMessage(html));
-    }
-}
-function fetchResponseFromEvent(event) {
-    var _a;
-    const fetchResponse = (_a = event.detail) === null || _a === void 0 ? void 0 : _a.fetchResponse;
-    if (fetchResponse instanceof FetchResponse) {
-        return fetchResponse;
-    }
-}
-function fetchResponseIsStream(response) {
-    var _a;
-    const contentType = (_a = response.contentType) !== null && _a !== void 0 ? _a : "";
-    return contentType.startsWith(StreamMessage.contentType);
-}
-
-class ErrorRenderer extends Renderer {
-    async render() {
-        this.replaceHeadAndBody();
-        this.activateScriptElements();
-    }
-    replaceHeadAndBody() {
-        const { documentElement, head, body } = document;
-        documentElement.replaceChild(this.newHead, head);
-        documentElement.replaceChild(this.newElement, body);
-    }
-    activateScriptElements() {
-        for (const replaceableElement of this.scriptElements) {
-            const parentNode = replaceableElement.parentNode;
-            if (parentNode) {
-                const element = this.createScriptElement(replaceableElement);
-                parentNode.replaceChild(element, replaceableElement);
-            }
-        }
-    }
-    get newHead() {
-        return this.newSnapshot.headSnapshot.element;
-    }
-    get scriptElements() {
-        return [...document.documentElement.querySelectorAll("script")];
-    }
-}
-
-class PageRenderer extends Renderer {
-    get shouldRender() {
-        return this.newSnapshot.isVisitable && this.trackedElementsAreIdentical;
-    }
-    prepareToRender() {
-        this.mergeHead();
-    }
-    async render() {
-        this.replaceBody();
-    }
-    finishRendering() {
-        super.finishRendering();
-        if (!this.isPreview) {
-            this.focusFirstAutofocusableElement();
-        }
-    }
-    get currentHeadSnapshot() {
-        return this.currentSnapshot.headSnapshot;
-    }
-    get newHeadSnapshot() {
-        return this.newSnapshot.headSnapshot;
-    }
-    get newElement() {
-        return this.newSnapshot.element;
-    }
-    mergeHead() {
-        this.copyNewHeadStylesheetElements();
-        this.copyNewHeadScriptElements();
-        this.removeCurrentHeadProvisionalElements();
-        this.copyNewHeadProvisionalElements();
-    }
-    replaceBody() {
-        this.preservingPermanentElements(() => {
-            this.activateNewBody();
-            this.assignNewBody();
-        });
-    }
-    get trackedElementsAreIdentical() {
-        return this.currentHeadSnapshot.trackedElementSignature == this.newHeadSnapshot.trackedElementSignature;
-    }
-    copyNewHeadStylesheetElements() {
-        for (const element of this.newHeadStylesheetElements) {
-            document.head.appendChild(element);
-        }
-    }
-    copyNewHeadScriptElements() {
-        for (const element of this.newHeadScriptElements) {
-            document.head.appendChild(this.createScriptElement(element));
-        }
-    }
-    removeCurrentHeadProvisionalElements() {
-        for (const element of this.currentHeadProvisionalElements) {
-            document.head.removeChild(element);
-        }
-    }
-    copyNewHeadProvisionalElements() {
-        for (const element of this.newHeadProvisionalElements) {
-            document.head.appendChild(element);
-        }
-    }
-    activateNewBody() {
-        document.adoptNode(this.newElement);
-        this.activateNewBodyScriptElements();
-    }
-    activateNewBodyScriptElements() {
-        for (const inertScriptElement of this.newBodyScriptElements) {
-            const activatedScriptElement = this.createScriptElement(inertScriptElement);
-            inertScriptElement.replaceWith(activatedScriptElement);
-        }
-    }
-    assignNewBody() {
-        if (document.body && this.newElement instanceof HTMLBodyElement) {
-            document.body.replaceWith(this.newElement);
-        }
-        else {
-            document.documentElement.appendChild(this.newElement);
-        }
-    }
-    get newHeadStylesheetElements() {
-        return this.newHeadSnapshot.getStylesheetElementsNotInSnapshot(this.currentHeadSnapshot);
-    }
-    get newHeadScriptElements() {
-        return this.newHeadSnapshot.getScriptElementsNotInSnapshot(this.currentHeadSnapshot);
-    }
-    get currentHeadProvisionalElements() {
-        return this.currentHeadSnapshot.provisionalElements;
-    }
-    get newHeadProvisionalElements() {
-        return this.newHeadSnapshot.provisionalElements;
-    }
-    get newBodyScriptElements() {
-        return this.newElement.querySelectorAll("script");
-    }
-}
-
-class SnapshotCache {
-    constructor(size) {
-        this.keys = [];
-        this.snapshots = {};
-        this.size = size;
-    }
-    has(location) {
-        return toCacheKey(location) in this.snapshots;
-    }
-    get(location) {
-        if (this.has(location)) {
-            const snapshot = this.read(location);
-            this.touch(location);
-            return snapshot;
-        }
-    }
-    put(location, snapshot) {
-        this.write(location, snapshot);
-        this.touch(location);
-        return snapshot;
-    }
-    clear() {
-        this.snapshots = {};
-    }
-    read(location) {
-        return this.snapshots[toCacheKey(location)];
-    }
-    write(location, snapshot) {
-        this.snapshots[toCacheKey(location)] = snapshot;
-    }
-    touch(location) {
-        const key = toCacheKey(location);
-        const index = this.keys.indexOf(key);
-        if (index > -1)
-            this.keys.splice(index, 1);
-        this.keys.unshift(key);
-        this.trim();
-    }
-    trim() {
-        for (const key of this.keys.splice(this.size)) {
-            delete this.snapshots[key];
-        }
-    }
-}
-
-class PageView extends View {
-    constructor() {
-        super(...arguments);
-        this.snapshotCache = new SnapshotCache(10);
-        this.lastRenderedLocation = new URL(location.href);
-    }
-    renderPage(snapshot, isPreview = false) {
-        const renderer = new PageRenderer(this.snapshot, snapshot, isPreview);
-        return this.render(renderer);
-    }
-    renderError(snapshot) {
-        const renderer = new ErrorRenderer(this.snapshot, snapshot, false);
-        return this.render(renderer);
-    }
-    clearSnapshotCache() {
-        this.snapshotCache.clear();
-    }
-    async cacheSnapshot() {
-        if (this.shouldCacheSnapshot) {
-            this.delegate.viewWillCacheSnapshot();
-            const { snapshot, lastRenderedLocation: location } = this;
-            await nextEventLoopTick();
-            this.snapshotCache.put(location, snapshot.clone());
-        }
-    }
-    getCachedSnapshotForLocation(location) {
-        return this.snapshotCache.get(location);
-    }
-    get snapshot() {
-        return PageSnapshot.fromElement(this.element);
-    }
-    get shouldCacheSnapshot() {
-        return this.snapshot.isCacheable;
-    }
-}
-
-class Session {
-    constructor() {
-        this.navigator = new Navigator(this);
-        this.history = new History(this);
-        this.view = new PageView(this, document.documentElement);
-        this.adapter = new BrowserAdapter(this);
-        this.pageObserver = new PageObserver(this);
-        this.cacheObserver = new CacheObserver();
-        this.linkClickObserver = new LinkClickObserver(this);
-        this.formSubmitObserver = new FormSubmitObserver(this);
-        this.scrollObserver = new ScrollObserver(this);
-        this.streamObserver = new StreamObserver(this);
-        this.frameRedirector = new FrameRedirector(document.documentElement);
-        this.drive = true;
-        this.enabled = true;
-        this.progressBarDelay = 500;
-        this.started = false;
-    }
-    start() {
-        if (!this.started) {
-            this.pageObserver.start();
-            this.cacheObserver.start();
-            this.linkClickObserver.start();
-            this.formSubmitObserver.start();
-            this.scrollObserver.start();
-            this.streamObserver.start();
-            this.frameRedirector.start();
-            this.history.start();
-            this.started = true;
-            this.enabled = true;
-        }
-    }
-    disable() {
-        this.enabled = false;
-    }
-    stop() {
-        if (this.started) {
-            this.pageObserver.stop();
-            this.cacheObserver.stop();
-            this.linkClickObserver.stop();
-            this.formSubmitObserver.stop();
-            this.scrollObserver.stop();
-            this.streamObserver.stop();
-            this.frameRedirector.stop();
-            this.history.stop();
-            this.started = false;
-        }
-    }
-    registerAdapter(adapter) {
-        this.adapter = adapter;
-    }
-    visit(location, options = {}) {
-        this.navigator.proposeVisit(expandURL(location), options);
-    }
-    connectStreamSource(source) {
-        this.streamObserver.connectStreamSource(source);
-    }
-    disconnectStreamSource(source) {
-        this.streamObserver.disconnectStreamSource(source);
-    }
-    renderStreamMessage(message) {
-        document.documentElement.appendChild(StreamMessage.wrap(message).fragment);
-    }
-    clearCache() {
-        this.view.clearSnapshotCache();
-    }
-    setProgressBarDelay(delay) {
-        this.progressBarDelay = delay;
-    }
-    get location() {
-        return this.history.location;
-    }
-    get restorationIdentifier() {
-        return this.history.restorationIdentifier;
-    }
-    historyPoppedToLocationWithRestorationIdentifier(location, restorationIdentifier) {
-        if (this.enabled) {
-            this.navigator.startVisit(location, restorationIdentifier, { action: "restore", historyChanged: true });
-        }
-        else {
-            this.adapter.pageInvalidated();
-        }
-    }
-    scrollPositionChanged(position) {
-        this.history.updateRestorationData({ scrollPosition: position });
-    }
-    willFollowLinkToLocation(link, location) {
-        return this.elementDriveEnabled(link)
-            && this.locationIsVisitable(location)
-            && this.applicationAllowsFollowingLinkToLocation(link, location);
-    }
-    followedLinkToLocation(link, location) {
-        const action = this.getActionForLink(link);
-        this.convertLinkWithMethodClickToFormSubmission(link) || this.visit(location.href, { action });
-    }
-    convertLinkWithMethodClickToFormSubmission(link) {
-        var _a;
-        const linkMethod = link.getAttribute("data-turbo-method");
-        if (linkMethod) {
-            const form = document.createElement("form");
-            form.method = linkMethod;
-            form.action = link.getAttribute("href") || "undefined";
-            form.hidden = true;
-            (_a = link.parentNode) === null || _a === void 0 ? void 0 : _a.insertBefore(form, link);
-            return dispatch("submit", { cancelable: true, target: form });
-        }
-        else {
-            return false;
-        }
-    }
-    allowsVisitingLocationWithAction(location, action) {
-        return this.locationWithActionIsSamePage(location, action) || this.applicationAllowsVisitingLocation(location);
-    }
-    visitProposedToLocation(location, options) {
-        extendURLWithDeprecatedProperties(location);
-        this.adapter.visitProposedToLocation(location, options);
-    }
-    visitStarted(visit) {
-        extendURLWithDeprecatedProperties(visit.location);
-        if (!visit.silent) {
-            this.notifyApplicationAfterVisitingLocation(visit.location, visit.action);
-        }
-    }
-    visitCompleted(visit) {
-        this.notifyApplicationAfterPageLoad(visit.getTimingMetrics());
-    }
-    locationWithActionIsSamePage(location, action) {
-        return this.navigator.locationWithActionIsSamePage(location, action);
-    }
-    visitScrolledToSamePageLocation(oldURL, newURL) {
-        this.notifyApplicationAfterVisitingSamePageLocation(oldURL, newURL);
-    }
-    willSubmitForm(form, submitter) {
-        return this.elementDriveEnabled(form) && (!submitter || this.elementDriveEnabled(submitter));
-    }
-    formSubmitted(form, submitter) {
-        this.navigator.submitForm(form, submitter);
-    }
-    pageBecameInteractive() {
-        this.view.lastRenderedLocation = this.location;
-        this.notifyApplicationAfterPageLoad();
-    }
-    pageLoaded() {
-        this.history.assumeControlOfScrollRestoration();
-    }
-    pageWillUnload() {
-        this.history.relinquishControlOfScrollRestoration();
-    }
-    receivedMessageFromStream(message) {
-        this.renderStreamMessage(message);
-    }
-    viewWillCacheSnapshot() {
-        var _a;
-        if (!((_a = this.navigator.currentVisit) === null || _a === void 0 ? void 0 : _a.silent)) {
-            this.notifyApplicationBeforeCachingSnapshot();
-        }
-    }
-    allowsImmediateRender({ element }, resume) {
-        const event = this.notifyApplicationBeforeRender(element, resume);
-        return !event.defaultPrevented;
-    }
-    viewRenderedSnapshot(snapshot, isPreview) {
-        this.view.lastRenderedLocation = this.history.location;
-        this.notifyApplicationAfterRender();
-    }
-    viewInvalidated() {
-        this.adapter.pageInvalidated();
-    }
-    frameLoaded(frame) {
-        this.notifyApplicationAfterFrameLoad(frame);
-    }
-    frameRendered(fetchResponse, frame) {
-        this.notifyApplicationAfterFrameRender(fetchResponse, frame);
-    }
-    applicationAllowsFollowingLinkToLocation(link, location) {
-        const event = this.notifyApplicationAfterClickingLinkToLocation(link, location);
-        return !event.defaultPrevented;
-    }
-    applicationAllowsVisitingLocation(location) {
-        const event = this.notifyApplicationBeforeVisitingLocation(location);
-        return !event.defaultPrevented;
-    }
-    notifyApplicationAfterClickingLinkToLocation(link, location) {
-        return dispatch("turbo:click", { target: link, detail: { url: location.href }, cancelable: true });
-    }
-    notifyApplicationBeforeVisitingLocation(location) {
-        return dispatch("turbo:before-visit", { detail: { url: location.href }, cancelable: true });
-    }
-    notifyApplicationAfterVisitingLocation(location, action) {
-        return dispatch("turbo:visit", { detail: { url: location.href, action } });
-    }
-    notifyApplicationBeforeCachingSnapshot() {
-        return dispatch("turbo:before-cache");
-    }
-    notifyApplicationBeforeRender(newBody, resume) {
-        return dispatch("turbo:before-render", { detail: { newBody, resume }, cancelable: true });
-    }
-    notifyApplicationAfterRender() {
-        return dispatch("turbo:render");
-    }
-    notifyApplicationAfterPageLoad(timing = {}) {
-        return dispatch("turbo:load", { detail: { url: this.location.href, timing } });
-    }
-    notifyApplicationAfterVisitingSamePageLocation(oldURL, newURL) {
-        dispatchEvent(new HashChangeEvent("hashchange", { oldURL: oldURL.toString(), newURL: newURL.toString() }));
-    }
-    notifyApplicationAfterFrameLoad(frame) {
-        return dispatch("turbo:frame-load", { target: frame });
-    }
-    notifyApplicationAfterFrameRender(fetchResponse, frame) {
-        return dispatch("turbo:frame-render", { detail: { fetchResponse }, target: frame, cancelable: true });
-    }
-    elementDriveEnabled(element) {
-        const container = element === null || element === void 0 ? void 0 : element.closest("[data-turbo]");
-        if (this.drive) {
-            if (container) {
-                return container.getAttribute("data-turbo") != "false";
-            }
-            else {
-                return true;
-            }
-        }
-        else {
-            if (container) {
-                return container.getAttribute("data-turbo") == "true";
-            }
-            else {
-                return false;
-            }
-        }
-    }
-    getActionForLink(link) {
-        const action = link.getAttribute("data-turbo-action");
-        return isAction(action) ? action : "advance";
-    }
-    locationIsVisitable(location) {
-        return isPrefixedBy(location, this.snapshot.rootLocation) && isHTML(location);
-    }
-    get snapshot() {
-        return this.view.snapshot;
-    }
-}
-function extendURLWithDeprecatedProperties(url) {
-    Object.defineProperties(url, deprecatedLocationPropertyDescriptors);
-}
-const deprecatedLocationPropertyDescriptors = {
-    absoluteURL: {
-        get() {
-            return this.toString();
-        }
-    }
-};
-
-const session = new Session;
-const { navigator: navigator$1 } = session;
-function start() {
-    session.start();
-}
-function registerAdapter(adapter) {
-    session.registerAdapter(adapter);
-}
-function visit(location, options) {
-    session.visit(location, options);
-}
-function connectStreamSource(source) {
-    session.connectStreamSource(source);
-}
-function disconnectStreamSource(source) {
-    session.disconnectStreamSource(source);
-}
-function renderStreamMessage(message) {
-    session.renderStreamMessage(message);
-}
-function clearCache() {
-    session.clearCache();
-}
-function setProgressBarDelay(delay) {
-    session.setProgressBarDelay(delay);
-}
-
-var Turbo = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    navigator: navigator$1,
-    session: session,
-    PageRenderer: PageRenderer,
-    PageSnapshot: PageSnapshot,
-    start: start,
-    registerAdapter: registerAdapter,
-    visit: visit,
-    connectStreamSource: connectStreamSource,
-    disconnectStreamSource: disconnectStreamSource,
-    renderStreamMessage: renderStreamMessage,
-    clearCache: clearCache,
-    setProgressBarDelay: setProgressBarDelay
-});
-
-class FrameController {
-    constructor(element) {
-        this.resolveVisitPromise = () => { };
-        this.connected = false;
-        this.hasBeenLoaded = false;
-        this.settingSourceURL = false;
-        this.element = element;
-        this.view = new FrameView(this, this.element);
-        this.appearanceObserver = new AppearanceObserver(this, this.element);
-        this.linkInterceptor = new LinkInterceptor(this, this.element);
-        this.formInterceptor = new FormInterceptor(this, this.element);
-    }
-    connect() {
-        if (!this.connected) {
-            this.connected = true;
-            this.reloadable = false;
-            if (this.loadingStyle == FrameLoadingStyle.lazy) {
-                this.appearanceObserver.start();
-            }
-            this.linkInterceptor.start();
-            this.formInterceptor.start();
-            this.sourceURLChanged();
-        }
-    }
-    disconnect() {
-        if (this.connected) {
-            this.connected = false;
-            this.appearanceObserver.stop();
-            this.linkInterceptor.stop();
-            this.formInterceptor.stop();
-        }
-    }
-    disabledChanged() {
-        if (this.loadingStyle == FrameLoadingStyle.eager) {
-            this.loadSourceURL();
-        }
-    }
-    sourceURLChanged() {
-        if (this.loadingStyle == FrameLoadingStyle.eager || this.hasBeenLoaded) {
-            this.loadSourceURL();
-        }
-    }
-    loadingStyleChanged() {
-        if (this.loadingStyle == FrameLoadingStyle.lazy) {
-            this.appearanceObserver.start();
-        }
-        else {
-            this.appearanceObserver.stop();
-            this.loadSourceURL();
-        }
-    }
-    async loadSourceURL() {
-        if (!this.settingSourceURL && this.enabled && this.isActive && (this.reloadable || this.sourceURL != this.currentURL)) {
-            const previousURL = this.currentURL;
-            this.currentURL = this.sourceURL;
-            if (this.sourceURL) {
-                try {
-                    this.element.loaded = this.visit(this.sourceURL);
-                    this.appearanceObserver.stop();
-                    await this.element.loaded;
-                    this.hasBeenLoaded = true;
-                    session.frameLoaded(this.element);
-                }
-                catch (error) {
-                    this.currentURL = previousURL;
-                    throw error;
-                }
-            }
-        }
-    }
-    async loadResponse(fetchResponse) {
-        if (fetchResponse.redirected) {
-            this.sourceURL = fetchResponse.response.url;
-        }
-        try {
-            const html = await fetchResponse.responseHTML;
-            if (html) {
-                const { body } = parseHTMLDocument(html);
-                const snapshot = new Snapshot(await this.extractForeignFrameElement(body));
-                const renderer = new FrameRenderer(this.view.snapshot, snapshot, false);
-                if (this.view.renderPromise)
-                    await this.view.renderPromise;
-                await this.view.render(renderer);
-                session.frameRendered(fetchResponse, this.element);
-            }
-        }
-        catch (error) {
-            console.error(error);
-            this.view.invalidate();
-        }
-    }
-    elementAppearedInViewport(element) {
-        this.loadSourceURL();
-    }
-    shouldInterceptLinkClick(element, url) {
-        if (element.hasAttribute("data-turbo-method")) {
-            return false;
-        }
-        else {
-            return this.shouldInterceptNavigation(element);
-        }
-    }
-    linkClickIntercepted(element, url) {
-        this.reloadable = true;
-        this.navigateFrame(element, url);
-    }
-    shouldInterceptFormSubmission(element, submitter) {
-        return this.shouldInterceptNavigation(element, submitter);
-    }
-    formSubmissionIntercepted(element, submitter) {
-        if (this.formSubmission) {
-            this.formSubmission.stop();
-        }
-        this.reloadable = false;
-        this.formSubmission = new FormSubmission(this, element, submitter);
-        if (this.formSubmission.fetchRequest.isIdempotent) {
-            this.navigateFrame(element, this.formSubmission.fetchRequest.url.href, submitter);
-        }
-        else {
-            const { fetchRequest } = this.formSubmission;
-            this.prepareHeadersForRequest(fetchRequest.headers, fetchRequest);
-            this.formSubmission.start();
-        }
-    }
-    prepareHeadersForRequest(headers, request) {
-        headers["Turbo-Frame"] = this.id;
-    }
-    requestStarted(request) {
-        this.element.setAttribute("busy", "");
-    }
-    requestPreventedHandlingResponse(request, response) {
-        this.resolveVisitPromise();
-    }
-    async requestSucceededWithResponse(request, response) {
-        await this.loadResponse(response);
-        this.resolveVisitPromise();
-    }
-    requestFailedWithResponse(request, response) {
-        console.error(response);
-        this.resolveVisitPromise();
-    }
-    requestErrored(request, error) {
-        console.error(error);
-        this.resolveVisitPromise();
-    }
-    requestFinished(request) {
-        this.element.removeAttribute("busy");
-    }
-    formSubmissionStarted(formSubmission) {
-        const frame = this.findFrameElement(formSubmission.formElement);
-        frame.setAttribute("busy", "");
-    }
-    formSubmissionSucceededWithResponse(formSubmission, response) {
-        const frame = this.findFrameElement(formSubmission.formElement, formSubmission.submitter);
-        frame.delegate.loadResponse(response);
-    }
-    formSubmissionFailedWithResponse(formSubmission, fetchResponse) {
-        this.element.delegate.loadResponse(fetchResponse);
-    }
-    formSubmissionErrored(formSubmission, error) {
-        console.error(error);
-    }
-    formSubmissionFinished(formSubmission) {
-        const frame = this.findFrameElement(formSubmission.formElement);
-        frame.removeAttribute("busy");
-    }
-    allowsImmediateRender(snapshot, resume) {
-        return true;
-    }
-    viewRenderedSnapshot(snapshot, isPreview) {
-    }
-    viewInvalidated() {
-    }
-    async visit(url) {
-        const request = new FetchRequest(this, FetchMethod.get, expandURL(url), undefined, this.element);
-        return new Promise(resolve => {
-            this.resolveVisitPromise = () => {
-                this.resolveVisitPromise = () => { };
-                resolve();
-            };
-            request.perform();
-        });
-    }
-    navigateFrame(element, url, submitter) {
-        const frame = this.findFrameElement(element, submitter);
-        frame.setAttribute("reloadable", "");
-        frame.src = url;
-    }
-    findFrameElement(element, submitter) {
-        var _a;
-        const id = (submitter === null || submitter === void 0 ? void 0 : submitter.getAttribute("data-turbo-frame")) || element.getAttribute("data-turbo-frame") || this.element.getAttribute("target");
-        return (_a = getFrameElementById(id)) !== null && _a !== void 0 ? _a : this.element;
-    }
-    async extractForeignFrameElement(container) {
-        let element;
-        const id = CSS.escape(this.id);
-        try {
-            if (element = activateElement(container.querySelector(`turbo-frame#${id}`), this.currentURL)) {
-                return element;
-            }
-            if (element = activateElement(container.querySelector(`turbo-frame[src][recurse~=${id}]`), this.currentURL)) {
-                await element.loaded;
-                return await this.extractForeignFrameElement(element);
-            }
-            console.error(`Response has no matching <turbo-frame id="${id}"> element`);
-        }
-        catch (error) {
-            console.error(error);
-        }
-        return new FrameElement();
-    }
-    shouldInterceptNavigation(element, submitter) {
-        const id = (submitter === null || submitter === void 0 ? void 0 : submitter.getAttribute("data-turbo-frame")) || element.getAttribute("data-turbo-frame") || this.element.getAttribute("target");
-        if (!this.enabled || id == "_top") {
-            return false;
-        }
-        if (id) {
-            const frameElement = getFrameElementById(id);
-            if (frameElement) {
-                return !frameElement.disabled;
-            }
-        }
-        if (!session.elementDriveEnabled(element)) {
-            return false;
-        }
-        if (submitter && !session.elementDriveEnabled(submitter)) {
-            return false;
-        }
-        return true;
-    }
-    get id() {
-        return this.element.id;
-    }
-    get enabled() {
-        return !this.element.disabled;
-    }
-    get sourceURL() {
-        if (this.element.src) {
-            return this.element.src;
-        }
-    }
-    get reloadable() {
-        const frame = this.findFrameElement(this.element);
-        return frame.hasAttribute("reloadable");
-    }
-    set reloadable(value) {
-        const frame = this.findFrameElement(this.element);
-        if (value) {
-            frame.setAttribute("reloadable", "");
-        }
-        else {
-            frame.removeAttribute("reloadable");
-        }
-    }
-    set sourceURL(sourceURL) {
-        this.settingSourceURL = true;
-        this.element.src = sourceURL !== null && sourceURL !== void 0 ? sourceURL : null;
-        this.currentURL = this.element.src;
-        this.settingSourceURL = false;
-    }
-    get loadingStyle() {
-        return this.element.loading;
-    }
-    get isLoading() {
-        return this.formSubmission !== undefined || this.resolveVisitPromise() !== undefined;
-    }
-    get isActive() {
-        return this.element.isActive && this.connected;
-    }
-}
-function getFrameElementById(id) {
-    if (id != null) {
-        const element = document.getElementById(id);
-        if (element instanceof FrameElement) {
-            return element;
-        }
-    }
-}
-function activateElement(element, currentURL) {
-    if (element) {
-        const src = element.getAttribute("src");
-        if (src != null && currentURL != null && urlsAreEqual(src, currentURL)) {
-            throw new Error(`Matching <turbo-frame id="${element.id}"> element has a source URL which references itself`);
-        }
-        if (element.ownerDocument !== document) {
-            element = document.importNode(element, true);
-        }
-        if (element instanceof FrameElement) {
-            element.connectedCallback();
-            return element;
-        }
-    }
-}
-
-const StreamActions = {
-    after() {
-        this.targetElements.forEach(e => { var _a; return (_a = e.parentElement) === null || _a === void 0 ? void 0 : _a.insertBefore(this.templateContent, e.nextSibling); });
-    },
-    append() {
-        this.removeDuplicateTargetChildren();
-        this.targetElements.forEach(e => e.append(this.templateContent));
-    },
-    before() {
-        this.targetElements.forEach(e => { var _a; return (_a = e.parentElement) === null || _a === void 0 ? void 0 : _a.insertBefore(this.templateContent, e); });
-    },
-    prepend() {
-        this.removeDuplicateTargetChildren();
-        this.targetElements.forEach(e => e.prepend(this.templateContent));
-    },
-    remove() {
-        this.targetElements.forEach(e => e.remove());
-    },
-    replace() {
-        this.targetElements.forEach(e => e.replaceWith(this.templateContent));
-    },
-    update() {
-        this.targetElements.forEach(e => {
-            e.innerHTML = "";
-            e.append(this.templateContent);
-        });
-    }
-};
-
-class StreamElement extends HTMLElement {
-    async connectedCallback() {
-        try {
-            await this.render();
-        }
-        catch (error) {
-            console.error(error);
-        }
-        finally {
-            this.disconnect();
-        }
-    }
-    async render() {
-        var _a;
-        return (_a = this.renderPromise) !== null && _a !== void 0 ? _a : (this.renderPromise = (async () => {
-            if (this.dispatchEvent(this.beforeRenderEvent)) {
-                await nextAnimationFrame();
-                this.performAction();
-            }
-        })());
-    }
-    disconnect() {
-        try {
-            this.remove();
-        }
-        catch (_a) { }
-    }
-    removeDuplicateTargetChildren() {
-        this.duplicateChildren.forEach(c => c.remove());
-    }
-    get duplicateChildren() {
-        var _a;
-        const existingChildren = this.targetElements.flatMap(e => [...e.children]).filter(c => !!c.id);
-        const newChildrenIds = [...(_a = this.templateContent) === null || _a === void 0 ? void 0 : _a.children].filter(c => !!c.id).map(c => c.id);
-        return existingChildren.filter(c => newChildrenIds.includes(c.id));
-    }
-    get performAction() {
-        if (this.action) {
-            const actionFunction = StreamActions[this.action];
-            if (actionFunction) {
-                return actionFunction;
-            }
-            this.raise("unknown action");
-        }
-        this.raise("action attribute is missing");
-    }
-    get targetElements() {
-        if (this.target) {
-            return this.targetElementsById;
-        }
-        else if (this.targets) {
-            return this.targetElementsByQuery;
-        }
-        else {
-            this.raise("target or targets attribute is missing");
-        }
-    }
-    get templateContent() {
-        return this.templateElement.content.cloneNode(true);
-    }
-    get templateElement() {
-        if (this.firstElementChild instanceof HTMLTemplateElement) {
-            return this.firstElementChild;
-        }
-        this.raise("first child element must be a <template> element");
-    }
-    get action() {
-        return this.getAttribute("action");
-    }
-    get target() {
-        return this.getAttribute("target");
-    }
-    get targets() {
-        return this.getAttribute("targets");
-    }
-    raise(message) {
-        throw new Error(`${this.description}: ${message}`);
-    }
-    get description() {
-        var _a, _b;
-        return (_b = ((_a = this.outerHTML.match(/<[^>]+>/)) !== null && _a !== void 0 ? _a : [])[0]) !== null && _b !== void 0 ? _b : "<turbo-stream>";
-    }
-    get beforeRenderEvent() {
-        return new CustomEvent("turbo:before-stream-render", { bubbles: true, cancelable: true });
-    }
-    get targetElementsById() {
-        var _a;
-        const element = (_a = this.ownerDocument) === null || _a === void 0 ? void 0 : _a.getElementById(this.target);
-        if (element !== null) {
-            return [element];
-        }
-        else {
-            return [];
-        }
-    }
-    get targetElementsByQuery() {
-        var _a;
-        const elements = (_a = this.ownerDocument) === null || _a === void 0 ? void 0 : _a.querySelectorAll(this.targets);
-        if (elements.length !== 0) {
-            return Array.prototype.slice.call(elements);
-        }
-        else {
-            return [];
-        }
-    }
-}
-
-FrameElement.delegateConstructor = FrameController;
-customElements.define("turbo-frame", FrameElement);
-customElements.define("turbo-stream", StreamElement);
-
-(() => {
-    let element = document.currentScript;
-    if (!element)
-        return;
-    if (element.hasAttribute("data-turbo-suppress-warning"))
-        return;
-    while (element = element.parentElement) {
-        if (element == document.body) {
-            return console.warn(unindent `
-        You are loading Turbo from a <script> element inside the <body> element. This is probably not what you meant to do!
-
-        Load your application’s JavaScript bundle inside the <head> element instead. <script> elements in <body> are evaluated with each page change.
-
-        For more information, see: https://turbo.hotwired.dev/handbook/building#working-with-script-elements
-
-        ——
-        Suppress this warning by adding a "data-turbo-suppress-warning" attribute to: %s
-      `, element.outerHTML);
-        }
-    }
-})();
-
-window.Turbo = Turbo;
-start();
-
-
-
-
-/***/ }),
-
 /***/ "./node_modules/animated-scroll-to/lib/animated-scroll-to.js":
 /*!*******************************************************************!*\
   !*** ./node_modules/animated-scroll-to/lib/animated-scroll-to.js ***!
@@ -6017,6 +3611,6015 @@ function e(e, n) {
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (e);
+
+/***/ }),
+
+/***/ "../../../packages/turbo/dist/turbo.es2017-esm.js":
+/*!********************************************************!*\
+  !*** ../../../packages/turbo/dist/turbo.es2017-esm.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "PageRenderer": () => (/* binding */ PageRenderer),
+/* harmony export */   "PageSnapshot": () => (/* binding */ PageSnapshot),
+/* harmony export */   "clearCache": () => (/* binding */ clearCache),
+/* harmony export */   "connectStreamSource": () => (/* binding */ connectStreamSource),
+/* harmony export */   "disconnectStreamSource": () => (/* binding */ disconnectStreamSource),
+/* harmony export */   "navigator": () => (/* binding */ navigator$1),
+/* harmony export */   "registerAdapter": () => (/* binding */ registerAdapter),
+/* harmony export */   "renderStreamMessage": () => (/* binding */ renderStreamMessage),
+/* harmony export */   "session": () => (/* binding */ session),
+/* harmony export */   "setConfirmMethod": () => (/* binding */ setConfirmMethod),
+/* harmony export */   "setProgressBarDelay": () => (/* binding */ setProgressBarDelay),
+/* harmony export */   "start": () => (/* binding */ start),
+/* harmony export */   "visit": () => (/* binding */ visit)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "../../../packages/turbo/node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+var _templateObject, _templateObject2;
+
+function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
+
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
+
+function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+/*
+Turbo 7.1.0-rc.1
+Copyright © 2021 Basecamp, LLC
+ */
+(function () {
+  if (window.Reflect === undefined || window.customElements === undefined || window.customElements.polyfillWrapFlushCallback) {
+    return;
+  }
+
+  var BuiltInHTMLElement = HTMLElement;
+  var wrapperForTheName = {
+    'HTMLElement': function HTMLElement() {
+      return Reflect.construct(BuiltInHTMLElement, [], this.constructor);
+    }
+  };
+  window.HTMLElement = wrapperForTheName['HTMLElement'];
+  HTMLElement.prototype = BuiltInHTMLElement.prototype;
+  HTMLElement.prototype.constructor = HTMLElement;
+  Object.setPrototypeOf(HTMLElement, BuiltInHTMLElement);
+})();
+/**
+ * The MIT License (MIT)
+ * 
+ * Copyright (c) 2019 Javan Makhmali
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+
+(function (prototype) {
+  if (typeof prototype.requestSubmit == "function") return;
+
+  prototype.requestSubmit = function (submitter) {
+    if (submitter) {
+      validateSubmitter(submitter, this);
+      submitter.click();
+    } else {
+      submitter = document.createElement("input");
+      submitter.type = "submit";
+      submitter.hidden = true;
+      this.appendChild(submitter);
+      submitter.click();
+      this.removeChild(submitter);
+    }
+  };
+
+  function validateSubmitter(submitter, form) {
+    submitter instanceof HTMLElement || raise(TypeError, "parameter 1 is not of type 'HTMLElement'");
+    submitter.type == "submit" || raise(TypeError, "The specified element is not a submit button");
+    submitter.form == form || raise(DOMException, "The specified element is not owned by this form element", "NotFoundError");
+  }
+
+  function raise(errorConstructor, message, name) {
+    throw new errorConstructor("Failed to execute 'requestSubmit' on 'HTMLFormElement': " + message + ".", name);
+  }
+})(HTMLFormElement.prototype);
+
+var submittersByForm = new WeakMap();
+
+function findSubmitterFromClickTarget(target) {
+  var element = target instanceof Element ? target : target instanceof Node ? target.parentElement : null;
+  var candidate = element ? element.closest("input, button") : null;
+  return (candidate === null || candidate === void 0 ? void 0 : candidate.type) == "submit" ? candidate : null;
+}
+
+function clickCaptured(event) {
+  var submitter = findSubmitterFromClickTarget(event.target);
+
+  if (submitter && submitter.form) {
+    submittersByForm.set(submitter.form, submitter);
+  }
+}
+
+(function () {
+  if ("submitter" in Event.prototype) return;
+  var prototype;
+
+  if ("SubmitEvent" in window && /Apple Computer/.test(navigator.vendor)) {
+    prototype = window.SubmitEvent.prototype;
+  } else if ("SubmitEvent" in window) {
+    return;
+  } else {
+    prototype = window.Event.prototype;
+  }
+
+  addEventListener("click", clickCaptured, true);
+  Object.defineProperty(prototype, "submitter", {
+    get: function get() {
+      if (this.type == "submit" && this.target instanceof HTMLFormElement) {
+        return submittersByForm.get(this.target);
+      }
+    }
+  });
+})();
+
+var FrameLoadingStyle;
+
+(function (FrameLoadingStyle) {
+  FrameLoadingStyle["eager"] = "eager";
+  FrameLoadingStyle["lazy"] = "lazy";
+})(FrameLoadingStyle || (FrameLoadingStyle = {}));
+
+var FrameElement = /*#__PURE__*/function (_HTMLElement) {
+  _inherits(FrameElement, _HTMLElement);
+
+  var _super = _createSuper(FrameElement);
+
+  function FrameElement() {
+    var _this;
+
+    _classCallCheck(this, FrameElement);
+
+    _this = _super.call(this);
+    _this.loaded = Promise.resolve();
+    _this.delegate = new FrameElement.delegateConstructor(_assertThisInitialized(_this));
+    return _this;
+  }
+
+  _createClass(FrameElement, [{
+    key: "connectedCallback",
+    value: function connectedCallback() {
+      this.delegate.connect();
+    }
+  }, {
+    key: "disconnectedCallback",
+    value: function disconnectedCallback() {
+      this.delegate.disconnect();
+    }
+  }, {
+    key: "reload",
+    value: function reload() {
+      var src = this.src;
+      this.src = null;
+      this.src = src;
+    }
+  }, {
+    key: "attributeChangedCallback",
+    value: function attributeChangedCallback(name) {
+      if (name == "loading") {
+        this.delegate.loadingStyleChanged();
+      } else if (name == "src") {
+        this.delegate.sourceURLChanged();
+      } else {
+        this.delegate.disabledChanged();
+      }
+    }
+  }, {
+    key: "src",
+    get: function get() {
+      return this.getAttribute("src");
+    },
+    set: function set(value) {
+      if (value) {
+        this.setAttribute("src", value);
+      } else {
+        this.removeAttribute("src");
+      }
+    }
+  }, {
+    key: "loading",
+    get: function get() {
+      return frameLoadingStyleFromString(this.getAttribute("loading") || "");
+    },
+    set: function set(value) {
+      if (value) {
+        this.setAttribute("loading", value);
+      } else {
+        this.removeAttribute("loading");
+      }
+    }
+  }, {
+    key: "disabled",
+    get: function get() {
+      return this.hasAttribute("disabled");
+    },
+    set: function set(value) {
+      if (value) {
+        this.setAttribute("disabled", "");
+      } else {
+        this.removeAttribute("disabled");
+      }
+    }
+  }, {
+    key: "autoscroll",
+    get: function get() {
+      return this.hasAttribute("autoscroll");
+    },
+    set: function set(value) {
+      if (value) {
+        this.setAttribute("autoscroll", "");
+      } else {
+        this.removeAttribute("autoscroll");
+      }
+    }
+  }, {
+    key: "complete",
+    get: function get() {
+      return !this.delegate.isLoading;
+    }
+  }, {
+    key: "isActive",
+    get: function get() {
+      return this.ownerDocument === document && !this.isPreview;
+    }
+  }, {
+    key: "isPreview",
+    get: function get() {
+      var _a, _b;
+
+      return (_b = (_a = this.ownerDocument) === null || _a === void 0 ? void 0 : _a.documentElement) === null || _b === void 0 ? void 0 : _b.hasAttribute("data-turbo-preview");
+    }
+  }], [{
+    key: "observedAttributes",
+    get: function get() {
+      return ["disabled", "loading", "src"];
+    }
+  }]);
+
+  return FrameElement;
+}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
+
+function frameLoadingStyleFromString(style) {
+  switch (style.toLowerCase()) {
+    case "lazy":
+      return FrameLoadingStyle.lazy;
+
+    default:
+      return FrameLoadingStyle.eager;
+  }
+}
+
+function expandURL(locatable) {
+  return new URL(locatable.toString(), document.baseURI);
+}
+
+function getAnchor(url) {
+  var anchorMatch;
+
+  if (url.hash) {
+    return url.hash.slice(1);
+  } else if (anchorMatch = url.href.match(/#(.*)$/)) {
+    return anchorMatch[1];
+  }
+}
+
+function getAction(form, submitter) {
+  var action = (submitter === null || submitter === void 0 ? void 0 : submitter.getAttribute("formaction")) || form.getAttribute("action") || form.action;
+  return expandURL(action);
+}
+
+function getExtension(url) {
+  return (getLastPathComponent(url).match(/\.[^.]*$/) || [])[0] || "";
+}
+
+function isHTML(url) {
+  return !!getExtension(url).match(/^(?:|\.(?:htm|html|xhtml))$/);
+}
+
+function isPrefixedBy(baseURL, url) {
+  var prefix = getPrefix(url);
+  return baseURL.href === expandURL(prefix).href || baseURL.href.startsWith(prefix);
+}
+
+function locationIsVisitable(location, rootLocation) {
+  return isPrefixedBy(location, rootLocation) && isHTML(location);
+}
+
+function getRequestURL(url) {
+  var anchor = getAnchor(url);
+  return anchor != null ? url.href.slice(0, -(anchor.length + 1)) : url.href;
+}
+
+function toCacheKey(url) {
+  return getRequestURL(url);
+}
+
+function urlsAreEqual(left, right) {
+  return expandURL(left).href == expandURL(right).href;
+}
+
+function getPathComponents(url) {
+  return url.pathname.split("/").slice(1);
+}
+
+function getLastPathComponent(url) {
+  return getPathComponents(url).slice(-1)[0];
+}
+
+function getPrefix(url) {
+  return addTrailingSlash(url.origin + url.pathname);
+}
+
+function addTrailingSlash(value) {
+  return value.endsWith("/") ? value : value + "/";
+}
+
+var FetchResponse = /*#__PURE__*/function () {
+  function FetchResponse(response) {
+    _classCallCheck(this, FetchResponse);
+
+    this.response = response;
+  }
+
+  _createClass(FetchResponse, [{
+    key: "succeeded",
+    get: function get() {
+      return this.response.ok;
+    }
+  }, {
+    key: "failed",
+    get: function get() {
+      return !this.succeeded;
+    }
+  }, {
+    key: "clientError",
+    get: function get() {
+      return this.statusCode >= 400 && this.statusCode <= 499;
+    }
+  }, {
+    key: "serverError",
+    get: function get() {
+      return this.statusCode >= 500 && this.statusCode <= 599;
+    }
+  }, {
+    key: "redirected",
+    get: function get() {
+      return this.response.redirected;
+    }
+  }, {
+    key: "location",
+    get: function get() {
+      return expandURL(this.response.url);
+    }
+  }, {
+    key: "isHTML",
+    get: function get() {
+      return this.contentType && this.contentType.match(/^(?:text\/([^\s;,]+\b)?html|application\/xhtml\+xml)\b/);
+    }
+  }, {
+    key: "statusCode",
+    get: function get() {
+      return this.response.status;
+    }
+  }, {
+    key: "contentType",
+    get: function get() {
+      return this.header("Content-Type");
+    }
+  }, {
+    key: "responseText",
+    get: function get() {
+      return this.response.clone().text();
+    }
+  }, {
+    key: "responseHTML",
+    get: function get() {
+      if (this.isHTML) {
+        return this.response.clone().text();
+      } else {
+        return Promise.resolve(undefined);
+      }
+    }
+  }, {
+    key: "header",
+    value: function header(name) {
+      return this.response.headers.get(name);
+    }
+  }]);
+
+  return FetchResponse;
+}();
+
+function dispatch(eventName) {
+  var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+      target = _ref.target,
+      cancelable = _ref.cancelable,
+      detail = _ref.detail;
+
+  var event = new CustomEvent(eventName, {
+    cancelable: cancelable,
+    bubbles: true,
+    detail: detail
+  });
+
+  if (target && target.isConnected) {
+    target.dispatchEvent(event);
+  } else {
+    document.documentElement.dispatchEvent(event);
+  }
+
+  return event;
+}
+
+function nextAnimationFrame() {
+  return new Promise(function (resolve) {
+    return requestAnimationFrame(function () {
+      return resolve();
+    });
+  });
+}
+
+function nextEventLoopTick() {
+  return new Promise(function (resolve) {
+    return setTimeout(function () {
+      return resolve();
+    }, 0);
+  });
+}
+
+function nextMicrotask() {
+  return Promise.resolve();
+}
+
+function parseHTMLDocument() {
+  var html = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+  return new DOMParser().parseFromString(html, "text/html");
+}
+
+function unindent(strings) {
+  for (var _len = arguments.length, values = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    values[_key - 1] = arguments[_key];
+  }
+
+  var lines = interpolate(strings, values).replace(/^\n/, "").split("\n");
+  var match = lines[0].match(/^\s+/);
+  var indent = match ? match[0].length : 0;
+  return lines.map(function (line) {
+    return line.slice(indent);
+  }).join("\n");
+}
+
+function interpolate(strings, values) {
+  return strings.reduce(function (result, string, i) {
+    var value = values[i] == undefined ? "" : values[i];
+    return result + string + value;
+  }, "");
+}
+
+function uuid() {
+  return Array.apply(null, {
+    length: 36
+  }).map(function (_, i) {
+    if (i == 8 || i == 13 || i == 18 || i == 23) {
+      return "-";
+    } else if (i == 14) {
+      return "4";
+    } else if (i == 19) {
+      return (Math.floor(Math.random() * 4) + 8).toString(16);
+    } else {
+      return Math.floor(Math.random() * 15).toString(16);
+    }
+  }).join("");
+}
+
+function getAttribute(attributeName) {
+  for (var _len2 = arguments.length, elements = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+    elements[_key2 - 1] = arguments[_key2];
+  }
+
+  var _iterator = _createForOfIteratorHelper(elements.map(function (element) {
+    return element === null || element === void 0 ? void 0 : element.getAttribute(attributeName);
+  })),
+      _step;
+
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var value = _step.value;
+      if (typeof value == "string") return value;
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+
+  return null;
+}
+
+function markAsBusy() {
+  for (var _len3 = arguments.length, elements = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+    elements[_key3] = arguments[_key3];
+  }
+
+  for (var _i = 0, _elements = elements; _i < _elements.length; _i++) {
+    var element = _elements[_i];
+
+    if (element.localName == "turbo-frame") {
+      element.setAttribute("busy", "");
+    }
+
+    element.setAttribute("aria-busy", "true");
+  }
+}
+
+function clearBusyState() {
+  for (var _len4 = arguments.length, elements = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+    elements[_key4] = arguments[_key4];
+  }
+
+  for (var _i2 = 0, _elements2 = elements; _i2 < _elements2.length; _i2++) {
+    var element = _elements2[_i2];
+
+    if (element.localName == "turbo-frame") {
+      element.removeAttribute("busy");
+    }
+
+    element.removeAttribute("aria-busy");
+  }
+}
+
+var FetchMethod;
+
+(function (FetchMethod) {
+  FetchMethod[FetchMethod["get"] = 0] = "get";
+  FetchMethod[FetchMethod["post"] = 1] = "post";
+  FetchMethod[FetchMethod["put"] = 2] = "put";
+  FetchMethod[FetchMethod["patch"] = 3] = "patch";
+  FetchMethod[FetchMethod["delete"] = 4] = "delete";
+})(FetchMethod || (FetchMethod = {}));
+
+function fetchMethodFromString(method) {
+  switch (method.toLowerCase()) {
+    case "get":
+      return FetchMethod.get;
+
+    case "post":
+      return FetchMethod.post;
+
+    case "put":
+      return FetchMethod.put;
+
+    case "patch":
+      return FetchMethod.patch;
+
+    case "delete":
+      return FetchMethod["delete"];
+  }
+}
+
+var FetchRequest = /*#__PURE__*/function () {
+  function FetchRequest(delegate, method, location) {
+    var body = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : new URLSearchParams();
+    var target = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
+
+    _classCallCheck(this, FetchRequest);
+
+    this.abortController = new AbortController();
+
+    this.resolveRequestPromise = function (value) {};
+
+    this.delegate = delegate;
+    this.method = method;
+    this.headers = this.defaultHeaders;
+
+    if (this.isIdempotent) {
+      this.url = mergeFormDataEntries(location, _toConsumableArray(body.entries()));
+    } else {
+      this.body = body;
+      this.url = location;
+    }
+
+    this.target = target;
+  }
+
+  _createClass(FetchRequest, [{
+    key: "location",
+    get: function get() {
+      return this.url;
+    }
+  }, {
+    key: "params",
+    get: function get() {
+      return this.url.searchParams;
+    }
+  }, {
+    key: "entries",
+    get: function get() {
+      return this.body ? Array.from(this.body.entries()) : [];
+    }
+  }, {
+    key: "cancel",
+    value: function cancel() {
+      this.abortController.abort();
+    }
+  }, {
+    key: "perform",
+    value: function () {
+      var _perform = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var _a, _b, fetchOptions, response;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                fetchOptions = this.fetchOptions;
+                (_b = (_a = this.delegate).prepareHeadersForRequest) === null || _b === void 0 ? void 0 : _b.call(_a, this.headers, this);
+                _context.next = 4;
+                return this.allowRequestToBeIntercepted(fetchOptions);
+
+              case 4:
+                _context.prev = 4;
+                this.delegate.requestStarted(this);
+                _context.next = 8;
+                return fetch(this.url.href, fetchOptions);
+
+              case 8:
+                response = _context.sent;
+                _context.next = 11;
+                return this.receive(response);
+
+              case 11:
+                return _context.abrupt("return", _context.sent);
+
+              case 14:
+                _context.prev = 14;
+                _context.t0 = _context["catch"](4);
+
+                if (!(_context.t0.name !== 'AbortError')) {
+                  _context.next = 19;
+                  break;
+                }
+
+                this.delegate.requestErrored(this, _context.t0);
+                throw _context.t0;
+
+              case 19:
+                _context.prev = 19;
+                this.delegate.requestFinished(this);
+                return _context.finish(19);
+
+              case 22:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this, [[4, 14, 19, 22]]);
+      }));
+
+      function perform() {
+        return _perform.apply(this, arguments);
+      }
+
+      return perform;
+    }()
+  }, {
+    key: "receive",
+    value: function () {
+      var _receive = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2(response) {
+        var fetchResponse, event;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                fetchResponse = new FetchResponse(response);
+                event = dispatch("turbo:before-fetch-response", {
+                  cancelable: true,
+                  detail: {
+                    fetchResponse: fetchResponse
+                  },
+                  target: this.target
+                });
+
+                if (event.defaultPrevented) {
+                  this.delegate.requestPreventedHandlingResponse(this, fetchResponse);
+                } else if (fetchResponse.succeeded) {
+                  this.delegate.requestSucceededWithResponse(this, fetchResponse);
+                } else {
+                  this.delegate.requestFailedWithResponse(this, fetchResponse);
+                }
+
+                return _context2.abrupt("return", fetchResponse);
+
+              case 4:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function receive(_x) {
+        return _receive.apply(this, arguments);
+      }
+
+      return receive;
+    }()
+  }, {
+    key: "fetchOptions",
+    get: function get() {
+      var _a;
+
+      return {
+        method: FetchMethod[this.method].toUpperCase(),
+        credentials: "same-origin",
+        headers: this.headers,
+        redirect: "follow",
+        body: this.body,
+        signal: this.abortSignal,
+        referrer: (_a = this.delegate.referrer) === null || _a === void 0 ? void 0 : _a.href
+      };
+    }
+  }, {
+    key: "defaultHeaders",
+    get: function get() {
+      return {
+        "Accept": "text/html, application/xhtml+xml"
+      };
+    }
+  }, {
+    key: "isIdempotent",
+    get: function get() {
+      return this.method == FetchMethod.get;
+    }
+  }, {
+    key: "abortSignal",
+    get: function get() {
+      return this.abortController.signal;
+    }
+  }, {
+    key: "allowRequestToBeIntercepted",
+    value: function () {
+      var _allowRequestToBeIntercepted = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3(fetchOptions) {
+        var _this2 = this;
+
+        var requestInterception, event;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                requestInterception = new Promise(function (resolve) {
+                  return _this2.resolveRequestPromise = resolve;
+                });
+                event = dispatch("turbo:before-fetch-request", {
+                  cancelable: true,
+                  detail: {
+                    fetchOptions: fetchOptions,
+                    url: this.url.href,
+                    resume: this.resolveRequestPromise
+                  },
+                  target: this.target
+                });
+
+                if (!event.defaultPrevented) {
+                  _context3.next = 5;
+                  break;
+                }
+
+                _context3.next = 5;
+                return requestInterception;
+
+              case 5:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function allowRequestToBeIntercepted(_x2) {
+        return _allowRequestToBeIntercepted.apply(this, arguments);
+      }
+
+      return allowRequestToBeIntercepted;
+    }()
+  }]);
+
+  return FetchRequest;
+}();
+
+function mergeFormDataEntries(url, entries) {
+  var currentSearchParams = new URLSearchParams(url.search);
+
+  var _iterator2 = _createForOfIteratorHelper(entries),
+      _step2;
+
+  try {
+    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+      var _step2$value = _slicedToArray(_step2.value, 2),
+          name = _step2$value[0],
+          value = _step2$value[1];
+
+      if (value instanceof File) continue;
+
+      if (currentSearchParams.has(name)) {
+        currentSearchParams["delete"](name);
+        url.searchParams.set(name, value);
+      } else {
+        url.searchParams.append(name, value);
+      }
+    }
+  } catch (err) {
+    _iterator2.e(err);
+  } finally {
+    _iterator2.f();
+  }
+
+  return url;
+}
+
+var AppearanceObserver = /*#__PURE__*/function () {
+  function AppearanceObserver(delegate, element) {
+    var _this3 = this;
+
+    _classCallCheck(this, AppearanceObserver);
+
+    this.started = false;
+
+    this.intersect = function (entries) {
+      var lastEntry = entries.slice(-1)[0];
+
+      if (lastEntry === null || lastEntry === void 0 ? void 0 : lastEntry.isIntersecting) {
+        _this3.delegate.elementAppearedInViewport(_this3.element);
+      }
+    };
+
+    this.delegate = delegate;
+    this.element = element;
+    this.intersectionObserver = new IntersectionObserver(this.intersect);
+  }
+
+  _createClass(AppearanceObserver, [{
+    key: "start",
+    value: function start() {
+      if (!this.started) {
+        this.started = true;
+        this.intersectionObserver.observe(this.element);
+      }
+    }
+  }, {
+    key: "stop",
+    value: function stop() {
+      if (this.started) {
+        this.started = false;
+        this.intersectionObserver.unobserve(this.element);
+      }
+    }
+  }]);
+
+  return AppearanceObserver;
+}();
+
+var StreamMessage = /*#__PURE__*/function () {
+  function StreamMessage(html) {
+    _classCallCheck(this, StreamMessage);
+
+    this.templateElement = document.createElement("template");
+    this.templateElement.innerHTML = html;
+  }
+
+  _createClass(StreamMessage, [{
+    key: "fragment",
+    get: function get() {
+      var fragment = document.createDocumentFragment();
+
+      var _iterator3 = _createForOfIteratorHelper(this.foreignElements),
+          _step3;
+
+      try {
+        for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+          var element = _step3.value;
+          fragment.appendChild(document.importNode(element, true));
+        }
+      } catch (err) {
+        _iterator3.e(err);
+      } finally {
+        _iterator3.f();
+      }
+
+      return fragment;
+    }
+  }, {
+    key: "foreignElements",
+    get: function get() {
+      return this.templateChildren.reduce(function (streamElements, child) {
+        if (child.tagName.toLowerCase() == "turbo-stream") {
+          return [].concat(_toConsumableArray(streamElements), [child]);
+        } else {
+          return streamElements;
+        }
+      }, []);
+    }
+  }, {
+    key: "templateChildren",
+    get: function get() {
+      return Array.from(this.templateElement.content.children);
+    }
+  }], [{
+    key: "wrap",
+    value: function wrap(message) {
+      if (typeof message == "string") {
+        return new this(message);
+      } else {
+        return message;
+      }
+    }
+  }]);
+
+  return StreamMessage;
+}();
+
+StreamMessage.contentType = "text/vnd.turbo-stream.html";
+var FormSubmissionState;
+
+(function (FormSubmissionState) {
+  FormSubmissionState[FormSubmissionState["initialized"] = 0] = "initialized";
+  FormSubmissionState[FormSubmissionState["requesting"] = 1] = "requesting";
+  FormSubmissionState[FormSubmissionState["waiting"] = 2] = "waiting";
+  FormSubmissionState[FormSubmissionState["receiving"] = 3] = "receiving";
+  FormSubmissionState[FormSubmissionState["stopping"] = 4] = "stopping";
+  FormSubmissionState[FormSubmissionState["stopped"] = 5] = "stopped";
+})(FormSubmissionState || (FormSubmissionState = {}));
+
+var FormEnctype;
+
+(function (FormEnctype) {
+  FormEnctype["urlEncoded"] = "application/x-www-form-urlencoded";
+  FormEnctype["multipart"] = "multipart/form-data";
+  FormEnctype["plain"] = "text/plain";
+})(FormEnctype || (FormEnctype = {}));
+
+function formEnctypeFromString(encoding) {
+  switch (encoding.toLowerCase()) {
+    case FormEnctype.multipart:
+      return FormEnctype.multipart;
+
+    case FormEnctype.plain:
+      return FormEnctype.plain;
+
+    default:
+      return FormEnctype.urlEncoded;
+  }
+}
+
+var FormSubmission = /*#__PURE__*/function () {
+  function FormSubmission(delegate, formElement, submitter) {
+    var mustRedirect = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+    _classCallCheck(this, FormSubmission);
+
+    this.state = FormSubmissionState.initialized;
+    this.delegate = delegate;
+    this.formElement = formElement;
+    this.submitter = submitter;
+    this.formData = buildFormData(formElement, submitter);
+    this.fetchRequest = new FetchRequest(this, this.method, this.location, this.body, this.formElement);
+    this.mustRedirect = mustRedirect;
+  }
+
+  _createClass(FormSubmission, [{
+    key: "method",
+    get: function get() {
+      var _a;
+
+      var method = ((_a = this.submitter) === null || _a === void 0 ? void 0 : _a.getAttribute("formmethod")) || this.formElement.getAttribute("method") || "";
+      return fetchMethodFromString(method.toLowerCase()) || FetchMethod.get;
+    }
+  }, {
+    key: "action",
+    get: function get() {
+      var _a;
+
+      var formElementAction = typeof this.formElement.action === 'string' ? this.formElement.action : null;
+      return ((_a = this.submitter) === null || _a === void 0 ? void 0 : _a.getAttribute("formaction")) || this.formElement.getAttribute("action") || formElementAction || "";
+    }
+  }, {
+    key: "location",
+    get: function get() {
+      return expandURL(this.action);
+    }
+  }, {
+    key: "body",
+    get: function get() {
+      if (this.enctype == FormEnctype.urlEncoded || this.method == FetchMethod.get) {
+        return new URLSearchParams(this.stringFormData);
+      } else {
+        return this.formData;
+      }
+    }
+  }, {
+    key: "enctype",
+    get: function get() {
+      var _a;
+
+      return formEnctypeFromString(((_a = this.submitter) === null || _a === void 0 ? void 0 : _a.getAttribute("formenctype")) || this.formElement.enctype);
+    }
+  }, {
+    key: "isIdempotent",
+    get: function get() {
+      return this.fetchRequest.isIdempotent;
+    }
+  }, {
+    key: "stringFormData",
+    get: function get() {
+      return _toConsumableArray(this.formData).reduce(function (entries, _ref2) {
+        var _ref3 = _slicedToArray(_ref2, 2),
+            name = _ref3[0],
+            value = _ref3[1];
+
+        return entries.concat(typeof value == "string" ? [[name, value]] : []);
+      }, []);
+    }
+  }, {
+    key: "confirmationMessage",
+    get: function get() {
+      return this.formElement.getAttribute("data-turbo-confirm");
+    }
+  }, {
+    key: "needsConfirmation",
+    get: function get() {
+      return this.confirmationMessage !== null;
+    }
+  }, {
+    key: "start",
+    value: function () {
+      var _start = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
+        var _FormSubmissionState, initialized, requesting, answer;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _FormSubmissionState = FormSubmissionState, initialized = _FormSubmissionState.initialized, requesting = _FormSubmissionState.requesting;
+
+                if (!this.needsConfirmation) {
+                  _context4.next = 5;
+                  break;
+                }
+
+                answer = FormSubmission.confirmMethod(this.confirmationMessage, this.formElement);
+
+                if (answer) {
+                  _context4.next = 5;
+                  break;
+                }
+
+                return _context4.abrupt("return");
+
+              case 5:
+                if (!(this.state == initialized)) {
+                  _context4.next = 8;
+                  break;
+                }
+
+                this.state = requesting;
+                return _context4.abrupt("return", this.fetchRequest.perform());
+
+              case 8:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function start() {
+        return _start.apply(this, arguments);
+      }
+
+      return start;
+    }()
+  }, {
+    key: "stop",
+    value: function stop() {
+      var _FormSubmissionState2 = FormSubmissionState,
+          stopping = _FormSubmissionState2.stopping,
+          stopped = _FormSubmissionState2.stopped;
+
+      if (this.state != stopping && this.state != stopped) {
+        this.state = stopping;
+        this.fetchRequest.cancel();
+        return true;
+      }
+    }
+  }, {
+    key: "prepareHeadersForRequest",
+    value: function prepareHeadersForRequest(headers, request) {
+      if (!request.isIdempotent) {
+        var token = getCookieValue(getMetaContent("csrf-param")) || getMetaContent("csrf-token");
+
+        if (token) {
+          headers["X-CSRF-Token"] = token;
+        }
+
+        headers["Accept"] = [StreamMessage.contentType, headers["Accept"]].join(", ");
+      }
+    }
+  }, {
+    key: "requestStarted",
+    value: function requestStarted(request) {
+      var _a;
+
+      this.state = FormSubmissionState.waiting;
+      (_a = this.submitter) === null || _a === void 0 ? void 0 : _a.setAttribute("disabled", "");
+      dispatch("turbo:submit-start", {
+        target: this.formElement,
+        detail: {
+          formSubmission: this
+        }
+      });
+      this.delegate.formSubmissionStarted(this);
+    }
+  }, {
+    key: "requestPreventedHandlingResponse",
+    value: function requestPreventedHandlingResponse(request, response) {
+      this.result = {
+        success: response.succeeded,
+        fetchResponse: response
+      };
+    }
+  }, {
+    key: "requestSucceededWithResponse",
+    value: function requestSucceededWithResponse(request, response) {
+      if (response.clientError || response.serverError) {
+        this.delegate.formSubmissionFailedWithResponse(this, response);
+      } else if (this.requestMustRedirect(request) && responseSucceededWithoutRedirect(response)) {
+        var error = new Error("Form responses must redirect to another location");
+        this.delegate.formSubmissionErrored(this, error);
+      } else {
+        this.state = FormSubmissionState.receiving;
+        this.result = {
+          success: true,
+          fetchResponse: response
+        };
+        this.delegate.formSubmissionSucceededWithResponse(this, response);
+      }
+    }
+  }, {
+    key: "requestFailedWithResponse",
+    value: function requestFailedWithResponse(request, response) {
+      this.result = {
+        success: false,
+        fetchResponse: response
+      };
+      this.delegate.formSubmissionFailedWithResponse(this, response);
+    }
+  }, {
+    key: "requestErrored",
+    value: function requestErrored(request, error) {
+      this.result = {
+        success: false,
+        error: error
+      };
+      this.delegate.formSubmissionErrored(this, error);
+    }
+  }, {
+    key: "requestFinished",
+    value: function requestFinished(request) {
+      var _a;
+
+      this.state = FormSubmissionState.stopped;
+      (_a = this.submitter) === null || _a === void 0 ? void 0 : _a.removeAttribute("disabled");
+      dispatch("turbo:submit-end", {
+        target: this.formElement,
+        detail: Object.assign({
+          formSubmission: this
+        }, this.result)
+      });
+      this.delegate.formSubmissionFinished(this);
+    }
+  }, {
+    key: "requestMustRedirect",
+    value: function requestMustRedirect(request) {
+      return !request.isIdempotent && this.mustRedirect;
+    }
+  }], [{
+    key: "confirmMethod",
+    value: function confirmMethod(message, element) {
+      return confirm(message);
+    }
+  }]);
+
+  return FormSubmission;
+}();
+
+function buildFormData(formElement, submitter) {
+  var formData = new FormData(formElement);
+  var name = submitter === null || submitter === void 0 ? void 0 : submitter.getAttribute("name");
+  var value = submitter === null || submitter === void 0 ? void 0 : submitter.getAttribute("value");
+
+  if (name && value != null && formData.get(name) != value) {
+    formData.append(name, value);
+  }
+
+  return formData;
+}
+
+function getCookieValue(cookieName) {
+  if (cookieName != null) {
+    var cookies = document.cookie ? document.cookie.split("; ") : [];
+    var cookie = cookies.find(function (cookie) {
+      return cookie.startsWith(cookieName);
+    });
+
+    if (cookie) {
+      var value = cookie.split("=").slice(1).join("=");
+      return value ? decodeURIComponent(value) : undefined;
+    }
+  }
+}
+
+function getMetaContent(name) {
+  var element = document.querySelector("meta[name=\"".concat(name, "\"]"));
+  return element && element.content;
+}
+
+function responseSucceededWithoutRedirect(response) {
+  return response.statusCode == 200 && !response.redirected;
+}
+
+var Snapshot = /*#__PURE__*/function () {
+  function Snapshot(element) {
+    _classCallCheck(this, Snapshot);
+
+    this.element = element;
+  }
+
+  _createClass(Snapshot, [{
+    key: "children",
+    get: function get() {
+      return _toConsumableArray(this.element.children);
+    }
+  }, {
+    key: "hasAnchor",
+    value: function hasAnchor(anchor) {
+      return this.getElementForAnchor(anchor) != null;
+    }
+  }, {
+    key: "getElementForAnchor",
+    value: function getElementForAnchor(anchor) {
+      return anchor ? this.element.querySelector("[id='".concat(anchor, "'], a[name='").concat(anchor, "']")) : null;
+    }
+  }, {
+    key: "isConnected",
+    get: function get() {
+      return this.element.isConnected;
+    }
+  }, {
+    key: "firstAutofocusableElement",
+    get: function get() {
+      return this.element.querySelector("[autofocus]");
+    }
+  }, {
+    key: "permanentElements",
+    get: function get() {
+      return _toConsumableArray(this.element.querySelectorAll("[id][data-turbo-permanent]"));
+    }
+  }, {
+    key: "getPermanentElementById",
+    value: function getPermanentElementById(id) {
+      return this.element.querySelector("#".concat(id, "[data-turbo-permanent]"));
+    }
+  }, {
+    key: "getPermanentElementMapForSnapshot",
+    value: function getPermanentElementMapForSnapshot(snapshot) {
+      var permanentElementMap = {};
+
+      var _iterator4 = _createForOfIteratorHelper(this.permanentElements),
+          _step4;
+
+      try {
+        for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+          var currentPermanentElement = _step4.value;
+          var id = currentPermanentElement.id;
+          var newPermanentElement = snapshot.getPermanentElementById(id);
+
+          if (newPermanentElement) {
+            permanentElementMap[id] = [currentPermanentElement, newPermanentElement];
+          }
+        }
+      } catch (err) {
+        _iterator4.e(err);
+      } finally {
+        _iterator4.f();
+      }
+
+      return permanentElementMap;
+    }
+  }]);
+
+  return Snapshot;
+}();
+
+var FormInterceptor = /*#__PURE__*/function () {
+  function FormInterceptor(delegate, element) {
+    var _this4 = this;
+
+    _classCallCheck(this, FormInterceptor);
+
+    this.submitBubbled = function (event) {
+      var form = event.target;
+
+      if (form instanceof HTMLFormElement && form.closest("turbo-frame, html") == _this4.element) {
+        var submitter = event.submitter || undefined;
+        var method = (submitter === null || submitter === void 0 ? void 0 : submitter.getAttribute("formmethod")) || form.method;
+
+        if (method != "dialog" && _this4.delegate.shouldInterceptFormSubmission(form, submitter)) {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+
+          _this4.delegate.formSubmissionIntercepted(form, submitter);
+        }
+      }
+    };
+
+    this.delegate = delegate;
+    this.element = element;
+  }
+
+  _createClass(FormInterceptor, [{
+    key: "start",
+    value: function start() {
+      this.element.addEventListener("submit", this.submitBubbled);
+    }
+  }, {
+    key: "stop",
+    value: function stop() {
+      this.element.removeEventListener("submit", this.submitBubbled);
+    }
+  }]);
+
+  return FormInterceptor;
+}();
+
+var View = /*#__PURE__*/function () {
+  function View(delegate, element) {
+    _classCallCheck(this, View);
+
+    this.resolveRenderPromise = function (value) {};
+
+    this.resolveInterceptionPromise = function (value) {};
+
+    this.delegate = delegate;
+    this.element = element;
+  }
+
+  _createClass(View, [{
+    key: "scrollToAnchor",
+    value: function scrollToAnchor(anchor) {
+      var element = this.snapshot.getElementForAnchor(anchor);
+
+      if (element) {
+        this.scrollToElement(element);
+        this.focusElement(element);
+      } else {
+        this.scrollToPosition({
+          x: 0,
+          y: 0
+        });
+      }
+    }
+  }, {
+    key: "scrollToAnchorFromLocation",
+    value: function scrollToAnchorFromLocation(location) {
+      this.scrollToAnchor(getAnchor(location));
+    }
+  }, {
+    key: "scrollToElement",
+    value: function scrollToElement(element) {
+      element.scrollIntoView();
+    }
+  }, {
+    key: "focusElement",
+    value: function focusElement(element) {
+      if (element instanceof HTMLElement) {
+        if (element.hasAttribute("tabindex")) {
+          element.focus();
+        } else {
+          element.setAttribute("tabindex", "-1");
+          element.focus();
+          element.removeAttribute("tabindex");
+        }
+      }
+    }
+  }, {
+    key: "scrollToPosition",
+    value: function scrollToPosition(_ref4) {
+      var x = _ref4.x,
+          y = _ref4.y;
+      this.scrollRoot.scrollTo(x, y);
+    }
+  }, {
+    key: "scrollToTop",
+    value: function scrollToTop() {
+      this.scrollToPosition({
+        x: 0,
+        y: 0
+      });
+    }
+  }, {
+    key: "scrollRoot",
+    get: function get() {
+      return window;
+    }
+  }, {
+    key: "render",
+    value: function () {
+      var _render = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5(renderer) {
+        var _this5 = this;
+
+        var isPreview, shouldRender, snapshot, renderInterception, immediateRender;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                isPreview = renderer.isPreview, shouldRender = renderer.shouldRender, snapshot = renderer.newSnapshot;
+
+                if (!shouldRender) {
+                  _context5.next = 22;
+                  break;
+                }
+
+                _context5.prev = 2;
+                this.renderPromise = new Promise(function (resolve) {
+                  return _this5.resolveRenderPromise = resolve;
+                });
+                this.renderer = renderer;
+                this.prepareToRenderSnapshot(renderer);
+                renderInterception = new Promise(function (resolve) {
+                  return _this5.resolveInterceptionPromise = resolve;
+                });
+                immediateRender = this.delegate.allowsImmediateRender(snapshot, this.resolveInterceptionPromise);
+
+                if (immediateRender) {
+                  _context5.next = 11;
+                  break;
+                }
+
+                _context5.next = 11;
+                return renderInterception;
+
+              case 11:
+                _context5.next = 13;
+                return this.renderSnapshot(renderer);
+
+              case 13:
+                this.delegate.viewRenderedSnapshot(snapshot, isPreview);
+                this.finishRenderingSnapshot(renderer);
+
+              case 15:
+                _context5.prev = 15;
+                delete this.renderer;
+                this.resolveRenderPromise(undefined);
+                delete this.renderPromise;
+                return _context5.finish(15);
+
+              case 20:
+                _context5.next = 23;
+                break;
+
+              case 22:
+                this.invalidate();
+
+              case 23:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5, this, [[2,, 15, 20]]);
+      }));
+
+      function render(_x3) {
+        return _render.apply(this, arguments);
+      }
+
+      return render;
+    }()
+  }, {
+    key: "invalidate",
+    value: function invalidate() {
+      this.delegate.viewInvalidated();
+    }
+  }, {
+    key: "prepareToRenderSnapshot",
+    value: function prepareToRenderSnapshot(renderer) {
+      this.markAsPreview(renderer.isPreview);
+      renderer.prepareToRender();
+    }
+  }, {
+    key: "markAsPreview",
+    value: function markAsPreview(isPreview) {
+      if (isPreview) {
+        this.element.setAttribute("data-turbo-preview", "");
+      } else {
+        this.element.removeAttribute("data-turbo-preview");
+      }
+    }
+  }, {
+    key: "renderSnapshot",
+    value: function () {
+      var _renderSnapshot = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee6(renderer) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                _context6.next = 2;
+                return renderer.render();
+
+              case 2:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6);
+      }));
+
+      function renderSnapshot(_x4) {
+        return _renderSnapshot.apply(this, arguments);
+      }
+
+      return renderSnapshot;
+    }()
+  }, {
+    key: "finishRenderingSnapshot",
+    value: function finishRenderingSnapshot(renderer) {
+      renderer.finishRendering();
+    }
+  }]);
+
+  return View;
+}();
+
+var FrameView = /*#__PURE__*/function (_View) {
+  _inherits(FrameView, _View);
+
+  var _super2 = _createSuper(FrameView);
+
+  function FrameView() {
+    _classCallCheck(this, FrameView);
+
+    return _super2.apply(this, arguments);
+  }
+
+  _createClass(FrameView, [{
+    key: "invalidate",
+    value: function invalidate() {
+      this.element.innerHTML = "";
+    }
+  }, {
+    key: "snapshot",
+    get: function get() {
+      return new Snapshot(this.element);
+    }
+  }]);
+
+  return FrameView;
+}(View);
+
+var LinkInterceptor = /*#__PURE__*/function () {
+  function LinkInterceptor(delegate, element) {
+    var _this6 = this;
+
+    _classCallCheck(this, LinkInterceptor);
+
+    this.clickBubbled = function (event) {
+      if (_this6.respondsToEventTarget(event.target)) {
+        _this6.clickEvent = event;
+      } else {
+        delete _this6.clickEvent;
+      }
+    };
+
+    this.linkClicked = function (event) {
+      if (_this6.clickEvent && _this6.respondsToEventTarget(event.target) && event.target instanceof Element) {
+        if (_this6.delegate.shouldInterceptLinkClick(event.target, event.detail.url)) {
+          _this6.clickEvent.preventDefault();
+
+          event.preventDefault();
+
+          _this6.delegate.linkClickIntercepted(event.target, event.detail.url);
+        }
+      }
+
+      delete _this6.clickEvent;
+    };
+
+    this.willVisit = function () {
+      delete _this6.clickEvent;
+    };
+
+    this.delegate = delegate;
+    this.element = element;
+  }
+
+  _createClass(LinkInterceptor, [{
+    key: "start",
+    value: function start() {
+      this.element.addEventListener("click", this.clickBubbled);
+      document.addEventListener("turbo:click", this.linkClicked);
+      document.addEventListener("turbo:before-visit", this.willVisit);
+    }
+  }, {
+    key: "stop",
+    value: function stop() {
+      this.element.removeEventListener("click", this.clickBubbled);
+      document.removeEventListener("turbo:click", this.linkClicked);
+      document.removeEventListener("turbo:before-visit", this.willVisit);
+    }
+  }, {
+    key: "respondsToEventTarget",
+    value: function respondsToEventTarget(target) {
+      var element = target instanceof Element ? target : target instanceof Node ? target.parentElement : null;
+      return element && element.closest("turbo-frame, html") == this.element;
+    }
+  }]);
+
+  return LinkInterceptor;
+}();
+
+var Bardo = /*#__PURE__*/function () {
+  function Bardo(permanentElementMap) {
+    _classCallCheck(this, Bardo);
+
+    this.permanentElementMap = permanentElementMap;
+  }
+
+  _createClass(Bardo, [{
+    key: "enter",
+    value: function enter() {
+      for (var id in this.permanentElementMap) {
+        var _this$permanentElemen = _slicedToArray(this.permanentElementMap[id], 2),
+            newPermanentElement = _this$permanentElemen[1];
+
+        this.replaceNewPermanentElementWithPlaceholder(newPermanentElement);
+      }
+    }
+  }, {
+    key: "leave",
+    value: function leave() {
+      for (var id in this.permanentElementMap) {
+        var _this$permanentElemen2 = _slicedToArray(this.permanentElementMap[id], 1),
+            currentPermanentElement = _this$permanentElemen2[0];
+
+        this.replaceCurrentPermanentElementWithClone(currentPermanentElement);
+        this.replacePlaceholderWithPermanentElement(currentPermanentElement);
+      }
+    }
+  }, {
+    key: "replaceNewPermanentElementWithPlaceholder",
+    value: function replaceNewPermanentElementWithPlaceholder(permanentElement) {
+      var placeholder = createPlaceholderForPermanentElement(permanentElement);
+      permanentElement.replaceWith(placeholder);
+    }
+  }, {
+    key: "replaceCurrentPermanentElementWithClone",
+    value: function replaceCurrentPermanentElementWithClone(permanentElement) {
+      var clone = permanentElement.cloneNode(true);
+      permanentElement.replaceWith(clone);
+    }
+  }, {
+    key: "replacePlaceholderWithPermanentElement",
+    value: function replacePlaceholderWithPermanentElement(permanentElement) {
+      var placeholder = this.getPlaceholderById(permanentElement.id);
+      placeholder === null || placeholder === void 0 ? void 0 : placeholder.replaceWith(permanentElement);
+    }
+  }, {
+    key: "getPlaceholderById",
+    value: function getPlaceholderById(id) {
+      return this.placeholders.find(function (element) {
+        return element.content == id;
+      });
+    }
+  }, {
+    key: "placeholders",
+    get: function get() {
+      return _toConsumableArray(document.querySelectorAll("meta[name=turbo-permanent-placeholder][content]"));
+    }
+  }], [{
+    key: "preservingPermanentElements",
+    value: function preservingPermanentElements(permanentElementMap, callback) {
+      var bardo = new this(permanentElementMap);
+      bardo.enter();
+      callback();
+      bardo.leave();
+    }
+  }]);
+
+  return Bardo;
+}();
+
+function createPlaceholderForPermanentElement(permanentElement) {
+  var element = document.createElement("meta");
+  element.setAttribute("name", "turbo-permanent-placeholder");
+  element.setAttribute("content", permanentElement.id);
+  return element;
+}
+
+var Renderer = /*#__PURE__*/function () {
+  function Renderer(currentSnapshot, newSnapshot, isPreview) {
+    var _this7 = this;
+
+    _classCallCheck(this, Renderer);
+
+    this.currentSnapshot = currentSnapshot;
+    this.newSnapshot = newSnapshot;
+    this.isPreview = isPreview;
+    this.promise = new Promise(function (resolve, reject) {
+      return _this7.resolvingFunctions = {
+        resolve: resolve,
+        reject: reject
+      };
+    });
+  }
+
+  _createClass(Renderer, [{
+    key: "shouldRender",
+    get: function get() {
+      return true;
+    }
+  }, {
+    key: "prepareToRender",
+    value: function prepareToRender() {
+      return;
+    }
+  }, {
+    key: "finishRendering",
+    value: function finishRendering() {
+      if (this.resolvingFunctions) {
+        this.resolvingFunctions.resolve();
+        delete this.resolvingFunctions;
+      }
+    }
+  }, {
+    key: "createScriptElement",
+    value: function createScriptElement(element) {
+      if (element.getAttribute("data-turbo-eval") == "false") {
+        return element;
+      } else {
+        var createdScriptElement = document.createElement("script");
+
+        if (this.cspNonce) {
+          createdScriptElement.nonce = this.cspNonce;
+        }
+
+        createdScriptElement.textContent = element.textContent;
+        createdScriptElement.async = false;
+        copyElementAttributes(createdScriptElement, element);
+        return createdScriptElement;
+      }
+    }
+  }, {
+    key: "preservingPermanentElements",
+    value: function preservingPermanentElements(callback) {
+      Bardo.preservingPermanentElements(this.permanentElementMap, callback);
+    }
+  }, {
+    key: "focusFirstAutofocusableElement",
+    value: function focusFirstAutofocusableElement() {
+      var element = this.connectedSnapshot.firstAutofocusableElement;
+
+      if (elementIsFocusable(element)) {
+        element.focus();
+      }
+    }
+  }, {
+    key: "connectedSnapshot",
+    get: function get() {
+      return this.newSnapshot.isConnected ? this.newSnapshot : this.currentSnapshot;
+    }
+  }, {
+    key: "currentElement",
+    get: function get() {
+      return this.currentSnapshot.element;
+    }
+  }, {
+    key: "newElement",
+    get: function get() {
+      return this.newSnapshot.element;
+    }
+  }, {
+    key: "permanentElementMap",
+    get: function get() {
+      return this.currentSnapshot.getPermanentElementMapForSnapshot(this.newSnapshot);
+    }
+  }, {
+    key: "cspNonce",
+    get: function get() {
+      var _a;
+
+      return (_a = document.head.querySelector('meta[name="csp-nonce"]')) === null || _a === void 0 ? void 0 : _a.getAttribute("content");
+    }
+  }]);
+
+  return Renderer;
+}();
+
+function copyElementAttributes(destinationElement, sourceElement) {
+  for (var _i3 = 0, _arr2 = _toConsumableArray(sourceElement.attributes); _i3 < _arr2.length; _i3++) {
+    var _arr2$_i = _arr2[_i3],
+        name = _arr2$_i.name,
+        value = _arr2$_i.value;
+    destinationElement.setAttribute(name, value);
+  }
+}
+
+function elementIsFocusable(element) {
+  return element && typeof element.focus == "function";
+}
+
+var FrameRenderer = /*#__PURE__*/function (_Renderer) {
+  _inherits(FrameRenderer, _Renderer);
+
+  var _super3 = _createSuper(FrameRenderer);
+
+  function FrameRenderer() {
+    _classCallCheck(this, FrameRenderer);
+
+    return _super3.apply(this, arguments);
+  }
+
+  _createClass(FrameRenderer, [{
+    key: "shouldRender",
+    get: function get() {
+      return true;
+    }
+  }, {
+    key: "render",
+    value: function () {
+      var _render2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee7() {
+        var _this8 = this;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee7$(_context7) {
+          while (1) {
+            switch (_context7.prev = _context7.next) {
+              case 0:
+                _context7.next = 2;
+                return nextAnimationFrame();
+
+              case 2:
+                this.preservingPermanentElements(function () {
+                  _this8.loadFrameElement();
+                });
+                this.scrollFrameIntoView();
+                _context7.next = 6;
+                return nextAnimationFrame();
+
+              case 6:
+                this.focusFirstAutofocusableElement();
+                _context7.next = 9;
+                return nextAnimationFrame();
+
+              case 9:
+                this.activateScriptElements();
+
+              case 10:
+              case "end":
+                return _context7.stop();
+            }
+          }
+        }, _callee7, this);
+      }));
+
+      function render() {
+        return _render2.apply(this, arguments);
+      }
+
+      return render;
+    }()
+  }, {
+    key: "loadFrameElement",
+    value: function loadFrameElement() {
+      var _a;
+
+      var destinationRange = document.createRange();
+      destinationRange.selectNodeContents(this.currentElement);
+      destinationRange.deleteContents();
+      var frameElement = this.newElement;
+      var sourceRange = (_a = frameElement.ownerDocument) === null || _a === void 0 ? void 0 : _a.createRange();
+
+      if (sourceRange) {
+        sourceRange.selectNodeContents(frameElement);
+        this.currentElement.appendChild(sourceRange.extractContents());
+      }
+    }
+  }, {
+    key: "scrollFrameIntoView",
+    value: function scrollFrameIntoView() {
+      if (this.currentElement.autoscroll || this.newElement.autoscroll) {
+        var element = this.currentElement.firstElementChild;
+        var block = readScrollLogicalPosition(this.currentElement.getAttribute("data-autoscroll-block"), "end");
+
+        if (element) {
+          element.scrollIntoView({
+            block: block
+          });
+          return true;
+        }
+      }
+
+      return false;
+    }
+  }, {
+    key: "activateScriptElements",
+    value: function activateScriptElements() {
+      var _iterator5 = _createForOfIteratorHelper(this.newScriptElements),
+          _step5;
+
+      try {
+        for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
+          var inertScriptElement = _step5.value;
+          var activatedScriptElement = this.createScriptElement(inertScriptElement);
+          inertScriptElement.replaceWith(activatedScriptElement);
+        }
+      } catch (err) {
+        _iterator5.e(err);
+      } finally {
+        _iterator5.f();
+      }
+    }
+  }, {
+    key: "newScriptElements",
+    get: function get() {
+      return this.currentElement.querySelectorAll("script");
+    }
+  }]);
+
+  return FrameRenderer;
+}(Renderer);
+
+function readScrollLogicalPosition(value, defaultValue) {
+  if (value == "end" || value == "start" || value == "center" || value == "nearest") {
+    return value;
+  } else {
+    return defaultValue;
+  }
+}
+
+var ProgressBar = /*#__PURE__*/function () {
+  function ProgressBar() {
+    var _this9 = this;
+
+    _classCallCheck(this, ProgressBar);
+
+    this.hiding = false;
+    this.value = 0;
+    this.visible = false;
+
+    this.trickle = function () {
+      _this9.setValue(_this9.value + Math.random() / 100);
+    };
+
+    this.stylesheetElement = this.createStylesheetElement();
+    this.progressElement = this.createProgressElement();
+    this.installStylesheetElement();
+    this.setValue(0);
+  }
+
+  _createClass(ProgressBar, [{
+    key: "show",
+    value: function show() {
+      if (!this.visible) {
+        this.visible = true;
+        this.installProgressElement();
+        this.startTrickling();
+      }
+    }
+  }, {
+    key: "hide",
+    value: function hide() {
+      var _this10 = this;
+
+      if (this.visible && !this.hiding) {
+        this.hiding = true;
+        this.fadeProgressElement(function () {
+          _this10.uninstallProgressElement();
+
+          _this10.stopTrickling();
+
+          _this10.visible = false;
+          _this10.hiding = false;
+        });
+      }
+    }
+  }, {
+    key: "setValue",
+    value: function setValue(value) {
+      this.value = value;
+      this.refresh();
+    }
+  }, {
+    key: "installStylesheetElement",
+    value: function installStylesheetElement() {
+      document.head.insertBefore(this.stylesheetElement, document.head.firstChild);
+    }
+  }, {
+    key: "installProgressElement",
+    value: function installProgressElement() {
+      this.progressElement.style.width = "0";
+      this.progressElement.style.opacity = "1";
+      document.documentElement.insertBefore(this.progressElement, document.body);
+      this.refresh();
+    }
+  }, {
+    key: "fadeProgressElement",
+    value: function fadeProgressElement(callback) {
+      this.progressElement.style.opacity = "0";
+      setTimeout(callback, ProgressBar.animationDuration * 1.5);
+    }
+  }, {
+    key: "uninstallProgressElement",
+    value: function uninstallProgressElement() {
+      if (this.progressElement.parentNode) {
+        document.documentElement.removeChild(this.progressElement);
+      }
+    }
+  }, {
+    key: "startTrickling",
+    value: function startTrickling() {
+      if (!this.trickleInterval) {
+        this.trickleInterval = window.setInterval(this.trickle, ProgressBar.animationDuration);
+      }
+    }
+  }, {
+    key: "stopTrickling",
+    value: function stopTrickling() {
+      window.clearInterval(this.trickleInterval);
+      delete this.trickleInterval;
+    }
+  }, {
+    key: "refresh",
+    value: function refresh() {
+      var _this11 = this;
+
+      requestAnimationFrame(function () {
+        _this11.progressElement.style.width = "".concat(10 + _this11.value * 90, "%");
+      });
+    }
+  }, {
+    key: "createStylesheetElement",
+    value: function createStylesheetElement() {
+      var element = document.createElement("style");
+      element.type = "text/css";
+      element.textContent = ProgressBar.defaultCSS;
+      return element;
+    }
+  }, {
+    key: "createProgressElement",
+    value: function createProgressElement() {
+      var element = document.createElement("div");
+      element.className = "turbo-progress-bar";
+      return element;
+    }
+  }], [{
+    key: "defaultCSS",
+    get: function get() {
+      return unindent(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n      .turbo-progress-bar {\n        position: fixed;\n        display: block;\n        top: 0;\n        left: 0;\n        height: 3px;\n        background: #0076ff;\n        z-index: 9999;\n        transition:\n          width ", "ms ease-out,\n          opacity ", "ms ", "ms ease-in;\n        transform: translate3d(0, 0, 0);\n      }\n    "])), ProgressBar.animationDuration, ProgressBar.animationDuration / 2, ProgressBar.animationDuration / 2);
+    }
+  }]);
+
+  return ProgressBar;
+}();
+
+ProgressBar.animationDuration = 300;
+
+var HeadSnapshot = /*#__PURE__*/function (_Snapshot) {
+  _inherits(HeadSnapshot, _Snapshot);
+
+  var _super4 = _createSuper(HeadSnapshot);
+
+  function HeadSnapshot() {
+    var _this12;
+
+    _classCallCheck(this, HeadSnapshot);
+
+    _this12 = _super4.apply(this, arguments);
+    _this12.detailsByOuterHTML = _this12.children.filter(function (element) {
+      return !elementIsNoscript(element);
+    }).map(function (element) {
+      return elementWithoutNonce(element);
+    }).reduce(function (result, element) {
+      var outerHTML = element.outerHTML;
+      var details = outerHTML in result ? result[outerHTML] : {
+        type: elementType(element),
+        tracked: elementIsTracked(element),
+        elements: []
+      };
+      return Object.assign(Object.assign({}, result), _defineProperty({}, outerHTML, Object.assign(Object.assign({}, details), {
+        elements: [].concat(_toConsumableArray(details.elements), [element])
+      })));
+    }, {});
+    return _this12;
+  }
+
+  _createClass(HeadSnapshot, [{
+    key: "trackedElementSignature",
+    get: function get() {
+      var _this13 = this;
+
+      return Object.keys(this.detailsByOuterHTML).filter(function (outerHTML) {
+        return _this13.detailsByOuterHTML[outerHTML].tracked;
+      }).join("");
+    }
+  }, {
+    key: "getScriptElementsNotInSnapshot",
+    value: function getScriptElementsNotInSnapshot(snapshot) {
+      return this.getElementsMatchingTypeNotInSnapshot("script", snapshot);
+    }
+  }, {
+    key: "getStylesheetElementsNotInSnapshot",
+    value: function getStylesheetElementsNotInSnapshot(snapshot) {
+      return this.getElementsMatchingTypeNotInSnapshot("stylesheet", snapshot);
+    }
+  }, {
+    key: "getElementsMatchingTypeNotInSnapshot",
+    value: function getElementsMatchingTypeNotInSnapshot(matchedType, snapshot) {
+      var _this14 = this;
+
+      return Object.keys(this.detailsByOuterHTML).filter(function (outerHTML) {
+        return !(outerHTML in snapshot.detailsByOuterHTML);
+      }).map(function (outerHTML) {
+        return _this14.detailsByOuterHTML[outerHTML];
+      }).filter(function (_ref5) {
+        var type = _ref5.type;
+        return type == matchedType;
+      }).map(function (_ref6) {
+        var _ref6$elements = _slicedToArray(_ref6.elements, 1),
+            element = _ref6$elements[0];
+
+        return element;
+      });
+    }
+  }, {
+    key: "provisionalElements",
+    get: function get() {
+      var _this15 = this;
+
+      return Object.keys(this.detailsByOuterHTML).reduce(function (result, outerHTML) {
+        var _this15$detailsByOute = _this15.detailsByOuterHTML[outerHTML],
+            type = _this15$detailsByOute.type,
+            tracked = _this15$detailsByOute.tracked,
+            elements = _this15$detailsByOute.elements;
+
+        if (type == null && !tracked) {
+          return [].concat(_toConsumableArray(result), _toConsumableArray(elements));
+        } else if (elements.length > 1) {
+          return [].concat(_toConsumableArray(result), _toConsumableArray(elements.slice(1)));
+        } else {
+          return result;
+        }
+      }, []);
+    }
+  }, {
+    key: "getMetaValue",
+    value: function getMetaValue(name) {
+      var element = this.findMetaElementByName(name);
+      return element ? element.getAttribute("content") : null;
+    }
+  }, {
+    key: "findMetaElementByName",
+    value: function findMetaElementByName(name) {
+      var _this16 = this;
+
+      return Object.keys(this.detailsByOuterHTML).reduce(function (result, outerHTML) {
+        var _this16$detailsByOute = _slicedToArray(_this16.detailsByOuterHTML[outerHTML].elements, 1),
+            element = _this16$detailsByOute[0];
+
+        return elementIsMetaElementWithName(element, name) ? element : result;
+      }, undefined);
+    }
+  }]);
+
+  return HeadSnapshot;
+}(Snapshot);
+
+function elementType(element) {
+  if (elementIsScript(element)) {
+    return "script";
+  } else if (elementIsStylesheet(element)) {
+    return "stylesheet";
+  }
+}
+
+function elementIsTracked(element) {
+  return element.getAttribute("data-turbo-track") == "reload";
+}
+
+function elementIsScript(element) {
+  var tagName = element.tagName.toLowerCase();
+  return tagName == "script";
+}
+
+function elementIsNoscript(element) {
+  var tagName = element.tagName.toLowerCase();
+  return tagName == "noscript";
+}
+
+function elementIsStylesheet(element) {
+  var tagName = element.tagName.toLowerCase();
+  return tagName == "style" || tagName == "link" && element.getAttribute("rel") == "stylesheet";
+}
+
+function elementIsMetaElementWithName(element, name) {
+  var tagName = element.tagName.toLowerCase();
+  return tagName == "meta" && element.getAttribute("name") == name;
+}
+
+function elementWithoutNonce(element) {
+  if (element.hasAttribute("nonce")) {
+    element.setAttribute("nonce", "");
+  }
+
+  return element;
+}
+
+var PageSnapshot = /*#__PURE__*/function (_Snapshot2) {
+  _inherits(PageSnapshot, _Snapshot2);
+
+  var _super5 = _createSuper(PageSnapshot);
+
+  function PageSnapshot(element, headSnapshot) {
+    var _this17;
+
+    _classCallCheck(this, PageSnapshot);
+
+    _this17 = _super5.call(this, element);
+    _this17.headSnapshot = headSnapshot;
+    return _this17;
+  }
+
+  _createClass(PageSnapshot, [{
+    key: "clone",
+    value: function clone() {
+      return new PageSnapshot(this.element.cloneNode(true), this.headSnapshot);
+    }
+  }, {
+    key: "headElement",
+    get: function get() {
+      return this.headSnapshot.element;
+    }
+  }, {
+    key: "rootLocation",
+    get: function get() {
+      var _a;
+
+      var root = (_a = this.getSetting("root")) !== null && _a !== void 0 ? _a : "/";
+      return expandURL(root);
+    }
+  }, {
+    key: "cacheControlValue",
+    get: function get() {
+      return this.getSetting("cache-control");
+    }
+  }, {
+    key: "isPreviewable",
+    get: function get() {
+      return this.cacheControlValue != "no-preview";
+    }
+  }, {
+    key: "isCacheable",
+    get: function get() {
+      return this.cacheControlValue != "no-cache";
+    }
+  }, {
+    key: "isVisitable",
+    get: function get() {
+      return this.getSetting("visit-control") != "reload";
+    }
+  }, {
+    key: "getSetting",
+    value: function getSetting(name) {
+      return this.headSnapshot.getMetaValue("turbo-".concat(name));
+    }
+  }], [{
+    key: "fromHTMLString",
+    value: function fromHTMLString() {
+      var html = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+      return this.fromDocument(parseHTMLDocument(html));
+    }
+  }, {
+    key: "fromElement",
+    value: function fromElement(element) {
+      return this.fromDocument(element.ownerDocument);
+    }
+  }, {
+    key: "fromDocument",
+    value: function fromDocument(_ref7) {
+      var head = _ref7.head,
+          body = _ref7.body;
+      return new this(body, new HeadSnapshot(head));
+    }
+  }]);
+
+  return PageSnapshot;
+}(Snapshot);
+
+var TimingMetric;
+
+(function (TimingMetric) {
+  TimingMetric["visitStart"] = "visitStart";
+  TimingMetric["requestStart"] = "requestStart";
+  TimingMetric["requestEnd"] = "requestEnd";
+  TimingMetric["visitEnd"] = "visitEnd";
+})(TimingMetric || (TimingMetric = {}));
+
+var VisitState;
+
+(function (VisitState) {
+  VisitState["initialized"] = "initialized";
+  VisitState["started"] = "started";
+  VisitState["canceled"] = "canceled";
+  VisitState["failed"] = "failed";
+  VisitState["completed"] = "completed";
+})(VisitState || (VisitState = {}));
+
+var defaultOptions = {
+  action: "advance",
+  delegate: {},
+  historyChanged: false
+};
+var SystemStatusCode;
+
+(function (SystemStatusCode) {
+  SystemStatusCode[SystemStatusCode["networkFailure"] = 0] = "networkFailure";
+  SystemStatusCode[SystemStatusCode["timeoutFailure"] = -1] = "timeoutFailure";
+  SystemStatusCode[SystemStatusCode["contentTypeMismatch"] = -2] = "contentTypeMismatch";
+})(SystemStatusCode || (SystemStatusCode = {}));
+
+var Visit = /*#__PURE__*/function () {
+  function Visit(delegate, location, restorationIdentifier) {
+    var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+
+    _classCallCheck(this, Visit);
+
+    this.identifier = uuid();
+    this.timingMetrics = {};
+    this.followedRedirect = false;
+    this.historyChanged = false;
+    this.scrolled = false;
+    this.snapshotCached = false;
+    this.state = VisitState.initialized;
+    this.delegate = delegate;
+    this.location = location;
+    this.restorationIdentifier = restorationIdentifier || uuid();
+
+    var _Object$assign2 = Object.assign(Object.assign({}, defaultOptions), options),
+        action = _Object$assign2.action,
+        historyChanged = _Object$assign2.historyChanged,
+        referrer = _Object$assign2.referrer,
+        snapshotHTML = _Object$assign2.snapshotHTML,
+        response = _Object$assign2.response,
+        optionalDelegate = _Object$assign2.delegate;
+
+    this.action = action;
+    this.historyChanged = historyChanged;
+    this.referrer = referrer;
+    this.snapshotHTML = snapshotHTML;
+    this.response = response;
+    this.isSamePage = this.delegate.locationWithActionIsSamePage(this.location, this.action);
+    this.optionalDelegate = optionalDelegate;
+  }
+
+  _createClass(Visit, [{
+    key: "adapter",
+    get: function get() {
+      return this.delegate.adapter;
+    }
+  }, {
+    key: "view",
+    get: function get() {
+      return this.delegate.view;
+    }
+  }, {
+    key: "history",
+    get: function get() {
+      return this.delegate.history;
+    }
+  }, {
+    key: "restorationData",
+    get: function get() {
+      return this.history.getRestorationDataForIdentifier(this.restorationIdentifier);
+    }
+  }, {
+    key: "silent",
+    get: function get() {
+      return this.isSamePage;
+    }
+  }, {
+    key: "start",
+    value: function start() {
+      if (this.state == VisitState.initialized) {
+        this.recordTimingMetric(TimingMetric.visitStart);
+        this.state = VisitState.started;
+        this.adapter.visitStarted(this);
+        this.delegate.visitStarted(this);
+        if (this.optionalDelegate.visitStarted) this.optionalDelegate.visitStarted(this);
+      }
+    }
+  }, {
+    key: "cancel",
+    value: function cancel() {
+      if (this.state == VisitState.started) {
+        if (this.request) {
+          this.request.cancel();
+        }
+
+        this.cancelRender();
+        this.state = VisitState.canceled;
+      }
+    }
+  }, {
+    key: "complete",
+    value: function complete() {
+      if (this.state == VisitState.started) {
+        this.recordTimingMetric(TimingMetric.visitEnd);
+        this.state = VisitState.completed;
+        this.adapter.visitCompleted(this);
+        this.delegate.visitCompleted(this);
+        this.followRedirect();
+      }
+    }
+  }, {
+    key: "fail",
+    value: function fail() {
+      if (this.state == VisitState.started) {
+        this.state = VisitState.failed;
+        this.adapter.visitFailed(this);
+      }
+    }
+  }, {
+    key: "changeHistory",
+    value: function changeHistory() {
+      var _a;
+
+      if (!this.historyChanged) {
+        var actionForHistory = this.location.href === ((_a = this.referrer) === null || _a === void 0 ? void 0 : _a.href) ? "replace" : this.action;
+        var method = this.getHistoryMethodForAction(actionForHistory);
+        this.history.update(method, this.location, this.restorationIdentifier);
+        this.historyChanged = true;
+      }
+    }
+  }, {
+    key: "issueRequest",
+    value: function issueRequest() {
+      if (this.hasPreloadedResponse()) {
+        this.simulateRequest();
+      } else if (this.shouldIssueRequest() && !this.request) {
+        this.request = new FetchRequest(this, FetchMethod.get, this.location);
+        this.request.perform();
+      }
+    }
+  }, {
+    key: "simulateRequest",
+    value: function simulateRequest() {
+      if (this.response) {
+        this.startRequest();
+        this.recordResponse();
+        this.finishRequest();
+      }
+    }
+  }, {
+    key: "startRequest",
+    value: function startRequest() {
+      this.recordTimingMetric(TimingMetric.requestStart);
+      this.adapter.visitRequestStarted(this);
+    }
+  }, {
+    key: "recordResponse",
+    value: function recordResponse() {
+      var response = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.response;
+      this.response = response;
+
+      if (response) {
+        var statusCode = response.statusCode;
+
+        if (isSuccessful(statusCode)) {
+          this.adapter.visitRequestCompleted(this);
+        } else {
+          this.adapter.visitRequestFailedWithStatusCode(this, statusCode);
+        }
+      }
+    }
+  }, {
+    key: "finishRequest",
+    value: function finishRequest() {
+      this.recordTimingMetric(TimingMetric.requestEnd);
+      this.adapter.visitRequestFinished(this);
+    }
+  }, {
+    key: "loadResponse",
+    value: function loadResponse() {
+      var _this18 = this;
+
+      if (this.response) {
+        var _this$response = this.response,
+            statusCode = _this$response.statusCode,
+            responseHTML = _this$response.responseHTML;
+        this.render( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee8() {
+          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee8$(_context8) {
+            while (1) {
+              switch (_context8.prev = _context8.next) {
+                case 0:
+                  _this18.cacheSnapshot();
+
+                  if (!_this18.view.renderPromise) {
+                    _context8.next = 4;
+                    break;
+                  }
+
+                  _context8.next = 4;
+                  return _this18.view.renderPromise;
+
+                case 4:
+                  if (!(isSuccessful(statusCode) && responseHTML != null)) {
+                    _context8.next = 11;
+                    break;
+                  }
+
+                  _context8.next = 7;
+                  return _this18.view.renderPage(PageSnapshot.fromHTMLString(responseHTML));
+
+                case 7:
+                  _this18.adapter.visitRendered(_this18);
+
+                  _this18.complete();
+
+                  _context8.next = 15;
+                  break;
+
+                case 11:
+                  _context8.next = 13;
+                  return _this18.view.renderError(PageSnapshot.fromHTMLString(responseHTML));
+
+                case 13:
+                  _this18.adapter.visitRendered(_this18);
+
+                  _this18.fail();
+
+                case 15:
+                case "end":
+                  return _context8.stop();
+              }
+            }
+          }, _callee8);
+        })));
+      }
+    }
+  }, {
+    key: "getCachedSnapshot",
+    value: function getCachedSnapshot() {
+      var snapshot = this.view.getCachedSnapshotForLocation(this.location) || this.getPreloadedSnapshot();
+
+      if (snapshot && (!getAnchor(this.location) || snapshot.hasAnchor(getAnchor(this.location)))) {
+        if (this.action == "restore" || snapshot.isPreviewable) {
+          return snapshot;
+        }
+      }
+    }
+  }, {
+    key: "getPreloadedSnapshot",
+    value: function getPreloadedSnapshot() {
+      if (this.snapshotHTML) {
+        return PageSnapshot.fromHTMLString(this.snapshotHTML);
+      }
+    }
+  }, {
+    key: "hasCachedSnapshot",
+    value: function hasCachedSnapshot() {
+      return this.getCachedSnapshot() != null;
+    }
+  }, {
+    key: "loadCachedSnapshot",
+    value: function loadCachedSnapshot() {
+      var _this19 = this;
+
+      var snapshot = this.getCachedSnapshot();
+
+      if (snapshot) {
+        var isPreview = this.shouldIssueRequest();
+        this.render( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee9() {
+          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee9$(_context9) {
+            while (1) {
+              switch (_context9.prev = _context9.next) {
+                case 0:
+                  _this19.cacheSnapshot();
+
+                  if (!_this19.isSamePage) {
+                    _context9.next = 5;
+                    break;
+                  }
+
+                  _this19.adapter.visitRendered(_this19);
+
+                  _context9.next = 12;
+                  break;
+
+                case 5:
+                  if (!_this19.view.renderPromise) {
+                    _context9.next = 8;
+                    break;
+                  }
+
+                  _context9.next = 8;
+                  return _this19.view.renderPromise;
+
+                case 8:
+                  _context9.next = 10;
+                  return _this19.view.renderPage(snapshot, isPreview);
+
+                case 10:
+                  _this19.adapter.visitRendered(_this19);
+
+                  if (!isPreview) {
+                    _this19.complete();
+                  }
+
+                case 12:
+                case "end":
+                  return _context9.stop();
+              }
+            }
+          }, _callee9);
+        })));
+      }
+    }
+  }, {
+    key: "followRedirect",
+    value: function followRedirect() {
+      var _a;
+
+      if (this.redirectedToLocation && !this.followedRedirect && ((_a = this.response) === null || _a === void 0 ? void 0 : _a.redirected)) {
+        this.adapter.visitProposedToLocation(this.redirectedToLocation, {
+          action: 'replace',
+          response: this.response
+        });
+        this.followedRedirect = true;
+      }
+    }
+  }, {
+    key: "goToSamePageAnchor",
+    value: function goToSamePageAnchor() {
+      var _this20 = this;
+
+      if (this.isSamePage) {
+        this.render( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee10() {
+          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee10$(_context10) {
+            while (1) {
+              switch (_context10.prev = _context10.next) {
+                case 0:
+                  _this20.cacheSnapshot();
+
+                  _this20.adapter.visitRendered(_this20);
+
+                case 2:
+                case "end":
+                  return _context10.stop();
+              }
+            }
+          }, _callee10);
+        })));
+      }
+    }
+  }, {
+    key: "requestStarted",
+    value: function requestStarted() {
+      this.startRequest();
+    }
+  }, {
+    key: "requestPreventedHandlingResponse",
+    value: function requestPreventedHandlingResponse(request, response) {}
+  }, {
+    key: "requestSucceededWithResponse",
+    value: function () {
+      var _requestSucceededWithResponse = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee11(request, response) {
+        var responseHTML, redirected, statusCode;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee11$(_context11) {
+          while (1) {
+            switch (_context11.prev = _context11.next) {
+              case 0:
+                _context11.next = 2;
+                return response.responseHTML;
+
+              case 2:
+                responseHTML = _context11.sent;
+                redirected = response.redirected, statusCode = response.statusCode;
+
+                if (responseHTML == undefined) {
+                  this.recordResponse({
+                    statusCode: SystemStatusCode.contentTypeMismatch,
+                    redirected: redirected
+                  });
+                } else {
+                  this.redirectedToLocation = response.redirected ? response.location : undefined;
+                  this.recordResponse({
+                    statusCode: statusCode,
+                    responseHTML: responseHTML,
+                    redirected: redirected
+                  });
+                }
+
+              case 5:
+              case "end":
+                return _context11.stop();
+            }
+          }
+        }, _callee11, this);
+      }));
+
+      function requestSucceededWithResponse(_x5, _x6) {
+        return _requestSucceededWithResponse.apply(this, arguments);
+      }
+
+      return requestSucceededWithResponse;
+    }()
+  }, {
+    key: "requestFailedWithResponse",
+    value: function () {
+      var _requestFailedWithResponse = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee12(request, response) {
+        var responseHTML, redirected, statusCode;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee12$(_context12) {
+          while (1) {
+            switch (_context12.prev = _context12.next) {
+              case 0:
+                _context12.next = 2;
+                return response.responseHTML;
+
+              case 2:
+                responseHTML = _context12.sent;
+                redirected = response.redirected, statusCode = response.statusCode;
+
+                if (responseHTML == undefined) {
+                  this.recordResponse({
+                    statusCode: SystemStatusCode.contentTypeMismatch,
+                    redirected: redirected
+                  });
+                } else {
+                  this.recordResponse({
+                    statusCode: statusCode,
+                    responseHTML: responseHTML,
+                    redirected: redirected
+                  });
+                }
+
+              case 5:
+              case "end":
+                return _context12.stop();
+            }
+          }
+        }, _callee12, this);
+      }));
+
+      function requestFailedWithResponse(_x7, _x8) {
+        return _requestFailedWithResponse.apply(this, arguments);
+      }
+
+      return requestFailedWithResponse;
+    }()
+  }, {
+    key: "requestErrored",
+    value: function requestErrored(request, error) {
+      this.recordResponse({
+        statusCode: SystemStatusCode.networkFailure,
+        redirected: false
+      });
+    }
+  }, {
+    key: "requestFinished",
+    value: function requestFinished() {
+      this.finishRequest();
+    }
+  }, {
+    key: "performScroll",
+    value: function performScroll() {
+      if (!this.scrolled) {
+        if (this.action == "restore") {
+          this.scrollToRestoredPosition() || this.scrollToAnchor() || this.view.scrollToTop();
+        } else {
+          this.scrollToAnchor() || this.view.scrollToTop();
+        }
+
+        if (this.isSamePage) {
+          this.delegate.visitScrolledToSamePageLocation(this.view.lastRenderedLocation, this.location);
+        }
+
+        this.scrolled = true;
+      }
+    }
+  }, {
+    key: "scrollToRestoredPosition",
+    value: function scrollToRestoredPosition() {
+      var scrollPosition = this.restorationData.scrollPosition;
+
+      if (scrollPosition) {
+        this.view.scrollToPosition(scrollPosition);
+        return true;
+      }
+    }
+  }, {
+    key: "scrollToAnchor",
+    value: function scrollToAnchor() {
+      var anchor = getAnchor(this.location);
+
+      if (anchor != null) {
+        this.view.scrollToAnchor(anchor);
+        return true;
+      }
+    }
+  }, {
+    key: "recordTimingMetric",
+    value: function recordTimingMetric(metric) {
+      this.timingMetrics[metric] = new Date().getTime();
+    }
+  }, {
+    key: "getTimingMetrics",
+    value: function getTimingMetrics() {
+      return Object.assign({}, this.timingMetrics);
+    }
+  }, {
+    key: "getHistoryMethodForAction",
+    value: function getHistoryMethodForAction(action) {
+      switch (action) {
+        case "replace":
+          return history.replaceState;
+
+        case "advance":
+        case "restore":
+          return history.pushState;
+      }
+    }
+  }, {
+    key: "hasPreloadedResponse",
+    value: function hasPreloadedResponse() {
+      return _typeof(this.response) == "object";
+    }
+  }, {
+    key: "shouldIssueRequest",
+    value: function shouldIssueRequest() {
+      if (this.isSamePage) {
+        return false;
+      } else if (this.action == "restore") {
+        return !this.hasCachedSnapshot();
+      } else {
+        return true;
+      }
+    }
+  }, {
+    key: "cacheSnapshot",
+    value: function cacheSnapshot() {
+      if (!this.snapshotCached) {
+        this.view.cacheSnapshot();
+        this.snapshotCached = true;
+        if (this.optionalDelegate.visitCachedSnapshot) this.optionalDelegate.visitCachedSnapshot(this);
+      }
+    }
+  }, {
+    key: "render",
+    value: function () {
+      var _render3 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee13(callback) {
+        var _this21 = this;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee13$(_context13) {
+          while (1) {
+            switch (_context13.prev = _context13.next) {
+              case 0:
+                this.cancelRender();
+                _context13.next = 3;
+                return new Promise(function (resolve) {
+                  _this21.frame = requestAnimationFrame(function () {
+                    return resolve();
+                  });
+                });
+
+              case 3:
+                _context13.next = 5;
+                return callback();
+
+              case 5:
+                delete this.frame;
+                this.performScroll();
+
+              case 7:
+              case "end":
+                return _context13.stop();
+            }
+          }
+        }, _callee13, this);
+      }));
+
+      function render(_x9) {
+        return _render3.apply(this, arguments);
+      }
+
+      return render;
+    }()
+  }, {
+    key: "cancelRender",
+    value: function cancelRender() {
+      if (this.frame) {
+        cancelAnimationFrame(this.frame);
+        delete this.frame;
+      }
+    }
+  }]);
+
+  return Visit;
+}();
+
+function isSuccessful(statusCode) {
+  return statusCode >= 200 && statusCode < 300;
+}
+
+var BrowserAdapter = /*#__PURE__*/function () {
+  function BrowserAdapter(session) {
+    var _this22 = this;
+
+    _classCallCheck(this, BrowserAdapter);
+
+    this.progressBar = new ProgressBar();
+
+    this.showProgressBar = function () {
+      _this22.progressBar.show();
+    };
+
+    this.session = session;
+  }
+
+  _createClass(BrowserAdapter, [{
+    key: "visitProposedToLocation",
+    value: function visitProposedToLocation(location, options) {
+      this.navigator.startVisit(location, uuid(), options);
+    }
+  }, {
+    key: "visitStarted",
+    value: function visitStarted(visit) {
+      visit.issueRequest();
+      visit.changeHistory();
+      visit.goToSamePageAnchor();
+      visit.loadCachedSnapshot();
+    }
+  }, {
+    key: "visitRequestStarted",
+    value: function visitRequestStarted(visit) {
+      this.progressBar.setValue(0);
+
+      if (visit.hasCachedSnapshot() || visit.action != "restore") {
+        this.showVisitProgressBarAfterDelay();
+      } else {
+        this.showProgressBar();
+      }
+    }
+  }, {
+    key: "visitRequestCompleted",
+    value: function visitRequestCompleted(visit) {
+      visit.loadResponse();
+    }
+  }, {
+    key: "visitRequestFailedWithStatusCode",
+    value: function visitRequestFailedWithStatusCode(visit, statusCode) {
+      switch (statusCode) {
+        case SystemStatusCode.networkFailure:
+        case SystemStatusCode.timeoutFailure:
+        case SystemStatusCode.contentTypeMismatch:
+          return this.reload();
+
+        default:
+          return visit.loadResponse();
+      }
+    }
+  }, {
+    key: "visitRequestFinished",
+    value: function visitRequestFinished(visit) {
+      this.progressBar.setValue(1);
+      this.hideVisitProgressBar();
+    }
+  }, {
+    key: "visitCompleted",
+    value: function visitCompleted(visit) {}
+  }, {
+    key: "pageInvalidated",
+    value: function pageInvalidated() {
+      this.reload();
+    }
+  }, {
+    key: "visitFailed",
+    value: function visitFailed(visit) {}
+  }, {
+    key: "visitRendered",
+    value: function visitRendered(visit) {}
+  }, {
+    key: "formSubmissionStarted",
+    value: function formSubmissionStarted(formSubmission) {
+      this.progressBar.setValue(0);
+      this.showFormProgressBarAfterDelay();
+    }
+  }, {
+    key: "formSubmissionFinished",
+    value: function formSubmissionFinished(formSubmission) {
+      this.progressBar.setValue(1);
+      this.hideFormProgressBar();
+    }
+  }, {
+    key: "showVisitProgressBarAfterDelay",
+    value: function showVisitProgressBarAfterDelay() {
+      this.visitProgressBarTimeout = window.setTimeout(this.showProgressBar, this.session.progressBarDelay);
+    }
+  }, {
+    key: "hideVisitProgressBar",
+    value: function hideVisitProgressBar() {
+      this.progressBar.hide();
+
+      if (this.visitProgressBarTimeout != null) {
+        window.clearTimeout(this.visitProgressBarTimeout);
+        delete this.visitProgressBarTimeout;
+      }
+    }
+  }, {
+    key: "showFormProgressBarAfterDelay",
+    value: function showFormProgressBarAfterDelay() {
+      if (this.formProgressBarTimeout == null) {
+        this.formProgressBarTimeout = window.setTimeout(this.showProgressBar, this.session.progressBarDelay);
+      }
+    }
+  }, {
+    key: "hideFormProgressBar",
+    value: function hideFormProgressBar() {
+      this.progressBar.hide();
+
+      if (this.formProgressBarTimeout != null) {
+        window.clearTimeout(this.formProgressBarTimeout);
+        delete this.formProgressBarTimeout;
+      }
+    }
+  }, {
+    key: "reload",
+    value: function reload() {
+      window.location.reload();
+    }
+  }, {
+    key: "navigator",
+    get: function get() {
+      return this.session.navigator;
+    }
+  }]);
+
+  return BrowserAdapter;
+}();
+
+var CacheObserver = /*#__PURE__*/function () {
+  function CacheObserver() {
+    _classCallCheck(this, CacheObserver);
+
+    this.started = false;
+  }
+
+  _createClass(CacheObserver, [{
+    key: "start",
+    value: function start() {
+      if (!this.started) {
+        this.started = true;
+        addEventListener("turbo:before-cache", this.removeStaleElements, false);
+      }
+    }
+  }, {
+    key: "stop",
+    value: function stop() {
+      if (this.started) {
+        this.started = false;
+        removeEventListener("turbo:before-cache", this.removeStaleElements, false);
+      }
+    }
+  }, {
+    key: "removeStaleElements",
+    value: function removeStaleElements() {
+      var staleElements = _toConsumableArray(document.querySelectorAll('[data-turbo-cache="false"]'));
+
+      var _iterator6 = _createForOfIteratorHelper(staleElements),
+          _step6;
+
+      try {
+        for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
+          var element = _step6.value;
+          element.remove();
+        }
+      } catch (err) {
+        _iterator6.e(err);
+      } finally {
+        _iterator6.f();
+      }
+    }
+  }]);
+
+  return CacheObserver;
+}();
+
+var FormSubmitObserver = /*#__PURE__*/function () {
+  function FormSubmitObserver(delegate) {
+    var _this23 = this;
+
+    _classCallCheck(this, FormSubmitObserver);
+
+    this.started = false;
+
+    this.submitCaptured = function () {
+      removeEventListener("submit", _this23.submitBubbled, false);
+      addEventListener("submit", _this23.submitBubbled, false);
+    };
+
+    this.submitBubbled = function (event) {
+      if (!event.defaultPrevented) {
+        var form = event.target instanceof HTMLFormElement ? event.target : undefined;
+        var submitter = event.submitter || undefined;
+
+        if (form) {
+          var method = (submitter === null || submitter === void 0 ? void 0 : submitter.getAttribute("formmethod")) || form.getAttribute("method");
+
+          if (method != "dialog" && _this23.delegate.willSubmitForm(form, submitter)) {
+            event.preventDefault();
+
+            _this23.delegate.formSubmitted(form, submitter);
+          }
+        }
+      }
+    };
+
+    this.delegate = delegate;
+  }
+
+  _createClass(FormSubmitObserver, [{
+    key: "start",
+    value: function start() {
+      if (!this.started) {
+        addEventListener("submit", this.submitCaptured, true);
+        this.started = true;
+      }
+    }
+  }, {
+    key: "stop",
+    value: function stop() {
+      if (this.started) {
+        removeEventListener("submit", this.submitCaptured, true);
+        this.started = false;
+      }
+    }
+  }]);
+
+  return FormSubmitObserver;
+}();
+
+var FrameRedirector = /*#__PURE__*/function () {
+  function FrameRedirector(element) {
+    _classCallCheck(this, FrameRedirector);
+
+    this.element = element;
+    this.linkInterceptor = new LinkInterceptor(this, element);
+    this.formInterceptor = new FormInterceptor(this, element);
+  }
+
+  _createClass(FrameRedirector, [{
+    key: "start",
+    value: function start() {
+      this.linkInterceptor.start();
+      this.formInterceptor.start();
+    }
+  }, {
+    key: "stop",
+    value: function stop() {
+      this.linkInterceptor.stop();
+      this.formInterceptor.stop();
+    }
+  }, {
+    key: "shouldInterceptLinkClick",
+    value: function shouldInterceptLinkClick(element, url) {
+      return this.shouldRedirect(element);
+    }
+  }, {
+    key: "linkClickIntercepted",
+    value: function linkClickIntercepted(element, url) {
+      var frame = this.findFrameElement(element);
+
+      if (frame) {
+        frame.delegate.linkClickIntercepted(element, url);
+      }
+    }
+  }, {
+    key: "shouldInterceptFormSubmission",
+    value: function shouldInterceptFormSubmission(element, submitter) {
+      return this.shouldSubmit(element, submitter);
+    }
+  }, {
+    key: "formSubmissionIntercepted",
+    value: function formSubmissionIntercepted(element, submitter) {
+      var frame = this.findFrameElement(element, submitter);
+
+      if (frame) {
+        frame.removeAttribute("reloadable");
+        frame.delegate.formSubmissionIntercepted(element, submitter);
+      }
+    }
+  }, {
+    key: "shouldSubmit",
+    value: function shouldSubmit(form, submitter) {
+      var _a;
+
+      var action = getAction(form, submitter);
+      var meta = this.element.ownerDocument.querySelector("meta[name=\"turbo-root\"]");
+      var rootLocation = expandURL((_a = meta === null || meta === void 0 ? void 0 : meta.content) !== null && _a !== void 0 ? _a : "/");
+      return this.shouldRedirect(form, submitter) && locationIsVisitable(action, rootLocation);
+    }
+  }, {
+    key: "shouldRedirect",
+    value: function shouldRedirect(element, submitter) {
+      var frame = this.findFrameElement(element, submitter);
+      return frame ? frame != element.closest("turbo-frame") : false;
+    }
+  }, {
+    key: "findFrameElement",
+    value: function findFrameElement(element, submitter) {
+      var id = (submitter === null || submitter === void 0 ? void 0 : submitter.getAttribute("data-turbo-frame")) || element.getAttribute("data-turbo-frame");
+
+      if (id && id != "_top") {
+        var frame = this.element.querySelector("#".concat(id, ":not([disabled])"));
+
+        if (frame instanceof FrameElement) {
+          return frame;
+        }
+      }
+    }
+  }]);
+
+  return FrameRedirector;
+}();
+
+var History = /*#__PURE__*/function () {
+  function History(delegate) {
+    var _this24 = this;
+
+    _classCallCheck(this, History);
+
+    this.restorationIdentifier = uuid();
+    this.restorationData = {};
+    this.started = false;
+    this.pageLoaded = false;
+
+    this.onPopState = function (event) {
+      if (_this24.shouldHandlePopState()) {
+        var _ref11 = event.state || {},
+            turbo = _ref11.turbo;
+
+        if (turbo) {
+          _this24.location = new URL(window.location.href);
+          var restorationIdentifier = turbo.restorationIdentifier;
+          _this24.restorationIdentifier = restorationIdentifier;
+
+          _this24.delegate.historyPoppedToLocationWithRestorationIdentifier(_this24.location, restorationIdentifier);
+        }
+      }
+    };
+
+    this.onPageLoad = /*#__PURE__*/function () {
+      var _ref12 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee14(event) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee14$(_context14) {
+          while (1) {
+            switch (_context14.prev = _context14.next) {
+              case 0:
+                _context14.next = 2;
+                return nextMicrotask();
+
+              case 2:
+                _this24.pageLoaded = true;
+
+              case 3:
+              case "end":
+                return _context14.stop();
+            }
+          }
+        }, _callee14);
+      }));
+
+      return function (_x10) {
+        return _ref12.apply(this, arguments);
+      };
+    }();
+
+    this.delegate = delegate;
+  }
+
+  _createClass(History, [{
+    key: "start",
+    value: function start() {
+      if (!this.started) {
+        addEventListener("popstate", this.onPopState, false);
+        addEventListener("load", this.onPageLoad, false);
+        this.started = true;
+        this.replace(new URL(window.location.href));
+      }
+    }
+  }, {
+    key: "stop",
+    value: function stop() {
+      if (this.started) {
+        removeEventListener("popstate", this.onPopState, false);
+        removeEventListener("load", this.onPageLoad, false);
+        this.started = false;
+      }
+    }
+  }, {
+    key: "push",
+    value: function push(location, restorationIdentifier) {
+      this.update(history.pushState, location, restorationIdentifier);
+    }
+  }, {
+    key: "replace",
+    value: function replace(location, restorationIdentifier) {
+      this.update(history.replaceState, location, restorationIdentifier);
+    }
+  }, {
+    key: "update",
+    value: function update(method, location) {
+      var restorationIdentifier = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : uuid();
+      var state = {
+        turbo: {
+          restorationIdentifier: restorationIdentifier
+        }
+      };
+      method.call(history, state, "", location.href);
+      this.location = location;
+      this.restorationIdentifier = restorationIdentifier;
+    }
+  }, {
+    key: "getRestorationDataForIdentifier",
+    value: function getRestorationDataForIdentifier(restorationIdentifier) {
+      return this.restorationData[restorationIdentifier] || {};
+    }
+  }, {
+    key: "updateRestorationData",
+    value: function updateRestorationData(additionalData) {
+      var restorationIdentifier = this.restorationIdentifier;
+      var restorationData = this.restorationData[restorationIdentifier];
+      this.restorationData[restorationIdentifier] = Object.assign(Object.assign({}, restorationData), additionalData);
+    }
+  }, {
+    key: "assumeControlOfScrollRestoration",
+    value: function assumeControlOfScrollRestoration() {
+      var _a;
+
+      if (!this.previousScrollRestoration) {
+        this.previousScrollRestoration = (_a = history.scrollRestoration) !== null && _a !== void 0 ? _a : "auto";
+        history.scrollRestoration = "manual";
+      }
+    }
+  }, {
+    key: "relinquishControlOfScrollRestoration",
+    value: function relinquishControlOfScrollRestoration() {
+      if (this.previousScrollRestoration) {
+        history.scrollRestoration = this.previousScrollRestoration;
+        delete this.previousScrollRestoration;
+      }
+    }
+  }, {
+    key: "shouldHandlePopState",
+    value: function shouldHandlePopState() {
+      return this.pageIsLoaded();
+    }
+  }, {
+    key: "pageIsLoaded",
+    value: function pageIsLoaded() {
+      return this.pageLoaded || document.readyState == "complete";
+    }
+  }]);
+
+  return History;
+}();
+
+var LinkClickObserver = /*#__PURE__*/function () {
+  function LinkClickObserver(delegate) {
+    var _this25 = this;
+
+    _classCallCheck(this, LinkClickObserver);
+
+    this.started = false;
+
+    this.clickCaptured = function () {
+      removeEventListener("click", _this25.clickBubbled, false);
+      addEventListener("click", _this25.clickBubbled, false);
+    };
+
+    this.clickBubbled = function (event) {
+      if (_this25.clickEventIsSignificant(event)) {
+        var target = event.composedPath && event.composedPath()[0] || event.target;
+
+        var link = _this25.findLinkFromClickTarget(target);
+
+        if (link) {
+          var _location = _this25.getLocationForLink(link);
+
+          if (_this25.delegate.willFollowLinkToLocation(link, _location)) {
+            event.preventDefault();
+
+            _this25.delegate.followedLinkToLocation(link, _location);
+          }
+        }
+      }
+    };
+
+    this.delegate = delegate;
+  }
+
+  _createClass(LinkClickObserver, [{
+    key: "start",
+    value: function start() {
+      if (!this.started) {
+        addEventListener("click", this.clickCaptured, true);
+        this.started = true;
+      }
+    }
+  }, {
+    key: "stop",
+    value: function stop() {
+      if (this.started) {
+        removeEventListener("click", this.clickCaptured, true);
+        this.started = false;
+      }
+    }
+  }, {
+    key: "clickEventIsSignificant",
+    value: function clickEventIsSignificant(event) {
+      return !(event.target && event.target.isContentEditable || event.defaultPrevented || event.which > 1 || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey);
+    }
+  }, {
+    key: "findLinkFromClickTarget",
+    value: function findLinkFromClickTarget(target) {
+      if (target instanceof Element) {
+        return target.closest("a[href]:not([target^=_]):not([download])");
+      }
+    }
+  }, {
+    key: "getLocationForLink",
+    value: function getLocationForLink(link) {
+      return expandURL(link.getAttribute("href") || "");
+    }
+  }]);
+
+  return LinkClickObserver;
+}();
+
+function isAction(action) {
+  return action == "advance" || action == "replace" || action == "restore";
+}
+
+var Navigator = /*#__PURE__*/function () {
+  function Navigator(delegate) {
+    _classCallCheck(this, Navigator);
+
+    this.delegate = delegate;
+  }
+
+  _createClass(Navigator, [{
+    key: "proposeVisit",
+    value: function proposeVisit(location) {
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+      if (this.delegate.allowsVisitingLocationWithAction(location, options.action)) {
+        if (locationIsVisitable(location, this.view.snapshot.rootLocation)) {
+          this.delegate.visitProposedToLocation(location, options);
+        } else {
+          window.location.href = location.toString();
+        }
+      }
+    }
+  }, {
+    key: "startVisit",
+    value: function startVisit(locatable, restorationIdentifier) {
+      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+      this.stop();
+      this.currentVisit = new Visit(this, expandURL(locatable), restorationIdentifier, Object.assign({
+        referrer: this.location
+      }, options));
+      this.currentVisit.start();
+    }
+  }, {
+    key: "submitForm",
+    value: function submitForm(form, submitter) {
+      this.stop();
+      this.formSubmission = new FormSubmission(this, form, submitter, true);
+      this.formSubmission.start();
+    }
+  }, {
+    key: "stop",
+    value: function stop() {
+      if (this.formSubmission) {
+        this.formSubmission.stop();
+        delete this.formSubmission;
+      }
+
+      if (this.currentVisit) {
+        this.currentVisit.cancel();
+        delete this.currentVisit;
+      }
+    }
+  }, {
+    key: "adapter",
+    get: function get() {
+      return this.delegate.adapter;
+    }
+  }, {
+    key: "view",
+    get: function get() {
+      return this.delegate.view;
+    }
+  }, {
+    key: "history",
+    get: function get() {
+      return this.delegate.history;
+    }
+  }, {
+    key: "formSubmissionStarted",
+    value: function formSubmissionStarted(formSubmission) {
+      if (typeof this.adapter.formSubmissionStarted === 'function') {
+        this.adapter.formSubmissionStarted(formSubmission);
+      }
+    }
+  }, {
+    key: "formSubmissionSucceededWithResponse",
+    value: function () {
+      var _formSubmissionSucceededWithResponse = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee15(formSubmission, fetchResponse) {
+        var responseHTML, statusCode, redirected, action, visitOptions;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee15$(_context15) {
+          while (1) {
+            switch (_context15.prev = _context15.next) {
+              case 0:
+                if (!(formSubmission == this.formSubmission)) {
+                  _context15.next = 5;
+                  break;
+                }
+
+                _context15.next = 3;
+                return fetchResponse.responseHTML;
+
+              case 3:
+                responseHTML = _context15.sent;
+
+                if (responseHTML) {
+                  if (formSubmission.method != FetchMethod.get) {
+                    this.view.clearSnapshotCache();
+                  }
+
+                  statusCode = fetchResponse.statusCode, redirected = fetchResponse.redirected;
+                  action = this.getActionForFormSubmission(formSubmission);
+                  visitOptions = {
+                    action: action,
+                    response: {
+                      statusCode: statusCode,
+                      responseHTML: responseHTML,
+                      redirected: redirected
+                    }
+                  };
+                  this.proposeVisit(fetchResponse.location, visitOptions);
+                }
+
+              case 5:
+              case "end":
+                return _context15.stop();
+            }
+          }
+        }, _callee15, this);
+      }));
+
+      function formSubmissionSucceededWithResponse(_x11, _x12) {
+        return _formSubmissionSucceededWithResponse.apply(this, arguments);
+      }
+
+      return formSubmissionSucceededWithResponse;
+    }()
+  }, {
+    key: "formSubmissionFailedWithResponse",
+    value: function () {
+      var _formSubmissionFailedWithResponse = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee16(formSubmission, fetchResponse) {
+        var responseHTML, snapshot;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee16$(_context16) {
+          while (1) {
+            switch (_context16.prev = _context16.next) {
+              case 0:
+                _context16.next = 2;
+                return fetchResponse.responseHTML;
+
+              case 2:
+                responseHTML = _context16.sent;
+
+                if (!responseHTML) {
+                  _context16.next = 14;
+                  break;
+                }
+
+                snapshot = PageSnapshot.fromHTMLString(responseHTML);
+
+                if (!fetchResponse.serverError) {
+                  _context16.next = 10;
+                  break;
+                }
+
+                _context16.next = 8;
+                return this.view.renderError(snapshot);
+
+              case 8:
+                _context16.next = 12;
+                break;
+
+              case 10:
+                _context16.next = 12;
+                return this.view.renderPage(snapshot);
+
+              case 12:
+                this.view.scrollToTop();
+                this.view.clearSnapshotCache();
+
+              case 14:
+              case "end":
+                return _context16.stop();
+            }
+          }
+        }, _callee16, this);
+      }));
+
+      function formSubmissionFailedWithResponse(_x13, _x14) {
+        return _formSubmissionFailedWithResponse.apply(this, arguments);
+      }
+
+      return formSubmissionFailedWithResponse;
+    }()
+  }, {
+    key: "formSubmissionErrored",
+    value: function formSubmissionErrored(formSubmission, error) {
+      console.error(error);
+    }
+  }, {
+    key: "formSubmissionFinished",
+    value: function formSubmissionFinished(formSubmission) {
+      if (typeof this.adapter.formSubmissionFinished === 'function') {
+        this.adapter.formSubmissionFinished(formSubmission);
+      }
+    }
+  }, {
+    key: "visitStarted",
+    value: function visitStarted(visit) {
+      this.delegate.visitStarted(visit);
+    }
+  }, {
+    key: "visitCompleted",
+    value: function visitCompleted(visit) {
+      this.delegate.visitCompleted(visit);
+    }
+  }, {
+    key: "visitCachedSnapshot",
+    value: function visitCachedSnapshot(visit) {
+      this.delegate.visitCachedSnapshot(visit);
+    }
+  }, {
+    key: "locationWithActionIsSamePage",
+    value: function locationWithActionIsSamePage(location, action) {
+      var anchor = getAnchor(location);
+      var currentAnchor = getAnchor(this.view.lastRenderedLocation);
+      var isRestorationToTop = action === 'restore' && typeof anchor === 'undefined';
+      return action !== "replace" && getRequestURL(location) === getRequestURL(this.view.lastRenderedLocation) && (isRestorationToTop || anchor != null && anchor !== currentAnchor);
+    }
+  }, {
+    key: "visitScrolledToSamePageLocation",
+    value: function visitScrolledToSamePageLocation(oldURL, newURL) {
+      this.delegate.visitScrolledToSamePageLocation(oldURL, newURL);
+    }
+  }, {
+    key: "location",
+    get: function get() {
+      return this.history.location;
+    }
+  }, {
+    key: "restorationIdentifier",
+    get: function get() {
+      return this.history.restorationIdentifier;
+    }
+  }, {
+    key: "getActionForFormSubmission",
+    value: function getActionForFormSubmission(formSubmission) {
+      var formElement = formSubmission.formElement,
+          submitter = formSubmission.submitter;
+      var action = getAttribute("data-turbo-action", submitter, formElement);
+      return isAction(action) ? action : "advance";
+    }
+  }]);
+
+  return Navigator;
+}();
+
+var PageStage;
+
+(function (PageStage) {
+  PageStage[PageStage["initial"] = 0] = "initial";
+  PageStage[PageStage["loading"] = 1] = "loading";
+  PageStage[PageStage["interactive"] = 2] = "interactive";
+  PageStage[PageStage["complete"] = 3] = "complete";
+})(PageStage || (PageStage = {}));
+
+var PageObserver = /*#__PURE__*/function () {
+  function PageObserver(delegate) {
+    var _this26 = this;
+
+    _classCallCheck(this, PageObserver);
+
+    this.stage = PageStage.initial;
+    this.started = false;
+
+    this.interpretReadyState = function () {
+      var readyState = _this26.readyState;
+
+      if (readyState == "interactive") {
+        _this26.pageIsInteractive();
+      } else if (readyState == "complete") {
+        _this26.pageIsComplete();
+      }
+    };
+
+    this.pageWillUnload = function () {
+      _this26.delegate.pageWillUnload();
+    };
+
+    this.delegate = delegate;
+  }
+
+  _createClass(PageObserver, [{
+    key: "start",
+    value: function start() {
+      if (!this.started) {
+        if (this.stage == PageStage.initial) {
+          this.stage = PageStage.loading;
+        }
+
+        document.addEventListener("readystatechange", this.interpretReadyState, false);
+        addEventListener("pagehide", this.pageWillUnload, false);
+        this.started = true;
+      }
+    }
+  }, {
+    key: "stop",
+    value: function stop() {
+      if (this.started) {
+        document.removeEventListener("readystatechange", this.interpretReadyState, false);
+        removeEventListener("pagehide", this.pageWillUnload, false);
+        this.started = false;
+      }
+    }
+  }, {
+    key: "pageIsInteractive",
+    value: function pageIsInteractive() {
+      if (this.stage == PageStage.loading) {
+        this.stage = PageStage.interactive;
+        this.delegate.pageBecameInteractive();
+      }
+    }
+  }, {
+    key: "pageIsComplete",
+    value: function pageIsComplete() {
+      this.pageIsInteractive();
+
+      if (this.stage == PageStage.interactive) {
+        this.stage = PageStage.complete;
+        this.delegate.pageLoaded();
+      }
+    }
+  }, {
+    key: "readyState",
+    get: function get() {
+      return document.readyState;
+    }
+  }]);
+
+  return PageObserver;
+}();
+
+var ScrollObserver = /*#__PURE__*/function () {
+  function ScrollObserver(delegate) {
+    var _this27 = this;
+
+    _classCallCheck(this, ScrollObserver);
+
+    this.started = false;
+
+    this.onScroll = function () {
+      _this27.updatePosition({
+        x: window.pageXOffset,
+        y: window.pageYOffset
+      });
+    };
+
+    this.delegate = delegate;
+  }
+
+  _createClass(ScrollObserver, [{
+    key: "start",
+    value: function start() {
+      if (!this.started) {
+        addEventListener("scroll", this.onScroll, false);
+        this.onScroll();
+        this.started = true;
+      }
+    }
+  }, {
+    key: "stop",
+    value: function stop() {
+      if (this.started) {
+        removeEventListener("scroll", this.onScroll, false);
+        this.started = false;
+      }
+    }
+  }, {
+    key: "updatePosition",
+    value: function updatePosition(position) {
+      this.delegate.scrollPositionChanged(position);
+    }
+  }]);
+
+  return ScrollObserver;
+}();
+
+var StreamObserver = /*#__PURE__*/function () {
+  function StreamObserver(delegate) {
+    var _this28 = this;
+
+    _classCallCheck(this, StreamObserver);
+
+    this.sources = new Set();
+    this.started = false;
+
+    this.inspectFetchResponse = function (event) {
+      var response = fetchResponseFromEvent(event);
+
+      if (response && fetchResponseIsStream(response)) {
+        event.preventDefault();
+
+        _this28.receiveMessageResponse(response);
+      }
+    };
+
+    this.receiveMessageEvent = function (event) {
+      if (_this28.started && typeof event.data == "string") {
+        _this28.receiveMessageHTML(event.data);
+      }
+    };
+
+    this.delegate = delegate;
+  }
+
+  _createClass(StreamObserver, [{
+    key: "start",
+    value: function start() {
+      if (!this.started) {
+        this.started = true;
+        addEventListener("turbo:before-fetch-response", this.inspectFetchResponse, false);
+      }
+    }
+  }, {
+    key: "stop",
+    value: function stop() {
+      if (this.started) {
+        this.started = false;
+        removeEventListener("turbo:before-fetch-response", this.inspectFetchResponse, false);
+      }
+    }
+  }, {
+    key: "connectStreamSource",
+    value: function connectStreamSource(source) {
+      if (!this.streamSourceIsConnected(source)) {
+        this.sources.add(source);
+        source.addEventListener("message", this.receiveMessageEvent, false);
+      }
+    }
+  }, {
+    key: "disconnectStreamSource",
+    value: function disconnectStreamSource(source) {
+      if (this.streamSourceIsConnected(source)) {
+        this.sources["delete"](source);
+        source.removeEventListener("message", this.receiveMessageEvent, false);
+      }
+    }
+  }, {
+    key: "streamSourceIsConnected",
+    value: function streamSourceIsConnected(source) {
+      return this.sources.has(source);
+    }
+  }, {
+    key: "receiveMessageResponse",
+    value: function () {
+      var _receiveMessageResponse = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee17(response) {
+        var html;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee17$(_context17) {
+          while (1) {
+            switch (_context17.prev = _context17.next) {
+              case 0:
+                _context17.next = 2;
+                return response.responseHTML;
+
+              case 2:
+                html = _context17.sent;
+
+                if (html) {
+                  this.receiveMessageHTML(html);
+                }
+
+              case 4:
+              case "end":
+                return _context17.stop();
+            }
+          }
+        }, _callee17, this);
+      }));
+
+      function receiveMessageResponse(_x15) {
+        return _receiveMessageResponse.apply(this, arguments);
+      }
+
+      return receiveMessageResponse;
+    }()
+  }, {
+    key: "receiveMessageHTML",
+    value: function receiveMessageHTML(html) {
+      this.delegate.receivedMessageFromStream(new StreamMessage(html));
+    }
+  }]);
+
+  return StreamObserver;
+}();
+
+function fetchResponseFromEvent(event) {
+  var _a;
+
+  var fetchResponse = (_a = event.detail) === null || _a === void 0 ? void 0 : _a.fetchResponse;
+
+  if (fetchResponse instanceof FetchResponse) {
+    return fetchResponse;
+  }
+}
+
+function fetchResponseIsStream(response) {
+  var _a;
+
+  var contentType = (_a = response.contentType) !== null && _a !== void 0 ? _a : "";
+  return contentType.startsWith(StreamMessage.contentType);
+}
+
+var ErrorRenderer = /*#__PURE__*/function (_Renderer2) {
+  _inherits(ErrorRenderer, _Renderer2);
+
+  var _super6 = _createSuper(ErrorRenderer);
+
+  function ErrorRenderer() {
+    _classCallCheck(this, ErrorRenderer);
+
+    return _super6.apply(this, arguments);
+  }
+
+  _createClass(ErrorRenderer, [{
+    key: "render",
+    value: function () {
+      var _render4 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee18() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee18$(_context18) {
+          while (1) {
+            switch (_context18.prev = _context18.next) {
+              case 0:
+                this.replaceHeadAndBody();
+                this.activateScriptElements();
+
+              case 2:
+              case "end":
+                return _context18.stop();
+            }
+          }
+        }, _callee18, this);
+      }));
+
+      function render() {
+        return _render4.apply(this, arguments);
+      }
+
+      return render;
+    }()
+  }, {
+    key: "replaceHeadAndBody",
+    value: function replaceHeadAndBody() {
+      var _document = document,
+          documentElement = _document.documentElement,
+          head = _document.head,
+          body = _document.body;
+      documentElement.replaceChild(this.newHead, head);
+      documentElement.replaceChild(this.newElement, body);
+    }
+  }, {
+    key: "activateScriptElements",
+    value: function activateScriptElements() {
+      var _iterator7 = _createForOfIteratorHelper(this.scriptElements),
+          _step7;
+
+      try {
+        for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {
+          var replaceableElement = _step7.value;
+          var parentNode = replaceableElement.parentNode;
+
+          if (parentNode) {
+            var element = this.createScriptElement(replaceableElement);
+            parentNode.replaceChild(element, replaceableElement);
+          }
+        }
+      } catch (err) {
+        _iterator7.e(err);
+      } finally {
+        _iterator7.f();
+      }
+    }
+  }, {
+    key: "newHead",
+    get: function get() {
+      return this.newSnapshot.headSnapshot.element;
+    }
+  }, {
+    key: "scriptElements",
+    get: function get() {
+      return _toConsumableArray(document.documentElement.querySelectorAll("script"));
+    }
+  }]);
+
+  return ErrorRenderer;
+}(Renderer);
+
+var PageRenderer = /*#__PURE__*/function (_Renderer3) {
+  _inherits(PageRenderer, _Renderer3);
+
+  var _super7 = _createSuper(PageRenderer);
+
+  function PageRenderer() {
+    _classCallCheck(this, PageRenderer);
+
+    return _super7.apply(this, arguments);
+  }
+
+  _createClass(PageRenderer, [{
+    key: "shouldRender",
+    get: function get() {
+      return this.newSnapshot.isVisitable && this.trackedElementsAreIdentical;
+    }
+  }, {
+    key: "prepareToRender",
+    value: function prepareToRender() {
+      this.mergeHead();
+    }
+  }, {
+    key: "render",
+    value: function () {
+      var _render5 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee19() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee19$(_context19) {
+          while (1) {
+            switch (_context19.prev = _context19.next) {
+              case 0:
+                this.replaceBody();
+
+              case 1:
+              case "end":
+                return _context19.stop();
+            }
+          }
+        }, _callee19, this);
+      }));
+
+      function render() {
+        return _render5.apply(this, arguments);
+      }
+
+      return render;
+    }()
+  }, {
+    key: "finishRendering",
+    value: function finishRendering() {
+      _get(_getPrototypeOf(PageRenderer.prototype), "finishRendering", this).call(this);
+
+      if (!this.isPreview) {
+        this.focusFirstAutofocusableElement();
+      }
+    }
+  }, {
+    key: "currentHeadSnapshot",
+    get: function get() {
+      return this.currentSnapshot.headSnapshot;
+    }
+  }, {
+    key: "newHeadSnapshot",
+    get: function get() {
+      return this.newSnapshot.headSnapshot;
+    }
+  }, {
+    key: "newElement",
+    get: function get() {
+      return this.newSnapshot.element;
+    }
+  }, {
+    key: "mergeHead",
+    value: function mergeHead() {
+      this.copyNewHeadStylesheetElements();
+      this.copyNewHeadScriptElements();
+      this.removeCurrentHeadProvisionalElements();
+      this.copyNewHeadProvisionalElements();
+    }
+  }, {
+    key: "replaceBody",
+    value: function replaceBody() {
+      var _this29 = this;
+
+      this.preservingPermanentElements(function () {
+        _this29.activateNewBody();
+
+        _this29.assignNewBody();
+      });
+    }
+  }, {
+    key: "trackedElementsAreIdentical",
+    get: function get() {
+      return this.currentHeadSnapshot.trackedElementSignature == this.newHeadSnapshot.trackedElementSignature;
+    }
+  }, {
+    key: "copyNewHeadStylesheetElements",
+    value: function copyNewHeadStylesheetElements() {
+      var _iterator8 = _createForOfIteratorHelper(this.newHeadStylesheetElements),
+          _step8;
+
+      try {
+        for (_iterator8.s(); !(_step8 = _iterator8.n()).done;) {
+          var element = _step8.value;
+          document.head.appendChild(element);
+        }
+      } catch (err) {
+        _iterator8.e(err);
+      } finally {
+        _iterator8.f();
+      }
+    }
+  }, {
+    key: "copyNewHeadScriptElements",
+    value: function copyNewHeadScriptElements() {
+      var _iterator9 = _createForOfIteratorHelper(this.newHeadScriptElements),
+          _step9;
+
+      try {
+        for (_iterator9.s(); !(_step9 = _iterator9.n()).done;) {
+          var element = _step9.value;
+          document.head.appendChild(this.createScriptElement(element));
+        }
+      } catch (err) {
+        _iterator9.e(err);
+      } finally {
+        _iterator9.f();
+      }
+    }
+  }, {
+    key: "removeCurrentHeadProvisionalElements",
+    value: function removeCurrentHeadProvisionalElements() {
+      var _iterator10 = _createForOfIteratorHelper(this.currentHeadProvisionalElements),
+          _step10;
+
+      try {
+        for (_iterator10.s(); !(_step10 = _iterator10.n()).done;) {
+          var element = _step10.value;
+          document.head.removeChild(element);
+        }
+      } catch (err) {
+        _iterator10.e(err);
+      } finally {
+        _iterator10.f();
+      }
+    }
+  }, {
+    key: "copyNewHeadProvisionalElements",
+    value: function copyNewHeadProvisionalElements() {
+      var _iterator11 = _createForOfIteratorHelper(this.newHeadProvisionalElements),
+          _step11;
+
+      try {
+        for (_iterator11.s(); !(_step11 = _iterator11.n()).done;) {
+          var element = _step11.value;
+          document.head.appendChild(element);
+        }
+      } catch (err) {
+        _iterator11.e(err);
+      } finally {
+        _iterator11.f();
+      }
+    }
+  }, {
+    key: "activateNewBody",
+    value: function activateNewBody() {
+      document.adoptNode(this.newElement);
+      this.activateNewBodyScriptElements();
+    }
+  }, {
+    key: "activateNewBodyScriptElements",
+    value: function activateNewBodyScriptElements() {
+      var _iterator12 = _createForOfIteratorHelper(this.newBodyScriptElements),
+          _step12;
+
+      try {
+        for (_iterator12.s(); !(_step12 = _iterator12.n()).done;) {
+          var inertScriptElement = _step12.value;
+          var activatedScriptElement = this.createScriptElement(inertScriptElement);
+          inertScriptElement.replaceWith(activatedScriptElement);
+        }
+      } catch (err) {
+        _iterator12.e(err);
+      } finally {
+        _iterator12.f();
+      }
+    }
+  }, {
+    key: "assignNewBody",
+    value: function assignNewBody() {
+      if (document.body && this.newElement instanceof HTMLBodyElement) {
+        document.body.replaceWith(this.newElement);
+      } else {
+        document.documentElement.appendChild(this.newElement);
+      }
+    }
+  }, {
+    key: "newHeadStylesheetElements",
+    get: function get() {
+      return this.newHeadSnapshot.getStylesheetElementsNotInSnapshot(this.currentHeadSnapshot);
+    }
+  }, {
+    key: "newHeadScriptElements",
+    get: function get() {
+      return this.newHeadSnapshot.getScriptElementsNotInSnapshot(this.currentHeadSnapshot);
+    }
+  }, {
+    key: "currentHeadProvisionalElements",
+    get: function get() {
+      return this.currentHeadSnapshot.provisionalElements;
+    }
+  }, {
+    key: "newHeadProvisionalElements",
+    get: function get() {
+      return this.newHeadSnapshot.provisionalElements;
+    }
+  }, {
+    key: "newBodyScriptElements",
+    get: function get() {
+      return this.newElement.querySelectorAll("script");
+    }
+  }]);
+
+  return PageRenderer;
+}(Renderer);
+
+var SnapshotCache = /*#__PURE__*/function () {
+  function SnapshotCache(size) {
+    _classCallCheck(this, SnapshotCache);
+
+    this.keys = [];
+    this.snapshots = {};
+    this.size = size;
+  }
+
+  _createClass(SnapshotCache, [{
+    key: "has",
+    value: function has(location) {
+      return toCacheKey(location) in this.snapshots;
+    }
+  }, {
+    key: "get",
+    value: function get(location) {
+      if (this.has(location)) {
+        var snapshot = this.read(location);
+        this.touch(location);
+        return snapshot;
+      }
+    }
+  }, {
+    key: "put",
+    value: function put(location, snapshot) {
+      this.write(location, snapshot);
+      this.touch(location);
+      return snapshot;
+    }
+  }, {
+    key: "clear",
+    value: function clear() {
+      this.snapshots = {};
+    }
+  }, {
+    key: "read",
+    value: function read(location) {
+      return this.snapshots[toCacheKey(location)];
+    }
+  }, {
+    key: "write",
+    value: function write(location, snapshot) {
+      this.snapshots[toCacheKey(location)] = snapshot;
+    }
+  }, {
+    key: "touch",
+    value: function touch(location) {
+      var key = toCacheKey(location);
+      var index = this.keys.indexOf(key);
+      if (index > -1) this.keys.splice(index, 1);
+      this.keys.unshift(key);
+      this.trim();
+    }
+  }, {
+    key: "trim",
+    value: function trim() {
+      var _iterator13 = _createForOfIteratorHelper(this.keys.splice(this.size)),
+          _step13;
+
+      try {
+        for (_iterator13.s(); !(_step13 = _iterator13.n()).done;) {
+          var key = _step13.value;
+          delete this.snapshots[key];
+        }
+      } catch (err) {
+        _iterator13.e(err);
+      } finally {
+        _iterator13.f();
+      }
+    }
+  }]);
+
+  return SnapshotCache;
+}();
+
+var PageView = /*#__PURE__*/function (_View2) {
+  _inherits(PageView, _View2);
+
+  var _super8 = _createSuper(PageView);
+
+  function PageView() {
+    var _this30;
+
+    _classCallCheck(this, PageView);
+
+    _this30 = _super8.apply(this, arguments);
+    _this30.snapshotCache = new SnapshotCache(10);
+    _this30.lastRenderedLocation = new URL(location.href);
+    return _this30;
+  }
+
+  _createClass(PageView, [{
+    key: "renderPage",
+    value: function renderPage(snapshot) {
+      var isPreview = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      var renderer = new PageRenderer(this.snapshot, snapshot, isPreview);
+      return this.render(renderer);
+    }
+  }, {
+    key: "renderError",
+    value: function renderError(snapshot) {
+      var renderer = new ErrorRenderer(this.snapshot, snapshot, false);
+      return this.render(renderer);
+    }
+  }, {
+    key: "clearSnapshotCache",
+    value: function clearSnapshotCache() {
+      this.snapshotCache.clear();
+    }
+  }, {
+    key: "cacheSnapshot",
+    value: function () {
+      var _cacheSnapshot = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee20() {
+        var snapshot, _location2;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee20$(_context20) {
+          while (1) {
+            switch (_context20.prev = _context20.next) {
+              case 0:
+                if (!this.shouldCacheSnapshot) {
+                  _context20.next = 6;
+                  break;
+                }
+
+                this.delegate.viewWillCacheSnapshot();
+                snapshot = this.snapshot, _location2 = this.lastRenderedLocation;
+                _context20.next = 5;
+                return nextEventLoopTick();
+
+              case 5:
+                this.snapshotCache.put(_location2, snapshot.clone());
+
+              case 6:
+              case "end":
+                return _context20.stop();
+            }
+          }
+        }, _callee20, this);
+      }));
+
+      function cacheSnapshot() {
+        return _cacheSnapshot.apply(this, arguments);
+      }
+
+      return cacheSnapshot;
+    }()
+  }, {
+    key: "getCachedSnapshotForLocation",
+    value: function getCachedSnapshotForLocation(location) {
+      return this.snapshotCache.get(location);
+    }
+  }, {
+    key: "snapshot",
+    get: function get() {
+      return PageSnapshot.fromElement(this.element);
+    }
+  }, {
+    key: "shouldCacheSnapshot",
+    get: function get() {
+      return this.snapshot.isCacheable;
+    }
+  }]);
+
+  return PageView;
+}(View);
+
+var Session = /*#__PURE__*/function () {
+  function Session() {
+    _classCallCheck(this, Session);
+
+    this.navigator = new Navigator(this);
+    this.history = new History(this);
+    this.view = new PageView(this, document.documentElement);
+    this.adapter = new BrowserAdapter(this);
+    this.pageObserver = new PageObserver(this);
+    this.cacheObserver = new CacheObserver();
+    this.linkClickObserver = new LinkClickObserver(this);
+    this.formSubmitObserver = new FormSubmitObserver(this);
+    this.scrollObserver = new ScrollObserver(this);
+    this.streamObserver = new StreamObserver(this);
+    this.frameRedirector = new FrameRedirector(document.documentElement);
+    this.drive = true;
+    this.enabled = true;
+    this.progressBarDelay = 500;
+    this.started = false;
+  }
+
+  _createClass(Session, [{
+    key: "start",
+    value: function start() {
+      if (!this.started) {
+        this.pageObserver.start();
+        this.cacheObserver.start();
+        this.linkClickObserver.start();
+        this.formSubmitObserver.start();
+        this.scrollObserver.start();
+        this.streamObserver.start();
+        this.frameRedirector.start();
+        this.history.start();
+        this.started = true;
+        this.enabled = true;
+      }
+    }
+  }, {
+    key: "disable",
+    value: function disable() {
+      this.enabled = false;
+    }
+  }, {
+    key: "stop",
+    value: function stop() {
+      if (this.started) {
+        this.pageObserver.stop();
+        this.cacheObserver.stop();
+        this.linkClickObserver.stop();
+        this.formSubmitObserver.stop();
+        this.scrollObserver.stop();
+        this.streamObserver.stop();
+        this.frameRedirector.stop();
+        this.history.stop();
+        this.started = false;
+      }
+    }
+  }, {
+    key: "registerAdapter",
+    value: function registerAdapter(adapter) {
+      this.adapter = adapter;
+    }
+  }, {
+    key: "visit",
+    value: function visit(location) {
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      this.navigator.proposeVisit(expandURL(location), options);
+    }
+  }, {
+    key: "connectStreamSource",
+    value: function connectStreamSource(source) {
+      this.streamObserver.connectStreamSource(source);
+    }
+  }, {
+    key: "disconnectStreamSource",
+    value: function disconnectStreamSource(source) {
+      this.streamObserver.disconnectStreamSource(source);
+    }
+  }, {
+    key: "renderStreamMessage",
+    value: function renderStreamMessage(message) {
+      document.documentElement.appendChild(StreamMessage.wrap(message).fragment);
+    }
+  }, {
+    key: "clearCache",
+    value: function clearCache() {
+      this.view.clearSnapshotCache();
+    }
+  }, {
+    key: "setProgressBarDelay",
+    value: function setProgressBarDelay(delay) {
+      this.progressBarDelay = delay;
+    }
+  }, {
+    key: "location",
+    get: function get() {
+      return this.history.location;
+    }
+  }, {
+    key: "restorationIdentifier",
+    get: function get() {
+      return this.history.restorationIdentifier;
+    }
+  }, {
+    key: "historyPoppedToLocationWithRestorationIdentifier",
+    value: function historyPoppedToLocationWithRestorationIdentifier(location, restorationIdentifier) {
+      if (this.enabled) {
+        this.navigator.startVisit(location, restorationIdentifier, {
+          action: "restore",
+          historyChanged: true
+        });
+      } else {
+        this.adapter.pageInvalidated();
+      }
+    }
+  }, {
+    key: "scrollPositionChanged",
+    value: function scrollPositionChanged(position) {
+      this.history.updateRestorationData({
+        scrollPosition: position
+      });
+    }
+  }, {
+    key: "willFollowLinkToLocation",
+    value: function willFollowLinkToLocation(link, location) {
+      return this.elementDriveEnabled(link) && locationIsVisitable(location, this.snapshot.rootLocation) && this.applicationAllowsFollowingLinkToLocation(link, location);
+    }
+  }, {
+    key: "followedLinkToLocation",
+    value: function followedLinkToLocation(link, location) {
+      var action = this.getActionForLink(link);
+      this.convertLinkWithMethodClickToFormSubmission(link) || this.visit(location.href, {
+        action: action
+      });
+    }
+  }, {
+    key: "convertLinkWithMethodClickToFormSubmission",
+    value: function convertLinkWithMethodClickToFormSubmission(link) {
+      var linkMethod = link.getAttribute("data-turbo-method");
+
+      if (linkMethod) {
+        var form = document.createElement("form");
+        form.method = linkMethod;
+        form.action = link.getAttribute("href") || "undefined";
+        form.hidden = true;
+
+        if (link.hasAttribute("data-turbo-confirm")) {
+          form.setAttribute("data-turbo-confirm", link.getAttribute("data-turbo-confirm"));
+        }
+
+        var frame = this.getTargetFrameForLink(link);
+
+        if (frame) {
+          form.setAttribute("data-turbo-frame", frame);
+          form.addEventListener("turbo:submit-start", function () {
+            return form.remove();
+          });
+        } else {
+          form.addEventListener("submit", function () {
+            return form.remove();
+          });
+        }
+
+        document.body.appendChild(form);
+        return dispatch("submit", {
+          cancelable: true,
+          target: form
+        });
+      } else {
+        return false;
+      }
+    }
+  }, {
+    key: "allowsVisitingLocationWithAction",
+    value: function allowsVisitingLocationWithAction(location, action) {
+      return this.locationWithActionIsSamePage(location, action) || this.applicationAllowsVisitingLocation(location);
+    }
+  }, {
+    key: "visitProposedToLocation",
+    value: function visitProposedToLocation(location, options) {
+      extendURLWithDeprecatedProperties(location);
+      this.adapter.visitProposedToLocation(location, options);
+    }
+  }, {
+    key: "visitStarted",
+    value: function visitStarted(visit) {
+      extendURLWithDeprecatedProperties(visit.location);
+
+      if (!visit.silent) {
+        this.notifyApplicationAfterVisitingLocation(visit.location, visit.action);
+      }
+    }
+  }, {
+    key: "visitCompleted",
+    value: function visitCompleted(visit) {
+      this.notifyApplicationAfterPageLoad(visit.getTimingMetrics());
+    }
+  }, {
+    key: "visitCachedSnapshot",
+    value: function visitCachedSnapshot(visit) {}
+  }, {
+    key: "locationWithActionIsSamePage",
+    value: function locationWithActionIsSamePage(location, action) {
+      return this.navigator.locationWithActionIsSamePage(location, action);
+    }
+  }, {
+    key: "visitScrolledToSamePageLocation",
+    value: function visitScrolledToSamePageLocation(oldURL, newURL) {
+      this.notifyApplicationAfterVisitingSamePageLocation(oldURL, newURL);
+    }
+  }, {
+    key: "willSubmitForm",
+    value: function willSubmitForm(form, submitter) {
+      var action = getAction(form, submitter);
+      return this.elementDriveEnabled(form) && (!submitter || this.elementDriveEnabled(submitter)) && locationIsVisitable(expandURL(action), this.snapshot.rootLocation);
+    }
+  }, {
+    key: "formSubmitted",
+    value: function formSubmitted(form, submitter) {
+      this.navigator.submitForm(form, submitter);
+    }
+  }, {
+    key: "pageBecameInteractive",
+    value: function pageBecameInteractive() {
+      this.view.lastRenderedLocation = this.location;
+      this.notifyApplicationAfterPageLoad();
+    }
+  }, {
+    key: "pageLoaded",
+    value: function pageLoaded() {
+      this.history.assumeControlOfScrollRestoration();
+    }
+  }, {
+    key: "pageWillUnload",
+    value: function pageWillUnload() {
+      this.history.relinquishControlOfScrollRestoration();
+    }
+  }, {
+    key: "receivedMessageFromStream",
+    value: function receivedMessageFromStream(message) {
+      this.renderStreamMessage(message);
+    }
+  }, {
+    key: "viewWillCacheSnapshot",
+    value: function viewWillCacheSnapshot() {
+      var _a;
+
+      if (!((_a = this.navigator.currentVisit) === null || _a === void 0 ? void 0 : _a.silent)) {
+        this.notifyApplicationBeforeCachingSnapshot();
+      }
+    }
+  }, {
+    key: "allowsImmediateRender",
+    value: function allowsImmediateRender(_ref13, resume) {
+      var element = _ref13.element;
+      var event = this.notifyApplicationBeforeRender(element, resume);
+      return !event.defaultPrevented;
+    }
+  }, {
+    key: "viewRenderedSnapshot",
+    value: function viewRenderedSnapshot(snapshot, isPreview) {
+      this.view.lastRenderedLocation = this.history.location;
+      this.notifyApplicationAfterRender();
+    }
+  }, {
+    key: "viewInvalidated",
+    value: function viewInvalidated() {
+      this.adapter.pageInvalidated();
+    }
+  }, {
+    key: "frameLoaded",
+    value: function frameLoaded(frame) {
+      this.notifyApplicationAfterFrameLoad(frame);
+    }
+  }, {
+    key: "frameRendered",
+    value: function frameRendered(fetchResponse, frame) {
+      this.notifyApplicationAfterFrameRender(fetchResponse, frame);
+    }
+  }, {
+    key: "frameMissing",
+    value: function () {
+      var _frameMissing = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee21(fetchResponse, target) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee21$(_context21) {
+          while (1) {
+            switch (_context21.prev = _context21.next) {
+              case 0:
+                dispatch("turbo:frame-missing", {
+                  target: target,
+                  detail: {
+                    fetchResponse: fetchResponse
+                  }
+                });
+
+              case 1:
+              case "end":
+                return _context21.stop();
+            }
+          }
+        }, _callee21);
+      }));
+
+      function frameMissing(_x16, _x17) {
+        return _frameMissing.apply(this, arguments);
+      }
+
+      return frameMissing;
+    }()
+  }, {
+    key: "applicationAllowsFollowingLinkToLocation",
+    value: function applicationAllowsFollowingLinkToLocation(link, location) {
+      var event = this.notifyApplicationAfterClickingLinkToLocation(link, location);
+      return !event.defaultPrevented;
+    }
+  }, {
+    key: "applicationAllowsVisitingLocation",
+    value: function applicationAllowsVisitingLocation(location) {
+      var event = this.notifyApplicationBeforeVisitingLocation(location);
+      return !event.defaultPrevented;
+    }
+  }, {
+    key: "notifyApplicationAfterClickingLinkToLocation",
+    value: function notifyApplicationAfterClickingLinkToLocation(link, location) {
+      return dispatch("turbo:click", {
+        target: link,
+        detail: {
+          url: location.href
+        },
+        cancelable: true
+      });
+    }
+  }, {
+    key: "notifyApplicationBeforeVisitingLocation",
+    value: function notifyApplicationBeforeVisitingLocation(location) {
+      return dispatch("turbo:before-visit", {
+        detail: {
+          url: location.href
+        },
+        cancelable: true
+      });
+    }
+  }, {
+    key: "notifyApplicationAfterVisitingLocation",
+    value: function notifyApplicationAfterVisitingLocation(location, action) {
+      markAsBusy(document.documentElement);
+      return dispatch("turbo:visit", {
+        detail: {
+          url: location.href,
+          action: action
+        }
+      });
+    }
+  }, {
+    key: "notifyApplicationBeforeCachingSnapshot",
+    value: function notifyApplicationBeforeCachingSnapshot() {
+      return dispatch("turbo:before-cache");
+    }
+  }, {
+    key: "notifyApplicationBeforeRender",
+    value: function notifyApplicationBeforeRender(newBody, resume) {
+      return dispatch("turbo:before-render", {
+        detail: {
+          newBody: newBody,
+          resume: resume
+        },
+        cancelable: true
+      });
+    }
+  }, {
+    key: "notifyApplicationAfterRender",
+    value: function notifyApplicationAfterRender() {
+      return dispatch("turbo:render");
+    }
+  }, {
+    key: "notifyApplicationAfterPageLoad",
+    value: function notifyApplicationAfterPageLoad() {
+      var timing = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      clearBusyState(document.documentElement);
+      return dispatch("turbo:load", {
+        detail: {
+          url: this.location.href,
+          timing: timing
+        }
+      });
+    }
+  }, {
+    key: "notifyApplicationAfterVisitingSamePageLocation",
+    value: function notifyApplicationAfterVisitingSamePageLocation(oldURL, newURL) {
+      dispatchEvent(new HashChangeEvent("hashchange", {
+        oldURL: oldURL.toString(),
+        newURL: newURL.toString()
+      }));
+    }
+  }, {
+    key: "notifyApplicationAfterFrameLoad",
+    value: function notifyApplicationAfterFrameLoad(frame) {
+      return dispatch("turbo:frame-load", {
+        target: frame
+      });
+    }
+  }, {
+    key: "notifyApplicationAfterFrameRender",
+    value: function notifyApplicationAfterFrameRender(fetchResponse, frame) {
+      return dispatch("turbo:frame-render", {
+        detail: {
+          fetchResponse: fetchResponse
+        },
+        target: frame,
+        cancelable: true
+      });
+    }
+  }, {
+    key: "elementDriveEnabled",
+    value: function elementDriveEnabled(element) {
+      var container = element === null || element === void 0 ? void 0 : element.closest("[data-turbo]");
+
+      if (this.drive) {
+        if (container) {
+          return container.getAttribute("data-turbo") != "false";
+        } else {
+          return true;
+        }
+      } else {
+        if (container) {
+          return container.getAttribute("data-turbo") == "true";
+        } else {
+          return false;
+        }
+      }
+    }
+  }, {
+    key: "getActionForLink",
+    value: function getActionForLink(link) {
+      var action = link.getAttribute("data-turbo-action");
+      return isAction(action) ? action : "advance";
+    }
+  }, {
+    key: "getTargetFrameForLink",
+    value: function getTargetFrameForLink(link) {
+      var frame = link.getAttribute("data-turbo-frame");
+
+      if (frame) {
+        return frame;
+      } else {
+        var container = link.closest("turbo-frame");
+
+        if (container) {
+          return container.id;
+        }
+      }
+    }
+  }, {
+    key: "snapshot",
+    get: function get() {
+      return this.view.snapshot;
+    }
+  }]);
+
+  return Session;
+}();
+
+function extendURLWithDeprecatedProperties(url) {
+  Object.defineProperties(url, deprecatedLocationPropertyDescriptors);
+}
+
+var deprecatedLocationPropertyDescriptors = {
+  absoluteURL: {
+    get: function get() {
+      return this.toString();
+    }
+  }
+};
+var session = new Session();
+var navigator$1 = session.navigator;
+
+function start() {
+  session.start();
+}
+
+function registerAdapter(adapter) {
+  session.registerAdapter(adapter);
+}
+
+function visit(location, options) {
+  session.visit(location, options);
+}
+
+function connectStreamSource(source) {
+  session.connectStreamSource(source);
+}
+
+function disconnectStreamSource(source) {
+  session.disconnectStreamSource(source);
+}
+
+function renderStreamMessage(message) {
+  session.renderStreamMessage(message);
+}
+
+function clearCache() {
+  session.clearCache();
+}
+
+function setProgressBarDelay(delay) {
+  session.setProgressBarDelay(delay);
+}
+
+function setConfirmMethod(confirmMethod) {
+  FormSubmission.confirmMethod = confirmMethod;
+}
+
+var Turbo = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  navigator: navigator$1,
+  session: session,
+  PageRenderer: PageRenderer,
+  PageSnapshot: PageSnapshot,
+  start: start,
+  registerAdapter: registerAdapter,
+  visit: visit,
+  connectStreamSource: connectStreamSource,
+  disconnectStreamSource: disconnectStreamSource,
+  renderStreamMessage: renderStreamMessage,
+  clearCache: clearCache,
+  setProgressBarDelay: setProgressBarDelay,
+  setConfirmMethod: setConfirmMethod
+});
+
+var FrameController = /*#__PURE__*/function () {
+  function FrameController(element) {
+    _classCallCheck(this, FrameController);
+
+    this.currentFetchRequest = null;
+
+    this.resolveVisitPromise = function () {};
+
+    this.connected = false;
+    this.hasBeenLoaded = false;
+    this.settingSourceURL = false;
+    this.element = element;
+    this.view = new FrameView(this, this.element);
+    this.appearanceObserver = new AppearanceObserver(this, this.element);
+    this.linkInterceptor = new LinkInterceptor(this, this.element);
+    this.formInterceptor = new FormInterceptor(this, this.element);
+  }
+
+  _createClass(FrameController, [{
+    key: "connect",
+    value: function connect() {
+      if (!this.connected) {
+        this.connected = true;
+        this.reloadable = false;
+
+        if (this.loadingStyle == FrameLoadingStyle.lazy) {
+          this.appearanceObserver.start();
+        }
+
+        this.linkInterceptor.start();
+        this.formInterceptor.start();
+        this.sourceURLChanged();
+      }
+    }
+  }, {
+    key: "disconnect",
+    value: function disconnect() {
+      if (this.connected) {
+        this.connected = false;
+        this.appearanceObserver.stop();
+        this.linkInterceptor.stop();
+        this.formInterceptor.stop();
+      }
+    }
+  }, {
+    key: "disabledChanged",
+    value: function disabledChanged() {
+      if (this.loadingStyle == FrameLoadingStyle.eager) {
+        this.loadSourceURL();
+      }
+    }
+  }, {
+    key: "sourceURLChanged",
+    value: function sourceURLChanged() {
+      if (this.loadingStyle == FrameLoadingStyle.eager || this.hasBeenLoaded) {
+        this.loadSourceURL();
+      }
+    }
+  }, {
+    key: "loadingStyleChanged",
+    value: function loadingStyleChanged() {
+      if (this.loadingStyle == FrameLoadingStyle.lazy) {
+        this.appearanceObserver.start();
+      } else {
+        this.appearanceObserver.stop();
+        this.loadSourceURL();
+      }
+    }
+  }, {
+    key: "loadSourceURL",
+    value: function () {
+      var _loadSourceURL = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee22() {
+        var previousURL;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee22$(_context22) {
+          while (1) {
+            switch (_context22.prev = _context22.next) {
+              case 0:
+                if (!(!this.settingSourceURL && this.enabled && this.isActive && (this.reloadable || this.sourceURL != this.currentURL))) {
+                  _context22.next = 16;
+                  break;
+                }
+
+                previousURL = this.currentURL;
+                this.currentURL = this.sourceURL;
+
+                if (!this.sourceURL) {
+                  _context22.next = 16;
+                  break;
+                }
+
+                _context22.prev = 4;
+                this.element.loaded = this.visit(this.sourceURL);
+                this.appearanceObserver.stop();
+                _context22.next = 9;
+                return this.element.loaded;
+
+              case 9:
+                this.hasBeenLoaded = true;
+                _context22.next = 16;
+                break;
+
+              case 12:
+                _context22.prev = 12;
+                _context22.t0 = _context22["catch"](4);
+                this.currentURL = previousURL;
+                throw _context22.t0;
+
+              case 16:
+              case "end":
+                return _context22.stop();
+            }
+          }
+        }, _callee22, this, [[4, 12]]);
+      }));
+
+      function loadSourceURL() {
+        return _loadSourceURL.apply(this, arguments);
+      }
+
+      return loadSourceURL;
+    }()
+  }, {
+    key: "loadResponse",
+    value: function () {
+      var _loadResponse = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee23(fetchResponse) {
+        var html, _parseHTMLDocument, body, snapshot, renderer;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee23$(_context23) {
+          while (1) {
+            switch (_context23.prev = _context23.next) {
+              case 0:
+                if (fetchResponse.redirected) {
+                  this.sourceURL = fetchResponse.response.url;
+                }
+
+                _context23.prev = 1;
+                _context23.next = 4;
+                return fetchResponse.responseHTML;
+
+              case 4:
+                html = _context23.sent;
+
+                if (!html) {
+                  _context23.next = 19;
+                  break;
+                }
+
+                _parseHTMLDocument = parseHTMLDocument(html), body = _parseHTMLDocument.body;
+                _context23.t0 = Snapshot;
+                _context23.next = 10;
+                return this.extractForeignFrameElement(body);
+
+              case 10:
+                _context23.t1 = _context23.sent;
+                snapshot = new _context23.t0(_context23.t1);
+                renderer = new FrameRenderer(this.view.snapshot, snapshot, false);
+
+                if (!this.view.renderPromise) {
+                  _context23.next = 16;
+                  break;
+                }
+
+                _context23.next = 16;
+                return this.view.renderPromise;
+
+              case 16:
+                _context23.next = 18;
+                return this.view.render(renderer);
+
+              case 18:
+                if (snapshot.element.delegate.isActive) {
+                  session.frameRendered(fetchResponse, this.element);
+                  session.frameLoaded(this.element);
+                } else {
+                  session.frameMissing(fetchResponse, this.element);
+                }
+
+              case 19:
+                _context23.next = 25;
+                break;
+
+              case 21:
+                _context23.prev = 21;
+                _context23.t2 = _context23["catch"](1);
+                console.error(_context23.t2);
+                this.view.invalidate();
+
+              case 25:
+              case "end":
+                return _context23.stop();
+            }
+          }
+        }, _callee23, this, [[1, 21]]);
+      }));
+
+      function loadResponse(_x18) {
+        return _loadResponse.apply(this, arguments);
+      }
+
+      return loadResponse;
+    }()
+  }, {
+    key: "elementAppearedInViewport",
+    value: function elementAppearedInViewport(element) {
+      this.loadSourceURL();
+    }
+  }, {
+    key: "shouldInterceptLinkClick",
+    value: function shouldInterceptLinkClick(element, url) {
+      if (element.hasAttribute("data-turbo-method")) {
+        return false;
+      } else {
+        return this.shouldInterceptNavigation(element);
+      }
+    }
+  }, {
+    key: "linkClickIntercepted",
+    value: function linkClickIntercepted(element, url) {
+      this.reloadable = true;
+      this.navigateFrame(element, url);
+    }
+  }, {
+    key: "shouldInterceptFormSubmission",
+    value: function shouldInterceptFormSubmission(element, submitter) {
+      return this.shouldInterceptNavigation(element, submitter);
+    }
+  }, {
+    key: "formSubmissionIntercepted",
+    value: function formSubmissionIntercepted(element, submitter) {
+      if (this.formSubmission) {
+        this.formSubmission.stop();
+      }
+
+      this.reloadable = false;
+      this.formSubmission = new FormSubmission(this, element, submitter);
+      var fetchRequest = this.formSubmission.fetchRequest;
+      this.prepareHeadersForRequest(fetchRequest.headers, fetchRequest);
+      this.formSubmission.start();
+    }
+  }, {
+    key: "prepareHeadersForRequest",
+    value: function prepareHeadersForRequest(headers, request) {
+      headers["Turbo-Frame"] = this.id;
+    }
+  }, {
+    key: "requestStarted",
+    value: function requestStarted(request) {
+      markAsBusy(this.element);
+    }
+  }, {
+    key: "requestPreventedHandlingResponse",
+    value: function requestPreventedHandlingResponse(request, response) {
+      this.resolveVisitPromise();
+    }
+  }, {
+    key: "requestSucceededWithResponse",
+    value: function () {
+      var _requestSucceededWithResponse2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee24(request, response) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee24$(_context24) {
+          while (1) {
+            switch (_context24.prev = _context24.next) {
+              case 0:
+                _context24.next = 2;
+                return this.loadResponse(response);
+
+              case 2:
+                this.resolveVisitPromise();
+
+              case 3:
+              case "end":
+                return _context24.stop();
+            }
+          }
+        }, _callee24, this);
+      }));
+
+      function requestSucceededWithResponse(_x19, _x20) {
+        return _requestSucceededWithResponse2.apply(this, arguments);
+      }
+
+      return requestSucceededWithResponse;
+    }()
+  }, {
+    key: "requestFailedWithResponse",
+    value: function requestFailedWithResponse(request, response) {
+      console.error(response);
+      this.resolveVisitPromise();
+    }
+  }, {
+    key: "requestErrored",
+    value: function requestErrored(request, error) {
+      console.error(error);
+      this.resolveVisitPromise();
+    }
+  }, {
+    key: "requestFinished",
+    value: function requestFinished(request) {
+      clearBusyState(this.element);
+    }
+  }, {
+    key: "formSubmissionStarted",
+    value: function formSubmissionStarted(_ref14) {
+      var formElement = _ref14.formElement;
+      markAsBusy(formElement, this.findFrameElement(formElement));
+    }
+  }, {
+    key: "formSubmissionSucceededWithResponse",
+    value: function formSubmissionSucceededWithResponse(formSubmission, response) {
+      var frame = this.findFrameElement(formSubmission.formElement, formSubmission.submitter);
+      this.proposeVisitIfNavigatedWithAction(frame, formSubmission.formElement, formSubmission.submitter);
+      frame.delegate.loadResponse(response);
+    }
+  }, {
+    key: "formSubmissionFailedWithResponse",
+    value: function formSubmissionFailedWithResponse(formSubmission, fetchResponse) {
+      this.element.delegate.loadResponse(fetchResponse);
+    }
+  }, {
+    key: "formSubmissionErrored",
+    value: function formSubmissionErrored(formSubmission, error) {
+      console.error(error);
+    }
+  }, {
+    key: "formSubmissionFinished",
+    value: function formSubmissionFinished(_ref15) {
+      var formElement = _ref15.formElement;
+      clearBusyState(formElement, this.findFrameElement(formElement));
+    }
+  }, {
+    key: "allowsImmediateRender",
+    value: function allowsImmediateRender(snapshot, resume) {
+      return true;
+    }
+  }, {
+    key: "viewRenderedSnapshot",
+    value: function viewRenderedSnapshot(snapshot, isPreview) {}
+  }, {
+    key: "viewInvalidated",
+    value: function viewInvalidated() {}
+  }, {
+    key: "visit",
+    value: function () {
+      var _visit = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee25(url) {
+        var _this31 = this;
+
+        var _a, request;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee25$(_context25) {
+          while (1) {
+            switch (_context25.prev = _context25.next) {
+              case 0:
+                request = new FetchRequest(this, FetchMethod.get, expandURL(url), new URLSearchParams(), this.element);
+                (_a = this.currentFetchRequest) === null || _a === void 0 ? void 0 : _a.cancel();
+                this.currentFetchRequest = request;
+                return _context25.abrupt("return", new Promise(function (resolve) {
+                  _this31.resolveVisitPromise = function () {
+                    _this31.resolveVisitPromise = function () {};
+
+                    _this31.currentFetchRequest = null;
+                    resolve();
+                  };
+
+                  request.perform();
+                }));
+
+              case 4:
+              case "end":
+                return _context25.stop();
+            }
+          }
+        }, _callee25, this);
+      }));
+
+      function visit(_x21) {
+        return _visit.apply(this, arguments);
+      }
+
+      return visit;
+    }()
+  }, {
+    key: "navigateFrame",
+    value: function navigateFrame(element, url, submitter) {
+      var frame = this.findFrameElement(element, submitter);
+      this.proposeVisitIfNavigatedWithAction(frame, element, submitter);
+      frame.setAttribute("reloadable", "");
+      frame.src = url;
+    }
+  }, {
+    key: "proposeVisitIfNavigatedWithAction",
+    value: function proposeVisitIfNavigatedWithAction(frame, element, submitter) {
+      var action = getAttribute("data-turbo-action", submitter, element, frame);
+
+      if (isAction(action)) {
+        var delegate = new SnapshotSubstitution(frame);
+
+        var proposeVisit = function proposeVisit(event) {
+          var target = event.target,
+              fetchResponse = event.detail.fetchResponse;
+
+          if (target instanceof FrameElement && target.src) {
+            var statusCode = fetchResponse.statusCode,
+                redirected = fetchResponse.redirected;
+            var responseHTML = target.ownerDocument.documentElement.outerHTML;
+            var response = {
+              statusCode: statusCode,
+              redirected: redirected,
+              responseHTML: responseHTML
+            };
+            session.visit(target.src, {
+              action: action,
+              response: response,
+              delegate: delegate
+            });
+          }
+        };
+
+        frame.addEventListener("turbo:frame-render", proposeVisit, {
+          once: true
+        });
+      }
+    }
+  }, {
+    key: "findFrameElement",
+    value: function findFrameElement(element, submitter) {
+      var _a;
+
+      var id = getAttribute("data-turbo-frame", submitter, element) || this.element.getAttribute("target");
+      return (_a = getFrameElementById(id)) !== null && _a !== void 0 ? _a : this.element;
+    }
+  }, {
+    key: "extractForeignFrameElement",
+    value: function () {
+      var _extractForeignFrameElement = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee26(container) {
+        var element, id;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee26$(_context26) {
+          while (1) {
+            switch (_context26.prev = _context26.next) {
+              case 0:
+                id = CSS.escape(this.id);
+
+                if (!(element = activateElement(container.querySelector("turbo-frame:not([disabled])#".concat(id)), this.currentURL))) {
+                  _context26.next = 3;
+                  break;
+                }
+
+                return _context26.abrupt("return", element);
+
+              case 3:
+                if (!(element = activateElement(container.querySelector("turbo-frame:not([disabled])[src][recurse~=".concat(id, "]")), this.currentURL))) {
+                  _context26.next = 9;
+                  break;
+                }
+
+                _context26.next = 6;
+                return element.loaded;
+
+              case 6:
+                _context26.next = 8;
+                return this.extractForeignFrameElement(element);
+
+              case 8:
+                return _context26.abrupt("return", _context26.sent);
+
+              case 9:
+                return _context26.abrupt("return", new FrameElement());
+
+              case 10:
+              case "end":
+                return _context26.stop();
+            }
+          }
+        }, _callee26, this);
+      }));
+
+      function extractForeignFrameElement(_x22) {
+        return _extractForeignFrameElement.apply(this, arguments);
+      }
+
+      return extractForeignFrameElement;
+    }()
+  }, {
+    key: "formActionIsVisitable",
+    value: function formActionIsVisitable(form, submitter) {
+      var action = getAction(form, submitter);
+      return locationIsVisitable(expandURL(action), this.rootLocation);
+    }
+  }, {
+    key: "shouldInterceptNavigation",
+    value: function shouldInterceptNavigation(element, submitter) {
+      var id = getAttribute("data-turbo-frame", submitter, element) || this.element.getAttribute("target");
+
+      if (element instanceof HTMLFormElement && !this.formActionIsVisitable(element, submitter)) {
+        return false;
+      }
+
+      if (!this.enabled || id == "_top") {
+        return false;
+      }
+
+      if (id) {
+        var frameElement = getFrameElementById(id);
+
+        if (frameElement) {
+          return !frameElement.disabled;
+        }
+      }
+
+      if (!session.elementDriveEnabled(element)) {
+        return false;
+      }
+
+      if (submitter && !session.elementDriveEnabled(submitter)) {
+        return false;
+      }
+
+      return true;
+    }
+  }, {
+    key: "id",
+    get: function get() {
+      return this.element.id;
+    }
+  }, {
+    key: "enabled",
+    get: function get() {
+      return !this.element.disabled;
+    }
+  }, {
+    key: "sourceURL",
+    get: function get() {
+      if (this.element.src) {
+        return this.element.src;
+      }
+    },
+    set: function set(sourceURL) {
+      this.settingSourceURL = true;
+      this.element.src = sourceURL !== null && sourceURL !== void 0 ? sourceURL : null;
+      this.currentURL = this.element.src;
+      this.settingSourceURL = false;
+    }
+  }, {
+    key: "reloadable",
+    get: function get() {
+      var frame = this.findFrameElement(this.element);
+      return frame.hasAttribute("reloadable");
+    },
+    set: function set(value) {
+      var frame = this.findFrameElement(this.element);
+
+      if (value) {
+        frame.setAttribute("reloadable", "");
+      } else {
+        frame.removeAttribute("reloadable");
+      }
+    }
+  }, {
+    key: "loadingStyle",
+    get: function get() {
+      return this.element.loading;
+    }
+  }, {
+    key: "isLoading",
+    get: function get() {
+      return this.formSubmission !== undefined || this.resolveVisitPromise() !== undefined;
+    }
+  }, {
+    key: "isActive",
+    get: function get() {
+      return this.element.isActive && this.connected;
+    }
+  }, {
+    key: "rootLocation",
+    get: function get() {
+      var _a;
+
+      var meta = this.element.ownerDocument.querySelector("meta[name=\"turbo-root\"]");
+      var root = (_a = meta === null || meta === void 0 ? void 0 : meta.content) !== null && _a !== void 0 ? _a : "/";
+      return expandURL(root);
+    }
+  }]);
+
+  return FrameController;
+}();
+
+var SnapshotSubstitution = /*#__PURE__*/function () {
+  function SnapshotSubstitution(element) {
+    _classCallCheck(this, SnapshotSubstitution);
+
+    this.clone = element.cloneNode(true);
+    this.id = element.id;
+  }
+
+  _createClass(SnapshotSubstitution, [{
+    key: "visitStarted",
+    value: function visitStarted(visit) {
+      this.snapshot = visit.view.snapshot;
+    }
+  }, {
+    key: "visitCachedSnapshot",
+    value: function visitCachedSnapshot() {
+      var _a;
+
+      var snapshot = this.snapshot,
+          id = this.id,
+          clone = this.clone;
+
+      if (snapshot) {
+        (_a = snapshot.element.querySelector("#" + id)) === null || _a === void 0 ? void 0 : _a.replaceWith(clone);
+      }
+    }
+  }]);
+
+  return SnapshotSubstitution;
+}();
+
+function getFrameElementById(id) {
+  if (id != null) {
+    var element = document.getElementById(id);
+
+    if (element instanceof FrameElement) {
+      return element;
+    }
+  }
+}
+
+function activateElement(element, currentURL) {
+  if (element) {
+    var src = element.getAttribute("src");
+
+    if (src != null && currentURL != null && urlsAreEqual(src, currentURL)) {
+      throw new Error("Matching <turbo-frame id=\"".concat(element.id, "\"> element has a source URL which references itself"));
+    }
+
+    if (element.ownerDocument !== document) {
+      element = document.importNode(element, true);
+    }
+
+    if (element instanceof FrameElement) {
+      element.connectedCallback();
+      return element;
+    }
+  }
+}
+
+var StreamActions = {
+  after: function after() {
+    var _this32 = this;
+
+    this.targetElements.forEach(function (e) {
+      var _a;
+
+      return (_a = e.parentElement) === null || _a === void 0 ? void 0 : _a.insertBefore(_this32.templateContent, e.nextSibling);
+    });
+  },
+  append: function append() {
+    var _this33 = this;
+
+    this.removeDuplicateTargetChildren();
+    this.targetElements.forEach(function (e) {
+      return e.append(_this33.templateContent);
+    });
+  },
+  before: function before() {
+    var _this34 = this;
+
+    this.targetElements.forEach(function (e) {
+      var _a;
+
+      return (_a = e.parentElement) === null || _a === void 0 ? void 0 : _a.insertBefore(_this34.templateContent, e);
+    });
+  },
+  prepend: function prepend() {
+    var _this35 = this;
+
+    this.removeDuplicateTargetChildren();
+    this.targetElements.forEach(function (e) {
+      return e.prepend(_this35.templateContent);
+    });
+  },
+  remove: function remove() {
+    this.targetElements.forEach(function (e) {
+      return e.remove();
+    });
+  },
+  replace: function replace() {
+    var _this36 = this;
+
+    this.targetElements.forEach(function (e) {
+      return e.replaceWith(_this36.templateContent);
+    });
+  },
+  update: function update() {
+    var _this37 = this;
+
+    this.targetElements.forEach(function (e) {
+      e.innerHTML = "";
+      e.append(_this37.templateContent);
+    });
+  }
+};
+
+var StreamElement = /*#__PURE__*/function (_HTMLElement2) {
+  _inherits(StreamElement, _HTMLElement2);
+
+  var _super9 = _createSuper(StreamElement);
+
+  function StreamElement() {
+    _classCallCheck(this, StreamElement);
+
+    return _super9.apply(this, arguments);
+  }
+
+  _createClass(StreamElement, [{
+    key: "connectedCallback",
+    value: function () {
+      var _connectedCallback = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee27() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee27$(_context27) {
+          while (1) {
+            switch (_context27.prev = _context27.next) {
+              case 0:
+                _context27.prev = 0;
+                _context27.next = 3;
+                return this.render();
+
+              case 3:
+                _context27.next = 8;
+                break;
+
+              case 5:
+                _context27.prev = 5;
+                _context27.t0 = _context27["catch"](0);
+                console.error(_context27.t0);
+
+              case 8:
+                _context27.prev = 8;
+                this.disconnect();
+                return _context27.finish(8);
+
+              case 11:
+              case "end":
+                return _context27.stop();
+            }
+          }
+        }, _callee27, this, [[0, 5, 8, 11]]);
+      }));
+
+      function connectedCallback() {
+        return _connectedCallback.apply(this, arguments);
+      }
+
+      return connectedCallback;
+    }()
+  }, {
+    key: "render",
+    value: function () {
+      var _render6 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee29() {
+        var _this38 = this;
+
+        var _a;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee29$(_context29) {
+          while (1) {
+            switch (_context29.prev = _context29.next) {
+              case 0:
+                return _context29.abrupt("return", (_a = this.renderPromise) !== null && _a !== void 0 ? _a : this.renderPromise = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee28() {
+                  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee28$(_context28) {
+                    while (1) {
+                      switch (_context28.prev = _context28.next) {
+                        case 0:
+                          if (!_this38.dispatchEvent(_this38.beforeRenderEvent)) {
+                            _context28.next = 4;
+                            break;
+                          }
+
+                          _context28.next = 3;
+                          return nextAnimationFrame();
+
+                        case 3:
+                          _this38.performAction();
+
+                        case 4:
+                        case "end":
+                          return _context28.stop();
+                      }
+                    }
+                  }, _callee28);
+                }))());
+
+              case 1:
+              case "end":
+                return _context29.stop();
+            }
+          }
+        }, _callee29, this);
+      }));
+
+      function render() {
+        return _render6.apply(this, arguments);
+      }
+
+      return render;
+    }()
+  }, {
+    key: "disconnect",
+    value: function disconnect() {
+      try {
+        this.remove();
+      } catch (_a) {}
+    }
+  }, {
+    key: "removeDuplicateTargetChildren",
+    value: function removeDuplicateTargetChildren() {
+      this.duplicateChildren.forEach(function (c) {
+        return c.remove();
+      });
+    }
+  }, {
+    key: "duplicateChildren",
+    get: function get() {
+      var _a;
+
+      var existingChildren = this.targetElements.flatMap(function (e) {
+        return _toConsumableArray(e.children);
+      }).filter(function (c) {
+        return !!c.id;
+      });
+
+      var newChildrenIds = _toConsumableArray((_a = this.templateContent) === null || _a === void 0 ? void 0 : _a.children).filter(function (c) {
+        return !!c.id;
+      }).map(function (c) {
+        return c.id;
+      });
+
+      return existingChildren.filter(function (c) {
+        return newChildrenIds.includes(c.id);
+      });
+    }
+  }, {
+    key: "performAction",
+    get: function get() {
+      if (this.action) {
+        var actionFunction = StreamActions[this.action];
+
+        if (actionFunction) {
+          return actionFunction;
+        }
+
+        this.raise("unknown action");
+      }
+
+      this.raise("action attribute is missing");
+    }
+  }, {
+    key: "targetElements",
+    get: function get() {
+      if (this.target) {
+        return this.targetElementsById;
+      } else if (this.targets) {
+        return this.targetElementsByQuery;
+      } else {
+        this.raise("target or targets attribute is missing");
+      }
+    }
+  }, {
+    key: "templateContent",
+    get: function get() {
+      return this.templateElement.content.cloneNode(true);
+    }
+  }, {
+    key: "templateElement",
+    get: function get() {
+      if (this.firstElementChild instanceof HTMLTemplateElement) {
+        return this.firstElementChild;
+      }
+
+      this.raise("first child element must be a <template> element");
+    }
+  }, {
+    key: "action",
+    get: function get() {
+      return this.getAttribute("action");
+    }
+  }, {
+    key: "target",
+    get: function get() {
+      return this.getAttribute("target");
+    }
+  }, {
+    key: "targets",
+    get: function get() {
+      return this.getAttribute("targets");
+    }
+  }, {
+    key: "raise",
+    value: function raise(message) {
+      throw new Error("".concat(this.description, ": ").concat(message));
+    }
+  }, {
+    key: "description",
+    get: function get() {
+      var _a, _b;
+
+      return (_b = ((_a = this.outerHTML.match(/<[^>]+>/)) !== null && _a !== void 0 ? _a : [])[0]) !== null && _b !== void 0 ? _b : "<turbo-stream>";
+    }
+  }, {
+    key: "beforeRenderEvent",
+    get: function get() {
+      return new CustomEvent("turbo:before-stream-render", {
+        bubbles: true,
+        cancelable: true
+      });
+    }
+  }, {
+    key: "targetElementsById",
+    get: function get() {
+      var _a;
+
+      var element = (_a = this.ownerDocument) === null || _a === void 0 ? void 0 : _a.getElementById(this.target);
+
+      if (element !== null) {
+        return [element];
+      } else {
+        return [];
+      }
+    }
+  }, {
+    key: "targetElementsByQuery",
+    get: function get() {
+      var _a;
+
+      var elements = (_a = this.ownerDocument) === null || _a === void 0 ? void 0 : _a.querySelectorAll(this.targets);
+
+      if (elements.length !== 0) {
+        return Array.prototype.slice.call(elements);
+      } else {
+        return [];
+      }
+    }
+  }]);
+
+  return StreamElement;
+}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
+
+FrameElement.delegateConstructor = FrameController;
+customElements.define("turbo-frame", FrameElement);
+customElements.define("turbo-stream", StreamElement);
+
+(function () {
+  var element = document.currentScript;
+  if (!element) return;
+  if (element.hasAttribute("data-turbo-suppress-warning")) return;
+
+  while (element = element.parentElement) {
+    if (element == document.body) {
+      return console.warn(unindent(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n        You are loading Turbo from a <script> element inside the <body> element. This is probably not what you meant to do!\n\n        Load your application\u2019s JavaScript bundle inside the <head> element instead. <script> elements in <body> are evaluated with each page change.\n\n        For more information, see: https://turbo.hotwired.dev/handbook/building#working-with-script-elements\n\n        \u2014\u2014\n        Suppress this warning by adding a \"data-turbo-suppress-warning\" attribute to: %s\n      "]))), element.outerHTML);
+    }
+  }
+})();
+
+window.Turbo = Turbo;
+start();
+
 
 /***/ }),
 
@@ -7147,6 +10750,7 @@ var default_1 = /*#__PURE__*/function (_Controller) {
       this.element.addEventListener('close', function () {
         _this.frameTarget.src = null;
       });
+      this.frameTarget.removeAttribute('disabled');
     }
   }, {
     key: "loading",
@@ -7399,7 +11003,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
-/* harmony import */ var _hotwired_turbo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @hotwired/turbo */ "./node_modules/@hotwired/turbo/dist/turbo.es2017-esm.js");
+/* harmony import */ var _hotwired_turbo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @hotwired/turbo */ "../../../packages/turbo/dist/turbo.es2017-esm.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
@@ -18993,11 +22597,6 @@ var u = /*#__PURE__*/function (_HTMLElement4) {
       });
     }
   }, {
-    key: "disconnectedCallback",
-    value: function disconnectedCallback() {
-      this.open = !1, this.hidden = !0;
-    }
-  }, {
     key: "open",
     get: function get() {
       return this.hasAttribute("open");
@@ -19255,7 +22854,7 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _hotwired_turbo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @hotwired/turbo */ "./node_modules/@hotwired/turbo/dist/turbo.es2017-esm.js");
+/* harmony import */ var _hotwired_turbo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @hotwired/turbo */ "../../../packages/turbo/dist/turbo.es2017-esm.js");
 /* harmony import */ var _github_hotkey__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @github/hotkey */ "./node_modules/@github/hotkey/dist/index.js");
 /* harmony import */ var _bootstrap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 /* harmony import */ var wicg_inert__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! wicg-inert */ "./node_modules/wicg-inert/dist/inert.esm.js");
@@ -19349,8 +22948,15 @@ document.addEventListener('turbo:submit-start', function (e) {
   }
 });
 document.addEventListener('turbo:submit-end', function (e) {
+  var _a;
+
   var submitter = e.detail.formSubmission.submitter;
   submitter.disabled = false;
+  var popupButton = (_a = submitter.closest('ui-popup')) === null || _a === void 0 ? void 0 : _a.children[0];
+
+  if (popupButton) {
+    popupButton.disabled = false;
+  }
 });
 document.addEventListener('turbo:before-fetch-response', function (e) {
   return __awaiter(void 0, void 0, void 0, /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
@@ -19400,6 +23006,39 @@ document.addEventListener('turbo:load', function () {
   document.querySelectorAll('[data-hotkey]').forEach(function (el) {
     (0,_github_hotkey__WEBPACK_IMPORTED_MODULE_2__.install)(el);
   });
+});
+document.addEventListener('turbo:frame-missing', function (_ref) {
+  var fetchResponse = _ref.detail.fetchResponse;
+  return __awaiter(void 0, void 0, void 0, /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+    var location, redirected, statusCode, responseHTML, response;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            location = fetchResponse.location, redirected = fetchResponse.redirected, statusCode = fetchResponse.statusCode, responseHTML = fetchResponse.responseHTML;
+            _context2.t0 = redirected;
+            _context2.t1 = statusCode;
+            _context2.next = 5;
+            return responseHTML;
+
+          case 5:
+            _context2.t2 = _context2.sent;
+            response = {
+              redirected: _context2.t0,
+              statusCode: _context2.t1,
+              responseHTML: _context2.t2
+            };
+            _hotwired_turbo__WEBPACK_IMPORTED_MODULE_1__.visit(location, {
+              response: response
+            });
+
+          case 8:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
 }); // don't want to do this for everything, some frames are reloadable
 // document.addEventListener('turbo:frame-load', function({ srcElement }) {
 //     (srcElement as FrameElement).removeAttribute('src');

@@ -45,12 +45,7 @@ export default class extends Controller {
 
         const nodes = this.listTarget!.querySelectorAll<HTMLElement>('[data-id]');
         const result = Array.from(nodes).map((el, i) => {
-            const node = { id: el.dataset.id, position: i } as any;
-            const parentNode = el.parentElement!.closest<HTMLElement>('[data-id]');
-            if (parentNode) {
-                node.parent_id = parentNode.dataset.id;
-            }
-            return node;
+            return el.dataset.id;
         });
 
         this.orderInputTarget!.value = JSON.stringify(result);

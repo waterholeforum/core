@@ -1,51 +1,60 @@
 <li
     class="admin-structure__node"
     data-id="{{ $node->id }}"
+    data-content-type="{{ $node->content->getMorphClass() }}"
     draggable="true"
 >
     <div class="admin-structure__content toolbar">
         <x-waterhole::icon icon="heroicon-o-menu" class="color-muted admin-structure__handle js-only" data-handle/>
 
-        @switch ($node->type)
-            @case('channel')
-                <x-waterhole::channel-label :channel="$node->content" class="admin-structure__label" link target="_blank"/>
-                <span class="with-icon text-xs color-muted">
-                    <x-waterhole::icon icon="heroicon-o-chat-alt-2"/>
-                    <span>Channel</span>
-                </span>
-                @break
+        @if ($node->content instanceof Waterhole\Models\Channel)
+            <x-waterhole::channel-label :channel="$node->content" class="admin-structure__label" link target="_blank"/>
+            <span class="with-icon text-xs color-muted">
+                <x-waterhole::icon icon="heroicon-o-chat-alt-2"/>
+                <span>Channel</span>
+            </span>
 
-            @case('link')
-                <a href="{{ $node->data['href'] }}" class="admin-structure__label with-icon color-text" target="_blank">
-                    <x-waterhole::icon :icon="$node->data['icon'] ?? null"/>
-                    <span>{{ $node->data['label'] ?? 'Group' }}</span>
-                </a>
-                <span class="with-icon text-xs color-muted">
-                    <x-waterhole::icon icon="heroicon-s-link"/>
-                    <span>Link</span>
-                </span>
-                @break
+        @elseif ($node->content instanceof Waterhole\Models\StructureHeading)
+            <span class="admin-structure__label color-muted">
+                {{ $node->content->name ?? 'Heading' }}
+            </span>
 
-            @case('group')
-                <span class="admin-structure__label color-muted">
-                    {{ $node->data['label'] ?? 'Group' }}
-                </span>
-        @endswitch
+        @elseif ($node->content instanceof Waterhole\Models\StructureLink)
+            <a href="{{ $node->content->href }}" class="admin-structure__label with-icon color-text" target="_blank">
+                <x-waterhole::icon :icon="$node->content->icon ?? null"/>
+                <span>{{ $node->content->name ?? 'Link' }}</span>
+            </a>
+            <span class="with-icon text-xs color-muted">
+                <x-waterhole::icon icon="heroicon-s-link"/>
+                <span>Link</span>
+            </span>
+        @endif
 
         <div class="spacer"></div>
 
+        @if (method_exists($node->content, 'permissions'))
+            @if ($node->content->permissions->guest()->can('view'))
+                <span class="with-icon text-xs color-muted">
+                    <x-waterhole::icon icon="heroicon-o-globe"/>
+                    Public
+                </span>
+            @elseif ($node->content->permissions->member()->can('view'))
+                <span class="with-icon text-xs color-muted">
+                    <x-waterhole::icon icon="heroicon-o-user"/>
+                    Member
+                </span>
+            @else
+                <span class="with-icon text-xs color-muted">
+                    <x-waterhole::icon icon="heroicon-o-key"/>
+                    {{ $node->content->permissions->ability('view')->map(fn($p) => $p->recipient->name)->join(', ') ?: 'Admin' }}
+                </span>
+            @endif
+        @endif
+
         <x-waterhole::action-menu
-            :for="$node->content ?: $node"
+            :for="$node->content"
             context="admin"
             placement="bottom-end"
         />
     </div>
-
-    @if ($node->type === 'group')
-        <ul role="list" class="admin-structure__children admin-structure__nodes">
-            @foreach ($node->children as $child)
-                <x-waterhole::admin.structure-node :node="$child"/>
-            @endforeach
-        </ul>
-    @endif
 </li>

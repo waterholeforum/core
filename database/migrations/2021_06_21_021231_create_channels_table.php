@@ -13,13 +13,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->string('icon')->nullable();
-            $table->string('cover')->nullable();
             $table->text('description')->nullable();
             $table->text('instructions')->nullable();
-            $table->boolean('hide_sidebar')->default(0);
             $table->json('sorts')->nullable();
-            $table->string('default_sort')->nullable();
-            $table->json('layouts')->nullable();
             $table->string('default_layout')->nullable();
             $table->boolean('sandbox')->default(0);
         });

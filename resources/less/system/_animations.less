@@ -14,6 +14,10 @@ ui-popup > :nth-child(2) {
   z-index: var(--z-index-overlay);
 }
 
+ui-popup.modeless::part(backdrop) {
+  display: none;
+}
+
 [data-placement="bottom-center"] {
   transform-origin: top center;
 }

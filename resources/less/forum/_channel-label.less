@@ -1,8 +1,9 @@
-.channel-label {
+.channel-label,
+.group-label {
   display: inline-flex;
-  align-items: baseline;
+  align-items: center;
   gap: var(--space-xxs);
-  vertical-align: baseline;
+  vertical-align: middle;
   color: inherit;
   text-decoration: none;
 
@@ -10,7 +11,12 @@
     text-decoration: underline;
   }
 
-  .icon {
-    vertical-align: 0;
-  }
+  //.icon {
+  //  vertical-align: -.2em;
+  //}
+}
+
+.group-label {
+  background: var(--group-color) !important;
+  color: var(--group-color-constrast) !important;
 }

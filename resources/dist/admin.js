@@ -2020,29 +2020,28 @@ var _default = /*#__PURE__*/function () {
       var e = Array.from(_this.list.querySelectorAll('[draggable="true"]')).filter(function (t) {
         return t !== _this.dragging;
       }),
-          i = _this.dragging.getBoundingClientRect(),
-          n = t.clientY - (_this.offsetY || 0),
-          r = t.clientY - (_this.offsetY || 0) + i.height;
+          n = _this.dragging.getBoundingClientRect(),
+          i = t.clientY - (_this.offsetY || 0),
+          s = t.clientY - (_this.offsetY || 0) + n.height;
 
       var _iterator = _createForOfIteratorHelper(e),
           _step;
 
       try {
         for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var _t = _step.value;
+          var _t3 = _step.value;
 
-          var _e = _t.firstElementChild.getBoundingClientRect();
+          var _e = _t3.firstElementChild.getBoundingClientRect();
 
-          if (n > _e.top && n < _e.top + _e.height / 2) {
-            _t.parentNode.insertBefore(_this.dragging, _t);
-
+          if (i > _e.top && i < _e.top + _e.height / 2) {
+            _this.canMove(_t3.parentElement) && _t3.parentElement.insertBefore(_this.dragging, _t3);
             break;
           }
 
-          if (r < _e.bottom && r > _e.bottom - _e.height / 2) {
-            var _e2 = _t.querySelector(':scope > ul, :scope > ol, :scope > [role="list"]');
+          if (s < _e.bottom && s > _e.bottom - _e.height / 2) {
+            var _e2 = _t3.querySelector(':scope > ul, :scope > ol, :scope > [role="list"]');
 
-            _e2 ? _e2.prepend(_this.dragging) : _t.parentNode.insertBefore(_this.dragging, _t.nextElementSibling);
+            _e2 && _this.canMove(_e2) ? _e2.prepend(_this.dragging) : _this.canMove(_t3.parentElement) && _t3.parentElement.insertBefore(_this.dragging, _t3.nextElementSibling);
             break;
           }
         }
@@ -2052,11 +2051,16 @@ var _default = /*#__PURE__*/function () {
         _iterator.f();
       }
 
-      var s = t.clientX - (_this.offsetX || 0);
+      var r = t.clientX - (_this.offsetX || 0);
 
-      if (_this.dragging.previousElementSibling && s > i.left + _this.options.indent) {
-        _this.dragging.previousElementSibling.querySelector(':scope > ul, :scope > ol, :scope > [role="list"]').appendChild(_this.dragging);
-      } else !_this.dragging.nextElementSibling && s < i.left && _this.dragging.parentNode !== _this.list && _this.dragging.parentNode.parentNode.parentNode.insertBefore(_this.dragging, _this.dragging.parentElement.parentElement.nextElementSibling);
+      if (_this.dragging.previousElementSibling && r > n.left + _this.options.indent) {
+        var _t = _this.dragging.previousElementSibling.querySelector(':scope > ul, :scope > ol, :scope > [role="list"]');
+
+        _t && _this.canMove(_t) && _t.appendChild(_this.dragging);
+      } else if (!_this.dragging.nextElementSibling && r < n.left && _this.dragging.parentNode !== _this.list) {
+        var _t2 = _this.dragging.parentElement.parentElement.parentElement;
+        _this.canMove(_t2) && _t2.insertBefore(_this.dragging, _this.dragging.parentElement.parentElement.nextElementSibling);
+      }
     }, this.list = t, this.options = Object.assign({
       indent: 40
     }, e), this.list.addEventListener("dragstart", this.dragstart), this.list.addEventListener("dragend", this.dragend);
@@ -2066,6 +2070,18 @@ var _default = /*#__PURE__*/function () {
     key: "destroy",
     value: function destroy() {
       this.list.removeEventListener("dragstart", this.dragstart), this.list.removeEventListener("dragend", this.dragend);
+    }
+  }, {
+    key: "canMove",
+    value: function canMove(t) {
+      var e = new CustomEvent("dragon-nest:move", {
+        bubbles: !0,
+        cancelable: !0,
+        detail: {
+          parent: t
+        }
+      });
+      return this.dragging.dispatchEvent(e), !e.defaultPrevented;
     }
   }]);
 
@@ -2124,9 +2140,13 @@ var default_1 = /*#__PURE__*/function (_Controller) {
   }
 
   _createClass(default_1, [{
-    key: "showOrderForm",
-    value: function showOrderForm() {
-      this.orderFormTarget.hidden = false;
+    key: "saveOrder",
+    value: function saveOrder() {
+      var _this = this;
+
+      setTimeout(function () {
+        _this.orderFormTarget.requestSubmit();
+      });
     }
   }]);
 
@@ -2135,6 +2155,80 @@ var default_1 = /*#__PURE__*/function (_Controller) {
 
 
 default_1.targets = ['orderForm'];
+
+/***/ }),
+
+/***/ "./resources/js/admin/controllers/color-picker.ts":
+/*!********************************************************!*\
+  !*** ./resources/js/admin/controllers/color-picker.ts ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ default_1)
+/* harmony export */ });
+/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+var default_1 = /*#__PURE__*/function (_Controller) {
+  _inherits(default_1, _Controller);
+
+  var _super = _createSuper(default_1);
+
+  function default_1() {
+    _classCallCheck(this, default_1);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(default_1, [{
+    key: "colorChanged",
+    value: function colorChanged(e) {
+      this.inputTarget.color = e.detail.value;
+      this.pickerTarget.color = e.detail.value;
+      this.swatchTarget.style.backgroundColor = e.detail.value;
+    }
+  }, {
+    key: "show",
+    value: function show() {
+      this.pickerTarget.hidden = false;
+    }
+  }, {
+    key: "hide",
+    value: function hide() {
+      this.pickerTarget.hidden = true;
+    }
+  }]);
+
+  return default_1;
+}(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
+
+
+default_1.targets = ['input', 'picker', 'swatch'];
 
 /***/ }),
 
@@ -2208,17 +2302,7 @@ var default_1 = /*#__PURE__*/function (_Controller) {
       var nodes = _this.listTarget.querySelectorAll('[data-id]');
 
       var result = Array.from(nodes).map(function (el, i) {
-        var node = {
-          id: el.dataset.id,
-          position: i
-        };
-        var parentNode = el.parentElement.closest('[data-id]');
-
-        if (parentNode) {
-          node.parent_id = parentNode.dataset.id;
-        }
-
-        return node;
+        return el.dataset.id;
       });
       _this.orderInputTarget.value = JSON.stringify(result);
     };
@@ -2251,6 +2335,219 @@ var default_1 = /*#__PURE__*/function (_Controller) {
 
 
 default_1.targets = ['list', 'orderInput'];
+
+/***/ }),
+
+/***/ "./resources/js/admin/controllers/permission-grid.ts":
+/*!***********************************************************!*\
+  !*** ./resources/js/admin/controllers/permission-grid.ts ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _default)
+/* harmony export */ });
+/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+var _default = /*#__PURE__*/function (_Controller) {
+  _inherits(_default, _Controller);
+
+  var _super = _createSuper(_default);
+
+  function _default() {
+    _classCallCheck(this, _default);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(_default, [{
+    key: "connect",
+    value: function connect() {
+      this.disabled = Array.from(this.element.querySelectorAll('input:disabled'));
+      this.update();
+    }
+  }, {
+    key: "mouseover",
+    value: function mouseover(e) {
+      var target = e.target;
+
+      if (target.matches('thead th, thead th *')) {
+        var index = Array.from(target.parentElement.children).indexOf(target);
+        this.element.querySelector('colgroup').children[index].classList.add('is-highlighted');
+        this.element.style.cursor = 'pointer';
+      }
+
+      if (target.matches('tbody th, tbody th *')) {
+        target.closest('tr').classList.add('is-highlighted');
+        this.element.style.cursor = 'pointer';
+      }
+    }
+  }, {
+    key: "reset",
+    value: function reset(e) {
+      this.element.querySelectorAll('col, tr').forEach(function (el) {
+        return el.classList.remove('is-highlighted');
+      });
+      this.element.style.cursor = '';
+    }
+  }, {
+    key: "click",
+    value: function click(e) {
+      var _this = this;
+
+      var _a, _b;
+
+      var target = e.target;
+
+      if (target.matches('thead th, thead th *')) {
+        var index = Array.from(target.parentElement.children).indexOf(target);
+        var checkboxes = Array.from(this.element.querySelectorAll("tbody tr td:nth-child(".concat(index + 1, ") input[type=\"checkbox\"]"))).filter(function (checkbox) {
+          var _a;
+
+          return !((_a = _this.disabled) === null || _a === void 0 ? void 0 : _a.includes(checkbox));
+        });
+        var checked = !((_a = checkboxes.find(function (checkbox) {
+          return !checkbox.disabled && checkbox.getAttribute('aria-disabled') !== 'true';
+        })) === null || _a === void 0 ? void 0 : _a.checked);
+        checkboxes.forEach(function (el) {
+          return el.checked = checked;
+        });
+      }
+
+      if (target.matches('tbody th, tbody th *')) {
+        var _checkboxes = Array.from(target.closest('tr').querySelectorAll("td input[type=\"checkbox\"]")).filter(function (checkbox) {
+          var _a;
+
+          return !((_a = _this.disabled) === null || _a === void 0 ? void 0 : _a.includes(checkbox));
+        });
+
+        var _checked = !((_b = _checkboxes.find(function (checkbox) {
+          return !checkbox.disabled && checkbox.getAttribute('aria-disabled') !== 'true';
+        })) === null || _b === void 0 ? void 0 : _b.checked);
+
+        _checkboxes.forEach(function (el) {
+          return el.checked = _checked;
+        });
+      }
+
+      this.update();
+    }
+  }, {
+    key: "update",
+    value: function update() {
+      var _this2 = this;
+
+      this.element.querySelectorAll('tbody td input[type="checkbox"]').forEach(function (checkbox) {
+        var _a;
+
+        if (!((_a = _this2.disabled) === null || _a === void 0 ? void 0 : _a.includes(checkbox))) {
+          checkbox.disabled = false; //setAttribute('aria-disabled', 'false');
+        }
+      });
+      this.element.querySelectorAll('[data-implied-by], [data-depends-on]').forEach(function (el) {
+        if (el.dataset.impliedBy) {
+          el.dataset.impliedBy.trim().split(/\s+/).filter(Boolean).forEach(function (name) {
+            var ref = document.querySelector("[name=\"".concat(name, "\"]:last-of-type"));
+
+            if (ref && ref.checked) {
+              el.checked = true;
+              el.disabled = true; //setAttribute('aria-disabled', 'true');
+            }
+          });
+        }
+
+        if (el.dataset.dependsOn) {
+          el.dataset.dependsOn.trim().split(/\s+/).filter(Boolean).forEach(function (name) {
+            var ref = document.querySelector("[name=\"".concat(name, "\"]:last-of-type"));
+
+            if (ref && !ref.checked) {
+              el.checked = false;
+              el.disabled = true; //setAttribute('aria-disabled', 'true');
+            }
+          });
+        }
+      }); // [1, 2].forEach((id, i) => {
+      //     Array.from(this.element.querySelectorAll<HTMLInputElement>(`[data-group-id="${id}"] td input`))
+      //         .filter(checkbox => ! this.disabled?.includes(checkbox))
+      //         .forEach(checkbox => {
+      //             const cell = checkbox.closest('td')!;
+      //             const index = Array.from(cell.parentElement!.children).indexOf(cell);
+      //             const rows = Array.from(this.element.querySelectorAll<HTMLInputElement>('tbody tr')).slice(i + 1);
+      //             rows.forEach(row => {
+      //                 const input = row.querySelector<HTMLInputElement>(`td:nth-child(${index + 1}) input`)!;
+      //                 if (checkbox.checked) {
+      //                     input.checked = true;
+      //                 }
+      //             });
+      //         });
+      // });
+      //
+      // this.element.querySelectorAll('tbody tr').forEach(row => {
+      //     const inputs = Array.from(row.querySelectorAll<HTMLInputElement>('td input'));
+      //     if (! inputs[0].checked) {
+      //         inputs.slice(1).forEach(checkbox => {
+      //             checkbox.checked = false;
+      //         });
+      //     }
+      // });
+      //
+      //
+      // [1, 2].forEach((id, i) => {
+      //     Array.from(this.element.querySelectorAll<HTMLInputElement>(`[data-group-id="${id}"] td input`))
+      //         .filter(checkbox => ! this.disabled?.includes(checkbox))
+      //         .forEach(checkbox => {
+      //             const cell = checkbox.closest('td')!;
+      //             const index = Array.from(cell.parentElement!.children).indexOf(cell);
+      //             const rows = Array.from(this.element.querySelectorAll<HTMLInputElement>('tbody tr')).slice(i + 1);
+      //             rows.forEach(row => {
+      //                 const input = row.querySelector<HTMLInputElement>(`td:nth-child(${index + 1}) input`)!;
+      //                 if (checkbox.checked) {
+      //                     input.setAttribute('aria-disabled', 'true');
+      //                 }
+      //             });
+      //         });
+      // });
+      //
+      // this.element.querySelectorAll('tbody tr').forEach(row => {
+      //     const inputs = Array.from(row.querySelectorAll<HTMLInputElement>('td input'));
+      //     if (! inputs[0].checked) {
+      //         inputs.slice(1).forEach(checkbox => {
+      //             checkbox.setAttribute('aria-disabled', 'true');
+      //         });
+      //     }
+      // });
+    }
+  }]);
+
+  return _default;
+}(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
+
+
 
 /***/ }),
 
@@ -2401,6 +2698,892 @@ function slug(string) {
 
 /***/ }),
 
+/***/ "./node_modules/vanilla-colorful/hex-color-picker.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/vanilla-colorful/hex-color-picker.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "HexColorPicker": () => (/* binding */ HexColorPicker)
+/* harmony export */ });
+/* harmony import */ var _lib_entrypoints_hex_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lib/entrypoints/hex.js */ "./node_modules/vanilla-colorful/lib/entrypoints/hex.js");
+
+/**
+ * A color picker custom element that uses HEX format.
+ *
+ * @element hex-color-picker
+ *
+ * @prop {string} color - Selected color in HEX format.
+ * @attr {string} color - Selected color in HEX format.
+ *
+ * @fires color-changed - Event fired when color property changes.
+ *
+ * @csspart hue - A hue selector container.
+ * @csspart saturation - A saturation selector container
+ * @csspart hue-pointer - A hue pointer element.
+ * @csspart saturation-pointer - A saturation pointer element.
+ */
+class HexColorPicker extends _lib_entrypoints_hex_js__WEBPACK_IMPORTED_MODULE_0__.HexBase {
+}
+customElements.define('hex-color-picker', HexColorPicker);
+//# sourceMappingURL=hex-color-picker.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/hex-input.js":
+/*!****************************************************!*\
+  !*** ./node_modules/vanilla-colorful/hex-input.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "HexInput": () => (/* binding */ HexInput)
+/* harmony export */ });
+/* harmony import */ var _lib_entrypoints_hex_input_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lib/entrypoints/hex-input.js */ "./node_modules/vanilla-colorful/lib/entrypoints/hex-input.js");
+
+/**
+ * A color picker custom element that uses HEX format.
+ *
+ * @element hex-input
+ *
+ * @prop {string} color - Color in HEX format.
+ * @attr {string} color - Selected color in HEX format.
+ *
+ * @fires color-changed - Event fired when color is changed.
+ *
+ * @csspart input - A native input element.
+ */
+class HexInput extends _lib_entrypoints_hex_input_js__WEBPACK_IMPORTED_MODULE_0__.HexInputBase {
+}
+customElements.define('hex-input', HexInput);
+//# sourceMappingURL=hex-input.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/components/color-picker.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/components/color-picker.js ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "$css": () => (/* binding */ $css),
+/* harmony export */   "$sliders": () => (/* binding */ $sliders),
+/* harmony export */   "ColorPicker": () => (/* binding */ ColorPicker)
+/* harmony export */ });
+/* harmony import */ var _utils_compare_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/compare.js */ "./node_modules/vanilla-colorful/lib/utils/compare.js");
+/* harmony import */ var _utils_dom_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/dom.js */ "./node_modules/vanilla-colorful/lib/utils/dom.js");
+/* harmony import */ var _hue_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./hue.js */ "./node_modules/vanilla-colorful/lib/components/hue.js");
+/* harmony import */ var _saturation_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./saturation.js */ "./node_modules/vanilla-colorful/lib/components/saturation.js");
+/* harmony import */ var _styles_color_picker_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../styles/color-picker.js */ "./node_modules/vanilla-colorful/lib/styles/color-picker.js");
+/* harmony import */ var _styles_hue_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styles/hue.js */ "./node_modules/vanilla-colorful/lib/styles/hue.js");
+/* harmony import */ var _styles_saturation_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../styles/saturation.js */ "./node_modules/vanilla-colorful/lib/styles/saturation.js");
+
+
+
+
+
+
+
+const $isSame = Symbol('same');
+const $color = Symbol('color');
+const $hsva = Symbol('hsva');
+const $change = Symbol('change');
+const $update = Symbol('update');
+const $parts = Symbol('parts');
+const $css = Symbol('css');
+const $sliders = Symbol('sliders');
+class ColorPicker extends HTMLElement {
+    static get observedAttributes() {
+        return ['color'];
+    }
+    get [$css]() {
+        return [_styles_color_picker_js__WEBPACK_IMPORTED_MODULE_0__["default"], _styles_hue_js__WEBPACK_IMPORTED_MODULE_1__["default"], _styles_saturation_js__WEBPACK_IMPORTED_MODULE_2__["default"]];
+    }
+    get [$sliders]() {
+        return [_saturation_js__WEBPACK_IMPORTED_MODULE_3__.Saturation, _hue_js__WEBPACK_IMPORTED_MODULE_4__.Hue];
+    }
+    get color() {
+        return this[$color];
+    }
+    set color(newColor) {
+        if (!this[$isSame](newColor)) {
+            const newHsva = this.colorModel.toHsva(newColor);
+            this[$update](newHsva);
+            this[$change](newColor);
+        }
+    }
+    constructor() {
+        super();
+        const template = (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_5__.tpl)(`<style>${this[$css].join('')}</style>`);
+        const root = this.attachShadow({ mode: 'open' });
+        root.appendChild(template.content.cloneNode(true));
+        root.addEventListener('move', this);
+        this[$parts] = this[$sliders].map((slider) => new slider(root));
+    }
+    connectedCallback() {
+        // A user may set a property on an _instance_ of an element,
+        // before its prototype has been connected to this class.
+        // If so, we need to run it through the proper class setter.
+        if (this.hasOwnProperty('color')) {
+            const value = this.color;
+            delete this['color'];
+            this.color = value;
+        }
+        else if (!this.color) {
+            this.color = this.colorModel.defaultColor;
+        }
+    }
+    attributeChangedCallback(_attr, _oldVal, newVal) {
+        const color = this.colorModel.fromAttr(newVal);
+        if (!this[$isSame](color)) {
+            this.color = color;
+        }
+    }
+    handleEvent(event) {
+        // Merge the current HSV color object with updated params.
+        const oldHsva = this[$hsva];
+        const newHsva = { ...oldHsva, ...event.detail };
+        this[$update](newHsva);
+        let newColor;
+        if (!(0,_utils_compare_js__WEBPACK_IMPORTED_MODULE_6__.equalColorObjects)(newHsva, oldHsva) &&
+            !this[$isSame]((newColor = this.colorModel.fromHsva(newHsva)))) {
+            this[$change](newColor);
+        }
+    }
+    [$isSame](color) {
+        return this.color && this.colorModel.equal(color, this.color);
+    }
+    [$update](hsva) {
+        this[$hsva] = hsva;
+        this[$parts].forEach((part) => part.update(hsva));
+    }
+    [$change](value) {
+        this[$color] = value;
+        (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_5__.fire)(this, 'color-changed', { value });
+    }
+}
+//# sourceMappingURL=color-picker.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/components/hue.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/components/hue.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Hue": () => (/* binding */ Hue)
+/* harmony export */ });
+/* harmony import */ var _slider_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./slider.js */ "./node_modules/vanilla-colorful/lib/components/slider.js");
+/* harmony import */ var _utils_convert_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/convert.js */ "./node_modules/vanilla-colorful/lib/utils/convert.js");
+/* harmony import */ var _utils_math_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/math.js */ "./node_modules/vanilla-colorful/lib/utils/math.js");
+
+
+
+class Hue extends _slider_js__WEBPACK_IMPORTED_MODULE_0__.Slider {
+    constructor(root) {
+        super(root, 'hue', 'aria-label="Hue" aria-valuemin="0" aria-valuemax="360"', false);
+    }
+    update({ h }) {
+        this.h = h;
+        this.style([
+            {
+                left: `${(h / 360) * 100}%`,
+                color: (0,_utils_convert_js__WEBPACK_IMPORTED_MODULE_1__.hsvaToHslString)({ h, s: 100, v: 100, a: 1 })
+            }
+        ]);
+        this.el.setAttribute('aria-valuenow', `${(0,_utils_math_js__WEBPACK_IMPORTED_MODULE_2__.round)(h)}`);
+    }
+    getMove(offset, key) {
+        // Hue measured in degrees of the color circle ranging from 0 to 360
+        return { h: key ? (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_2__.clamp)(this.h + offset.x * 360, 0, 360) : 360 * offset.x };
+    }
+}
+//# sourceMappingURL=hue.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/components/saturation.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/components/saturation.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Saturation": () => (/* binding */ Saturation)
+/* harmony export */ });
+/* harmony import */ var _slider_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./slider.js */ "./node_modules/vanilla-colorful/lib/components/slider.js");
+/* harmony import */ var _utils_convert_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/convert.js */ "./node_modules/vanilla-colorful/lib/utils/convert.js");
+/* harmony import */ var _utils_math_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/math.js */ "./node_modules/vanilla-colorful/lib/utils/math.js");
+
+
+
+class Saturation extends _slider_js__WEBPACK_IMPORTED_MODULE_0__.Slider {
+    constructor(root) {
+        super(root, 'saturation', 'aria-label="Color"', true);
+    }
+    update(hsva) {
+        this.hsva = hsva;
+        this.style([
+            {
+                top: `${100 - hsva.v}%`,
+                left: `${hsva.s}%`,
+                color: (0,_utils_convert_js__WEBPACK_IMPORTED_MODULE_1__.hsvaToHslString)(hsva)
+            },
+            {
+                'background-color': (0,_utils_convert_js__WEBPACK_IMPORTED_MODULE_1__.hsvaToHslString)({ h: hsva.h, s: 100, v: 100, a: 1 })
+            }
+        ]);
+        this.el.setAttribute('aria-valuetext', `Saturation ${(0,_utils_math_js__WEBPACK_IMPORTED_MODULE_2__.round)(hsva.s)}%, Brightness ${(0,_utils_math_js__WEBPACK_IMPORTED_MODULE_2__.round)(hsva.v)}%`);
+    }
+    getMove(offset, key) {
+        // Saturation and brightness always fit into [0, 100] range
+        return {
+            s: key ? (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_2__.clamp)(this.hsva.s + offset.x * 100, 0, 100) : offset.x * 100,
+            v: key ? (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_2__.clamp)(this.hsva.v - offset.y * 100, 0, 100) : Math.round(100 - offset.y * 100)
+        };
+    }
+}
+//# sourceMappingURL=saturation.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/components/slider.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/components/slider.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Slider": () => (/* binding */ Slider)
+/* harmony export */ });
+/* harmony import */ var _utils_dom_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/dom.js */ "./node_modules/vanilla-colorful/lib/utils/dom.js");
+/* harmony import */ var _utils_math_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/math.js */ "./node_modules/vanilla-colorful/lib/utils/math.js");
+
+
+let hasTouched = false;
+// Check if an event was triggered by touch
+const isTouch = (e) => 'touches' in e;
+// Prevent mobile browsers from handling mouse events (conflicting with touch ones).
+// If we detected a touch interaction before, we prefer reacting to touch events only.
+const isValid = (event) => {
+    if (hasTouched && !isTouch(event))
+        return false;
+    if (!hasTouched)
+        hasTouched = isTouch(event);
+    return true;
+};
+const pointerMove = (target, event) => {
+    const pointer = isTouch(event) ? event.touches[0] : event;
+    const rect = target.el.getBoundingClientRect();
+    (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_0__.fire)(target.el, 'move', target.getMove({
+        x: (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_1__.clamp)((pointer.pageX - (rect.left + window.pageXOffset)) / rect.width),
+        y: (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_1__.clamp)((pointer.pageY - (rect.top + window.pageYOffset)) / rect.height)
+    }));
+};
+const keyMove = (target, event) => {
+    // We use `keyCode` instead of `key` to reduce the size of the library.
+    const keyCode = event.keyCode;
+    // Ignore all keys except arrow ones, Page Up, Page Down, Home and End.
+    if (keyCode > 40 || (target.xy && keyCode < 37) || keyCode < 33)
+        return;
+    // Do not scroll page by keys when color picker element has focus.
+    event.preventDefault();
+    // Send relative offset to the parent component.
+    (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_0__.fire)(target.el, 'move', target.getMove({
+        x: keyCode === 39 // Arrow Right
+            ? 0.01
+            : keyCode === 37 // Arrow Left
+                ? -0.01
+                : keyCode === 34 // Page Down
+                    ? 0.05
+                    : keyCode === 33 // Page Up
+                        ? -0.05
+                        : keyCode === 35 // End
+                            ? 1
+                            : keyCode === 36 // Home
+                                ? -1
+                                : 0,
+        y: keyCode === 40 // Arrow down
+            ? 0.01
+            : keyCode === 38 // Arrow Up
+                ? -0.01
+                : 0
+    }, true));
+};
+class Slider {
+    constructor(root, part, aria, xy) {
+        const template = (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_0__.tpl)(`<div role="slider" tabindex="0" part="${part}" ${aria}><div part="${part}-pointer"></div></div>`);
+        root.appendChild(template.content.cloneNode(true));
+        const el = root.querySelector(`[part=${part}]`);
+        el.addEventListener('mousedown', this);
+        el.addEventListener('touchstart', this);
+        el.addEventListener('keydown', this);
+        this.el = el;
+        this.xy = xy;
+        this.nodes = [el.firstChild, el];
+    }
+    set dragging(state) {
+        const toggleEvent = state ? document.addEventListener : document.removeEventListener;
+        toggleEvent(hasTouched ? 'touchmove' : 'mousemove', this);
+        toggleEvent(hasTouched ? 'touchend' : 'mouseup', this);
+    }
+    handleEvent(event) {
+        switch (event.type) {
+            case 'mousedown':
+            case 'touchstart':
+                event.preventDefault();
+                // event.button is 0 in mousedown for left button activation
+                if (!isValid(event) || (!hasTouched && event.button != 0))
+                    return;
+                this.el.focus();
+                pointerMove(this, event);
+                this.dragging = true;
+                break;
+            case 'mousemove':
+            case 'touchmove':
+                event.preventDefault();
+                pointerMove(this, event);
+                break;
+            case 'mouseup':
+            case 'touchend':
+                this.dragging = false;
+                break;
+            case 'keydown':
+                keyMove(this, event);
+                break;
+        }
+    }
+    style(styles) {
+        styles.forEach((style, i) => {
+            for (const p in style) {
+                this.nodes[i].style.setProperty(p, style[p]);
+            }
+        });
+    }
+}
+//# sourceMappingURL=slider.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/entrypoints/hex-input.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/entrypoints/hex-input.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "HexInputBase": () => (/* binding */ HexInputBase)
+/* harmony export */ });
+/* harmony import */ var _utils_validate_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/validate.js */ "./node_modules/vanilla-colorful/lib/utils/validate.js");
+/* harmony import */ var _utils_dom_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/dom.js */ "./node_modules/vanilla-colorful/lib/utils/dom.js");
+
+
+const template = (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_0__.tpl)('<slot><input part="input" spellcheck="false"></slot>');
+// Escapes all non-hexadecimal characters including "#"
+const escape = (hex) => hex.replace(/([^0-9A-F]+)/gi, '').substr(0, 6);
+const $color = Symbol('color');
+const $saved = Symbol('saved');
+const $input = Symbol('saved');
+const $update = Symbol('update');
+class HexInputBase extends HTMLElement {
+    static get observedAttributes() {
+        return ['color'];
+    }
+    get color() {
+        return this[$color];
+    }
+    set color(hex) {
+        this[$color] = hex;
+        this[$update](hex);
+    }
+    connectedCallback() {
+        const root = this.attachShadow({ mode: 'open' });
+        root.appendChild(template.content.cloneNode(true));
+        const slot = root.firstElementChild;
+        const setInput = () => {
+            let input = this.querySelector('input');
+            if (!input) {
+                // remove all child node if no input found
+                let c;
+                while ((c = this.firstChild)) {
+                    c.remove();
+                }
+                input = slot.firstChild;
+            }
+            input.addEventListener('input', this);
+            input.addEventListener('blur', this);
+            this[$input] = input;
+        };
+        slot.addEventListener('slotchange', setInput);
+        setInput();
+        // A user may set a property on an _instance_ of an element,
+        // before its prototype has been connected to this class.
+        // If so, we need to run it through the proper class setter.
+        if (this.hasOwnProperty('color')) {
+            const value = this.color;
+            delete this['color'];
+            this.color = value;
+        }
+        else if (this.color == null) {
+            this.color = this.getAttribute('color') || '';
+        }
+        else if (this[$color]) {
+            this[$update](this[$color]);
+        }
+    }
+    handleEvent(event) {
+        const target = event.target;
+        const { value } = target;
+        switch (event.type) {
+            case 'input':
+                const hex = escape(value);
+                this[$saved] = this.color;
+                if ((0,_utils_validate_js__WEBPACK_IMPORTED_MODULE_1__.validHex)(hex)) {
+                    this.color = hex;
+                    this.dispatchEvent(new CustomEvent('color-changed', { bubbles: true, detail: { value: '#' + hex } }));
+                }
+                break;
+            case 'blur':
+                if (!(0,_utils_validate_js__WEBPACK_IMPORTED_MODULE_1__.validHex)(value)) {
+                    this.color = this[$saved];
+                }
+        }
+    }
+    attributeChangedCallback(_attr, _oldVal, newVal) {
+        if (this.color !== newVal) {
+            this.color = newVal;
+        }
+    }
+    [$update](hex) {
+        if (this[$input]) {
+            this[$input].value = hex == null || hex == '' ? '' : escape(hex);
+        }
+    }
+}
+//# sourceMappingURL=hex-input.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/entrypoints/hex.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/entrypoints/hex.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "HexBase": () => (/* binding */ HexBase)
+/* harmony export */ });
+/* harmony import */ var _components_color_picker_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/color-picker.js */ "./node_modules/vanilla-colorful/lib/components/color-picker.js");
+/* harmony import */ var _utils_convert_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/convert.js */ "./node_modules/vanilla-colorful/lib/utils/convert.js");
+/* harmony import */ var _utils_compare_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/compare.js */ "./node_modules/vanilla-colorful/lib/utils/compare.js");
+
+
+
+const colorModel = {
+    defaultColor: '#000',
+    toHsva: _utils_convert_js__WEBPACK_IMPORTED_MODULE_0__.hexToHsva,
+    fromHsva: _utils_convert_js__WEBPACK_IMPORTED_MODULE_0__.hsvaToHex,
+    equal: _utils_compare_js__WEBPACK_IMPORTED_MODULE_1__.equalHex,
+    fromAttr: (color) => color
+};
+class HexBase extends _components_color_picker_js__WEBPACK_IMPORTED_MODULE_2__.ColorPicker {
+    get colorModel() {
+        return colorModel;
+    }
+}
+//# sourceMappingURL=hex.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/styles/color-picker.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/styles/color-picker.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (`:host{display:flex;flex-direction:column;position:relative;width:200px;height:200px;user-select:none;-webkit-user-select:none;cursor:default}:host([hidden]){display:none!important}[role=slider]{position:relative;touch-action:none;user-select:none;-webkit-user-select:none;outline:0}[role=slider]:last-child{border-radius:0 0 8px 8px}[part$=pointer]{position:absolute;z-index:1;box-sizing:border-box;width:28px;height:28px;transform:translate(-50%,-50%);background-color:#fff;border:2px solid #fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.2)}[part$=pointer]::after{display:block;content:'';position:absolute;left:0;top:0;right:0;bottom:0;border-radius:inherit;background-color:currentColor}[role=slider]:focus [part$=pointer]{transform:translate(-50%,-50%) scale(1.1)}`);
+//# sourceMappingURL=color-picker.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/styles/hue.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/styles/hue.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (`[part=hue]{flex:0 0 24px;background:linear-gradient(to right,red 0,#ff0 17%,#0f0 33%,#0ff 50%,#00f 67%,#f0f 83%,red 100%)}[part=hue-pointer]{top:50%;z-index:2}`);
+//# sourceMappingURL=hue.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/styles/saturation.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/styles/saturation.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (`[part=saturation]{flex-grow:1;border-color:transparent;border-bottom:12px solid #000;border-radius:8px 8px 0 0;background-image:linear-gradient(to top,#000,transparent),linear-gradient(to right,#fff,rgba(255,255,255,0));box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)}[part=saturation-pointer]{z-index:3}`);
+//# sourceMappingURL=saturation.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/utils/compare.js":
+/*!************************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/utils/compare.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "equalColorObjects": () => (/* binding */ equalColorObjects),
+/* harmony export */   "equalColorString": () => (/* binding */ equalColorString),
+/* harmony export */   "equalHex": () => (/* binding */ equalHex)
+/* harmony export */ });
+/* harmony import */ var _convert_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./convert.js */ "./node_modules/vanilla-colorful/lib/utils/convert.js");
+
+const equalColorObjects = (first, second) => {
+    if (first === second)
+        return true;
+    for (const prop in first) {
+        // The following allows for a type-safe calling of this function (first & second have to be HSL, HSV, or RGB)
+        // with type-unsafe iterating over object keys. TS does not allow this without an index (`[key: string]: number`)
+        // on an object to define how iteration is normally done. To ensure extra keys are not allowed on our types,
+        // we must cast our object to unknown (as RGB demands `r` be a key, while `Record<string, x>` does not care if
+        // there is or not), and then as a type TS can iterate over.
+        if (first[prop] !==
+            second[prop])
+            return false;
+    }
+    return true;
+};
+const equalColorString = (first, second) => {
+    return first.replace(/\s/g, '') === second.replace(/\s/g, '');
+};
+const equalHex = (first, second) => {
+    if (first.toLowerCase() === second.toLowerCase())
+        return true;
+    // To compare colors like `#FFF` and `ffffff` we convert them into RGB objects
+    return equalColorObjects((0,_convert_js__WEBPACK_IMPORTED_MODULE_0__.hexToRgba)(first), (0,_convert_js__WEBPACK_IMPORTED_MODULE_0__.hexToRgba)(second));
+};
+//# sourceMappingURL=compare.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/utils/convert.js":
+/*!************************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/utils/convert.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "hexToHsva": () => (/* binding */ hexToHsva),
+/* harmony export */   "hexToRgba": () => (/* binding */ hexToRgba),
+/* harmony export */   "parseHue": () => (/* binding */ parseHue),
+/* harmony export */   "hslaStringToHsva": () => (/* binding */ hslaStringToHsva),
+/* harmony export */   "hslStringToHsva": () => (/* binding */ hslStringToHsva),
+/* harmony export */   "hslaToHsva": () => (/* binding */ hslaToHsva),
+/* harmony export */   "hsvaToHex": () => (/* binding */ hsvaToHex),
+/* harmony export */   "hsvaToHsla": () => (/* binding */ hsvaToHsla),
+/* harmony export */   "hsvaToHsvString": () => (/* binding */ hsvaToHsvString),
+/* harmony export */   "hsvaToHsvaString": () => (/* binding */ hsvaToHsvaString),
+/* harmony export */   "hsvaToHslString": () => (/* binding */ hsvaToHslString),
+/* harmony export */   "hsvaToHslaString": () => (/* binding */ hsvaToHslaString),
+/* harmony export */   "hsvaToRgba": () => (/* binding */ hsvaToRgba),
+/* harmony export */   "hsvaToRgbString": () => (/* binding */ hsvaToRgbString),
+/* harmony export */   "hsvaToRgbaString": () => (/* binding */ hsvaToRgbaString),
+/* harmony export */   "hsvaStringToHsva": () => (/* binding */ hsvaStringToHsva),
+/* harmony export */   "hsvStringToHsva": () => (/* binding */ hsvStringToHsva),
+/* harmony export */   "rgbaStringToHsva": () => (/* binding */ rgbaStringToHsva),
+/* harmony export */   "rgbStringToHsva": () => (/* binding */ rgbStringToHsva),
+/* harmony export */   "rgbaToHex": () => (/* binding */ rgbaToHex),
+/* harmony export */   "rgbaToHsva": () => (/* binding */ rgbaToHsva),
+/* harmony export */   "roundHsva": () => (/* binding */ roundHsva),
+/* harmony export */   "rgbaToRgb": () => (/* binding */ rgbaToRgb),
+/* harmony export */   "hslaToHsl": () => (/* binding */ hslaToHsl),
+/* harmony export */   "hsvaToHsv": () => (/* binding */ hsvaToHsv)
+/* harmony export */ });
+/* harmony import */ var _math_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./math.js */ "./node_modules/vanilla-colorful/lib/utils/math.js");
+
+/**
+ * Valid CSS <angle> units.
+ * https://developer.mozilla.org/en-US/docs/Web/CSS/angle
+ */
+const angleUnits = {
+    grad: 360 / 400,
+    turn: 360,
+    rad: 360 / (Math.PI * 2)
+};
+const hexToHsva = (hex) => rgbaToHsva(hexToRgba(hex));
+const hexToRgba = (hex) => {
+    if (hex[0] === '#')
+        hex = hex.substr(1);
+    if (hex.length < 6) {
+        return {
+            r: parseInt(hex[0] + hex[0], 16),
+            g: parseInt(hex[1] + hex[1], 16),
+            b: parseInt(hex[2] + hex[2], 16),
+            a: 1
+        };
+    }
+    return {
+        r: parseInt(hex.substr(0, 2), 16),
+        g: parseInt(hex.substr(2, 2), 16),
+        b: parseInt(hex.substr(4, 2), 16),
+        a: 1
+    };
+};
+const parseHue = (value, unit = 'deg') => {
+    return Number(value) * (angleUnits[unit] || 1);
+};
+const hslaStringToHsva = (hslString) => {
+    const matcher = /hsla?\(?\s*(-?\d*\.?\d+)(deg|rad|grad|turn)?[,\s]+(-?\d*\.?\d+)%?[,\s]+(-?\d*\.?\d+)%?,?\s*[/\s]*(-?\d*\.?\d+)?(%)?\s*\)?/i;
+    const match = matcher.exec(hslString);
+    if (!match)
+        return { h: 0, s: 0, v: 0, a: 1 };
+    return hslaToHsva({
+        h: parseHue(match[1], match[2]),
+        s: Number(match[3]),
+        l: Number(match[4]),
+        a: match[5] === undefined ? 1 : Number(match[5]) / (match[6] ? 100 : 1)
+    });
+};
+const hslStringToHsva = hslaStringToHsva;
+const hslaToHsva = ({ h, s, l, a }) => {
+    s *= (l < 50 ? l : 100 - l) / 100;
+    return {
+        h: h,
+        s: s > 0 ? ((2 * s) / (l + s)) * 100 : 0,
+        v: l + s,
+        a
+    };
+};
+const hsvaToHex = (hsva) => rgbaToHex(hsvaToRgba(hsva));
+const hsvaToHsla = ({ h, s, v, a }) => {
+    const hh = ((200 - s) * v) / 100;
+    return {
+        h: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(h),
+        s: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hh > 0 && hh < 200 ? ((s * v) / 100 / (hh <= 100 ? hh : 200 - hh)) * 100 : 0),
+        l: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hh / 2),
+        a: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(a, 2)
+    };
+};
+const hsvaToHsvString = (hsva) => {
+    const { h, s, v } = roundHsva(hsva);
+    return `hsv(${h}, ${s}%, ${v}%)`;
+};
+const hsvaToHsvaString = (hsva) => {
+    const { h, s, v, a } = roundHsva(hsva);
+    return `hsva(${h}, ${s}%, ${v}%, ${a})`;
+};
+const hsvaToHslString = (hsva) => {
+    const { h, s, l } = hsvaToHsla(hsva);
+    return `hsl(${h}, ${s}%, ${l}%)`;
+};
+const hsvaToHslaString = (hsva) => {
+    const { h, s, l, a } = hsvaToHsla(hsva);
+    return `hsla(${h}, ${s}%, ${l}%, ${a})`;
+};
+const hsvaToRgba = ({ h, s, v, a }) => {
+    h = (h / 360) * 6;
+    s = s / 100;
+    v = v / 100;
+    const hh = Math.floor(h), b = v * (1 - s), c = v * (1 - (h - hh) * s), d = v * (1 - (1 - h + hh) * s), module = hh % 6;
+    return {
+        r: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)([v, c, b, b, d, v][module] * 255),
+        g: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)([d, v, v, c, b, b][module] * 255),
+        b: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)([b, b, d, v, v, c][module] * 255),
+        a: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(a, 2)
+    };
+};
+const hsvaToRgbString = (hsva) => {
+    const { r, g, b } = hsvaToRgba(hsva);
+    return `rgb(${r}, ${g}, ${b})`;
+};
+const hsvaToRgbaString = (hsva) => {
+    const { r, g, b, a } = hsvaToRgba(hsva);
+    return `rgba(${r}, ${g}, ${b}, ${a})`;
+};
+const hsvaStringToHsva = (hsvString) => {
+    const matcher = /hsva?\(?\s*(-?\d*\.?\d+)(deg|rad|grad|turn)?[,\s]+(-?\d*\.?\d+)%?[,\s]+(-?\d*\.?\d+)%?,?\s*[/\s]*(-?\d*\.?\d+)?(%)?\s*\)?/i;
+    const match = matcher.exec(hsvString);
+    if (!match)
+        return { h: 0, s: 0, v: 0, a: 1 };
+    return roundHsva({
+        h: parseHue(match[1], match[2]),
+        s: Number(match[3]),
+        v: Number(match[4]),
+        a: match[5] === undefined ? 1 : Number(match[5]) / (match[6] ? 100 : 1)
+    });
+};
+const hsvStringToHsva = hsvaStringToHsva;
+const rgbaStringToHsva = (rgbaString) => {
+    const matcher = /rgba?\(?\s*(-?\d*\.?\d+)(%)?[,\s]+(-?\d*\.?\d+)(%)?[,\s]+(-?\d*\.?\d+)(%)?,?\s*[/\s]*(-?\d*\.?\d+)?(%)?\s*\)?/i;
+    const match = matcher.exec(rgbaString);
+    if (!match)
+        return { h: 0, s: 0, v: 0, a: 1 };
+    return rgbaToHsva({
+        r: Number(match[1]) / (match[2] ? 100 / 255 : 1),
+        g: Number(match[3]) / (match[4] ? 100 / 255 : 1),
+        b: Number(match[5]) / (match[6] ? 100 / 255 : 1),
+        a: match[7] === undefined ? 1 : Number(match[7]) / (match[8] ? 100 : 1)
+    });
+};
+const rgbStringToHsva = rgbaStringToHsva;
+const format = (number) => {
+    const hex = number.toString(16);
+    return hex.length < 2 ? '0' + hex : hex;
+};
+const rgbaToHex = ({ r, g, b }) => {
+    return '#' + format(r) + format(g) + format(b);
+};
+const rgbaToHsva = ({ r, g, b, a }) => {
+    const max = Math.max(r, g, b);
+    const delta = max - Math.min(r, g, b);
+    // prettier-ignore
+    const hh = delta
+        ? max === r
+            ? (g - b) / delta
+            : max === g
+                ? 2 + (b - r) / delta
+                : 4 + (r - g) / delta
+        : 0;
+    return {
+        h: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(60 * (hh < 0 ? hh + 6 : hh)),
+        s: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(max ? (delta / max) * 100 : 0),
+        v: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)((max / 255) * 100),
+        a
+    };
+};
+const roundHsva = (hsva) => ({
+    h: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hsva.h),
+    s: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hsva.s),
+    v: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hsva.v),
+    a: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hsva.a, 2)
+});
+const rgbaToRgb = ({ r, g, b }) => ({ r, g, b });
+const hslaToHsl = ({ h, s, l }) => ({ h, s, l });
+const hsvaToHsv = (hsva) => {
+    const { h, s, v } = roundHsva(hsva);
+    return { h, s, v };
+};
+//# sourceMappingURL=convert.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/utils/dom.js":
+/*!********************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/utils/dom.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "tpl": () => (/* binding */ tpl),
+/* harmony export */   "fire": () => (/* binding */ fire)
+/* harmony export */ });
+const cache = {};
+const tpl = (html) => {
+    let template = cache[html];
+    if (!template) {
+        template = document.createElement('template');
+        template.innerHTML = html;
+        cache[html] = template;
+    }
+    return template;
+};
+const fire = (target, type, detail) => {
+    target.dispatchEvent(new CustomEvent(type, {
+        bubbles: true,
+        detail
+    }));
+};
+//# sourceMappingURL=dom.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/utils/math.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/utils/math.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "clamp": () => (/* binding */ clamp),
+/* harmony export */   "round": () => (/* binding */ round)
+/* harmony export */ });
+// Clamps a value between an upper and lower bound.
+// We use ternary operators because it makes the minified code
+// 2 times shorter then `Math.min(Math.max(a,b),c)`
+const clamp = (number, min = 0, max = 1) => {
+    return number > max ? max : number < min ? min : number;
+};
+const round = (number, digits = 0, base = Math.pow(10, digits)) => {
+    return Math.round(base * number) / base;
+};
+//# sourceMappingURL=math.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/utils/validate.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/utils/validate.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "validHex": () => (/* binding */ validHex)
+/* harmony export */ });
+const hex3 = /^#?[0-9A-F]{3}$/i;
+const hex6 = /^#?[0-9A-F]{6}$/i;
+const validHex = (color) => hex6.test(color) || hex3.test(color);
+//# sourceMappingURL=validate.js.map
+
+/***/ }),
+
 /***/ "./resources/js/admin/controllers sync recursive \\.ts$":
 /*!****************************************************!*\
   !*** ./resources/js/admin/controllers/ sync \.ts$ ***!
@@ -2409,7 +3592,9 @@ function slug(string) {
 
 var map = {
 	"./admin-structure.ts": "./resources/js/admin/controllers/admin-structure.ts",
+	"./color-picker.ts": "./resources/js/admin/controllers/color-picker.ts",
 	"./dragon-nest.ts": "./resources/js/admin/controllers/dragon-nest.ts",
+	"./permission-grid.ts": "./resources/js/admin/controllers/permission-grid.ts",
 	"./slugger.ts": "./resources/js/admin/controllers/slugger.ts"
 };
 
@@ -2498,8 +3683,9 @@ var __webpack_exports__ = {};
 /*!*************************************!*\
   !*** ./resources/js/admin/index.ts ***!
   \*************************************/
-
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vanilla_colorful__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vanilla-colorful */ "./node_modules/vanilla-colorful/hex-color-picker.js");
+/* harmony import */ var vanilla_colorful_hex_input_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vanilla-colorful/hex-input.js */ "./node_modules/vanilla-colorful/hex-input.js");
 var context = __webpack_require__("./resources/js/admin/controllers sync recursive \\.ts$");
 
 window.Stimulus.load(context.keys().map(function (key) {
@@ -2508,6 +3694,8 @@ window.Stimulus.load(context.keys().map(function (key) {
     controllerConstructor: context(key)["default"]
   };
 }));
+
+
 })();
 
 /******/ })()

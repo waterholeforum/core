@@ -20,7 +20,9 @@
         data-slugger-target="slug"
     >
     <p class="field__description">
-        This channel will be accessible at {!! preg_replace('~^https?://~', '', str_replace('*', '<span data-slugger-target="mirror">'.old('slug', $channel->slug ?? '').'</span>', route('waterhole.channels.show', ['channel' => '*']))) !!}.
+        This channel will be accessible
+        at {!! preg_replace('~^https?://~', '', str_replace('*', '<span data-slugger-target="mirror">'.old('slug', $channel->slug ?? '').'</span>', route('waterhole.channels.show', ['channel' => '*']))) !!}
+        .
     </p>
 </x-waterhole::field>
 
@@ -52,7 +54,8 @@
         class="input"
     >{{ old('instructions', $channel->instructions ?? '') }}</textarea>
     <p class="field__description">
-        Give instructions to be shown to users as they create posts in this channel.
+        Give instructions to be shown to users as they create posts in this
+        channel.
     </p>
 </x-waterhole::field>
 
@@ -96,7 +99,7 @@
         @endforeach
     </div>
     @error('default_layout')
-        <div>{{ $message }}</div>
+    <div>{{ $message }}</div>
     @enderror
 </div>
 
@@ -120,7 +123,7 @@
 
         <ul
             data-reveal-target="then"
-            class="card admin-structure"
+            class="card admin-structure text-xs"
             data-controller="dragon-nest"
             data-dragon-nest-target="list"
         >
@@ -130,8 +133,16 @@
 
             @foreach (Waterhole\Extend\FeedSort::getInstances()->sortBy(fn($sort) => ($k = array_search($sort->handle(), $sorts)) === false ? INF : $k) as $sort)
                 @php $handle = $sort->handle(); @endphp
-                <li class="admin-structure__node admin-structure__content toolbar" draggable="true" data-id="{{ $handle }}">
-                    <x-waterhole::icon icon="heroicon-o-menu" class="color-muted admin-structure__handle js-only" data-handle/>
+                <li
+                    class="admin-structure__node admin-structure__content toolbar"
+                    draggable="true"
+                    data-id="{{ $handle }}"
+                >
+                    <x-waterhole::icon
+                        icon="heroicon-o-menu"
+                        class="color-muted admin-structure__handle js-only"
+                        data-handle
+                    />
 
                     <label class="choice">
                         <input
@@ -145,5 +156,17 @@
                 </li>
             @endforeach
         </ul>
+    </div>
+</div>
+
+<div class="field">
+    <div class="field__label">Permissions</div>
+    <div>
+        <x-waterhole::admin.permission-grid
+            :abilities="['view', 'comment', 'post', 'moderate']"
+            :permissions="$channel->permissions ?? null"
+            :parent-permissions="$channel->structure->parent->content->permissions ?? null"
+            :defaults="['view', 'comment', 'post']"
+        />
     </div>
 </div>

@@ -1,4 +1,3 @@
-import { definitionsFromContext } from '@hotwired/stimulus-webpack-helpers';
 import * as Turbo from '@hotwired/turbo';
 import { install } from '@github/hotkey';
 
@@ -54,6 +53,10 @@ document.addEventListener('turbo:submit-start', e => {
 document.addEventListener('turbo:submit-end', e => {
     const submitter = (e as any).detail.formSubmission.submitter;
     submitter.disabled = false;
+    const popupButton = submitter.closest('ui-popup')?.children[0] as HTMLButtonElement;
+    if (popupButton) {
+        popupButton.disabled = false;
+    }
 });
 
 document.addEventListener('turbo:before-fetch-response', async e => {
@@ -85,6 +88,13 @@ document.addEventListener('turbo:load', () => {
         install(el);
     });
 });
+
+document.addEventListener('turbo:frame-missing', async ({ detail: { fetchResponse }}: any) => {
+    const { location, redirected, statusCode, responseHTML } = fetchResponse;
+    const response = { redirected, statusCode, responseHTML: await responseHTML };
+
+    Turbo.visit(location, { response });
+})
 
 // don't want to do this for everything, some frames are reloadable
 // document.addEventListener('turbo:frame-load', function({ srcElement }) {

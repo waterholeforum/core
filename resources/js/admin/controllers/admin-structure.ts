@@ -5,7 +5,9 @@ export default class extends Controller {
 
     orderFormTarget?: HTMLFormElement;
 
-    showOrderForm() {
-        this.orderFormTarget!.hidden = false;
+    saveOrder() {
+        setTimeout(() => {
+            this.orderFormTarget!.requestSubmit();
+        });
     }
 }

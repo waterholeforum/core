@@ -60,27 +60,27 @@ class ActionController extends Controller
 
         try {
             $response = $action->run($items, $request);
-
-            if (
-                $request->wantsTurboStream()
-                && $streams = $items->flatMap(fn($item) => $action->stream($item))->all()
-            ) {
-                if ($success = session()->get('success')) {
-                    $streams[] = TurboStream::append(new Alert('success', $success), 'alerts');
-                }
-
-                session()->ageFlashData();
-
-                return TurboResponseFactory::makeStream(
-                    implode(PHP_EOL, $streams)
-                );
-            }
-
-            if ($response) {
-                return $response;
-            }
         } catch (ValidationException $exception) {
             throw $exception->redirectTo(route('waterhole.action.create', $request->input()));
+        }
+
+        if (
+            $request->wantsTurboStream()
+            && $streams = $items->flatMap(fn($item) => $action->stream($item))->all()
+        ) {
+            if ($success = session()->get('success')) {
+                $streams[] = TurboStream::append(new Alert('success', $success), 'alerts');
+            }
+
+            session()->ageFlashData();
+
+            return TurboResponseFactory::makeStream(
+                implode(PHP_EOL, $streams)
+            );
+        }
+
+        if ($response) {
+            return $response;
         }
 
         return redirect($request->get('return', url()->previous()));

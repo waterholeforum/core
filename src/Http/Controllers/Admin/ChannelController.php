@@ -3,6 +3,7 @@
 namespace Waterhole\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Channel;
 
@@ -10,36 +11,32 @@ class ChannelController extends Controller
 {
     public function create()
     {
-        $this->authorize('create', Channel::class);
-
-        return view('waterhole::admin.channels.create');
+        return view('waterhole::admin.structure.channels.create');
     }
 
     public function store(Request $request)
     {
-        $this->authorize('create', Channel::class);
+        $data = $this->data($request);
+        $permissions = Arr::pull($data, 'permissions');
 
-        $channel = Channel::create(
-            $this->data($request)
-        );
+        $channel = Channel::create($data);
+        $channel->savePermissions($permissions);
 
         return redirect()->route('waterhole.admin.structure');
     }
 
     public function edit(Channel $channel)
     {
-        $this->authorize('update', $channel);
-
-        return view('waterhole::admin.channels.edit', compact('channel'));
+        return view('waterhole::admin.structure.channels.edit', compact('channel'));
     }
 
     public function update(Channel $channel, Request $request)
     {
-        $this->authorize('update', $channel);
+        $data = $this->data($request, $channel);
+        $permissions = Arr::pull($data, 'permissions');
 
-        $channel->update(
-            $this->data($request, $channel)
-        );
+        $channel->update($data);
+        $channel->savePermissions($permissions);
 
         return redirect()->route('waterhole.admin.structure');
     }

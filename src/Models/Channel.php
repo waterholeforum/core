@@ -3,25 +3,24 @@
 namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Validation\Rule;
-use Intervention\Image\Image;
 use Waterhole\Extend\FeedSort;
 use Waterhole\Models\Concerns\Followable;
-use Waterhole\Models\Concerns\HasImageAttributes;
+use Waterhole\Models\Concerns\HasPermissions;
 use Waterhole\Models\Concerns\HasUserState;
+use Waterhole\Models\Concerns\Structurable;
 
 class Channel extends Model
 {
-    use HasImageAttributes;
     use HasUserState;
     use Followable;
+    use Structurable;
+    use HasPermissions;
 
     public $timestamps = false;
 
     protected $casts = [
         'sorts' => 'json',
-        'layouts' => 'json',
     ];
 
     public function posts(): HasMany
@@ -49,28 +48,6 @@ class Channel extends Model
         return $this->posts()->following()->unread();
     }
 
-    public function structure(): MorphOne
-    {
-        return $this->morphOne(Structure::class, 'content');
-    }
-
-    public function getCoverUrlAttribute(): string
-    {
-        return $this->resolvePublicUrl($this->cover, 'channel-covers');
-    }
-
-    public function removeCover(): void
-    {
-        $this->removeImage('cover', 'channel-covers');
-    }
-
-    public function uploadCover(Image $image): void
-    {
-        $this->uploadImage($image, 'cover', 'channel-covers', function (Image $image) {
-            return $image->crop(1000, 300)->encode('jpg');
-        });
-    }
-
     public function getUrlAttribute(): string
     {
         return route('waterhole.channels.show', ['channel' => $this]);
@@ -81,9 +58,9 @@ class Channel extends Model
         return route('waterhole.admin.structure.channels.edit', ['channel' => $this]);
     }
 
-    public function getDisplayNameAttribute(): string
+    public function abilities(): array
     {
-        return $this->icon.' '.$this->name;
+        return ['view', 'comment', 'post', 'moderate'];
     }
 
     public static function rules(Channel $channel = null): array
@@ -98,6 +75,7 @@ class Channel extends Model
             'default_layout' => ['in:list,cards'],
             'sorts' => ['required_with:custom_sorts', 'array'],
             'sorts.*' => ['string', 'distinct', Rule::in(FeedSort::getInstances()->map->handle())],
+            'permissions' => ['array'],
         ];
     }
 }

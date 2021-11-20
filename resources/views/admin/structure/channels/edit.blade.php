@@ -11,7 +11,7 @@
                 <x-waterhole::validation-errors/>
 
                 <div class="form-groups" data-controller="slugger">
-                    @include('waterhole::admin.channels.fields')
+                    @include('waterhole::admin.structure.channels.fields')
 
                     <div>
                         <div class="toolbar">

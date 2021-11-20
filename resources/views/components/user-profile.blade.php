@@ -13,6 +13,15 @@
                     <p class="content">{{ $user->bio }}</p>
                 @endif
                 <div class="toolbar toolbar--baseline color-muted text-xs">
+                    @if ($user->groups->where('is_public')->count())
+                        <span>
+                            @foreach ($user->groups as $group)
+                                @if ($group->is_public)
+                                    <x-waterhole::group-label :group="$group"/>
+                                @endif
+                            @endforeach
+                        </span>
+                    @endif
                     @if ($user->location)
                         <span class="with-icon">
                             <x-waterhole::icon icon="heroicon-o-location-marker"/>

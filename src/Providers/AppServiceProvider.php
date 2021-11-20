@@ -39,6 +39,8 @@ class AppServiceProvider extends ServiceProvider
             'comment' => Models\Comment::class,
             'group' => Models\Group::class,
             'post' => Models\Post::class,
+            'structureHeading' => Models\StructureHeading::class,
+            'structureLink' => Models\StructureLink::class,
             'user' => Models\User::class,
         ]);
 

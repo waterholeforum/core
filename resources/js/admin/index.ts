@@ -6,3 +6,6 @@ window.Stimulus.load(
         controllerConstructor: context(key).default,
     }))
 );
+
+import 'vanilla-colorful';
+import 'vanilla-colorful/hex-input.js';
