@@ -14,7 +14,7 @@
             <tr>
                 <td></td>
                 @foreach ($abilities as $ability)
-                    <th><span>{{ ucfirst($ability) }}</span></th>
+                    <th>{{ ucfirst($ability) }}</th>
                 @endforeach
             </tr>
         </thead>

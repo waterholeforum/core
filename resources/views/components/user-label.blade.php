@@ -2,7 +2,7 @@
     $tag = 'span';
     $attributes = $attributes->class('user-label');
 
-    if ($link && $href = $user->url) {
+    if ($link && ($href = $user->url)) {
         $tag = 'a';
         $attributes = $attributes->merge(compact('href'));
     }

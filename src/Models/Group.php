@@ -3,6 +3,7 @@
 namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Waterhole\Models\Concerns\HasVisibility;
 use Waterhole\Models\Concerns\ReceivesPermissions;
 
@@ -16,6 +17,11 @@ class Group extends Model
     public const ADMIN_ID = 3;
 
     public $timestamps = false;
+
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class);
+    }
 
     public function isGuest(): bool
     {
@@ -55,6 +61,11 @@ class Group extends Model
     public function scopeCustom(Builder $query)
     {
         $query->whereNotIn('id', [static::GUEST_ID, static::MEMBER_ID, static::ADMIN_ID]);
+    }
+
+    public function scopeSelectable(Builder $query)
+    {
+        $query->whereNotIn('id', [static::GUEST_ID, static::MEMBER_ID]);
     }
 
     public function getEditUrlAttribute(): string

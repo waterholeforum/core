@@ -36,11 +36,16 @@ trait ManagesAssets
                 continue;
             }
 
-            $urls = array_merge($urls, self::compile(static::$assets[$group], $group === '*' ? 'global' : $group));
+            $urls = array_merge($urls, self::compile(static::getAssets($group), $group));
         }
 
         return $urls;
     }
 
     abstract public static function compile(array $assets, string $group): array;
+
+    private static function getAssets(string $group): array
+    {
+        return static::$assets[$group] ?? [];
+    }
 }

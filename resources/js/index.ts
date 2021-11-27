@@ -42,6 +42,7 @@ window.Turbo = Turbo;
 
 document.addEventListener('turbo:submit-start', e => {
     const submitter = (e as any).detail.formSubmission.submitter;
+    if (! submitter) return;
     submitter.disabled = true;
     const popupButton = submitter.closest('ui-popup')?.children[0] as HTMLButtonElement;
     if (popupButton) {
@@ -51,6 +52,7 @@ document.addEventListener('turbo:submit-start', e => {
 
 document.addEventListener('turbo:submit-end', e => {
     const submitter = (e as any).detail.formSubmission.submitter;
+    if (! submitter) return;
     submitter.disabled = false;
     const popupButton = submitter.closest('ui-popup')?.children[0] as HTMLButtonElement;
     if (popupButton) {
@@ -93,7 +95,7 @@ document.addEventListener('turbo:frame-missing', async ({ detail: { fetchRespons
     const response = { redirected, statusCode, responseHTML: await responseHTML };
 
     Turbo.visit(location, { response });
-})
+});
 
 // don't want to do this for everything, some frames are reloadable
 // document.addEventListener('turbo:frame-load', function({ srcElement }) {

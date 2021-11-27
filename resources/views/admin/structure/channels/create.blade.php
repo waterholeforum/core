@@ -9,15 +9,11 @@
             <div class="stack-lg">
                 <x-waterhole::validation-errors/>
 
-                <div class="form-groups" data-controller="slugger">
-                    @include('waterhole::admin.structure.channels.fields')
+                @include('waterhole::admin.structure.channels.fields')
 
-                    <div>
-                        <div class="toolbar">
-                            <button type="submit" class="btn btn--primary btn--wide">Create</button>
-                            <a href="{{ route('waterhole.admin.structure') }}" class="btn">Cancel</a>
-                        </div>
-                    </div>
+                <div class="toolbar">
+                    <button type="submit" class="btn btn--primary btn--wide">Create</button>
+                    <a href="{{ route('waterhole.admin.structure') }}" class="btn">Cancel</a>
                 </div>
             </div>
         </form>

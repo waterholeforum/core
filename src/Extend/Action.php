@@ -43,9 +43,11 @@ class Action
             Actions\EditChannel::class,
             Actions\EditStructure::class,
             Actions\EditGroup::class,
+            Actions\EditUser::class,
             Actions\DeleteChannel::class,
             Actions\DeleteStructure::class,
             Actions\DeleteGroup::class,
+            Actions\DeleteUser::class,
 
             // Hidden actions
             Actions\Like::class,

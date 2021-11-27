@@ -3,7 +3,6 @@
 
 @import '../system/_reset';
 @import '../system/_base';
-@import '../system/_utils';
 
 @import '../system/_animations';
 @import '../system/_attribution';
@@ -41,6 +40,7 @@
 
   td, th {
     padding: var(--space-sm);
+    text-align: left;
   }
 
   th {
@@ -77,15 +77,9 @@ td.choice-cell {
 
 .permission-grid {
   thead th {
-    height: 10ch;
-    vertical-align: bottom;
-
-    span {
-      display: block;
-      width: 20px;
-      transform: rotate(-90deg);
-      pointer-events: none;
-    }
+    width: 9ch;
+    padding-inline: 0;
+    text-align: center;
   }
 }
 
@@ -94,6 +88,10 @@ td.choice-cell {
   width: fit-content;
   border: 1px solid var(--color-stroke);
   border-radius: var(--border-radius);
+
+  .table {
+    width: 100%;
+  }
 }
 
 .color-picker__swatch {
@@ -114,4 +112,9 @@ td.choice-cell {
   box-shadow: var(--shadow-md);
   margin-top: 6px;
   border-radius: var(--border-radius);
+}
+@import '../system/_utils';
+
+.container {
+  max-width: none;
 }

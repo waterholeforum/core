@@ -63,37 +63,35 @@ select.input,
   padding-right: 2em;
 }
 
-.full-width {
-  width: 100%;
-}
-
 .input-container {
+  --input-container-size: 2.6em;
+
   display: flex;
   align-items: center;
 
   > :not(.input) {
-    width: 3em;
+    width: var(--input-container-size);
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
 
     &:first-child {
-      margin-right: -3em;
+      margin-right: ~"calc(-1 * var(--input-container-size))";
     }
 
     &:last-child {
-      margin-left: -3em;
+      margin-left: ~"calc(-1 * var(--input-container-size))";
     }
   }
 
   > .input {
     &:nth-child(2) {
-      padding-left: 3em;
+      padding-left: var(--input-container-size);
     }
 
     &:nth-last-child(2) {
-      padding-right: 3em;
+      padding-right: var(--input-container-size);
     }
   }
 }

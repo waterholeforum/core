@@ -25,7 +25,7 @@
 
             <hr class="menu-divider">
 
-            <a href="{{ route('waterhole.admin.home') }}" class="menu-item" role="menuitem">
+            <a href="{{ route('waterhole.admin.dashboard') }}" class="menu-item" role="menuitem">
                 <x-waterhole::icon icon="heroicon-o-cog"/>
                 <span>Administration</span>
             </a>

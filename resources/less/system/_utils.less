@@ -8,18 +8,11 @@
   width: 1px;
 }
 
-.icon {
-  display: inline-block;
-  height: 1.2em;
-  width: 1.2em;
-  vertical-align: -0.2em;
-}
-
 .with-icon {
   display: inline-flex;
   align-items: baseline;
 
-  > :first-child {
+  > .icon {
     margin-right: .2em;
     align-self: center;
     margin-top: -1px;
@@ -72,6 +65,10 @@
 
 .rotate-270 {
   transform: rotate(270deg);
+}
+
+.text-left {
+  text-align: left;
 }
 
 .text-center {
@@ -207,4 +204,26 @@
 .js .no-js-only,
 .no-js .js-only {
   display: none !important;
+}
+
+.grid {
+  display: grid;
+  gap: var(--space-md);
+  grid-template-columns: repeat(auto-fit, minmax(15ch, 1fr))
+}
+
+.rounded {
+  border-radius: var(--border-radius);
+}
+
+.rounded-full {
+  border-radius: 999px;
+}
+
+.measure-narrow {
+  max-width: 55ch;
+}
+
+.full-width {
+  width: 100%;
 }

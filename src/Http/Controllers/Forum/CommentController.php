@@ -26,7 +26,7 @@ class CommentController extends Controller
     public function show(Post $post, Comment $comment, Request $request)
     {
         $all = $comment->childrenAndSelf
-            ->load('user', 'likedBy', 'parent.post', 'parent.user')
+            ->load('user.groups', 'likedBy', 'parent.post', 'parent.user.groups')
             ->each->setRelation('post', $post);
 
         $comment = $all->toTree()[0];

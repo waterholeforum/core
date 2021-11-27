@@ -32,4 +32,17 @@ class Stylesheet
 
         return [asset('storage/css/'.$compiled)];
     }
+
+    private static function getAssets(string $group): array
+    {
+        $assets = static::$assets[$group] ?? [];
+
+        foreach (['css', 'less'] as $ext) {
+            if (file_exists($file = resource_path("css/waterhole/$group.$ext"))) {
+                $assets[] = $file;
+            }
+        }
+
+        return $assets;
+    }
 }

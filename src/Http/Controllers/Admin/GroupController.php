@@ -5,6 +5,7 @@ namespace Waterhole\Http\Controllers\Admin;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Group;
@@ -14,7 +15,7 @@ class GroupController extends Controller
 {
     public function index()
     {
-        $groups = Group::custom()->orderBy('name')->get();
+        $groups = Group::withCount('users')->custom()->orderBy('name')->get();
 
         return view('waterhole::admin.groups.index', compact('groups'));
     }
@@ -29,8 +30,10 @@ class GroupController extends Controller
         $data = $request->validate(Group::rules());
         $permissions = Arr::pull($data, 'permissions');
 
-        $group = Group::create($data);
-        $group->savePermissions($permissions);
+        DB::transaction(function () use ($data, $permissions) {
+            $group = Group::create($data);
+            $group->savePermissions($permissions);
+        });
 
         return redirect()->route('waterhole.admin.groups.index');
     }
@@ -45,8 +48,10 @@ class GroupController extends Controller
         $data = $request->validate(Group::rules());
         $permissions = Arr::pull($data, 'permissions');
 
-        $group->update($data);
-        $group->savePermissions($permissions);
+        DB::transaction(function () use ($group, $data, $permissions) {
+            $group->update($data);
+            $group->savePermissions($permissions);
+        });
 
         return redirect()->route('waterhole.admin.groups.index');
     }

@@ -24,7 +24,7 @@ class StructureController extends Controller
             ->orderBy('position')
             ->get();
 
-        return view('waterhole::admin.structure', compact('structure'));
+        return view('waterhole::admin.structure.index', compact('structure'));
     }
 
     public function saveOrder(Request $request)

@@ -48,3 +48,52 @@ mark {
   font-weight: bold;
   color: var(--color-text);
 }
+
+.icon {
+  display: inline-block;
+  height: 1.2em;
+  width: 1.2em;
+  vertical-align: -0.2em;
+}
+
+.panels {
+  > * + * {
+    margin-top: var(--space-sm);
+  }
+}
+
+.panel {
+  border: 1px solid var(--color-stroke);
+  border-radius: var(--border-radius);
+}
+
+.panel__header {
+  background: var(--color-fill);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius);
+
+  summary& {
+    cursor: pointer;
+  }
+
+  .panel[open] & {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+.panel__body {
+  padding: var(--space-lg);
+}
+
+.combobox {
+  position: relative;
+}
+
+.combobox__list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  max-width: none !important;
+  width: 100% !important;
+}

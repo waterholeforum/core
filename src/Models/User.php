@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 use Intervention\Image\Image;
 use Waterhole\Models\Concerns\HasImageAttributes;
 use Waterhole\Models\Concerns\ReceivesPermissions;
@@ -111,6 +113,11 @@ class User extends Model implements
         return route('waterhole.users.show', ['user' => $this]);
     }
 
+    public function getEditUrlAttribute(): string
+    {
+        return route('waterhole.admin.users.edit', ['user' => $this]);
+    }
+
     public function getAvatarUrlAttribute()
     {
         return $this->resolvePublicUrl($this->avatar, 'avatars');
@@ -155,8 +162,17 @@ class User extends Model implements
         $this->notify(new ResetPassword($token));
     }
 
-    public function getRouteKeyName(): string
+    public static function rules(User $user = null): array
     {
-        return 'name';
+        return [
+            'name' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user)],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user)],
+            'password' => [$user ? 'nullable' : 'required', Password::defaults()],
+        ];
+    }
+
+    public function isRootAdmin(): bool
+    {
+        return $this->id === 1;
     }
 }

@@ -43,11 +43,15 @@
                 </div>
             </div>
             <div class="toolbar">
-                <button class="btn">
-                    <x-waterhole::icon icon="heroicon-o-cog"/>
-                    <span>Controls</span>
-                    <x-waterhole::icon icon="heroicon-s-chevron-down"/>
-                </button>
+                <x-waterhole::action-menu :for="$user" placement="bottom-end">
+                    <x-slot name="button">
+                        <button type="button" class="btn">
+                            <x-waterhole::icon icon="heroicon-o-cog"/>
+                            <span>Controls</span>
+                            <x-waterhole::icon icon="heroicon-s-chevron-down"/>
+                        </button>
+                    </x-slot>
+                </x-waterhole::action-menu>
             </div>
         </div>
     </div>

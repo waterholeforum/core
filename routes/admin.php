@@ -3,9 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Waterhole\Http\Controllers\Admin;
 
-Route::get('/', Admin\HomeController::class)->name('home');
-
-Route::get('settings', Admin\SettingsController::class)->name('settings');
+Route::get('/', Admin\DashboardController::class)->name('dashboard');
 
 Route::get('structure', [Admin\StructureController::class, 'index'])->name('structure');
 Route::post('structure', [Admin\StructureController::class, 'saveOrder']);
@@ -29,12 +27,9 @@ Route::prefix('structure')->name('structure.')->group(function () {
 Route::resource('groups', Admin\GroupController::class)
     ->only('index', 'create', 'store', 'edit', 'update');
 
-Route::get('design', Admin\SettingsController::class)->name('design');
+Route::resource('users', Admin\UserController::class)
+    ->only('index', 'create', 'store', 'edit', 'update');
 
-Route::get('users', Admin\SettingsController::class)->name('users');
+Route::get('extensions')->name('extensions');
 
-Route::get('utilities', Admin\SettingsController::class)->name('utilities');
-
-Route::get('extensions', Admin\SettingsController::class)->name('extensions');
-
-Route::get('updates', Admin\SettingsController::class)->name('updates');
+Route::get('updates')->name('updates');

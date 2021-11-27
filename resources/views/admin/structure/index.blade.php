@@ -7,7 +7,11 @@
 {{--            </div>--}}
 {{--        </x-waterhole::alert>--}}
 
-        <div class="toolbar toolbar--right">
+        <div class="toolbar">
+            <h1 class="h2">Structure</h1>
+
+            <div class="spacer"></div>
+
             <ui-popup placement="bottom-end">
                 <button type="button" class="btn btn--primary">
                     <x-waterhole::icon icon="heroicon-s-plus"/>

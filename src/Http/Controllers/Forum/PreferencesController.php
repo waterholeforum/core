@@ -8,6 +8,7 @@ use Illuminate\Validation\Rules\Password;
 use Intervention\Image\Facades\Image;
 use Waterhole\Extend\NotificationTypes;
 use Waterhole\Http\Controllers\Controller;
+use Waterhole\Views\Components\UserProfileFields;
 
 class PreferencesController extends Controller
 {
@@ -65,24 +66,7 @@ class PreferencesController extends Controller
 
     public function saveProfile(Request $request)
     {
-        $data = $request->validate([
-            'avatar' => 'image',
-            'headline' => 'string|max:30',
-            'bio' => 'string|max:255',
-            'location' => 'string|max:30',
-            'website' => 'string|max:100',
-            'show_online' => 'boolean',
-        ]);
-
-        $request->user()->fill($data)->save();
-
-        if ($request->input('remove_avatar')) {
-            $request->user()->removeAvatar();
-        }
-
-        if ($file = $request->file('avatar')) {
-            $request->user()->uploadAvatar(Image::make($file));
-        }
+        (new UserProfileFields($request->user()))->save($request);
 
         return redirect()->route('waterhole.preferences.profile')
             ->with('success', 'Profile saved.');

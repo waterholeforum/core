@@ -14,55 +14,62 @@
             <div class="stack-lg">
                 <x-waterhole::validation-errors/>
 
-                <div class="form-groups">
-                    <x-waterhole::field name="name" label="Name">
-                        <input
-                            type="text"
-                            name="name"
-                            id="{{ $component->id }}"
-                            class="input"
-                            value="{{ old('name', $group->name ?? null) }}"
-                            autofocus
-                        >
-                    </x-waterhole::field>
+                <div class="panels">
+                    <details class="panel" open>
+                        <summary class="panel__header h4">Details</summary>
 
-                    <div data-controller="reveal">
-                        <div class="field__label">Appearance</div>
+                        <div class="panel__body form-groups">
+                            <x-waterhole::field name="name" label="Name">
+                                <input
+                                    type="text"
+                                    name="name"
+                                    id="{{ $component->id }}"
+                                    class="input"
+                                    value="{{ old('name', $group->name ?? null) }}"
+                                    autofocus
+                                >
+                            </x-waterhole::field>
 
-                        <div class="stack-lg">
-                            <div>
-                                <input type="hidden" name="is_public" value="0">
-                                <label class="choice">
-                                    <input type="checkbox" data-reveal-target="if" name="is_public" value="1" @if (old('is_public', $group->is_public ?? null)) checked @endif>
-                                    Show this group as a user badge
-                                </label>
-                            </div>
+                            <div data-controller="reveal">
+                                <div class="field__label">Appearance</div>
 
-                            <div class="toolbar toolbar--nowrap" data-reveal-target="then">
-                                <x-waterhole::field name="icon" label="Icon" style="flex-basis: 50%">
-                                    <input
-                                        type="text"
-                                        name="icon"
-                                        id="{{ $component->id }}"
-                                        class="input"
-                                        value="{{ old('icon', $group->icon ?? null) }}"
-                                    >
-                                </x-waterhole::field>
+                                <div class="stack-lg">
+                                    <div>
+                                        <input type="hidden" name="is_public" value="0">
+                                        <label class="choice">
+                                            <input type="checkbox" data-reveal-target="if" name="is_public" value="1" @if (old('is_public', $group->is_public ?? null)) checked @endif>
+                                            Show this group as a user badge
+                                        </label>
+                                    </div>
 
-                                <x-waterhole::field name="color" label="Color" style="flex-basis: 50%">
-                                    <x-waterhole::admin.color-picker
-                                        name="color"
-                                        id="{{ $component->id }}"
-                                        value="{{ old('color', $group->color ?? null) }}"
-                                    />
-                                </x-waterhole::field>
+                                    <div class="toolbar toolbar--nowrap" data-reveal-target="then">
+                                        <x-waterhole::field name="icon" label="Icon" style="flex-basis: 50%">
+                                            <input
+                                                type="text"
+                                                name="icon"
+                                                id="{{ $component->id }}"
+                                                class="input"
+                                                value="{{ old('icon', $group->icon ?? null) }}"
+                                            >
+                                        </x-waterhole::field>
+
+                                        <x-waterhole::field name="color" label="Color" style="flex-basis: 50%">
+                                            <x-waterhole::admin.color-picker
+                                                name="color"
+                                                id="{{ $component->id }}"
+                                                value="{{ old('color', $group->color ?? null) }}"
+                                            />
+                                        </x-waterhole::field>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </details>
 
-                    <div class="field">
-                        <div class="field__label">Permissions</div>
-                        <div>
+                    <details class="panel">
+                        <summary class="panel__header h4">Permissions</summary>
+
+                        <div class="panel__body">
                             <div class="table-container">
                                 <table
                                     class="table permission-grid"
@@ -79,8 +86,7 @@
                                         <tr>
                                             <td></td>
                                             @foreach ($abilities as $ability)
-                                                <th><span>{{ ucfirst($ability) }}</span>
-                                                </th>
+                                                <th>{{ ucfirst($ability) }}</th>
                                             @endforeach
                                         </tr>
                                     </thead>
@@ -129,23 +135,20 @@
                                 </table>
                             </div>
                         </div>
+                    </details>
+                </div>
 
-                    </div>
-
-                    <div>
-                        <div class="toolbar">
-                            <button
-                                type="submit"
-                                class="btn btn--primary btn--wide"
-                            >
-                                {{ isset($group) ? 'Save Changes' : 'Create' }}
-                            </button>
-                            <a
-                                href="{{ route('waterhole.admin.groups.index') }}"
-                                class="btn"
-                            >Cancel</a>
-                        </div>
-                    </div>
+                <div class="toolbar">
+                    <button
+                        type="submit"
+                        class="btn btn--primary btn--wide"
+                    >
+                        {{ isset($group) ? 'Save Changes' : 'Create' }}
+                    </button>
+                    <a
+                        href="{{ route('waterhole.admin.groups.index') }}"
+                        class="btn"
+                    >Cancel</a>
                 </div>
             </div>
         </form>

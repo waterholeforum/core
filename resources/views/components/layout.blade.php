@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
+    <meta name="theme-color" content="{{ config('waterhole.design.accent_color') }}">
 
     <title>{{ $title ? $title.' - ' : '' }}{{ config('waterhole.forum.title', 'Waterhole') }}</title>
 
@@ -10,11 +11,11 @@
       document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
     </script>
 
-    @foreach (Waterhole\Extend\Stylesheet::urls(['*', 'forum', 'forum-'.App::getLocale(), ...$assets]) as $url)
+    @foreach (Waterhole\Extend\Stylesheet::urls(['forum', 'forum-'.App::getLocale(), ...$assets]) as $url)
         <link href="{{ $url }}" rel="stylesheet" data-turbo-track="reload">
     @endforeach
 
-    @foreach (Waterhole\Extend\Script::urls(['*', 'forum', 'forum-'.App::getLocale(), ...$assets]) as $url)
+    @foreach (Waterhole\Extend\Script::urls(['forum', 'forum-'.App::getLocale(), ...$assets]) as $url)
         <script src="{{ $url }}" defer data-turbo-track="reload"></script>
     @endforeach
 
@@ -25,12 +26,16 @@
     </script>
 
     @components(Waterhole\Extend\DocumentHead::getComponents(), compact('title', 'assets'))
+
+    @includeIf('waterhole.head')
 </head>
 
 <body class="{{ Auth::check() ? 'logged-in' : 'not-logged-in' }}">
 
 <div id="waterhole" data-controller="page">
     <a href="#main" class="skip-link">Skip to main content</a>
+
+    @includeIf('waterhole.layout-before')
 
     @components(Waterhole\Extend\LayoutBefore::getComponents())
 
@@ -39,6 +44,8 @@
     </main>
 
     @components(Waterhole\Extend\LayoutAfter::getComponents())
+
+    @includeIf('waterhole.layout-after')
 </div>
 
 <ui-modal

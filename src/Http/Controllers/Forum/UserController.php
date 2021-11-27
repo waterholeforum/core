@@ -34,8 +34,8 @@ class UserController extends Controller
         $query = $user->comments()->with([
             'post.userState',
             'post.channel',
-            'user',
-            'parent.user',
+            'user.groups',
+            'parent.user.groups',
             'parent.post',
             'likedBy',
             'mentions',
