@@ -56,6 +56,12 @@ mark {
   vertical-align: -0.2em;
 }
 
+.icon--thin {
+  path {
+    stroke-width: 1.5;
+  }
+}
+
 .panels {
   > * + * {
     margin-top: var(--space-sm);
@@ -73,7 +79,13 @@ mark {
   border-radius: var(--border-radius);
 
   summary& {
-    cursor: pointer;
+    .clickable();
+    transform: none !important;
+
+    &::marker,
+    &::-webkit-details-marker {
+      color: var(--color-text-muted);
+    }
   }
 
   .panel[open] & {

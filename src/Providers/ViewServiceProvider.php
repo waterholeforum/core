@@ -29,12 +29,13 @@ class ViewServiceProvider extends ServiceProvider
 
             return implode("\n", [
                 '<?php foreach ('.$components.' as $component): ?>',
+                '<?php unset($instance); ?>',
                 '<?php if (class_exists($component)): ?>',
                 '<?php $instance = $__env->getContainer()->make($component, '.($data ?: '[]').'); ?>',
                 '<?php elseif ($__env->getContainer()->make(Illuminate\View\Factory::class)->exists($component)): ?>',
                 '<?php $instance = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, [\'view\' => $component, \'data\' => '.($data ?: '[]').']); ?>',
                 '<?php elseif (config(\'app.debug\')): ?>',
-                '<script>console.warn(\'Component [<?php echo e($component); ?>] not found\')</script>',
+                '<script>console.warn(\'Component [<?php echo e(addslashes($component)); ?>] not found\')</script>',
                 '<?php endif; ?>',
                 '<?php if (isset($instance) && $instance->shouldRender()): ?>',
                 '<?php $__env->startComponent($instance->resolveView(), $instance->data()); ?>',

@@ -1,0 +1,12 @@
+.admin-dashboard {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  margin: ~"calc(-1 * var(--space-sm))";
+
+  > * {
+    width: var(--admin-dashboard-widget-width, 100%);
+    padding: var(--space-sm);
+    min-width: 30ch;
+  }
+}

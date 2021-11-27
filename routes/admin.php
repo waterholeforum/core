@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Waterhole\Http\Controllers\Admin;
 
-Route::get('/', Admin\DashboardController::class)->name('dashboard');
+Route::get('/', [Admin\DashboardController::class, 'index'])->name('dashboard');
+Route::get('feed', [Admin\DashboardController::class, 'feed'])->name('dashboard.feed');
 
 Route::get('structure', [Admin\StructureController::class, 'index'])->name('structure');
 Route::post('structure', [Admin\StructureController::class, 'saveOrder']);

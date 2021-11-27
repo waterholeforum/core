@@ -5,7 +5,6 @@ namespace Waterhole\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Group;
@@ -30,9 +29,11 @@ class UserController extends Controller
             foreach ($tokens as $token) {
                 if (str_starts_with($token[0], 'group:')) {
                     $value = $token[1] ?? substr($token[0], strlen('group:'));
-                    $query->whereHas('groups', function ($query) use ($value) {
-                        $query->where('name', $value);
-                    });
+                    if ($value) {
+                        $query->whereHas('groups', function ($query) use ($value) {
+                            $query->whereIn('name', explode(',', $value));
+                        });
+                    }
                 } else {
                     $query->where('name', 'LIKE', $token[0].'%');
 

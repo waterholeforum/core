@@ -197,6 +197,10 @@
   color: var(--color-text-muted);
 }
 
+.color-accent {
+  color: var(--color-accent);
+}
+
 .pointer-events-none {
   pointer-events: none;
 }
@@ -209,7 +213,7 @@
 .grid {
   display: grid;
   gap: var(--space-md);
-  grid-template-columns: repeat(auto-fit, minmax(15ch, 1fr))
+  grid-template-columns: repeat(auto-fit, minmax(var(--grid-min, 15ch), 1fr))
 }
 
 .rounded {
@@ -226,4 +230,50 @@
 
 .full-width {
   width: 100%;
+}
+
+.block-link {
+  display: block;
+  color: inherit;
+  text-decoration: none !important;
+  border-radius: var(--border-radius);
+  padding: var(--space-md);
+
+  &:hover {
+    background: var(--color-fill);
+  }
+
+  &:active {
+    filter: var(--filter-active);
+  }
+}
+
+.cluster-md {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.no-shrink {
+  flex-shrink: 0;
+}
+
+.overlay-container {
+  position: relative;
+}
+
+.overlay,
+.with-overlay::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.with-overlay::before {
+  content: '';
 }
