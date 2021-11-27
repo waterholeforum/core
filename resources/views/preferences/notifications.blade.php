@@ -8,11 +8,12 @@
             <div class="card form-groups">
                 <div>
                     <h4 class="field__label">Notifications</h4>
-                    <div class="notification-grid">
+                    <div class="notification-grid card card-list">
                         @foreach (Waterhole\Extend\NotificationTypes::getComponents() as $type)
                             @php $channels = (array) old('notification_channels.'.$type, Auth::user()->notification_channels[$type] ?? []) @endphp
-                            <div>
+                            <div class="toolbar">
                                 <div>{{ $type::description() }}</div>
+                                <div class="spacer"></div>
                                 <label class="choice">
                                     <input type="checkbox" name="notification_channels[{{ $type }}][]" value="database" @if (in_array('database', $channels)) checked @endif> Web
                                 </label>

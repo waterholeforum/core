@@ -242,21 +242,19 @@
 }
 
 .notification-grid {
+  .choice {
+    flex-basis: 10ch;
+  }
+}
+
+.card-list {
+  padding: 0;
+
   > * {
-    display: flex;
-
-    > * {
-      flex-basis: 10ch;
-    }
-
-    > :first-child {
-      flex-grow: 1;
-    }
+    padding: var(--space-sm);
   }
 
   > * + * {
     border-top: 1px solid var(--color-stroke);
-    margin-top: var(--space-sm);
-    padding-top: var(--space-sm);
   }
 }
