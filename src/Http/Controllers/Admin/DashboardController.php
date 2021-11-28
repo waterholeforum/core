@@ -2,8 +2,6 @@
 
 namespace Waterhole\Http\Controllers\Admin;
 
-use Feed;
-use Illuminate\Http\Request;
 use Waterhole\Http\Controllers\Controller;
 
 class DashboardController extends Controller
@@ -13,16 +11,10 @@ class DashboardController extends Controller
         return view('waterhole::admin.dashboard');
     }
 
-    public function feed(Request $request)
+    public function widget(int $id)
     {
-        $url = $request->query('url');
-        $limit = (int) $request->query('limit', 3);
+        abort_unless($widget = config('waterhole.admin.widgets.'.$id), 404);
 
-        Feed::$cacheDir = storage_path('waterhole/feed');
-        Feed::$cacheExpire = '12 hours';
-
-        $feed = Feed::load($url);
-
-        return view('waterhole::admin.feed', compact('url', 'feed', 'limit'));
+        return view('waterhole::admin.widget', compact('id', 'widget'));
     }
 }

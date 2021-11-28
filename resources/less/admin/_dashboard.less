@@ -6,7 +6,22 @@
 
   > * {
     width: var(--admin-dashboard-widget-width, 100%);
+    height: var(--admin-dashboard-widget-height, auto);
     padding: var(--space-sm);
     min-width: 30ch;
   }
+
+  turbo-frame,
+  .card {
+    height: 100%;
+  }
+}
+
+.line-chart-widget {
+  min-height: 14em;
+}
+
+.line-chart-widget__head {
+  //padding: var(--space-lg);
+  //padding-bottom: 0;
 }

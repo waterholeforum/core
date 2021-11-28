@@ -49,4 +49,5 @@ relative-time = { $unit ->
   *[other] { DATETIME($date) }
 }
 
+short-time = { DATETIME($date, dateStyle: "short", timeStyle: "short") }
 full-time = { DATETIME($date, dateStyle: "long", timeStyle: "long") }

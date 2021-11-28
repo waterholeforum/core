@@ -34,7 +34,7 @@ class Post extends Model
         'is_locked' => 'boolean',
     ];
 
-    protected $withCount = ['unreadComments'];
+    // protected $withCount = ['unreadComments'];
 
     public static function byUser(User $user, array $attributes = []): static
     {

@@ -50,8 +50,13 @@
   margin-top: var(--space-xxs);
 }
 
-.stack-xs > * + * {
-  margin-top: var(--space-xs);
+.stack-xs {
+  display: flex;
+  flex-direction: column;
+
+  > * + * {
+    margin-top: var(--space-xs);
+  }
 }
 
 .stack-sm > * + * {

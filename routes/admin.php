@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Waterhole\Http\Controllers\Admin;
 
 Route::get('/', [Admin\DashboardController::class, 'index'])->name('dashboard');
-Route::get('feed', [Admin\DashboardController::class, 'feed'])->name('dashboard.feed');
+Route::get('widget/{id}', [Admin\DashboardController::class, 'widget'])->name('dashboard.widget');
 
 Route::get('structure', [Admin\StructureController::class, 'index'])->name('structure');
 Route::post('structure', [Admin\StructureController::class, 'saveOrder']);
