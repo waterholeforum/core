@@ -69,7 +69,7 @@ class SearchController extends Controller
                 'hits' => $hits->withQueryString(),
                 'total' => $results->total,
                 'exhaustiveTotal' => $results->exhaustiveTotal,
-                'channels' => Channel::all(),
+                'channels' => Channel::all()->filter(fn($channel) => $results->channelHits[$channel->id])->sortByDesc(fn($channel) => $results->channelHits[$channel->id]),
                 'channelHits' => $results->channelHits,
                 'error' => $results->error,
                 'sorts' => $sorts,

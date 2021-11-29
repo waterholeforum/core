@@ -17,7 +17,7 @@
         >
             @foreach ($groups as $group)
                 <li class="admin-structure__content toolbar">
-                    <x-waterhole::group-label :group="$group"/>
+                    <x-waterhole::group-label :group="$group" class="text-xs"/>
                     <div class="spacer"></div>
                     <a
                         href="{{ route('waterhole.admin.users.index', ['q' => 'group:'.(str_contains($group->name, ' ') ? '"'.$group->name.'"' : $group->name)]) }}"

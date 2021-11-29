@@ -12,7 +12,9 @@
                         data-action="turbo:frame-load->turbo-frame#removeSrc"
                         class="full-height"
                     >
-                        <div class="loading-indicator"></div>
+                        <div class="card">
+                            <div class="loading-indicator"></div>
+                        </div>
                     </turbo-frame>
                 @endif
             </div>

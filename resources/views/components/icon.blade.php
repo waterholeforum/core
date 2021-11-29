@@ -14,7 +14,9 @@
             try {
                 echo svg($icon, '', $attributes->class('icon-'.$icon)->getAttributes())->toHtml();
             } catch (BladeUI\Icons\Exceptions\SvgNotFound $e) {
-                //
+                if (config('app.debug')) {
+                    echo '<script>console.warn("Icon ['.e($icon).'] not found")</script>';
+                }
             }
         @endphp
     @endif

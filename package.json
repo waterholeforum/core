@@ -28,6 +28,7 @@
     "@github/text-expander-element": "^2.2.1",
     "@hotwired/stimulus": "^3.0.1",
     "@hotwired/turbo": "^7.1.0",
+    "@joeattardi/emoji-button": "^4.6.2",
     "animated-scroll-to": "^2.2.0",
     "clipboard-copy": "^4.0.1",
     "frappe-charts": "^2.0.0-rc20",
