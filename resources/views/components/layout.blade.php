@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ config('app.locale') }}" class="no-js">
+<html lang="{{ config('app.locale') }}" class="no-js" data-controller="theme">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
@@ -9,6 +9,11 @@
 
     <script>
       document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+
+      @if (config('waterhole.design.support_dark_mode'))
+        document.documentElement.dataset.theme = localStorage.getItem('theme')
+          || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      @endif
     </script>
 
     @foreach (Waterhole\Extend\Stylesheet::urls(['forum', 'forum-'.App::getLocale(), ...$assets]) as $url)

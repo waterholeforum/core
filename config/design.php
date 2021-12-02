@@ -6,4 +6,6 @@ return [
 
     'custom_logo_url' => null,
 
+    'support_dark_mode' => true,
+
 ];

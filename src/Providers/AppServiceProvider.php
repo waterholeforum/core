@@ -13,7 +13,7 @@ use Waterhole\Notifications\DatabaseChannel;
 class AppServiceProvider extends ServiceProvider
 {
     protected array $configFiles = [
-        'admin', 'forum', 'system', 'users'
+        'admin', 'design', 'forum', 'system', 'users'
     ];
 
     public function register()
