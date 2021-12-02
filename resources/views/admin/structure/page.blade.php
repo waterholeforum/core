@@ -7,6 +7,7 @@
         <form
             method="POST"
             action="{{ isset($page) ? route('waterhole.admin.structure.pages.update', compact('page')) : route('waterhole.admin.structure.pages.store') }}"
+            enctype="multipart/form-data"
         >
             @csrf
             @if (isset($page)) @method('PATCH') @endif
@@ -48,13 +49,10 @@
                             </x-waterhole::field>
 
                             <x-waterhole::field name="icon" label="Icon">
-                                <input
-                                    type="text"
+                                <x-waterhole::admin.icon-picker
                                     name="icon"
-                                    id="{{ $component->id }}"
-                                    class="input"
-                                    value="{{ old('icon', $page->icon ?? null) }}"
-                                >
+                                    :value="old('icon', $page->icon ?? null)"
+                                />
                             </x-waterhole::field>
 
                             <x-waterhole::field name="body" label="Body">

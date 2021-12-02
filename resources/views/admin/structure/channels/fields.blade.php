@@ -31,45 +31,10 @@
             </x-waterhole::field>
 
             <x-waterhole::field name="icon" label="Icon">
-                <div>
-                    <div class="cluster-sm" id="icon1">
-                        <x-waterhole::icon icon="{{ $channel->icon ?? null }}" class="text-md"/>
-                        <button type="button" class="btn" onclick="document.getElementById('icon1').hidden=true; document.getElementById('icon2').hidden=false; ">Change</button>
-                    </div>
-
-                    <div class="cluster-sm align-start" data-controller="reveal" hidden id="icon2">
-                        <select class="input" style="width: auto" data-reveal-target="if">
-                            <option value="">None</option>
-                            <option value="emoji" selected>Emoji</option>
-                            <option value="svg">SVG Icon</option>
-                            <option value="file">Image</option>
-                        </select>
-
-                        <div class="stack-xs full-width" data-reveal-target="then" data-reveal-value="emoji" hidden>
-                            <input type="text" class="input">
-                            <div class="field__description">Enter a single emoji character using your system keyboard, or paste one from <a href="https://emojipedia.org" target="_blank" rel="noopener">Emojipedia</a>.</div>
-                        </div>
-
-                        <div class="stack-xs full-width" data-reveal-target="then" data-reveal-value="svg" hidden>
-                            <input type="text" class="input" list="icons">
-                            <div class="field__description">Enter the name of a <a href="https://blade-ui-kit.com/blade-icons#search" target="_blank" rel="noopener">Blade Icon</a> from one of the following installed sets: {{ implode(', ', array_map(fn($set) => $set['prefix'], app(BladeUI\Icons\Factory::class)->all())) }}</div>
-                            <div class="field__description"><a href="" class="with-icon"><x-waterhole::icon icon="heroicon-s-question-mark-circle"/>Learn more about SVG icons</a></div>
-                            <datalist id="icons">
-                                @foreach (app(BladeUI\Icons\IconsManifest::class)->getManifest($sets = app(BladeUI\Icons\Factory::class)->all()) as $set => $paths)
-                                    @foreach ($paths as $icons)
-                                        @foreach ($icons as $icon)
-                                            <option value="{{ $sets[$set]['prefix'] }}-{{ $icon }}">
-                                        @endforeach
-                                    @endforeach
-                                @endforeach
-                            </datalist>
-                        </div>
-
-                        <div class="stack-xs full-width" data-reveal-target="then" data-reveal-value="file" hidden>
-                            <input type="file" class="input">
-                        </div>
-                    </div>
-                </div>
+                <x-waterhole::admin.icon-picker
+                    name="icon"
+                    :value="old('icon', $channel->icon ?? null)"
+                />
 
 {{--                <input--}}
 {{--                    id="{{ $component->id }}"--}}

@@ -18,9 +18,11 @@ class StructureLinkController extends Controller
     {
         $data = $request->validate(StructureLink::rules());
         $permissions = Arr::pull($data, 'permissions');
+        $icon = Arr::pull($data, 'icon');
 
         $link = StructureLink::create($data);
         $link->savePermissions($permissions);
+        $link->saveIcon($icon);
 
         return redirect()->route('waterhole.admin.structure');
     }
@@ -34,9 +36,11 @@ class StructureLinkController extends Controller
     {
         $data = $request->validate(StructureLink::rules($link));
         $permissions = Arr::pull($data, 'permissions');
+        $icon = Arr::pull($data, 'icon');
 
         $link->update($data);
         $link->savePermissions($permissions);
+        $link->saveIcon($icon);
 
         return redirect()->route('waterhole.admin.structure');
     }

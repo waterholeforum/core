@@ -43,7 +43,7 @@ trait HasImageAttributes
 
         $encodedImage = $encode($image);
 
-        $this->$attribute = Str::random().'.'.$encodedImage->extension;
+        $this->$attribute = Str::random().'.'.Str::after($encodedImage->mime, '/');
         $this->save();
         Storage::disk('public')->put($directory.'/'.$this->$attribute, $encodedImage);
 

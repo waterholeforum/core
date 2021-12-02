@@ -3,6 +3,7 @@
         <form
             method="POST"
             action="{{ route('waterhole.admin.structure.channels.store') }}"
+            enctype="multipart/form-data"
         >
             @csrf
 

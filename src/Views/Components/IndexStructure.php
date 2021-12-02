@@ -30,10 +30,8 @@ class IndexStructure extends Component
                 ]);
             }
         }])->orderBy('position')->get()->filter(function (Structure $node) {
-            if ($node->content->permissions) {
-                return $node->content->permissions->can(Auth::user(), 'view');
-            }
-            return true;
+            return ! $node->content->permissions
+                || $node->content->permissions->can(Auth::user(), 'view');
         });
 
         $this->nav = collect([
@@ -73,7 +71,7 @@ class IndexStructure extends Component
 
         $this->nav = $this->nav->filter(function (array $item, $i) {
             if (isset($item['heading'])) {
-                return empty($this->nav[$i + 1]['heading']);
+                return isset($this->nav[$i + 1]) && empty($this->nav[$i + 1]['heading']);
             }
             return true;
         });

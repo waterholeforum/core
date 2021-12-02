@@ -18,12 +18,7 @@
     <span class="label">Groups</span>
 </a>
 
-<a href="{{ route('waterhole.admin.extensions') }}" class="nav-link {{ request()->routeIs('waterhole.admin.extensions') ? 'is-active' : '' }}">
-    <x-waterhole::icon icon="heroicon-o-puzzle"/>
-    <span class="label">Extensions</span>
-</a>
-
-<a href="{{ route('waterhole.admin.extensions') }}" class="nav-link {{ request()->routeIs('waterhole.admin.extensions') ? 'is-active' : '' }}">
+<a href="{{ route('waterhole.admin.updates') }}" class="nav-link {{ request()->routeIs('waterhole.admin.updates') ? 'is-active' : '' }}">
     <x-waterhole::icon icon="heroicon-o-refresh"/>
     <span class="label">Updates</span>
     <span class="badge badge--unread">2</span>
@@ -32,5 +27,5 @@
 <br>
 
 <div class="nav-text text-xs stack-xs">
-    <p><a href="" class="color-muted">Waterhole {{ Waterhole::VERSION }}</a> <span class="badge">PRO</span></p>
+    <p><a href="" class="color-muted">Waterhole {{ Waterhole::VERSION }}</a> <a href="#" class="badge">PRO</a></p>
 </div>

@@ -18,9 +18,11 @@ class ChannelController extends Controller
     {
         $data = $this->data($request);
         $permissions = Arr::pull($data, 'permissions');
+        $icon = Arr::pull($data, 'icon');
 
         $channel = Channel::create($data);
         $channel->savePermissions($permissions);
+        $channel->saveIcon($icon);
 
         return redirect()->route('waterhole.admin.structure');
     }
@@ -34,9 +36,11 @@ class ChannelController extends Controller
     {
         $data = $this->data($request, $channel);
         $permissions = Arr::pull($data, 'permissions');
+        $icon = Arr::pull($data, 'icon');
 
         $channel->update($data);
         $channel->savePermissions($permissions);
+        $channel->saveIcon($icon);
 
         return redirect()->route('waterhole.admin.structure');
     }

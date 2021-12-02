@@ -3,6 +3,7 @@
         <form
             method="POST"
             action="{{ route('waterhole.admin.structure.channels.update', compact('channel')) }}"
+            enctype="multipart/form-data"
         >
             @csrf
             @method('PATCH')

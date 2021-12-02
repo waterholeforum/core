@@ -31,6 +31,4 @@ Route::resource('groups', Admin\GroupController::class)
 Route::resource('users', Admin\UserController::class)
     ->only('index', 'create', 'store', 'edit', 'update');
 
-Route::get('extensions')->name('extensions');
-
 Route::get('updates')->name('updates');

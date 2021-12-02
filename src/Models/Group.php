@@ -4,6 +4,7 @@ namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Waterhole\Models\Concerns\HasIcon;
 use Waterhole\Models\Concerns\HasVisibility;
 use Waterhole\Models\Concerns\ReceivesPermissions;
 
@@ -11,6 +12,7 @@ class Group extends Model
 {
     use HasVisibility;
     use ReceivesPermissions;
+    use HasIcon;
 
     public const GUEST_ID = 1;
     public const MEMBER_ID = 2;
@@ -80,12 +82,11 @@ class Group extends Model
 
     public static function rules(Group $group = null): array
     {
-        return [
+        return array_merge([
             'name' => ['required', 'string', 'max:255'],
             'is_public' => ['boolean'],
-            'icon' => ['nullable', 'string'],
             'color' => ['nullable', 'string', 'regex:/^[a-f0-9]{3}|[a-f0-9]{6}$/i'],
             'permissions' => ['array'],
-        ];
+        ], static::iconRules());
     }
 }

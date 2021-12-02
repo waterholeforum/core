@@ -18,10 +18,12 @@ class PageController extends Controller
     {
         $data = $request->validate(Page::rules());
         $permissions = Arr::pull($data, 'permissions');
+        $icon = Arr::pull($data, 'icon');
 
         $page = new Page($data);
         $page->save();
         $page->savePermissions($permissions);
+        $page->saveIcon($icon);
 
         return redirect()->route('waterhole.admin.structure');
     }
@@ -35,9 +37,11 @@ class PageController extends Controller
     {
         $data = $request->validate(Page::rules($page));
         $permissions = Arr::pull($data, 'permissions');
+        $icon = Arr::pull($data, 'icon');
 
         $page->update($data);
         $page->savePermissions($permissions);
+        $page->saveIcon($icon);
 
         return redirect()->route('waterhole.admin.structure');
     }

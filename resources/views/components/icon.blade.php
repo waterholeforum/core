@@ -3,14 +3,15 @@
 @endphp
 
 @if (! empty($icon))
-    @if (str_starts_with($icon, 'data:image/'))
-        <img src="{{ $icon }}" alt="" {{ $attributes }}>
-    @elseif (preg_match('/\.(svg|png|gif|jpg)$/i', $icon))
-        <img src="{{ asset($icon) }}" alt="" {{ $attributes }}>
+    @if (str_starts_with($icon, 'file:'))
+        <img src="{{ Storage::disk('public')->url('icons/'.substr($icon, 5)) }}" alt="" {{ $attributes }}>
     @elseif (str_starts_with($icon, 'emoji:'))
         <span {{ $attributes }}>{{ emojify(substr($icon, 6)) }}</span>
     @else
         @php
+            if (str_starts_with($icon, 'svg:')) {
+                $icon = substr($icon, 4);
+            }
             try {
                 echo svg($icon, '', $attributes->class('icon-'.$icon)->getAttributes())->toHtml();
             } catch (BladeUI\Icons\Exceptions\SvgNotFound $e) {

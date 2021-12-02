@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Validation\Rule;
 use Waterhole\Extend\FeedSort;
 use Waterhole\Models\Concerns\Followable;
+use Waterhole\Models\Concerns\HasIcon;
 use Waterhole\Models\Concerns\HasPermissions;
 use Waterhole\Models\Concerns\HasUserState;
 use Waterhole\Models\Concerns\Structurable;
@@ -16,6 +17,7 @@ class Channel extends Model
     use Followable;
     use Structurable;
     use HasPermissions;
+    use HasIcon;
 
     public $timestamps = false;
 
@@ -65,10 +67,9 @@ class Channel extends Model
 
     public static function rules(Channel $channel = null): array
     {
-        return [
+        return array_merge([
             'name' => ['required', 'string', 'max:255'],
             'slug' => ['required', 'string', 'max:255', Rule::unique('channels')->ignore($channel)],
-            'icon' => ['nullable', 'string'],
             'description' => ['nullable', 'string'],
             'instructions' => ['nullable', 'string'],
             'sandbox' => ['nullable', 'boolean'],
@@ -76,6 +77,6 @@ class Channel extends Model
             'sorts' => ['required_with:custom_sorts', 'array'],
             'sorts.*' => ['string', 'distinct', Rule::in(FeedSort::getInstances()->map->handle())],
             'permissions' => ['array'],
-        ];
+        ], static::iconRules());
     }
 }

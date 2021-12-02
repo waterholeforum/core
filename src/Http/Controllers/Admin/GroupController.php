@@ -15,7 +15,10 @@ class GroupController extends Controller
 {
     public function index()
     {
-        $groups = Group::withCount('users')->custom()->orderBy('name')->get();
+        $groups = Group::custom()
+            ->withCount('users')
+            ->orderBy('name')
+            ->get();
 
         return view('waterhole::admin.groups.index', compact('groups'));
     }
@@ -29,10 +32,12 @@ class GroupController extends Controller
     {
         $data = $request->validate(Group::rules());
         $permissions = Arr::pull($data, 'permissions');
+        $icon = Arr::pull($data, 'icon');
 
-        DB::transaction(function () use ($data, $permissions) {
+        DB::transaction(function () use ($data, $permissions, $icon) {
             $group = Group::create($data);
             $group->savePermissions($permissions);
+            $group->saveIcon($icon);
         });
 
         return redirect()->route('waterhole.admin.groups.index');
@@ -47,10 +52,12 @@ class GroupController extends Controller
     {
         $data = $request->validate(Group::rules());
         $permissions = Arr::pull($data, 'permissions');
+        $icon = Arr::pull($data, 'icon');
 
-        DB::transaction(function () use ($group, $data, $permissions) {
+        DB::transaction(function () use ($group, $data, $permissions, $icon) {
             $group->update($data);
             $group->savePermissions($permissions);
+            $group->saveIcon($icon);
         });
 
         return redirect()->route('waterhole.admin.groups.index');

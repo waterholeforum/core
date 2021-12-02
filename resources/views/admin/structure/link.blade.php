@@ -3,10 +3,11 @@
 @endphp
 
 <x-waterhole::admin :title="$title">
-    <x-waterhole::dialog :title="$title" class="dialog--lg">
+    <x-waterhole::dialog :title="$title" class="dialog--xl">
         <form
             method="POST"
             action="{{ isset($link) ? route('waterhole.admin.structure.links.update', compact('link')) : route('waterhole.admin.structure.links.store') }}"
+            enctype="multipart/form-data"
         >
             @csrf
             @if (isset($link)) @method('PATCH') @endif
@@ -31,13 +32,10 @@
                             </x-waterhole::field>
 
                             <x-waterhole::field name="icon" label="Icon">
-                                <input
-                                    type="text"
+                                <x-waterhole::admin.icon-picker
                                     name="icon"
-                                    id="{{ $component->id }}"
-                                    class="input"
-                                    value="{{ old('icon', $link->icon ?? null) }}"
-                                >
+                                    :value="old('icon', $link->icon ?? null)"
+                                />
                             </x-waterhole::field>
 
                             <x-waterhole::field name="href" label="URL">

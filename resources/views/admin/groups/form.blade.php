@@ -3,10 +3,11 @@
 @endphp
 
 <x-waterhole::admin :title="$title">
-    <x-waterhole::dialog :title="$title" class="dialog--lg">
+    <x-waterhole::dialog :title="$title" class="dialog--xl">
         <form
             method="POST"
             action="{{ isset($group) ? route('waterhole.admin.groups.update', compact('group')) : route('waterhole.admin.groups.store') }}"
+            enctype="multipart/form-data"
         >
             @csrf
             @if (isset($group)) @method('PATCH') @endif
@@ -42,61 +43,20 @@
                                         </label>
                                     </div>
 
-                                    <div class="toolbar toolbar--nowrap" data-reveal-target="then">
-                                        <x-waterhole::field name="icon" label="Icon" style="flex-basis: 50%">
-                                            <ui-popup placement="bottom-start">
-                                                <button class="btn" type="button">
-                                                    <span>No Icon</span>
-                                                    <x-waterhole::icon icon="heroicon-s-chevron-down"/>
-                                                </button>
+                                    <x-waterhole::field name="color" label="Color" data-reveal-target="then">
+                                        <x-waterhole::admin.color-picker
+                                            name="color"
+                                            id="{{ $component->id }}"
+                                            value="{{ old('color', $group->color ?? null) }}"
+                                        />
+                                    </x-waterhole::field>
 
-                                                <div class="menu" hidden>
-                                                    <button type="button" class="menu-item" role="menuitem">
-                                                        <x-waterhole::icon icon="heroicon-o-x"/>
-                                                        No Icon
-                                                    </button>
-                                                    <button type="button" class="menu-item" role="menuitem">
-                                                        <x-waterhole::icon icon="heroicon-o-emoji-happy"/>
-                                                        Emoji...
-                                                    </button>
-                                                    <button type="button" class="menu-item" role="menuitem" onclick="document.getElementById('test').open = true">
-                                                        <x-waterhole::icon icon="heroicon-o-code"/>
-                                                        SVG Icon...
-                                                    </button>
-                                                    <button type="button" class="menu-item" role="menuitem">
-                                                        <x-waterhole::icon icon="heroicon-o-photograph"/>
-                                                        Upload Image...
-                                                    </button>
-                                                </div>
-                                            </ui-popup>
-
-                                            <ui-modal hidden id="test">
-                                                <div class="dialog stack-lg">
-                                                    <div>Choose an icon from Blade Icons:</div>
-                                                    <input type="text" class="input">
-                                                    <div class="toolbar toolbar--right">
-                                                        <button class="btn">Cancel</button>
-                                                        <button class="btn btn--primary btn--wide">OK</button>
-                                                    </div>
-                                                </div>
-                                            </ui-modal>
-{{--                                            <input--}}
-{{--                                                type="text"--}}
-{{--                                                name="icon"--}}
-{{--                                                id="{{ $component->id }}"--}}
-{{--                                                class="input"--}}
-{{--                                                value="{{ old('icon', $group->icon ?? null) }}"--}}
-{{--                                            >--}}
-                                        </x-waterhole::field>
-
-                                        <x-waterhole::field name="color" label="Color" style="flex-basis: 50%">
-                                            <x-waterhole::admin.color-picker
-                                                name="color"
-                                                id="{{ $component->id }}"
-                                                value="{{ old('color', $group->color ?? null) }}"
-                                            />
-                                        </x-waterhole::field>
-                                    </div>
+                                    <x-waterhole::field name="icon" label="Icon" data-reveal-target="then">
+                                        <x-waterhole::admin.icon-picker
+                                            name="icon"
+                                            :value="old('icon', $group->icon ?? null)"
+                                        />
+                                    </x-waterhole::field>
                                 </div>
                             </div>
                         </div>
