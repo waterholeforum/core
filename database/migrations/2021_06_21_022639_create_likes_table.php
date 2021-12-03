@@ -12,6 +12,8 @@ return new class extends Migration
             $table->morphs('content');
             $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamp('created_at')->nullable();
+
+            $table->primary(['content_type', 'content_id', 'user_id']);
         });
     }
 

@@ -8,14 +8,14 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('config', function (Blueprint $table) {
-            $table->string('key')->primary();
-            $table->json('value')->nullable();
+        Schema::create('structure_headings', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('config');
+        Schema::dropIfExists('structure_headings');
     }
 };

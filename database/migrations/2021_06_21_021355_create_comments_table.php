@@ -18,7 +18,6 @@ return new class extends Migration
             $table->timestamp('edited_at')->nullable()->index();
             $table->unsignedInteger('reply_count')->default(0);
             $table->unsignedInteger('score')->default(0);
-            $table->boolean('is_pinned')->default(0);
         });
     }
 

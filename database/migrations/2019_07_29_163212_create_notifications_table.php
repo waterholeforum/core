@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('sender_id')->nullable()->constrained('users')->cascadeOnUpdate()->nullOnDelete();
             $table->nullableMorphs('group');
             $table->nullableMorphs('content');
-            $table->timestamp('read_at')->nullable();
             $table->timestamps();
+            $table->timestamp('read_at')->nullable();
         });
     }
 

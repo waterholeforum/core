@@ -8,17 +8,17 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('groups', function (Blueprint $table) {
+        Schema::create('pages', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->boolean('is_public')->default(0);
+            $table->string('slug')->unique();
             $table->string('icon')->nullable();
-            $table->string('color')->nullable();
+            $table->mediumText('body');
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('groups');
+        Schema::dropIfExists('pages');
     }
 };

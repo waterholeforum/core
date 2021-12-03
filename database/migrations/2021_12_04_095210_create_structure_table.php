@@ -8,16 +8,15 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('mentions', function (Blueprint $table) {
+        Schema::create('structure', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedInteger('position')->default(0);
             $table->morphs('content');
-            $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-
-            $table->primary(['content_type', 'content_id', 'user_id']);
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('mentions');
+        Schema::dropIfExists('structure');
     }
 };

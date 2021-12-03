@@ -8,17 +8,16 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('groups', function (Blueprint $table) {
+        Schema::create('structure_links', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->boolean('is_public')->default(0);
+            $table->string('href');
             $table->string('icon')->nullable();
-            $table->string('color')->nullable();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('groups');
+        Schema::dropIfExists('structure_links');
     }
 };

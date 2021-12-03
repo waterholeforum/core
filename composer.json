@@ -15,7 +15,7 @@
         "intervention/image": "^2.5",
         "jrmajor/fluent": "^0.3",
         "kirschbaum-development/eloquent-power-joins": "^2.4",
-        "laravel/framework": "^8.45",
+        "laravel/framework": "^8.74",
         "laravel/scout": "^9.1",
         "laravel/ui": "^3.3",
         "matthiasmullie/minify": "^1.3",

@@ -12,16 +12,14 @@ return new class extends Migration
             $table->id();
             $table->foreignId('channel_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('user_id')->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
-            $table->string('title')->nullable();
+            $table->string('title')->nullable()->fulltext();
             $table->string('slug')->nullable()->unique();
-            $table->mediumText('body');
-            $table->string('cover')->nullable();
+            $table->mediumText('body')->fulltext();
             $table->timestamp('created_at')->nullable()->index();
             $table->timestamp('edited_at')->nullable()->index();
             $table->timestamp('last_activity_at')->nullable()->index();
             $table->unsignedInteger('comment_count')->default(0)->index();
             $table->unsignedInteger('score')->default(0)->index();
-            $table->boolean('is_pinned')->default(0)->index();
             $table->boolean('is_locked')->default(0);
 
             $table->index(['channel_id', 'created_at']); // used to get new post count within each channel
