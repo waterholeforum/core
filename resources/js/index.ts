@@ -1,9 +1,14 @@
-import * as Turbo from '@hotwired/turbo';
 import { install } from '@github/hotkey';
+import '@github/text-expander-element';
+import { Application } from '@hotwired/stimulus';
+import * as Turbo from '@hotwired/turbo';
+import { StreamElement } from '@hotwired/turbo/dist/types/elements';
+import { AlertsElement, MenuElement, ModalElement, PopupElement, TooltipElement } from 'inclusive-elements';
+import Echo from 'laravel-echo';
+import morphdom from 'morphdom';
+import 'wicg-inert';
 
 import './bootstrap';
-import 'wicg-inert';
-import '@github/text-expander-element';
 
 // import { persistResumableFields, restoreResumableFields, setForm } from '@github/session-resume';
 //
@@ -97,14 +102,6 @@ document.addEventListener('turbo:frame-missing', async ({ detail: { fetchRespons
     Turbo.visit(location, { response });
 });
 
-// don't want to do this for everything, some frames are reloadable
-// document.addEventListener('turbo:frame-load', function({ srcElement }) {
-//     (srcElement as FrameElement).removeAttribute('src');
-// });
-
-import { Application } from '@hotwired/stimulus';
-import { FrameElement, StreamElement } from '@hotwired/turbo/dist/types/elements';
-
 window.Stimulus = Application.start();
 const context = require.context('./controllers', true, /\.ts$/);
 window.Stimulus.load(
@@ -113,8 +110,6 @@ window.Stimulus.load(
         controllerConstructor: context(key).default,
     }))
 );
-
-import morphdom from 'morphdom';
 
 interface Waterhole {
     userId: number;
@@ -132,9 +127,6 @@ declare global {
         Waterhole: Waterhole;
     }
 }
-
-import { PopupElement, MenuElement, ModalElement, TooltipElement, AlertsElement } from 'inclusive-elements';
-import Echo from 'laravel-echo';
 
 window.customElements.define('ui-popup', PopupElement);
 window.customElements.define('ui-menu', MenuElement);
