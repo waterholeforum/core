@@ -1,6 +1,6 @@
 <div class="card full-height line-chart-widget stack-xs" data-controller="line-chart">
     <div class="line-chart-widget__head stack-xs">
-        <div class="cluster justify-between">
+        <div class="row justify-between">
             <h3>{{ $title }}</h3>
 
             <ui-popup placement="bottom-end">
@@ -28,7 +28,7 @@
         </div>
 
         <div style="height: 2em">
-            <div class="cluster-sm align-baseline" data-line-chart-target="summary">
+            <div class="row gap-sm align-baseline" data-line-chart-target="summary">
                 <span class="text-lg">{{ number_format($periodTotal) }}</span>
                 @if ($prevPeriodTotal && $periodTotal !== $prevPeriodTotal)
                     <span class="badge badge--{{ $periodTotal < $prevPeriodTotal ? 'warning' : 'success' }}">
@@ -38,7 +38,7 @@
                 @endif
             </div>
 
-            <div class="cluster-sm align-baseline" data-line-chart-target="legend" hidden></div>
+            <div class="row gap-sm align-baseline" data-line-chart-target="legend" hidden></div>
         </div>
     </div>
 
@@ -77,7 +77,7 @@
 
     <div
         data-line-chart-target="axis"
-        class="cluster-md justify-between color-muted text-xxs"
+        class="row gap-md justify-between color-muted text-xxs"
         aria-hidden="true"
         hidden
     >

@@ -29,11 +29,15 @@ trait ManagesComponents
 
     public static function getComponents(): Collection
     {
-        $defaults = array_map(function ($components) {
+        $components = array_map(function ($components) {
             return is_array($components) ? $components : [$components];
         }, static::defaultComponents());
 
-        $components = array_replace_recursive($defaults, static::$components);
+        foreach (static::$components as $position => $items) {
+            foreach ($items as $item) {
+                $components[$position][] = $item;
+            }
+        }
 
         return collect($components)->sortKeys()->flatten();
     }

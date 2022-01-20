@@ -12,7 +12,7 @@ trait Structurable
     {
         static::created(function (Model $model) {
             $model->structure()->create([
-                'position' => Structure::max('position'),
+                'position' => Structure::max('position') ?: 0,
             ]);
         });
 

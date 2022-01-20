@@ -14,6 +14,7 @@ class WaterholeServiceProvider extends AggregateServiceProvider
     protected $providers = [
         AppServiceProvider::class,
         AuthServiceProvider::class,
+        ConsoleServiceProvider::class,
         EventServiceProvider::class,
         LocaleServiceProvider::class,
         RouteServiceProvider::class,

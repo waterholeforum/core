@@ -3,7 +3,7 @@
 
     <div class="section container with-sidebar-start">
         <nav class="sidebar--sticky">
-            @components(Waterhole\Extend\AdminNav::getComponents())
+            @components(Waterhole\Extend\AdminNav::build())
         </nav>
 
         <div style="max-width: 90ch; margin-inline: auto">

@@ -2,6 +2,8 @@
 
 return [
 
+    'path' => 'admin',
+
     'widgets' => [
         [
             'component' => Waterhole\Widgets\GettingStarted::class,

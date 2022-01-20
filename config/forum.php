@@ -4,9 +4,7 @@ return [
 
     'title' => 'Waterhole',
 
-    'route' => '',
-
-    'admin_route' => 'admin',
+    'path' => '',
 
     'sorts' => ['latest', 'new-activity', 'oldest', 'top'],
 

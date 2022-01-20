@@ -40,4 +40,7 @@ return [
 
     'send_powered_by_header' => true,
 
+    'php_memory_limit' => '-1',
+    'php_max_execution_time' => '-1',
+
 ];

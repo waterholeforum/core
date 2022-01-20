@@ -2,7 +2,7 @@
     <h2 class="h3">Get Started With Waterhole</h2>
 
     <div class="grid" style="--grid-min: 30ch; gap: 0">
-        <a href="#" class="cluster-md align-start block-link" data-turbo-frame="_top">
+        <a href="#" class="row gap-md align-start block-link" data-turbo-frame="_top">
             <x-waterhole::icon icon="heroicon-o-map" class="text-xl no-shrink icon--thin"/>
             <div class="stack-xs">
                 <div class="h4 color-accent">Develop Your Strategy</div>
@@ -10,7 +10,7 @@
             </div>
         </a>
 
-        <a href="{{ route('waterhole.admin.structure') }}" class="cluster-md align-start block-link" data-turbo-frame="_top">
+        <a href="{{ route('waterhole.admin.structure') }}" class="row gap-md align-start block-link" data-turbo-frame="_top">
             <x-waterhole::icon icon="heroicon-o-collection" class="text-xl no-shrink icon--thin"/>
             <div class="stack-xs">
                 <div class="h4 color-accent">Set Up Your Structure</div>
@@ -18,7 +18,7 @@
             </div>
         </a>
 
-        <a href="{{ route('waterhole.admin.groups.index') }}" class="cluster-md align-start block-link" data-turbo-frame="_top">
+        <a href="{{ route('waterhole.admin.groups.index') }}" class="row gap-md align-start block-link" data-turbo-frame="_top">
             <x-waterhole::icon icon="heroicon-o-user-group" class="text-xl no-shrink icon--thin"/>
             <div class="stack-xs">
                 <div class="h4 color-accent">Define User Groups</div>
@@ -26,7 +26,7 @@
             </div>
         </a>
 
-        <a href="#" class="cluster-md align-start block-link" data-turbo-frame="_top">
+        <a href="#" class="row gap-md align-start block-link" data-turbo-frame="_top">
             <x-waterhole::icon icon="heroicon-o-color-swatch" class="text-xl no-shrink icon--thin"/>
             <div class="stack-xs">
                 <div class="h4 color-accent">Customize The Design</div>

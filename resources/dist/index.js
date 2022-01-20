@@ -8283,6 +8283,11 @@ var _default = /*#__PURE__*/function (_Controller) {
   }
 
   _createClass(_default, [{
+    key: "reload",
+    value: function reload() {
+      this.element.reload();
+    }
+  }, {
     key: "disable",
     value: function disable() {
       this.element.disabled = true;

@@ -26,9 +26,9 @@ class Script
 
         foreach ($assets as $source) {
             if (is_callable($source)) {
-                $content .= $source();
+                $content .= $source().';';
             } else {
-                $content .= file_get_contents($source);
+                $content .= file_get_contents($source).';';
             }
         }
 

@@ -10,13 +10,14 @@ trait Streamable
 {
     public function id(): ?string
     {
+        $name = (new ReflectionClass($this))->getShortName();
         $properties = $this->extractPublicProperties();
 
         if ($model = reset($properties)) {
-            return dom_id($model, (new ReflectionClass($this))->getShortName());
+            return dom_id($model, $name);
         }
 
-        return null;
+        return $name;
     }
 
     /**

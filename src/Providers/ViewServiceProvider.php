@@ -30,7 +30,9 @@ class ViewServiceProvider extends ServiceProvider
             return implode("\n", [
                 '<?php foreach ('.$components.' as $component): ?>',
                 '<?php unset($instance); ?>',
-                '<?php if (class_exists($component)): ?>',
+                '<?php if ($component instanceof Illuminate\View\Component): ?>',
+                '<?php $instance = $component; ?>',
+                '<?php elseif (class_exists($component)): ?>',
                 '<?php $instance = $__env->getContainer()->make($component, '.($data ?: '[]').'); ?>',
                 '<?php elseif ($__env->getContainer()->make(Illuminate\View\Factory::class)->exists($component)): ?>',
                 '<?php $instance = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, [\'view\' => $component, \'data\' => '.($data ?: '[]').']); ?>',

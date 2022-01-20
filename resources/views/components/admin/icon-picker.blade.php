@@ -1,13 +1,13 @@
 <div data-controller="icon-picker" class="icon-picker">
     @if (is_string($value) && $value)
-        <div class="cluster-sm" data-icon-picker-target="preview">
+        <div class="row gap-sm" data-icon-picker-target="preview">
             <x-waterhole::icon icon="{{ $value }}" class="text-md"/>
             <button type="button" class="btn" data-action="icon-picker#change">Change</button>
         </div>
     @endif
 
     <div
-        class="cluster-sm align-start"
+        class="row gap-sm align-start"
         data-icon-picker-target="form"
         data-controller="reveal"
         @if (is_string($value) && $value) hidden @endif

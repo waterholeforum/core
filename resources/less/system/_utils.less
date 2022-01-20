@@ -81,6 +81,13 @@
   justify-content: center;
 }
 
+.justify-end {
+  justify-content: flex-end;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
 
 .link--muted {
   border: 0;
@@ -203,6 +210,10 @@
   color: var(--color-accent);
 }
 
+.bg-fill {
+  background-color: var(--color-fill);
+}
+
 .pointer-events-none {
   pointer-events: none;
 }
@@ -215,7 +226,7 @@
 .grid {
   display: grid;
   gap: var(--space-md);
-  grid-template-columns: repeat(auto-fit, minmax(min(var(--grid-min, 15ch), 100%), 1fr))
+  grid-template-columns: repeat(auto-fill, minmax(~"min(var(--grid-min, 15ch), 100%)", 1fr));
 }
 
 .rounded {
@@ -254,22 +265,23 @@
   }
 }
 
-.cluster {
+.row {
   display: flex;
   align-items: center;
 }
 
-.cluster-sm {
-  display: flex;
-  gap: var(--space-sm);
-  align-items: center;
+.wrap {
+  flex-wrap: wrap;
 }
 
-.cluster-md {
-  display: flex;
-  gap: var(--space-md);
-  align-items: center;
-}
+.gap-xxs { gap: var(--space-xxs) }
+.gap-xs { gap: var(--space-xs) }
+.gap-sm { gap: var(--space-sm) }
+.gap-md { gap: var(--space-md) }
+.gap-lg { gap: var(--space-lg) }
+.gap-xl { gap: var(--space-xl) }
+.gap-xxl { gap: var(--space-xxl) }
+.gap-xxxl { gap: var(--space-xxxl) }
 
 .justify-between {
   justify-content: space-between;
@@ -302,6 +314,10 @@
 
 .align-start {
   align-items: flex-start;
+}
+
+.align-end {
+  align-items: flex-end;
 }
 
 .align-baseline {

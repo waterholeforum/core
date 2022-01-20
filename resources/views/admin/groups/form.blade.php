@@ -3,150 +3,154 @@
 @endphp
 
 <x-waterhole::admin :title="$title">
-    <x-waterhole::dialog :title="$title" class="dialog--xl">
-        <form
-            method="POST"
-            action="{{ isset($group) ? route('waterhole.admin.groups.update', compact('group')) : route('waterhole.admin.groups.store') }}"
-            enctype="multipart/form-data"
-        >
-            @csrf
-            @if (isset($group)) @method('PATCH') @endif
+    <x-waterhole::admin.title
+        :parent-url="route('waterhole.admin.groups.index')"
+        parent-title="Groups"
+        :title="$title"
+    />
 
-            <div class="stack-lg">
-                <x-waterhole::validation-errors/>
+    <form
+        method="POST"
+        action="{{ isset($group) ? route('waterhole.admin.groups.update', compact('group')) : route('waterhole.admin.groups.store') }}"
+        enctype="multipart/form-data"
+    >
+        @csrf
+        @if (isset($group)) @method('PATCH') @endif
 
-                <div class="panels">
-                    <details class="panel" open>
-                        <summary class="panel__header h4">Details</summary>
+        <div class="stack-lg">
+            <x-waterhole::validation-errors/>
 
-                        <div class="panel__body form-groups">
-                            <x-waterhole::field name="name" label="Name">
-                                <input
-                                    type="text"
-                                    name="name"
-                                    id="{{ $component->id }}"
-                                    class="input"
-                                    value="{{ old('name', $group->name ?? null) }}"
-                                    autofocus
-                                >
-                            </x-waterhole::field>
+            <div class="panels">
+                <details class="panel" open>
+                    <summary class="panel__header h4">Details</summary>
 
-                            <div data-controller="reveal">
-                                <div class="field__label">Appearance</div>
+                    <div class="panel__body form-groups">
+                        <x-waterhole::field name="name" label="Name">
+                            <input
+                                type="text"
+                                name="name"
+                                id="{{ $component->id }}"
+                                class="input"
+                                value="{{ old('name', $group->name ?? null) }}"
+                                autofocus
+                            >
+                        </x-waterhole::field>
 
-                                <div class="stack-lg">
-                                    <div>
-                                        <input type="hidden" name="is_public" value="0">
-                                        <label class="choice">
-                                            <input type="checkbox" data-reveal-target="if" name="is_public" value="1" @if (old('is_public', $group->is_public ?? null)) checked @endif>
-                                            Show this group as a user badge
-                                        </label>
-                                    </div>
+                        <div data-controller="reveal">
+                            <div class="field__label">Appearance</div>
 
-                                    <x-waterhole::field name="color" label="Color" data-reveal-target="then">
-                                        <x-waterhole::admin.color-picker
-                                            name="color"
-                                            id="{{ $component->id }}"
-                                            value="{{ old('color', $group->color ?? null) }}"
-                                        />
-                                    </x-waterhole::field>
-
-                                    <x-waterhole::field name="icon" label="Icon" data-reveal-target="then">
-                                        <x-waterhole::admin.icon-picker
-                                            name="icon"
-                                            :value="old('icon', $group->icon ?? null)"
-                                        />
-                                    </x-waterhole::field>
+                            <div class="stack-lg">
+                                <div>
+                                    <input type="hidden" name="is_public" value="0">
+                                    <label class="choice">
+                                        <input type="checkbox" data-reveal-target="if" name="is_public" value="1" @if (old('is_public', $group->is_public ?? null)) checked @endif>
+                                        Show this group as a user badge
+                                    </label>
                                 </div>
+
+                                <x-waterhole::field name="color" label="Color" data-reveal-target="then">
+                                    <x-waterhole::admin.color-picker
+                                        name="color"
+                                        id="{{ $component->id }}"
+                                        value="{{ old('color', $group->color ?? null) }}"
+                                    />
+                                </x-waterhole::field>
+
+                                <x-waterhole::field name="icon" label="Icon" data-reveal-target="then">
+                                    <x-waterhole::admin.icon-picker
+                                        name="icon"
+                                        :value="old('icon', $group->icon ?? null)"
+                                    />
+                                </x-waterhole::field>
                             </div>
                         </div>
-                    </details>
+                    </div>
+                </details>
 
-                    <details class="panel">
-                        <summary class="panel__header h4">Permissions</summary>
+                <details class="panel">
+                    <summary class="panel__header h4">Permissions</summary>
 
-                        <div class="panel__body">
-                            <div class="table-container">
-                                <table
-                                    class="table permission-grid"
-                                    data-controller="permission-grid"
-                                    data-action="click->permission-grid#click mouseover->permission-grid#mouseover mouseout->permission-grid#reset"
-                                >
-                                    <colgroup>
+                    <div class="panel__body">
+                        <div class="table-container">
+                            <table
+                                class="table permission-grid"
+                                data-controller="permission-grid"
+                                data-action="click->permission-grid#click mouseover->permission-grid#mouseover mouseout->permission-grid#reset"
+                            >
+                                <colgroup>
+                                    <col>
+                                    @foreach ($abilities as $ability)
                                         <col>
+                                    @endforeach
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <td></td>
                                         @foreach ($abilities as $ability)
-                                            <col>
+                                            <th>{{ ucfirst($ability) }}</th>
                                         @endforeach
-                                    </colgroup>
-                                    <thead>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($structure as $node)
                                         <tr>
-                                            <td></td>
+                                            <th>
+                                                @if ($node->content instanceof Waterhole\Models\Channel)
+                                                    <x-waterhole::channel-label
+                                                        :channel="$node->content"
+                                                    />
+                                                @else
+                                                    {{ $node->content->name }}
+                                                @endif
+                                            </th>
                                             @foreach ($abilities as $ability)
-                                                <th>{{ ucfirst($ability) }}</th>
+                                                @if (method_exists($node->content, 'abilities') && in_array($ability, $node->content->abilities()))
+                                                    <td class="choice-cell">
+                                                        <label class="choice">
+                                                            <input
+                                                                type="hidden"
+                                                                name="permissions[{{ $node->content->getMorphClass() }}:{{ $node->content->getKey() }}][{{ $ability }}]"
+                                                                value="{{ $node->content->permissions->member()->allows($ability) ? 1 : 0 }}"
+                                                            >
+                                                            <input
+                                                                type="checkbox"
+                                                                name="permissions[{{ $node->content->getMorphClass() }}:{{ $node->content->getKey() }}][{{ $ability }}]"
+                                                                value="1"
+                                                                @if ($node->content->permissions->member()->allows($ability)) disabled
+                                                                @endif
+                                                                @if (old("permissions.{$node->content->getMorphClass()}:{$node->content->getKey()}.$ability", $node->content->permissions->group($group ?? Waterhole\Models\Group::member())->allows($ability))) checked
+                                                                @endif
+                                                                data-depends-on="
+                                                                    @if ($ability !== 'view') permissions[{{ $node->content->getMorphClass() }}:{{ $node->content->getKey() }}][view] @endif
+                                                                    "
+                                                            >
+                                                        </label>
+                                                    </td>
+                                                @else
+                                                    <td></td>
+                                                @endif
                                             @endforeach
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($structure as $node)
-                                            <tr>
-                                                <th>
-                                                    @if ($node->content instanceof Waterhole\Models\Channel)
-                                                        <x-waterhole::channel-label
-                                                            :channel="$node->content"
-                                                        />
-                                                    @else
-                                                        {{ $node->content->name }}
-                                                    @endif
-                                                </th>
-                                                @foreach ($abilities as $ability)
-                                                    @if (method_exists($node->content, 'abilities') && in_array($ability, $node->content->abilities()))
-                                                        <td class="choice-cell">
-                                                            <label class="choice">
-                                                                <input
-                                                                    type="hidden"
-                                                                    name="permissions[{{ $node->content->getMorphClass() }}:{{ $node->content->getKey() }}][{{ $ability }}]"
-                                                                    value="{{ $node->content->permissions->member()->allows($ability) ? 1 : 0 }}"
-                                                                >
-                                                                <input
-                                                                    type="checkbox"
-                                                                    name="permissions[{{ $node->content->getMorphClass() }}:{{ $node->content->getKey() }}][{{ $ability }}]"
-                                                                    value="1"
-                                                                    @if ($node->content->permissions->member()->allows($ability)) disabled
-                                                                    @endif
-                                                                    @if (old("permissions.{$node->content->getMorphClass()}:{$node->content->getKey()}.$ability", $node->content->permissions->group($group ?? Waterhole\Models\Group::member())->allows($ability))) checked
-                                                                    @endif
-                                                                    data-depends-on="
-                                                                        @if ($ability !== 'view') permissions[{{ $node->content->getMorphClass() }}:{{ $node->content->getKey() }}][view] @endif
-                                                                        "
-                                                                >
-                                                            </label>
-                                                        </td>
-                                                    @else
-                                                        <td></td>
-                                                    @endif
-                                                @endforeach
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
-                    </details>
-                </div>
-
-                <div class="toolbar">
-                    <button
-                        type="submit"
-                        class="btn btn--primary btn--wide"
-                    >
-                        {{ isset($group) ? 'Save Changes' : 'Create' }}
-                    </button>
-                    <a
-                        href="{{ route('waterhole.admin.groups.index') }}"
-                        class="btn"
-                    >Cancel</a>
-                </div>
+                    </div>
+                </details>
             </div>
-        </form>
-    </x-waterhole::dialog>
+
+            <div class="toolbar">
+                <button
+                    type="submit"
+                    class="btn btn--primary btn--wide"
+                >
+                    {{ isset($group) ? 'Save Changes' : 'Create' }}
+                </button>
+                <a
+                    href="{{ route('waterhole.admin.groups.index') }}"
+                    class="btn"
+                >Cancel</a>
+            </div>
+        </div>
+    </form>
 </x-waterhole::admin>

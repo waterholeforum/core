@@ -4,6 +4,8 @@
             {{ $title }}
         </h1>
 
+        {{ $header ?? '' }}
+
 {{--        <button class="btn btn--transparent btn--icon dialog__close">--}}
 {{--            <x-waterhole::icon icon="heroicon-o-x"/>--}}
 {{--        </button>--}}
