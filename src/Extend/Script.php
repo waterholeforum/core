@@ -3,22 +3,21 @@
 namespace Waterhole\Extend;
 
 use Illuminate\Support\Facades\Storage;
-use Waterhole\Extend\Concerns\ManagesAssets;
+use Waterhole\Extend\Concerns\AssetList;
 
+/**
+ * Manage JavaScript asset bundles.
+ *
+ * In addition to files, you can also add callbacks which return JS code.
+ *
+ * Waterhole will simply concatenate the scripts together into bundles. You are
+ * responsible for doing any transpiling prior.
+ */
 class Script
 {
-    use ManagesAssets;
+    use AssetList;
 
-    private static array $assets = [
-        'forum' => [
-            __DIR__.'/../../resources/dist/index.js',
-        ],
-        'admin' => [
-            __DIR__.'/../../resources/dist/admin.js',
-        ],
-    ];
-
-    public static function compile(array $assets, string $group): array
+    private static function compile(array $assets, string $bundle): array
     {
         // TODO: caching
 
@@ -32,8 +31,11 @@ class Script
             }
         }
 
-        Storage::disk('public')->put($compiled = 'js/'.$group.'.js', $content);
+        Storage::disk('public')->put($compiled = "js/$bundle.js", $content);
 
         return [asset(Storage::disk('public')->url($compiled))];
     }
 }
+
+Script::add(__DIR__.'/../../resources/dist/index.js');
+Script::add(__DIR__.'/../../resources/dist/admin.js', bundle: 'admin');

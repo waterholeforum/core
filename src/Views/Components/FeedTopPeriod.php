@@ -3,26 +3,27 @@
 namespace Waterhole\Views\Components;
 
 use Illuminate\View\Component;
+use Waterhole\Feed\Feed;
+use Waterhole\Filters\Top;
 use Waterhole\Models\Channel;
-use Waterhole\PostFeed;
-use Waterhole\Sorts\Top;
 
 class FeedTopPeriod extends Component
 {
-    public PostFeed|\Waterhole\Feed $feed;
+    public Feed $feed;
     public ?Channel $channel;
     public ?array $periods = null;
     public ?string $currentPeriod = null;
 
-    public function __construct(PostFeed|\Waterhole\Feed $feed, Channel $channel = null)
+    public function __construct(Feed $feed, Channel $channel = null)
     {
         $this->feed = $feed;
         $this->channel = $channel;
 
-        $sort = $feed->currentSort();
-        if ($sort instanceof Top) {
-            $this->periods = $sort::PERIODS;
-            $this->currentPeriod = $sort->currentPeriod();
+        $filter = $feed->currentFilter();
+
+        if ($filter instanceof Top) {
+            $this->periods = $filter::PERIODS;
+            $this->currentPeriod = $filter->currentPeriod();
         }
     }
 

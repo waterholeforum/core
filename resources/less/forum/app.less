@@ -1,5 +1,4 @@
 @import '../system/_variables';
-@import '../system/_mixins';
 
 @import '../system/_reset';
 @import '../system/_base';
@@ -218,42 +217,9 @@
   margin-bottom: var(--space-md);
 }
 
-.form-groups {
-  > * {
-    display: flex;
-
-    > :first-child:not(:only-child) {
-      flex-basis: 25%;
-      flex-shrink: 0;
-    }
-
-    > :nth-child(2) {
-      flex-grow: 1;
-      margin: 0;
-    }
-  }
-
-  > * + * {
-    border-top: 1px solid var(--color-stroke);
-    margin-top: var(--space-lg);
-    padding-top: var(--space-lg);
-  }
-}
-
 .notification-grid {
   .choice {
     flex-basis: 10ch;
   }
 }
 
-.card-list {
-  padding: 0;
-
-  > * {
-    padding: var(--space-sm);
-  }
-
-  > * + * {
-    border-top: 1px solid var(--color-stroke);
-  }
-}

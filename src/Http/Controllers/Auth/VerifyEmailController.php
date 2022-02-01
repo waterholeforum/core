@@ -6,7 +6,6 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
 use Waterhole\Http\Controllers\Controller;
-use Waterhole\Providers\RouteServiceProvider;
 
 class VerifyEmailController extends Controller
 {
@@ -28,14 +27,14 @@ class VerifyEmailController extends Controller
 
         event(new Verified($request->user()));
 
-        return redirect()->intended(RouteServiceProvider::HOME)
+        return redirect()->intended(route('waterhole.home'))
             ->with('success', 'Thanks for verifying your email!');
     }
 
     public function resend(Request $request)
     {
         if ($request->user()->hasVerifiedEmail()) {
-            return redirect()->intended(RouteServiceProvider::HOME);
+            return redirect()->intended(route('waterhole.home'));
         }
 
         $request->user()->sendEmailVerificationNotification();

@@ -2,16 +2,12 @@
 
 namespace Waterhole\Extend;
 
-use Waterhole\Extend\Concerns\ManagesComponents;
+use Waterhole\Extend\Concerns\OrderedList;
 
-class LayoutAfter
+/**
+ * A list of components to render in the layout after the main content.
+ */
+abstract class LayoutAfter
 {
-    use ManagesComponents;
-
-    protected static function defaultComponents(): array
-    {
-        return [
-            // 'waterhole::components.footer',
-        ];
-    }
+    use OrderedList;
 }

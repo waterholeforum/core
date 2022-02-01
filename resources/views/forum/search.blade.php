@@ -31,13 +31,13 @@
                     <div class="nav sidebar--sticky">
                         @foreach ($channels as $channel)
                             <a
-                                href="{{ request('channel') == $channel->id ? request()->fullUrlWithoutQuery(['channel', 'page']) : request()->fullUrlWithQuery(['channel' => $channel->id, 'page' => null]) }}"
+                                href="{{ $selectedChannels->contains($channel) ? request()->fullUrlWithoutQuery(['channels', 'page']) : request()->fullUrlWithQuery(['channels' => $channel->id, 'page' => null]) }}"
                                 class="nav-link"
-                                @if (request('channel') == $channel->id) aria-current="page" @endif
+                                @if ($selectedChannels->contains($channel)) aria-current="page" @endif
                             >
                                 <x-waterhole::icon :icon="$channel->icon"/>
                                 <span>{{ $channel->name }}</span>
-                                @if (request('channel') == $channel->id)
+                                @if ($selectedChannels->contains($channel))
                                     <x-waterhole::icon icon="heroicon-s-x" style="margin-left: auto; font-size: inherit"/>
                                 @elseif (isset($channelHits[$channel->id]))
                                     <span class="badge">{{ $channelHits[$channel->id] }}</span>
@@ -88,7 +88,7 @@
                                                         <a href="{{ $hit->post->url }}">{{ $hit->title }}</a>
                                                     </h3>
                                                     <div class="post-summary__info">
-                                                        @components(Waterhole\Extend\PostInfo::getComponents(), ['post' => $hit->post])
+                                                        @components(Waterhole\Extend\PostInfo::build(), ['post' => $hit->post])
                                                     </div>
                                                 </div>
                                             </div>

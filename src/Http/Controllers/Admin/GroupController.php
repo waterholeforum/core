@@ -2,15 +2,18 @@
 
 namespace Waterhole\Http\Controllers\Admin;
 
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Waterhole\Http\Controllers\Controller;
-use Waterhole\Models\Channel;
 use Waterhole\Models\Group;
 use Waterhole\Models\Structure;
 
+/**
+ * Controller for admin group management (list, create, and update).
+ *
+ * Deletion is handled by the DeleteGroup action.
+ */
 class GroupController extends Controller
 {
     public function index()
@@ -30,17 +33,7 @@ class GroupController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate(Group::rules());
-        $permissions = Arr::pull($data, 'permissions');
-        $icon = Arr::pull($data, 'icon');
-
-        DB::transaction(function () use ($data, $permissions, $icon) {
-            $group = Group::create($data);
-            $group->savePermissions($permissions);
-            $group->saveIcon($icon);
-        });
-
-        return redirect()->route('waterhole.admin.groups.index');
+        $this->save(new Group(), $request);
     }
 
     public function edit(Group $group)
@@ -50,32 +43,38 @@ class GroupController extends Controller
 
     public function update(Group $group, Request $request)
     {
-        $data = $request->validate(Group::rules());
-        $permissions = Arr::pull($data, 'permissions');
-        $icon = Arr::pull($data, 'icon');
-
-        DB::transaction(function () use ($group, $data, $permissions, $icon) {
-            $group->update($data);
-            $group->savePermissions($permissions);
-            $group->saveIcon($icon);
-        });
-
-        return redirect()->route('waterhole.admin.groups.index');
+        $this->save($group, $request);
     }
 
     private function form()
     {
-        $structure = Structure::with(['content' => function (MorphTo $morphTo) {
-            $morphTo->morphWith([
-                Channel::class => ['permissions.recipient'],
-            ]);
-        }])
+        $structure = Structure::query()
             ->orderBy('position')
-            ->get();
+            ->get()
+            ->loadMissing('content.permissions.recipient');
 
-        return view('waterhole::admin.groups.form', [
-            'structure' => $structure,
-            'abilities' => $structure->flatMap(fn(Structure $node) => method_exists($node->content, 'abilities') ? $node->content->abilities() : [])->unique(),
-        ]);
+        // Construct an array of all abilities that apply to the structure
+        // content to use as columns for the permission grid.
+        $abilities = $structure->flatMap(function(Structure $node) {
+            return method_exists($node->content, 'abilities') ? $node->content->abilities() : [];
+        })->unique();
+
+        return view('waterhole::admin.groups.form', compact('structure', 'abilities'));
+    }
+
+    private function save(Group $group, Request $request)
+    {
+        $data = $request->validate(Group::rules());
+
+        $icon = Arr::pull($data, 'icon');
+        $permissions = Arr::pull($data, 'permissions');
+
+        DB::transaction(function () use ($group, $data, $permissions, $icon) {
+            $group->fill($data)->save();
+            $group->saveIcon($icon);
+            $group->savePermissions($permissions);
+        });
+
+        return redirect()->route('waterhole.admin.groups.index');
     }
 }

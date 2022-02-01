@@ -2,65 +2,67 @@
 
 namespace Waterhole\Actions;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\HtmlString;
+use Illuminate\View\View;
+use Waterhole\Models\Model;
 use Waterhole\Models\User;
 
 class DeleteUser extends Action
 {
-    public ?array $context = [null, 'admin'];
     public bool $destructive = true;
-    public bool $confirm = true;
-    public bool $bulk = true;
 
-    public function name(): string
+    public function appliesTo(Model $model): bool
+    {
+        return $model instanceof User && ! $model->isRootAdmin();
+    }
+
+    public function authorize(?User $user, Model $model): bool
+    {
+        // Users are not allowed to delete themselves.
+        return $user && $user->can('delete', $model) && $user->isNot($model);
+    }
+
+    public function label(Collection $models): string
     {
         return 'Delete...';
     }
 
-    public function icon(Collection $items): ?string
+    public function icon(Collection $models): string
     {
         return 'heroicon-o-trash';
     }
 
-    public function appliesTo($item): bool
+    public function confirm(Collection $models): View
     {
-        return $item instanceof User && $item->id !== 1;
+        return view('waterhole::admin.users.delete', [
+            'users' => $models,
+        ]);
     }
 
-    public function authorize(?User $user, $item): bool
+    public function confirmButton(Collection $models): string
     {
-        return $user && $user->can('delete', $item) && $user->isNot($item);
+        return 'Delete';
     }
 
-    public function confirmation(Collection $items): null|string
+    public function run(Collection $models)
     {
-        return $items->count() === 1 ? "Delete User: {$items[0]->name}" : "Delete {$items->count()} Users";
-    }
-
-    public function confirmationBody(Collection $items): HtmlString
-    {
-        return new HtmlString(view('waterhole::admin.users.delete'));
-    }
-
-    public function run(Collection $items, Request $request)
-    {
-        DB::transaction(function () use ($items, $request) {
-            if ($request->input('delete_content')) {
-                $items->each(function (User $user) {
+        DB::transaction(function () use ($models) {
+            if (request('delete_content')) {
+                $models->each(function (User $user) {
                     $user->posts()->delete();
                     $user->comments()->delete();
                 });
             }
 
-            $items->each->delete();
+            $models->each->delete();
         });
 
-        $request->session()->flash('success', 'User deleted.');
+        session()->flash('success', 'User deleted.');
 
-        if ($request->input('return') === $items[0]->url) {
+        // If the action was initiated from the user's page, we can't send the
+        // user back there. Instead, send them to the forum index.
+        if (request('return') === $models[0]->url) {
             return redirect('/');
         }
     }

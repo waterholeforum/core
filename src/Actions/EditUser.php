@@ -3,34 +3,33 @@
 namespace Waterhole\Actions;
 
 use Illuminate\Support\Collection;
+use Waterhole\Models\Model;
 use Waterhole\Models\User;
 
 class EditUser extends Link
 {
-    public ?array $context = [null, 'admin'];
+    public function appliesTo(Model $model): bool
+    {
+        return $model instanceof User;
+    }
 
-    public function name(): string
+    public function authorize(?User $user, Model $model): bool
+    {
+        return $user && $user->can('update', $model);
+    }
+
+    public function label(Collection $models): string
     {
         return 'Edit';
     }
 
-    public function icon(Collection $items): ?string
+    public function icon(Collection $models): string
     {
         return 'heroicon-o-pencil';
     }
 
-    public function appliesTo($item): bool
+    public function url(Model $model): string
     {
-        return $item instanceof User;
-    }
-
-    public function authorize(?User $user, $item): bool
-    {
-        return $user && $user->can('update', $item);
-    }
-
-    public function link($item)
-    {
-        return $item->edit_url;
+        return $model->edit_url;
     }
 }

@@ -3,33 +3,34 @@
 namespace Waterhole\Actions;
 
 use Illuminate\Support\Collection;
+use Waterhole\Models\Model;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
 
 class EditPost extends Link
 {
-    public function name(): string
+    public function appliesTo(Model $model): bool
+    {
+        return $model instanceof Post;
+    }
+
+    public function authorize(?User $user, Model $model): bool
+    {
+        return $user && $user->can('update', $model);
+    }
+    
+    public function label(Collection $models): string
     {
         return 'Edit Post';
     }
 
-    public function icon(Collection $items): ?string
+    public function icon(Collection $models): string
     {
         return 'heroicon-o-pencil';
     }
 
-    public function appliesTo($item): bool
+    public function url(Model $model): string
     {
-        return $item instanceof Post;
-    }
-
-    public function authorize(?User $user, $item): bool
-    {
-        return $user && $user->can('update', $item);
-    }
-
-    public function link($item)
-    {
-        return $item->edit_url;
+        return $model->edit_url;
     }
 }

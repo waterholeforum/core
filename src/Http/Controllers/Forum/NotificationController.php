@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Notification;
 
+/**
+ * Controller for notification management.
+ */
 class NotificationController extends Controller
 {
     public function __construct()
@@ -20,6 +23,9 @@ class NotificationController extends Controller
 
         $user->update(['notifications_read_at' => now()]);
 
+        // Notifications can be grouped together by their subject. When listing
+        // notifications, we only show the most recent notification in each
+        // "group", so the user doesn't get overwhelmed by lots of activity.
         $query = $user->notifications()
             ->select('*')
             ->selectRaw('ROW_NUMBER() OVER(PARTITION BY type, COALESCE(group_type, id), COALESCE(group_id, id) ORDER BY created_at DESC) AS r');
@@ -31,6 +37,8 @@ class NotificationController extends Controller
             ->latest()
             ->paginate(10);
 
+        // Give notification types the opportunity to eager-load additional
+        // relationships.
         $notifications
             ->groupBy('type')
             ->each(fn($models, $type) => $type::load($models));
@@ -54,9 +62,12 @@ class NotificationController extends Controller
 
     public function unsubscribe(Request $request)
     {
-        $attributes = $request->only('type', 'notifiable_type', 'notifiable_id', 'content_type', 'content_id');
-
-        $notification = Notification::where($attributes)->firstOrFail();
+        // An unsubscribe request will come in with the notification type,
+        // its user, and content. Find the matching notification in the database
+        // so we can reconstruct its template and call its unsubscribe method.
+        $notification = Notification::where(
+            $request->only('type', 'notifiable_type', 'notifiable_id', 'content_type', 'content_id')
+        )->firstOrFail();
 
         $notification->template->unsubscribe($notification->notifiable);
 

@@ -4,21 +4,38 @@ namespace Waterhole\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Auth;
 
 class Localize
 {
+    const SESSION_KEY = 'locale';
+    const LOCALES = ['en'];
+
     public function handle(Request $request, Closure $next)
     {
-        // TODO: detect locale from the browser's preferred
-        // See https://laracasts.com/discuss/channels/laravel/what-is-the-best-way-to-set-language-for-user
+        $user = $request->user();
 
-        if ($actor = Auth::user()) {
-            if ($locale = $actor->preferredLocale()) {
-                App::setLocale($locale);
+        // Allow the locale to be set in a query parameter. If there is a
+        // logged-in user, update their preference in the database; otherwise,
+        // store the preference in the session.
+        if (in_array($locale = $request->query('locale'), static::LOCALES)) {
+            if ($user) {
+                $user->update(['locale' => $locale]);
+            } else {
+                session()->put(static::SESSION_KEY, $locale);
             }
+
+            return back();
         }
+
+        // Retrieve the user's locale preference, either from the user model if
+        // logged in, or from the session or browser preference otherwise.
+        if ($user) {
+            $locale = $user->preferredLocale();
+        } else {
+            $locale = session(static::SESSION_KEY, $request->getPreferredLanguage(static::LOCALES));
+        }
+
+        app()->setLocale($locale);
 
         return $next($request);
     }

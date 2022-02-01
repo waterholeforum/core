@@ -14,8 +14,8 @@ class MySqlEngine
         int $limit,
         int $offset = 0,
         string $sort = null,
-        array $filters = [],
-    ) {
+        array $channelIds = [],
+    ): SearchResults {
         preg_match_all('/\w+/', $q, $matches);
         $wordsTooShort = collect($matches[0])->some(fn($word) => strlen($word) < 3);
 
@@ -37,9 +37,9 @@ class MySqlEngine
             )
             ->get();
 
-        if ($channel = $filters['channel'] ?? null) {
-            $inner->where('channel_id', $channel);
-            $total = $channels->find($channel)->hits;
+        if ($channelIds) {
+            $inner->whereIn('channel_id', $channelIds);
+            $total = $channels->find($channelIds)->sum('hits');
         } else {
             $total = $channels->sum('hits');
         }

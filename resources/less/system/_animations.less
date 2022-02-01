@@ -14,11 +14,7 @@ ui-popup > :nth-child(2) {
   z-index: var(--z-index-overlay);
 }
 
-ui-popup.modeless::part(backdrop) {
-  display: none;
-}
-
-[data-placement="bottom-center"] {
+[data-placement="bottom"] {
   transform-origin: top center;
 }
 [data-placement="bottom-start"] {
@@ -27,7 +23,7 @@ ui-popup.modeless::part(backdrop) {
 [data-placement="bottom-end"] {
   transform-origin: top right;
 }
-[data-placement="top-center"] {
+[data-placement="top"] {
   transform-origin: bottom center;
 }
 [data-placement="top-start"] {
@@ -36,7 +32,7 @@ ui-popup.modeless::part(backdrop) {
 [data-placement="top-end"] {
   transform-origin: bottom right;
 }
-[data-placement="left-center"] {
+[data-placement="left"] {
   transform-origin: right center;
 }
 [data-placement="left-start"] {
@@ -45,7 +41,7 @@ ui-popup.modeless::part(backdrop) {
 [data-placement="left-end"] {
   transform-origin: right bottom;
 }
-[data-placement="right-center"] {
+[data-placement="right"] {
   transform-origin: left center;
 }
 [data-placement="right-start"] {
@@ -56,13 +52,13 @@ ui-popup.modeless::part(backdrop) {
 }
 
 [data-placement^="top"] {
-  margin-bottom: 6px;
+  margin-top: -6px;
 }
 [data-placement^="bottom"] {
   margin-top: 6px;
 }
 [data-placement^="left"] {
-  margin-right: 6px;
+  margin-left: -6px;
 }
 [data-placement^="right"] {
   margin-left: 6px;

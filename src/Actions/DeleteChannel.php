@@ -2,57 +2,64 @@
 
 namespace Waterhole\Actions;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Illuminate\Support\HtmlString;
 use Illuminate\Validation\Rule;
+use Illuminate\View\View;
 use Waterhole\Models\Channel;
+use Waterhole\Models\Model;
 use Waterhole\Models\User;
+use Waterhole\Waterhole;
 
 class DeleteChannel extends Action
 {
-    public ?array $context = ['admin'];
     public bool $destructive = true;
-    public bool $confirm = true;
-    public bool $bulk = false;
 
-    public function name(): string
+    public function appliesTo($model): bool
+    {
+        return $model instanceof Channel;
+    }
+
+    public function authorize(?User $user, Model $model): bool
+    {
+        return $user && $user->can('delete', $model);
+    }
+
+    public function shouldRender(Collection $models): bool
+    {
+        return Waterhole::isAdminRoute();
+    }
+
+    public function label(Collection $models): string
     {
         return 'Delete...';
     }
 
-    public function icon(Collection $items): ?string
+    public function icon(Collection $models): string
     {
         return 'heroicon-o-trash';
     }
 
-    public function appliesTo($item): bool
+    public function confirm(Collection $models): View
     {
-        return $item instanceof Channel;
+        $channel = $models[0];
+        $postCount = $channel->posts()->count();
+
+        return view('waterhole::admin.structure.channels.delete', compact('channel', 'postCount'));
     }
 
-    public function authorize(?User $user, $item): bool
+    public function confirmButton(Collection $models): string
     {
-        return $user && $user->can('delete', $item);
+        return 'Delete';
     }
 
-    public function confirmationBody(Collection $items): HtmlString
+    public function run(Collection $models)
     {
-        return new HtmlString(
-            view('waterhole::admin.structure.channels.delete', [
-                'channel' => $items[0]
-            ])
-        );
-    }
-
-    public function run(Collection $items, Request $request)
-    {
-        $data = $request->validate([
+        $data = request()->validate([
             'move_posts' => ['boolean'],
             'channel_id' => ['required_if:move_posts,1', Rule::exists(Channel::class, 'id')],
         ]);
 
-        $items->each(function (Channel $channel) use ($data) {
+        $models->each(function (Channel $channel) use ($data) {
             if ($data['move_posts'] ?? false) {
                 $channel->posts()->update(['channel_id' => $data['channel_id']]);
             }

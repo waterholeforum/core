@@ -176,3 +176,15 @@ function get_contrast_color(string $hex): string
 
     return ($yiq >= 128) ? 'black' : 'white';
 }
+
+/**
+ * Resolve a collection of services from the container.
+ *
+ * Items that do not exist will be logged and skipped.
+ */
+function resolve_all(array $names, array ...$parameters): array
+{
+    return array_filter(
+        array_map(fn($name) => rescue(fn() => resolve($name, ...$parameters)), $names)
+    );
+}

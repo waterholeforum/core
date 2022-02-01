@@ -4,11 +4,12 @@ namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Validation\Rule;
-use Waterhole\Extend\FeedSort;
+use Waterhole\Extend\PostFilters;
 use Waterhole\Models\Concerns\Followable;
 use Waterhole\Models\Concerns\HasIcon;
 use Waterhole\Models\Concerns\HasPermissions;
 use Waterhole\Models\Concerns\HasUserState;
+use Waterhole\Models\Concerns\HasVisibility;
 use Waterhole\Models\Concerns\Structurable;
 
 class Channel extends Model
@@ -18,11 +19,12 @@ class Channel extends Model
     use Structurable;
     use HasPermissions;
     use HasIcon;
+    use HasVisibility;
 
     public $timestamps = false;
 
     protected $casts = [
-        'sorts' => 'json',
+        'filters' => 'json',
     ];
 
     public function posts(): HasMany
@@ -74,8 +76,8 @@ class Channel extends Model
             'instructions' => ['nullable', 'string'],
             'sandbox' => ['nullable', 'boolean'],
             'default_layout' => ['in:list,cards'],
-            'sorts' => ['required_with:custom_sorts', 'array'],
-            'sorts.*' => ['string', 'distinct', Rule::in(FeedSort::getInstances()->map->handle())],
+            'filters' => ['required_with:custom_filters', 'array'],
+            'filters.*' => ['string', 'distinct', Rule::in(PostFilters::values())],
             'permissions' => ['array'],
         ], static::iconRules());
     }

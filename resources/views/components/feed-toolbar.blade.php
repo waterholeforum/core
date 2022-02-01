@@ -1,3 +1,3 @@
 <div class="toolbar feed__toolbar">
-    @components(Waterhole\Extend\FeedToolbar::getComponents(), compact('feed', 'channel'))
+    @components(Waterhole\Extend\PostFeedToolbar::build(), compact('feed', 'channel'))
 </div>

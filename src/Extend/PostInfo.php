@@ -2,25 +2,23 @@
 
 namespace Waterhole\Extend;
 
-use Waterhole\Extend\Concerns\ManagesComponents;
+use Waterhole\Extend\Concerns\OrderedList;
 use Waterhole\Views\Components\PostActivity;
 use Waterhole\Views\Components\PostChannel;
 use Waterhole\Views\Components\PostLocked;
 use Waterhole\Views\Components\PostNotifications;
 use Waterhole\Views\Components\PostUnread;
 
-class PostInfo
+/**
+ * A list of components to render under each post's title.
+ */
+abstract class PostInfo
 {
-    use ManagesComponents;
-
-    protected static function defaultComponents(): array
-    {
-        return [
-            PostUnread::class,
-            PostChannel::class,
-            PostLocked::class,
-            PostActivity::class,
-            PostNotifications::class,
-        ];
-    }
+    use OrderedList;
 }
+
+PostInfo::add('unread', PostUnread::class);
+PostInfo::add('channel', PostChannel::class);
+PostInfo::add('locked', PostLocked::class);
+PostInfo::add('activity', PostActivity::class);
+PostInfo::add('notifications', PostNotifications::class);

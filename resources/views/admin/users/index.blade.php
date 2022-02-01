@@ -50,12 +50,12 @@
 
         <turbo-frame id="users_frame" target="_top" class="stack-md">
             @if ($users->isNotEmpty())
-                <div class="table-container full-width">
+                <div class="table-container full-width" style="overflow: visible">
                     <table class="table">
                         <thead>
                             <tr>
 {{--                                <td class="choice-cell">--}}
-{{--                                    <label class="choice">--}}
+{{--                                    <label>--}}
 {{--                                        <input type="checkbox">--}}
 {{--                                    </label>--}}
 {{--                                </td>--}}
@@ -83,7 +83,7 @@
                             @foreach ($users as $user)
                                 <tr>
 {{--                                    <td class="choice-cell">--}}
-{{--                                        <label class="choice">--}}
+{{--                                        <label>--}}
 {{--                                            <input type="checkbox">--}}
 {{--                                        </label>--}}
 {{--                                    </td>--}}

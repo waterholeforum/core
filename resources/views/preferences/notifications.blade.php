@@ -9,7 +9,7 @@
                 <div>
                     <h4 class="field__label">Notifications</h4>
                     <div class="notification-grid card card-list">
-                        @foreach (Waterhole\Extend\NotificationTypes::getComponents() as $type)
+                        @foreach (Waterhole\Extend\NotificationTypes::build() as $type)
                             @php $channels = (array) old('notification_channels.'.$type, Auth::user()->notification_channels[$type] ?? []) @endphp
                             <div class="toolbar">
                                 <div>{{ $type::description() }}</div>

@@ -119,20 +119,20 @@
             </div>
 
             <div role="group" class="field">
-                <div class="field__label">Sort Options</div>
+                <div class="field__label">Filter Options</div>
                 <div data-controller="reveal" class="stack-md">
                     <label class="choice">
                         <input
                             type="checkbox"
-                            id="custom_sorts"
-                            name="custom_sorts"
+                            id="custom_filters"
+                            name="custom_filters"
                             value="1"
                             data-reveal-target="if"
-                            @if (old('custom_sorts', $channel->sorts ?? false)) checked @endif
+                            @if (old('custom_filters', $channel->filters ?? false)) checked @endif
                         >
                         <span class="stack-xxs">
-                            <span>Use custom sort options</span>
-                            <small class="field__description">Override the global sort options for this channel.</small>
+                            <span>Use custom filter options</span>
+                            <small class="field__description">Override the global filter options for this channel.</small>
                         </span>
                     </label>
 
@@ -143,15 +143,14 @@
                         data-dragon-nest-target="list"
                     >
                         @php
-                            $sorts = old('sorts', $channel->sorts ?? config('waterhole.forum.sorts', []));
+                            $filters = old('filters', $channel->filters ?? config('waterhole.forum.post_filters', []));
                         @endphp
 
-                        @foreach (Waterhole\Extend\FeedSort::getInstances()->sortBy(fn($sort) => ($k = array_search($sort->handle(), $sorts)) === false ? INF : $k) as $sort)
-                            @php $handle = $sort->handle(); @endphp
+                        @foreach (collect(Waterhole\Extend\PostFilters::values())->map(fn($class) => resolve($class))->sortBy(fn($filter, $key) => ($k = array_search($key, $filters)) === false ? INF : $k) as $filter)
+                            @php $handle = $filter->handle(); @endphp
                             <li
                                 class="admin-structure__node admin-structure__content toolbar"
                                 draggable="true"
-                                data-id="{{ $handle }}"
                             >
                                 <x-waterhole::icon
                                     icon="heroicon-o-menu"
@@ -162,11 +161,11 @@
                                 <label class="choice">
                                     <input
                                         type="checkbox"
-                                        name="sorts[]"
-                                        value="{{ $sort->handle() }}"
-                                        @if (in_array($handle, $sorts)) checked @endif
+                                        name="filters[]"
+                                        value="{{ $filter::class }}"
+                                        @if (in_array($filter::class, $filters)) checked @endif
                                     >
-                                    {{ $sort->name() }}
+                                    {{ $filter->label() }}
                                 </label>
                             </li>
                         @endforeach

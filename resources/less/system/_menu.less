@@ -32,6 +32,7 @@
 
   &:is(:hover, .is-hovered, :focus, .is-focused, [aria-selected=true]) {
     background: var(--color-fill);
+    outline: none;
   }
 
   &.is-destructive {
@@ -43,7 +44,7 @@
     }
   }
 
-  &.is-active, &[aria-current=page] {
+  &.is-active, &[aria-current=page], &[aria-checked=true] {
     color: var(--color-accent);
     background: var(--color-accent-light);
   }

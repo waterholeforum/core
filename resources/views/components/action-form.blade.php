@@ -1,5 +1,5 @@
 @php
-    $actionable = Waterhole\Extend\Actionable::getActionable($for);
+    $actionable = Waterhole\Extend\Actionables::getActionableName($for);
 @endphp
 
 @if ($for && $actionable)

@@ -3,20 +3,18 @@
 namespace Waterhole\Extend;
 
 use Illuminate\Support\Facades\Auth;
-use Waterhole\Extend\Concerns\ManagesClasses;
+use Waterhole\Extend\Concerns\ClassList;
 use Waterhole\Models\Comment;
 
-class CommentClasses
+/**
+ * A list of CSS classes to be applied to comment elements.
+ */
+abstract class CommentClasses
 {
-    use ManagesClasses;
-
-    protected static function defaultClasses(Comment $comment): array
-    {
-        return [
-            'is-unread' => $isUnread = Auth::check() && $comment->post->userState->last_read_at < $comment->created_at,
-            'is-read' => ! $isUnread,
-            'is-mine' => $comment->user_id === Auth::id(),
-            'has-replies' => $comment->reply_count,
-        ];
-    }
+    use ClassList;
 }
+
+CommentClasses::add('is-unread', fn(Comment $comment) => $comment->isUnread());
+CommentClasses::add('is-read', fn(Comment $comment) => $comment->isRead());
+CommentClasses::add('is-mine', fn(Comment $comment) => $comment->user_id === Auth::id());
+CommentClasses::add('has-replies', fn(Comment $comment) => $comment->reply_count);

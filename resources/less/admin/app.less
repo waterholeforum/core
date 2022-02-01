@@ -1,5 +1,4 @@
 @import '../system/_variables';
-@import '../system/_mixins';
 
 @import '../system/_reset';
 @import '../system/_base';
@@ -11,6 +10,7 @@
 @import '../system/_btn';
 @import '../system/_card';
 @import '../system/_choice';
+@import '../system/_combobox';
 @import '../system/_dialog';
 @import '../system/_divider';
 @import '../system/_form';
@@ -19,6 +19,7 @@
 @import '../system/_loading';
 @import '../system/_menu';
 @import '../system/_nav';
+@import '../system/_panel';
 @import '../system/_placeholder';
 @import '../system/_search-input';
 @import '../system/_skip-link';
@@ -29,92 +30,14 @@
 
 @import '../system/_alert';
 @import '../system/_alerts';
+@import '../system/_table';
+@import '../system/_color-picker';
 
 @import '_structure';
 @import '_dashboard';
-@import '_updates';
+@import '_permission-grid';
 @import '../forum/_composer';
 
-.table {
-  border-spacing: 0;
-  font-size: var(--text-xs);
-
-  td, th {
-    padding: var(--space-sm);
-    text-align: left;
-  }
-
-  th {
-    font-weight: var(--font-weight-bold);
-  }
-
-  tbody td,
-  tbody th {
-    border-top: 1px solid var(--color-stroke);
-  }
-
-  tbody th {
-    text-align: left;
-  }
-}
-
-td.choice-cell {
-  padding: 0;
-
-  .choice {
-    padding: var(--space-sm);
-    justify-content: center;
-
-    &:not(.is-disabled):hover,
-    &.is-highlighted {
-      background: var(--color-fill);
-    }
-  }
-}
-
-.is-highlighted {
-  background: var(--color-fill);
-}
-
-.permission-grid {
-  thead th {
-    width: 9ch;
-    padding-inline: 0;
-    text-align: center;
-  }
-}
-
-.table-container {
-  overflow: auto;
-  max-width: 100%;
-  width: fit-content;
-  border: 1px solid var(--color-stroke);
-  border-radius: var(--border-radius);
-
-  .table {
-    width: 100%;
-  }
-}
-
-.color-picker__swatch {
-  width: 1.5em;
-  height: 1.5em;
-  border-radius: 4px;
-  border: 1px solid var(--color-stroke);
-}
-
-.color-picker {
-  position: relative;
-}
-
-.color-picker__picker {
-  position: absolute;
-  top: 100%;
-  z-index: var(--z-index-overlay);
-  box-shadow: var(--shadow-md);
-  margin-top: 6px;
-  border-radius: var(--border-radius);
-}
 @import '../system/_utils';
 
 .container {

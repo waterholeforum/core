@@ -40,7 +40,7 @@ hr {
 }
 
 #main {
-  margin-bottom: 5rem;
+  margin-bottom: var(--space-xxl);
 }
 
 mark {
@@ -62,50 +62,7 @@ mark {
   }
 }
 
-.panels {
-  > * + * {
-    margin-top: var(--space-sm);
-  }
-}
-
-.panel {
-  border: 1px solid var(--color-stroke);
-  border-radius: var(--border-radius);
-}
-
-.panel__header {
-  background: var(--color-fill);
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--border-radius);
-
-  summary& {
-    .clickable();
-    transform: none !important;
-
-    &::marker,
-    &::-webkit-details-marker {
-      color: var(--color-text-muted);
-    }
-  }
-
-  .panel[open] & {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-}
-
-.panel__body {
-  padding: var(--space-lg);
-}
-
-.combobox {
-  position: relative;
-}
-
-.combobox__list {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  max-width: none !important;
-  width: 100% !important;
+.icon--narrow {
+  margin-left: -.2em;
+  margin-right: -.2em;
 }

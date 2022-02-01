@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Waterhole\Http\Controllers\Controller;
-use Waterhole\Providers\RouteServiceProvider;
 
 class LoginController extends Controller
 {
@@ -20,6 +19,8 @@ class LoginController extends Controller
 
     public function showLoginForm(Request $request)
     {
+        // Copy any URL passed in the `return` query parameter into the session
+        // so that after the login is complete we can redirect back to it.
         if (! session()->has('url.intended')) {
             session()->put('url.intended', $request->query('return', url()->previous()));
         }
@@ -48,7 +49,7 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        return redirect()->intended(route('waterhole.home'));
     }
 
     private function ensureIsNotRateLimited(Request $request)

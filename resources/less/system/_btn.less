@@ -19,24 +19,6 @@
     flex-shrink: 0;
   }
 
-  &.is-loading {
-    &::before {
-      content: '';
-      flex-shrink: 0;
-      margin-right: .3em;
-      width: 1.2em;
-      height: 1.2em;
-      border: .15em currentColor solid;
-      border-top-color: transparent !important;
-      border-radius: 50%;
-      animation: loading-indicator .6s infinite linear;
-    }
-
-    > .icon:first-child {
-      display: none;
-    }
-  }
-
   button&,
   a&,
   &[role=button],

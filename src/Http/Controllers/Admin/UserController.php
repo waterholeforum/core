@@ -11,9 +11,15 @@ use Waterhole\Models\Group;
 use Waterhole\Models\User;
 use Waterhole\Views\Components\UserProfileFields;
 
+/**
+ * Controller for admin user management.
+ */
 class UserController extends Controller
 {
-    const SORTABLE_COLUMNS = [
+    /**
+     * A map of sortable columns and their initial direction.
+     */
+    private const SORTABLE_COLUMNS = [
         'name' => 'asc',
         'created_at' => 'desc',
         'last_seen_at' => 'desc',
@@ -23,27 +29,29 @@ class UserController extends Controller
     {
         $query = User::with('groups');
 
+        // Explode the filter query into space-separated tokens (as long as the
+        // space is not within a pair of quotes). For each token, add a where
+        // clause to the query.
         if ($q = $request->query('q')) {
             preg_match_all('/(?:[^\s"]*)"([^"]*)(?:"|$)|[^\s"]+/i', $q, $tokens, PREG_SET_ORDER);
 
             foreach ($tokens as $token) {
                 if (str_starts_with($token[0], 'group:')) {
-                    $value = $token[1] ?? substr($token[0], strlen('group:'));
-                    if ($value) {
+                    if ($value = $token[1] ?? substr($token[0], strlen('group:'))) {
                         $query->whereHas('groups', function ($query) use ($value) {
                             $query->whereIn('name', explode(',', $value));
                         });
                     }
+                } elseif (filter_var($token[0], FILTER_VALIDATE_EMAIL)) {
+                    $query->where('email', $token[0]);
                 } else {
                     $query->where('name', 'LIKE', $token[0].'%');
-
-                    if (filter_var($token[0], FILTER_VALIDATE_EMAIL)) {
-                        $query->orWhere('email', $token[0]);
-                    }
                 }
             }
         }
 
+        // Apply sorting to the query. Ensure the requested sort and direction
+        // is valid before doing so.
         if (! isset(self::SORTABLE_COLUMNS[$sort = $request->query('sort')])) {
             $sort = array_key_first(self::SORTABLE_COLUMNS);
         }
@@ -71,11 +79,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        DB::transaction(function () use ($request) {
-            $user = User::create($this->data($request));
-            $this->saveGroups($user, $request);
-            (new UserProfileFields($user))->save($request);
-        });
+        $this->save(new User(), $request);
 
         return redirect()
             ->route('waterhole.admin.users.index', ['sort' => 'created_at'])
@@ -89,11 +93,7 @@ class UserController extends Controller
 
     public function update(User $user, Request $request)
     {
-        DB::transaction(function () use ($user, $request) {
-            $user->update($this->data($request, $user));
-            $this->saveGroups($user, $request);
-            (new UserProfileFields($user))->save($request);
-        });
+        $this->save($user, $request);
 
         return redirect()
             ->route('waterhole.admin.users.index')
@@ -102,16 +102,14 @@ class UserController extends Controller
 
     private function form()
     {
-        $groups = Group::whereNotIn('id', [Group::GUEST_ID, Group::MEMBER_ID])->get();
+        $groups = Group::selectable();
 
         return view('waterhole::admin.users.form', compact('groups'));
     }
 
-    private function data(Request $request, User $user = null): array
+    private function save(User $user, Request $request): void
     {
-        $data = $request->validate(
-            User::rules($user)
-        );
+        $data = $request->validate(User::rules($user));
 
         if (! empty($data['password'])) {
             $data['password'] = Hash::make($data['password']);
@@ -119,10 +117,16 @@ class UserController extends Controller
             unset($data['password']);
         }
 
-        return $data;
+        DB::transaction(function () use ($request, $user, $data) {
+            $user->fill($data)->save();
+
+            $this->saveGroups($user, $request);
+
+            (new UserProfileFields($user))->save($request);
+        });
     }
 
-    private function saveGroups(User $user, Request $request)
+    private function saveGroups(User $user, Request $request): void
     {
         $data = $request->validate([
             'groups' => [

@@ -3,8 +3,8 @@
 namespace Waterhole\Views\Components;
 
 use Illuminate\View\Component;
+use Waterhole\Feed\PostFeed;
 use Waterhole\Models\Channel;
-use Waterhole\PostFeed;
 
 class FeedControlsLayout extends Component
 {
@@ -20,7 +20,6 @@ class FeedControlsLayout extends Component
     public function render()
     {
         return <<<'blade'
-            <hr class="menu-divider">
             <h4 class="menu-heading">Display as</h4>
             <a href="{{ request()->fullUrlWithQuery(['layout' => 'list']) }}" class="menu-item" role="menuitemradio">
                 <x-waterhole::icon icon="heroicon-o-view-list"/>

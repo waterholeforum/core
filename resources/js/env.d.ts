@@ -1,7 +1,7 @@
 declare module 'textarea-editor' {
     export default class TextareaEditor {
-        constructor(...args: any);
-        toggle(...args: any): void;
-        insert(...args: any): void;
+        constructor(el: HTMLElement);
+        insert(text: string): TextareaEditor;
+        toggle(format: string | object, ...args: any): TextareaEditor;
     }
 }

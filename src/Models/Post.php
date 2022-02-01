@@ -14,6 +14,7 @@ use Waterhole\Models\Concerns\HasBody;
 use Waterhole\Models\Concerns\HasLikes;
 use Waterhole\Models\Concerns\HasUserState;
 use Waterhole\Models\Concerns\HasVisibility;
+use Waterhole\Models\Concerns\ValidatesData;
 use Waterhole\Views\Components;
 use Waterhole\Views\TurboStream;
 
@@ -24,6 +25,7 @@ class Post extends Model
     use HasVisibility;
     use HasUserState;
     use Followable;
+    use ValidatesData;
 
     const UPDATED_AT = null;
 
@@ -33,9 +35,7 @@ class Post extends Model
         'is_pinned' => 'boolean',
         'is_locked' => 'boolean',
     ];
-
-    // protected $withCount = ['unreadComments'];
-
+    
     public static function byUser(User $user, array $attributes = []): static
     {
         return new static(array_merge(['user_id' => $user->id], $attributes));
@@ -126,7 +126,7 @@ class Post extends Model
         return $this->url(['index' => $this->comment_count - $this->unread_comments_count]).$fragment;
     }
 
-    public function wasEdited(): static
+    public function markAsEdited(): static
     {
         $this->edited_at = now();
 
@@ -141,14 +141,14 @@ class Post extends Model
         return $this;
     }
 
-    public static function rules(Post $post = null): array
+    public static function rules(Post $instance = null): array
     {
         $rules = [
             'title' => ['required', 'string', 'max:255'],
             'body' => ['required', 'string'],
         ];
 
-        if (! $post) {
+        if (! $instance) {
             $rules['channel_id'] = ['required', Rule::exists(Channel::class, 'id')];
         }
 

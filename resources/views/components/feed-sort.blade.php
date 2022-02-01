@@ -1,10 +1,9 @@
 <div class="tabs">
-    @foreach ($feed->sorts() as $sort)
+    @foreach ($feed->filters() as $filter)
         <a
-            href="{{ request()->fullUrlWithQuery(['sort' => $sort->handle(), 'cursor' => null]) }}"
+            href="{{ request()->fullUrlWithQuery(['filter' => $filter->handle(), 'cursor' => null]) }}"
             class="tab"
-            title="{{ $sort->description() }}"
-            @if ($feed->currentSort() === $sort) aria-current="page" @endif
-        >{{ $sort->name() }}</a>
+            @if ($feed->currentFilter() === $filter) aria-current="page" @endif
+        >{{ $filter->label() }}</a>
     @endforeach
 </div>

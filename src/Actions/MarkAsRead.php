@@ -2,36 +2,30 @@
 
 namespace Waterhole\Actions;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Illuminate\Support\HtmlString;
+use Waterhole\Models\Model;
 use Waterhole\Models\Post;
 
 class MarkAsRead extends Action
 {
-    public function name(): string
+    public function appliesTo(Model $model): bool
+    {
+        return $model instanceof Post && $model->isUnread();
+    }
+
+    public function label(Collection $models): string
     {
         return 'Mark as Read';
     }
 
-    public function label(Collection $items): string|HtmlString
-    {
-        return 'Mark as Read';
-    }
-
-    public function icon(Collection $items): ?string
+    public function icon(Collection $models): ?string
     {
         return 'heroicon-s-check';
     }
 
-    public function appliesTo($item): bool
+    public function run(Collection $models)
     {
-        return $item instanceof Post && $item->isUnread();
-    }
-
-    public function run(Collection $items, Request $request)
-    {
-        $items->each(function ($post) use ($request) {
+        $models->each(function ($post) {
             $post->userState->read()->save();
             $post->refresh();
         });

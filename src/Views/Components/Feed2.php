@@ -4,7 +4,7 @@ namespace Waterhole\Views\Components;
 
 use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\View\Component;
-use Waterhole\Feed;
+use Waterhole\Feed\Feed;
 
 class Feed2 extends Component
 {

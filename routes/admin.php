@@ -30,10 +30,3 @@ Route::resource('groups', Admin\GroupController::class)
 
 Route::resource('users', Admin\UserController::class)
     ->only('index', 'create', 'store', 'edit', 'update');
-
-Route::get('updates', [Admin\UpdatesController::class, 'index'])->name('updates');
-Route::get('updates/list', [Admin\UpdatesController::class, 'list'])->name('updates.list');
-Route::post('updates/refresh', [Admin\UpdatesController::class, 'refresh'])->name('updates.refresh');
-Route::get('updates/start', [Admin\UpdatesController::class, 'start'])->name('updates.start');
-Route::post('updates/run', [Admin\UpdatesController::class, 'run'])->name('updates.run');
-Route::get('updates/output', [Admin\UpdatesController::class, 'output'])->name('updates.output');

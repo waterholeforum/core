@@ -8,11 +8,21 @@ use s9e\TextFormatter\Parser;
 use s9e\TextFormatter\Renderer;
 use s9e\TextFormatter\Unparser;
 
+/**
+ * The Formatter parses plain text content and renders it as HTML.
+ *
+ * Waterhole uses the TextFormatter library to safely format markup. This class
+ * is an abstraction around TextFormatter, enabling extension and caching of its
+ * configuration and renderer.
+ *
+ * @link https://github.com/s9e/TextFormatter
+ */
 class Formatter
 {
     protected string $cacheDir;
     protected Repository $cache;
     protected string $cacheKey;
+
     protected array $configurationCallbacks = [];
     protected array $parsingCallbacks = [];
     protected array $renderingCallbacks = [];
@@ -24,11 +34,17 @@ class Formatter
         $this->cacheKey = $cacheKey;
     }
 
-    public function configure(callable $callback)
+    /**
+     * Add a configuration callback to the formatter.
+     */
+    public function configure(callable $callback): void
     {
         $this->configurationCallbacks[] = $callback;
     }
 
+    /**
+     * Parse plain text into an XML document for storage in the database.
+     */
     public function parse(string $text, $context = null): string
     {
         $parser = $this->getParser();
@@ -40,11 +56,17 @@ class Formatter
         return $parser->parse($text);
     }
 
-    public function parsing(callable $callback)
+    /**
+     * Add a parsing callback to the formatter.
+     */
+    public function parsing(callable $callback): void
     {
         $this->parsingCallbacks[] = $callback;
     }
 
+    /**
+     * Transform a parsed XML document into HTML.
+     */
     public function render(string $xml, $context = null): string
     {
         $renderer = $this->getRenderer();
@@ -56,16 +78,25 @@ class Formatter
         return $renderer->render($xml);
     }
 
-    public function rendering(callable $callback)
+    /**
+     * Add a rendering callback to the formatter.
+     */
+    public function rendering(callable $callback): void
     {
         $this->renderingCallbacks[] = $callback;
     }
 
+    /**
+     * Revert a parsed XML document back into plain text.
+     */
     public function unparse(string $xml): string
     {
         return Unparser::unparse($xml);
     }
 
+    /**
+     * Flush the formatter from the cache.
+     */
     public function flush(): void
     {
         $this->cache->forget($this->cacheKey);
@@ -120,7 +151,7 @@ class Formatter
 
         foreach ($dom->getElementsByTagName('a') as $a) {
             $a->setAttribute('target', '_blank');
-            $a->setAttribute('rel', 'nofollow');
+            $a->setAttribute('rel', 'nofollow ugc');
         }
 
         $dom->saveChanges();

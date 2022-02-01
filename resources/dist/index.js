@@ -306,6 +306,53 @@ function subscribe(el) {
 
 /***/ }),
 
+/***/ "./node_modules/@hotwired/stimulus-webpack-helpers/dist/stimulus-webpack-helpers.js":
+/*!******************************************************************************************!*\
+  !*** ./node_modules/@hotwired/stimulus-webpack-helpers/dist/stimulus-webpack-helpers.js ***!
+  \******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "definitionForModuleAndIdentifier": () => (/* binding */ definitionForModuleAndIdentifier),
+/* harmony export */   "definitionForModuleWithContextAndKey": () => (/* binding */ definitionForModuleWithContextAndKey),
+/* harmony export */   "definitionsFromContext": () => (/* binding */ definitionsFromContext),
+/* harmony export */   "identifierForContextKey": () => (/* binding */ identifierForContextKey)
+/* harmony export */ });
+/*
+Stimulus Webpack Helpers 1.0.0
+Copyright © 2021 Basecamp, LLC
+ */
+function definitionsFromContext(context) {
+    return context.keys()
+        .map((key) => definitionForModuleWithContextAndKey(context, key))
+        .filter((value) => value);
+}
+function definitionForModuleWithContextAndKey(context, key) {
+    const identifier = identifierForContextKey(key);
+    if (identifier) {
+        return definitionForModuleAndIdentifier(context(key), identifier);
+    }
+}
+function definitionForModuleAndIdentifier(module, identifier) {
+    const controllerConstructor = module.default;
+    if (typeof controllerConstructor == "function") {
+        return { identifier, controllerConstructor };
+    }
+}
+function identifierForContextKey(key) {
+    const logicalName = (key.match(/^(?:\.\/)?(.+)(?:[_-]controller\..+?)$/) || [])[1];
+    if (logicalName) {
+        return logicalName.replace(/_/g, "-").replace(/\//g, "--");
+    }
+}
+
+
+
+
+/***/ }),
+
 /***/ "./node_modules/@hotwired/stimulus/dist/stimulus.js":
 /*!**********************************************************!*\
   !*** ./node_modules/@hotwired/stimulus/dist/stimulus.js ***!
@@ -5981,129 +6028,279 @@ exports["default"] = animateScrollTo;
 
 /***/ }),
 
-/***/ "../../../packages/placement.js/dist/index.es.js":
-/*!*******************************************************!*\
-  !*** ../../../packages/placement.js/dist/index.es.js ***!
-  \*******************************************************/
+/***/ "./resources/js/bootstrap/alerts.ts":
+/*!******************************************!*\
+  !*** ./resources/js/bootstrap/alerts.ts ***!
+  \******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-var t = {
-  x: {
-    start: "left",
-    Start: "Left",
-    end: "right",
-    End: "Right",
-    size: "width",
-    Size: "Width"
-  },
-  y: {
-    start: "top",
-    Start: "Top",
-    end: "bottom",
-    End: "Bottom",
-    size: "height",
-    Size: "Height"
+var __awaiter = undefined && undefined.__awaiter || function (thisArg, _arguments, P, generator) {
+  function adopt(value) {
+    return value instanceof P ? value : new P(function (resolve) {
+      resolve(value);
+    });
   }
+
+  return new (P || (P = Promise))(function (resolve, reject) {
+    function fulfilled(value) {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function rejected(value) {
+      try {
+        step(generator["throw"](value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function step(result) {
+      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+    }
+
+    step((generator = generator.apply(thisArg, _arguments || [])).next());
+  });
 };
 
-function e(e, n) {
-  var _Object$assign, _Object$assign2;
+window.Waterhole.alerts = document.getElementById('alerts');
+document.addEventListener('turbo:before-fetch-response', function (e) {
+  return __awaiter(void 0, void 0, void 0, /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+    var _a, _b, _c, response, alerts, templateId, alert;
 
-  var i = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-  var o;
-  var a = n.style;
-  Object.assign(a, {
-    position: "absolute",
-    maxWidth: "",
-    maxHeight: ""
-  });
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            response = e.detail.fetchResponse;
+            alerts = document.getElementById('alerts');
 
-  var _i$placement$split = i.placement.split("-"),
-      _i$placement$split2 = _slicedToArray(_i$placement$split, 2),
-      _i$placement$split2$ = _i$placement$split2[0],
-      s = _i$placement$split2$ === void 0 ? "bottom" : _i$placement$split2$,
-      _i$placement$split2$2 = _i$placement$split2[1],
-      d = _i$placement$split2$2 === void 0 ? "center" : _i$placement$split2$2;
+            if (response.statusCode >= 400 && response.statusCode !== 422 && response.statusCode <= 599) {
+              templateId = response.statusCode === 429 ? 'too-many-requests-alert' : 'fatal-error-alert';
+              alert = (_c = (_b = (_a = document.getElementById(templateId)) === null || _a === void 0 ? void 0 : _a.content) === null || _b === void 0 ? void 0 : _b.firstElementChild) === null || _c === void 0 ? void 0 : _c.cloneNode(true);
 
-  var r = ["top", "bottom"].includes(s) ? "y" : "x";
-  var c = s === t[r].start ? t[r].end : t[r].start;
-  var l = "x" === r ? "y" : "x",
-      p = e instanceof DOMRect ? e : e.getBoundingClientRect(),
-      f = (null === (o = function (t) {
-    for (; (t = t.parentNode) && t instanceof Element;) {
-      var _e2 = getComputedStyle(t).overflow;
-      if (["auto", "scroll"].includes(_e2)) return t;
-    }
-  }(n)) || void 0 === o ? void 0 : o.getBoundingClientRect()) || new DOMRect(0, 0, window.innerWidth, window.innerHeight),
-      g = n.offsetParent || document.body,
-      u = g === document.body ? new DOMRect(-pageXOffset, -pageYOffset, window.innerWidth, window.innerHeight) : g.getBoundingClientRect(),
-      m = getComputedStyle(g),
-      h = getComputedStyle(n);
+              if (alert) {
+                alerts.show(alert, {
+                  key: 'fetchError',
+                  duration: -1
+                });
+              }
 
-  if (i.flip || void 0 === i.flip) {
-    var _ref;
+              e.preventDefault();
+            } else {
+              alerts.dismiss('fetchError');
+            }
 
-    var _e3 = function _e3(t) {
-      return Math.abs(p[t] - f[t]);
-    },
-        _i2 = _e3(s);
+          case 3:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+});
 
-    n["offset" + t[r].Size] > _i2 && _e3(c) > _i2 && (_ref = [c, s], s = _ref[0], c = _ref[1], _ref);
-  }
-
-  if (n.dataset.placement = "".concat(s, "-").concat(d), i.cap || void 0 === i.cap) {
-    var _e4 = function _e4(e, i) {
-      var o = h["max" + t[e].Size];
-      i -= parseInt(h["margin" + t[e].Start]) + parseInt(h["margin" + t[e].End]), ("none" === o || i < parseInt(o)) && (n.style["max" + t[e].Size] = i + "px");
-    };
-
-    _e4(r, Math.abs(f[s] - p[s])), _e4(l, f[t[l].size]);
-  }
-
-  Object.assign(a, (_Object$assign = {}, _defineProperty(_Object$assign, s, "auto"), _defineProperty(_Object$assign, c, (s === t[r].start ? u[t[r].end] - p[t[r].start] : p[t[r].end] - u[t[r].start]) - parseInt(m["border" + t[r].Start + "Width"]) + "px"), _Object$assign));
-  var b = "end" === d ? "end" : "start",
-      S = "end" === d ? "start" : "end",
-      x = p[l] - u[l],
-      w = p[t[l].size],
-      z = n["offset" + t[l].Size];
-  var y = "end" === d ? u[t[l].size] - x - w : x + ("start" !== d ? w / 2 - z / 2 : 0);
-
-  if (i.bound || void 0 === i.bound) {
-    var _e5 = "end" === d ? -1 : 1;
-
-    y = Math.max(_e5 * (f[t[l][b]] - u[t[l][b]]), Math.min(y, _e5 * (f[t[l][S]] - u[t[l][b]]) - z));
-  }
-
-  Object.assign(a, (_Object$assign2 = {}, _defineProperty(_Object$assign2, t[l][S], "auto"), _defineProperty(_Object$assign2, t[l][b], y - parseInt(m["border" + t[l].Start + "Width"]) + "px"), _Object$assign2));
-}
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (e);
 
 /***/ }),
 
-/***/ "./resources/js/controllers/alerts-append.ts":
+/***/ "./resources/js/bootstrap/custom-elements.ts":
 /*!***************************************************!*\
-  !*** ./resources/js/controllers/alerts-append.ts ***!
+  !*** ./resources/js/bootstrap/custom-elements.ts ***!
   \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _github_text_expander_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @github/text-expander-element */ "./node_modules/@github/text-expander-element/dist/index.js");
+/* harmony import */ var inclusive_elements__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! inclusive-elements */ "./node_modules/inclusive-elements/dist/index.js");
+
+
+window.customElements.define('ui-popup', inclusive_elements__WEBPACK_IMPORTED_MODULE_1__.PopupElement);
+window.customElements.define('ui-menu', inclusive_elements__WEBPACK_IMPORTED_MODULE_1__.MenuElement);
+window.customElements.define('ui-modal', inclusive_elements__WEBPACK_IMPORTED_MODULE_1__.ModalElement);
+window.customElements.define('ui-tooltip', inclusive_elements__WEBPACK_IMPORTED_MODULE_1__.TooltipElement);
+window.customElements.define('ui-alerts', inclusive_elements__WEBPACK_IMPORTED_MODULE_1__.AlertsElement);
+
+/***/ }),
+
+/***/ "./resources/js/bootstrap/echo.ts":
+/*!****************************************!*\
+  !*** ./resources/js/bootstrap/echo.ts ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var laravel_echo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! laravel-echo */ "./node_modules/laravel-echo/dist/echo.js");
+/* harmony import */ var pusher_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
+/* harmony import */ var pusher_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(pusher_js__WEBPACK_IMPORTED_MODULE_1__);
+
+
+window.Pusher = (pusher_js__WEBPACK_IMPORTED_MODULE_1___default());
+window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
+  broadcaster: 'pusher',
+  key: '2d80bcb99dd1f29f0399',
+  cluster: 'ap4',
+  forceTLS: true,
+  namespace: 'Waterhole.Events'
+});
+document.addEventListener('turbo:before-fetch-request', function (e) {
+  e.detail.fetchOptions.headers['X-Socket-ID'] = window.Echo.socketId();
+});
+
+/***/ }),
+
+/***/ "./resources/js/bootstrap/hotkeys.ts":
+/*!*******************************************!*\
+  !*** ./resources/js/bootstrap/hotkeys.ts ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _github_hotkey__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @github/hotkey */ "./node_modules/@github/hotkey/dist/index.js");
+
+document.addEventListener('turbo:load', function () {
+  document.querySelectorAll('[data-hotkey]').forEach(function (el) {
+    (0,_github_hotkey__WEBPACK_IMPORTED_MODULE_0__.install)(el);
+  });
+});
+
+/***/ }),
+
+/***/ "./resources/js/bootstrap/turbo.ts":
+/*!*****************************************!*\
+  !*** ./resources/js/bootstrap/turbo.ts ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _hotwired_turbo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @hotwired/turbo */ "./node_modules/@hotwired/turbo/dist/turbo.es2017-esm.js");
+/* harmony import */ var morphdom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! morphdom */ "./node_modules/morphdom/dist/morphdom-esm.js");
+
+
+var __awaiter = undefined && undefined.__awaiter || function (thisArg, _arguments, P, generator) {
+  function adopt(value) {
+    return value instanceof P ? value : new P(function (resolve) {
+      resolve(value);
+    });
+  }
+
+  return new (P || (P = Promise))(function (resolve, reject) {
+    function fulfilled(value) {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function rejected(value) {
+      try {
+        step(generator["throw"](value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function step(result) {
+      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+    }
+
+    step((generator = generator.apply(thisArg, _arguments || [])).next());
+  });
+};
+
+
+
+_hotwired_turbo__WEBPACK_IMPORTED_MODULE_1__.start();
+window.Turbo = _hotwired_turbo__WEBPACK_IMPORTED_MODULE_1__;
+document.addEventListener('turbo:submit-start', function (e) {
+  var _a;
+
+  var submitter = e.detail.formSubmission.submitter;
+  if (!submitter) return;
+  submitter.disabled = true;
+  var popupButton = (_a = submitter.closest('ui-popup')) === null || _a === void 0 ? void 0 : _a.children[0];
+
+  if (popupButton) {
+    popupButton.disabled = true;
+  }
+});
+document.addEventListener('turbo:submit-end', function (e) {
+  var _a;
+
+  var submitter = e.detail.formSubmission.submitter;
+  if (!submitter) return;
+  submitter.disabled = false;
+  var popupButton = (_a = submitter.closest('ui-popup')) === null || _a === void 0 ? void 0 : _a.children[0];
+
+  if (popupButton) {
+    popupButton.disabled = false;
+  }
+});
+document.addEventListener('turbo:before-stream-render', function (e) {
+  var stream = e.target;
+
+  if (stream.action === 'replace') {
+    e.preventDefault();
+    stream.targetElements.forEach(function (el) {
+      (0,morphdom__WEBPACK_IMPORTED_MODULE_2__["default"])(el, stream.templateContent.firstElementChild);
+    });
+  }
+});
+document.addEventListener('turbo:frame-missing', function (_ref) {
+  var fetchResponse = _ref.detail.fetchResponse;
+  return __awaiter(void 0, void 0, void 0, /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+    var location, redirected, statusCode, responseHTML, response;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            location = fetchResponse.location, redirected = fetchResponse.redirected, statusCode = fetchResponse.statusCode, responseHTML = fetchResponse.responseHTML;
+            _context.t0 = redirected;
+            _context.t1 = statusCode;
+            _context.next = 5;
+            return responseHTML;
+
+          case 5:
+            _context.t2 = _context.sent;
+            response = {
+              redirected: _context.t0,
+              statusCode: _context.t1,
+              responseHTML: _context.t2
+            };
+            _hotwired_turbo__WEBPACK_IMPORTED_MODULE_1__.visit(location, {
+              response: response
+            });
+
+          case 8:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+});
+
+/***/ }),
+
+/***/ "./resources/js/controllers/alerts-append-controller.ts":
+/*!**************************************************************!*\
+  !*** ./resources/js/controllers/alerts-append-controller.ts ***!
+  \**************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -6135,6 +6332,15 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
+/**
+ * Controller to show an element's children as alerts.
+ *
+ * This is used in the layout template to move "flash" messages from a static
+ * container into the main alerts container, so that they show with an
+ * animation and disappear automatically.
+ *
+ * @internal
+ */
 
 var _default = /*#__PURE__*/function (_Controller) {
   _inherits(_default, _Controller);
@@ -6150,11 +6356,8 @@ var _default = /*#__PURE__*/function (_Controller) {
   _createClass(_default, [{
     key: "connect",
     value: function connect() {
-      var alerts = document.getElementById('alerts');
       Array.from(this.element.children).forEach(function (el) {
-        alerts.show(el, {
-          key: 'flash'
-        });
+        window.Waterhole.alerts.show(el);
       });
       this.element.remove();
     }
@@ -6167,10 +6370,10 @@ var _default = /*#__PURE__*/function (_Controller) {
 
 /***/ }),
 
-/***/ "./resources/js/controllers/alerts.ts":
-/*!********************************************!*\
-  !*** ./resources/js/controllers/alerts.ts ***!
-  \********************************************/
+/***/ "./resources/js/controllers/alerts-controller.ts":
+/*!*******************************************************!*\
+  !*** ./resources/js/controllers/alerts-controller.ts ***!
+  \*******************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -6202,6 +6405,14 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
+/**
+ * Controller for the main alerts element.
+ *
+ * Listens in on Turbo Streams to make sure any alerts are properly appended
+ * to the container. Also provides an action for alerts to dismiss themselves.
+ *
+ * @internal
+ */
 
 var _default = /*#__PURE__*/function (_Controller) {
   _inherits(_default, _Controller);
@@ -6215,210 +6426,52 @@ var _default = /*#__PURE__*/function (_Controller) {
 
     _this = _super.apply(this, arguments);
 
-    _this.streamAlerts = function (e) {
+    _this.streamAlert = function (e) {
+      // When a Turbo Stream comes in, we will check to see if it is
+      // appending to the alerts container. If it is, we will append it via
+      // the AlertsElement's show method, rather than just a plain DOM append.
       var stream = e.target;
 
       if (stream.targetElements.includes(_this.element) && stream.action === 'append') {
         var alert = stream.templateContent.firstElementChild;
 
         if (alert) {
-          _this.alertsElement.show(alert, {
-            key: 'flash'
-          });
+          _this.alertsElement.show(alert);
 
           e.preventDefault();
         }
       }
     };
 
-    _this.dismissFlash = function () {
-      Waterhole.alerts.dismiss('flash');
-    };
-
     return _this;
   }
 
   _createClass(_default, [{
-    key: "connect",
-    value: function connect() {
-      document.addEventListener('turbo:before-stream-render', this.streamAlerts);
-      document.addEventListener('turbo:visit', this.dismissFlash);
-    }
-  }, {
-    key: "disconnect",
-    value: function disconnect() {
-      document.removeEventListener('turbo:before-stream-render', this.streamAlerts);
-      document.removeEventListener('turbo:visit', this.dismissFlash);
-    }
-  }, {
-    key: "dismiss",
-    value: function dismiss(e) {
-      this.alertsElement.dismiss(e.currentTarget.parentElement.parentElement);
-    }
-  }, {
     key: "alertsElement",
     get: function get() {
       return this.element;
     }
-  }]);
-
-  return _default;
-}(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
-
-
-
-/***/ }),
-
-/***/ "./resources/js/controllers/channel-picker.ts":
-/*!****************************************************!*\
-  !*** ./resources/js/controllers/channel-picker.ts ***!
-  \****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ default_1)
-/* harmony export */ });
-/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-
-
-var default_1 = /*#__PURE__*/function (_Controller) {
-  _inherits(default_1, _Controller);
-
-  var _super = _createSuper(default_1);
-
-  function default_1() {
-    _classCallCheck(this, default_1);
-
-    return _super.apply(this, arguments);
-  }
-
-  _createClass(default_1, [{
+  }, {
     key: "connect",
     value: function connect() {
-      this.instructionsTarget.hidden = true;
+      document.addEventListener('turbo:before-stream-render', this.streamAlert);
     }
   }, {
-    key: "update",
-    value: function update(e) {
-      var select = e.target;
-      var instructions = select.options[select.selectedIndex].dataset.instructions || '';
-      this.instructionsTarget.hidden = !instructions;
-      this.instructionsContentTarget.innerHTML = instructions;
-    }
-  }]);
-
-  return default_1;
-}(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
-
-
-default_1.targets = ['instructions', 'instructionsContent'];
-
-/***/ }),
-
-/***/ "./resources/js/controllers/comment-replies.ts":
-/*!*****************************************************!*\
-  !*** ./resources/js/controllers/comment-replies.ts ***!
-  \*****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _default)
-/* harmony export */ });
-/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-
-
-var _default = /*#__PURE__*/function (_Controller) {
-  _inherits(_default, _Controller);
-
-  var _super = _createSuper(_default);
-
-  function _default() {
-    _classCallCheck(this, _default);
-
-    return _super.apply(this, arguments);
-  }
-
-  _createClass(_default, [{
-    key: "connect",
-    value: function connect() {
-      var _this = this;
-
-      this.element.addEventListener('click', function (e) {
-        var _a;
-
-        var expanded = _this.element.getAttribute('aria-expanded') === 'false';
-
-        _this.element.setAttribute('aria-expanded', String(expanded));
-
-        var controlled = (_a = _this.element.closest('.comment')) === null || _a === void 0 ? void 0 : _a.querySelector('.comment__replies');
-
-        if (controlled) {
-          controlled.hidden = !expanded;
-        }
-
-        if (!expanded) {
-          e.preventDefault();
-        }
-      });
+    key: "disconnect",
+    value: function disconnect() {
+      document.removeEventListener('turbo:before-stream-render', this.streamAlert);
     }
   }, {
-    key: "focusAfterLoad",
-    value: function focusAfterLoad() {
-      addEventListener('turbo:frame-render', function (e) {
-        var _a;
+    key: "dismiss",
+    value: function dismiss(e) {
+      // This action will be triggered by a "close" button within an alert,
+      // so we will find the closest alert parent and dismiss it from the
+      // alerts container.
+      var alert = e.currentTarget.closest('.alert');
 
-        (_a = e.target.querySelector('.comment__replies')) === null || _a === void 0 ? void 0 : _a.focus();
-      }, {
-        once: true
-      });
+      if (alert) {
+        this.alertsElement.dismiss(alert);
+      }
     }
   }]);
 
@@ -6429,10 +6482,10 @@ var _default = /*#__PURE__*/function (_Controller) {
 
 /***/ }),
 
-/***/ "./resources/js/controllers/comment.ts":
-/*!*********************************************!*\
-  !*** ./resources/js/controllers/comment.ts ***!
-  \*********************************************/
+/***/ "./resources/js/controllers/comment-controller.ts":
+/*!********************************************************!*\
+  !*** ./resources/js/controllers/comment-controller.ts ***!
+  \********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -6465,11 +6518,12 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
- // let collapsed: string[] = [];
-//
-// try {
-//     collapsed = JSON.parse(window.localStorage.getItem('collapsed_comments') || '[]');
-// } catch (e) {}
+
+/**
+ * Controller for the comment component.
+ *
+ * @internal
+ */
 
 var default_1 = /*#__PURE__*/function (_Controller) {
   _inherits(default_1, _Controller);
@@ -6527,10 +6581,105 @@ default_1.targets = ['parentTooltip'];
 
 /***/ }),
 
-/***/ "./resources/js/controllers/composer.ts":
-/*!**********************************************!*\
-  !*** ./resources/js/controllers/composer.ts ***!
-  \**********************************************/
+/***/ "./resources/js/controllers/comment-replies-controller.ts":
+/*!****************************************************************!*\
+  !*** ./resources/js/controllers/comment-replies-controller.ts ***!
+  \****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _default)
+/* harmony export */ });
+/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+/**
+ * Controller for a comment replies button.
+ *
+ * @internal
+ */
+
+var _default = /*#__PURE__*/function (_Controller) {
+  _inherits(_default, _Controller);
+
+  var _super = _createSuper(_default);
+
+  function _default() {
+    _classCallCheck(this, _default);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(_default, [{
+    key: "connect",
+    value: function connect() {
+      var _this = this;
+
+      this.element.addEventListener('click', function (e) {
+        var _a;
+
+        var expanded = _this.element.getAttribute('aria-expanded') === 'false';
+
+        _this.element.setAttribute('aria-expanded', String(expanded));
+
+        var controlled = (_a = _this.element.closest('.comment')) === null || _a === void 0 ? void 0 : _a.querySelector('.comment__replies');
+
+        if (controlled) {
+          controlled.hidden = !expanded;
+        }
+
+        if (!expanded) {
+          e.preventDefault();
+        }
+      });
+    }
+  }, {
+    key: "focusAfterLoad",
+    value: function focusAfterLoad() {
+      addEventListener('turbo:frame-render', function (e) {
+        var _a;
+
+        (_a = e.target.querySelector('.comment__replies')) === null || _a === void 0 ? void 0 : _a.focus();
+      }, {
+        once: true
+      });
+    }
+  }]);
+
+  return _default;
+}(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
+
+
+
+/***/ }),
+
+/***/ "./resources/js/controllers/composer-controller.ts":
+/*!*********************************************************!*\
+  !*** ./resources/js/controllers/composer-controller.ts ***!
+  \*********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -6567,6 +6716,11 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+/**
+ * Controller for the composer component.
+ *
+ * @internal
+ */
 
 var default_1 = /*#__PURE__*/function (_Controller) {
   _inherits(default_1, _Controller);
@@ -6667,10 +6821,10 @@ default_1.targets = ['handle'];
 
 /***/ }),
 
-/***/ "./resources/js/controllers/copy-link.ts":
-/*!***********************************************!*\
-  !*** ./resources/js/controllers/copy-link.ts ***!
-  \***********************************************/
+/***/ "./resources/js/controllers/copy-link-controller.ts":
+/*!**********************************************************!*\
+  !*** ./resources/js/controllers/copy-link-controller.ts ***!
+  \**********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -6736,10 +6890,10 @@ var _default = /*#__PURE__*/function (_Controller) {
 
 /***/ }),
 
-/***/ "./resources/js/controllers/feed.ts":
-/*!******************************************!*\
-  !*** ./resources/js/controllers/feed.ts ***!
-  \******************************************/
+/***/ "./resources/js/controllers/feed-controller.ts":
+/*!*****************************************************!*\
+  !*** ./resources/js/controllers/feed-controller.ts ***!
+  \*****************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -6797,11 +6951,11 @@ var default_1 = /*#__PURE__*/function (_Controller) {
 
       (_a = this.channelsValue) === null || _a === void 0 ? void 0 : _a.forEach(function (id) {
         window.Echo.channel("Waterhole.Models.Channel.".concat(id)).listen('NewComment', function () {
-          if (_this.sortValue === 'new-activity') {
+          if (_this.filterValue === 'new-activity') {
             _this.showNewActivity();
           }
         }).listen('NewPost', function () {
-          if (_this.sortValue === 'latest' || _this.sortValue === 'new-activity') {
+          if (_this.filterValue === 'latest' || _this.filterValue === 'new-activity') {
             _this.showNewActivity();
           }
         });
@@ -6838,16 +6992,16 @@ var default_1 = /*#__PURE__*/function (_Controller) {
 
 default_1.targets = ['newActivity'];
 default_1.values = {
-  sort: String,
+  filter: String,
   channels: Array
 };
 
 /***/ }),
 
-/***/ "./resources/js/controllers/header.ts":
-/*!********************************************!*\
-  !*** ./resources/js/controllers/header.ts ***!
-  \********************************************/
+/***/ "./resources/js/controllers/header-controller.ts":
+/*!*******************************************************!*\
+  !*** ./resources/js/controllers/header-controller.ts ***!
+  \*******************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -6919,10 +7073,10 @@ var _default = /*#__PURE__*/function (_Controller) {
 
 /***/ }),
 
-/***/ "./resources/js/controllers/load-backwards.ts":
-/*!****************************************************!*\
-  !*** ./resources/js/controllers/load-backwards.ts ***!
-  \****************************************************/
+/***/ "./resources/js/controllers/load-backwards-controller.ts":
+/*!***************************************************************!*\
+  !*** ./resources/js/controllers/load-backwards-controller.ts ***!
+  \***************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -7021,10 +7175,10 @@ var _default = /*#__PURE__*/function (_Controller) {
 
 /***/ }),
 
-/***/ "./resources/js/controllers/login.ts":
-/*!*******************************************!*\
-  !*** ./resources/js/controllers/login.ts ***!
-  \*******************************************/
+/***/ "./resources/js/controllers/login-controller.ts":
+/*!******************************************************!*\
+  !*** ./resources/js/controllers/login-controller.ts ***!
+  \******************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -7110,10 +7264,10 @@ var _default = /*#__PURE__*/function (_Controller) {
 
 /***/ }),
 
-/***/ "./resources/js/controllers/modal.ts":
-/*!*******************************************!*\
-  !*** ./resources/js/controllers/modal.ts ***!
-  \*******************************************/
+/***/ "./resources/js/controllers/modal-controller.ts":
+/*!******************************************************!*\
+  !*** ./resources/js/controllers/modal-controller.ts ***!
+  \******************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -7145,6 +7299,11 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
+/**
+ * Controller for the modal element.
+ *
+ *
+ */
 
 var default_1 = /*#__PURE__*/function (_Controller) {
   _inherits(default_1, _Controller);
@@ -7170,16 +7329,11 @@ var default_1 = /*#__PURE__*/function (_Controller) {
   }, {
     key: "loading",
     value: function loading(e) {
-      // this.loadingTarget!.hidden = false;
-      // this.frameTarget!.hidden = true;
       this.show();
     }
   }, {
     key: "loaded",
     value: function loaded() {
-      // this.loadingTarget!.hidden = true;
-      // this.frameTarget!.hidden = false;
-      // this.frameTarget!.focus();
       var _a;
 
       if ((_a = this.frameTarget) === null || _a === void 0 ? void 0 : _a.children.length) {
@@ -7212,14 +7366,14 @@ var default_1 = /*#__PURE__*/function (_Controller) {
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
 
 
-default_1.targets = ['loading', 'frame'];
+default_1.targets = ['frame'];
 
 /***/ }),
 
-/***/ "./resources/js/controllers/notifications-popup.ts":
-/*!*********************************************************!*\
-  !*** ./resources/js/controllers/notifications-popup.ts ***!
-  \*********************************************************/
+/***/ "./resources/js/controllers/notifications-popup-controller.ts":
+/*!********************************************************************!*\
+  !*** ./resources/js/controllers/notifications-popup-controller.ts ***!
+  \********************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -7324,10 +7478,10 @@ default_1.targets = ['badge', 'frame'];
 
 /***/ }),
 
-/***/ "./resources/js/controllers/page.ts":
-/*!******************************************!*\
-  !*** ./resources/js/controllers/page.ts ***!
-  \******************************************/
+/***/ "./resources/js/controllers/page-controller.ts":
+/*!*****************************************************!*\
+  !*** ./resources/js/controllers/page-controller.ts ***!
+  \*****************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -7405,10 +7559,74 @@ default_1.targets = ['header', 'breadcrumb', 'title'];
 
 /***/ }),
 
-/***/ "./resources/js/controllers/post-page.ts":
-/*!***********************************************!*\
-  !*** ./resources/js/controllers/post-page.ts ***!
-  \***********************************************/
+/***/ "./resources/js/controllers/post-controller.ts":
+/*!*****************************************************!*\
+  !*** ./resources/js/controllers/post-controller.ts ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _default)
+/* harmony export */ });
+/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+var _default = /*#__PURE__*/function (_Controller) {
+  _inherits(_default, _Controller);
+
+  var _super = _createSuper(_default);
+
+  function _default() {
+    _classCallCheck(this, _default);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(_default, [{
+    key: "appearAsRead",
+    value: function appearAsRead() {
+      if (this.element.classList.contains('is-unread')) {
+        this.element.classList.remove('is-unread', 'is-new');
+        this.element.classList.add('is-read');
+      }
+    }
+  }]);
+
+  return _default;
+}(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
+
+
+
+/***/ }),
+
+/***/ "./resources/js/controllers/post-page-controller.ts":
+/*!**********************************************************!*\
+  !*** ./resources/js/controllers/post-page-controller.ts ***!
+  \**********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -7560,74 +7778,10 @@ default_1.values = {
 
 /***/ }),
 
-/***/ "./resources/js/controllers/post.ts":
-/*!******************************************!*\
-  !*** ./resources/js/controllers/post.ts ***!
-  \******************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _default)
-/* harmony export */ });
-/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-
-
-var _default = /*#__PURE__*/function (_Controller) {
-  _inherits(_default, _Controller);
-
-  var _super = _createSuper(_default);
-
-  function _default() {
-    _classCallCheck(this, _default);
-
-    return _super.apply(this, arguments);
-  }
-
-  _createClass(_default, [{
-    key: "appearAsRead",
-    value: function appearAsRead() {
-      if (this.element.classList.contains('is-unread')) {
-        this.element.classList.remove('is-unread', 'is-new');
-        this.element.classList.add('is-read');
-      }
-    }
-  }]);
-
-  return _default;
-}(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
-
-
-
-/***/ }),
-
-/***/ "./resources/js/controllers/quotable.ts":
-/*!**********************************************!*\
-  !*** ./resources/js/controllers/quotable.ts ***!
-  \**********************************************/
+/***/ "./resources/js/controllers/quotable-controller.ts":
+/*!*********************************************************!*\
+  !*** ./resources/js/controllers/quotable-controller.ts ***!
+  \*********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -7637,8 +7791,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _floating_ui_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @floating-ui/dom */ "./node_modules/@floating-ui/dom/dist/floating-ui.dom.esm.development.js");
+/* harmony import */ var _floating_ui_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @floating-ui/dom */ "./node_modules/@floating-ui/core/dist/floating-ui.core.esm.development.js");
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
-/* harmony import */ var placement_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! placement.js */ "../../../packages/placement.js/dist/index.es.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
@@ -7731,7 +7886,9 @@ var default_1 = /*#__PURE__*/function (_Controller) {
     key: "updateQuoteButton",
     value: function updateQuoteButton() {
       return __awaiter(this, void 0, void 0, /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var selection, range, parent, position, rects, anchor, side, rect, _rect;
+        var _this2 = this;
+
+        var selection, range, parent, position, rects, anchor, placement, rect, _rect, virtualEl;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
@@ -7768,7 +7925,8 @@ var default_1 = /*#__PURE__*/function (_Controller) {
                 return _context.abrupt("return");
 
               case 10:
-                this.buttonTarget.hidden = false; // Place the quote button according to where the focus of the
+                this.buttonTarget.hidden = false;
+                this.buttonTarget.style.position = 'absolute'; // Place the quote button according to where the focus of the
                 // selection is (ie. where the selection began).
 
                 position = selection.anchorNode.compareDocumentPosition(selection.focusNode);
@@ -7777,18 +7935,31 @@ var default_1 = /*#__PURE__*/function (_Controller) {
                 if (position & Node.DOCUMENT_POSITION_PRECEDING || !position && selection.focusOffset < selection.anchorOffset) {
                   rect = rects[0];
                   anchor = new DOMRect(rect.left, rect.top);
-                  side = 'top';
+                  placement = 'top';
                 } else {
                   _rect = rects[rects.length - 1];
                   anchor = new DOMRect(_rect.right, _rect.bottom);
-                  side = 'bottom';
+                  placement = 'bottom';
                 }
 
-                (0,placement_js__WEBPACK_IMPORTED_MODULE_2__["default"])(anchor, this.buttonTarget, {
-                  placement: side
+                virtualEl = {
+                  getBoundingClientRect: function getBoundingClientRect() {
+                    return anchor;
+                  }
+                };
+                (0,_floating_ui_dom__WEBPACK_IMPORTED_MODULE_2__.computePosition)(virtualEl, this.buttonTarget, {
+                  placement: placement,
+                  middleware: [(0,_floating_ui_dom__WEBPACK_IMPORTED_MODULE_3__.offset)(10), (0,_floating_ui_dom__WEBPACK_IMPORTED_MODULE_3__.shift)(), (0,_floating_ui_dom__WEBPACK_IMPORTED_MODULE_3__.flip)()]
+                }).then(function (_ref) {
+                  var x = _ref.x,
+                      y = _ref.y;
+                  Object.assign(_this2.buttonTarget.style, {
+                    left: "".concat(x, "px"),
+                    top: "".concat(y, "px")
+                  });
                 });
 
-              case 15:
+              case 17:
               case "end":
                 return _context.stop();
             }
@@ -7799,7 +7970,7 @@ var default_1 = /*#__PURE__*/function (_Controller) {
   }, {
     key: "quoteSelectedText",
     value: function quoteSelectedText() {
-      var _this2 = this;
+      var _this3 = this;
 
       var container = document.createElement('div');
       var selection = window.getSelection();
@@ -7812,7 +7983,7 @@ var default_1 = /*#__PURE__*/function (_Controller) {
       // open (via turbo:before-fetch-request) before we dispatch the event.
 
       setTimeout(function () {
-        _this2.dispatch('quote-text', {
+        _this3.dispatch('quote-text', {
           detail: {
             text: container.textContent
           },
@@ -7831,10 +8002,10 @@ default_1.targets = ['button'];
 
 /***/ }),
 
-/***/ "./resources/js/controllers/reveal.ts":
-/*!********************************************!*\
-  !*** ./resources/js/controllers/reveal.ts ***!
-  \********************************************/
+/***/ "./resources/js/controllers/reveal-controller.ts":
+/*!*******************************************************!*\
+  !*** ./resources/js/controllers/reveal-controller.ts ***!
+  \*******************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -7918,10 +8089,10 @@ default_1.targets = ['if', 'then'];
 
 /***/ }),
 
-/***/ "./resources/js/controllers/scrollspy.ts":
-/*!***********************************************!*\
-  !*** ./resources/js/controllers/scrollspy.ts ***!
-  \***********************************************/
+/***/ "./resources/js/controllers/scrollspy-controller.ts":
+/*!**********************************************************!*\
+  !*** ./resources/js/controllers/scrollspy-controller.ts ***!
+  \**********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -8001,10 +8172,10 @@ var _default = /*#__PURE__*/function (_Controller) {
 
 /***/ }),
 
-/***/ "./resources/js/controllers/text-editor.ts":
-/*!*************************************************!*\
-  !*** ./resources/js/controllers/text-editor.ts ***!
-  \*************************************************/
+/***/ "./resources/js/controllers/text-editor-controller.ts":
+/*!************************************************************!*\
+  !*** ./resources/js/controllers/text-editor-controller.ts ***!
+  \************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -8173,10 +8344,10 @@ default_1.targets = ['input', 'preview', 'toolbar', 'previewButton', 'expander']
 
 /***/ }),
 
-/***/ "./resources/js/controllers/theme.ts":
-/*!*******************************************!*\
-  !*** ./resources/js/controllers/theme.ts ***!
-  \*******************************************/
+/***/ "./resources/js/controllers/theme-controller.ts":
+/*!******************************************************!*\
+  !*** ./resources/js/controllers/theme-controller.ts ***!
+  \******************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -8235,10 +8406,10 @@ var _default = /*#__PURE__*/function (_Controller) {
 
 /***/ }),
 
-/***/ "./resources/js/controllers/turbo-frame.ts":
-/*!*************************************************!*\
-  !*** ./resources/js/controllers/turbo-frame.ts ***!
-  \*************************************************/
+/***/ "./resources/js/controllers/turbo-frame-controller.ts":
+/*!************************************************************!*\
+  !*** ./resources/js/controllers/turbo-frame-controller.ts ***!
+  \************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -8306,10 +8477,10 @@ var _default = /*#__PURE__*/function (_Controller) {
 
 /***/ }),
 
-/***/ "./resources/js/controllers/watch-sticky.ts":
-/*!**************************************************!*\
-  !*** ./resources/js/controllers/watch-sticky.ts ***!
-  \**************************************************/
+/***/ "./resources/js/controllers/watch-sticky-controller.ts":
+/*!*************************************************************!*\
+  !*** ./resources/js/controllers/watch-sticky-controller.ts ***!
+  \*************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -8393,34 +8564,37 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "shouldOpenInNewTab": () => (/* binding */ shouldOpenInNewTab),
 /* harmony export */   "isElementInViewport": () => (/* binding */ isElementInViewport),
 /* harmony export */   "getHeaderHeight": () => (/* binding */ getHeaderHeight),
-/* harmony export */   "getCookieValue": () => (/* binding */ getCookieValue),
 /* harmony export */   "htmlToElement": () => (/* binding */ htmlToElement),
 /* harmony export */   "slug": () => (/* binding */ slug)
 /* harmony export */ });
+/**
+ * Determine whether the user is trying to open a link in a new tab.
+ */
 function shouldOpenInNewTab(e) {
   return e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || e.button !== undefined && e.button !== 0;
 }
+/**
+ * Determine if an element is currently visible in the viewport.
+ */
+
 function isElementInViewport(el) {
   var proportion = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
   var rect = el.getBoundingClientRect();
   return -rect.top / rect.height < proportion && (rect.bottom - window.innerHeight) / rect.height < proportion;
 }
+/**
+ * Get the height of the page header.
+ */
+
 function getHeaderHeight() {
   var _a;
 
-  return ((_a = document.querySelector('.header')) === null || _a === void 0 ? void 0 : _a.offsetHeight) || 0;
+  return ((_a = document.getElementById('#header')) === null || _a === void 0 ? void 0 : _a.offsetHeight) || 0;
 }
-function getCookieValue(name) {
-  var cookies = document.cookie ? document.cookie.split('; ') : [];
-  var cookie = cookies.find(function (cookie) {
-    return cookie.startsWith(name);
-  });
+/**
+ * Convert an HTML string into a DOM element.
+ */
 
-  if (cookie) {
-    var value = cookie.split('=').slice(1).join('=');
-    return value ? decodeURIComponent(value) : undefined;
-  }
-}
 function htmlToElement(html) {
   var template = document.createElement('template');
   template.innerHTML = html;
@@ -8434,30 +8608,6 @@ function htmlToElement(html) {
 function slug(string) {
   return string.toLowerCase().replace(/[^a-z0-9]/gi, '-').replace(/-+/g, '-').replace(/-$|^-/g, '');
 }
-
-/***/ }),
-
-/***/ "./resources/js/bootstrap.js":
-/*!***********************************!*\
-  !*** ./resources/js/bootstrap.js ***!
-  \***********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var laravel_echo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! laravel-echo */ "./node_modules/laravel-echo/dist/echo.js");
-
-window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
-window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
-  broadcaster: 'pusher',
-  key: '2d80bcb99dd1f29f0399',
-  cluster: 'ap4',
-  forceTLS: true,
-  namespace: 'Waterhole.Events'
-});
-document.addEventListener('turbo:before-fetch-request', function (e) {
-  e.detail.fetchOptions.headers['X-Socket-ID'] = window.Echo.socketId();
-});
 
 /***/ }),
 
@@ -8552,6 +8702,987 @@ module.exports = function (str) {
 
 	return str.replace(matchOperatorsRe, '\\$&');
 };
+
+
+/***/ }),
+
+/***/ "./node_modules/hello-goodbye/dist/index.es.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/hello-goodbye/dist/index.es.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "cancel": () => (/* binding */ n),
+/* harmony export */   "goodbye": () => (/* binding */ r),
+/* harmony export */   "hello": () => (/* binding */ i),
+/* harmony export */   "move": () => (/* binding */ t),
+/* harmony export */   "transition": () => (/* binding */ e)
+/* harmony export */ });
+function t(t,n,e={}){const i=new WeakMap,r=s(e);t instanceof HTMLCollection&&(t=Array.from(t)),t.forEach((t=>{"none"!==getComputedStyle(t).display&&i.set(t,t.getBoundingClientRect())})),n(),t.forEach((t=>{const n=i.get(t);if(!n)return;const e=n.left-t.getBoundingClientRect().left,s=n.top-t.getBoundingClientRect().top;if(!e&&!s)return;const a=t.style;a.transitionDuration="0s",a.transform=`translate(${e}px, ${s}px)`,document.body.offsetWidth,a.transitionDuration=a.transform="",t.classList.add(r+"move"),o(t,(()=>{t.classList.remove(r+"move")}))}))}function n(t){t._currentTransition&&(t.classList.remove(...["active","from","to"].map((n=>t._currentTransition+n))),t._currentTransition=null)}function e(t,e,i={}){const r=s(i)+e+"-",a=t.classList;var c;n(t),t._currentTransition=r,a.add(r+"active",r+"from"),c=()=>{a.add(r+"to"),a.remove(r+"from"),o(t,(()=>{a.remove(r+"to",r+"active"),t._currentTransition===r&&(i.finish&&i.finish(),t._currentTransition=null)}))},requestAnimationFrame((()=>{requestAnimationFrame(c)}))}function i(t,n={}){e(t,"enter",n)}function r(t,n={}){e(t,"leave",n)}function o(t,n){if(getComputedStyle(t).transitionDuration.startsWith("0s"))n();else{const e=()=>{n(),t.removeEventListener("transitionend",e),t.removeEventListener("transitioncancel",e)};t.addEventListener("transitionend",e),t.addEventListener("transitioncancel",e)}}function s(t){return t.prefix?t.prefix+"-":""}
+
+
+/***/ }),
+
+/***/ "./node_modules/inclusive-elements/node_modules/focus-trap/dist/focus-trap.esm.js":
+/*!****************************************************************************************!*\
+  !*** ./node_modules/inclusive-elements/node_modules/focus-trap/dist/focus-trap.esm.js ***!
+  \****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "createFocusTrap": () => (/* binding */ createFocusTrap)
+/* harmony export */ });
+/* harmony import */ var tabbable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tabbable */ "./node_modules/inclusive-elements/node_modules/tabbable/dist/index.esm.js");
+/*!
+* focus-trap 6.7.2
+* @license MIT, https://github.com/focus-trap/focus-trap/blob/master/LICENSE
+*/
+
+
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    enumerableOnly && (symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    })), keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function _objectSpread2(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = null != arguments[i] ? arguments[i] : {};
+    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
+      _defineProperty(target, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
+      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+    });
+  }
+
+  return target;
+}
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+var activeFocusTraps = function () {
+  var trapQueue = [];
+  return {
+    activateTrap: function activateTrap(trap) {
+      if (trapQueue.length > 0) {
+        var activeTrap = trapQueue[trapQueue.length - 1];
+
+        if (activeTrap !== trap) {
+          activeTrap.pause();
+        }
+      }
+
+      var trapIndex = trapQueue.indexOf(trap);
+
+      if (trapIndex === -1) {
+        trapQueue.push(trap);
+      } else {
+        // move this existing trap to the front of the queue
+        trapQueue.splice(trapIndex, 1);
+        trapQueue.push(trap);
+      }
+    },
+    deactivateTrap: function deactivateTrap(trap) {
+      var trapIndex = trapQueue.indexOf(trap);
+
+      if (trapIndex !== -1) {
+        trapQueue.splice(trapIndex, 1);
+      }
+
+      if (trapQueue.length > 0) {
+        trapQueue[trapQueue.length - 1].unpause();
+      }
+    }
+  };
+}();
+
+var isSelectableInput = function isSelectableInput(node) {
+  return node.tagName && node.tagName.toLowerCase() === 'input' && typeof node.select === 'function';
+};
+
+var isEscapeEvent = function isEscapeEvent(e) {
+  return e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27;
+};
+
+var isTabEvent = function isTabEvent(e) {
+  return e.key === 'Tab' || e.keyCode === 9;
+};
+
+var delay = function delay(fn) {
+  return setTimeout(fn, 0);
+}; // Array.find/findIndex() are not supported on IE; this replicates enough
+//  of Array.findIndex() for our needs
+
+
+var findIndex = function findIndex(arr, fn) {
+  var idx = -1;
+  arr.every(function (value, i) {
+    if (fn(value)) {
+      idx = i;
+      return false; // break
+    }
+
+    return true; // next
+  });
+  return idx;
+};
+/**
+ * Get an option's value when it could be a plain value, or a handler that provides
+ *  the value.
+ * @param {*} value Option's value to check.
+ * @param {...*} [params] Any parameters to pass to the handler, if `value` is a function.
+ * @returns {*} The `value`, or the handler's returned value.
+ */
+
+
+var valueOrHandler = function valueOrHandler(value) {
+  for (var _len = arguments.length, params = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    params[_key - 1] = arguments[_key];
+  }
+
+  return typeof value === 'function' ? value.apply(void 0, params) : value;
+};
+
+var getActualTarget = function getActualTarget(event) {
+  // NOTE: If the trap is _inside_ a shadow DOM, event.target will always be the
+  //  shadow host. However, event.target.composedPath() will be an array of
+  //  nodes "clicked" from inner-most (the actual element inside the shadow) to
+  //  outer-most (the host HTML document). If we have access to composedPath(),
+  //  then use its first element; otherwise, fall back to event.target (and
+  //  this only works for an _open_ shadow DOM; otherwise,
+  //  composedPath()[0] === event.target always).
+  return event.target.shadowRoot && typeof event.composedPath === 'function' ? event.composedPath()[0] : event.target;
+};
+
+var createFocusTrap = function createFocusTrap(elements, userOptions) {
+  // SSR: a live trap shouldn't be created in this type of environment so this
+  //  should be safe code to execute if the `document` option isn't specified
+  var doc = (userOptions === null || userOptions === void 0 ? void 0 : userOptions.document) || document;
+
+  var config = _objectSpread2({
+    returnFocusOnDeactivate: true,
+    escapeDeactivates: true,
+    delayInitialFocus: true
+  }, userOptions);
+
+  var state = {
+    // @type {Array<HTMLElement>}
+    containers: [],
+    // list of objects identifying the first and last tabbable nodes in all containers/groups in
+    //  the trap
+    // NOTE: it's possible that a group has no tabbable nodes if nodes get removed while the trap
+    //  is active, but the trap should never get to a state where there isn't at least one group
+    //  with at least one tabbable node in it (that would lead to an error condition that would
+    //  result in an error being thrown)
+    // @type {Array<{ container: HTMLElement, firstTabbableNode: HTMLElement|null, lastTabbableNode: HTMLElement|null }>}
+    tabbableGroups: [],
+    nodeFocusedBeforeActivation: null,
+    mostRecentlyFocusedNode: null,
+    active: false,
+    paused: false,
+    // timer ID for when delayInitialFocus is true and initial focus in this trap
+    //  has been delayed during activation
+    delayInitialFocusTimer: undefined
+  };
+  var trap; // eslint-disable-line prefer-const -- some private functions reference it, and its methods reference private functions, so we must declare here and define later
+
+  var getOption = function getOption(configOverrideOptions, optionName, configOptionName) {
+    return configOverrideOptions && configOverrideOptions[optionName] !== undefined ? configOverrideOptions[optionName] : config[configOptionName || optionName];
+  };
+
+  var containersContain = function containersContain(element) {
+    return !!(element && state.containers.some(function (container) {
+      return container.contains(element);
+    }));
+  };
+  /**
+   * Gets the node for the given option, which is expected to be an option that
+   *  can be either a DOM node, a string that is a selector to get a node, `false`
+   *  (if a node is explicitly NOT given), or a function that returns any of these
+   *  values.
+   * @param {string} optionName
+   * @returns {undefined | false | HTMLElement | SVGElement} Returns
+   *  `undefined` if the option is not specified; `false` if the option
+   *  resolved to `false` (node explicitly not given); otherwise, the resolved
+   *  DOM node.
+   * @throws {Error} If the option is set, not `false`, and is not, or does not
+   *  resolve to a node.
+   */
+
+
+  var getNodeForOption = function getNodeForOption(optionName) {
+    var optionValue = config[optionName];
+
+    if (typeof optionValue === 'function') {
+      for (var _len2 = arguments.length, params = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+        params[_key2 - 1] = arguments[_key2];
+      }
+
+      optionValue = optionValue.apply(void 0, params);
+    }
+
+    if (!optionValue) {
+      if (optionValue === undefined || optionValue === false) {
+        return optionValue;
+      } // else, empty string (invalid), null (invalid), 0 (invalid)
+
+
+      throw new Error("`".concat(optionName, "` was specified but was not a node, or did not return a node"));
+    }
+
+    var node = optionValue; // could be HTMLElement, SVGElement, or non-empty string at this point
+
+    if (typeof optionValue === 'string') {
+      node = doc.querySelector(optionValue); // resolve to node, or null if fails
+
+      if (!node) {
+        throw new Error("`".concat(optionName, "` as selector refers to no known node"));
+      }
+    }
+
+    return node;
+  };
+
+  var getInitialFocusNode = function getInitialFocusNode() {
+    var node = getNodeForOption('initialFocus'); // false explicitly indicates we want no initialFocus at all
+
+    if (node === false) {
+      return false;
+    }
+
+    if (node === undefined) {
+      // option not specified: use fallback options
+      if (containersContain(doc.activeElement)) {
+        node = doc.activeElement;
+      } else {
+        var firstTabbableGroup = state.tabbableGroups[0];
+        var firstTabbableNode = firstTabbableGroup && firstTabbableGroup.firstTabbableNode; // NOTE: `fallbackFocus` option function cannot return `false` (not supported)
+
+        node = firstTabbableNode || getNodeForOption('fallbackFocus');
+      }
+    }
+
+    if (!node) {
+      throw new Error('Your focus-trap needs to have at least one focusable element');
+    }
+
+    return node;
+  };
+
+  var updateTabbableNodes = function updateTabbableNodes() {
+    state.tabbableGroups = state.containers.map(function (container) {
+      var tabbableNodes = (0,tabbable__WEBPACK_IMPORTED_MODULE_0__.tabbable)(container);
+
+      if (tabbableNodes.length > 0) {
+        return {
+          container: container,
+          firstTabbableNode: tabbableNodes[0],
+          lastTabbableNode: tabbableNodes[tabbableNodes.length - 1]
+        };
+      }
+
+      return undefined;
+    }).filter(function (group) {
+      return !!group;
+    }); // remove groups with no tabbable nodes
+    // throw if no groups have tabbable nodes and we don't have a fallback focus node either
+
+    if (state.tabbableGroups.length <= 0 && !getNodeForOption('fallbackFocus') // returning false not supported for this option
+    ) {
+      throw new Error('Your focus-trap must have at least one container with at least one tabbable node in it at all times');
+    }
+  };
+
+  var tryFocus = function tryFocus(node) {
+    if (node === false) {
+      return;
+    }
+
+    if (node === doc.activeElement) {
+      return;
+    }
+
+    if (!node || !node.focus) {
+      tryFocus(getInitialFocusNode());
+      return;
+    }
+
+    node.focus({
+      preventScroll: !!config.preventScroll
+    });
+    state.mostRecentlyFocusedNode = node;
+
+    if (isSelectableInput(node)) {
+      node.select();
+    }
+  };
+
+  var getReturnFocusNode = function getReturnFocusNode(previousActiveElement) {
+    var node = getNodeForOption('setReturnFocus', previousActiveElement);
+    return node ? node : node === false ? false : previousActiveElement;
+  }; // This needs to be done on mousedown and touchstart instead of click
+  // so that it precedes the focus event.
+
+
+  var checkPointerDown = function checkPointerDown(e) {
+    var target = getActualTarget(e);
+
+    if (containersContain(target)) {
+      // allow the click since it ocurred inside the trap
+      return;
+    }
+
+    if (valueOrHandler(config.clickOutsideDeactivates, e)) {
+      // immediately deactivate the trap
+      trap.deactivate({
+        // if, on deactivation, we should return focus to the node originally-focused
+        //  when the trap was activated (or the configured `setReturnFocus` node),
+        //  then assume it's also OK to return focus to the outside node that was
+        //  just clicked, causing deactivation, as long as that node is focusable;
+        //  if it isn't focusable, then return focus to the original node focused
+        //  on activation (or the configured `setReturnFocus` node)
+        // NOTE: by setting `returnFocus: false`, deactivate() will do nothing,
+        //  which will result in the outside click setting focus to the node
+        //  that was clicked, whether it's focusable or not; by setting
+        //  `returnFocus: true`, we'll attempt to re-focus the node originally-focused
+        //  on activation (or the configured `setReturnFocus` node)
+        returnFocus: config.returnFocusOnDeactivate && !(0,tabbable__WEBPACK_IMPORTED_MODULE_0__.isFocusable)(target)
+      });
+      return;
+    } // This is needed for mobile devices.
+    // (If we'll only let `click` events through,
+    // then on mobile they will be blocked anyways if `touchstart` is blocked.)
+
+
+    if (valueOrHandler(config.allowOutsideClick, e)) {
+      // allow the click outside the trap to take place
+      return;
+    } // otherwise, prevent the click
+
+
+    e.preventDefault();
+  }; // In case focus escapes the trap for some strange reason, pull it back in.
+
+
+  var checkFocusIn = function checkFocusIn(e) {
+    var target = getActualTarget(e);
+    var targetContained = containersContain(target); // In Firefox when you Tab out of an iframe the Document is briefly focused.
+
+    if (targetContained || target instanceof Document) {
+      if (targetContained) {
+        state.mostRecentlyFocusedNode = target;
+      }
+    } else {
+      // escaped! pull it back in to where it just left
+      e.stopImmediatePropagation();
+      tryFocus(state.mostRecentlyFocusedNode || getInitialFocusNode());
+    }
+  }; // Hijack Tab events on the first and last focusable nodes of the trap,
+  // in order to prevent focus from escaping. If it escapes for even a
+  // moment it can end up scrolling the page and causing confusion so we
+  // kind of need to capture the action at the keydown phase.
+
+
+  var checkTab = function checkTab(e) {
+    var target = getActualTarget(e);
+    updateTabbableNodes();
+    var destinationNode = null;
+
+    if (state.tabbableGroups.length > 0) {
+      // make sure the target is actually contained in a group
+      // NOTE: the target may also be the container itself if it's focusable
+      //  with tabIndex='-1' and was given initial focus
+      var containerIndex = findIndex(state.tabbableGroups, function (_ref) {
+        var container = _ref.container;
+        return container.contains(target);
+      });
+
+      if (containerIndex < 0) {
+        // target not found in any group: quite possible focus has escaped the trap,
+        //  so bring it back in to...
+        if (e.shiftKey) {
+          // ...the last node in the last group
+          destinationNode = state.tabbableGroups[state.tabbableGroups.length - 1].lastTabbableNode;
+        } else {
+          // ...the first node in the first group
+          destinationNode = state.tabbableGroups[0].firstTabbableNode;
+        }
+      } else if (e.shiftKey) {
+        // REVERSE
+        // is the target the first tabbable node in a group?
+        var startOfGroupIndex = findIndex(state.tabbableGroups, function (_ref2) {
+          var firstTabbableNode = _ref2.firstTabbableNode;
+          return target === firstTabbableNode;
+        });
+
+        if (startOfGroupIndex < 0 && (state.tabbableGroups[containerIndex].container === target || (0,tabbable__WEBPACK_IMPORTED_MODULE_0__.isFocusable)(target) && !(0,tabbable__WEBPACK_IMPORTED_MODULE_0__.isTabbable)(target))) {
+          // an exception case where the target is either the container itself, or
+          //  a non-tabbable node that was given focus (i.e. tabindex is negative
+          //  and user clicked on it or node was programmatically given focus), in which
+          //  case, we should handle shift+tab as if focus were on the container's
+          //  first tabbable node, and go to the last tabbable node of the LAST group
+          startOfGroupIndex = containerIndex;
+        }
+
+        if (startOfGroupIndex >= 0) {
+          // YES: then shift+tab should go to the last tabbable node in the
+          //  previous group (and wrap around to the last tabbable node of
+          //  the LAST group if it's the first tabbable node of the FIRST group)
+          var destinationGroupIndex = startOfGroupIndex === 0 ? state.tabbableGroups.length - 1 : startOfGroupIndex - 1;
+          var destinationGroup = state.tabbableGroups[destinationGroupIndex];
+          destinationNode = destinationGroup.lastTabbableNode;
+        }
+      } else {
+        // FORWARD
+        // is the target the last tabbable node in a group?
+        var lastOfGroupIndex = findIndex(state.tabbableGroups, function (_ref3) {
+          var lastTabbableNode = _ref3.lastTabbableNode;
+          return target === lastTabbableNode;
+        });
+
+        if (lastOfGroupIndex < 0 && (state.tabbableGroups[containerIndex].container === target || (0,tabbable__WEBPACK_IMPORTED_MODULE_0__.isFocusable)(target) && !(0,tabbable__WEBPACK_IMPORTED_MODULE_0__.isTabbable)(target))) {
+          // an exception case where the target is the container itself, or
+          //  a non-tabbable node that was given focus (i.e. tabindex is negative
+          //  and user clicked on it or node was programmatically given focus), in which
+          //  case, we should handle tab as if focus were on the container's
+          //  last tabbable node, and go to the first tabbable node of the FIRST group
+          lastOfGroupIndex = containerIndex;
+        }
+
+        if (lastOfGroupIndex >= 0) {
+          // YES: then tab should go to the first tabbable node in the next
+          //  group (and wrap around to the first tabbable node of the FIRST
+          //  group if it's the last tabbable node of the LAST group)
+          var _destinationGroupIndex = lastOfGroupIndex === state.tabbableGroups.length - 1 ? 0 : lastOfGroupIndex + 1;
+
+          var _destinationGroup = state.tabbableGroups[_destinationGroupIndex];
+          destinationNode = _destinationGroup.firstTabbableNode;
+        }
+      }
+    } else {
+      // NOTE: the fallbackFocus option does not support returning false to opt-out
+      destinationNode = getNodeForOption('fallbackFocus');
+    }
+
+    if (destinationNode) {
+      e.preventDefault();
+      tryFocus(destinationNode);
+    } // else, let the browser take care of [shift+]tab and move the focus
+
+  };
+
+  var checkKey = function checkKey(e) {
+    if (isEscapeEvent(e) && valueOrHandler(config.escapeDeactivates, e) !== false) {
+      e.preventDefault();
+      trap.deactivate();
+      return;
+    }
+
+    if (isTabEvent(e)) {
+      checkTab(e);
+      return;
+    }
+  };
+
+  var checkClick = function checkClick(e) {
+    if (valueOrHandler(config.clickOutsideDeactivates, e)) {
+      return;
+    }
+
+    var target = getActualTarget(e);
+
+    if (containersContain(target)) {
+      return;
+    }
+
+    if (valueOrHandler(config.allowOutsideClick, e)) {
+      return;
+    }
+
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  }; //
+  // EVENT LISTENERS
+  //
+
+
+  var addListeners = function addListeners() {
+    if (!state.active) {
+      return;
+    } // There can be only one listening focus trap at a time
+
+
+    activeFocusTraps.activateTrap(trap); // Delay ensures that the focused element doesn't capture the event
+    // that caused the focus trap activation.
+
+    state.delayInitialFocusTimer = config.delayInitialFocus ? delay(function () {
+      tryFocus(getInitialFocusNode());
+    }) : tryFocus(getInitialFocusNode());
+    doc.addEventListener('focusin', checkFocusIn, true);
+    doc.addEventListener('mousedown', checkPointerDown, {
+      capture: true,
+      passive: false
+    });
+    doc.addEventListener('touchstart', checkPointerDown, {
+      capture: true,
+      passive: false
+    });
+    doc.addEventListener('click', checkClick, {
+      capture: true,
+      passive: false
+    });
+    doc.addEventListener('keydown', checkKey, {
+      capture: true,
+      passive: false
+    });
+    return trap;
+  };
+
+  var removeListeners = function removeListeners() {
+    if (!state.active) {
+      return;
+    }
+
+    doc.removeEventListener('focusin', checkFocusIn, true);
+    doc.removeEventListener('mousedown', checkPointerDown, true);
+    doc.removeEventListener('touchstart', checkPointerDown, true);
+    doc.removeEventListener('click', checkClick, true);
+    doc.removeEventListener('keydown', checkKey, true);
+    return trap;
+  }; //
+  // TRAP DEFINITION
+  //
+
+
+  trap = {
+    activate: function activate(activateOptions) {
+      if (state.active) {
+        return this;
+      }
+
+      var onActivate = getOption(activateOptions, 'onActivate');
+      var onPostActivate = getOption(activateOptions, 'onPostActivate');
+      var checkCanFocusTrap = getOption(activateOptions, 'checkCanFocusTrap');
+
+      if (!checkCanFocusTrap) {
+        updateTabbableNodes();
+      }
+
+      state.active = true;
+      state.paused = false;
+      state.nodeFocusedBeforeActivation = doc.activeElement;
+
+      if (onActivate) {
+        onActivate();
+      }
+
+      var finishActivation = function finishActivation() {
+        if (checkCanFocusTrap) {
+          updateTabbableNodes();
+        }
+
+        addListeners();
+
+        if (onPostActivate) {
+          onPostActivate();
+        }
+      };
+
+      if (checkCanFocusTrap) {
+        checkCanFocusTrap(state.containers.concat()).then(finishActivation, finishActivation);
+        return this;
+      }
+
+      finishActivation();
+      return this;
+    },
+    deactivate: function deactivate(deactivateOptions) {
+      if (!state.active) {
+        return this;
+      }
+
+      clearTimeout(state.delayInitialFocusTimer); // noop if undefined
+
+      state.delayInitialFocusTimer = undefined;
+      removeListeners();
+      state.active = false;
+      state.paused = false;
+      activeFocusTraps.deactivateTrap(trap);
+      var onDeactivate = getOption(deactivateOptions, 'onDeactivate');
+      var onPostDeactivate = getOption(deactivateOptions, 'onPostDeactivate');
+      var checkCanReturnFocus = getOption(deactivateOptions, 'checkCanReturnFocus');
+
+      if (onDeactivate) {
+        onDeactivate();
+      }
+
+      var returnFocus = getOption(deactivateOptions, 'returnFocus', 'returnFocusOnDeactivate');
+
+      var finishDeactivation = function finishDeactivation() {
+        delay(function () {
+          if (returnFocus) {
+            tryFocus(getReturnFocusNode(state.nodeFocusedBeforeActivation));
+          }
+
+          if (onPostDeactivate) {
+            onPostDeactivate();
+          }
+        });
+      };
+
+      if (returnFocus && checkCanReturnFocus) {
+        checkCanReturnFocus(getReturnFocusNode(state.nodeFocusedBeforeActivation)).then(finishDeactivation, finishDeactivation);
+        return this;
+      }
+
+      finishDeactivation();
+      return this;
+    },
+    pause: function pause() {
+      if (state.paused || !state.active) {
+        return this;
+      }
+
+      state.paused = true;
+      removeListeners();
+      return this;
+    },
+    unpause: function unpause() {
+      if (!state.paused || !state.active) {
+        return this;
+      }
+
+      state.paused = false;
+      updateTabbableNodes();
+      addListeners();
+      return this;
+    },
+    updateContainerElements: function updateContainerElements(containerElements) {
+      var elementsAsArray = [].concat(containerElements).filter(Boolean);
+      state.containers = elementsAsArray.map(function (element) {
+        return typeof element === 'string' ? doc.querySelector(element) : element;
+      });
+
+      if (state.active) {
+        updateTabbableNodes();
+      }
+
+      return this;
+    }
+  }; // initialize container elements
+
+  trap.updateContainerElements(elements);
+  return trap;
+};
+
+
+//# sourceMappingURL=focus-trap.esm.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/inclusive-elements/node_modules/tabbable/dist/index.esm.js":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/inclusive-elements/node_modules/tabbable/dist/index.esm.js ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "focusable": () => (/* binding */ focusable),
+/* harmony export */   "isFocusable": () => (/* binding */ isFocusable),
+/* harmony export */   "isTabbable": () => (/* binding */ isTabbable),
+/* harmony export */   "tabbable": () => (/* binding */ tabbable)
+/* harmony export */ });
+/*!
+* tabbable 5.2.1
+* @license MIT, https://github.com/focus-trap/tabbable/blob/master/LICENSE
+*/
+var candidateSelectors = ['input', 'select', 'textarea', 'a[href]', 'button', '[tabindex]', 'audio[controls]', 'video[controls]', '[contenteditable]:not([contenteditable="false"])', 'details>summary:first-of-type', 'details'];
+var candidateSelector = /* #__PURE__ */candidateSelectors.join(',');
+var matches = typeof Element === 'undefined' ? function () {} : Element.prototype.matches || Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
+
+var getCandidates = function getCandidates(el, includeContainer, filter) {
+  var candidates = Array.prototype.slice.apply(el.querySelectorAll(candidateSelector));
+
+  if (includeContainer && matches.call(el, candidateSelector)) {
+    candidates.unshift(el);
+  }
+
+  candidates = candidates.filter(filter);
+  return candidates;
+};
+
+var isContentEditable = function isContentEditable(node) {
+  return node.contentEditable === 'true';
+};
+
+var getTabindex = function getTabindex(node) {
+  var tabindexAttr = parseInt(node.getAttribute('tabindex'), 10);
+
+  if (!isNaN(tabindexAttr)) {
+    return tabindexAttr;
+  } // Browsers do not return `tabIndex` correctly for contentEditable nodes;
+  // so if they don't have a tabindex attribute specifically set, assume it's 0.
+
+
+  if (isContentEditable(node)) {
+    return 0;
+  } // in Chrome, <details/>, <audio controls/> and <video controls/> elements get a default
+  //  `tabIndex` of -1 when the 'tabindex' attribute isn't specified in the DOM,
+  //  yet they are still part of the regular tab order; in FF, they get a default
+  //  `tabIndex` of 0; since Chrome still puts those elements in the regular tab
+  //  order, consider their tab index to be 0.
+
+
+  if ((node.nodeName === 'AUDIO' || node.nodeName === 'VIDEO' || node.nodeName === 'DETAILS') && node.getAttribute('tabindex') === null) {
+    return 0;
+  }
+
+  return node.tabIndex;
+};
+
+var sortOrderedTabbables = function sortOrderedTabbables(a, b) {
+  return a.tabIndex === b.tabIndex ? a.documentOrder - b.documentOrder : a.tabIndex - b.tabIndex;
+};
+
+var isInput = function isInput(node) {
+  return node.tagName === 'INPUT';
+};
+
+var isHiddenInput = function isHiddenInput(node) {
+  return isInput(node) && node.type === 'hidden';
+};
+
+var isDetailsWithSummary = function isDetailsWithSummary(node) {
+  var r = node.tagName === 'DETAILS' && Array.prototype.slice.apply(node.children).some(function (child) {
+    return child.tagName === 'SUMMARY';
+  });
+  return r;
+};
+
+var getCheckedRadio = function getCheckedRadio(nodes, form) {
+  for (var i = 0; i < nodes.length; i++) {
+    if (nodes[i].checked && nodes[i].form === form) {
+      return nodes[i];
+    }
+  }
+};
+
+var isTabbableRadio = function isTabbableRadio(node) {
+  if (!node.name) {
+    return true;
+  }
+
+  var radioScope = node.form || node.ownerDocument;
+
+  var queryRadios = function queryRadios(name) {
+    return radioScope.querySelectorAll('input[type="radio"][name="' + name + '"]');
+  };
+
+  var radioSet;
+
+  if (typeof window !== 'undefined' && typeof window.CSS !== 'undefined' && typeof window.CSS.escape === 'function') {
+    radioSet = queryRadios(window.CSS.escape(node.name));
+  } else {
+    try {
+      radioSet = queryRadios(node.name);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error('Looks like you have a radio button with a name attribute containing invalid CSS selector characters and need the CSS.escape polyfill: %s', err.message);
+      return false;
+    }
+  }
+
+  var checked = getCheckedRadio(radioSet, node.form);
+  return !checked || checked === node;
+};
+
+var isRadio = function isRadio(node) {
+  return isInput(node) && node.type === 'radio';
+};
+
+var isNonTabbableRadio = function isNonTabbableRadio(node) {
+  return isRadio(node) && !isTabbableRadio(node);
+};
+
+var isHidden = function isHidden(node, displayCheck) {
+  if (getComputedStyle(node).visibility === 'hidden') {
+    return true;
+  }
+
+  var isDirectSummary = matches.call(node, 'details>summary:first-of-type');
+  var nodeUnderDetails = isDirectSummary ? node.parentElement : node;
+
+  if (matches.call(nodeUnderDetails, 'details:not([open]) *')) {
+    return true;
+  }
+
+  if (!displayCheck || displayCheck === 'full') {
+    while (node) {
+      if (getComputedStyle(node).display === 'none') {
+        return true;
+      }
+
+      node = node.parentElement;
+    }
+  } else if (displayCheck === 'non-zero-area') {
+    var _node$getBoundingClie = node.getBoundingClientRect(),
+        width = _node$getBoundingClie.width,
+        height = _node$getBoundingClie.height;
+
+    return width === 0 && height === 0;
+  }
+
+  return false;
+}; // form fields (nested) inside a disabled fieldset are not focusable/tabbable
+//  unless they are in the _first_ <legend> element of the top-most disabled
+//  fieldset
+
+
+var isDisabledFromFieldset = function isDisabledFromFieldset(node) {
+  if (isInput(node) || node.tagName === 'SELECT' || node.tagName === 'TEXTAREA' || node.tagName === 'BUTTON') {
+    var parentNode = node.parentElement;
+
+    while (parentNode) {
+      if (parentNode.tagName === 'FIELDSET' && parentNode.disabled) {
+        // look for the first <legend> as an immediate child of the disabled
+        //  <fieldset>: if the node is in that legend, it'll be enabled even
+        //  though the fieldset is disabled; otherwise, the node is in a
+        //  secondary/subsequent legend, or somewhere else within the fieldset
+        //  (however deep nested) and it'll be disabled
+        for (var i = 0; i < parentNode.children.length; i++) {
+          var child = parentNode.children.item(i);
+
+          if (child.tagName === 'LEGEND') {
+            if (child.contains(node)) {
+              return false;
+            } // the node isn't in the first legend (in doc order), so no matter
+            //  where it is now, it'll be disabled
+
+
+            return true;
+          }
+        } // the node isn't in a legend, so no matter where it is now, it'll be disabled
+
+
+        return true;
+      }
+
+      parentNode = parentNode.parentElement;
+    }
+  } // else, node's tabbable/focusable state should not be affected by a fieldset's
+  //  enabled/disabled state
+
+
+  return false;
+};
+
+var isNodeMatchingSelectorFocusable = function isNodeMatchingSelectorFocusable(options, node) {
+  if (node.disabled || isHiddenInput(node) || isHidden(node, options.displayCheck) || // For a details element with a summary, the summary element gets the focus
+  isDetailsWithSummary(node) || isDisabledFromFieldset(node)) {
+    return false;
+  }
+
+  return true;
+};
+
+var isNodeMatchingSelectorTabbable = function isNodeMatchingSelectorTabbable(options, node) {
+  if (!isNodeMatchingSelectorFocusable(options, node) || isNonTabbableRadio(node) || getTabindex(node) < 0) {
+    return false;
+  }
+
+  return true;
+};
+
+var tabbable = function tabbable(el, options) {
+  options = options || {};
+  var regularTabbables = [];
+  var orderedTabbables = [];
+  var candidates = getCandidates(el, options.includeContainer, isNodeMatchingSelectorTabbable.bind(null, options));
+  candidates.forEach(function (candidate, i) {
+    var candidateTabindex = getTabindex(candidate);
+
+    if (candidateTabindex === 0) {
+      regularTabbables.push(candidate);
+    } else {
+      orderedTabbables.push({
+        documentOrder: i,
+        tabIndex: candidateTabindex,
+        node: candidate
+      });
+    }
+  });
+  var tabbableNodes = orderedTabbables.sort(sortOrderedTabbables).map(function (a) {
+    return a.node;
+  }).concat(regularTabbables);
+  return tabbableNodes;
+};
+
+var focusable = function focusable(el, options) {
+  options = options || {};
+  var candidates = getCandidates(el, options.includeContainer, isNodeMatchingSelectorFocusable.bind(null, options));
+  return candidates;
+};
+
+var isTabbable = function isTabbable(node, options) {
+  options = options || {};
+
+  if (!node) {
+    throw new Error('No node provided');
+  }
+
+  if (matches.call(node, candidateSelector) === false) {
+    return false;
+  }
+
+  return isNodeMatchingSelectorTabbable(options, node);
+};
+
+var focusableCandidateSelector = /* #__PURE__ */candidateSelectors.concat('iframe').join(',');
+
+var isFocusable = function isFocusable(node, options) {
+  options = options || {};
+
+  if (!node) {
+    throw new Error('No node provided');
+  }
+
+  if (matches.call(node, focusableCandidateSelector) === false) {
+    return false;
+  }
+
+  return isNodeMatchingSelectorFocusable(options, node);
+};
+
+
+//# sourceMappingURL=index.esm.js.map
 
 
 /***/ }),
@@ -17005,848 +18136,6 @@ exports["default"] = Formats;
 
 /***/ }),
 
-/***/ "./node_modules/wicg-inert/dist/inert.esm.js":
-/*!***************************************************!*\
-  !*** ./node_modules/wicg-inert/dist/inert.esm.js ***!
-  \***************************************************/
-/***/ (() => {
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * This work is licensed under the W3C Software and Document License
- * (http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document).
- */
-
-(function () {
-  // Return early if we're not running inside of the browser.
-  if (typeof window === 'undefined') {
-    return;
-  }
-
-  // Convenience function for converting NodeLists.
-  /** @type {typeof Array.prototype.slice} */
-  var slice = Array.prototype.slice;
-
-  /**
-   * IE has a non-standard name for "matches".
-   * @type {typeof Element.prototype.matches}
-   */
-  var matches = Element.prototype.matches || Element.prototype.msMatchesSelector;
-
-  /** @type {string} */
-  var _focusableElementsString = ['a[href]', 'area[href]', 'input:not([disabled])', 'select:not([disabled])', 'textarea:not([disabled])', 'button:not([disabled])', 'details', 'summary', 'iframe', 'object', 'embed', '[contenteditable]'].join(',');
-
-  /**
-   * `InertRoot` manages a single inert subtree, i.e. a DOM subtree whose root element has an `inert`
-   * attribute.
-   *
-   * Its main functions are:
-   *
-   * - to create and maintain a set of managed `InertNode`s, including when mutations occur in the
-   *   subtree. The `makeSubtreeUnfocusable()` method handles collecting `InertNode`s via registering
-   *   each focusable node in the subtree with the singleton `InertManager` which manages all known
-   *   focusable nodes within inert subtrees. `InertManager` ensures that a single `InertNode`
-   *   instance exists for each focusable node which has at least one inert root as an ancestor.
-   *
-   * - to notify all managed `InertNode`s when this subtree stops being inert (i.e. when the `inert`
-   *   attribute is removed from the root node). This is handled in the destructor, which calls the
-   *   `deregister` method on `InertManager` for each managed inert node.
-   */
-
-  var InertRoot = function () {
-    /**
-     * @param {!Element} rootElement The Element at the root of the inert subtree.
-     * @param {!InertManager} inertManager The global singleton InertManager object.
-     */
-    function InertRoot(rootElement, inertManager) {
-      _classCallCheck(this, InertRoot);
-
-      /** @type {!InertManager} */
-      this._inertManager = inertManager;
-
-      /** @type {!Element} */
-      this._rootElement = rootElement;
-
-      /**
-       * @type {!Set<!InertNode>}
-       * All managed focusable nodes in this InertRoot's subtree.
-       */
-      this._managedNodes = new Set();
-
-      // Make the subtree hidden from assistive technology
-      if (this._rootElement.hasAttribute('aria-hidden')) {
-        /** @type {?string} */
-        this._savedAriaHidden = this._rootElement.getAttribute('aria-hidden');
-      } else {
-        this._savedAriaHidden = null;
-      }
-      this._rootElement.setAttribute('aria-hidden', 'true');
-
-      // Make all focusable elements in the subtree unfocusable and add them to _managedNodes
-      this._makeSubtreeUnfocusable(this._rootElement);
-
-      // Watch for:
-      // - any additions in the subtree: make them unfocusable too
-      // - any removals from the subtree: remove them from this inert root's managed nodes
-      // - attribute changes: if `tabindex` is added, or removed from an intrinsically focusable
-      //   element, make that node a managed node.
-      this._observer = new MutationObserver(this._onMutation.bind(this));
-      this._observer.observe(this._rootElement, { attributes: true, childList: true, subtree: true });
-    }
-
-    /**
-     * Call this whenever this object is about to become obsolete.  This unwinds all of the state
-     * stored in this object and updates the state of all of the managed nodes.
-     */
-
-
-    _createClass(InertRoot, [{
-      key: 'destructor',
-      value: function destructor() {
-        this._observer.disconnect();
-
-        if (this._rootElement) {
-          if (this._savedAriaHidden !== null) {
-            this._rootElement.setAttribute('aria-hidden', this._savedAriaHidden);
-          } else {
-            this._rootElement.removeAttribute('aria-hidden');
-          }
-        }
-
-        this._managedNodes.forEach(function (inertNode) {
-          this._unmanageNode(inertNode.node);
-        }, this);
-
-        // Note we cast the nulls to the ANY type here because:
-        // 1) We want the class properties to be declared as non-null, or else we
-        //    need even more casts throughout this code. All bets are off if an
-        //    instance has been destroyed and a method is called.
-        // 2) We don't want to cast "this", because we want type-aware optimizations
-        //    to know which properties we're setting.
-        this._observer = /** @type {?} */null;
-        this._rootElement = /** @type {?} */null;
-        this._managedNodes = /** @type {?} */null;
-        this._inertManager = /** @type {?} */null;
-      }
-
-      /**
-       * @return {!Set<!InertNode>} A copy of this InertRoot's managed nodes set.
-       */
-
-    }, {
-      key: '_makeSubtreeUnfocusable',
-
-
-      /**
-       * @param {!Node} startNode
-       */
-      value: function _makeSubtreeUnfocusable(startNode) {
-        var _this2 = this;
-
-        composedTreeWalk(startNode, function (node) {
-          return _this2._visitNode(node);
-        });
-
-        var activeElement = document.activeElement;
-
-        if (!document.body.contains(startNode)) {
-          // startNode may be in shadow DOM, so find its nearest shadowRoot to get the activeElement.
-          var node = startNode;
-          /** @type {!ShadowRoot|undefined} */
-          var root = undefined;
-          while (node) {
-            if (node.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
-              root = /** @type {!ShadowRoot} */node;
-              break;
-            }
-            node = node.parentNode;
-          }
-          if (root) {
-            activeElement = root.activeElement;
-          }
-        }
-        if (startNode.contains(activeElement)) {
-          activeElement.blur();
-          // In IE11, if an element is already focused, and then set to tabindex=-1
-          // calling blur() will not actually move the focus.
-          // To work around this we call focus() on the body instead.
-          if (activeElement === document.activeElement) {
-            document.body.focus();
-          }
-        }
-      }
-
-      /**
-       * @param {!Node} node
-       */
-
-    }, {
-      key: '_visitNode',
-      value: function _visitNode(node) {
-        if (node.nodeType !== Node.ELEMENT_NODE) {
-          return;
-        }
-        var element = /** @type {!Element} */node;
-
-        // If a descendant inert root becomes un-inert, its descendants will still be inert because of
-        // this inert root, so all of its managed nodes need to be adopted by this InertRoot.
-        if (element !== this._rootElement && element.hasAttribute('inert')) {
-          this._adoptInertRoot(element);
-        }
-
-        if (matches.call(element, _focusableElementsString) || element.hasAttribute('tabindex')) {
-          this._manageNode(element);
-        }
-      }
-
-      /**
-       * Register the given node with this InertRoot and with InertManager.
-       * @param {!Node} node
-       */
-
-    }, {
-      key: '_manageNode',
-      value: function _manageNode(node) {
-        var inertNode = this._inertManager.register(node, this);
-        this._managedNodes.add(inertNode);
-      }
-
-      /**
-       * Unregister the given node with this InertRoot and with InertManager.
-       * @param {!Node} node
-       */
-
-    }, {
-      key: '_unmanageNode',
-      value: function _unmanageNode(node) {
-        var inertNode = this._inertManager.deregister(node, this);
-        if (inertNode) {
-          this._managedNodes['delete'](inertNode);
-        }
-      }
-
-      /**
-       * Unregister the entire subtree starting at `startNode`.
-       * @param {!Node} startNode
-       */
-
-    }, {
-      key: '_unmanageSubtree',
-      value: function _unmanageSubtree(startNode) {
-        var _this3 = this;
-
-        composedTreeWalk(startNode, function (node) {
-          return _this3._unmanageNode(node);
-        });
-      }
-
-      /**
-       * If a descendant node is found with an `inert` attribute, adopt its managed nodes.
-       * @param {!Element} node
-       */
-
-    }, {
-      key: '_adoptInertRoot',
-      value: function _adoptInertRoot(node) {
-        var inertSubroot = this._inertManager.getInertRoot(node);
-
-        // During initialisation this inert root may not have been registered yet,
-        // so register it now if need be.
-        if (!inertSubroot) {
-          this._inertManager.setInert(node, true);
-          inertSubroot = this._inertManager.getInertRoot(node);
-        }
-
-        inertSubroot.managedNodes.forEach(function (savedInertNode) {
-          this._manageNode(savedInertNode.node);
-        }, this);
-      }
-
-      /**
-       * Callback used when mutation observer detects subtree additions, removals, or attribute changes.
-       * @param {!Array<!MutationRecord>} records
-       * @param {!MutationObserver} self
-       */
-
-    }, {
-      key: '_onMutation',
-      value: function _onMutation(records, self) {
-        records.forEach(function (record) {
-          var target = /** @type {!Element} */record.target;
-          if (record.type === 'childList') {
-            // Manage added nodes
-            slice.call(record.addedNodes).forEach(function (node) {
-              this._makeSubtreeUnfocusable(node);
-            }, this);
-
-            // Un-manage removed nodes
-            slice.call(record.removedNodes).forEach(function (node) {
-              this._unmanageSubtree(node);
-            }, this);
-          } else if (record.type === 'attributes') {
-            if (record.attributeName === 'tabindex') {
-              // Re-initialise inert node if tabindex changes
-              this._manageNode(target);
-            } else if (target !== this._rootElement && record.attributeName === 'inert' && target.hasAttribute('inert')) {
-              // If a new inert root is added, adopt its managed nodes and make sure it knows about the
-              // already managed nodes from this inert subroot.
-              this._adoptInertRoot(target);
-              var inertSubroot = this._inertManager.getInertRoot(target);
-              this._managedNodes.forEach(function (managedNode) {
-                if (target.contains(managedNode.node)) {
-                  inertSubroot._manageNode(managedNode.node);
-                }
-              });
-            }
-          }
-        }, this);
-      }
-    }, {
-      key: 'managedNodes',
-      get: function get() {
-        return new Set(this._managedNodes);
-      }
-
-      /** @return {boolean} */
-
-    }, {
-      key: 'hasSavedAriaHidden',
-      get: function get() {
-        return this._savedAriaHidden !== null;
-      }
-
-      /** @param {?string} ariaHidden */
-
-    }, {
-      key: 'savedAriaHidden',
-      set: function set(ariaHidden) {
-        this._savedAriaHidden = ariaHidden;
-      }
-
-      /** @return {?string} */
-      ,
-      get: function get() {
-        return this._savedAriaHidden;
-      }
-    }]);
-
-    return InertRoot;
-  }();
-
-  /**
-   * `InertNode` initialises and manages a single inert node.
-   * A node is inert if it is a descendant of one or more inert root elements.
-   *
-   * On construction, `InertNode` saves the existing `tabindex` value for the node, if any, and
-   * either removes the `tabindex` attribute or sets it to `-1`, depending on whether the element
-   * is intrinsically focusable or not.
-   *
-   * `InertNode` maintains a set of `InertRoot`s which are descendants of this `InertNode`. When an
-   * `InertRoot` is destroyed, and calls `InertManager.deregister()`, the `InertManager` notifies the
-   * `InertNode` via `removeInertRoot()`, which in turn destroys the `InertNode` if no `InertRoot`s
-   * remain in the set. On destruction, `InertNode` reinstates the stored `tabindex` if one exists,
-   * or removes the `tabindex` attribute if the element is intrinsically focusable.
-   */
-
-
-  var InertNode = function () {
-    /**
-     * @param {!Node} node A focusable element to be made inert.
-     * @param {!InertRoot} inertRoot The inert root element associated with this inert node.
-     */
-    function InertNode(node, inertRoot) {
-      _classCallCheck(this, InertNode);
-
-      /** @type {!Node} */
-      this._node = node;
-
-      /** @type {boolean} */
-      this._overrodeFocusMethod = false;
-
-      /**
-       * @type {!Set<!InertRoot>} The set of descendant inert roots.
-       *    If and only if this set becomes empty, this node is no longer inert.
-       */
-      this._inertRoots = new Set([inertRoot]);
-
-      /** @type {?number} */
-      this._savedTabIndex = null;
-
-      /** @type {boolean} */
-      this._destroyed = false;
-
-      // Save any prior tabindex info and make this node untabbable
-      this.ensureUntabbable();
-    }
-
-    /**
-     * Call this whenever this object is about to become obsolete.
-     * This makes the managed node focusable again and deletes all of the previously stored state.
-     */
-
-
-    _createClass(InertNode, [{
-      key: 'destructor',
-      value: function destructor() {
-        this._throwIfDestroyed();
-
-        if (this._node && this._node.nodeType === Node.ELEMENT_NODE) {
-          var element = /** @type {!Element} */this._node;
-          if (this._savedTabIndex !== null) {
-            element.setAttribute('tabindex', this._savedTabIndex);
-          } else {
-            element.removeAttribute('tabindex');
-          }
-
-          // Use `delete` to restore native focus method.
-          if (this._overrodeFocusMethod) {
-            delete element.focus;
-          }
-        }
-
-        // See note in InertRoot.destructor for why we cast these nulls to ANY.
-        this._node = /** @type {?} */null;
-        this._inertRoots = /** @type {?} */null;
-        this._destroyed = true;
-      }
-
-      /**
-       * @type {boolean} Whether this object is obsolete because the managed node is no longer inert.
-       * If the object has been destroyed, any attempt to access it will cause an exception.
-       */
-
-    }, {
-      key: '_throwIfDestroyed',
-
-
-      /**
-       * Throw if user tries to access destroyed InertNode.
-       */
-      value: function _throwIfDestroyed() {
-        if (this.destroyed) {
-          throw new Error('Trying to access destroyed InertNode');
-        }
-      }
-
-      /** @return {boolean} */
-
-    }, {
-      key: 'ensureUntabbable',
-
-
-      /** Save the existing tabindex value and make the node untabbable and unfocusable */
-      value: function ensureUntabbable() {
-        if (this.node.nodeType !== Node.ELEMENT_NODE) {
-          return;
-        }
-        var element = /** @type {!Element} */this.node;
-        if (matches.call(element, _focusableElementsString)) {
-          if ( /** @type {!HTMLElement} */element.tabIndex === -1 && this.hasSavedTabIndex) {
-            return;
-          }
-
-          if (element.hasAttribute('tabindex')) {
-            this._savedTabIndex = /** @type {!HTMLElement} */element.tabIndex;
-          }
-          element.setAttribute('tabindex', '-1');
-          if (element.nodeType === Node.ELEMENT_NODE) {
-            element.focus = function () {};
-            this._overrodeFocusMethod = true;
-          }
-        } else if (element.hasAttribute('tabindex')) {
-          this._savedTabIndex = /** @type {!HTMLElement} */element.tabIndex;
-          element.removeAttribute('tabindex');
-        }
-      }
-
-      /**
-       * Add another inert root to this inert node's set of managing inert roots.
-       * @param {!InertRoot} inertRoot
-       */
-
-    }, {
-      key: 'addInertRoot',
-      value: function addInertRoot(inertRoot) {
-        this._throwIfDestroyed();
-        this._inertRoots.add(inertRoot);
-      }
-
-      /**
-       * Remove the given inert root from this inert node's set of managing inert roots.
-       * If the set of managing inert roots becomes empty, this node is no longer inert,
-       * so the object should be destroyed.
-       * @param {!InertRoot} inertRoot
-       */
-
-    }, {
-      key: 'removeInertRoot',
-      value: function removeInertRoot(inertRoot) {
-        this._throwIfDestroyed();
-        this._inertRoots['delete'](inertRoot);
-        if (this._inertRoots.size === 0) {
-          this.destructor();
-        }
-      }
-    }, {
-      key: 'destroyed',
-      get: function get() {
-        return (/** @type {!InertNode} */this._destroyed
-        );
-      }
-    }, {
-      key: 'hasSavedTabIndex',
-      get: function get() {
-        return this._savedTabIndex !== null;
-      }
-
-      /** @return {!Node} */
-
-    }, {
-      key: 'node',
-      get: function get() {
-        this._throwIfDestroyed();
-        return this._node;
-      }
-
-      /** @param {?number} tabIndex */
-
-    }, {
-      key: 'savedTabIndex',
-      set: function set(tabIndex) {
-        this._throwIfDestroyed();
-        this._savedTabIndex = tabIndex;
-      }
-
-      /** @return {?number} */
-      ,
-      get: function get() {
-        this._throwIfDestroyed();
-        return this._savedTabIndex;
-      }
-    }]);
-
-    return InertNode;
-  }();
-
-  /**
-   * InertManager is a per-document singleton object which manages all inert roots and nodes.
-   *
-   * When an element becomes an inert root by having an `inert` attribute set and/or its `inert`
-   * property set to `true`, the `setInert` method creates an `InertRoot` object for the element.
-   * The `InertRoot` in turn registers itself as managing all of the element's focusable descendant
-   * nodes via the `register()` method. The `InertManager` ensures that a single `InertNode` instance
-   * is created for each such node, via the `_managedNodes` map.
-   */
-
-
-  var InertManager = function () {
-    /**
-     * @param {!Document} document
-     */
-    function InertManager(document) {
-      _classCallCheck(this, InertManager);
-
-      if (!document) {
-        throw new Error('Missing required argument; InertManager needs to wrap a document.');
-      }
-
-      /** @type {!Document} */
-      this._document = document;
-
-      /**
-       * All managed nodes known to this InertManager. In a map to allow looking up by Node.
-       * @type {!Map<!Node, !InertNode>}
-       */
-      this._managedNodes = new Map();
-
-      /**
-       * All inert roots known to this InertManager. In a map to allow looking up by Node.
-       * @type {!Map<!Node, !InertRoot>}
-       */
-      this._inertRoots = new Map();
-
-      /**
-       * Observer for mutations on `document.body`.
-       * @type {!MutationObserver}
-       */
-      this._observer = new MutationObserver(this._watchForInert.bind(this));
-
-      // Add inert style.
-      addInertStyle(document.head || document.body || document.documentElement);
-
-      // Wait for document to be loaded.
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', this._onDocumentLoaded.bind(this));
-      } else {
-        this._onDocumentLoaded();
-      }
-    }
-
-    /**
-     * Set whether the given element should be an inert root or not.
-     * @param {!Element} root
-     * @param {boolean} inert
-     */
-
-
-    _createClass(InertManager, [{
-      key: 'setInert',
-      value: function setInert(root, inert) {
-        if (inert) {
-          if (this._inertRoots.has(root)) {
-            // element is already inert
-            return;
-          }
-
-          var inertRoot = new InertRoot(root, this);
-          root.setAttribute('inert', '');
-          this._inertRoots.set(root, inertRoot);
-          // If not contained in the document, it must be in a shadowRoot.
-          // Ensure inert styles are added there.
-          if (!this._document.body.contains(root)) {
-            var parent = root.parentNode;
-            while (parent) {
-              if (parent.nodeType === 11) {
-                addInertStyle(parent);
-              }
-              parent = parent.parentNode;
-            }
-          }
-        } else {
-          if (!this._inertRoots.has(root)) {
-            // element is already non-inert
-            return;
-          }
-
-          var _inertRoot = this._inertRoots.get(root);
-          _inertRoot.destructor();
-          this._inertRoots['delete'](root);
-          root.removeAttribute('inert');
-        }
-      }
-
-      /**
-       * Get the InertRoot object corresponding to the given inert root element, if any.
-       * @param {!Node} element
-       * @return {!InertRoot|undefined}
-       */
-
-    }, {
-      key: 'getInertRoot',
-      value: function getInertRoot(element) {
-        return this._inertRoots.get(element);
-      }
-
-      /**
-       * Register the given InertRoot as managing the given node.
-       * In the case where the node has a previously existing inert root, this inert root will
-       * be added to its set of inert roots.
-       * @param {!Node} node
-       * @param {!InertRoot} inertRoot
-       * @return {!InertNode} inertNode
-       */
-
-    }, {
-      key: 'register',
-      value: function register(node, inertRoot) {
-        var inertNode = this._managedNodes.get(node);
-        if (inertNode !== undefined) {
-          // node was already in an inert subtree
-          inertNode.addInertRoot(inertRoot);
-        } else {
-          inertNode = new InertNode(node, inertRoot);
-        }
-
-        this._managedNodes.set(node, inertNode);
-
-        return inertNode;
-      }
-
-      /**
-       * De-register the given InertRoot as managing the given inert node.
-       * Removes the inert root from the InertNode's set of managing inert roots, and remove the inert
-       * node from the InertManager's set of managed nodes if it is destroyed.
-       * If the node is not currently managed, this is essentially a no-op.
-       * @param {!Node} node
-       * @param {!InertRoot} inertRoot
-       * @return {?InertNode} The potentially destroyed InertNode associated with this node, if any.
-       */
-
-    }, {
-      key: 'deregister',
-      value: function deregister(node, inertRoot) {
-        var inertNode = this._managedNodes.get(node);
-        if (!inertNode) {
-          return null;
-        }
-
-        inertNode.removeInertRoot(inertRoot);
-        if (inertNode.destroyed) {
-          this._managedNodes['delete'](node);
-        }
-
-        return inertNode;
-      }
-
-      /**
-       * Callback used when document has finished loading.
-       */
-
-    }, {
-      key: '_onDocumentLoaded',
-      value: function _onDocumentLoaded() {
-        // Find all inert roots in document and make them actually inert.
-        var inertElements = slice.call(this._document.querySelectorAll('[inert]'));
-        inertElements.forEach(function (inertElement) {
-          this.setInert(inertElement, true);
-        }, this);
-
-        // Comment this out to use programmatic API only.
-        this._observer.observe(this._document.body || this._document.documentElement, { attributes: true, subtree: true, childList: true });
-      }
-
-      /**
-       * Callback used when mutation observer detects attribute changes.
-       * @param {!Array<!MutationRecord>} records
-       * @param {!MutationObserver} self
-       */
-
-    }, {
-      key: '_watchForInert',
-      value: function _watchForInert(records, self) {
-        var _this = this;
-        records.forEach(function (record) {
-          switch (record.type) {
-            case 'childList':
-              slice.call(record.addedNodes).forEach(function (node) {
-                if (node.nodeType !== Node.ELEMENT_NODE) {
-                  return;
-                }
-                var inertElements = slice.call(node.querySelectorAll('[inert]'));
-                if (matches.call(node, '[inert]')) {
-                  inertElements.unshift(node);
-                }
-                inertElements.forEach(function (inertElement) {
-                  this.setInert(inertElement, true);
-                }, _this);
-              }, _this);
-              break;
-            case 'attributes':
-              if (record.attributeName !== 'inert') {
-                return;
-              }
-              var target = /** @type {!Element} */record.target;
-              var inert = target.hasAttribute('inert');
-              _this.setInert(target, inert);
-              break;
-          }
-        }, this);
-      }
-    }]);
-
-    return InertManager;
-  }();
-
-  /**
-   * Recursively walk the composed tree from |node|.
-   * @param {!Node} node
-   * @param {(function (!Element))=} callback Callback to be called for each element traversed,
-   *     before descending into child nodes.
-   * @param {?ShadowRoot=} shadowRootAncestor The nearest ShadowRoot ancestor, if any.
-   */
-
-
-  function composedTreeWalk(node, callback, shadowRootAncestor) {
-    if (node.nodeType == Node.ELEMENT_NODE) {
-      var element = /** @type {!Element} */node;
-      if (callback) {
-        callback(element);
-      }
-
-      // Descend into node:
-      // If it has a ShadowRoot, ignore all child elements - these will be picked
-      // up by the <content> or <shadow> elements. Descend straight into the
-      // ShadowRoot.
-      var shadowRoot = /** @type {!HTMLElement} */element.shadowRoot;
-      if (shadowRoot) {
-        composedTreeWalk(shadowRoot, callback, shadowRoot);
-        return;
-      }
-
-      // If it is a <content> element, descend into distributed elements - these
-      // are elements from outside the shadow root which are rendered inside the
-      // shadow DOM.
-      if (element.localName == 'content') {
-        var content = /** @type {!HTMLContentElement} */element;
-        // Verifies if ShadowDom v0 is supported.
-        var distributedNodes = content.getDistributedNodes ? content.getDistributedNodes() : [];
-        for (var i = 0; i < distributedNodes.length; i++) {
-          composedTreeWalk(distributedNodes[i], callback, shadowRootAncestor);
-        }
-        return;
-      }
-
-      // If it is a <slot> element, descend into assigned nodes - these
-      // are elements from outside the shadow root which are rendered inside the
-      // shadow DOM.
-      if (element.localName == 'slot') {
-        var slot = /** @type {!HTMLSlotElement} */element;
-        // Verify if ShadowDom v1 is supported.
-        var _distributedNodes = slot.assignedNodes ? slot.assignedNodes({ flatten: true }) : [];
-        for (var _i = 0; _i < _distributedNodes.length; _i++) {
-          composedTreeWalk(_distributedNodes[_i], callback, shadowRootAncestor);
-        }
-        return;
-      }
-    }
-
-    // If it is neither the parent of a ShadowRoot, a <content> element, a <slot>
-    // element, nor a <shadow> element recurse normally.
-    var child = node.firstChild;
-    while (child != null) {
-      composedTreeWalk(child, callback, shadowRootAncestor);
-      child = child.nextSibling;
-    }
-  }
-
-  /**
-   * Adds a style element to the node containing the inert specific styles
-   * @param {!Node} node
-   */
-  function addInertStyle(node) {
-    if (node.querySelector('style#inert-style, link#inert-style')) {
-      return;
-    }
-    var style = document.createElement('style');
-    style.setAttribute('id', 'inert-style');
-    style.textContent = '\n' + '[inert] {\n' + '  pointer-events: none;\n' + '  cursor: default;\n' + '}\n' + '\n' + '[inert], [inert] * {\n' + '  -webkit-user-select: none;\n' + '  -moz-user-select: none;\n' + '  -ms-user-select: none;\n' + '  user-select: none;\n' + '}\n';
-    node.appendChild(style);
-  }
-
-  if (!Element.prototype.hasOwnProperty('inert')) {
-    /** @type {!InertManager} */
-    var inertManager = new InertManager(document);
-
-    Object.defineProperty(Element.prototype, 'inert', {
-      enumerable: true,
-      /** @this {!Element} */
-      get: function get() {
-        return this.hasAttribute('inert');
-      },
-      /** @this {!Element} */
-      set: function set(inert) {
-        inertManager.setInert(this, inert);
-      }
-    });
-  }
-})();
-
-
-/***/ }),
-
 /***/ "./resources/js/controllers sync recursive \\.ts$":
 /*!**********************************************!*\
   !*** ./resources/js/controllers/ sync \.ts$ ***!
@@ -17854,29 +18143,28 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var map = {
-	"./alerts-append.ts": "./resources/js/controllers/alerts-append.ts",
-	"./alerts.ts": "./resources/js/controllers/alerts.ts",
-	"./channel-picker.ts": "./resources/js/controllers/channel-picker.ts",
-	"./comment-replies.ts": "./resources/js/controllers/comment-replies.ts",
-	"./comment.ts": "./resources/js/controllers/comment.ts",
-	"./composer.ts": "./resources/js/controllers/composer.ts",
-	"./copy-link.ts": "./resources/js/controllers/copy-link.ts",
-	"./feed.ts": "./resources/js/controllers/feed.ts",
-	"./header.ts": "./resources/js/controllers/header.ts",
-	"./load-backwards.ts": "./resources/js/controllers/load-backwards.ts",
-	"./login.ts": "./resources/js/controllers/login.ts",
-	"./modal.ts": "./resources/js/controllers/modal.ts",
-	"./notifications-popup.ts": "./resources/js/controllers/notifications-popup.ts",
-	"./page.ts": "./resources/js/controllers/page.ts",
-	"./post-page.ts": "./resources/js/controllers/post-page.ts",
-	"./post.ts": "./resources/js/controllers/post.ts",
-	"./quotable.ts": "./resources/js/controllers/quotable.ts",
-	"./reveal.ts": "./resources/js/controllers/reveal.ts",
-	"./scrollspy.ts": "./resources/js/controllers/scrollspy.ts",
-	"./text-editor.ts": "./resources/js/controllers/text-editor.ts",
-	"./theme.ts": "./resources/js/controllers/theme.ts",
-	"./turbo-frame.ts": "./resources/js/controllers/turbo-frame.ts",
-	"./watch-sticky.ts": "./resources/js/controllers/watch-sticky.ts"
+	"./alerts-append-controller.ts": "./resources/js/controllers/alerts-append-controller.ts",
+	"./alerts-controller.ts": "./resources/js/controllers/alerts-controller.ts",
+	"./comment-controller.ts": "./resources/js/controllers/comment-controller.ts",
+	"./comment-replies-controller.ts": "./resources/js/controllers/comment-replies-controller.ts",
+	"./composer-controller.ts": "./resources/js/controllers/composer-controller.ts",
+	"./copy-link-controller.ts": "./resources/js/controllers/copy-link-controller.ts",
+	"./feed-controller.ts": "./resources/js/controllers/feed-controller.ts",
+	"./header-controller.ts": "./resources/js/controllers/header-controller.ts",
+	"./load-backwards-controller.ts": "./resources/js/controllers/load-backwards-controller.ts",
+	"./login-controller.ts": "./resources/js/controllers/login-controller.ts",
+	"./modal-controller.ts": "./resources/js/controllers/modal-controller.ts",
+	"./notifications-popup-controller.ts": "./resources/js/controllers/notifications-popup-controller.ts",
+	"./page-controller.ts": "./resources/js/controllers/page-controller.ts",
+	"./post-controller.ts": "./resources/js/controllers/post-controller.ts",
+	"./post-page-controller.ts": "./resources/js/controllers/post-page-controller.ts",
+	"./quotable-controller.ts": "./resources/js/controllers/quotable-controller.ts",
+	"./reveal-controller.ts": "./resources/js/controllers/reveal-controller.ts",
+	"./scrollspy-controller.ts": "./resources/js/controllers/scrollspy-controller.ts",
+	"./text-editor-controller.ts": "./resources/js/controllers/text-editor-controller.ts",
+	"./theme-controller.ts": "./resources/js/controllers/theme-controller.ts",
+	"./turbo-frame-controller.ts": "./resources/js/controllers/turbo-frame-controller.ts",
+	"./watch-sticky-controller.ts": "./resources/js/controllers/watch-sticky-controller.ts"
 };
 
 
@@ -17898,6 +18186,1635 @@ webpackContext.keys = function webpackContextKeys() {
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
 webpackContext.id = "./resources/js/controllers sync recursive \\.ts$";
+
+/***/ }),
+
+/***/ "./node_modules/@floating-ui/core/dist/floating-ui.core.esm.development.js":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/@floating-ui/core/dist/floating-ui.core.esm.development.js ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "arrow": () => (/* binding */ arrow),
+/* harmony export */   "autoPlacement": () => (/* binding */ autoPlacement),
+/* harmony export */   "computePosition": () => (/* binding */ computePosition),
+/* harmony export */   "detectOverflow": () => (/* binding */ detectOverflow),
+/* harmony export */   "flip": () => (/* binding */ flip),
+/* harmony export */   "hide": () => (/* binding */ hide),
+/* harmony export */   "inline": () => (/* binding */ inline),
+/* harmony export */   "limitShift": () => (/* binding */ limitShift),
+/* harmony export */   "offset": () => (/* binding */ offset),
+/* harmony export */   "rectToClientRect": () => (/* binding */ rectToClientRect),
+/* harmony export */   "shift": () => (/* binding */ shift),
+/* harmony export */   "size": () => (/* binding */ size)
+/* harmony export */ });
+function getBasePlacement(placement) {
+  return placement.split('-')[0];
+}
+
+function getAlignment(placement) {
+  return placement.split('-')[1];
+}
+
+function getMainAxisFromPlacement(placement) {
+  return ['top', 'bottom'].includes(getBasePlacement(placement)) ? 'x' : 'y';
+}
+
+function getLengthFromAxis(axis) {
+  return axis === 'y' ? 'height' : 'width';
+}
+
+function computeCoordsFromPlacement(_ref) {
+  let {
+    reference,
+    floating,
+    placement
+  } = _ref;
+  const commonX = reference.x + reference.width / 2 - floating.width / 2;
+  const commonY = reference.y + reference.height / 2 - floating.height / 2;
+  let coords;
+
+  switch (getBasePlacement(placement)) {
+    case 'top':
+      coords = {
+        x: commonX,
+        y: reference.y - floating.height
+      };
+      break;
+
+    case 'bottom':
+      coords = {
+        x: commonX,
+        y: reference.y + reference.height
+      };
+      break;
+
+    case 'right':
+      coords = {
+        x: reference.x + reference.width,
+        y: commonY
+      };
+      break;
+
+    case 'left':
+      coords = {
+        x: reference.x - floating.width,
+        y: commonY
+      };
+      break;
+
+    default:
+      coords = {
+        x: reference.x,
+        y: reference.y
+      };
+  }
+
+  const mainAxis = getMainAxisFromPlacement(placement);
+  const length = getLengthFromAxis(mainAxis);
+
+  switch (getAlignment(placement)) {
+    case 'start':
+      coords[mainAxis] = coords[mainAxis] - (reference[length] / 2 - floating[length] / 2);
+      break;
+
+    case 'end':
+      coords[mainAxis] = coords[mainAxis] + (reference[length] / 2 - floating[length] / 2);
+      break;
+  }
+
+  return coords;
+}
+
+/**
+ * Computes the `x` and `y` coordinates that will place the floating element
+ * next to a reference element when it is given a certain positioning strategy.
+ *
+ * This export does not have any `platform` interface logic. You will need to
+ * write one for the platform you are using Floating UI with.
+ */
+
+const computePosition = async (reference, floating, config) => {
+  const {
+    placement = 'bottom',
+    strategy = 'absolute',
+    middleware = [],
+    platform
+  } = config;
+
+  {
+    if (platform == null) {
+      console.error(['Floating UI: `platform` property was not passed to config. If you', 'want to use Floating UI on the web, install @floating-ui/dom', 'instead of the /core package. Otherwise, you can create your own', '`platform`: https://floating-ui.com/docs/platform'].join(' '));
+    }
+
+    if (middleware.filter(_ref => {
+      let {
+        name
+      } = _ref;
+      return name === 'autoPlacement' || name === 'flip';
+    }).length > 1) {
+      throw new Error(['Floating UI: duplicate `flip` and/or `autoPlacement`', 'middleware detected. This will lead to an infinite loop. Ensure only', 'one of either has been passed to the `middleware` array.'].join(' '));
+    }
+  }
+
+  let rects = await platform.getElementRects({
+    reference,
+    floating,
+    strategy
+  });
+  let {
+    x,
+    y
+  } = computeCoordsFromPlacement({ ...rects,
+    placement
+  });
+  let statefulPlacement = placement;
+  let middlewareData = {};
+  let _debug_loop_count_ = 0;
+
+  for (let i = 0; i < middleware.length; i++) {
+    {
+      _debug_loop_count_++;
+
+      if (_debug_loop_count_ > 100) {
+        throw new Error(['Floating UI: The middleware lifecycle appears to be', 'running in an infinite loop. This is usually caused by a `reset`', 'continually being returned without a break condition.'].join(' '));
+      }
+    }
+
+    const {
+      name,
+      fn
+    } = middleware[i];
+    const {
+      x: nextX,
+      y: nextY,
+      data,
+      reset
+    } = await fn({
+      x,
+      y,
+      initialPlacement: placement,
+      placement: statefulPlacement,
+      strategy,
+      middlewareData,
+      rects,
+      platform,
+      elements: {
+        reference,
+        floating
+      }
+    });
+    x = nextX != null ? nextX : x;
+    y = nextY != null ? nextY : y;
+    middlewareData = { ...middlewareData,
+      [name]: data != null ? data : {}
+    };
+
+    if (reset) {
+      if (typeof reset === 'object') {
+        if (reset.placement) {
+          statefulPlacement = reset.placement;
+        }
+
+        if (reset.rects) {
+          rects = reset.rects === true ? await platform.getElementRects({
+            reference,
+            floating,
+            strategy
+          }) : reset.rects;
+        }
+
+        ({
+          x,
+          y
+        } = computeCoordsFromPlacement({ ...rects,
+          placement: statefulPlacement
+        }));
+      }
+
+      i = -1;
+      continue;
+    }
+  }
+
+  return {
+    x,
+    y,
+    placement: statefulPlacement,
+    strategy,
+    middlewareData
+  };
+};
+
+function expandPaddingObject(padding) {
+  return {
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    ...padding
+  };
+}
+
+function getSideObjectFromPadding(padding) {
+  return typeof padding !== 'number' ? expandPaddingObject(padding) : {
+    top: padding,
+    right: padding,
+    bottom: padding,
+    left: padding
+  };
+}
+
+function rectToClientRect(rect) {
+  return { ...rect,
+    top: rect.y,
+    left: rect.x,
+    right: rect.x + rect.width,
+    bottom: rect.y + rect.height
+  };
+}
+
+/**
+ * Resolves with an object of overflow side offsets that determine how much the
+ * element is overflowing a given clipping boundary.
+ * - positive = overflowing the boundary by that number of pixels
+ * - negative = how many pixels left before it will overflow
+ * - 0 = lies flush with the boundary
+ */
+async function detectOverflow(middlewareArguments, options) {
+  if (options === void 0) {
+    options = {};
+  }
+
+  const {
+    x,
+    y,
+    platform,
+    rects,
+    elements,
+    strategy
+  } = middlewareArguments;
+  const {
+    boundary = 'clippingParents',
+    rootBoundary = 'viewport',
+    elementContext = 'floating',
+    altBoundary = false,
+    padding = 0
+  } = options;
+  const paddingObject = getSideObjectFromPadding(padding);
+  const altContext = elementContext === 'floating' ? 'reference' : 'floating';
+  const element = elements[altBoundary ? altContext : elementContext];
+  const clippingClientRect = await platform.getClippingClientRect({
+    element: (await platform.isElement(element)) ? element : element.contextElement || (await platform.getDocumentElement({
+      element: elements.floating
+    })),
+    boundary,
+    rootBoundary
+  });
+  const elementClientRect = rectToClientRect(await platform.convertOffsetParentRelativeRectToViewportRelativeRect({
+    rect: elementContext === 'floating' ? { ...rects.floating,
+      x,
+      y
+    } : rects.reference,
+    offsetParent: await platform.getOffsetParent({
+      element: elements.floating
+    }),
+    strategy
+  })); // positive = overflowing the clipping rect
+  // 0 or negative = within the clipping rect
+
+  return {
+    top: clippingClientRect.top - elementClientRect.top + paddingObject.top,
+    bottom: elementClientRect.bottom - clippingClientRect.bottom + paddingObject.bottom,
+    left: clippingClientRect.left - elementClientRect.left + paddingObject.left,
+    right: elementClientRect.right - clippingClientRect.right + paddingObject.right
+  };
+}
+
+const min = Math.min;
+const max = Math.max;
+
+function within(min$1, value, max$1) {
+  return max(min$1, min(value, max$1));
+}
+
+/**
+ * Positions an inner element of the floating element such that it is centered
+ * to the reference element.
+ */
+const arrow = options => ({
+  name: 'arrow',
+  options,
+
+  async fn(middlewareArguments) {
+    // Since `element` is required, we don't Partial<> the type
+    const {
+      element,
+      padding = 0
+    } = options != null ? options : {};
+    const {
+      x,
+      y,
+      placement,
+      rects,
+      platform
+    } = middlewareArguments;
+
+    if (element == null) {
+      {
+        console.warn('Floating UI: No `element` was passed to the `arrow` middleware.');
+      }
+
+      return {};
+    }
+
+    const paddingObject = getSideObjectFromPadding(padding);
+    const coords = {
+      x,
+      y
+    };
+    const basePlacement = getBasePlacement(placement);
+    const axis = getMainAxisFromPlacement(basePlacement);
+    const length = getLengthFromAxis(axis);
+    const arrowDimensions = await platform.getDimensions({
+      element
+    });
+    const minProp = axis === 'y' ? 'top' : 'left';
+    const maxProp = axis === 'y' ? 'bottom' : 'right';
+    const endDiff = rects.reference[length] + rects.reference[axis] - coords[axis] - rects.floating[length];
+    const startDiff = coords[axis] - rects.reference[axis];
+    const arrowOffsetParent = await platform.getOffsetParent({
+      element
+    });
+    const clientSize = arrowOffsetParent ? axis === 'y' ? arrowOffsetParent.clientHeight || 0 : arrowOffsetParent.clientWidth || 0 : 0;
+    const centerToReference = endDiff / 2 - startDiff / 2; // Make sure the arrow doesn't overflow the floating element if the center
+    // point is outside of the floating element's bounds
+
+    const min = paddingObject[minProp];
+    const max = clientSize - arrowDimensions[length] - paddingObject[maxProp];
+    const center = clientSize / 2 - arrowDimensions[length] / 2 + centerToReference;
+    const offset = within(min, center, max);
+    return {
+      data: {
+        [axis]: offset,
+        centerOffset: center - offset
+      }
+    };
+  }
+
+});
+
+const hash$1 = {
+  left: 'right',
+  right: 'left',
+  bottom: 'top',
+  top: 'bottom'
+};
+function getOppositePlacement(placement) {
+  return placement.replace(/left|right|bottom|top/g, matched => hash$1[matched]);
+}
+
+function getAlignmentSides(placement, rects) {
+  const isStart = getAlignment(placement) === 'start';
+  const mainAxis = getMainAxisFromPlacement(placement);
+  const length = getLengthFromAxis(mainAxis);
+  let mainAlignmentSide = mainAxis === 'x' ? isStart ? 'right' : 'left' : isStart ? 'bottom' : 'top';
+
+  if (rects.reference[length] > rects.floating[length]) {
+    mainAlignmentSide = getOppositePlacement(mainAlignmentSide);
+  }
+
+  return {
+    main: mainAlignmentSide,
+    cross: getOppositePlacement(mainAlignmentSide)
+  };
+}
+
+const hash = {
+  start: 'end',
+  end: 'start'
+};
+function getOppositeAlignmentPlacement(placement) {
+  return placement.replace(/start|end/g, matched => hash[matched]);
+}
+
+const basePlacements = ['top', 'right', 'bottom', 'left'];
+const allPlacements = /*#__PURE__*/basePlacements.reduce((acc, basePlacement) => acc.concat(basePlacement, basePlacement + "-start", basePlacement + "-end"), []);
+
+function getPlacementList(alignment, autoAlignment, allowedPlacements) {
+  const allowedPlacementsSortedByAlignment = alignment ? [...allowedPlacements.filter(placement => getAlignment(placement) === alignment), ...allowedPlacements.filter(placement => getAlignment(placement) !== alignment)] : allowedPlacements.filter(placement => getBasePlacement(placement) === placement);
+  return allowedPlacementsSortedByAlignment.filter(placement => {
+    if (alignment) {
+      return getAlignment(placement) === alignment || (autoAlignment ? getOppositeAlignmentPlacement(placement) !== placement : false);
+    }
+
+    return true;
+  });
+}
+
+/**
+ * Automatically chooses the `placement` which has the most space available.
+ */
+const autoPlacement = function (options) {
+  if (options === void 0) {
+    options = {};
+  }
+
+  return {
+    name: 'autoPlacement',
+    options,
+
+    async fn(middlewareArguments) {
+      var _middlewareData$autoP, _middlewareData$autoP2, _middlewareData$autoP3, _middlewareData$autoP4, _middlewareData$autoP5, _placementsSortedByLe;
+
+      const {
+        x,
+        y,
+        rects,
+        middlewareData,
+        placement
+      } = middlewareArguments;
+      const {
+        alignment = null,
+        allowedPlacements = allPlacements,
+        autoAlignment = true,
+        ...detectOverflowOptions
+      } = options;
+
+      if ((_middlewareData$autoP = middlewareData.autoPlacement) != null && _middlewareData$autoP.skip) {
+        return {};
+      }
+
+      const placements = getPlacementList(alignment, autoAlignment, allowedPlacements);
+      const overflow = await detectOverflow(middlewareArguments, detectOverflowOptions);
+      const currentIndex = (_middlewareData$autoP2 = (_middlewareData$autoP3 = middlewareData.autoPlacement) == null ? void 0 : _middlewareData$autoP3.index) != null ? _middlewareData$autoP2 : 0;
+      const currentPlacement = placements[currentIndex];
+      const {
+        main,
+        cross
+      } = getAlignmentSides(currentPlacement, rects); // Make `computeCoords` start from the right place
+
+      if (placement !== currentPlacement) {
+        return {
+          x,
+          y,
+          reset: {
+            placement: placements[0]
+          }
+        };
+      }
+
+      const currentOverflows = [overflow[getBasePlacement(currentPlacement)], overflow[main], overflow[cross]];
+      const allOverflows = [...((_middlewareData$autoP4 = (_middlewareData$autoP5 = middlewareData.autoPlacement) == null ? void 0 : _middlewareData$autoP5.overflows) != null ? _middlewareData$autoP4 : []), {
+        placement: currentPlacement,
+        overflows: currentOverflows
+      }];
+      const nextPlacement = placements[currentIndex + 1]; // There are more placements to check
+
+      if (nextPlacement) {
+        return {
+          data: {
+            index: currentIndex + 1,
+            overflows: allOverflows
+          },
+          reset: {
+            placement: nextPlacement
+          }
+        };
+      }
+
+      const placementsSortedByLeastOverflow = allOverflows.slice().sort((a, b) => a.overflows[0] - b.overflows[0]);
+      const placementThatFitsOnAllSides = (_placementsSortedByLe = placementsSortedByLeastOverflow.find(_ref => {
+        let {
+          overflows
+        } = _ref;
+        return overflows.every(overflow => overflow <= 0);
+      })) == null ? void 0 : _placementsSortedByLe.placement;
+      return {
+        data: {
+          skip: true
+        },
+        reset: {
+          placement: placementThatFitsOnAllSides != null ? placementThatFitsOnAllSides : placementsSortedByLeastOverflow[0].placement
+        }
+      };
+    }
+
+  };
+};
+
+function getExpandedPlacements(placement) {
+  const oppositePlacement = getOppositePlacement(placement);
+  return [getOppositeAlignmentPlacement(placement), oppositePlacement, getOppositeAlignmentPlacement(oppositePlacement)];
+}
+
+/**
+ * Changes the placement of the floating element to one that will fit if the
+ * initially specified `placement` does not.
+ */
+const flip = function (options) {
+  if (options === void 0) {
+    options = {};
+  }
+
+  return {
+    name: 'flip',
+    options,
+
+    async fn(middlewareArguments) {
+      var _middlewareData$flip, _middlewareData$flip2;
+
+      const {
+        placement,
+        middlewareData,
+        rects,
+        initialPlacement
+      } = middlewareArguments;
+
+      if ((_middlewareData$flip = middlewareData.flip) != null && _middlewareData$flip.skip) {
+        return {};
+      }
+
+      const {
+        mainAxis: checkMainAxis = true,
+        crossAxis: checkCrossAxis = true,
+        fallbackPlacements: specifiedFallbackPlacements,
+        fallbackStrategy = 'bestFit',
+        flipAlignment = true,
+        ...detectOverflowOptions
+      } = options;
+      const basePlacement = getBasePlacement(placement);
+      const isBasePlacement = basePlacement === initialPlacement;
+      const fallbackPlacements = specifiedFallbackPlacements || (isBasePlacement || !flipAlignment ? [getOppositePlacement(initialPlacement)] : getExpandedPlacements(initialPlacement));
+      const placements = [initialPlacement, ...fallbackPlacements];
+      const overflow = await detectOverflow(middlewareArguments, detectOverflowOptions);
+      const overflows = [];
+      let overflowsData = ((_middlewareData$flip2 = middlewareData.flip) == null ? void 0 : _middlewareData$flip2.overflows) || [];
+
+      if (checkMainAxis) {
+        overflows.push(overflow[basePlacement]);
+      }
+
+      if (checkCrossAxis) {
+        const {
+          main,
+          cross
+        } = getAlignmentSides(placement, rects);
+        overflows.push(overflow[main], overflow[cross]);
+      }
+
+      overflowsData = [...overflowsData, {
+        placement,
+        overflows
+      }]; // One or more sides is overflowing
+
+      if (!overflows.every(side => side <= 0)) {
+        var _middlewareData$flip$, _middlewareData$flip3;
+
+        const nextIndex = ((_middlewareData$flip$ = (_middlewareData$flip3 = middlewareData.flip) == null ? void 0 : _middlewareData$flip3.index) != null ? _middlewareData$flip$ : 0) + 1;
+        const nextPlacement = placements[nextIndex];
+
+        if (nextPlacement) {
+          // Try next placement and re-run the lifecycle
+          return {
+            data: {
+              index: nextIndex,
+              overflows: overflowsData
+            },
+            reset: {
+              placement: nextPlacement
+            }
+          };
+        }
+
+        let resetPlacement = 'bottom';
+
+        switch (fallbackStrategy) {
+          case 'bestFit':
+            {
+              var _overflowsData$slice$;
+
+              const placement = (_overflowsData$slice$ = overflowsData.slice().sort((a, b) => a.overflows.filter(overflow => overflow > 0).reduce((acc, overflow) => acc + overflow, 0) - b.overflows.filter(overflow => overflow > 0).reduce((acc, overflow) => acc + overflow, 0))[0]) == null ? void 0 : _overflowsData$slice$.placement;
+
+              if (placement) {
+                resetPlacement = placement;
+              }
+
+              break;
+            }
+
+          case 'initialPlacement':
+            resetPlacement = initialPlacement;
+            break;
+        }
+
+        return {
+          data: {
+            skip: true
+          },
+          reset: {
+            placement: resetPlacement
+          }
+        };
+      }
+
+      return {};
+    }
+
+  };
+};
+
+function getSideOffsets(overflow, rect) {
+  return {
+    top: overflow.top - rect.height,
+    right: overflow.right - rect.width,
+    bottom: overflow.bottom - rect.height,
+    left: overflow.left - rect.width
+  };
+}
+
+function isAnySideFullyClipped(overflow) {
+  return basePlacements.some(side => overflow[side] >= 0);
+}
+/**
+ * Provides data to hide the floating element in applicable situations, such as
+ * when it is not in the same clipping context as the reference element.
+ */
+
+
+const hide = () => ({
+  name: 'hide',
+
+  async fn(modifierArguments) {
+    const referenceOverflow = await detectOverflow(modifierArguments, {
+      elementContext: 'reference'
+    });
+    const floatingAltOverflow = await detectOverflow(modifierArguments, {
+      altBoundary: true
+    });
+    const referenceHiddenOffsets = getSideOffsets(referenceOverflow, modifierArguments.rects.reference);
+    const escapedOffsets = getSideOffsets(floatingAltOverflow, modifierArguments.rects.floating);
+    const referenceHidden = isAnySideFullyClipped(referenceHiddenOffsets);
+    const escaped = isAnySideFullyClipped(escapedOffsets);
+    return {
+      data: {
+        referenceHidden,
+        referenceHiddenOffsets,
+        escaped,
+        escapedOffsets
+      }
+    };
+  }
+
+});
+
+function convertValueToCoords(_ref) {
+  let {
+    placement,
+    rects,
+    value
+  } = _ref;
+  const basePlacement = getBasePlacement(placement);
+  const multiplier = ['left', 'top'].includes(basePlacement) ? -1 : 1;
+  const rawValue = typeof value === 'function' ? value({ ...rects,
+    placement
+  }) : value;
+  const {
+    mainAxis,
+    crossAxis
+  } = typeof rawValue === 'number' ? {
+    mainAxis: rawValue,
+    crossAxis: 0
+  } : {
+    mainAxis: 0,
+    crossAxis: 0,
+    ...rawValue
+  };
+  return getMainAxisFromPlacement(basePlacement) === 'x' ? {
+    x: crossAxis,
+    y: mainAxis * multiplier
+  } : {
+    x: mainAxis * multiplier,
+    y: crossAxis
+  };
+}
+/**
+ * Displaces the floating element from its reference element.
+ */
+
+const offset = function (value) {
+  if (value === void 0) {
+    value = 0;
+  }
+
+  return {
+    name: 'offset',
+    options: value,
+
+    fn(middlewareArguments) {
+      const {
+        x,
+        y,
+        placement,
+        rects
+      } = middlewareArguments;
+      const diffCoords = convertValueToCoords({
+        placement,
+        rects,
+        value
+      });
+      return {
+        x: x + diffCoords.x,
+        y: y + diffCoords.y,
+        data: diffCoords
+      };
+    }
+
+  };
+};
+
+function getCrossAxis(axis) {
+  return axis === 'x' ? 'y' : 'x';
+}
+
+/**
+ * Shifts the floating element in order to keep it in view when it will overflow
+ * a clipping boundary.
+ */
+const shift = function (options) {
+  if (options === void 0) {
+    options = {};
+  }
+
+  return {
+    name: 'shift',
+    options,
+
+    async fn(middlewareArguments) {
+      const {
+        x,
+        y,
+        placement
+      } = middlewareArguments;
+      const {
+        mainAxis: checkMainAxis = true,
+        crossAxis: checkCrossAxis = false,
+        limiter = {
+          fn: _ref => {
+            let {
+              x,
+              y
+            } = _ref;
+            return {
+              x,
+              y
+            };
+          }
+        },
+        ...detectOverflowOptions
+      } = options;
+      const coords = {
+        x,
+        y
+      };
+      const overflow = await detectOverflow(middlewareArguments, detectOverflowOptions);
+      const mainAxis = getMainAxisFromPlacement(getBasePlacement(placement));
+      const crossAxis = getCrossAxis(mainAxis);
+      let mainAxisCoord = coords[mainAxis];
+      let crossAxisCoord = coords[crossAxis];
+
+      if (checkMainAxis) {
+        const minSide = mainAxis === 'y' ? 'top' : 'left';
+        const maxSide = mainAxis === 'y' ? 'bottom' : 'right';
+        const min = mainAxisCoord + overflow[minSide];
+        const max = mainAxisCoord - overflow[maxSide];
+        mainAxisCoord = within(min, mainAxisCoord, max);
+      }
+
+      if (checkCrossAxis) {
+        const minSide = crossAxis === 'y' ? 'top' : 'left';
+        const maxSide = crossAxis === 'y' ? 'bottom' : 'right';
+        const min = crossAxisCoord + overflow[minSide];
+        const max = crossAxisCoord - overflow[maxSide];
+        crossAxisCoord = within(min, crossAxisCoord, max);
+      }
+
+      const limitedCoords = limiter.fn({ ...middlewareArguments,
+        [mainAxis]: mainAxisCoord,
+        [crossAxis]: crossAxisCoord
+      });
+      return { ...limitedCoords,
+        data: {
+          x: limitedCoords.x - x,
+          y: limitedCoords.y - y
+        }
+      };
+    }
+
+  };
+};
+
+/**
+ * Built-in `limiter` that will stop `shift()` at a certain point.
+ */
+const limitShift = function (options) {
+  if (options === void 0) {
+    options = {};
+  }
+
+  return {
+    options,
+
+    fn(middlewareArguments) {
+      const {
+        x,
+        y,
+        placement,
+        rects,
+        middlewareData
+      } = middlewareArguments;
+      const {
+        offset = 0,
+        mainAxis: checkMainAxis = true,
+        crossAxis: checkCrossAxis = true
+      } = options;
+      const coords = {
+        x,
+        y
+      };
+      const mainAxis = getMainAxisFromPlacement(placement);
+      const crossAxis = getCrossAxis(mainAxis);
+      let mainAxisCoord = coords[mainAxis];
+      let crossAxisCoord = coords[crossAxis];
+      const rawOffset = typeof offset === 'function' ? offset({ ...rects,
+        placement
+      }) : offset;
+      const computedOffset = typeof rawOffset === 'number' ? {
+        mainAxis: rawOffset,
+        crossAxis: 0
+      } : {
+        mainAxis: 0,
+        crossAxis: 0,
+        ...rawOffset
+      };
+
+      if (checkMainAxis) {
+        const len = mainAxis === 'y' ? 'height' : 'width';
+        const limitMin = rects.reference[mainAxis] - rects.floating[len] + computedOffset.mainAxis;
+        const limitMax = rects.reference[mainAxis] + rects.reference[len] - computedOffset.mainAxis;
+
+        if (mainAxisCoord < limitMin) {
+          mainAxisCoord = limitMin;
+        } else if (mainAxisCoord > limitMax) {
+          mainAxisCoord = limitMax;
+        }
+      }
+
+      if (checkCrossAxis) {
+        var _middlewareData$offse, _middlewareData$offse2, _middlewareData$offse3, _middlewareData$offse4;
+
+        const len = mainAxis === 'y' ? 'width' : 'height';
+        const isOriginSide = ['top', 'left'].includes(getBasePlacement(placement));
+        const limitMin = rects.reference[crossAxis] - rects.floating[len] + (isOriginSide ? (_middlewareData$offse = (_middlewareData$offse2 = middlewareData.offset) == null ? void 0 : _middlewareData$offse2[crossAxis]) != null ? _middlewareData$offse : 0 : 0) + (isOriginSide ? 0 : computedOffset.crossAxis);
+        const limitMax = rects.reference[crossAxis] + rects.reference[len] + (isOriginSide ? 0 : (_middlewareData$offse3 = (_middlewareData$offse4 = middlewareData.offset) == null ? void 0 : _middlewareData$offse4[crossAxis]) != null ? _middlewareData$offse3 : 0) - (isOriginSide ? computedOffset.crossAxis : 0);
+
+        if (crossAxisCoord < limitMin) {
+          crossAxisCoord = limitMin;
+        } else if (crossAxisCoord > limitMax) {
+          crossAxisCoord = limitMax;
+        }
+      }
+
+      return {
+        [mainAxis]: mainAxisCoord,
+        [crossAxis]: crossAxisCoord
+      };
+    }
+
+  };
+};
+
+/**
+ * Provides data to change the size of the floating element. For instance,
+ * prevent it from overflowing its clipping boundary or match the width of the
+ * reference element.
+ */
+const size = function (options) {
+  if (options === void 0) {
+    options = {};
+  }
+
+  return {
+    name: 'size',
+    options,
+
+    async fn(middlewareArguments) {
+      var _middlewareData$size;
+
+      const {
+        placement,
+        rects,
+        middlewareData
+      } = middlewareArguments;
+      const {
+        apply,
+        ...detectOverflowOptions
+      } = options;
+
+      if ((_middlewareData$size = middlewareData.size) != null && _middlewareData$size.skip) {
+        return {};
+      }
+
+      const overflow = await detectOverflow(middlewareArguments, detectOverflowOptions);
+      const basePlacement = getBasePlacement(placement);
+      const isEnd = getAlignment(placement) === 'end';
+      let heightSide;
+      let widthSide;
+
+      if (basePlacement === 'top' || basePlacement === 'bottom') {
+        heightSide = basePlacement;
+        widthSide = isEnd ? 'left' : 'right';
+      } else {
+        widthSide = basePlacement;
+        heightSide = isEnd ? 'top' : 'bottom';
+      }
+
+      const xMin = max(overflow.left, 0);
+      const xMax = max(overflow.right, 0);
+      const yMin = max(overflow.top, 0);
+      const yMax = max(overflow.bottom, 0);
+      const dimensions = {
+        height: rects.floating.height - (['left', 'right'].includes(placement) ? 2 * (yMin !== 0 || yMax !== 0 ? yMin + yMax : max(overflow.top, overflow.bottom)) : overflow[heightSide]),
+        width: rects.floating.width - (['top', 'bottom'].includes(placement) ? 2 * (xMin !== 0 || xMax !== 0 ? xMin + xMax : max(overflow.left, overflow.right)) : overflow[widthSide])
+      };
+      apply == null ? void 0 : apply({ ...dimensions,
+        ...rects
+      });
+      return {
+        data: {
+          skip: true
+        },
+        reset: {
+          rects: true
+        }
+      };
+    }
+
+  };
+};
+
+/**
+ * Provides improved positioning for inline reference elements that can span
+ * over multiple lines, such as hyperlinks or range selections.
+ */
+const inline = function (options) {
+  if (options === void 0) {
+    options = {};
+  }
+
+  return {
+    name: 'inline',
+    options,
+
+    async fn(middlewareArguments) {
+      var _middlewareData$inlin, _await$platform$getCl;
+
+      const {
+        placement,
+        elements,
+        rects,
+        platform,
+        strategy,
+        middlewareData
+      } = middlewareArguments; // A MouseEvent's client{X,Y} coords can be up to 2 pixels off a
+      // ClientRect's bounds, despite the event listener being triggered. A
+      // padding of 2 seems to handle this issue.
+
+      const {
+        padding = 2,
+        x,
+        y
+      } = options;
+
+      if ((_middlewareData$inlin = middlewareData.inline) != null && _middlewareData$inlin.skip) {
+        return {};
+      }
+
+      const fallback = rectToClientRect(await platform.convertOffsetParentRelativeRectToViewportRelativeRect({
+        rect: rects.reference,
+        offsetParent: await platform.getOffsetParent({
+          element: elements.floating
+        }),
+        strategy
+      }));
+      const clientRects = Array.from((_await$platform$getCl = await (platform.getClientRects == null ? void 0 : platform.getClientRects({
+        element: elements.reference
+      }))) != null ? _await$platform$getCl : []);
+      const paddingObject = getSideObjectFromPadding(padding);
+
+      function getBoundingClientRect() {
+        // There are two rects and they are disjoined
+        if (clientRects.length === 2 && clientRects[0].left > clientRects[1].right && x != null && y != null) {
+          var _clientRects$find;
+
+          // Find the first rect in which the point is fully inside
+          return (_clientRects$find = clientRects.find(rect => x > rect.left - paddingObject.left && x < rect.right + paddingObject.right && y > rect.top - paddingObject.top && y < rect.bottom + paddingObject.bottom)) != null ? _clientRects$find : fallback;
+        } // There are 2 or more connected rects
+
+
+        if (clientRects.length >= 2) {
+          if (getMainAxisFromPlacement(placement) === 'x') {
+            const firstRect = clientRects[0];
+            const lastRect = clientRects[clientRects.length - 1];
+            const isTop = getBasePlacement(placement) === 'top';
+            const top = firstRect.top;
+            const bottom = lastRect.bottom;
+            const left = isTop ? firstRect.left : lastRect.left;
+            const right = isTop ? firstRect.right : lastRect.right;
+            const width = right - left;
+            const height = bottom - top;
+            return {
+              top,
+              bottom,
+              left,
+              right,
+              width,
+              height,
+              x: left,
+              y: top
+            };
+          }
+
+          const isLeftPlacement = getBasePlacement(placement) === 'left';
+          const maxRight = max(...clientRects.map(rect => rect.right));
+          const minLeft = min(...clientRects.map(rect => rect.left));
+          const measureRects = clientRects.filter(rect => isLeftPlacement ? rect.left === minLeft : rect.right === maxRight);
+          const top = measureRects[0].top;
+          const bottom = measureRects[measureRects.length - 1].bottom;
+          const left = minLeft;
+          const right = maxRight;
+          const width = right - left;
+          const height = bottom - top;
+          return {
+            top,
+            bottom,
+            left,
+            right,
+            width,
+            height,
+            x: left,
+            y: top
+          };
+        }
+
+        return fallback;
+      }
+
+      return {
+        data: {
+          skip: true
+        },
+        reset: {
+          rects: await platform.getElementRects({
+            reference: {
+              getBoundingClientRect
+            },
+            floating: elements.floating,
+            strategy
+          })
+        }
+      };
+    }
+
+  };
+};
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@floating-ui/dom/dist/floating-ui.dom.esm.development.js":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/@floating-ui/dom/dist/floating-ui.dom.esm.development.js ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "arrow": () => (/* reexport safe */ _floating_ui_core__WEBPACK_IMPORTED_MODULE_0__.arrow),
+/* harmony export */   "autoPlacement": () => (/* reexport safe */ _floating_ui_core__WEBPACK_IMPORTED_MODULE_0__.autoPlacement),
+/* harmony export */   "detectOverflow": () => (/* reexport safe */ _floating_ui_core__WEBPACK_IMPORTED_MODULE_0__.detectOverflow),
+/* harmony export */   "flip": () => (/* reexport safe */ _floating_ui_core__WEBPACK_IMPORTED_MODULE_0__.flip),
+/* harmony export */   "hide": () => (/* reexport safe */ _floating_ui_core__WEBPACK_IMPORTED_MODULE_0__.hide),
+/* harmony export */   "inline": () => (/* reexport safe */ _floating_ui_core__WEBPACK_IMPORTED_MODULE_0__.inline),
+/* harmony export */   "limitShift": () => (/* reexport safe */ _floating_ui_core__WEBPACK_IMPORTED_MODULE_0__.limitShift),
+/* harmony export */   "offset": () => (/* reexport safe */ _floating_ui_core__WEBPACK_IMPORTED_MODULE_0__.offset),
+/* harmony export */   "shift": () => (/* reexport safe */ _floating_ui_core__WEBPACK_IMPORTED_MODULE_0__.shift),
+/* harmony export */   "size": () => (/* reexport safe */ _floating_ui_core__WEBPACK_IMPORTED_MODULE_0__.size),
+/* harmony export */   "computePosition": () => (/* binding */ computePosition),
+/* harmony export */   "getScrollParents": () => (/* binding */ getScrollParents)
+/* harmony export */ });
+/* harmony import */ var _floating_ui_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @floating-ui/core */ "./node_modules/@floating-ui/core/dist/floating-ui.core.esm.development.js");
+
+
+
+function isWindow(value) {
+  return (value == null ? void 0 : value.toString()) === '[object Window]';
+}
+function getWindow(node) {
+  if (node == null) {
+    return window;
+  }
+
+  if (!isWindow(node)) {
+    const ownerDocument = node.ownerDocument;
+    return ownerDocument ? ownerDocument.defaultView || window : window;
+  }
+
+  return node;
+}
+
+function getComputedStyle$1(element) {
+  return getWindow(element).getComputedStyle(element);
+}
+
+function getNodeName(node) {
+  return isWindow(node) ? '' : node ? (node.nodeName || '').toLowerCase() : '';
+}
+
+function isHTMLElement(value) {
+  return value instanceof getWindow(value).HTMLElement;
+}
+function isElement(value) {
+  return value instanceof getWindow(value).Element;
+}
+function isNode(value) {
+  return value instanceof getWindow(value).Node;
+}
+function isShadowRoot(node) {
+  const OwnElement = getWindow(node).ShadowRoot;
+  return node instanceof OwnElement || node instanceof ShadowRoot;
+}
+function isScrollParent(element) {
+  // Firefox wants us to check `-x` and `-y` variations as well
+  const {
+    overflow,
+    overflowX,
+    overflowY
+  } = getComputedStyle$1(element);
+  return /auto|scroll|overlay|hidden/.test(overflow + overflowY + overflowX);
+}
+function isTableElement(element) {
+  return ['table', 'td', 'th'].includes(getNodeName(element));
+}
+function isContainingBlock(element) {
+  // TODO: Try and use feature detection here instead
+  const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
+  const css = getComputedStyle$1(element); // This is non-exhaustive but covers the most common CSS properties that
+  // create a containing block.
+  // https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block
+
+  return css.transform !== 'none' || css.perspective !== 'none' || css.contain === 'paint' || ['transform', 'perspective'].includes(css.willChange) || isFirefox && css.willChange === 'filter' || isFirefox && (css.filter ? css.filter !== 'none' : false);
+}
+
+const min = Math.min;
+const max = Math.max;
+const round = Math.round;
+
+function getBoundingClientRect(element, includeScale) {
+  if (includeScale === void 0) {
+    includeScale = false;
+  }
+
+  const clientRect = element.getBoundingClientRect();
+  let scaleX = 1;
+  let scaleY = 1;
+
+  if (includeScale && isHTMLElement(element)) {
+    scaleX = element.offsetWidth > 0 ? round(clientRect.width) / element.offsetWidth || 1 : 1;
+    scaleY = element.offsetHeight > 0 ? round(clientRect.height) / element.offsetHeight || 1 : 1;
+  }
+
+  return {
+    width: clientRect.width / scaleX,
+    height: clientRect.height / scaleY,
+    top: clientRect.top / scaleY,
+    right: clientRect.right / scaleX,
+    bottom: clientRect.bottom / scaleY,
+    left: clientRect.left / scaleX,
+    x: clientRect.left / scaleX,
+    y: clientRect.top / scaleY
+  };
+}
+
+function getDocumentElement(node) {
+  return ((isNode(node) ? node.ownerDocument : node.document) || window.document).documentElement;
+}
+
+function getNodeScroll(element) {
+  if (isWindow(element)) {
+    return {
+      scrollLeft: element.pageXOffset,
+      scrollTop: element.pageYOffset
+    };
+  }
+
+  return {
+    scrollLeft: element.scrollLeft,
+    scrollTop: element.scrollTop
+  };
+}
+
+function getWindowScrollBarX(element) {
+  // If <html> has a CSS width greater than the viewport, then this will be
+  // incorrect for RTL.
+  return getBoundingClientRect(getDocumentElement(element)).left + getNodeScroll(element).scrollLeft;
+}
+
+function isScaled(element) {
+  const rect = getBoundingClientRect(element);
+  return round(rect.width) !== element.offsetWidth || round(rect.height) !== element.offsetHeight;
+}
+
+function getRectRelativeToOffsetParent(element, offsetParent, strategy) {
+  const isOffsetParentAnElement = isHTMLElement(offsetParent);
+  const documentElement = getDocumentElement(offsetParent);
+  const rect = getBoundingClientRect(element, isOffsetParentAnElement && isScaled(offsetParent));
+  let scroll = {
+    scrollLeft: 0,
+    scrollTop: 0
+  };
+  const offsets = {
+    x: 0,
+    y: 0
+  };
+
+  if (isOffsetParentAnElement || !isOffsetParentAnElement && strategy !== 'fixed') {
+    if (getNodeName(offsetParent) !== 'body' || isScrollParent(documentElement)) {
+      scroll = getNodeScroll(offsetParent);
+    }
+
+    if (isHTMLElement(offsetParent)) {
+      const offsetRect = getBoundingClientRect(offsetParent, true);
+      offsets.x = offsetRect.x + offsetParent.clientLeft;
+      offsets.y = offsetRect.y + offsetParent.clientTop;
+    } else if (documentElement) {
+      offsets.x = getWindowScrollBarX(documentElement);
+    }
+  }
+
+  return {
+    x: rect.left + scroll.scrollLeft - offsets.x,
+    y: rect.top + scroll.scrollTop - offsets.y,
+    width: rect.width,
+    height: rect.height
+  };
+}
+
+function getParentNode(node) {
+  if (getNodeName(node) === 'html') {
+    return node;
+  }
+
+  return (// this is a quicker (but less type safe) way to save quite some bytes from the bundle
+    // @ts-ignore
+    node.assignedSlot || // step into the shadow DOM of the parent of a slotted node
+    node.parentNode || ( // DOM Element detected
+    isShadowRoot(node) ? node.host : null) || // ShadowRoot detected
+    getDocumentElement(node) // fallback
+
+  );
+}
+
+function getTrueOffsetParent(element) {
+  if (!isHTMLElement(element) || getComputedStyle(element).position === 'fixed') {
+    return null;
+  }
+
+  return element.offsetParent;
+}
+
+function getContainingBlock(element) {
+  let currentNode = getParentNode(element);
+
+  while (isHTMLElement(currentNode) && !['html', 'body'].includes(getNodeName(currentNode))) {
+    if (isContainingBlock(currentNode)) {
+      return currentNode;
+    } else {
+      currentNode = currentNode.parentNode;
+    }
+  }
+
+  return null;
+} // Gets the closest ancestor positioned element. Handles some edge cases,
+// such as table ancestors and cross browser bugs.
+
+
+function getOffsetParent(element) {
+  const window = getWindow(element);
+  let offsetParent = getTrueOffsetParent(element);
+
+  while (offsetParent && isTableElement(offsetParent) && getComputedStyle(offsetParent).position === 'static') {
+    offsetParent = getTrueOffsetParent(offsetParent);
+  }
+
+  if (offsetParent && (getNodeName(offsetParent) === 'html' || getNodeName(offsetParent) === 'body' && getComputedStyle(offsetParent).position === 'static' && !isContainingBlock(offsetParent))) {
+    return window;
+  }
+
+  return offsetParent || getContainingBlock(element) || window;
+}
+
+function getDimensions(element) {
+  return {
+    width: element.offsetWidth,
+    height: element.offsetHeight
+  };
+}
+
+function convertOffsetParentRelativeRectToViewportRelativeRect(_ref) {
+  let {
+    rect,
+    offsetParent,
+    strategy
+  } = _ref;
+  const isOffsetParentAnElement = isHTMLElement(offsetParent);
+  const documentElement = getDocumentElement(offsetParent);
+
+  if (offsetParent === documentElement) {
+    return rect;
+  }
+
+  let scroll = {
+    scrollLeft: 0,
+    scrollTop: 0
+  };
+  const offsets = {
+    x: 0,
+    y: 0
+  };
+
+  if (isOffsetParentAnElement || !isOffsetParentAnElement && strategy !== 'fixed') {
+    if (getNodeName(offsetParent) !== 'body' || isScrollParent(documentElement)) {
+      scroll = getNodeScroll(offsetParent);
+    }
+
+    if (isHTMLElement(offsetParent)) {
+      const offsetRect = getBoundingClientRect(offsetParent, true);
+      offsets.x = offsetRect.x + offsetParent.clientLeft;
+      offsets.y = offsetRect.y + offsetParent.clientTop;
+    } // This doesn't appear to be need to be negated.
+    // else if (documentElement) {
+    //   offsets.x = getWindowScrollBarX(documentElement);
+    // }
+
+  }
+
+  return { ...rect,
+    x: rect.x - scroll.scrollLeft + offsets.x,
+    y: rect.y - scroll.scrollTop + offsets.y
+  };
+}
+
+function getViewportRect(element) {
+  const win = getWindow(element);
+  const html = getDocumentElement(element);
+  const visualViewport = win.visualViewport;
+  let width = html.clientWidth;
+  let height = html.clientHeight;
+  let x = 0;
+  let y = 0;
+
+  if (visualViewport) {
+    width = visualViewport.width;
+    height = visualViewport.height; // Uses Layout Viewport (like Chrome; Safari does not currently)
+    // In Chrome, it returns a value very close to 0 (+/-) but contains rounding
+    // errors due to floating point numbers, so we need to check precision.
+    // Safari returns a number <= 0, usually < -1 when pinch-zoomed
+
+    if (Math.abs(win.innerWidth / visualViewport.scale - visualViewport.width) < 0.01) {
+      x = visualViewport.offsetLeft;
+      y = visualViewport.offsetTop;
+    }
+  }
+
+  return {
+    width,
+    height,
+    x,
+    y
+  };
+}
+
+// of the `<html>` and `<body>` rect bounds if horizontally scrollable
+
+function getDocumentRect(element) {
+  var _element$ownerDocumen;
+
+  const html = getDocumentElement(element);
+  const scroll = getNodeScroll(element);
+  const body = (_element$ownerDocumen = element.ownerDocument) == null ? void 0 : _element$ownerDocumen.body;
+  const width = max(html.scrollWidth, html.clientWidth, body ? body.scrollWidth : 0, body ? body.clientWidth : 0);
+  const height = max(html.scrollHeight, html.clientHeight, body ? body.scrollHeight : 0, body ? body.clientHeight : 0);
+  let x = -scroll.scrollLeft + getWindowScrollBarX(element);
+  const y = -scroll.scrollTop;
+
+  if (getComputedStyle$1(body || html).direction === 'rtl') {
+    x += max(html.clientWidth, body ? body.clientWidth : 0) - width;
+  }
+
+  return {
+    width,
+    height,
+    x,
+    y
+  };
+}
+
+function getScrollParent(node) {
+  if (['html', 'body', '#document'].includes(getNodeName(node))) {
+    // @ts-ignore assume body is always available
+    return node.ownerDocument.body;
+  }
+
+  if (isHTMLElement(node) && isScrollParent(node)) {
+    return node;
+  }
+
+  return getScrollParent(getParentNode(node));
+}
+
+function getScrollParents(node, list) {
+  var _node$ownerDocument;
+
+  if (list === void 0) {
+    list = [];
+  }
+
+  const scrollParent = getScrollParent(node);
+  const isBody = scrollParent === ((_node$ownerDocument = node.ownerDocument) == null ? void 0 : _node$ownerDocument.body);
+  const win = getWindow(scrollParent);
+  const target = isBody ? [win].concat(win.visualViewport || [], isScrollParent(scrollParent) ? scrollParent : []) : scrollParent;
+  const updatedList = list.concat(target);
+  return isBody ? updatedList : // @ts-ignore: isBody tells us target will be an HTMLElement here
+  updatedList.concat(getScrollParents(getParentNode(target)));
+}
+
+function contains(parent, child) {
+  const rootNode = child.getRootNode == null ? void 0 : child.getRootNode(); // First, attempt with faster native method
+
+  if (parent.contains(child)) {
+    return true;
+  } // then fallback to custom implementation with Shadow DOM support
+  else if (rootNode && isShadowRoot(rootNode)) {
+    let next = child;
+
+    do {
+      // use `===` replace node.isSameNode()
+      if (next && parent === next) {
+        return true;
+      } // @ts-ignore: need a better way to handle this...
+
+
+      next = next.parentNode || next.host;
+    } while (next);
+  }
+
+  return false;
+}
+
+function getInnerBoundingClientRect(element) {
+  const clientRect = getBoundingClientRect(element);
+  const top = clientRect.top + element.clientTop;
+  const left = clientRect.left + element.clientLeft;
+  return {
+    top,
+    left,
+    x: left,
+    y: top,
+    right: left + element.clientWidth,
+    bottom: top + element.clientHeight,
+    width: element.clientWidth,
+    height: element.clientHeight
+  };
+}
+
+function getClientRectFromClippingParent(element, clippingParent) {
+  if (clippingParent === 'viewport') {
+    return (0,_floating_ui_core__WEBPACK_IMPORTED_MODULE_0__.rectToClientRect)(getViewportRect(element));
+  }
+
+  if (isElement(clippingParent)) {
+    return getInnerBoundingClientRect(clippingParent);
+  }
+
+  return (0,_floating_ui_core__WEBPACK_IMPORTED_MODULE_0__.rectToClientRect)(getDocumentRect(getDocumentElement(element)));
+} // A "clipping parent" is an overflowable container with the characteristic of
+// clipping (or hiding) overflowing elements with a position different from
+// `initial`
+
+
+function getClippingParents(element) {
+  const clippingParents = getScrollParents(getParentNode(element));
+  const canEscapeClipping = ['absolute', 'fixed'].includes(getComputedStyle$1(element).position);
+  const clipperElement = canEscapeClipping && isHTMLElement(element) ? getOffsetParent(element) : element;
+
+  if (!isElement(clipperElement)) {
+    return [];
+  } // @ts-ignore isElement check ensures we return Array<Element>
+
+
+  return clippingParents.filter(clippingParent => isElement(clippingParent) && contains(clippingParent, clipperElement) && getNodeName(clippingParent) !== 'body');
+} // Gets the maximum area that the element is visible in due to any number of
+// clipping parents
+
+
+function getClippingClientRect(_ref) {
+  let {
+    element,
+    boundary,
+    rootBoundary
+  } = _ref;
+  const mainClippingParents = boundary === 'clippingParents' ? getClippingParents(element) : [].concat(boundary);
+  const clippingParents = [...mainClippingParents, rootBoundary];
+  const firstClippingParent = clippingParents[0];
+  const clippingRect = clippingParents.reduce((accRect, clippingParent) => {
+    const rect = getClientRectFromClippingParent(element, clippingParent);
+    accRect.top = max(rect.top, accRect.top);
+    accRect.right = min(rect.right, accRect.right);
+    accRect.bottom = min(rect.bottom, accRect.bottom);
+    accRect.left = max(rect.left, accRect.left);
+    return accRect;
+  }, getClientRectFromClippingParent(element, firstClippingParent));
+  clippingRect.width = clippingRect.right - clippingRect.left;
+  clippingRect.height = clippingRect.bottom - clippingRect.top;
+  clippingRect.x = clippingRect.left;
+  clippingRect.y = clippingRect.top;
+  return clippingRect;
+}
+
+const platform = {
+  getElementRects: _ref => {
+    let {
+      reference,
+      floating,
+      strategy
+    } = _ref;
+    return {
+      reference: getRectRelativeToOffsetParent(reference, getOffsetParent(floating), strategy),
+      floating: { ...getDimensions(floating),
+        x: 0,
+        y: 0
+      }
+    };
+  },
+  convertOffsetParentRelativeRectToViewportRelativeRect: args => convertOffsetParentRelativeRectToViewportRelativeRect(args),
+  getOffsetParent: _ref2 => {
+    let {
+      element
+    } = _ref2;
+    return getOffsetParent(element);
+  },
+  isElement: value => isElement(value),
+  getDocumentElement: _ref3 => {
+    let {
+      element
+    } = _ref3;
+    return getDocumentElement(element);
+  },
+  getClippingClientRect: args => getClippingClientRect(args),
+  getDimensions: _ref4 => {
+    let {
+      element
+    } = _ref4;
+    return getDimensions(element);
+  },
+  getClientRects: _ref5 => {
+    let {
+      element
+    } = _ref5;
+    return element.getClientRects();
+  }
+};
+
+/**
+ * Computes the `x` and `y` coordinates that will place the floating element
+ * next to a reference element when it is given a certain CSS positioning
+ * strategy.
+ */
+
+const computePosition = (reference, floating, options) => (0,_floating_ui_core__WEBPACK_IMPORTED_MODULE_0__.computePosition)(reference, floating, {
+  platform,
+  ...options
+});
+
+
+
 
 /***/ }),
 
@@ -18650,678 +20567,28 @@ if (!window.customElements.get('text-expander')) {
 
 /***/ }),
 
-/***/ "../../../packages/inclusive-elements/dist/index.js":
-/*!**********************************************************!*\
-  !*** ../../../packages/inclusive-elements/dist/index.js ***!
-  \**********************************************************/
+/***/ "./node_modules/inclusive-elements/dist/index.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/inclusive-elements/dist/index.js ***!
+  \*******************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "AlertsElement": () => (/* binding */ m),
-/* harmony export */   "MenuElement": () => (/* binding */ c),
-/* harmony export */   "ModalElement": () => (/* binding */ u),
-/* harmony export */   "PopupElement": () => (/* binding */ d),
-/* harmony export */   "TooltipElement": () => (/* binding */ l)
+/* harmony export */   "AlertsElement": () => (/* binding */ l),
+/* harmony export */   "MenuElement": () => (/* binding */ u),
+/* harmony export */   "ModalElement": () => (/* binding */ p),
+/* harmony export */   "PopupElement": () => (/* binding */ m),
+/* harmony export */   "ToolbarElement": () => (/* binding */ b),
+/* harmony export */   "TooltipElement": () => (/* binding */ v)
 /* harmony export */ });
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e7) { throw _e7; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e8) { didErr = true; err = _e8; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
-
-function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-var t = {
-  x: {
-    start: "left",
-    Start: "Left",
-    end: "right",
-    End: "Right",
-    size: "width",
-    Size: "Width"
-  },
-  y: {
-    start: "top",
-    Start: "Top",
-    end: "bottom",
-    End: "Bottom",
-    size: "height",
-    Size: "Height"
-  }
-};
-
-function e(e, i, n) {
-  var _Object$assign, _Object$assign2;
-
-  var s;
-  var o = i.style;
-  Object.assign(o, {
-    position: "absolute",
-    maxWidth: "",
-    maxHeight: ""
-  });
-
-  var _n$placement$split = n.placement.split("-"),
-      _n$placement$split2 = _slicedToArray(_n$placement$split, 2),
-      _n$placement$split2$ = _n$placement$split2[0],
-      r = _n$placement$split2$ === void 0 ? "bottom" : _n$placement$split2$,
-      _n$placement$split2$2 = _n$placement$split2[1],
-      a = _n$placement$split2$2 === void 0 ? "center" : _n$placement$split2$2;
-
-  var h = ["top", "bottom"].includes(r) ? "y" : "x";
-  var d = r === t[h].start ? t[h].end : t[h].start;
-  var l = "x" === h ? "y" : "x",
-      c = e.getBoundingClientRect(),
-      u = (null === (s = function (t) {
-    for (; (t = t.parentNode) && t instanceof Element;) {
-      var _e2 = getComputedStyle(t).overflow;
-      if (["auto", "scroll"].includes(_e2)) return t;
-    }
-  }(i)) || void 0 === s ? void 0 : s.getBoundingClientRect()) || new DOMRect(0, 0, window.innerWidth, window.innerHeight),
-      m = i.offsetParent || document.body,
-      p = m === document.body ? new DOMRect(-pageXOffset, -pageYOffset, window.innerWidth, window.innerHeight) : m.getBoundingClientRect(),
-      f = getComputedStyle(m),
-      v = getComputedStyle(i);
-
-  if (n.flip || void 0 === n.flip) {
-    var _ref;
-
-    var _e3 = function _e3(t) {
-      return Math.abs(c[t] - u[t]);
-    },
-        _n2 = _e3(r);
-
-    i["offset" + t[h].Size] > _n2 && _e3(d) > _n2 && (_ref = [d, r], r = _ref[0], d = _ref[1], _ref);
-  }
-
-  if (i.dataset.placement = "".concat(r, "-").concat(a), n.cap || void 0 === n.cap) {
-    var _e4 = function _e4(e, n) {
-      var s = v["max" + t[e].Size];
-      n -= parseInt(v["margin" + t[e].Start]) + parseInt(v["margin" + t[e].End]), ("none" === s || n < parseInt(s)) && (i.style["max" + t[e].Size] = n + "px");
-    };
-
-    _e4(h, Math.abs(u[r] - c[r])), _e4(l, u[t[l].size]);
-  }
-
-  Object.assign(o, (_Object$assign = {}, _defineProperty(_Object$assign, r, "auto"), _defineProperty(_Object$assign, d, (r === t[h].start ? p[t[h].end] - c[t[h].start] : c[t[h].end] - p[t[h].start]) - parseInt(f["border" + t[h].Start + "Width"]) + "px"), _Object$assign));
-  var b = "end" === a ? "end" : "start",
-      E = "end" === a ? "start" : "end",
-      g = c[l] - p[l],
-      w = c[t[l].size],
-      y = i["offset" + t[l].Size];
-  var L = "end" === a ? p[t[l].size] - g - w : g + ("start" !== a ? w / 2 - y / 2 : 0);
-
-  if (n.bound || void 0 === n.bound) {
-    var _e5 = "end" === a ? -1 : 1;
-
-    L = Math.max(_e5 * (u[t[l][b]] - p[t[l][b]]), Math.min(L, _e5 * (u[t[l][E]] - p[t[l][b]]) - y));
-  }
-
-  Object.assign(o, (_Object$assign2 = {}, _defineProperty(_Object$assign2, t[l][E], "auto"), _defineProperty(_Object$assign2, t[l][b], L - parseInt(f["border" + t[l].Start + "Width"]) + "px"), _Object$assign2));
-}
-
-function i(t, e) {
-  var i = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-  var n = new WeakMap(),
-      s = h(i);
-  t instanceof HTMLCollection && (t = Array.from(t)), t.forEach(function (t) {
-    "none" !== getComputedStyle(t).display && n.set(t, t.getBoundingClientRect());
-  }), e(), t.forEach(function (t) {
-    var e = n.get(t);
-    if (!e) return;
-    var i = e.left - t.getBoundingClientRect().left,
-        o = e.top - t.getBoundingClientRect().top;
-    if (!i && !o) return;
-    var r = t.style;
-    r.transitionDuration = "0s", r.transform = "translate(".concat(i, "px, ").concat(o, "px)"), document.body.offsetWidth, r.transitionDuration = r.transform = "", t.classList.add(s + "move"), a(t, function () {
-      t.classList.remove(s + "move");
-    });
-  });
-}
-
-function n(t) {
-  var _t$classList;
-
-  t._currentTransition && ((_t$classList = t.classList).remove.apply(_t$classList, _toConsumableArray(["active", "from", "to"].map(function (e) {
-    return t._currentTransition + e;
-  }))), t._currentTransition = null);
-}
-
-function s(t, e) {
-  var i = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-  var s = h(i) + e + "-",
-      o = t.classList;
-  var r;
-  n(t), t._currentTransition = s, o.add(s + "active", s + "from"), r = function r() {
-    o.add(s + "to"), o.remove(s + "from"), a(t, function () {
-      o.remove(s + "to", s + "active"), t._currentTransition === s && (i.finish && i.finish(), t._currentTransition = null);
-    });
-  }, requestAnimationFrame(function () {
-    requestAnimationFrame(r);
-  });
-}
-
-function o(t) {
-  var e = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  s(t, "enter", e);
-}
-
-function r(t) {
-  var e = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  s(t, "leave", e);
-}
-
-function a(t, e) {
-  if (getComputedStyle(t).transitionDuration.startsWith("0s")) e();else {
-    var _i2 = function _i2() {
-      e(), t.removeEventListener("transitionend", _i2), t.removeEventListener("transitioncancel", _i2);
-    };
-
-    t.addEventListener("transitionend", _i2), t.addEventListener("transitioncancel", _i2);
-  }
-}
-
-function h(t) {
-  return t.prefix ? t.prefix + "-" : "";
-}
-
-var d = /*#__PURE__*/function (_HTMLElement) {
-  _inherits(d, _HTMLElement);
-
-  var _super = _createSuper(d);
-
-  function d() {
-    var _this;
-
-    _classCallCheck(this, d);
-
-    _this = _super.call(this);
-
-    var t = _this.attachShadow({
-      mode: "open"
-    });
-
-    var e = document.createElement("template");
-    e.innerHTML = '<div part="backdrop" hidden style="position: fixed; top: 0; left: 0; right: 0; bottom: 0"></div><slot></slot>', t.appendChild(e.content.cloneNode(!0)), _this.shadowRoot.firstElementChild.onclick = function () {
-      return _this.open = !1;
-    };
-    return _this;
-  }
-
-  _createClass(d, [{
-    key: "connectedCallback",
-    value: function connectedCallback() {
-      var _this2 = this;
-
-      this.shadowRoot.firstElementChild.hidden = !0, this.menu.hidden = !0, this.button.setAttribute("aria-haspopup", "true"), this.button.setAttribute("aria-expanded", "false"), this.button.addEventListener("click", function () {
-        _this2.open = !0;
-      }), this.button.addEventListener("keydown", function (t) {
-        "ArrowDown" === t.key && (t.preventDefault(), _this2.open = !0);
-      }), this.addEventListener("keydown", function (t) {
-        "Escape" === t.key && _this2.open && (t.preventDefault(), t.stopPropagation(), _this2.open = !1, _this2.button.focus());
-      }), this.menu.addEventListener("click", function (t) {
-        var e = t.target instanceof Element ? t.target : null;
-        ("menuitem" === (null == e ? void 0 : e.getAttribute("role")) || "menuitemradio" === (null == e ? void 0 : e.getAttribute("role")) || (null == e ? void 0 : e.closest("[role=menuitem], [role=menuitemradio]"))) && (_this2.open = !1, _this2.button.focus());
-      }), this.open = !1;
-    }
-  }, {
-    key: "disconnectedCallback",
-    value: function disconnectedCallback() {
-      n(this.shadowRoot.firstElementChild), n(this.menu);
-    }
-  }, {
-    key: "button",
-    get: function get() {
-      return this.children[0];
-    }
-  }, {
-    key: "menu",
-    get: function get() {
-      return this.children[1];
-    }
-  }, {
-    key: "open",
-    get: function get() {
-      return this.hasAttribute("open");
-    },
-    set: function set(t) {
-      t ? this.setAttribute("open", "") : this.removeAttribute("open");
-    }
-  }, {
-    key: "attributeChangedCallback",
-    value: function attributeChangedCallback(t, i, n) {
-      var _this3 = this;
-
-      if ("open" === t) if (null !== n) {
-        if (!this.menu.hidden) return;
-        this.menu.hidden = !1, o(this.menu), this.button.setAttribute("aria-expanded", "true"), e(this.button, this.menu, {
-          placement: this.getAttribute("placement") || "bottom"
-        });
-        var _t = this.shadowRoot.firstElementChild;
-        _t.hidden = !1, o(_t);
-
-        var _i3 = this.menu.querySelector("[autofocus]");
-
-        _i3 && _i3.focus(), this.dispatchEvent(new Event("open"));
-      } else if (!this.menu.hidden) {
-        this.button.setAttribute("aria-expanded", "false");
-        var _t2 = this.shadowRoot.firstElementChild;
-        r(_t2, {
-          finish: function finish() {
-            return _t2.hidden = !0;
-          }
-        }), r(this.menu, {
-          finish: function finish() {
-            return _this3.menu.hidden = !0;
-          }
-        }), this.dispatchEvent(new Event("close"));
-      }
-    }
-  }], [{
-    key: "observedAttributes",
-    get: function get() {
-      return ["open"];
-    }
-  }]);
-
-  return d;
-}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
-
-var l = /*#__PURE__*/function (_HTMLElement2) {
-  _inherits(l, _HTMLElement2);
-
-  var _super2 = _createSuper(l);
-
-  function l() {
-    var _this4;
-
-    _classCallCheck(this, l);
-
-    _this4 = _super2.apply(this, arguments), _this4.showing = !1, _this4.handleMouseEnter = _this4.afterDelay.bind(_assertThisInitialized(_this4), _this4.show), _this4.handleFocus = _this4.show.bind(_assertThisInitialized(_this4)), _this4.handleMouseLeave = _this4.afterDelay.bind(_assertThisInitialized(_this4), _this4.hide), _this4.handleBlur = _this4.hide.bind(_assertThisInitialized(_this4)), _this4.handleKeyDown = _this4.keyDown.bind(_assertThisInitialized(_this4));
-    return _this4;
-  }
-
-  _createClass(l, [{
-    key: "connectedCallback",
-    value: function connectedCallback() {
-      var _this5 = this;
-
-      this.parent = this.parentNode, this.parent && (this.parent.matches("a, button, input, select, textarea, button, iframe") || (this.parent.tabIndex = this.parent.tabIndex || 0), this.parent.addEventListener("mouseenter", this.handleMouseEnter), this.parent.addEventListener("focus", this.handleFocus), this.parent.addEventListener("mouseleave", this.handleMouseLeave), this.parent.addEventListener("blur", this.handleBlur), this.parent.addEventListener("click", this.handleBlur), this.observer = new MutationObserver(function (t) {
-        t.forEach(function (t) {
-          "disabled" === t.attributeName && _this5.hide();
-        });
-      }), this.observer.observe(this.parent, {
-        attributes: !0
-      })), document.addEventListener("keydown", this.handleKeyDown), document.addEventListener("scroll", this.handleBlur);
-    }
-  }, {
-    key: "disconnectedCallback",
-    value: function disconnectedCallback() {
-      this.tooltip && (this.tooltip.remove(), this.tooltip = null), this.observer.disconnect(), this.parent && (this.parent.removeEventListener("mouseenter", this.handleMouseEnter), this.parent.removeEventListener("focus", this.handleFocus), this.parent.removeEventListener("mouseleave", this.handleMouseLeave), this.parent.removeEventListener("blur", this.handleBlur), this.parent.removeEventListener("click", this.handleBlur), this.parent = null), document.removeEventListener("keydown", this.handleKeyDown), document.removeEventListener("scroll", this.handleBlur);
-    }
-  }, {
-    key: "disabled",
-    get: function get() {
-      return this.hasAttribute("disabled");
-    },
-    set: function set(t) {
-      t ? this.setAttribute("disabled", "") : this.removeAttribute("disabled");
-    }
-  }, {
-    key: "keyDown",
-    value: function keyDown(t) {
-      "Escape" === t.key && this.hide();
-    }
-  }, {
-    key: "show",
-    value: function show() {
-      if (this.disabled) return;
-      var t = this.createTooltip();
-      clearTimeout(this.timeout), this.showing || (t.hidden = !1, o(t), this.showing = !0), t.innerHTML !== this.innerHTML && (t.innerHTML = this.innerHTML), e(this.parent, t, {
-        placement: this.getAttribute("placement") || l.placement
-      });
-    }
-  }, {
-    key: "hide",
-    value: function hide() {
-      var _this6 = this;
-
-      clearTimeout(this.timeout), this.showing && (this.showing = !1, r(this.tooltip, {
-        finish: function finish() {
-          _this6.tooltip && (_this6.tooltip.hidden = !0);
-        }
-      }));
-    }
-  }, {
-    key: "afterDelay",
-    value: function afterDelay(t) {
-      clearTimeout(this.timeout);
-      var e = parseInt(this.getAttribute("delay") || "");
-      this.timeout = window.setTimeout(t.bind(this), isNaN(e) ? l.delay : e);
-    }
-  }, {
-    key: "createTooltip",
-    value: function createTooltip() {
-      return this.tooltip || (this.tooltip = document.createElement("div"), this.tooltip.className = this.getAttribute("tooltip-class") || l.tooltipClass, this.tooltip.hidden = !0, this.tooltip.addEventListener("mouseenter", this.show.bind(this)), this.tooltip.addEventListener("mouseleave", this.afterDelay.bind(this, this.hide)), document.body.appendChild(this.tooltip)), this.tooltip;
-    }
-  }]);
-
-  return l;
-}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
-
-l.delay = 100, l.placement = "top", l.tooltipClass = "tooltip";
-
-var c = /*#__PURE__*/function (_HTMLElement3) {
-  _inherits(c, _HTMLElement3);
-
-  var _super3 = _createSuper(c);
-
-  function c() {
-    var _this7;
-
-    _classCallCheck(this, c);
-
-    _this7 = _super3.apply(this, arguments), _this7.search = "", _this7.handleKeydown = function (t) {
-      if (!_this7.hidden) if ("ArrowUp" === t.key) _this7.navigate(-1), t.preventDefault();else if ("ArrowDown" === t.key) _this7.navigate(1), t.preventDefault();else {
-        if (t.key.length > 1) return;
-        if (t.ctrlKey || t.metaKey || t.altKey) return;
-        t.preventDefault(), _this7.search += t.key.toLowerCase(), clearTimeout(_this7.searchTimeout), _this7.searchTimeout = window.setTimeout(function () {
-          _this7.search = "";
-        }, c.searchDelay), _this7.focusableItems.some(function (t) {
-          var e;
-          if (0 === (null === (e = t.textContent) || void 0 === e ? void 0 : e.trim().toLowerCase().indexOf(_this7.search))) return t.focus(), !0;
-        });
-      }
-    };
-    return _this7;
-  }
-
-  _createClass(c, [{
-    key: "connectedCallback",
-    value: function connectedCallback() {
-      this.setAttribute("role", "menu"), Array.from(this.focusableItems).forEach(function (t) {
-        t.setAttribute("tabindex", "-1");
-      }), document.addEventListener("keydown", this.handleKeydown);
-    }
-  }, {
-    key: "disconnectedCallback",
-    value: function disconnectedCallback() {
-      document.removeEventListener("keydown", this.handleKeydown);
-    }
-  }, {
-    key: "navigate",
-    value: function navigate(t) {
-      var e = this.focusableItems;
-      var i = document.activeElement instanceof HTMLElement ? e.indexOf(document.activeElement) : -1;
-      i += t, i < 0 && (i = e.length - 1), i >= e.length && (i = 0), e[i] && e[i].focus();
-    }
-  }, {
-    key: "focusableItems",
-    get: function get() {
-      return Array.from(this.querySelectorAll("[role^=menuitem]"));
-    }
-  }]);
-
-  return c;
-}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
-
-c.searchDelay = 800;
-
-var u = /*#__PURE__*/function (_HTMLElement4) {
-  _inherits(u, _HTMLElement4);
-
-  var _super4 = _createSuper(u);
-
-  function u() {
-    var _this8;
-
-    _classCallCheck(this, u);
-
-    var t;
-    _this8 = _super4.call(this), _this8.inertCache = new Map();
-
-    var e = _this8.attachShadow({
-      mode: "open"
-    });
-
-    var i = document.createElement("template");
-    i.innerHTML = '<div part="backdrop" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0"></div><div part="content" style="z-index: 1"><slot></slot></div>', e.appendChild(i.content.cloneNode(!0)), null === (t = e.querySelector("[part=backdrop]")) || void 0 === t || t.addEventListener("click", function () {
-      _this8.hasAttribute("static") ? u.attention && u.attention(e.children[1]) : _this8.close();
-    });
-    return _this8;
-  }
-
-  _createClass(u, [{
-    key: "connectedCallback",
-    value: function connectedCallback() {
-      var _this9 = this;
-
-      this.firstElementChild && (this.firstElementChild.setAttribute("role", "dialog"), this.firstElementChild.setAttribute("aria-modal", "true"), this.firstElementChild.setAttribute("tabindex", "-1")), this.addEventListener("keydown", function (t) {
-        "Escape" !== t.key || _this9.hidden || (t.preventDefault(), t.stopPropagation(), _this9.close());
-      });
-    }
-  }, {
-    key: "open",
-    get: function get() {
-      return this.hasAttribute("open");
-    },
-    set: function set(t) {
-      t ? this.setAttribute("open", "") : this.removeAttribute("open");
-    }
-  }, {
-    key: "close",
-    value: function close() {
-      if (!this.open) return;
-      var t = new Event("beforeclose", {
-        cancelable: !0
-      });
-      this.dispatchEvent(t) && (this.open = !1);
-    }
-  }, {
-    key: "undoInert",
-    value: function undoInert() {
-      this.inertCache.forEach(function (t, e) {
-        e.inert = !1;
-      }), this.inertCache.clear();
-    }
-  }, {
-    key: "attributeChangedCallback",
-    value: function attributeChangedCallback(t, e, i) {
-      var _this10 = this;
-
-      var n, s, a;
-      if ("open" === t) if (null !== i) {
-        this.trigger = document.activeElement, this.hidden = !1, o(this);
-
-        var _t3 = this.querySelector("[autofocus]");
-
-        _t3 ? _t3.focus() : null === (n = this.firstElementChild) || void 0 === n || n.focus(), Array.from(document.body.children).filter(function (t) {
-          return t !== _this10;
-        }).forEach(function (t) {
-          _this10.inertCache.set(t, t.inert), t.inert = !0;
-        }), this.dispatchEvent(new Event("open"));
-      } else this.undoInert(), this.trigger && ("menuitem" === this.trigger.getAttribute("role") ? null === (a = null === (s = this.trigger.parentElement) || void 0 === s ? void 0 : s.previousElementSibling) || void 0 === a || a.focus() : this.trigger.focus()), r(this, {
-        finish: function finish() {
-          return _this10.hidden = !0;
-        }
-      }), this.dispatchEvent(new Event("close"));
-    }
-  }], [{
-    key: "observedAttributes",
-    get: function get() {
-      return ["open"];
-    }
-  }]);
-
-  return u;
-}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
-
-u.attention = function (t) {
-  return t.animate([{
-    transform: "scale(1)"
-  }, {
-    transform: "scale(1.1)"
-  }, {
-    transform: "scale(1)"
-  }], 300);
-};
-
-var m = /*#__PURE__*/function (_HTMLElement5) {
-  _inherits(m, _HTMLElement5);
-
-  var _super5 = _createSuper(m);
-
-  function m() {
-    var _this11;
-
-    _classCallCheck(this, m);
-
-    _this11 = _super5.apply(this, arguments), _this11.timeouts = new Map(), _this11.index = 0;
-    return _this11;
-  }
-
-  _createClass(m, [{
-    key: "connectedCallback",
-    value: function connectedCallback() {
-      this.setAttribute("role", "status"), this.setAttribute("aria-live", "polite"), this.setAttribute("aria-relevant", "additions");
-    }
-  }, {
-    key: "show",
-    value: function show(t) {
-      var _this12 = this;
-
-      var e = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var n = e.key || String(this.index++);
-      this.dismiss(n), t.dataset.key = n, i(this.children, function () {
-        _this12.append(t), o(t);
-      });
-      var s = void 0 !== e.duration ? Number(e.duration) : m.duration;
-      return s > 0 && (this.startTimeout(t, s), t.addEventListener("mouseenter", this.clearTimeout.bind(this, t)), t.addEventListener("focusin", this.clearTimeout.bind(this, t)), t.addEventListener("mouseleave", this.startTimeout.bind(this, t, s)), t.addEventListener("focusout", this.startTimeout.bind(this, t, s))), n;
-    }
-  }, {
-    key: "dismiss",
-    value: function dismiss(t) {
-      var _this13 = this;
-
-      if ("string" != typeof t) i(this.children, function () {
-        r(t, {
-          finish: function finish() {
-            return _this13.removeChild(t);
-          }
-        });
-      }), this.clearTimeout(t);else {
-        var _e6 = this.querySelector("[data-key=\"".concat(t, "\"]"));
-
-        _e6 && this.dismiss(_e6);
-      }
-    }
-  }, {
-    key: "clear",
-    value: function clear() {
-      var _iterator = _createForOfIteratorHelper(this.children),
-          _step;
-
-      try {
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var _t4 = _step.value;
-          this.dismiss(_t4);
-        }
-      } catch (err) {
-        _iterator.e(err);
-      } finally {
-        _iterator.f();
-      }
-    }
-  }, {
-    key: "speak",
-    value: function speak(t) {
-      var e = document.createElement("div");
-      Object.assign(e.style, {
-        clip: "rect(0 0 0 0)",
-        clipPath: "inset(50%)",
-        height: "1px",
-        overflow: "hidden",
-        position: "absolute",
-        whiteSpace: "nowrap",
-        width: "1px"
-      }), e.textContent = t, this.show(e);
-    }
-  }, {
-    key: "startTimeout",
-    value: function startTimeout(t, e) {
-      var _this14 = this;
-
-      this.clearTimeout(t), this.timeouts.set(t, window.setTimeout(function () {
-        _this14.dismiss(t);
-      }, e));
-    }
-  }, {
-    key: "clearTimeout",
-    value: function (_clearTimeout) {
-      function clearTimeout(_x) {
-        return _clearTimeout.apply(this, arguments);
-      }
-
-      clearTimeout.toString = function () {
-        return _clearTimeout.toString();
-      };
-
-      return clearTimeout;
-    }(function (t) {
-      this.timeouts.has(t) && clearTimeout(this.timeouts.get(t));
-    })
-  }]);
-
-  return m;
-}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
-
-m.duration = 1e4;
+/* harmony import */ var hello_goodbye__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! hello-goodbye */ "./node_modules/hello-goodbye/dist/index.es.js");
+/* harmony import */ var tabbable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tabbable */ "./node_modules/inclusive-elements/node_modules/tabbable/dist/index.esm.js");
+/* harmony import */ var focus_trap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! focus-trap */ "./node_modules/inclusive-elements/node_modules/focus-trap/dist/focus-trap.esm.js");
+/* harmony import */ var _floating_ui_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @floating-ui/dom */ "./node_modules/@floating-ui/dom/dist/floating-ui.dom.esm.development.js");
+/* harmony import */ var _floating_ui_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @floating-ui/dom */ "./node_modules/@floating-ui/core/dist/floating-ui.core.esm.development.js");
+class l extends HTMLElement{static duration=1e4;timeouts=new Map;index=0;connectedCallback(){this.hasAttribute("role")||this.setAttribute("role","status"),this.hasAttribute("aria-live")||this.setAttribute("aria-live","polite"),this.hasAttribute("aria-relevant")||this.setAttribute("aria-relevant","additions")}show(i,s={}){const n=s.key||String(this.index++);this.dismiss(n),i.dataset.key=n,(0,hello_goodbye__WEBPACK_IMPORTED_MODULE_0__.move)(this.children,(()=>{this.append(i),(0,hello_goodbye__WEBPACK_IMPORTED_MODULE_0__.hello)(i)}));const o=void 0!==s.duration?Number(s.duration):l.duration;return o>0&&(this.startTimeout(i,o),i.addEventListener("mouseenter",this.clearTimeout.bind(this,i)),i.addEventListener("focusin",this.clearTimeout.bind(this,i)),i.addEventListener("mouseleave",this.startTimeout.bind(this,i,o)),i.addEventListener("focusout",this.startTimeout.bind(this,i,o))),n}dismiss(e){if("string"!=typeof e)(0,hello_goodbye__WEBPACK_IMPORTED_MODULE_0__.move)(this.children,(()=>{(0,hello_goodbye__WEBPACK_IMPORTED_MODULE_0__.goodbye)(e,{finish:()=>this.removeChild(e)})})),this.clearTimeout(e);else{const t=this.querySelector(`[data-key="${e}"]`);t&&this.dismiss(t)}}clear(){for(const t of this.children)this.dismiss(t)}speak(t){const e=document.createElement("div");Object.assign(e.style,{clip:"rect(0 0 0 0)",clipPath:"inset(50%)",height:"1px",overflow:"hidden",position:"absolute",whiteSpace:"nowrap",width:"1px"}),e.textContent=t,this.show(e)}startTimeout(t,e){this.clearTimeout(t),this.timeouts.set(t,window.setTimeout((()=>{this.dismiss(t)}),e))}clearTimeout(t){this.timeouts.has(t)&&clearTimeout(this.timeouts.get(t))}}class u extends HTMLElement{static searchDelay=800;search="";searchTimeout;connectedCallback(){this.hasAttribute("role")||this.setAttribute("role","menu"),this.hasAttribute("tabindex")||this.setAttribute("tabindex","-1"),this.items.forEach((t=>{t.hasAttribute("tabindex")||t.setAttribute("tabindex","-1")})),this.addEventListener("keydown",this.onKeyDown)}disconnectedCallback(){this.removeEventListener("keydown",this.onKeyDown)}get items(){return Array.from(this.querySelectorAll("[role^=menuitem]")).filter((t=>(0,tabbable__WEBPACK_IMPORTED_MODULE_1__.isFocusable)(t)))}onKeyDown=t=>{if(!this.hidden)return"ArrowUp"===t.key?(this.navigate(-1),void t.preventDefault()):"ArrowDown"===t.key?(this.navigate(1),void t.preventDefault()):void(t.key.length>1||t.ctrlKey||t.metaKey||t.altKey||(this.search+=t.key.toLowerCase(),t.preventDefault(),clearTimeout(this.searchTimeout),this.searchTimeout=window.setTimeout((()=>{this.search=""}),u.searchDelay),this.items.some((t=>{if(0===t.textContent?.trim().toLowerCase().indexOf(this.search))return t.focus(),!0}))))};navigate(t){const e=this.items;let i=(document.activeElement instanceof HTMLElement?e.indexOf(document.activeElement):-1)+t;i<0&&(i=e.length-1),i>=e.length&&(i=0),e[i]?.focus()}}class p extends HTMLElement{static attention=t=>t.animate([{transform:"scale(1)"},{transform:"scale(1.1)"},{transform:"scale(1)"}],300);static get observedAttributes(){return["open"]}trigger;focusTrap;constructor(){super();const t=document.createElement("template");t.innerHTML='\n            <div part="backdrop" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0"></div>\n            <div part="content" style="z-index: 1"><slot></slot></div>\n        ';const e=this.attachShadow({mode:"open"});e.appendChild(t.content.cloneNode(!0)),this.backdrop.addEventListener("click",(()=>{this.hasAttribute("static")?p.attention?.(e.children[1]):this.close()})),this.focusTrap=(0,focus_trap__WEBPACK_IMPORTED_MODULE_2__.createFocusTrap)(this,{escapeDeactivates:!1,allowOutsideClick:!0})}connectedCallback(){this.content?.hasAttribute("role")||this.content?.setAttribute("role","dialog"),this.content?.hasAttribute("aria-modal")||this.content?.setAttribute("aria-modal","true"),this.content?.hasAttribute("tabindex")||this.content?.setAttribute("tabindex","-1"),this.addEventListener("keydown",(t=>{"Escape"===t.key&&this.open&&(t.preventDefault(),t.stopPropagation(),this.close())})),this.open&&this.focusContent()}get open(){return this.hasAttribute("open")}set open(t){t?this.setAttribute("open",""):this.removeAttribute("open")}close(){if(!this.open)return;const t=new Event("beforeclose",{cancelable:!0});this.dispatchEvent(t)&&(this.open=!1)}attributeChangedCallback(t,e,i){"open"===t&&(null!==i?this.wasOpened():this.wasClosed())}wasOpened(){this.trigger=document.activeElement,this.hidden=!1,(0,hello_goodbye__WEBPACK_IMPORTED_MODULE_0__.hello)(this),this.focusTrap.activate(),this.focusContent(),this.dispatchEvent(new Event("open"))}wasClosed(){this.focusTrap.deactivate(),this.trigger?.focus(),(0,hello_goodbye__WEBPACK_IMPORTED_MODULE_0__.goodbye)(this,{finish:()=>this.hidden=!0}),this.dispatchEvent(new Event("close"))}focusContent(){const t=this.querySelector("[autofocus]");t?t.focus():this.content?.focus()}get backdrop(){return this.shadowRoot?.firstElementChild}get content(){return this.firstElementChild}}class m extends HTMLElement{static get observedAttributes(){return["open"]}constructor(){super();const t=document.createElement("template");t.innerHTML='\n            <div part="backdrop" hidden style="position: fixed; top: 0; left: 0; right: 0; bottom: 0"></div>\n            <slot></slot>\n        ';this.attachShadow({mode:"open"}).appendChild(t.content.cloneNode(!0)),this.backdrop.onclick=()=>this.open=!1}connectedCallback(){this.backdrop.hidden=!0,this.content.hidden=!0,this.open=!1,this.button.setAttribute("aria-expanded","false"),setTimeout((()=>{"menu"===this.content.getAttribute("role")&&this.button.setAttribute("aria-haspopup","true")})),this.button.addEventListener("click",(()=>{this.open=!this.open})),this.button.addEventListener("keydown",(t=>{"ArrowDown"===t.key&&(t.preventDefault(),this.open=!0,(0,tabbable__WEBPACK_IMPORTED_MODULE_1__.focusable)(this.content)[0]?.focus())})),this.addEventListener("keydown",(t=>{"Escape"===t.key&&this.open&&(t.preventDefault(),t.stopPropagation(),this.open=!1,this.button.focus())})),this.addEventListener("focusout",(t=>{t.relatedTarget instanceof Node&&this.contains(t.relatedTarget)||(this.open=!1)})),this.content.addEventListener("click",(t=>{t.target instanceof Element&&t.target.closest("[role=menuitem], [role=menuitemradio]")&&(this.open=!1,this.button.focus())}))}disconnectedCallback(){(0,hello_goodbye__WEBPACK_IMPORTED_MODULE_0__.cancel)(this.backdrop),(0,hello_goodbye__WEBPACK_IMPORTED_MODULE_0__.cancel)(this.content)}get open(){return this.hasAttribute("open")}set open(t){t?this.setAttribute("open",""):this.removeAttribute("open")}attributeChangedCallback(t,e,i){"open"===t&&(null!==i?this.wasOpened():this.wasClosed())}wasOpened(){if(!this.content.hidden)return;this.content.hidden=!1,this.backdrop.hidden=!1,(0,hello_goodbye__WEBPACK_IMPORTED_MODULE_0__.hello)(this.content),(0,hello_goodbye__WEBPACK_IMPORTED_MODULE_0__.hello)(this.backdrop),this.button.setAttribute("aria-expanded","true"),this.content.style.position="absolute",(0,_floating_ui_dom__WEBPACK_IMPORTED_MODULE_3__.computePosition)(this.button,this.content,{placement:this.getAttribute("placement")||"bottom",middleware:[(0,_floating_ui_dom__WEBPACK_IMPORTED_MODULE_4__.shift)(),(0,_floating_ui_dom__WEBPACK_IMPORTED_MODULE_4__.flip)(),(0,_floating_ui_dom__WEBPACK_IMPORTED_MODULE_4__.size)()]}).then((({x:t,y:e,placement:i})=>{Object.assign(this.content.style,{left:`${t}px`,top:`${e}px`}),this.content.dataset.placement=i}));const t=this.content.querySelector("[autofocus]");t?t.focus():this.content.focus(),this.dispatchEvent(new Event("open"))}wasClosed(){this.content.hidden||(this.button.setAttribute("aria-expanded","false"),(0,hello_goodbye__WEBPACK_IMPORTED_MODULE_0__.goodbye)(this.backdrop,{finish:()=>this.backdrop.hidden=!0}),(0,hello_goodbye__WEBPACK_IMPORTED_MODULE_0__.goodbye)(this.content,{finish:()=>this.content.hidden=!0}),this.dispatchEvent(new Event("close")))}get backdrop(){return this.shadowRoot?.firstElementChild}get button(){return this.children[0]}get content(){return this.children[1]}}class b extends HTMLElement{connectedCallback(){this.hasAttribute("role")||this.setAttribute("role","toolbar"),this.setAttribute("tabindex","0"),this.addEventListener("focus",this.onInitialFocus,{once:!0}),this.addEventListener("keydown",this.onKeyDown)}disconnectedCallback(){this.removeEventListener("keydown",this.onKeyDown)}onInitialFocus=t=>{this.removeAttribute("tabindex"),this.focusControlAtIndex(0)};onKeyDown=t=>{if("ArrowRight"!==t.key&&"ArrowLeft"!==t.key&&"Home"!==t.key&&"End"!==t.key)return;const e=this.controls,i=this.controls.length,s=e.indexOf(t.target);if(-1===s)return;let n=0;"ArrowLeft"===t.key&&(n=s-1),"ArrowRight"===t.key&&(n=s+1),"End"===t.key&&(n=i-1),n<0&&(n=i-1),n>i-1&&(n=0),this.focusControlAtIndex(n),t.preventDefault()};focusControlAtIndex(t){this.controls.forEach(((e,i)=>{i===t?(e.setAttribute("tabindex","0"),e.focus()):e.setAttribute("tabindex","-1")}))}get controls(){return (0,tabbable__WEBPACK_IMPORTED_MODULE_1__.focusable)(this)}}class v extends HTMLElement{static delay=100;static placement="top";static tooltipClass="tooltip";parent;tooltip;timeout;observer;showing=!1;onMouseEnter=this.afterDelay.bind(this,this.show);onFocus=this.show.bind(this);onMouseLeave=this.afterDelay.bind(this,this.hide);onBlur=this.hide.bind(this);connectedCallback(){this.parent=this.parentNode,this.parent&&(this.parent.addEventListener("mouseenter",this.onMouseEnter),this.parent.addEventListener("focus",this.onFocus),this.parent.addEventListener("mouseleave",this.onMouseLeave),this.parent.addEventListener("blur",this.onBlur),this.parent.addEventListener("click",this.onBlur),this.observer=new MutationObserver((t=>{t.forEach((t=>{"disabled"===t.attributeName&&this.hide()}))})),this.observer.observe(this.parent,{attributes:!0})),document.addEventListener("keydown",this.onKeyDown),document.addEventListener("scroll",this.onBlur)}disconnectedCallback(){this.tooltip&&(this.tooltip.remove(),this.tooltip=void 0),this.parent&&(this.parent.removeEventListener("mouseenter",this.onMouseEnter),this.parent.removeEventListener("focus",this.onFocus),this.parent.removeEventListener("mouseleave",this.onMouseLeave),this.parent.removeEventListener("blur",this.onBlur),this.parent.removeEventListener("click",this.onBlur),this.parent=void 0),document.removeEventListener("keydown",this.onKeyDown),document.removeEventListener("scroll",this.onBlur),this.observer.disconnect()}get disabled(){return this.hasAttribute("disabled")}set disabled(t){t?this.setAttribute("disabled",""):this.removeAttribute("disabled")}onKeyDown=t=>{"Escape"===t.key&&this.hide()};show(){if(this.disabled)return;const t=this.createTooltip();clearTimeout(this.timeout),this.showing||(t.hidden=!1,(0,hello_goodbye__WEBPACK_IMPORTED_MODULE_0__.hello)(t),this.showing=!0),t.innerHTML!==this.innerHTML&&(t.innerHTML=this.innerHTML),t.style.position="absolute",(0,_floating_ui_dom__WEBPACK_IMPORTED_MODULE_3__.computePosition)(this.parent,t,{placement:this.getAttribute("placement")||v.placement,middleware:[(0,_floating_ui_dom__WEBPACK_IMPORTED_MODULE_4__.shift)(),(0,_floating_ui_dom__WEBPACK_IMPORTED_MODULE_4__.flip)()]}).then((({x:e,y:i,placement:s})=>{Object.assign(t.style,{left:`${e}px`,top:`${i}px`}),t.dataset.placement=s}))}hide(){clearTimeout(this.timeout),this.showing&&(this.showing=!1,(0,hello_goodbye__WEBPACK_IMPORTED_MODULE_0__.goodbye)(this.tooltip,{finish:()=>{this.tooltip&&(this.tooltip.hidden=!0)}}))}afterDelay(t){clearTimeout(this.timeout);const e=parseInt(this.getAttribute("delay")||"");this.timeout=window.setTimeout(t.bind(this),isNaN(e)?v.delay:e)}createTooltip(){return this.tooltip||(this.tooltip=document.createElement("div"),this.tooltip.className=this.getAttribute("tooltip-class")||v.tooltipClass,this.tooltip.hidden=!0,this.tooltip.addEventListener("mouseenter",this.show.bind(this)),this.tooltip.addEventListener("mouseleave",this.afterDelay.bind(this,this.hide)),document.body.appendChild(this.tooltip)),this.tooltip}}
 
 
 /***/ })
@@ -19402,50 +20669,13 @@ var __webpack_exports__ = {};
   !*** ./resources/js/index.ts ***!
   \*******************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _github_hotkey__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @github/hotkey */ "./node_modules/@github/hotkey/dist/index.js");
-/* harmony import */ var _github_text_expander_element__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @github/text-expander-element */ "./node_modules/@github/text-expander-element/dist/index.js");
-/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
-/* harmony import */ var _hotwired_turbo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @hotwired/turbo */ "./node_modules/@hotwired/turbo/dist/turbo.es2017-esm.js");
-/* harmony import */ var inclusive_elements__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! inclusive-elements */ "../../../packages/inclusive-elements/dist/index.js");
-/* harmony import */ var morphdom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! morphdom */ "./node_modules/morphdom/dist/morphdom-esm.js");
-/* harmony import */ var wicg_inert__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! wicg-inert */ "./node_modules/wicg-inert/dist/inert.esm.js");
-/* harmony import */ var wicg_inert__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(wicg_inert__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _bootstrap__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
-
-
-var __awaiter = undefined && undefined.__awaiter || function (thisArg, _arguments, P, generator) {
-  function adopt(value) {
-    return value instanceof P ? value : new P(function (resolve) {
-      resolve(value);
-    });
-  }
-
-  return new (P || (P = Promise))(function (resolve, reject) {
-    function fulfilled(value) {
-      try {
-        step(generator.next(value));
-      } catch (e) {
-        reject(e);
-      }
-    }
-
-    function rejected(value) {
-      try {
-        step(generator["throw"](value));
-      } catch (e) {
-        reject(e);
-      }
-    }
-
-    function step(result) {
-      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-    }
-
-    step((generator = generator.apply(thisArg, _arguments || [])).next());
-  });
-};
+/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
+/* harmony import */ var _hotwired_stimulus_webpack_helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @hotwired/stimulus-webpack-helpers */ "./node_modules/@hotwired/stimulus-webpack-helpers/dist/stimulus-webpack-helpers.js");
+/* harmony import */ var _bootstrap_alerts__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./bootstrap/alerts */ "./resources/js/bootstrap/alerts.ts");
+/* harmony import */ var _bootstrap_custom_elements__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./bootstrap/custom-elements */ "./resources/js/bootstrap/custom-elements.ts");
+/* harmony import */ var _bootstrap_echo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./bootstrap/echo */ "./resources/js/bootstrap/echo.ts");
+/* harmony import */ var _bootstrap_hotkeys__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./bootstrap/hotkeys */ "./resources/js/bootstrap/hotkeys.ts");
+/* harmony import */ var _bootstrap_turbo__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./bootstrap/turbo */ "./resources/js/bootstrap/turbo.ts");
 
 
 
@@ -19453,161 +20683,8 @@ var __awaiter = undefined && undefined.__awaiter || function (thisArg, _argument
 
 
 
-
- // import { persistResumableFields, restoreResumableFields, setForm } from '@github/session-resume';
-//
-// let pageId: string;
-//
-// function updatePageId() {
-//     pageId = window.location.pathname;
-// }
-//
-// Listen for all form submit events and to see if their default submission
-// behavior is invoked.
-// window.addEventListener('submit', setForm, { capture: true });
-//
-// window.addEventListener('pageshow', updatePageId);
-// window.addEventListener('pagehide', updatePageId);
-// window.addEventListener('turbo:load', updatePageId);
-//
-//
-// const restore = (e: Event) => {
-//     restoreResumableFields(pageId);
-// };
-// window.addEventListener('pageshow', restore);
-// window.addEventListener('turbo:load', restore);
-//
-// const persist = (e: Event) => {
-//     persistResumableFields(pageId);
-// };
-// window.addEventListener('turbo:before-visit', persist);
-// window.addEventListener('popstate', persist);
-// window.addEventListener('pagehide', persist);
-
-_hotwired_turbo__WEBPACK_IMPORTED_MODULE_4__.start();
-window.Turbo = _hotwired_turbo__WEBPACK_IMPORTED_MODULE_4__;
-document.addEventListener('turbo:submit-start', function (e) {
-  var _a;
-
-  var submitter = e.detail.formSubmission.submitter;
-  if (!submitter) return;
-  submitter.disabled = true;
-  var popupButton = (_a = submitter.closest('ui-popup')) === null || _a === void 0 ? void 0 : _a.children[0];
-
-  if (popupButton) {
-    popupButton.disabled = true;
-  }
-});
-document.addEventListener('turbo:submit-end', function (e) {
-  var _a;
-
-  var submitter = e.detail.formSubmission.submitter;
-  if (!submitter) return;
-  submitter.disabled = false;
-  var popupButton = (_a = submitter.closest('ui-popup')) === null || _a === void 0 ? void 0 : _a.children[0];
-
-  if (popupButton) {
-    popupButton.disabled = false;
-  }
-});
-document.addEventListener('turbo:before-fetch-response', function (e) {
-  return __awaiter(void 0, void 0, void 0, /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-    var _a, _b, _c, response, alerts, alert;
-
-    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            response = e.detail.fetchResponse;
-            alerts = document.getElementById('alerts');
-
-            if (response.statusCode >= 400 && response.statusCode !== 422 && response.statusCode <= 599) {
-              alert = (_c = (_b = (_a = document.getElementById('fetch-error')) === null || _a === void 0 ? void 0 : _a.content) === null || _b === void 0 ? void 0 : _b.firstElementChild) === null || _c === void 0 ? void 0 : _c.cloneNode(true);
-
-              if (alert) {
-                alerts.show(alert, {
-                  key: 'fetchError',
-                  duration: -1
-                });
-              }
-
-              e.preventDefault();
-            } else {
-              alerts.dismiss('fetchError');
-            }
-
-          case 3:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee);
-  }));
-});
-document.addEventListener('turbo:before-stream-render', function (e) {
-  var stream = e.target;
-
-  if (stream.action === 'replace') {
-    e.preventDefault();
-    stream.targetElements.forEach(function (el) {
-      (0,morphdom__WEBPACK_IMPORTED_MODULE_5__["default"])(el, stream.templateContent.firstElementChild);
-    });
-  }
-});
-document.addEventListener('turbo:load', function () {
-  document.querySelectorAll('[data-hotkey]').forEach(function (el) {
-    (0,_github_hotkey__WEBPACK_IMPORTED_MODULE_1__.install)(el);
-  });
-});
-document.addEventListener('turbo:frame-missing', function (_ref) {
-  var fetchResponse = _ref.detail.fetchResponse;
-  return __awaiter(void 0, void 0, void 0, /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-    var location, redirected, statusCode, responseHTML, response;
-    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            location = fetchResponse.location, redirected = fetchResponse.redirected, statusCode = fetchResponse.statusCode, responseHTML = fetchResponse.responseHTML;
-            _context2.t0 = redirected;
-            _context2.t1 = statusCode;
-            _context2.next = 5;
-            return responseHTML;
-
-          case 5:
-            _context2.t2 = _context2.sent;
-            response = {
-              redirected: _context2.t0,
-              statusCode: _context2.t1,
-              responseHTML: _context2.t2
-            };
-            _hotwired_turbo__WEBPACK_IMPORTED_MODULE_4__.visit(location, {
-              response: response
-            });
-
-          case 8:
-          case "end":
-            return _context2.stop();
-        }
-      }
-    }, _callee2);
-  }));
-});
-window.Stimulus = _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_3__.Application.start();
-
-var context = __webpack_require__("./resources/js/controllers sync recursive \\.ts$");
-
-window.Stimulus.load(context.keys().map(function (key) {
-  return {
-    identifier: (key.match(/^(?:\.\/)?(.+)(\..+?)$/) || [])[1],
-    controllerConstructor: context(key)["default"]
-  };
-}));
-window.customElements.define('ui-popup', inclusive_elements__WEBPACK_IMPORTED_MODULE_8__.PopupElement);
-window.customElements.define('ui-menu', inclusive_elements__WEBPACK_IMPORTED_MODULE_8__.MenuElement);
-window.customElements.define('ui-modal', inclusive_elements__WEBPACK_IMPORTED_MODULE_8__.ModalElement);
-window.customElements.define('ui-tooltip', inclusive_elements__WEBPACK_IMPORTED_MODULE_8__.TooltipElement);
-window.customElements.define('ui-alerts', inclusive_elements__WEBPACK_IMPORTED_MODULE_8__.AlertsElement);
-window.Waterhole.alerts = document.getElementById('alerts');
+window.Stimulus = _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Application.start();
+window.Stimulus.load((0,_hotwired_stimulus_webpack_helpers__WEBPACK_IMPORTED_MODULE_1__.definitionsFromContext)(__webpack_require__("./resources/js/controllers sync recursive \\.ts$")));
 })();
 
 /******/ })()

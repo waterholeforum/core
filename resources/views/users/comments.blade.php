@@ -1,4 +1,4 @@
-<x-waterhole::user-profile :user="$user" :title="$user->name.'\'s '.$comments->currentSort()->name().' Comments'">
+<x-waterhole::user-profile :user="$user" :title="$user->name.'\'s '.$comments->currentFilter()->label().' Comments'">
     <div class="stack-lg">
         <div class="toolbar">
             <x-waterhole::feed-sort :feed="$comments"/>

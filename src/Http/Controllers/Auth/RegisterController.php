@@ -6,10 +6,8 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\User;
-use Waterhole\Providers\RouteServiceProvider;
 
 class RegisterController extends Controller
 {
@@ -20,6 +18,8 @@ class RegisterController extends Controller
 
     public function showRegistrationForm(Request $request)
     {
+        // Copy any URL passed in the `return` query parameter into the session
+        // so that after the registration is complete we can redirect back to it.
         if (! session()->has('url.intended')) {
             session()->put('url.intended', $request->query('return', url()->previous()));
         }
@@ -41,6 +41,6 @@ class RegisterController extends Controller
 
         // Remove the fragment so that the email verification notice at the top
         // of the page is visible.
-        return redirect()->intended(RouteServiceProvider::HOME)->withoutFragment();
+        return redirect()->intended(route('waterhole.home'))->withoutFragment();
     }
 }

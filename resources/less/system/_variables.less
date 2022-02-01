@@ -12,8 +12,8 @@
   --color-bg-translucent: rgba(255, 255, 255, 0.9);
   --color-bg-transparent: rgba(255, 255, 255, 0);
 
-  --color-fill: ~"hsla(var(--base-h), var(--base-s), 90%, 0.4)";
-  --color-stroke: ~"hsla(var(--base-h), var(--base-s), 70%, 0.4)";
+  --color-fill: ~"hsla(var(--base-h), var(--base-s), 50%, 0.1)";
+  --color-stroke: ~"hsla(var(--base-h), var(--base-s), 50%, 0.25)";
 
   --color-text: #000;
   --color-text-muted: ~"hsl(var(--base-h), calc(var(--base-s) / 2), 50%)";
@@ -27,7 +27,7 @@
 
   --color-accent: ~"hsl(var(--accent-hsl))";
   --color-accent-contrast: #fff;
-  //--color-accent-light: ~"hsla(var(--accent-hsl), 0.1)";
+  //--color-accent-light: ~"hsla(var(--accent-hsl), 0.2)";
   --color-accent-light: #08FFE7;
 
   --color-info: #FFFFB2;
@@ -87,24 +87,34 @@
   --z-index-alerts: 300;
 
   // Font size
-  --text-xxs: .75rem; // rem so it doesn't get too small
-  --text-xs: .875em;
-  --text-sm: 1em;
-  --text-md: 1.125em;
-  --text-lg: 1.5em;
-  --text-xl: 2em;
-  --text-xxl: 2.5em;
-  --text-xxxl: 3em;
+  --text-xxs: .8rem; // rem so it doesn't get too small
+  --text-xs: .875rem;
+  --text-sm: 1rem;
+  --text-md: 1.125rem;
+  --text-lg: 1.5rem;
+  --text-xl: 2rem;
+  --text-xxl: 2.5rem;
+  --text-xxxl: 3rem;
 
   // Spacing
-  --space-xxs: .25rem;
-  --space-xs: .5rem;
-  --space-sm: .75rem;
+  //--space-xxs: .25rem;
+  //--space-xs: .5rem;
+  //--space-sm: .75rem;
+  //--space-md: 1rem;
+  //--space-lg: 1.5rem;
+  //--space-xl: 2rem;
+  //--space-xxl: 2.5rem;
+  //--space-xxxl: 3rem;
+
+  --ratio: 1.5;
+  --space-xxs: ~"calc(var(--space-xs) / var(--ratio))";
+  --space-xs: ~"calc(var(--space-sm) / var(--ratio))";
+  --space-sm: ~"calc(var(--space-md) / var(--ratio))";
   --space-md: 1rem;
-  --space-lg: 1.5rem;
-  --space-xl: 2rem;
-  --space-xxl: 2.5rem;
-  --space-xxxl: 3rem;
+  --space-lg: ~"calc(var(--space-md) * var(--ratio))";
+  --space-xl: ~"calc(var(--space-lg) * var(--ratio))";
+  --space-xxl: ~"calc(var(--space-xl) * var(--ratio))";
+  --space-xxxl: ~"calc(var(--space-xxl) * var(--ratio))";
 
   --control-height: 2.5em;
   --control-height-small: 2em;
@@ -126,7 +136,7 @@
 
   --accent-l: 75%;
   --color-accent-contrast: #222;
-  --color-accent-light: #000;
+  --color-accent-light: #004146;
 
   --shadow-sm: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 1px 4px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 5px 15px rgba(0, 0, 0, 0.2);

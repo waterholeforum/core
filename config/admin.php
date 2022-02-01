@@ -2,7 +2,27 @@
 
 return [
 
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Panel Path
+    |--------------------------------------------------------------------------
+    |
+    | This is the URI path where the Waterhole Admin Panel will be accessible
+    | from. Feel free to change this path to anything you like.
+    |
+    */
+
     'path' => 'admin',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Dashboard Widgets
+    |--------------------------------------------------------------------------
+    |
+    | Here you may define any number of dashboard widgets. You're free to
+    | use the same widget multiple times in different configurations.
+    |
+    */
 
     'widgets' => [
         [

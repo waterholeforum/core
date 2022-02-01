@@ -2,21 +2,19 @@
 
 namespace Waterhole\Extend;
 
-use Waterhole\Extend\Concerns\ManagesComponents;
+use Waterhole\Extend\Concerns\OrderedList;
 use Waterhole\Views\Components\PostReactionsCondensed;
 use Waterhole\Views\Components\PostReplies;
 use Waterhole\Views\Components\PostSummary;
 
-class PostListItem
+/**
+ * A list of components to render for each post in the "list" layout.
+ */
+abstract class PostListItem
 {
-    use ManagesComponents;
-
-    protected static function defaultComponents(): array
-    {
-        return [
-            PostSummary::class,
-            PostReactionsCondensed::class,
-            PostReplies::class,
-        ];
-    }
+    use OrderedList;
 }
+
+PostListItem::add('summary', PostSummary::class);
+PostListItem::add('reactions', PostReactionsCondensed::class);
+PostListItem::add('replies', PostReplies::class);

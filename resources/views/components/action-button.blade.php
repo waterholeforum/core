@@ -1,6 +1,6 @@
 @php
-    $actionable = Waterhole\Extend\Actionable::getActionable($for);
-    $action = collect(Waterhole\Extend\Action::for([$for]))
+    $actionable = Waterhole\Extend\Actionables::getActionableName($for);
+    $action = collect(Waterhole\Extend\Actions::for([$for]))
         ->filter(fn($a) => $a instanceof $action)
         ->first();
 @endphp
@@ -17,7 +17,7 @@
             <input type="hidden" name="return" value="{{ $return }}">
         @endisset
 
-        {{ $action->render(collect([$for]), $attributes) }}
+        {{ $action->render(collect([$for]), $attributes->getAttributes()) }}
     </form>
 
     {{ $after ?? '' }}

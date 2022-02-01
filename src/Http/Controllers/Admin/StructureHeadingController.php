@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\StructureHeading;
 
+/**
+ * Controller for admin structure heading management (create and update).
+ *
+ * Deletion is handled by the DeleteStructure action.
+ */
 class StructureHeadingController extends Controller
 {
     public function create()

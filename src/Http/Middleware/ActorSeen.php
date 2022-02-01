@@ -5,21 +5,20 @@ namespace Waterhole\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
+/**
+ * Middleware to save the actor's "last seen" time so that we can use it to show
+ * them what content is new since their last visit.
+ */
 class ActorSeen
 {
-    /**
-     * Save the actor's "last seen" time so that we can use it to show
-     * them what content is new since their last visit. Then update it.
-     */
     public function handle(Request $request, Closure $next)
     {
-        if (
-            ($actor = $request->user())
-            && (
-                ! $request->session()->has('previously_seen_at')
-                || $request->has('update_previously_seen_at')
-            )
-        ) {
+        $actor = $request->user();
+
+        if ($actor && (
+            ! $request->session()->has('previously_seen_at')
+            || $request->has('update_previously_seen_at')
+        )) {
             $request->session()->put('previously_seen_at', $actor->last_seen_at);
         }
 

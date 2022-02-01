@@ -1,3 +1,20 @@
+/*
+Alerts
+
+Alerts visually highlight important content for the user. They can contain an icon, a message, and actions.
+
+Markup:
+<div class="alert {{.modifier}}">
+  <svg class="alert__icon"><!-- ... --></svg>
+  <div class="alert__message">Something happened!</div>
+  <div class="alert__actions">
+
+  </div>
+</div>
+
+Styleguide card
+*/
+
 .alert {
   border-radius: var(--border-radius);
   padding: var(--space-xs) var(--space-md);
@@ -5,49 +22,6 @@
   background: var(--color-fill);
   display: flex;
   align-items: flex-start;
-
-  &.inline {
-    display: inline-flex;
-  }
-}
-
-.alert--lg {
-  padding: var(--space-md);
-}
-
-.alert--xl {
-  padding: var(--space-lg);
-
-  .alert__icon {
-    font-size: var(--text-xl);
-    margin-right: var(--space-lg);
-
-    path {
-      stroke-width: 1.5px;
-    }
-  }
-}
-
-.alert--danger {
-  background: var(--color-danger);
-  color: var(--color-danger-contrast);
-  font-weight: var(--font-weight-medium);
-
-  --color-text: var(--color-danger-contrast);
-  --color-text-muted: var(--color-danger-contrast);
-}
-
-.alert--info {
-  background: var(--color-info);
-}
-
-.alert--success {
-  background: var(--color-success);
-  color: var(--color-success-contrast);
-  font-weight: var(--font-weight-medium);
-
-  --color-text: var(--color-success-contrast);
-  --color-text-muted: var(--color-success-contrast);
 }
 
 .alert__icon {
@@ -71,6 +45,52 @@
   margin-left: var(--space-md);
   font-size: var(--text-xs);
 }
+
+
+// Sizes
+
+.alert--lg {
+  padding: var(--space-md);
+}
+
+.alert--xl {
+  padding: var(--space-lg);
+
+  .alert__icon {
+    font-size: var(--text-xl);
+    margin-right: var(--space-lg);
+
+    path {
+      stroke-width: 1.5px;
+    }
+  }
+}
+
+// Colors
+
+.alert--info {
+  background: var(--color-info);
+}
+
+.alert--danger {
+  background: var(--color-danger);
+  color: var(--color-danger-contrast);
+  font-weight: var(--font-weight-medium);
+
+  --color-text: var(--color-danger-contrast);
+  --color-text-muted: var(--color-danger-contrast);
+}
+
+.alert--success {
+  background: var(--color-success);
+  color: var(--color-success-contrast);
+  font-weight: var(--font-weight-medium);
+
+  --color-text: var(--color-success-contrast);
+  --color-text-muted: var(--color-success-contrast);
+}
+
+// Notification Alerts
 
 .alert--notification {
   max-width: 50ch;

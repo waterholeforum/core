@@ -2,16 +2,12 @@
 
 namespace Waterhole\Extend;
 
-use Waterhole\Extend\Concerns\ManagesComponents;
+use Waterhole\Extend\Concerns\OrderedList;
 
-class DocumentHead
+/**
+ * A list of components to render in the document <head>.
+ */
+abstract class DocumentHead
 {
-    use ManagesComponents;
-
-    protected static function defaultComponents(): array
-    {
-        return [
-            //
-        ];
-    }
+    use OrderedList;
 }

@@ -1,5 +1,5 @@
 <x-waterhole::admin title="Structure">
-    <div class="stack-md" data-controller="admin-structure dragon-nest">
+    <div class="stack-md" data-controller="form dragon-nest">
 {{--        <x-waterhole::alert type="info" class="alert--xl" icon="heroicon-o-collection">--}}
 {{--            <div class="content">--}}
 {{--                <h3>Giving your forum structure</h3>--}}
@@ -44,15 +44,14 @@
             class="card admin-structure"
             role="list"
             data-dragon-nest-target="list"
-            data-admin-structure-target="list"
-            data-action="dragend->admin-structure#saveOrder"
+            data-action="dragend->form#submit"
         >
             @foreach ($structure as $node)
                 <x-waterhole::admin.structure-node :node="$node"/>
             @endforeach
         </ul>
 
-        <form action="{{ route('waterhole.admin.structure') }}" method="post" data-admin-structure-target="orderForm" hidden>
+        <form action="{{ route('waterhole.admin.structure') }}" method="post" data-form-target="form" hidden>
             @csrf
             <input type="hidden" name="order" data-dragon-nest-target="orderInput">
         </form>

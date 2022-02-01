@@ -3,13 +3,14 @@
 namespace Waterhole\Http\Controllers\Forum;
 
 use Illuminate\Http\Request;
-use Waterhole\Feed;
+use Waterhole\Feed\CommentFeed;
+use Waterhole\Feed\PostFeed;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\User;
-use Waterhole\PostFeed;
-use Waterhole\Sorts\Latest;
-use Waterhole\Sorts\Top;
 
+/**
+ * Controller for user profiles.
+ */
 class UserController extends Controller
 {
     public function show(User $user)
@@ -21,9 +22,9 @@ class UserController extends Controller
     {
         $posts = new PostFeed(
             request: $request,
-            scope: fn($query) => $query->where('user_id', $user->id),
-            sorts: ['latest', 'top'],
+            filters: resolve_all(config('waterhole.users.post_filters', [])),
             defaultLayout: 'cards',
+            scope: fn($query) => $query->whereBelongsTo($user),
         );
 
         return view('waterhole::users.posts', compact('user', 'posts'));
@@ -31,24 +32,9 @@ class UserController extends Controller
 
     public function comments(User $user, Request $request)
     {
-        $query = $user->comments()->with([
-            'post.userState',
-            'post.channel',
-            'user.groups',
-            'parent.user.groups',
-            'parent.post',
-            'likedBy',
-            'mentions',
-        ]);
-
-        $comments = new Feed(
+        $comments = new CommentFeed(
             request: $request,
-            query: $query->getQuery(),
-            sorts: [
-                new Latest(),
-                new Top()
-            ],
-            defaultSort: 'latest',
+            filters: resolve_all(config('waterhole.users.comment_filters', [])),
         );
 
         return view('waterhole::users.comments', compact('user', 'comments'));

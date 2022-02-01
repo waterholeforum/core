@@ -2,32 +2,18 @@
 
 namespace Waterhole\Providers;
 
-use Illuminate\Auth\Middleware\RequirePassword;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
-use Waterhole\Http\Middleware\Authenticate;
 
 class RouteServiceProvider extends ServiceProvider
 {
-    const HOME = '/';
-
-    /**
-     * Define your route model bindings, pattern filters, etc.
-     *
-     * @return void
-     */
     public function boot()
     {
-        //
-
-        parent::boot();
-
         Route::middlewareGroup('waterhole.web', [
-            \Waterhole\Http\Middleware\EncryptCookies::class,
+            \Illuminate\Cookie\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\Session\Middleware\AuthenticateSession::class,
@@ -37,11 +23,14 @@ class RouteServiceProvider extends ServiceProvider
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \Waterhole\Http\Middleware\ActorSeen::class,
             \Waterhole\Http\Middleware\Localize::class,
+            \Waterhole\Http\Middleware\PoweredByHeader::class,
         ]);
-        
-        Route::aliasMiddleware('waterhole.auth', Authenticate::class);
-        Route::aliasMiddleware('waterhole.throttle', ThrottleRequests::class);
-        Route::aliasMiddleware('waterhole.confirm-password', RequirePassword::class);
+
+        Route::middlewareGroup('waterhole.admin', [
+            'can:administrate',
+            'password.confirm:waterhole.confirm-password',
+            // \Waterhole\Http\Middleware\Admin\ContactOutpost::class,
+        ]);
 
         $this->configureRateLimiting();
 
@@ -51,7 +40,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix(config('waterhole.forum.path'))
                 ->group(__DIR__.'/../../routes/web.php');
 
-            Route::middleware(['waterhole.web', 'waterhole.confirm-password:waterhole.confirm-password'])
+            Route::middleware(['waterhole.web', 'waterhole.admin'])
                 ->name('waterhole.admin.')
                 ->prefix(config('waterhole.admin.path'))
                 ->group(__DIR__.'/../../routes/admin.php');
@@ -61,11 +50,14 @@ class RouteServiceProvider extends ServiceProvider
     protected function configureRateLimiting()
     {
         RateLimiter::for('waterhole.create', function (Request $request) {
-            // return Limit::perMinute(2)->by($request->user()->id);
+            return Limit::perMinute(config('waterhole.forum.create_per_minute', 2))
+                ->by($request->user()->id);
         });
 
         RateLimiter::for('waterhole.search', function (Request $request) {
-            return $request->input('q') ? Limit::perMinute(10) : Limit::none();
+            return $request->input('q')
+                ? Limit::perMinute(config('waterhole.forum.search_per_minute', 10))
+                : Limit::none();
         });
     }
 }

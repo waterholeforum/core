@@ -2,69 +2,46 @@
 
 namespace Waterhole\Extend;
 
-use Closure;
-use Illuminate\Contracts\Foundation\Application;
-
 /**
- * ```php
- * Formatter::rendering()
- * ```
+ * An extender to register formatting callbacks.
+ *
+ * Waterhole uses the [TextFormatter](https://github.com/s9e/TextFormatter)
+ * library to safely format markup in posts and comments. You can hook in to add
+ * or remove formatting syntax and change rendered HTML.
  */
-class Formatter
+abstract class Formatter
 {
-    private Closure $register;
-
-    private function __construct()
+    /**
+     * Add a configuration callback to the formatter.
+     */
+    public static function configure(callable $callback): void
     {
+        app('waterhole.formatter')->configure($callback);
     }
 
-    public static function configure(callable $callback): static
+    /**
+     * Add a parsing callback to the formatter.
+     *
+     * In the parsing phase, user-submitted text is parsed into an XML document
+     * for storage in the database. Here you can perform runtime configuration
+     * on the parser, or make manual alterations to the `$text` before it is
+     * parsed.
+     */
+    public static function parsing(callable $callback): void
     {
-        $instance = new static();
-
-        $instance->register = function (\Waterhole\Formatter\Formatter $formatter) use ($callback) {
-            $formatter->configure($callback);
-        };
-
-        return $instance;
+        app('waterhole.formatter')->parsing($callback);
     }
 
-    public static function parsing(callable $callback): static
+    /**
+     * Add a rendering callback to the formatter.
+     *
+     * The rendering phase is when the XML document stored in the database is
+     * transformed into HTML. Here you can perform runtime configuration on
+     * the renderer, or make manual alterations to the `$xml` document before
+     * it is rendered.
+     */
+    public static function rendering(callable $callback): void
     {
-        $instance = new static();
-
-        $instance->register = function (\Waterhole\Formatter\Formatter $formatter) use ($callback) {
-            $formatter->parsing($callback);
-        };
-
-        return $instance;
-    }
-
-    public static function rendering(callable $callback): static
-    {
-        $instance = new static();
-
-        $instance->register = function (\Waterhole\Formatter\Formatter $formatter) use ($callback) {
-            $formatter->rendering($callback);
-        };
-
-        return $instance;
-    }
-
-    public function register(Application $app)
-    {
-        $app->resolving('fori.formatter', function (Formatter $formatter) {
-            ($this->register)($formatter);
-        });
-    }
-
-    public function onEnable(Application $app)
-    {
-        $app->make('fori.formatter')->flush();
-    }
-
-    public function onDisable(Application $app)
-    {
-        $app->make('fori.formatter')->flush();
+        app('waterhole.formatter')->rendering($callback);
     }
 }

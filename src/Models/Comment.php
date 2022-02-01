@@ -9,6 +9,7 @@ use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 use Waterhole\Events\NewComment;
 use Waterhole\Models\Concerns\HasBody;
 use Waterhole\Models\Concerns\HasLikes;
+use Waterhole\Models\Concerns\ValidatesData;
 use Waterhole\Views\Components;
 use Waterhole\Views\TurboStream;
 
@@ -19,6 +20,7 @@ class Comment extends Model
     use HasLikes;
     use HasBody;
     use HasRecursiveRelationships;
+    use ValidatesData;
 
     const UPDATED_AT = null;
 
@@ -54,11 +56,6 @@ class Comment extends Model
         });
     }
 
-    public static function byUser(User $user, array $attributes = []): static
-    {
-        return new static(array_merge(['user_id' => $user->id], $attributes));
-    }
-
     public function post(): BelongsTo
     {
         return $this->belongsTo(Post::class);
@@ -79,7 +76,17 @@ class Comment extends Model
         return $this->belongsTo(self::class, 'parent_id');
     }
 
-    public static function rules(): array
+    public function isUnread(): bool
+    {
+        return $this->post->userState && $this->post->userState->last_read_at < $this->created_at;
+    }
+
+    public function isRead(): bool
+    {
+        return $this->post->userState && ! $this->isUnread();
+    }
+
+    public static function rules(Comment $instance = null): array
     {
         return [
             'parent_id' => ['nullable', Rule::exists('comments', 'id')],

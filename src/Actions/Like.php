@@ -2,9 +2,9 @@
 
 namespace Waterhole\Actions;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Waterhole\Models\Comment;
+use Waterhole\Models\Model;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
 use Waterhole\Views\Components\Reactions;
@@ -12,45 +12,43 @@ use Waterhole\Views\TurboStream;
 
 class Like extends Action
 {
-    public bool $hidden = true;
+    public function appliesTo(Model $model): bool
+    {
+        return $model instanceof Post || $model instanceof Comment;
+    }
 
-    public function name(): string
+    public function authorize(?User $user, Model $model): bool
+    {
+        return $user && $user->can('like', $model);
+    }
+
+    public function shouldRender(Collection $models): bool
+    {
+        return false;
+    }
+
+    public function label(Collection $models): string
     {
         return 'Like';
     }
 
-    public function label(Collection $items): string
-    {
-        return 'Like';
-    }
-
-    public function icon(Collection $items): ?string
+    public function icon(Collection $models): string
     {
         return 'heroicon-o-thumb-up';
     }
 
-    public function appliesTo($item): bool
+    public function run(Collection $models)
     {
-        return $item instanceof Post || $item instanceof Comment;
-    }
-
-    public function authorize(?User $user, $item): bool
-    {
-        return $user && $user->can('like', $item);
-    }
-
-    public function run(Collection $items, Request $request)
-    {
-        $items->each(function ($item) use ($request) {
-            $item->likedBy()->toggle([$request->user()->id]);
+        $models->each(function ($item) {
+            $item->likedBy()->toggle([request()->user()->id]);
             $item->refreshLikeMetadata()->save();
         });
     }
 
-    public function stream($item): array
+    public function stream(Model $model): array
     {
         return [
-            TurboStream::replace(new Reactions($item)),
+            TurboStream::replace(new Reactions($model)),
         ];
     }
 }

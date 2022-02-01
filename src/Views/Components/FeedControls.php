@@ -3,8 +3,8 @@
 namespace Waterhole\Views\Components;
 
 use Illuminate\View\Component;
+use Waterhole\Feed\PostFeed;
 use Waterhole\Models\Channel;
-use Waterhole\PostFeed;
 
 class FeedControls extends Component
 {
@@ -26,7 +26,7 @@ class FeedControls extends Component
                 </button>
                 
                 <ui-menu class="menu" hidden>
-                    @components(Waterhole\Extend\FeedControls::getComponents(), compact('feed', 'channel'))
+                    @components(Waterhole\Extend\PostFeedControls::build(), compact('feed', 'channel'))
                 </ui-menu>
             </ui-popup>
         blade;

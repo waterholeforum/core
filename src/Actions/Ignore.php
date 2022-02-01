@@ -2,43 +2,44 @@
 
 namespace Waterhole\Actions;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Waterhole\Models\Model;
 use Waterhole\Views\Components\FollowButton;
 use Waterhole\Views\TurboStream;
+use Waterhole\Waterhole;
 
 class Ignore extends Action
 {
-    public function name(): string
+    public function appliesTo($model): bool
+    {
+        return method_exists($model, 'ignore');
+    }
+
+    public function shouldRender(Collection $models): bool
+    {
+        return ! Waterhole::isAdminRoute() && $models->some(fn($item) => ! $item->userState->notifications);
+    }
+
+    public function label(Collection $models): string
     {
         return 'Ignore';
     }
 
-    public function icon(Collection $items): ?string
+    public function icon(Collection $models): string
     {
         return 'heroicon-o-volume-off';
     }
 
-    public function appliesTo($item): bool
+    public function run(Collection $models)
     {
-        return method_exists($item, 'ignore');
+        $models->each->ignore();
     }
 
-    public function visible(Collection $items, string $context = null): bool
-    {
-        return parent::visible($items, $context) && $items->some(fn($item) => ! $item->userState->notifications);
-    }
-
-    public function run(Collection $items, Request $request)
-    {
-        $items->each->ignore();
-    }
-
-    public function stream($item): array
+    public function stream(Model $model): array
     {
         return [
-            ...parent::stream($item),
-            TurboStream::replace(new FollowButton($item)),
+            ...parent::stream($model),
+            TurboStream::replace(new FollowButton($model)),
         ];
     }
 }

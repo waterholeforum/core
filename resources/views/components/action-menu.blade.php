@@ -3,7 +3,6 @@
     :only="$only"
     :exclude="$exclude"
     :button-attributes="['class' => 'menu-item', 'role' => 'menuitem']"
-    :context="$context"
     {{ $attributes }}
 >
     <x-slot name="before">
@@ -11,7 +10,10 @@
             @if (isset($button))
                 {{ $button }}
             @else
-                <button type="button" {{ (new Illuminate\View\ComponentAttributeBag($buttonAttributes))->class('btn btn--icon btn--transparent btn--small') }}>
+                <button
+                    type="button"
+                    {{ (new Illuminate\View\ComponentAttributeBag($buttonAttributes))->class('btn btn--icon btn--transparent btn--small') }}
+                >
                     <x-waterhole::icon icon="heroicon-o-dots-horizontal"/>
                 </button>
             @endif

@@ -1,9 +1,9 @@
 <article
-    {{ $attributes->class(['post-list-item', Waterhole\Extend\PostClasses::getClasses($post)]) }}
+    {{ $attributes->class(['post-list-item', Waterhole\Extend\PostClasses::build($post)]) }}
     data-controller="post"
 >
     <div class="post-list-item__content toolbar">
-        @components(Waterhole\Extend\PostListItem::getComponents(), compact('post'))
+        @components(Waterhole\Extend\PostListItem::build(), compact('post'))
     </div>
     <div class="post-list-item__controls">
         <x-waterhole::post-actions :post="$post"/>

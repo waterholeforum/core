@@ -5,17 +5,19 @@ namespace Waterhole\Http\Controllers\Forum;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
-use Intervention\Image\Facades\Image;
 use Waterhole\Extend\NotificationTypes;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Views\Components\UserProfileFields;
 
+/**
+ * Controller for user preferences views.
+ */
 class PreferencesController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('waterhole.confirm-password:waterhole.confirm-password')
+        $this->middleware('password.confirm:waterhole.confirm-password')
             ->only(['account', 'changeEmail', 'changePassword']);
     }
 
@@ -32,16 +34,19 @@ class PreferencesController extends Controller
     public function changeEmail(Request $request)
     {
         $data = $request->validate([
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
         ]);
 
+        // Make a copy of the user because we don't want to set the email
+        // of the global instance, otherwise a subsequent call to `save` could
+        // actually save the new email before it's been verified.
         (clone $request->user())
             ->fill($data)
             ->sendEmailVerificationNotification();
 
         return redirect()
             ->route('waterhole.preferences.account')
-            ->with('email_status', "We've sent a verification email to <strong>{$data['email']}</strong>.");
+            ->with('success', "We've sent a verification email to <strong>{$data['email']}</strong>.");
     }
 
     public function changePassword(Request $request)
@@ -50,13 +55,11 @@ class PreferencesController extends Controller
             'password' => ['required', Password::defaults()],
         ]);
 
-        $request->user()
-            ->fill(['password' => Hash::make($data['password'])])
-            ->save();
+        $request->user()->update(['password' => Hash::make($data['password'])]);
 
         return redirect()
             ->route('waterhole.preferences.account')
-            ->with('password_status', "Your password has been changed.");
+            ->with('success', "Your password has been changed.");
     }
 
     public function profile()
@@ -79,16 +82,14 @@ class PreferencesController extends Controller
 
     public function saveNotifications(Request $request)
     {
-        $types = NotificationTypes::getComponents();
-
         $data = $request->validate([
-            'notification_channels' => 'array:'.$types->join(','),
+            'notification_channels' => 'array:'.implode(',', NotificationTypes::build()),
             'notification_channels.*' => 'array:0,1',
             'notification_channels.*.*' => 'in:database,mail',
             'follow_on_comment' => 'boolean',
         ]);
 
-        $request->user()->fill($data)->save();
+        $request->user()->update($data);
 
         return redirect()->route('waterhole.preferences.notifications')
             ->with('success', 'Notification preferences saved.');

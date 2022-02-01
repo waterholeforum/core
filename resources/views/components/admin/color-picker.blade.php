@@ -13,6 +13,7 @@
                 data-color-picker-target="swatch"
             ></span>
         </span>
+        
         <input
             type="text"
             name="{{ $name }}"
@@ -24,6 +25,7 @@
             data-action="focus->color-picker#show blur->color-picker#hide"
         >
     </hex-input>
+
     <hex-color-picker
         class="color-picker__picker"
         color="#{{ $value }}"

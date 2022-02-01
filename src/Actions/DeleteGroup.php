@@ -2,45 +2,42 @@
 
 namespace Waterhole\Actions;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Waterhole\Models\Group;
+use Waterhole\Models\Model;
 use Waterhole\Models\User;
 
 class DeleteGroup extends Action
 {
-    public ?array $context = ['admin'];
     public bool $destructive = true;
-    public bool $confirm = true;
-    public bool $bulk = false;
 
-    public function name(): string
+    public function appliesTo(Model $model): bool
+    {
+        return $model instanceof Group;
+    }
+
+    public function authorize(?User $user, Model $model): bool
+    {
+        return $user && $user->can('delete', $model);
+    }
+
+    public function label(Collection $models): string
     {
         return 'Delete...';
     }
 
-    public function icon(Collection $items): ?string
+    public function icon(Collection $models): string
     {
         return 'heroicon-o-trash';
     }
 
-    public function appliesTo($item): bool
+    public function confirm(Collection $models): string
     {
-        return $item instanceof Group;
+        return 'Are you sure you want to delete this group?';
     }
 
-    public function authorize(?User $user, $item): bool
+    public function run(Collection $models)
     {
-        return $user && $user->can('delete', $item);
-    }
-
-    public function confirmation(Collection $items): null|string
-    {
-        return 'Are you sure you want to delete this?';
-    }
-
-    public function run(Collection $items, Request $request)
-    {
-        $items->each->delete();
+        $models->each->delete();
     }
 }

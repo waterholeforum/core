@@ -5,7 +5,10 @@ namespace Waterhole\Extend;
 use Waterhole\Extend\Concerns\OrderedList;
 use Waterhole\Views\Components\NavLink;
 
-class AdminNav
+/**
+ * A list of components to render in the admin panel navigation menu.
+ */
+abstract class AdminNav
 {
     use OrderedList;
 }
@@ -35,7 +38,5 @@ AdminNav::add('groups', new NavLink(
     route: 'waterhole.admin.groups.index',
     active: fn() => request()->routeIs('waterhole.admin.groups*'),
 ));
-
-AdminNav::add('updates', 'waterhole::admin.nav.updates');
 
 AdminNav::add('version', 'waterhole::admin.nav.version');

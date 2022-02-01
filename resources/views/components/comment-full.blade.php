@@ -2,7 +2,7 @@
     role="article"
     {{ $attributes->class([
         'comment',
-        Waterhole\Extend\CommentClasses::getClasses($comment),
+        Waterhole\Extend\CommentClasses::build($comment),
     ]) }}
     data-comment-id="{{ $comment->id }}"
     data-parent-id="{{ $comment->parent?->id }}"
@@ -80,7 +80,7 @@
         </div>
 
         <footer class="comment__footer toolbar">
-            @components(Waterhole\Extend\CommentFooter::getComponents(), compact('comment', 'withReplies'))
+            @components(Waterhole\Extend\CommentFooter::build(), compact('comment', 'withReplies'))
 
             <x-waterhole::action-menu
                 :for="$comment"

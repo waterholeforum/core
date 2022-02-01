@@ -3,13 +3,13 @@
     class="stack-md"
     target="_top"
     data-controller="feed"
-    data-feed-sort-value="{{ $feed->currentSort()->handle() }}"
+    data-feed-sort-value="{{ $feed->filters()->search($feed->currentFilter()) }}"
     data-feed-channels-value="@json($channel ? [$channel->id] : Waterhole\Models\Channel::pluck('id'))"
 >
-    @components(Waterhole\Extend\FeedHeader::getComponents(), compact('feed', 'channel'))
+    @components(Waterhole\Extend\PostFeedHeader::build(), compact('feed', 'channel'))
 
     @php
-        $posts = $feed->posts()->withQueryString();
+        $posts = $feed->items()->withQueryString();
     @endphp
 
     @if ($posts->isNotEmpty())
@@ -49,14 +49,23 @@
             @if ($posts->hasMorePages())
                 <turbo-frame
                     id="page_{{ $posts->nextCursor()->encode() }}"
-                    src="{{ $posts->nextPageUrl() }}"
-                    loading="lazy"
+                    @if (! $posts->cursor())
+                        src="{{ $posts->nextPageUrl() }}"
+                        loading="lazy"
+                    @endif
                     class="next-page"
-                    target="_top"
                     data-controller="turbo-frame"
                     data-action="turbo:frame-load->turbo-frame#disable"
                 >
-                    <div class="loading-indicator"></div>
+                    @if (! $posts->cursor())
+                        <div class="loading-indicator"></div>
+                    @else
+                        <br>
+                        <form method="get" action="" class="text-center">
+                            <input type="hidden" name="{{ $posts->getCursorName() }}" value="{{ $posts->nextCursor()->encode() }}">
+                            <button type="submit" class="btn">Load More</button>
+                        </form>
+                    @endif
                 </turbo-frame>
             @endif
         </turbo-frame>

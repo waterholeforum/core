@@ -2,8 +2,8 @@
 
 namespace Waterhole\Actions;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Waterhole\Models\Model;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
 use Waterhole\Views\Components\CommentsLocked;
@@ -11,39 +11,36 @@ use Waterhole\Views\TurboStream;
 
 class Lock extends Action
 {
-    public function name(): string
+    public function appliesTo(Model $model): bool
+    {
+        return $model instanceof Post && ! $model->is_locked;
+    }
+
+    public function authorize(?User $user, Model $model): bool
+    {
+        return $user && $user->can('moderate', $model);
+    }
+
+    public function label(Collection $models): string
     {
         return 'Lock Comments';
     }
 
-    public function icon(Collection $items): ?string
+    public function icon(Collection $models): string
     {
         return 'heroicon-o-lock-closed';
     }
 
-    public function appliesTo($item): bool
+    public function run(Collection $models)
     {
-        return $item instanceof Post && ! $item->is_locked;
+        $models->each->update(['is_locked' => true]);
     }
 
-    public function authorize(?User $user, $item): bool
-    {
-        return $user && $user->can('moderate', $item);
-    }
-
-    public function run(Collection $items, Request $request)
-    {
-        $items->each(function ($item) {
-            $item->is_locked = true;
-            $item->save();
-        });
-    }
-
-    public function stream($item): array
+    public function stream(Model $model): array
     {
         return [
-            ...parent::stream($item),
-            TurboStream::replace(new CommentsLocked($item)),
+            ...parent::stream($model),
+            TurboStream::replace(new CommentsLocked($model)),
         ];
     }
 }

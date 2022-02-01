@@ -3,8 +3,8 @@
 namespace Waterhole\Views\Components;
 
 use Illuminate\View\Component;
+use Waterhole\Feed\PostFeed;
 use Waterhole\Models\Channel;
-use Waterhole\PostFeed;
 
 class FeedNewPost extends Component
 {

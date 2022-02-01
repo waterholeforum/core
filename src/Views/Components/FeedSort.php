@@ -3,15 +3,15 @@
 namespace Waterhole\Views\Components;
 
 use Illuminate\View\Component;
+use Waterhole\Feed\Feed;
 use Waterhole\Models\Channel;
-use Waterhole\PostFeed;
 
 class FeedSort extends Component
 {
-    public PostFeed|\Waterhole\Feed $feed;
+    public Feed $feed;
     public ?Channel $channel;
 
-    public function __construct(PostFeed|\Waterhole\Feed $feed, Channel $channel = null)
+    public function __construct(Feed $feed, Channel $channel = null)
     {
         $this->feed = $feed;
         $this->channel = $channel;

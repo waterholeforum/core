@@ -1,4 +1,4 @@
-<div {{ $attributes->class(['alert', $type ? "alert--$type" : null]) }}>
+<div {{ $attributes->class(['alert', $type ? "alert--$type" : null]) }} role="alert">
     @if ($icon)
         <div class="alert__icon">
             <x-waterhole::icon :icon="$icon"/>

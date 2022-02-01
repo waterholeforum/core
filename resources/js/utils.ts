@@ -1,8 +1,14 @@
+/**
+ * Determine whether the user is trying to open a link in a new tab.
+ */
 export function shouldOpenInNewTab(e: MouseEvent): boolean {
     return e.altKey || e.ctrlKey || e.metaKey || e.shiftKey
         || (e.button !== undefined && e.button !== 0);
 }
 
+/**
+ * Determine if an element is currently visible in the viewport.
+ */
 export function isElementInViewport(el: HTMLElement, proportion: number = 1): boolean {
     const rect = el.getBoundingClientRect();
 
@@ -10,20 +16,17 @@ export function isElementInViewport(el: HTMLElement, proportion: number = 1): bo
         && (rect.bottom - window.innerHeight) / rect.height < proportion;
 }
 
+/**
+ * Get the height of the page header.
+ */
 export function getHeaderHeight(): number {
-    return document.querySelector<HTMLElement>('.header')?.offsetHeight || 0;
+    return document.getElementById('#header')?.offsetHeight || 0;
 }
 
-export function getCookieValue(name: string): string|undefined {
-    const cookies = document.cookie ? document.cookie.split('; ') : [];
-    const cookie = cookies.find((cookie) => cookie.startsWith(name));
-    if (cookie) {
-        const value = cookie.split('=').slice(1).join('=');
-        return value ? decodeURIComponent(value) : undefined;
-    }
-}
-
-export function htmlToElement(html: string): Element|null {
+/**
+ * Convert an HTML string into a DOM element.
+ */
+export function htmlToElement(html: string): Element | null {
     const template = document.createElement('template');
     template.innerHTML = html;
 

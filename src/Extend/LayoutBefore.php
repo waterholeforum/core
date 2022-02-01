@@ -2,19 +2,17 @@
 
 namespace Waterhole\Extend;
 
-use Waterhole\Extend\Concerns\ManagesComponents;
+use Waterhole\Extend\Concerns\OrderedList;
 use Waterhole\Views\Components\EmailVerification;
 use Waterhole\Views\Components\Header;
 
-class LayoutBefore
+/**
+ * A list of components to render in the layout before the main content.
+ */
+abstract class LayoutBefore
 {
-    use ManagesComponents;
-
-    protected static function defaultComponents(): array
-    {
-        return [
-            Header::class,
-            EmailVerification::class,
-        ];
-    }
+    use OrderedList;
 }
+
+LayoutBefore::add('header', Header::class);
+LayoutBefore::add('email-verification', EmailVerification::class);

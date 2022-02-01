@@ -2,62 +2,53 @@
 
 namespace Waterhole\Actions;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Illuminate\Support\HtmlString;
 use Illuminate\Validation\Rule;
+use Illuminate\View\View;
+use Waterhole\Models\Model;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
 
 class MoveChannel extends Action
 {
-    public bool $confirm = true;
+    public function appliesTo(Model $model): bool
+    {
+        return $model instanceof Post;
+    }
 
-    public function name(): string
+    public function authorize(?User $user, Model $model): bool
+    {
+        return $user && $user->can('move', $model);
+    }
+
+    public function label(Collection $models): string
     {
         return 'Move to Channel...';
     }
 
-    public function icon(Collection $items): ?string
+    public function icon(Collection $models): string
     {
         return 'heroicon-o-arrow-right';
     }
 
-    public function appliesTo($item): bool
+    public function confirm(Collection $models): View
     {
-        return $item instanceof Post;
+        return view('waterhole::posts.action-move-channel', ['posts' => $models]);
     }
 
-    public function authorize(?User $user, $item): bool
-    {
-        return $user && $user->can('move', $item);
-    }
-
-    public function confirmation(Collection $items): string
-    {
-        return 'Move Post';
-    }
-
-    public function confirmationBody(Collection $items): HtmlString
-    {
-        return new HtmlString(
-            view('waterhole::posts.action-move-channel', ['posts' => $items])
-        );
-    }
-
-    public function buttonText(Collection $items): string
+    public function confirmButton(Collection $models): string
     {
         return 'Move';
     }
 
-    public function run(Collection $items, Request $request)
+    public function run(Collection $models)
     {
-        $data = $request->validate([
+        $data = request()->validate([
             'channel_id' => ['required', Rule::exists('channels', 'id')],
         ]);
 
         // TODO: check permission to post in this channel
 
-        $items->each->update($data);
+        $models->each->update($data);
     }
 }

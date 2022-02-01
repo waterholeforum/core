@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('icon')->nullable();
             $table->text('description')->nullable();
             $table->text('instructions')->nullable();
-            $table->json('sorts')->nullable();
+            $table->json('filters')->nullable();
             $table->string('default_layout')->nullable();
             $table->boolean('sandbox')->default(0);
         });

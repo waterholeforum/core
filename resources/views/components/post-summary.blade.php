@@ -12,7 +12,7 @@
             >{{ $post->title }}</a>
         </h3>
         <div class="post-summary__info">
-            @components(Waterhole\Extend\PostInfo::getComponents(), compact('post'))
+            @components(Waterhole\Extend\PostInfo::build(), compact('post'))
         </div>
     </div>
 </div>

@@ -2,11 +2,10 @@
 
 namespace Waterhole\Http\Controllers\Auth;
 
-use Waterhole\Http\Controllers\Controller;
-use Waterhole\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Waterhole\Http\Controllers\Controller;
 
 class ConfirmPasswordController extends Controller
 {
@@ -33,6 +32,6 @@ class ConfirmPasswordController extends Controller
 
         $request->session()->put('auth.password_confirmed_at', time());
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        return redirect()->intended(route('waterhole.home'));
     }
 }

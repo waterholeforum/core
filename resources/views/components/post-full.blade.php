@@ -1,7 +1,7 @@
 <article {{ $attributes->class('post-full with-sidebar-end') }}>
     <div class="post-full__main">
         <header class="post-header">
-            @components(Waterhole\Extend\PostHeader::getComponents(), compact('post'))
+            @components(Waterhole\Extend\PostHeader::build(), compact('post'))
         </header>
 
         <div
@@ -40,7 +40,7 @@
                 </x-slot>
             </x-waterhole::action-menu>
 
-            @components(Waterhole\Extend\PostFooter::getComponents(), compact('post') + ['interactive' => true])
+            @components(Waterhole\Extend\PostFooter::build(), compact('post') + ['interactive' => true])
 
 {{--            <x-waterhole::post-actions :post="$post"/>--}}
 

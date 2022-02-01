@@ -11,7 +11,7 @@ use Waterhole\Http\Controllers\Auth\ResetPasswordController;
 use Waterhole\Http\Controllers\Auth\VerifyEmailController;
 use Waterhole\Http\Controllers\FormatController;
 use Waterhole\Http\Controllers\Forum\CommentController;
-use Waterhole\Http\Controllers\Forum\FeedController;
+use Waterhole\Http\Controllers\Forum\IndexController;
 use Waterhole\Http\Controllers\Forum\NotificationController;
 use Waterhole\Http\Controllers\Forum\PostController;
 use Waterhole\Http\Controllers\Forum\PreferencesController;
@@ -20,9 +20,9 @@ use Waterhole\Http\Controllers\Forum\UserController;
 use Waterhole\Http\Controllers\UserLookupController;
 
 // Feed
-Route::get('/', [FeedController::class, 'home'])->name('home');
-Route::get('channels/{channel:slug}', [FeedController::class, 'channel'])->name('channels.show');
-Route::get('pages/{page:slug}', [FeedController::class, 'page'])->name('page');
+Route::get('/', [IndexController::class, 'home'])->name('home');
+Route::get('channels/{channel:slug}', [IndexController::class, 'channel'])->name('channels.show');
+Route::get('pages/{page:slug}', [IndexController::class, 'page'])->name('page');
 
 // Actions
 Route::get('confirm-action', [ActionController::class, 'confirm'])->name('action.create');

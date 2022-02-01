@@ -4,9 +4,15 @@ namespace Waterhole\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Channel;
 
+/**
+ * Controller for admin channel management (create and update).
+ *
+ * Deletion is handled by the DeleteChannel action.
+ */
 class ChannelController extends Controller
 {
     public function create()
@@ -16,15 +22,7 @@ class ChannelController extends Controller
 
     public function store(Request $request)
     {
-        $data = $this->data($request);
-        $permissions = Arr::pull($data, 'permissions');
-        $icon = Arr::pull($data, 'icon');
-
-        $channel = Channel::create($data);
-        $channel->savePermissions($permissions);
-        $channel->saveIcon($icon);
-
-        return redirect()->route('waterhole.admin.structure');
+        return $this->save(new Channel(), $request);
     }
 
     public function edit(Channel $channel)
@@ -34,25 +32,26 @@ class ChannelController extends Controller
 
     public function update(Channel $channel, Request $request)
     {
-        $data = $this->data($request, $channel);
-        $permissions = Arr::pull($data, 'permissions');
-        $icon = Arr::pull($data, 'icon');
-
-        $channel->update($data);
-        $channel->savePermissions($permissions);
-        $channel->saveIcon($icon);
-
-        return redirect()->route('waterhole.admin.structure');
+        return $this->save($channel, $request);
     }
 
-    private function data(Request $request, Channel $channel = null): array
+    private function save(Channel $channel, Request $request)
     {
         $data = $request->validate(Channel::rules($channel));
 
-        if (! $request->input('custom_sorts')) {
-            $data['sorts'] = null;
+        if (! $request->input('custom_filters')) {
+            $data['filters'] = null;
         }
 
-        return $data;
+        $icon = Arr::pull($data, 'icon');
+        $permissions = Arr::pull($data, 'permissions');
+
+        DB::transaction(function () use ($channel, $data, $permissions, $icon) {
+            $channel->fill($data)->save();
+            $channel->saveIcon($icon);
+            $channel->savePermissions($permissions);
+        });
+
+        return redirect()->route('waterhole.admin.structure');
     }
 }

@@ -2,21 +2,19 @@
 
 namespace Waterhole\Extend;
 
-use Waterhole\Extend\Concerns\ManagesComponents;
+use Waterhole\Extend\Concerns\OrderedList;
 use Waterhole\Views\Components\PostAttribution;
 use Waterhole\Views\Components\PostChannel;
 use Waterhole\Views\Components\PostTitle;
 
-class PostHeader
+/**
+ * A list of components to render in the post page header.
+ */
+abstract class PostHeader
 {
-    use ManagesComponents;
-
-    protected static function defaultComponents(): array
-    {
-        return [
-            PostChannel::class,
-            PostTitle::class,
-            PostAttribution::class,
-        ];
-    }
+    use OrderedList;
 }
+
+PostHeader::add('channel', PostChannel::class);
+PostHeader::add('title', PostTitle::class);
+PostHeader::add('attribution', PostAttribution::class);

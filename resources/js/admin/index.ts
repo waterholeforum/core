@@ -1,11 +1,7 @@
-const context = require.context('./controllers', true, /\.ts$/);
-
-window.Stimulus.load(
-    context.keys().map(key => ({
-        identifier: (key.match(/^(?:\.\/)?(.+)(\..+?)$/) || [])[1],
-        controllerConstructor: context(key).default,
-    }))
-);
-
+import { definitionsFromContext } from '@hotwired/stimulus-webpack-helpers';
 import 'vanilla-colorful';
 import 'vanilla-colorful/hex-input.js';
+
+window.Stimulus.load(definitionsFromContext(
+    require.context('./controllers', true, /\.ts$/)
+));

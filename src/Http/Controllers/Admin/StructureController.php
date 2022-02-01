@@ -2,27 +2,21 @@
 
 namespace Waterhole\Http\Controllers\Admin;
 
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\Request;
 use Waterhole\Http\Controllers\Controller;
-use Waterhole\Models\Channel;
-use Waterhole\Models\Page;
 use Waterhole\Models\Structure;
-use Waterhole\Models\StructureLink;
 
+/**
+ * Controller for the admin structure index.
+ */
 class StructureController extends Controller
 {
     public function index()
     {
-        $structure = Structure::with(['content' => function (MorphTo $morphTo) {
-            $morphTo->morphWith([
-                Channel::class => ['permissions.recipient'],
-                Page::class => ['permissions.recipient'],
-                StructureLink::class => ['permissions.recipient'],
-            ]);
-        }])
+        $structure = Structure::query()
             ->orderBy('position')
-            ->get();
+            ->get()
+            ->loadMissing('content.permissions.recipient');
 
         return view('waterhole::admin.structure.index', compact('structure'));
     }

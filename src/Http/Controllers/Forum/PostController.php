@@ -3,28 +3,37 @@
 namespace Waterhole\Http\Controllers\Forum;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Notification;
-use Waterhole\Extend\CommentsSort;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
 use Waterhole\Notifications\NewPost;
-use Waterhole\Sorts\Sort;
 
+/**
+ * Controller for a post (post page, create, and update).
+ *
+ * Deletion is handled by the DeletePost action. Only editing of the post
+ * title/body is done through this controller - updating other attributes
+ * (channel, locked) is done through various Actions.
+ */
 class PostController extends Controller
 {
     public function __construct()
     {
         $this->middleware('waterhole.auth')->except('show');
-        $this->middleware('waterhole.throttle:waterhole.create')->only('store', 'update');
+        $this->middleware('throttle:waterhole.create')->only('store', 'update');
     }
 
     public function show(Post $post, Request $request)
     {
-        if ($cid = $request->query('comment')) {
-            $comment = $post->comments()->findOrFail($cid);
+        // If we've come here with reference to a particular comment, we will
+        // mark any notifications about that comment as read, and then redirect
+        // to the page on which that comment will be found. This allows comment
+        // permalinks to be constructed without having to know the comment
+        // page/index, which may be subject to change over time anyway.
+        if ($commentId = $request->query('comment')) {
+            $comment = $post->comments()->findOrFail($commentId);
 
             $request->user()?->markNotificationsRead($comment);
 
@@ -33,96 +42,85 @@ class PostController extends Controller
 
         $post->load('likedBy');
 
-        $sorts = CommentsSort::getInstances();
-        $currentSort = $sorts->first(function (Sort $sort) use ($request) {
-            return $sort->handle() === $request->query('sort');
-        }, $sorts[0]);
+        $comments = $post->comments()
+            ->with(['user.groups', 'parent.user.groups', 'likedBy', 'mentions'])
+            ->oldest()
+            ->paginate();
 
-        $query = $post->comments()->with(['user.groups', 'parent.user.groups', 'likedBy', 'mentions']);
-
-        $currentSort->apply($query);
-
-        $comments = $query->paginate();
-
+        // We already have an instance of the `post` relation for each comment,
+        // since we are on the post page!
         $comments->getCollection()->each(function (Comment $comment) use ($post) {
             $comment->setRelation('post', $post);
             $comment->parent?->setRelation('post', $post);
         });
 
         $lastReadAt = $post->userState?->last_read_at;
+
         $post->userState?->read()->save();
 
         $request->user()?->markNotificationsRead($post);
 
-        return view('waterhole::posts.show', compact('post', 'comments', 'sorts', 'currentSort', 'lastReadAt'));
+        return view('waterhole::posts.show', compact('post', 'comments', 'lastReadAt'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $this->authorize('create', Post::class);
 
-        if ($channelId = request('channel')) {
-            $channel = Channel::findOrFail($channelId);
+        if ($channelId = $request->query('channel')) {
+            $channel = Channel::visibleTo($request->user())->findOrFail($channelId);
+        } else {
+            $channel = null;
         }
 
-        return view('waterhole::posts.create', [
-            'channel' => $channel ?? null,
-        ]);
+        return view('waterhole::posts.create', compact('channel'));
     }
 
     public function store(Request $request)
     {
+        // Only proceed with post submission if the "post" button was
+        // explicitly clicked. This allows the form to be submitted for other
+        // purposes, such as selecting a different channel.
+        if (! $request->input('publish')) {
+            return redirect()
+                ->route('waterhole.posts.create', ['channel' => $request->input('channel_id')])
+                ->withInput();
+        }
+
         $this->authorize('create', Post::class);
 
-        if ($request->input('publish')) {
-            $post = Post::byUser(
-                $request->user(),
-                $this->data($request)
-            );
+        $data = Post::validate($request->all());
+        $data['user_id'] = $request->user()->id;
 
-            $post->save();
+        $this->authorize('post', Channel::visibleTo($request->user())->findOrFail($data['channel_id']));
 
-            Notification::send(
-                $post->channel->followedBy->except($request->user()->id),
-                new NewPost($post)
-            );
+        $post = Post::create($data);
 
-            return redirect($post->url);
-        }
+        // Send out a "new post" notification to all followers of this post's
+        // channel, except for the user who created the post.
+        Notification::send(
+            $post->channel->followedBy->except($request->user()->id),
+            new NewPost($post)
+        );
 
-        if ($request->has('channel_id')) {
-            $channel = Channel::findOrFail($request->input('channel_id'));
-        }
-
-        return redirect()
-            ->route('waterhole.posts.create', ['channel' => $channel->id ?? null])
-            ->withInput();
+        return redirect($post->url);
     }
 
     public function edit(Post $post)
     {
         $this->authorize('update', $post);
 
-        return view('waterhole::posts.edit', ['post' => $post]);
+        return view('waterhole::posts.edit', compact('post'));
     }
 
     public function update(Post $post, Request $request)
     {
         $this->authorize('update', $post);
 
-        $post->fill($this->data($request, $post))->wasEdited()->save();
+        $post->fill(Post::validate($request->all(), $post))
+            ->markAsEdited()
+            ->save();
 
         return redirect($request->get('return', $post->url));
-    }
-
-    private function data(Request $request, Post $post = null): array
-    {
-        $data = $request->validate(Post::rules($post));
-
-        if (isset($data['channel_id'])) {
-            $this->authorize('post', Channel::findOrFail($data['channel_id']));
-        }
-
-        return $data;
     }
 }

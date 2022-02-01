@@ -3,10 +3,10 @@
 namespace Waterhole\Views\Components;
 
 use Illuminate\View\Component;
+use Waterhole\Feed\PostFeed;
+use Waterhole\Filters\Latest;
+use Waterhole\Filters\NewActivity;
 use Waterhole\Models\Channel;
-use Waterhole\PostFeed;
-use Waterhole\Sorts\Latest;
-use Waterhole\Sorts\NewActivity;
 
 class Feed extends Component
 {
@@ -19,8 +19,8 @@ class Feed extends Component
         $this->feed = $feed;
         $this->channel = $channel?->exists ? $channel : null;
 
-        $sort = $feed->currentSort();
-        $this->showLastVisit = $sort instanceof Latest || $sort instanceof NewActivity;
+        $filter = $feed->currentFilter();
+        $this->showLastVisit = $filter instanceof Latest || $filter instanceof NewActivity;
     }
 
     public function render()

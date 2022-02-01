@@ -31,3 +31,25 @@
     color: var(--color-danger);
   }
 }
+
+.form-groups {
+  > * {
+    display: flex;
+
+    > :first-child:not(:only-child) {
+      flex-basis: 25%;
+      flex-shrink: 0;
+    }
+
+    > :nth-child(2) {
+      flex-grow: 1;
+      margin: 0;
+    }
+  }
+
+  > * + * {
+    border-top: 1px solid var(--color-stroke);
+    margin-top: var(--space-lg);
+    padding-top: var(--space-lg);
+  }
+}

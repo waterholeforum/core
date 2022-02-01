@@ -3,7 +3,7 @@
 namespace Waterhole\Views\Components;
 
 use Illuminate\View\Component;
-use Waterhole\Extend\Action;
+use Waterhole\Extend\Actions;
 
 class ActionForm extends Component
 {
@@ -32,7 +32,7 @@ class ActionForm extends Component
     {
         $action ??= $this->action;
 
-        return collect(Action::for($this->for))
+        return collect(Actions::for($this->for))
             ->contains(fn($i) => $i instanceof $action);
     }
 }

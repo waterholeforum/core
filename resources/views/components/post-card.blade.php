@@ -1,5 +1,5 @@
 <article
-    {{ $attributes->class(['card post-card', Waterhole\Extend\PostClasses::getClasses($post)]) }}
+    {{ $attributes->class(['card post-card', Waterhole\Extend\PostClasses::build($post)]) }}
     data-controller="post"
 >
     <header class="post-card__header">

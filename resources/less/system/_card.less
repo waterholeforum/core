@@ -9,3 +9,15 @@
     padding: var(--space-md) 0;
   }
 }
+
+.card-list {
+  padding: 0;
+
+  > * {
+    padding: var(--space-sm);
+  }
+
+  > * + * {
+    border-top: 1px solid var(--color-stroke);
+  }
+}

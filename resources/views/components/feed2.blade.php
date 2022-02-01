@@ -1,4 +1,4 @@
-<div>
+<div {{ $attributes }}>
     @if ($items->isNotEmpty())
         <turbo-frame id="page_{{ $items->cursor()?->encode() ?? '1' }}" target="_top">
             {{ $slot ?? '' }}
