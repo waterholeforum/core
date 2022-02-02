@@ -3,10 +3,12 @@
 namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Waterhole\Models\Concerns\Followable;
@@ -15,6 +17,7 @@ use Waterhole\Models\Concerns\HasLikes;
 use Waterhole\Models\Concerns\HasUserState;
 use Waterhole\Models\Concerns\HasVisibility;
 use Waterhole\Models\Concerns\ValidatesData;
+use Waterhole\Notifications\Mention;
 use Waterhole\Views\Components;
 use Waterhole\Views\TurboStream;
 
@@ -35,17 +38,46 @@ class Post extends Model
         'is_pinned' => 'boolean',
         'is_locked' => 'boolean',
     ];
-    
-    public static function byUser(User $user, array $attributes = []): static
-    {
-        return new static(array_merge(['user_id' => $user->id], $attributes));
-    }
 
-    public static function booting()
+    public static function booted()
     {
         static::creating(function (Post $post) {
             $post->last_activity_at ??= now();
         });
+
+        // When a new post is created, send notifications to mentioned users.
+        // We have to use `saved` instead of `created` because the mentions are
+        // synced to the database in the `saved` event, and `created` is always
+        // run before `saved`.
+        static::saved(function (Post $post) {
+            if (! $post->wasRecentlyCreated) {
+                return;
+            }
+
+            $post->usersWereMentioned(
+                $users = $post->mentions->except($post->user_id)
+            );
+
+            Notification::send($users, new Mention($post));
+        });
+    }
+
+    /**
+     *
+     */
+    public function usersWereMentioned(Collection $users): void
+    {
+        $users = $users->filter(function (User $user) {
+            return Post::visibleTo($user)->whereKey($this->id)->exists();
+        });
+
+        $postUserRows = $users->map(fn(User $user) => [
+            'post_id' => $this->getKey(),
+            'user_id' => $user->getKey(),
+            'mentioned_at' => now(),
+        ])->all();
+
+        PostUser::upsert($postUserRows, ['post_id', 'user_id'], ['mentioned_at']);
     }
 
     public function scopeUnread(Builder $query)

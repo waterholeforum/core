@@ -130,7 +130,7 @@ class LineChart extends Component
             ->where($column, '>=', $this->prevPeriodStart)
             ->where($column, '<', $this->periodEnd)
             ->groupBy('time_group')
-            ->get('count', 'time_group')
+            ->get(['count', 'time_group'])
             ->map(fn($row) => [
                 'count' => $row['count'],
                 'date' => CarbonImmutable::parse($row['time_group']),

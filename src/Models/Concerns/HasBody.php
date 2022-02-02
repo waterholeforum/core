@@ -4,17 +4,30 @@ namespace Waterhole\Models\Concerns;
 
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\HtmlString;
 use Waterhole\Formatter\Formatter;
 use Waterhole\Formatter\Mentions;
-use Waterhole\Models\Comment;
 use Waterhole\Models\Model;
-use Waterhole\Models\Post;
-use Waterhole\Models\PostUser;
 use Waterhole\Models\User;
-use Waterhole\Notifications\Mention;
 
+/**
+ * Methods to give a model a "body" of formatted text.
+ *
+ * This trait assumes a `body` column exists on the model. When this attribute
+ * is set on the model, the content will be parsed into an XML document by the
+ * Formatter, and stored in the database in this form. When the `body` attribute
+ * is retrieved, it is unparsed back into the original plain-text version.
+ *
+ * This trait also adds a `mentions` relationship to store a list of the users
+ * mentioned in the body using the @ prefix. This relationship can then be
+ * loaded before the body is rendered so that the Formatter can substitute in
+ * the most up-to-date usernames.
+ *
+ * @property string $body The original unformatted version of the body.
+ * @property-read HtmlString $body_html The formatted HTML version of the body
+ *   for the current user.
+ * @property string $parsed_body The intermediary parsed XML document.
+ */
 trait HasBody
 {
     protected static Formatter $formatter;
@@ -23,41 +36,49 @@ trait HasBody
 
     public static function bootHasBody()
     {
+        // Whenever the model is saved, sync the users mentioned in the body
+        // into the `mentions` relationship.
         static::saved(function (Model $model) {
             $model->mentions()->sync(
                 Mentions::getMentionedUsers($model->parsed_body)
             );
-
-            if ($model->wasRecentlyCreated && ($model instanceof Post || $model instanceof Comment)) {
-                $post = $model instanceof Post ? $model : $model->post;
-
-                $users = $model->mentions
-                    ->except($model->user_id)
-                    ->filter(function (User $user) use ($post) {
-                        return Post::visibleTo($user)->whereKey($post->id)->exists();
-                    });
-
-                $postUserRows = $users->map(fn(User $user) => [
-                    'post_id' => $post->getKey(),
-                    'user_id' => $user->getKey(),
-                    'mentioned_at' => now(),
-                ])->all();
-
-                PostUser::upsert($postUserRows, ['post_id', 'user_id'], ['mentioned_at']);
-
-                Notification::send($users, new Mention($model));
-            }
         });
     }
 
+    /**
+     * Relationship with the users who were mentioned in the body.
+     */
     public function mentions(): MorphToMany
     {
         return $this->morphToMany(User::class, 'content', 'mentions');
     }
 
+    /**
+     * Render the body as HTML for the given user.
+     */
+    public function render(User $user = null): HtmlString
+    {
+        $key = $user->id ?? 0;
+
+        if (! isset($this->renderCache[$key])) {
+            $context = ['model' => $this, 'user' => $user];
+
+            $this->renderCache[$key] = static::$formatter->render($this->parsed_body, $context);
+        }
+
+        return new HtmlString($this->renderCache[$key]);
+    }
+
     public function getBodyAttribute(string $value): string
     {
         return static::$formatter->unparse($value);
+    }
+
+    public function setBodyAttribute(string $value)
+    {
+        $context = ['model' => $this];
+
+        $this->attributes['body'] = $value ? static::$formatter->parse($value, $context) : null;
     }
 
     public function getBodyHtmlAttribute(): HtmlString
@@ -70,36 +91,22 @@ trait HasBody
         return $this->attributes['body'];
     }
 
-    public function setBodyAttribute(string $value)
-    {
-        $context = ['model' => $this];
-
-        $this->attributes['body'] = $value ? static::$formatter->parse($value, $context) : null;
-    }
-
     public function setParsedBodyAttribute(string $value)
     {
         $this->attributes['body'] = $value;
     }
 
-    public function render(User $actor = null): HtmlString
-    {
-        $key = $actor->id ?? 0;
-
-        if (! isset($this->renderCache[$key])) {
-            $context = ['model' => $this, 'actor' => $actor];
-
-            $this->renderCache[$key] = static::$formatter->render($this->parsedBody, $context);
-        }
-
-        return new HtmlString($this->renderCache[$key]);
-    }
-
+    /**
+     * Set the formatter instance for this model.
+     */
     public static function getFormatter(): Formatter
     {
         return static::$formatter;
     }
 
+    /**
+     * Set the formatter instance for this model.
+     */
     public static function setFormatter(Formatter $formatter)
     {
         static::$formatter = $formatter;

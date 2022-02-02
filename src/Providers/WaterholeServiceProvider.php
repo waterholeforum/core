@@ -16,7 +16,7 @@ class WaterholeServiceProvider extends AggregateServiceProvider
         AuthServiceProvider::class,
         ConsoleServiceProvider::class,
         EventServiceProvider::class,
-        LocaleServiceProvider::class,
+        TranslationServiceProvider::class,
         RouteServiceProvider::class,
         BroadcastServiceProvider::class,
         ViewServiceProvider::class,

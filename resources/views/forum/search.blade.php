@@ -39,8 +39,8 @@
                                 <span>{{ $channel->name }}</span>
                                 @if ($selectedChannels->contains($channel))
                                     <x-waterhole::icon icon="heroicon-s-x" style="margin-left: auto; font-size: inherit"/>
-                                @elseif (isset($channelHits[$channel->id]))
-                                    <span class="badge">{{ $channelHits[$channel->id] }}</span>
+                                @elseif (isset($results->channelHits[$channel->id]))
+                                    <span class="badge">{{ $results->channelHits[$channel->id] }}</span>
                                 @endif
                             </a>
                         @endforeach
@@ -48,7 +48,7 @@
 
                     <div class="stack-md">
                         <div class="toolbar">
-                            <h2 class="h3">Showing {{ number_format($total) }}{{ $exhaustiveTotal ? '' : '+' }} results</h2>
+                            <h2 class="h3">Showing {{ number_format($results->total) }}{{ $results->exhaustiveTotal ? '' : '+' }} results</h2>
                             <div class="spacer"></div>
                             <ui-popup placement="bottom-end">
                                 <button type="button" class="btn btn--small btn--link">
@@ -122,8 +122,8 @@
                 <div class="placeholder">
                     <x-waterhole::icon icon="heroicon-o-search" class="placeholder__visual"/>
                     <h2 class="h3">No Results Found</h2>
-                    @if ($error)
-                        <p>{{ $error }}</p>
+                    @if ($results->error)
+                        <p>{{ $results->error }}</p>
                     @endif
                 </div>
             @endif

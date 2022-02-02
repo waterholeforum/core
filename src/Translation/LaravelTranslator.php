@@ -1,16 +1,16 @@
 <?php
 
-namespace Waterhole\Locale;
+namespace Waterhole\Translation;
 
 use Illuminate\Translation\Translator;
 use Waterhole\Waterhole;
 
-class BaseTranslator extends Translator
+class LaravelTranslator extends Translator
 {
     public function parseKey($key): array
     {
         if (
-            Waterhole::isForumRoute()
+            (Waterhole::isForumRoute() || Waterhole::isAdminRoute())
             && (
                 str_starts_with($key, 'validation.')
                 || str_starts_with($key, 'auth.')

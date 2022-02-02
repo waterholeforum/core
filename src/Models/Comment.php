@@ -4,12 +4,14 @@ namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rule;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 use Waterhole\Events\NewComment;
 use Waterhole\Models\Concerns\HasBody;
 use Waterhole\Models\Concerns\HasLikes;
 use Waterhole\Models\Concerns\ValidatesData;
+use Waterhole\Notifications\Mention;
 use Waterhole\Views\Components;
 use Waterhole\Views\TurboStream;
 
@@ -47,6 +49,22 @@ class Comment extends Model
 
         static::created(function (self $comment) {
             broadcast(new NewComment($comment))->toOthers();
+        });
+
+        // When a new comment is created, send notifications to mentioned users.
+        // We have to use `saved` instead of `created` because the mentions are
+        // synced to the database in the `saved` event, and `created` is always
+        // run before `saved`.
+        static::saved(function (Comment $comment) {
+            if (! $comment->wasRecentlyCreated) {
+                return;
+            }
+
+            $comment->post->usersWereMentioned(
+                $users = $comment->mentions->except($comment->user_id)
+            );
+
+            Notification::send($users, new Mention($comment));
         });
 
         static::addGlobalScope('index', function ($query) {

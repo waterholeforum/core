@@ -4,38 +4,11 @@ use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\HtmlString;
 use Illuminate\View\Component;
+use Major\Fluent\Formatters\Number\NumberFormatter;
+use Major\Fluent\Formatters\Number\Options;
 use Waterhole\Support\TimeAgo;
 
 
-// function fluent_bundle(string $id, string $locale = null)
-// {
-//     $locales = app('waterhole.locales');
-//
-//     $locale = $locale ?: $locales->localeFor(Auth::user());
-//
-//     $bundle = $locales->getBundle($locale);
-//
-//     if (! $bundle->hasMessage($id)) {
-//         $bundle = $locales->getBundle($locales->getDefaultLocale());
-//
-//         if (! $bundle->hasMessage($id)) {
-//             return null;
-//         }
-//     }
-//
-//     return $bundle;
-// }
-//
-// function fluent(string $id, array $args = [], string $locale = null): string
-// {
-//     if ($bundle = fluent_bundle($id, $locale)) {
-//         $message = $bundle->getMessage($id);
-//
-//         return $bundle->formatPattern($message['value'], $args);
-//     }
-//
-//     return $id;
-// }
 //
 // function fluent_html(string $html, string $id, array $args = [], string $locale = null): string
 // {
@@ -58,6 +31,36 @@ use Waterhole\Support\TimeAgo;
 //
 //     return $id;
 // }
+
+/**
+ * Format a number in compact notation.
+ */
+function compact_number(int|float $number, string $locale = null): string
+{
+    if ($number >= 100) {
+        $locale ??= app()->getLocale();
+        $key = 'waterhole::number.compact-number-1'.str_repeat('0', floor(log10($number)));
+
+        if (($format = __($key, [], $locale)) !== $key) {
+            [$numberFormat, $unit] = str_split($format, strrpos($format, '0') + 1);
+            $split = explode('.', $numberFormat);
+            $digits = strlen($split[0]);
+            $fractionDigits = count($split) > 1 ? strlen($split[1]) : 0;
+            $threshold = pow(10, $digits);
+
+            while ($number >= $threshold) {
+                $number /= 10;
+            }
+
+            $formattedNumber = (new NumberFormatter($locale ?? app()->getLocale()))
+                ->format($number, new Options(maximumFractionDigits: $fractionDigits));
+
+            return $formattedNumber.$unit;
+        }
+    }
+
+    return (string) $number;
+}
 
 function time_ago($then): string
 {

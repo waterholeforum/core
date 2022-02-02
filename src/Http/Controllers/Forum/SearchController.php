@@ -38,6 +38,8 @@ class SearchController extends Controller
             $selectedChannels = $channels->find($ids);
         }
 
+        // The MySQL engine is the only implementation right now. In the future
+        // other engines will exist and this will be configurable.
         $engine = new MySqlEngine();
 
         $results = $engine->search(
@@ -48,13 +50,16 @@ class SearchController extends Controller
             channelIds: $selectedChannels->modelKeys(),
         );
 
-        $postsById = Post::with(
+        // The engine has given us a Results object with an array of Hits,
+        // each of which contain a post ID and highlighted title/body text. So
+        // we still need to retrieve and set the Post model for each hit.
+        $postsById = Post::with([
             'user',
             'channel.userState',
             'lastComment.user',
             'userState',
             'likedBy'
-        )
+        ])
             ->whereIn('id', collect($results->hits)->map->postId)
             ->get()
             ->keyBy('id');
@@ -63,6 +68,9 @@ class SearchController extends Controller
             $hit->post = $postsById[$hit->postId] ?? null;
         }
 
+        // Depending on if we have an accurate idea of how many results there
+        // are or not, we will wrap the hits in an appropriate paginator
+        // instance.
         $paginatorOptions = [
             'path' => Paginator::resolveCurrentPath()
         ];
@@ -84,14 +92,17 @@ class SearchController extends Controller
             );
         }
 
+        // In the sidebar, we will only display channels that contain hits, and
+        // we will sort them with the most hits at the top.
+        $channelsByHits = $channels
+            ->filter(fn($channel) => $results->channelHits[$channel->id])
+            ->sortByDesc(fn($channel) => $results->channelHits[$channel->id]);
+
         return view('waterhole::forum.search', [
             'hits' => $hits->withQueryString(),
-            'total' => $results->total,
-            'exhaustiveTotal' => $results->exhaustiveTotal,
-            'channels' => Channel::all()->filter(fn($channel) => $results->channelHits[$channel->id])->sortByDesc(fn($channel) => $results->channelHits[$channel->id]),
+            'results' => $results,
+            'channels' => $channelsByHits,
             'selectedChannels' => $selectedChannels,
-            'channelHits' => $results->channelHits,
-            'error' => $results->error,
             'sorts' => static::SORTS,
             'currentSort' => $currentSort,
         ]);

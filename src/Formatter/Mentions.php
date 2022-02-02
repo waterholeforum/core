@@ -85,6 +85,10 @@ abstract class Mentions
 
     /**
      * Get all the user IDs that have been mentioned in a piece of content.
+     *
+     * This is used in the `HasBody` model trait to populate the `mentions`
+     * relationship so that it can be eager loaded when the content is
+     * displayed, and the rendering function above can make use of the data.
      */
     public static function getMentionedUsers(string $xml): array
     {

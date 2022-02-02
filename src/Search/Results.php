@@ -2,7 +2,7 @@
 
 namespace Waterhole\Search;
 
-class SearchResults
+class Results
 {
     public array $hits;
     public ?int $total;
