@@ -38,6 +38,8 @@ class GroupController extends Controller
 
     public function edit(Group $group)
     {
+        abort_if(! $group->isCustom(), 404);
+
         return $this->form()->with(compact('group'));
     }
 

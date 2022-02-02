@@ -10,57 +10,58 @@ use Illuminate\Support\Facades\Auth;
 use Staudenmeir\LaravelCte\Eloquent\QueriesExpressions;
 use Waterhole\Notifications\Notification as NotificationTemplate;
 
+/**
+ * @property string $id
+ * @property string $type
+ * @property string $notifiable_type
+ * @property int $notifiable_id
+ * @property array $data
+ * @property ?int $sender_id
+ * @property ?string $group_type
+ * @property ?int $group_id
+ * @property ?string $content_type
+ * @property ?int $content_id
+ * @property ?\Carbon\Carbon $created_at
+ * @property ?\Carbon\Carbon $updated_at
+ * @property ?\Carbon\Carbon $read_at
+ * @property-read ?NotificationTemplate $template
+ * @property-read ?User $sender
+ * @property-read ?Model $group
+ * @property-read ?Model $content
+ */
 class Notification extends DatabaseNotification
 {
     use QueriesExpressions;
 
-    protected NotificationTemplate $template;
+    private NotificationTemplate $template;
 
-    public function getTemplateAttribute()
-    {
-        if (! $this->content) {
-            return null;
-        }
-
-        if (! isset($this->template)) {
-            $this->template = new $this->type($this->content);
-        }
-
-        return $this->template;
-    }
-
+    /**
+     * Relationship with the user whose action caused the notification to be
+     * sent.
+     */
     public function sender(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Relationship with the notification's group.
+     */
     public function group(): MorphTo
     {
         return $this->morphTo();
     }
 
+    /**
+     * Relationship with the notification's content.
+     */
     public function content(): MorphTo
     {
         return $this->morphTo();
     }
-
-    public function scopeAbout(Builder $query, $model)
-    {
-        $query->whereMorphedTo('group', $model)
-            ->orWhereMorphedTo('content', $model);
-
-        if ($model instanceof Post) {
-            $query->orWhere(function (Builder $query) use ($model) {
-                $query->where('group_type', Comment::class)
-                    ->whereIn('group_id', function ($query) use ($model) {
-                        $query->select('id')->from('comments')->where('post_id', $model->getKey());
-                    });
-            });
-        }
-    }
-
+    
     /**
-     * Match notifications that have the same type and subject as a notification
+     * Query notifications that have the same type and group as a notification.
      */
     public function scopeGroupedWith(Builder $query, Notification $notification): void
     {
@@ -71,11 +72,27 @@ class Notification extends DatabaseNotification
         }
     }
 
+    /**
+     * Only allow users to view their own notifications.
+     */
     public function resolveRouteBinding($value, $field = null)
     {
         return $this
-            ->where('id', $value)
+            ->whereKey($value)
             ->whereMorphedTo('notifiable', Auth::user())
             ->firstOrFail();
+    }
+
+    public function getTemplateAttribute(): ?NotificationTemplate
+    {
+        if (! $this->content) {
+            return null;
+        }
+
+        if (! isset($this->template)) {
+            $this->template = new $this->type($this->content);
+        }
+
+        return $this->template;
     }
 }

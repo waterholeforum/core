@@ -11,7 +11,7 @@ use Waterhole\Models\Model;
 use Waterhole\Models\User;
 
 /**
- * Methods to give a model a "body" of formatted text.
+ * Methods to give a model a formatted text `body`.
  *
  * This trait assumes a `body` column exists on the model. When this attribute
  * is set on the model, the content will be parsed into an XML document by the
@@ -34,7 +34,7 @@ trait HasBody
 
     private array $renderCache = [];
 
-    public static function bootHasBody()
+    public static function bootHasBody(): void
     {
         // Whenever the model is saved, sync the users mentioned in the body
         // into the `mentions` relationship.

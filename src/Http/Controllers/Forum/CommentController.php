@@ -144,9 +144,9 @@ class CommentController extends Controller
     {
         $this->authorize('update', $comment);
 
-        $comment->update(
-            Comment::validate($request->all(), $comment)
-        );
+        $comment->fill(Comment::validate($request->all(), $comment))
+            ->markAsEdited()
+            ->save();
 
         return redirect($request->get('return', $comment->post_url));
     }

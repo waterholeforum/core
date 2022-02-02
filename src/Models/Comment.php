@@ -4,6 +4,7 @@ namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rule;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
@@ -17,10 +18,28 @@ use Waterhole\Views\TurboStream;
 
 use function Tonysm\TurboLaravel\dom_id;
 
+/**
+ * @property int $id
+ * @property int $post_id
+ * @property ?int $parent_id
+ * @property ?int $user_id
+ * @property string $body
+ * @property \Carbon\Carbon $created_at
+ * @property ?\Carbon\Carbon $edited_at
+ * @property int $reply_count
+ * @property int $score
+ * @property-read Post $post
+ * @property-read ?User $user
+ * @property-read \Illuminate\Database\Eloquent\Collection $replies
+ * @property-read ?Comment $parent
+ * @property-read string $url
+ * @property-read string $edit_url
+ * @property-read string $post_url
+ */
 class Comment extends Model
 {
-    use HasLikes;
     use HasBody;
+    use HasLikes;
     use HasRecursiveRelationships;
     use ValidatesData;
 
@@ -36,12 +55,12 @@ class Comment extends Model
 
     protected static function booted(): void
     {
+        // Whenever a comment is created or deleted, we will update the metadata
+        // (number of replies) of the post and any parent comment that this one
+        // was made in reply to.
         $refreshMetadata = function (self $comment) {
             $comment->post->refreshCommentMetadata()->save();
-
-            if ($comment->parent) {
-                $comment->parent->refreshReplyMetadata()->save();
-            }
+            $comment->parent?->refreshReplyMetadata()->save();
         };
 
         static::created($refreshMetadata);
@@ -67,6 +86,9 @@ class Comment extends Model
             Notification::send($users, new Mention($comment));
         });
 
+        // By default, we calculate each comment's index (ie. how many comments
+        // came before it) when querying comments. Since this is an expensive
+        // thing to do, put it in a global scope so it can be disabled.
         static::addGlobalScope('index', function ($query) {
             if (! $query->getQuery()->columns) {
                 $query->select($query->qualifyColumn('*'))->withIndex();
@@ -84,38 +106,89 @@ class Comment extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function replies()
+    public function replies(): HasMany
     {
         return $this->hasMany(self::class, 'parent_id');
     }
 
-    public function parent()
+    public function parent(): BelongsTo
     {
         return $this->belongsTo(self::class, 'parent_id');
     }
 
+    /**
+     * Determine whether this comment is unread by the current user.
+     */
     public function isUnread(): bool
     {
         return $this->post->userState && $this->post->userState->last_read_at < $this->created_at;
     }
 
+    /**
+     * Determine whether this comment is read by the current user.
+     */
     public function isRead(): bool
     {
         return $this->post->userState && ! $this->isUnread();
     }
 
-    public static function rules(Comment $instance = null): array
+    /**
+     * Calculate each comment's index (ie. how many comments came before it)
+     * in the select clause.
+     */
+    public function scopeWithIndex(Builder $query)
+    {
+        $query->selectSub(function ($sub) use ($query) {
+            $sub->selectRaw('count(*)')
+                ->from('comments as before')
+                ->whereColumn('before.post_id', $query->qualifyColumn('post_id'))
+                ->whereColumn('before.created_at', '<', $query->qualifyColumn('created_at'));
+        }, 'index');
+    }
+
+    /**
+     * Mark this comment as having been edited just now.
+     */
+    public function markAsEdited(): static
+    {
+        $this->edited_at = now();
+
+        return $this;
+    }
+
+    /**
+     * Refresh the metadata about this comment's replies.
+     */
+    public function refreshReplyMetadata(): static
+    {
+        $this->reply_count = $this->replies()->count();
+
+        return $this;
+    }
+
+    public function getPerPage(): int
+    {
+        return config('waterhole.forum.comments_per_page', $this->perPage);
+    }
+
+    /**
+     * Get the Turbo Streams that should be sent when this comment is updated.
+     */
+    public function streamUpdated(): array
     {
         return [
-            'parent_id' => ['nullable', Rule::exists('comments', 'id')],
-            'body' => ['required', 'string'],
+            TurboStream::replace(new Components\CommentFull($this)),
         ];
     }
 
-    public static function messages(): array
+    /**
+     * Get the Turbo Streams that should be sent when this comment is removed.
+     */
+    public function streamRemoved(): array
     {
         return [
-            'body.required' => "Don't forget to write something!",
+            // TODO: replace with a generic CSS class target
+            TurboStream::remove(new Components\CommentFull($this)),
         ];
     }
 
@@ -132,52 +205,24 @@ class Comment extends Model
     public function getPostUrlAttribute(): string
     {
         if (isset($this->index)) {
-            return $this->post->url(['index' => $this->index]).'#'.dom_id($this);
+            return $this->post->url($this->index).'#'.dom_id($this);
         }
 
         return $this->post->url.'?comment='.$this->id;
     }
 
-    public function scopeWithIndex(Builder $query)
-    {
-        $query->selectSub(function ($sub) use ($query) {
-            $sub->selectRaw('count(*)')
-                ->from('comments as before')
-                ->whereColumn('before.post_id', $query->qualifyColumn('post_id'))
-                ->whereColumn('before.created_at', '<', $query->qualifyColumn('created_at'));
-        }, 'index');
-    }
-
-    public function wasEdited(): static
-    {
-        $this->edited_at = now();
-
-        return $this;
-    }
-
-    public function refreshReplyMetadata(): static
-    {
-        $this->reply_count = $this->replies()->count();
-
-        return $this;
-    }
-
-    public function getPerPage(): int
-    {
-        return config('waterhole.forum.comments_per_page', $this->perPage);
-    }
-
-    public function streamUpdated(): array
+    public static function rules(Comment $instance = null): array
     {
         return [
-            TurboStream::replace(new Components\CommentFull($this)),
+            'parent_id' => ['nullable', Rule::exists('comments', 'id')],
+            'body' => ['required', 'string'],
         ];
     }
 
-    public function streamRemoved(): array
+    public static function messages(): array
     {
         return [
-            TurboStream::remove(new Components\CommentFull($this)),
+            'body.required' => "Don't forget to write something!",
         ];
     }
 }

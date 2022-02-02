@@ -11,29 +11,51 @@ use Waterhole\Models\Concerns\HasPermissions;
 use Waterhole\Models\Concerns\HasUserState;
 use Waterhole\Models\Concerns\HasVisibility;
 use Waterhole\Models\Concerns\Structurable;
+use Waterhole\Models\Concerns\ValidatesData;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property ?string $description
+ * @property ?string $instructions
+ * @property ?array $filters
+ * @property ?string $default_layout
+ * @property bool $sandbox
+ * @property-read \Illuminate\Database\Eloquent\Collection $posts
+ * @property-read \Illuminate\Database\Eloquent\Collection $newPosts
+ * @property-read \Illuminate\Database\Eloquent\Collection $unreadPosts
+ * @property-read ?ChannelUser $userState
+ * @property-read string $url
+ * @property-read string $edit_url
+ */
 class Channel extends Model
 {
-    use HasUserState;
     use Followable;
-    use Structurable;
-    use HasPermissions;
     use HasIcon;
+    use HasPermissions;
+    use HasUserState;
     use HasVisibility;
+    use Structurable;
+    use ValidatesData;
 
     public $timestamps = false;
 
     protected $casts = [
         'filters' => 'json',
+        'sandbox' => 'bool',
     ];
 
+    /**
+     * Relationship with the channel's posts.
+     */
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
     }
 
     /**
-     * A relationship with posts that are new since this channel was followed.
+     * Relationship with posts that are new since this channel was followed.
      */
     public function newPosts(): HasMany
     {
@@ -45,11 +67,16 @@ class Channel extends Model
     }
 
     /**
-     * A relationship with posts that are followed and unread.
+     * Relationship with posts that are followed and contain unread content.
      */
     public function unreadPosts(): HasMany
     {
         return $this->posts()->following()->unread();
+    }
+
+    public function abilities(): array
+    {
+        return ['view', 'comment', 'post', 'moderate'];
     }
 
     public function getUrlAttribute(): string
@@ -62,16 +89,11 @@ class Channel extends Model
         return route('waterhole.admin.structure.channels.edit', ['channel' => $this]);
     }
 
-    public function abilities(): array
-    {
-        return ['view', 'comment', 'post', 'moderate'];
-    }
-
-    public static function rules(Channel $channel = null): array
+    public static function rules(Channel $instance = null): array
     {
         return array_merge([
             'name' => ['required', 'string', 'max:255'],
-            'slug' => ['required', 'string', 'max:255', Rule::unique('channels')->ignore($channel)],
+            'slug' => ['required', 'string', 'max:255', Rule::unique('channels')->ignore($instance)],
             'description' => ['nullable', 'string'],
             'instructions' => ['nullable', 'string'],
             'sandbox' => ['nullable', 'boolean'],

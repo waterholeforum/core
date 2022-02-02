@@ -7,12 +7,22 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Waterhole\Models\Concerns\HasIcon;
 use Waterhole\Models\Concerns\HasVisibility;
 use Waterhole\Models\Concerns\ReceivesPermissions;
+use Waterhole\Models\Concerns\ValidatesData;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property bool $is_public
+ * @property ?string $color
+ * @property string $edit_url
+ * @property-read \Illuminate\Database\Eloquent\Collection $users
+ */
 class Group extends Model
 {
+    use HasIcon;
     use HasVisibility;
     use ReceivesPermissions;
-    use HasIcon;
+    use ValidatesData;
 
     public const GUEST_ID = 1;
     public const MEMBER_ID = 2;
@@ -20,51 +30,81 @@ class Group extends Model
 
     public $timestamps = false;
 
+    /**
+     * Relationship with the group's users.
+     */
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
     }
 
+    /**
+     * Whether this group is the Guest group.
+     */
     public function isGuest(): bool
     {
         return $this->id === static::GUEST_ID;
     }
 
+    /**
+     * Whether this group is the Member group.
+     */
     public function isMember(): bool
     {
         return $this->id === static::MEMBER_ID;
     }
 
+    /**
+     * Whether this group is the Admin group.
+     */
     public function isAdmin(): bool
     {
         return $this->id === static::ADMIN_ID;
     }
 
+    /**
+     * Whether this group is a custom (user-defined) group.
+     */
     public function isCustom(): bool
     {
         return ! $this->isGuest() && ! $this->isMember() && ! $this->isAdmin();
     }
 
+    /**
+     * Get an instance of the Guest group.
+     */
     public static function guest(): static
     {
         return (new static())->newInstance(['id' => static::GUEST_ID], true);
     }
 
+    /**
+     * Get an instance of the Member group.
+     */
     public static function member(): static
     {
         return (new static())->newInstance(['id' => static::MEMBER_ID], true);
     }
 
+    /**
+     * Get an instance of the Admin group.
+     */
     public static function admin(): static
     {
         return (new static())->newInstance(['id' => static::ADMIN_ID], true);
     }
 
+    /**
+     * Get only custom (user-defined) groups.
+     */
     public function scopeCustom(Builder $query)
     {
         $query->whereNotIn('id', [static::GUEST_ID, static::MEMBER_ID, static::ADMIN_ID]);
     }
 
+    /**
+     * Get only groups that can be selected for users (admin + custom groups).
+     */
     public function scopeSelectable(Builder $query)
     {
         $query->whereNotIn('id', [static::GUEST_ID, static::MEMBER_ID]);
@@ -75,12 +115,7 @@ class Group extends Model
         return route('waterhole.admin.groups.edit', ['group' => $this]);
     }
 
-    public function resolveRouteBinding($value, $field = null)
-    {
-        return $this->custom()->whereKey($value)->firstOrFail();
-    }
-
-    public static function rules(Group $group = null): array
+    public static function rules(Group $instance = null): array
     {
         return array_merge([
             'name' => ['required', 'string', 'max:255'],

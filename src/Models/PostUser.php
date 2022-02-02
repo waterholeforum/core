@@ -4,6 +4,16 @@ namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $post_id
+ * @property int $user_id
+ * @property ?\Carbon\Carbon $last_read_at
+ * @property ?string $notifications
+ * @property ?\Carbon\Carbon $followed_at
+ * @property ?\Carbon\Carbon $mentioned_at
+ * @property-read Post $post
+ * @property-read User $user
+ */
 class PostUser extends Model
 {
     public $timestamps = false;
@@ -13,8 +23,12 @@ class PostUser extends Model
     protected $casts = [
         'last_read_at' => 'datetime',
         'followed_at' => 'datetime',
+        'mentioned_at' => 'datetime',
     ];
 
+    /**
+     * Mark this post as having been read by the user.
+     */
     public function read(): static
     {
         $this->last_read_at = now();

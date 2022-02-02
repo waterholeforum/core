@@ -27,7 +27,6 @@ return new class extends Migration
             $table->json('notification_channels')->nullable();
             $table->timestamp('notifications_read_at')->nullable();
             $table->boolean('follow_on_comment')->default(0);
-            $table->timestamp('suspend_until')->nullable();
         });
     }
 

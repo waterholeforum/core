@@ -21,13 +21,35 @@ use Waterhole\Notifications\Mention;
 use Waterhole\Views\Components;
 use Waterhole\Views\TurboStream;
 
+/**
+ * @property int $id
+ * @property int $channel_id
+ * @property ?int $user_id
+ * @property ?string $title
+ * @property ?string $slug
+ * @property ?\Carbon\Carbon $created_at
+ * @property ?\Carbon\Carbon $edited_at
+ * @property ?\Carbon\Carbon $last_activity_at
+ * @property int $comment_count
+ * @property int $score
+ * @property bool $is_locked
+ * @property-read Channel $channel
+ * @property-read ?User $user
+ * @property-read \Illuminate\Database\Eloquent\Collection $comments
+ * @property-read \Illuminate\Database\Eloquent\Collection $unreadComments
+ * @property-read ?Comment $lastComment
+ * @property-read ?PostUser $userState
+ * @property-read string $url
+ * @property-read string $edit_url
+ * @property-read string $unread_url
+ */
 class Post extends Model
 {
-    use HasLikes;
-    use HasBody;
-    use HasVisibility;
-    use HasUserState;
     use Followable;
+    use HasBody;
+    use HasLikes;
+    use HasUserState;
+    use HasVisibility;
     use ValidatesData;
 
     const UPDATED_AT = null;
@@ -35,7 +57,6 @@ class Post extends Model
     protected $casts = [
         'edited_at' => 'datetime',
         'last_activity_at' => 'datetime',
-        'is_pinned' => 'boolean',
         'is_locked' => 'boolean',
     ];
 
@@ -63,7 +84,7 @@ class Post extends Model
     }
 
     /**
-     *
+     * Update the user state for any users mentioned in this post.
      */
     public function usersWereMentioned(Collection $users): void
     {
@@ -80,6 +101,9 @@ class Post extends Model
         PostUser::upsert($postUserRows, ['post_id', 'user_id'], ['mentioned_at']);
     }
 
+    /**
+     * Query posts that are unread for the current user.
+     */
     public function scopeUnread(Builder $query)
     {
         $query->whereDoesntHave('userState', function ($query) {
@@ -87,40 +111,154 @@ class Post extends Model
         });
     }
 
-    public function setTitleAttribute($value)
-    {
-        $this->attributes['title'] = $value;
-        $this->attributes['slug'] = Str::slug($value);
-    }
-
+    /**
+     * Relationship with the post's channel.
+     */
     public function channel(): BelongsTo
     {
         return $this->belongsTo(Channel::class);
     }
 
+    /**
+     * Relationship with the post's author.
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Relationship with the post's comments.
+     */
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
 
+    /**
+     * Relationship with the post's unread comments for the current user.
+     */
     public function unreadComments(): HasMany
     {
+        // This relationship is used to provide a count of unread comments for
+        // each post in the post feed. Remove the `index` scope as it is not
+        // needed and causes performance to suffer in this context.
         return $this->comments()
-            ->withoutGlobalScopes()
+            ->withoutGlobalScope('index')
             ->whereRaw(
                 'created_at > COALESCE((select last_read_at from post_user where post_id = comments.post_id and post_user.user_id = ?), 0)',
                 [Auth::id()]
             );
     }
 
+    /**
+     * Relationship with the post's most recent comment.
+     */
     public function lastComment(): HasOne
     {
         return $this->hasOne(Comment::class)->latestOfMany();
+    }
+
+    /**
+     * Generate a URL for a particular comment index in this post.
+     */
+    public function url(int $index = 0): string
+    {
+        $params = ['post' => $this];
+
+        if (($page = floor($index / (new Comment)->getPerPage()) + 1) > 1) {
+            $params['page'] = $page;
+        }
+
+        return route('waterhole.posts.show', $params);
+    }
+
+    /**
+     * Mark this post as having been edited just now.
+     */
+    public function markAsEdited(): static
+    {
+        $this->edited_at = now();
+
+        return $this;
+    }
+
+    /**
+     * Refresh the metadata about this post's comments.
+     */
+    public function refreshCommentMetadata(): static
+    {
+        $this->last_activity_at = $this->comments()->latest()->value('created_at') ?: $this->created_at;
+        $this->comment_count = $this->comments()->count();
+
+        return $this;
+    }
+
+    /**
+     * Determine whether this post contains any new activity for the current user.
+     */
+    public function isUnread(): bool
+    {
+        return $this->userState && $this->last_activity_at > $this->userState->last_read_at;
+    }
+
+    /**
+     * Determine whether this post has been fully read by the current user.
+     */
+    public function isRead(): bool
+    {
+        return $this->userState && ! $this->isUnread();
+    }
+
+    /**
+     * Determine whether this post has never before been seen by the current user.
+     */
+    public function isNew(): bool
+    {
+        return $this->userState && ! $this->userState->last_read_at;
+    }
+
+    /**
+     * Get the Turbo Streams that should be sent when this post is updated.
+     */
+    public function streamUpdated(): array
+    {
+        return [
+            TurboStream::replace(new Components\PostListItem($this)),
+            TurboStream::replace(new Components\PostCardsItem($this)),
+            TurboStream::replace(new Components\PostFull($this)),
+            TurboStream::replace(new Components\PostActions($this)),
+        ];
+    }
+
+    /**
+     * Get the Turbo Streams that should be sent when this post is removed.
+     */
+    public function streamRemoved(): array
+    {
+        return [
+            // TODO: replace with a generic CSS class target
+            TurboStream::remove(new Components\PostListItem($this)),
+            TurboStream::remove(new Components\PostCardsItem($this)),
+        ];
+    }
+
+    public function getPerPage(): int
+    {
+        return config('waterhole.forum.posts_per_page', $this->perPage);
+    }
+
+    public function getRouteKey(): string
+    {
+        return $this->id.($this->slug ? '-'.$this->slug : '');
+    }
+
+    public function resolveRouteBinding($value, $field = null)
+    {
+        return $this
+            ->whereKey(explode('-', $value)[0])
+            ->visibleTo(Auth::user())
+            ->firstOrFail();
     }
 
     public function getUrlAttribute(): string
@@ -133,20 +271,6 @@ class Post extends Model
         return route('waterhole.posts.edit', ['post' => $this]);
     }
 
-    public function url(array $options = []): string
-    {
-        $params = ['post' => $this];
-
-        if (
-            ($index = $options['index'] ?? null)
-            && (($page = floor($index / (new Comment)->getPerPage()) + 1) > 1)
-        ) {
-            $params['page'] = $page;
-        }
-
-        return route('waterhole.posts.show', $params);
-    }
-
     public function getUnreadUrlAttribute(): string
     {
         $fragment = match (true) {
@@ -155,22 +279,13 @@ class Post extends Model
             default => '#bottom',
         };
 
-        return $this->url(['index' => $this->comment_count - $this->unread_comments_count]).$fragment;
+        return $this->url($this->comment_count - $this->unread_comments_count).$fragment;
     }
 
-    public function markAsEdited(): static
+    public function setTitleAttribute($value)
     {
-        $this->edited_at = now();
-
-        return $this;
-    }
-
-    public function refreshCommentMetadata(): static
-    {
-        $this->last_activity_at = $this->comments()->latest()->value('created_at') ?: $this->created_at;
-        $this->comment_count = $this->comments()->count();
-
-        return $this;
+        $this->attributes['title'] = $value;
+        $this->attributes['slug'] = Str::slug($value);
     }
 
     public static function rules(Post $instance = null): array
@@ -185,56 +300,5 @@ class Post extends Model
         }
 
         return $rules;
-    }
-
-    public function getRouteKey()
-    {
-        return $this->id.($this->slug ? '-'.$this->slug : '');
-    }
-
-    public function resolveRouteBinding($value, $field = null)
-    {
-        return $this
-            ->where('id', explode('-', $value)[0])
-            ->visibleTo(Auth::user())
-            ->firstOrFail();
-    }
-
-    public function isUnread(): bool
-    {
-        return $this->userState && $this->last_activity_at > $this->userState->last_read_at;
-    }
-
-    public function isRead(): bool
-    {
-        return $this->userState && ! $this->isUnread();
-    }
-
-    public function isNew(): bool
-    {
-        return $this->userState && ! $this->userState->last_read_at;
-    }
-
-    public function getPerPage(): int
-    {
-        return config('waterhole.forum.posts_per_page', $this->perPage);
-    }
-
-    public function streamUpdated(): array
-    {
-        return [
-            TurboStream::replace(new Components\PostListItem($this)),
-            TurboStream::replace(new Components\PostCardsItem($this)),
-            TurboStream::replace(new Components\PostFull($this)),
-            TurboStream::replace(new Components\PostActions($this)),
-        ];
-    }
-
-    public function streamRemoved(): array
-    {
-        return [
-            TurboStream::remove(new Components\PostListItem($this)),
-            TurboStream::remove(new Components\PostCardsItem($this)),
-        ];
     }
 }
