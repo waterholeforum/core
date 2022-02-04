@@ -1,4 +1,4 @@
-<ui-popup placement="top-start" class="js-only">
+<ui-popup placement="top-start" class="js-only" data-controller="theme">
     <button class="btn btn--icon btn--transparent text-xs">
         <x-waterhole::icon icon="heroicon-o-sun" class="light-only"/>
         <x-waterhole::icon icon="heroicon-o-moon" class="dark-only"/>

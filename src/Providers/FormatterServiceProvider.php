@@ -32,6 +32,9 @@ class FormatterServiceProvider extends ServiceProvider
                 $config->Litedown;
                 $config->PipeTables;
                 $config->TaskLists;
+
+                // Add the CODE tag to get auto-syntax-highlighting support.
+                $config->BBCodes->addFromRepository('CODE', vars: ['style' => 'none']);
             });
 
             $formatter->rendering(function (Renderer $renderer, string $xml, ?Context $context) {
