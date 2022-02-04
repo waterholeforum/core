@@ -11,6 +11,8 @@ use Waterhole\Models\User;
 
 class MoveChannel extends Action
 {
+    public bool $confirm = true;
+
     public function appliesTo(Model $model): bool
     {
         return $model instanceof Post;
@@ -18,7 +20,7 @@ class MoveChannel extends Action
 
     public function authorize(?User $user, Model $model): bool
     {
-        return $user && $user->can('move', $model);
+        return $user && $user->can('post.move', $model);
     }
 
     public function label(Collection $models): string

@@ -61,7 +61,7 @@
             class="comment__body content"
             data-controller="quotable"
         >
-            {{ emojify($comment->body_html) }}
+            {{ Waterhole\emojify($comment->body_html) }}
 
             <a
                 href="{{ route('waterhole.posts.comments.create', [
@@ -84,7 +84,6 @@
 
             <x-waterhole::action-menu
                 :for="$comment"
-                :button-attributes="['class' => 'btn--small']"
                 placement="bottom-end"
                 class="comment__control"
             />

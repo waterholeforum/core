@@ -4,6 +4,7 @@ namespace Waterhole\Notifications;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\URL;
 use Waterhole\Models\User;
 
 class VerifyEmail extends Notification
@@ -17,12 +18,12 @@ class VerifyEmail extends Notification
         $this->email = $email;
     }
 
-    public function via()
+    public function via(): array
     {
         return ['mail'];
     }
 
-    public function toMail()
+    public function toMail(): MailMessage
     {
         $verificationUrl = $this->verificationUrl();
 
@@ -33,9 +34,9 @@ class VerifyEmail extends Notification
             ->line('If you do not have an account on '.config('waterhole.forum.title').', no further action is required.');
     }
 
-    protected function verificationUrl()
+    protected function verificationUrl(): string
     {
-        return url()->temporarySignedRoute(
+        return URL::temporarySignedRoute(
             'waterhole.verify-email',
             now()->addMinutes(config('auth.verification.expire', 60)),
             [

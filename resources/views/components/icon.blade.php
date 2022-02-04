@@ -6,7 +6,7 @@
     @if (str_starts_with($icon, 'file:'))
         <img src="{{ Storage::disk('public')->url('icons/'.substr($icon, 5)) }}" alt="" {{ $attributes }}>
     @elseif (str_starts_with($icon, 'emoji:'))
-        <span {{ $attributes }}>{{ emojify(substr($icon, 6)) }}</span>
+        <span {{ $attributes }}>{{ Waterhole\emojify(substr($icon, 6)) }}</span>
     @else
         @php
             if (str_starts_with($icon, 'svg:')) {

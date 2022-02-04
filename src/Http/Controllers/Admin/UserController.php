@@ -95,21 +95,20 @@ class UserController extends Controller
     {
         $this->save($user, $request);
 
-        return redirect()
-            ->route('waterhole.admin.users.index')
+        return redirect($request->input('return', route('waterhole.admin.users.index')))
             ->with('success', 'User saved.');
     }
 
     private function form()
     {
-        $groups = Group::selectable();
+        $groups = Group::selectable()->get();
 
         return view('waterhole::admin.users.form', compact('groups'));
     }
 
     private function save(User $user, Request $request): void
     {
-        $data = $request->validate(User::rules($user));
+        $data = User::validate($request->all(), $user);
 
         if (! empty($data['password'])) {
             $data['password'] = Hash::make($data['password']);
@@ -130,6 +129,7 @@ class UserController extends Controller
     {
         $data = $request->validate([
             'groups' => [
+                'nullable',
                 'array',
                 function ($attribute, $value, $fail) use ($user) {
                     if ($user->isRootAdmin() && ! in_array(Group::ADMIN_ID, $value)) {
@@ -143,8 +143,8 @@ class UserController extends Controller
             ],
         ]);
 
-        if (isset($data['groups'])) {
-            $user->groups()->sync($data['groups']);
+        if (array_key_exists('groups', $data)) {
+            $user->groups()->sync($data['groups'] ?: []);
         }
     }
 }

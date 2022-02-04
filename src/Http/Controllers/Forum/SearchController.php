@@ -28,7 +28,7 @@ class SearchController extends Controller
             return view('waterhole::forum.search');
         }
 
-        $channels = $selectedChannels = Channel::visibleTo($request->user())->get();
+        $channels = $selectedChannels = Channel::all();
 
         $currentSort = in_array($sort = $request->input('sort'), static::SORTS) ? $sort : static::SORTS[0];
         $currentPage = Paginator::resolveCurrentPage();

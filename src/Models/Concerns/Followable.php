@@ -45,9 +45,11 @@ trait Followable
      */
     protected function setNotifications(?string $value): void
     {
-        $this->userState->notifications = $value;
-        $this->userState->followed_at = $value === 'follow' ? now() : null;
-        $this->userState->save();
+        if ($this->userState->notifications !== $value) {
+            $this->userState->notifications = $value;
+            $this->userState->followed_at = $value === 'follow' ? now() : null;
+            $this->userState->save();
+        }
     }
 
     /**

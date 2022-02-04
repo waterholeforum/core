@@ -15,9 +15,10 @@ use Waterhole\Models\Concerns\Followable;
 use Waterhole\Models\Concerns\HasBody;
 use Waterhole\Models\Concerns\HasLikes;
 use Waterhole\Models\Concerns\HasUserState;
-use Waterhole\Models\Concerns\HasVisibility;
 use Waterhole\Models\Concerns\ValidatesData;
 use Waterhole\Notifications\Mention;
+use Waterhole\Scopes\CommentIndexScope;
+use Waterhole\Scopes\PermittedScope;
 use Waterhole\Views\Components;
 use Waterhole\Views\TurboStream;
 
@@ -49,7 +50,6 @@ class Post extends Model
     use HasBody;
     use HasLikes;
     use HasUserState;
-    use HasVisibility;
     use ValidatesData;
 
     const UPDATED_AT = null;
@@ -62,6 +62,8 @@ class Post extends Model
 
     public static function booted()
     {
+        static::addGlobalScope(new PermittedScope(Channel::class, 'channel_id'));
+
         static::creating(function (Post $post) {
             $post->last_activity_at ??= now();
         });
@@ -88,9 +90,10 @@ class Post extends Model
      */
     public function usersWereMentioned(Collection $users): void
     {
-        $users = $users->filter(function (User $user) {
-            return Post::visibleTo($user)->whereKey($this->id)->exists();
-        });
+        // TODO: filter out users who aren't allowed to see the post
+        // $users = $users->filter(function (User $user) {
+        //     return Post::visibleTo($user)->whereKey($this->id)->exists();
+        // });
 
         $postUserRows = $users->map(fn(User $user) => [
             'post_id' => $this->getKey(),
@@ -107,7 +110,7 @@ class Post extends Model
     public function scopeUnread(Builder $query)
     {
         $query->whereDoesntHave('userState', function ($query) {
-            $query->whereColumn('last_read_at', '>', 'last_activity_at');
+            $query->whereColumn('last_read_at', '>=', 'last_activity_at');
         });
     }
 
@@ -141,10 +144,10 @@ class Post extends Model
     public function unreadComments(): HasMany
     {
         // This relationship is used to provide a count of unread comments for
-        // each post in the post feed. Remove the `index` scope as it is not
-        // needed and causes performance to suffer in this context.
+        // each post in the post feed. Remove the `CommentIndexScope` as it is
+        // not needed and causes performance to suffer in this context.
         return $this->comments()
-            ->withoutGlobalScope('index')
+            ->withoutGlobalScope(CommentIndexScope::class)
             ->whereRaw(
                 'created_at > COALESCE((select last_read_at from post_user where post_id = comments.post_id and post_user.user_id = ?), 0)',
                 [Auth::id()]
@@ -257,7 +260,6 @@ class Post extends Model
     {
         return $this
             ->whereKey(explode('-', $value)[0])
-            ->visibleTo(Auth::user())
             ->firstOrFail();
     }
 

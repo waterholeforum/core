@@ -18,8 +18,12 @@
         </a>
 
         <ui-menu hidden class="menu notifications-menu">
+            {{--
+                https://github.com/hotwired/turbo/pull/445#issuecomment-995305287
+            --}}
             <turbo-frame
-                id="notifications"
+                data-id="notifications"
+                data-controller="turbo-frame"
                 src="{{ route('waterhole.notifications.index') }}"
                 loading="lazy"
                 data-notifications-popup-target="frame"

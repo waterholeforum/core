@@ -44,7 +44,14 @@ use Waterhole\Notifications\VerifyEmail;
  * @property ?\Illuminate\Database\Eloquent\Casts\ArrayObject $notification_channels
  * @property ?\Carbon\Carbon $notifications_read_at
  * @property bool $follow_on_comment
+ * @property-read string $url
+ * @property-read string $edit_url
+ * @property-read string $avatar_url
  * @property-read int $unread_notification_count
+ * @property-read \Illuminate\Database\Eloquent\Collection $posts
+ * @property-read \Illuminate\Database\Eloquent\Collection $comments
+ * @property-read \Illuminate\Database\Eloquent\Collection $groups
+ * @property-read \Illuminate\Database\Eloquent\Collection $notifications
  */
 class User extends Model implements
     AuthenticatableContract,
@@ -93,7 +100,7 @@ class User extends Model implements
     }
 
     /**
-     * Relationship with the user's groups.
+     * Relationship with the user's selected groups.
      */
     public function groups(): BelongsToMany
     {
@@ -161,6 +168,14 @@ class User extends Model implements
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPassword($token));
+    }
+
+    /**
+     * Determine whether this user is an admin.
+     */
+    public function isAdmin(): bool
+    {
+        return $this->groups->contains(Group::ADMIN_ID);
     }
 
     /**

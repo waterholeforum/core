@@ -91,20 +91,22 @@
                                     <x-waterhole::comments-locked :post="$post"/>
 
                                     @guest
-                                        <x-waterhole::alert
-                                            type="info"
-                                            class="alert--xl"
-                                            icon="heroicon-o-light-bulb"
-                                        >
-                                            <div class="content">
-                                                <h3>Sign up to participate in this discussion!</h3>
-                                                <p>Lorem ipsum dolor sit amet, has choro debitis ne, debet harum quando ex his. Cu elit noster usu, atqui mucius eum no. Et vix stet purto, quem propriae eam ne. Mea verear sapientem ea, ut laudem apeirian sit. Pro placerat oporteat ex.</p>
-                                                <p class="toolbar">
-                                                    <a href="{{ route('waterhole.register', ['return' => $comments->appends('direction', null)->fragment('bottom')->url($comments->lastPage())]) }}" class="btn btn--primary">Sign Up</a>
-                                                    <a href="{{ route('waterhole.login', ['return' => $comments->appends('direction', null)->fragment('bottom')->url($comments->lastPage())]) }}" class="btn btn--link">Log In</a>
-                                                </p>
-                                            </div>
-                                        </x-waterhole::alert>
+                                        @if ((new Waterhole\Models\User())->can('post.comment', $post))
+                                            <x-waterhole::alert
+                                                type="info"
+                                                class="alert--xl"
+                                                icon="heroicon-o-light-bulb"
+                                            >
+                                                <div class="content">
+                                                    <h3>Sign up to participate in this discussion!</h3>
+                                                    <p>Lorem ipsum dolor sit amet, has choro debitis ne, debet harum quando ex his. Cu elit noster usu, atqui mucius eum no. Et vix stet purto, quem propriae eam ne. Mea verear sapientem ea, ut laudem apeirian sit. Pro placerat oporteat ex.</p>
+                                                    <p class="toolbar">
+                                                        <a href="{{ route('waterhole.register', ['return' => $comments->appends('direction', null)->fragment('bottom')->url($comments->lastPage())]) }}" class="btn btn--primary">Sign Up</a>
+                                                        <a href="{{ route('waterhole.login', ['return' => $comments->appends('direction', null)->fragment('bottom')->url($comments->lastPage())]) }}" class="btn btn--link">Log In</a>
+                                                    </p>
+                                                </div>
+                                            </x-waterhole::alert>
+                                        @endif
                                     @endguest
                                 </div>
                             @endif
@@ -112,7 +114,7 @@
                     </div>
 
                     <div
-                        class="sidebar--sticky"
+                        class="sidebar sidebar--sticky"
                         style="overflow: visible; position: sticky; top: calc(var(--header-height) + var(--space-xl)); margin-left: var(--space-xxxl); width: 160px; flex-shrink: 0; padding: 0 0 0 var(--space-md); margin-bottom: 0"
                     >
                         <div class="stack-lg ruler">
@@ -174,7 +176,7 @@
 
             </section>
 
-            @can('reply', $post)
+            @can('post.comment', $post)
                 <x-waterhole::composer
                     :post="$post"
                     class="can-sticky"

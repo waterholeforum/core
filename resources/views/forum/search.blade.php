@@ -28,7 +28,7 @@
 
             @if ($hits->count())
                 <div class="with-sidebar-start">
-                    <div class="nav sidebar--sticky">
+                    <div class="nav sidebar sidebar--sticky">
                         @foreach ($channels as $channel)
                             <a
                                 href="{{ $selectedChannels->contains($channel) ? request()->fullUrlWithoutQuery(['channels', 'page']) : request()->fullUrlWithQuery(['channels' => $channel->id, 'page' => null]) }}"
@@ -90,12 +90,13 @@
                                                     <div class="post-summary__info">
                                                         @components(Waterhole\Extend\PostInfo::build(), ['post' => $hit->post])
                                                     </div>
+                                                    <div class="content" style="color: var(--color-text-muted); font-size: var(--text-xs); margin-top: .5em">
+                                                        {{ $hit->body }}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div style="margin-left: 4.1em; color: var(--color-text-muted); font-size: var(--text-xs); margin-top: .5em">
-                                            {{ $hit->body }}
-                                        </div>
+
                                     </li>
                                 @endforeach
                             </ul>

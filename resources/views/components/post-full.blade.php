@@ -8,7 +8,7 @@
             class="post-body content"
             data-controller="quotable"
         >
-            {{ emojify($post->body_html) }}
+            {{ Waterhole\emojify($post->body_html) }}
 
             <a
                 href="{{ route('waterhole.posts.comments.create', compact('post')) }}"
@@ -25,7 +25,7 @@
     </div>
 
     <div
-        class="sidebar--sticky"
+        class="sidebar sidebar--sticky"
         style="overflow: visible; margin-top: 6rem; position: sticky; top: calc(var(--header-height) + var(--space-xl)); margin-left: var(--space-xxxl); width: 160px; flex-shrink: 0; padding: 0 0 0 var(--space-md); margin-bottom: 0"
     >
         <div class="toolbar toolbar--nospace">

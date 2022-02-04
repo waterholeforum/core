@@ -38,6 +38,7 @@ class ActionButtons extends Component
         $this->actions = $actions
             ->filter(fn($action) => ! $action instanceof Action || $action->shouldRender(collect([$for])))
             ->values()
+            ->reject(fn($action, $i) => $action instanceof MenuDivider && $i === 0)
             ->all();
     }
 

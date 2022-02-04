@@ -12,6 +12,7 @@ use Waterhole\Waterhole;
 
 class DeleteChannel extends Action
 {
+    public bool $confirm = true;
     public bool $destructive = true;
 
     public function appliesTo($model): bool
@@ -21,7 +22,7 @@ class DeleteChannel extends Action
 
     public function authorize(?User $user, Model $model): bool
     {
-        return $user && $user->can('delete', $model);
+        return $user && $user->can('channel.delete', $model);
     }
 
     public function shouldRender(Collection $models): bool

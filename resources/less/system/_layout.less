@@ -85,8 +85,8 @@
   align-items: flex-start;
 }
 
-.with-sidebar-start > :nth-child(2),
-.with-sidebar-end > :nth-last-child(2) {
+.with-sidebar-start > :not(.sidebar),
+.with-sidebar-end > :not(.sidebar) {
   flex-grow: 999;
   min-width: 0;
 }
@@ -100,9 +100,9 @@
 
 @media (min-width: (@breakpoint-sm + 1)) {
   .with-sidebar-start {
-    gap: var(--space-xl);
+    gap: var(--space-xxl);
 
-    > :first-child {
+    .sidebar {
       width: 25ch;
       min-width: 25ch;
     }
@@ -116,6 +116,9 @@
     padding-bottom: var(--space-lg);
     overflow: auto;
     max-height: ~"calc(100vh - var(--header-height))";
+    margin-left: ~"calc(-1 * var(--space-xl))";
+    padding-left: var(--space-xl);
+    box-sizing: content-box;
 
     // When there are multiple sticky sidebars with protruding content (like
     // popups), bring the "active" one to the front.

@@ -4,6 +4,9 @@ namespace Waterhole\Models\Concerns;
 
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Waterhole\Models\Permission;
+use Waterhole\Models\User;
+use Waterhole\Scopes\PermittedScope;
+use Waterhole\Waterhole;
 
 /**
  * Methods to manage permissions on a model.
@@ -11,11 +14,15 @@ use Waterhole\Models\Permission;
  * This trait is distinct from `ReceivesPermissions` in that it is for models
  * that can be acted *upon*, rather than models that take the action (users
  * and groups).
+ *
+ * @property-read \Waterhole\Models\PermissionCollection $permissions
  */
 trait HasPermissions
 {
     public static function bootHasPermissions(): void
     {
+        static::addGlobalScope(new PermittedScope());
+
         // Ensure model deletion cascades to permission records.
         static::deleted(function (self $model) {
             $model->permissions()->delete();
@@ -60,5 +67,25 @@ trait HasPermissions
                 ])->values();
             })
         );
+    }
+
+    /**
+     * Get the model IDs that the given user has permission for.
+     *
+     * If the user is an admin, the result will be null, meaning there is no
+     * restriction on the models they have permission for.
+     */
+    public static function allPermitted(?User $user, string $ability = 'view'): ?array
+    {
+        if ($user?->isAdmin()) {
+            return null;
+        }
+
+        return Waterhole::permissions()
+            ->user($user)
+            ->ability($ability)
+            ->scope(static::class)
+            ->ids()
+            ->all();
     }
 }

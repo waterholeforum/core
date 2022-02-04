@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\HtmlString;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
+use Waterhole\Models\User;
 
 class Mention extends Notification
 {
@@ -18,31 +19,23 @@ class Mention extends Notification
         $this->post = $this->content instanceof Post ? $this->content : $this->content->post;
     }
 
-    public static function load(Collection $notifications): void
-    {
-        $notifications->loadMorph('content', [
-            Post::class => ['user'],
-            Comment::class => ['post', 'user'],
-        ]);
-    }
-
     public function shouldSend($notifiable): bool
     {
         return ! $this->post->ignoredBy->contains($notifiable)
             && ! $this->post->channel->ignoredBy->contains($notifiable);
     }
 
-    public function sender()
-    {
-        return $this->content->user;
-    }
-
-    public function content()
+    public function content(): Post|Comment
     {
         return $this->content;
     }
 
-    public function icon()
+    public function sender(): User
+    {
+        return $this->content->user;
+    }
+
+    public function icon(): string
     {
         return 'heroicon-o-at-symbol';
     }
@@ -80,5 +73,13 @@ class Mention extends Notification
     public static function description(): string
     {
         return 'Mentions';
+    }
+
+    public static function load(Collection $notifications): void
+    {
+        $notifications->loadMorph('content', [
+            Post::class => ['user'],
+            Comment::class => ['post', 'user'],
+        ]);
     }
 }

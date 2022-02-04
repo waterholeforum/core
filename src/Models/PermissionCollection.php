@@ -3,6 +3,7 @@
 namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection as BaseCollection;
 
 class PermissionCollection extends Collection
 {
@@ -32,7 +33,7 @@ class PermissionCollection extends Collection
     /**
      * Get the permission records received by any of the specified groups.
      */
-    public function group(Group|int|array $group): static
+    public function group(Group|int|array|Collection $group): static
     {
         $ids = collect($group instanceof Group ? [$group] : $group)
             ->map(fn($group) => $group instanceof Group ? $group->id : $group);
@@ -67,11 +68,27 @@ class PermissionCollection extends Collection
     /**
      * Get the permission records pertaining to a specific model.
      */
-    public function scope(Model $model): static
+    public function scope(Model|string $model): static
     {
+        if (is_string($model)) {
+            if (class_exists($model)) {
+                $model = (new $model())->getMorphClass();
+            }
+            
+            return $this->where('scope_type', $model);
+        }
+
         return $this
             ->where('scope_type', $model->getMorphClass())
             ->where('scope_id', $model->getKey());
+    }
+
+    /**
+     * Get the scope IDs present in the permission collection.
+     */
+    public function ids(): BaseCollection
+    {
+        return $this->pluck('scope_id');
     }
 
     /**
@@ -81,13 +98,14 @@ class PermissionCollection extends Collection
     {
         return $this->where('ability', $ability);
     }
-
+    
     /**
      * Determine whether this set of permissions contains a specific ability.
      */
-    public function allows(string $ability): bool
+    public function allows(string $ability, Model $model = null): bool
     {
-        return $this->ability($ability)->isNotEmpty();
+        return ($model ? $this->scope($model) : $this)
+            ->ability($ability)->isNotEmpty();
     }
 
     /**
@@ -95,16 +113,12 @@ class PermissionCollection extends Collection
      *
      * For Admins, this will always return true.
      */
-    public function can(?User $user, string $ability): bool
+    public function can(?User $user, string $ability, Model $model = null): bool
     {
-        if (! $user) {
-            return $this->guest()->allows($ability);
-        }
-
-        if ($user->groups->contains(Group::ADMIN_ID)) {
+        if ($user?->groups->contains(Group::ADMIN_ID)) {
             return true;
         }
-
-        return $this->user($user)->allows($ability);
+        
+        return $this->user($user)->allows($ability, $model);
     }
 }

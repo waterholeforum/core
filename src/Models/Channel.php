@@ -9,7 +9,6 @@ use Waterhole\Models\Concerns\Followable;
 use Waterhole\Models\Concerns\HasIcon;
 use Waterhole\Models\Concerns\HasPermissions;
 use Waterhole\Models\Concerns\HasUserState;
-use Waterhole\Models\Concerns\HasVisibility;
 use Waterhole\Models\Concerns\Structurable;
 use Waterhole\Models\Concerns\ValidatesData;
 
@@ -35,7 +34,6 @@ class Channel extends Model
     use HasIcon;
     use HasPermissions;
     use HasUserState;
-    use HasVisibility;
     use Structurable;
     use ValidatesData;
 

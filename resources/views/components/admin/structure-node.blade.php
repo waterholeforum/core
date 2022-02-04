@@ -42,20 +42,20 @@
 
         <div class="spacer"></div>
 
-        @if (method_exists($node->content, 'permissions'))
-            @if ($node->content->permissions->guest()->allows('view'))
+        @if ($permissions = app('waterhole.permissions')->load('recipient')->scope($node->content))
+            @if ($permissions->guest()->allows('view'))
                 <span class="with-icon text-xs color-muted">
                     <x-waterhole::icon icon="heroicon-o-globe"/>
                     Public
                 </span>
-            @elseif ($node->content->permissions->member()->allows('view'))
+            @elseif ($permissions->member()->allows('view'))
                 <span class="with-icon text-xs color-muted">
                     <x-waterhole::icon icon="heroicon-o-user"/>
                     Member
                 </span>
             @else
                 <span>
-                    @forelse ($node->content->permissions->ability('view')->groups()->map->recipient as $group)
+                    @forelse ($permissions->ability('view')->groups()->map->recipient as $group)
                         <x-waterhole::group-label :group="$group"/>
                     @empty
                         <span class="badge">Admin</span>

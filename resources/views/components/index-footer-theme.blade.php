@@ -1,16 +1,27 @@
-<button class="btn btn--icon btn--transparent btn--small">
-    <x-waterhole::icon icon="heroicon-o-moon"/>
-    <ui-tooltip>Theme</ui-tooltip>
-</button>
+<ui-popup placement="top-start" class="js-only">
+    <button class="btn btn--icon btn--transparent text-xs">
+        <x-waterhole::icon icon="heroicon-o-sun" class="light-only"/>
+        <x-waterhole::icon icon="heroicon-o-moon" class="dark-only"/>
+        <ui-tooltip>Theme</ui-tooltip>
+    </button>
 
-{{--@if (config('waterhole.design.support_dark_mode'))--}}
-{{--    <button class="menu-item js-only light-only" role="menuitem" data-action="theme#set" data-theme-name-param="dark">--}}
-{{--        <x-waterhole::icon icon="heroicon-o-moon"/>--}}
-{{--        <span>Dark Mode</span>--}}
-{{--    </button>--}}
+    <ui-menu class="menu" hidden>
+        <button class="menu-item" role="menuitemradio" data-action="theme#set" data-theme-name-param="light">
+            <x-waterhole::icon icon="heroicon-o-sun"/>
+            <span>Light</span>
+            <x-waterhole::icon icon="heroicon-s-check" class="menu-item-check"/>
+        </button>
 
-{{--    <button class="menu-item js-only dark-only" role="menuitem" data-action="theme#set" data-theme-name-param="light">--}}
-{{--        <x-waterhole::icon icon="heroicon-o-sun"/>--}}
-{{--        <span>Light Mode</span>--}}
-{{--    </button>--}}
-{{--@endif--}}
+        <button class="menu-item" role="menuitemradio" data-action="theme#set" data-theme-name-param="dark">
+            <x-waterhole::icon icon="heroicon-o-moon"/>
+            <span>Dark</span>
+            <x-waterhole::icon icon="heroicon-s-check" class="menu-item-check"/>
+        </button>
+
+        <button class="menu-item" role="menuitemradio" data-action="theme#set" data-theme-name-param>
+            <x-waterhole::icon icon="heroicon-o-desktop-computer"/>
+            <span>Automatic</span>
+            <x-waterhole::icon icon="heroicon-s-check" class="menu-item-check"/>
+        </button>
+    </ui-menu>
+</ui-popup>

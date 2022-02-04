@@ -10,6 +10,7 @@ use Waterhole\Models\User;
 
 class DeleteUser extends Action
 {
+    public bool $confirm = true;
     public bool $destructive = true;
 
     public function appliesTo(Model $model): bool
@@ -19,8 +20,10 @@ class DeleteUser extends Action
 
     public function authorize(?User $user, Model $model): bool
     {
-        // Users are not allowed to delete themselves.
-        return $user && $user->can('delete', $model) && $user->isNot($model);
+        return $user
+            && $user->can('user.delete', $model)
+            && $user->isNot($model)
+            && ! $model->isRootAdmin();
     }
 
     public function label(Collection $models): string

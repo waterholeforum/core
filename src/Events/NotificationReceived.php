@@ -2,13 +2,15 @@
 
 namespace Waterhole\Events;
 
-use Illuminate\Support\HtmlString;
-use Waterhole\Models\Notification;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Support\HtmlString;
 use Neves\Events\Contracts\TransactionalEvent;
+use Waterhole\Models\Notification;
 use Waterhole\Views\Components\Alert;
 use Waterhole\Views\Components\Notification as NotificationComponent;
+
+use function Waterhole\render_component;
 
 class NotificationReceived implements ShouldBroadcast, TransactionalEvent
 {

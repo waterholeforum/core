@@ -57,7 +57,7 @@
     </div>
 
     <div class="section container with-sidebar-start">
-        <div class="sidebar--sticky">
+        <div class="sidebar sidebar--sticky">
             <nav class="nav">
                 <a
                     href="{{ route('waterhole.user.posts', compact('user')) }}"

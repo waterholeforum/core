@@ -2,15 +2,15 @@
 
 namespace Waterhole\Providers;
 
-use Waterhole\Extend\Script;
+use Illuminate\Support\ServiceProvider;
+use s9e\TextFormatter\Configurator;
+use s9e\TextFormatter\Renderer;
+use Waterhole\Formatter\Context;
 use Waterhole\Formatter\Formatter;
 use Waterhole\Formatter\Mentions;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Page;
 use Waterhole\Models\Post;
-use Illuminate\Support\ServiceProvider;
-use s9e\TextFormatter\Configurator;
-use s9e\TextFormatter\Renderer;
 
 class FormatterServiceProvider extends ServiceProvider
 {
@@ -30,27 +30,29 @@ class FormatterServiceProvider extends ServiceProvider
                 $config->Autoemail;
                 $config->Autolink;
                 $config->Litedown;
-                $config->HTMLEntities;
+                $config->PipeTables;
+                $config->TaskLists;
             });
 
+            $formatter->rendering(function (Renderer $renderer, string $xml, ?Context $context) {
+                $renderer->setParameter('USER_ID', $context->user->id ?? null);
+            });
+            
             $formatter->configure([Mentions::class, 'configure']);
-
-            $formatter->rendering(function (Renderer $renderer, $xml, $context) {
-                $renderer->setParameter('USER_ID', $context['actor']->id ?? null);
-            });
-
             $formatter->rendering([Mentions::class, 'rendering']);
 
             return $formatter;
         });
+
+        $this->app->alias('waterhole.formatter', Formatter::class);
     }
 
     public function boot()
     {
         $formatter = $this->app->make('waterhole.formatter');
 
-        Post::setFormatter($formatter);
         Comment::setFormatter($formatter);
         Page::setFormatter($formatter);
+        Post::setFormatter($formatter);
     }
 }

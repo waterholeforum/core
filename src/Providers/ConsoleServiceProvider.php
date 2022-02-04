@@ -9,7 +9,8 @@ use Waterhole\Console\Commands;
 class ConsoleServiceProvider extends ServiceProvider
 {
     protected array $commands = [
-        Commands\Install::class,
+        Commands\FormatterClearCommand::class,
+        Commands\InstallCommand::class,
     ];
 
     public function boot()

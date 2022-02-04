@@ -17,11 +17,16 @@
   summary& {
     .clickable();
     transform: none !important;
+    outline: none !important;
 
     &::marker,
     &::-webkit-details-marker {
       color: var(--color-text-muted);
       margin-right: var(--space-sm);
+    }
+
+    &:focus-visible {
+      background: var(--color-accent-light);
     }
   }
 

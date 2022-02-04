@@ -28,6 +28,11 @@ abstract class Action
     public bool $bulk = false;
 
     /**
+     * Whether the action requires confirmation or user input before it is run.
+     */
+    public bool $confirm = false;
+
+    /**
      * Whether the action is destructive, and should have a red appearance.
      */
     public bool $destructive = false;
@@ -88,7 +93,7 @@ abstract class Action
 
         // If the action requires confirmation, we will override the form's
         // method and action to take the user to the confirmation route.
-        if ($this->confirm($models)) {
+        if ($this->confirm) {
             $attributes = $attributes->merge([
                 'formmethod' => 'GET',
                 'formaction' => route('waterhole.action.create'),
@@ -122,8 +127,6 @@ abstract class Action
     /**
      * Confirmation message or view to prompt the user with before the action
      * is run.
-     *
-     * Return null to run the action immediately, without any confirmation.
      */
     public function confirm(Collection $models): null|string|View
     {

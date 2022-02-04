@@ -4,7 +4,7 @@ namespace Waterhole\Views;
 
 use Illuminate\View\Component;
 
-use function render_component;
+use function Waterhole\render_component;
 
 abstract class TurboStream
 {

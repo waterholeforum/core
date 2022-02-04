@@ -9,28 +9,37 @@ import DragonNest from 'dragon-nest';
 export default class extends Controller {
     static targets = ['list', 'orderInput'];
 
-    listTarget?: HTMLElement;
+    // listTarget?: HTMLElement;
+    listTargets?: HTMLElement[];
     orderInputTarget?: HTMLInputElement;
 
     dragonNest?: DragonNest;
     dragTarget?: Element;
 
+    initialize() {
+        this.dragonNest = new DragonNest();
+    }
+
     connect() {
-        this.dragonNest = new DragonNest(this.listTarget!);
-
-        this.listTarget!.addEventListener('dragstart', this.start);
-        this.listTarget!.addEventListener('dragend', this.end);
-
         document.addEventListener('mousedown', this.mousedown);
     }
 
     disconnect() {
-        this.dragonNest?.destroy();
-
-        this.listTarget!.removeEventListener('dragstart', this.start);
-        this.listTarget!.removeEventListener('dragend', this.end);
-
         document.removeEventListener('mousedown', this.mousedown);
+    }
+
+    listTargetConnected(el: HTMLElement) {
+        this.dragonNest?.addList(el);
+
+        el.addEventListener('dragstart', this.start);
+        el.addEventListener('dragend', this.end);
+    }
+
+    listTargetDisconnected(el: HTMLElement) {
+        this.dragonNest?.removeList(el);
+
+        el.removeEventListener('dragstart', this.start);
+        el.removeEventListener('dragend', this.end);
     }
 
     private mousedown = (e: MouseEvent) => {
@@ -48,11 +57,13 @@ export default class extends Controller {
     private end = (e: DragEvent) => {
         (e.target as HTMLElement).classList.remove('is-dragging');
 
-        const nodes = this.listTarget!.querySelectorAll<HTMLElement>('[data-id]');
-        const result = Array.from(nodes).map((el, i) => {
-            return el.dataset.id;
-        });
+        const result = this.listTargets!.flatMap((list, i) =>
+            Array.from(list.querySelectorAll<HTMLElement>('[data-id]')).map(el => {
+                return { id: el.dataset.id, listIndex: i };
+            }));
 
-        this.orderInputTarget!.value = JSON.stringify(result);
+        if (result) {
+            this.orderInputTarget!.value = JSON.stringify(result);
+        }
     }
 }

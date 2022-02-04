@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Waterhole\Models\User;
 use Waterhole\Views\Components\UserLabel;
 
+use function Waterhole\render_component;
+
 /**
  * Controller to look up users by name.
  *
@@ -13,7 +15,7 @@ use Waterhole\Views\Components\UserLabel;
  * The return format is an array of objects with the following keys:
  *
  * - `id`: the user ID
- * - `name`: the user name
+ * - `name`: the user's name
  * - `html`: a rendering of the UserLabel component for the user
  */
 class UserLookupController extends Controller

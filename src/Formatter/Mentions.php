@@ -36,12 +36,12 @@ abstract class Mentions
         $tag->attributes->add('id');
         $tag->filterChain->prepend([static::class, 'filterMention']);
 
-        $tag->template = <<<'xml'
-            <a href="{$MENTION_URL}{@name}" data-user-id="{@id}" data-mention="" data-id="{@name}">
-                <xsl:attribute name="class">mention<xsl:if test="@id = $USER_ID"> mention--self</xsl:if></xsl:attribute>
-                @<xsl:value-of select="@name"/>
-            </a>
-        xml;
+        $tag->template = join([
+            '<a href="{$MENTION_URL}{@name}" data-user-id="{@id}" data-mention="" data-id="{@name}">',
+            '<xsl:attribute name="class">mention<xsl:if test="@id = $USER_ID"> mention--self</xsl:if></xsl:attribute>',
+            '@<xsl:value-of select="@name"/>',
+            '</a>',
+        ]);
     }
 
     /**
@@ -66,17 +66,15 @@ abstract class Mentions
      * This assumes that the `mentions` relationship is already loaded on the
      * content model – otherwise we would run into an N+1 query problem.
      */
-    public static function rendering(Renderer $renderer, string &$xml, array $context): void
+    public static function rendering(Renderer $renderer, string &$xml, ?Context $context): void
     {
-        $content = $context['model'];
-
-        if (! $content->relationLoaded('mentions')) {
+        if (! $context?->model?->relationLoaded('mentions')) {
             return;
         }
 
-        $xml = Utils::replaceAttributes($xml, 'MENTION', function ($attributes) use ($content) {
+        $xml = Utils::replaceAttributes($xml, 'MENTION', function ($attributes) use ($context) {
             if (isset($attributes['id'])) {
-                $attributes['name'] = $content->mentions->find($attributes['id'])?->name;
+                $attributes['name'] = $context->model->mentions->find($attributes['id'])?->name;
             }
 
             return $attributes;

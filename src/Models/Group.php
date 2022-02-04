@@ -5,7 +5,6 @@ namespace Waterhole\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Waterhole\Models\Concerns\HasIcon;
-use Waterhole\Models\Concerns\HasVisibility;
 use Waterhole\Models\Concerns\ReceivesPermissions;
 use Waterhole\Models\Concerns\ValidatesData;
 
@@ -20,7 +19,6 @@ use Waterhole\Models\Concerns\ValidatesData;
 class Group extends Model
 {
     use HasIcon;
-    use HasVisibility;
     use ReceivesPermissions;
     use ValidatesData;
 
@@ -43,7 +41,7 @@ class Group extends Model
      */
     public function isGuest(): bool
     {
-        return $this->id === static::GUEST_ID;
+        return $this->getKey() === static::GUEST_ID;
     }
 
     /**
@@ -51,7 +49,7 @@ class Group extends Model
      */
     public function isMember(): bool
     {
-        return $this->id === static::MEMBER_ID;
+        return $this->getKey() === static::MEMBER_ID;
     }
 
     /**
@@ -59,7 +57,7 @@ class Group extends Model
      */
     public function isAdmin(): bool
     {
-        return $this->id === static::ADMIN_ID;
+        return $this->getKey() === static::ADMIN_ID;
     }
 
     /**
@@ -99,7 +97,7 @@ class Group extends Model
      */
     public function scopeCustom(Builder $query)
     {
-        $query->whereNotIn('id', [static::GUEST_ID, static::MEMBER_ID, static::ADMIN_ID]);
+        $query->whereKeyNot([static::GUEST_ID, static::MEMBER_ID, static::ADMIN_ID]);
     }
 
     /**
@@ -107,7 +105,7 @@ class Group extends Model
      */
     public function scopeSelectable(Builder $query)
     {
-        $query->whereNotIn('id', [static::GUEST_ID, static::MEMBER_ID]);
+        $query->whereKeyNot([static::GUEST_ID, static::MEMBER_ID]);
     }
 
     public function getEditUrlAttribute(): string

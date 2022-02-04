@@ -16,13 +16,15 @@ class PostFeed extends Feed
         string $defaultLayout,
         Closure $scope = null,
     ) {
-        $query = Post::with([
-            'user',
-            'channel.userState',
-            'lastComment.user',
-            'userState',
-            'likedBy',
-        ])->withCount('unreadComments');
+        $query = Post::query()
+            ->with([
+                'user',
+                'channel.userState',
+                'lastComment.user',
+                'userState',
+                'likedBy',
+            ])
+            ->withCount('unreadComments');
 
         if ($scope) {
             $scope($query);

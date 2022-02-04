@@ -61,10 +61,9 @@
                         <div class="loading-indicator"></div>
                     @else
                         <br>
-                        <form method="get" action="" class="text-center">
-                            <input type="hidden" name="{{ $posts->getCursorName() }}" value="{{ $posts->nextCursor()->encode() }}">
-                            <button type="submit" class="btn">Load More</button>
-                        </form>
+                        <div class="text-center">
+                            <a href="{{ $posts->nextPageUrl() }}" class="btn">Load More</a>
+                        </div>
                     @endif
                 </turbo-frame>
             @endif

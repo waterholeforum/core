@@ -16,7 +16,7 @@ class EditGroup extends Link
 
     public function authorize(?User $user, Model $model): bool
     {
-        return $user && $user->can('update', $model);
+        return $user && $user->can('group.edit', $model);
     }
 
     public function label(Collection $models): string

@@ -10,6 +10,8 @@ use Waterhole\Models\Permission;
  *
  * This trait is distinct from `HasPermissions` in that it is for models that
  * take action (users and groups), rather than models that can be acted *upon*.
+ *
+ * @property-read \Waterhole\Models\PermissionCollection $permissions
  */
 trait ReceivesPermissions
 {

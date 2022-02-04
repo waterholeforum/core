@@ -5,6 +5,7 @@ namespace Waterhole\Notifications;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\HtmlString;
 use Waterhole\Models\Comment;
+use Waterhole\Models\Post;
 use Waterhole\Models\User;
 
 class NewComment extends Notification
@@ -16,27 +17,17 @@ class NewComment extends Notification
         $this->comment = $comment;
     }
 
-    public static function load(Collection $notifications): void
-    {
-        $notifications->load('content.post', 'content.user');
-    }
-
-    public function sender()
-    {
-        return $this->comment->user;
-    }
-
-    public function group()
-    {
-        return $this->comment->post;
-    }
-
-    public function content()
+    public function content(): Comment
     {
         return $this->comment;
     }
 
-    public function icon()
+    public function sender(): User
+    {
+        return $this->comment->user;
+    }
+
+    public function icon(): string
     {
         return 'heroicon-o-chat-alt';
     }
@@ -54,6 +45,11 @@ class NewComment extends Notification
     public function url(): string
     {
         return $this->comment->post_url;
+    }
+
+    public function group(): Post
+    {
+        return $this->comment->post;
     }
 
     public function groupedUrl(): string
@@ -84,5 +80,10 @@ class NewComment extends Notification
     public static function description(): string
     {
         return 'New comments on followed posts';
+    }
+
+    public static function load(Collection $notifications): void
+    {
+        $notifications->load('content.post', 'content.user');
     }
 }

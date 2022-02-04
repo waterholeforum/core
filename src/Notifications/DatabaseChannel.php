@@ -2,9 +2,9 @@
 
 namespace Waterhole\Notifications;
 
-use Waterhole\Events\NotificationReceived;
 use Illuminate\Notifications\Channels\DatabaseChannel as BaseDatabaseChannel;
 use Illuminate\Notifications\Notification;
+use Waterhole\Events\NotificationReceived;
 
 class DatabaseChannel extends BaseDatabaseChannel
 {
@@ -22,9 +22,9 @@ class DatabaseChannel extends BaseDatabaseChannel
     {
         $payload = parent::buildPayload($notifiable, $notification);
 
-        // We will add a few things specific to our notifications system into
-        // the database payload, if they are present. See the base Notification
-        // class for a description of each of these.
+        // We will add a few things specific to Waterhole's notifications system
+        // into the database payload, if they are present. See the base
+        // Notification class for a description of each of these.
         if (method_exists($notification, 'sender') && $sender = $notification->sender()) {
             $payload['sender_id'] = $sender->getKey();
         }

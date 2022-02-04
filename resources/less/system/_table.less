@@ -5,14 +5,19 @@
   border: 1px solid var(--color-stroke);
   border-radius: var(--border-radius);
 
-  .table {
+  table {
     width: 100%;
+    border: 0;
   }
 }
 
-.table {
+table {
   border-spacing: 0;
-  font-size: var(--text-xs);
+  border-collapse: collapse;
+
+  &, td, th {
+    border: 1px solid var(--color-stroke);
+  }
 
   td, th {
     padding: var(--space-sm);
@@ -22,14 +27,26 @@
   th {
     font-weight: var(--font-weight-bold);
   }
+}
 
-  tbody td,
-  tbody th {
-    border-top: 1px solid var(--color-stroke);
+.table {
+  font-size: var(--text-xs);
+  border-collapse: separate;
+
+  td, th {
+    padding: var(--space-sm);
+    text-align: left;
+    border-width: 1px 0 0;
   }
 
-  tbody th {
-    text-align: left;
+  th {
+    font-weight: var(--font-weight-bold);
+  }
+
+  thead {
+    td, th {
+      border-width: 0;
+    }
   }
 }
 

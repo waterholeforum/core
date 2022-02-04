@@ -23,7 +23,7 @@
             >{{ $item->title }}</a>
 
             <p class="color-muted text-xxs">
-                {{ relative_time(new DateTime('@'.$item->timestamp)) }}
+                {{ Waterhole\relative_time(new DateTime('@'.$item->timestamp)) }}
                 — {{ Str::limit($item->description, 200) }}
             </p>
         </article>

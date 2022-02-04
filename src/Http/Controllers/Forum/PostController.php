@@ -21,7 +21,7 @@ class PostController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('waterhole.auth')->except('show');
+        $this->middleware('auth')->except('show');
         $this->middleware('throttle:waterhole.create')->only('store', 'update');
     }
 
@@ -65,10 +65,10 @@ class PostController extends Controller
 
     public function create(Request $request)
     {
-        $this->authorize('create', Post::class);
+        $this->authorize('post.create');
 
         if ($channelId = $request->query('channel')) {
-            $channel = Channel::visibleTo($request->user())->findOrFail($channelId);
+            $channel = Channel::findOrFail($channelId);
         } else {
             $channel = null;
         }
@@ -87,12 +87,12 @@ class PostController extends Controller
                 ->withInput();
         }
 
-        $this->authorize('create', Post::class);
+        $this->authorize('post.create');
 
         $data = Post::validate($request->all());
         $data['user_id'] = $request->user()->id;
 
-        $this->authorize('post', Channel::visibleTo($request->user())->findOrFail($data['channel_id']));
+        $this->authorize('channel.post', Channel::findOrFail($data['channel_id']));
 
         $post = Post::create($data);
 
@@ -108,14 +108,14 @@ class PostController extends Controller
 
     public function edit(Post $post)
     {
-        $this->authorize('update', $post);
+        $this->authorize('post.edit', $post);
 
         return view('waterhole::posts.edit', compact('post'));
     }
 
     public function update(Post $post, Request $request)
     {
-        $this->authorize('update', $post);
+        $this->authorize('post.edit', $post);
 
         $post->fill(Post::validate($request->all(), $post))
             ->markAsEdited()

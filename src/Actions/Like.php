@@ -3,6 +3,7 @@
 namespace Waterhole\Actions;
 
 use Illuminate\Support\Collection;
+use ReflectionClass;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Model;
 use Waterhole\Models\Post;
@@ -19,7 +20,7 @@ class Like extends Action
 
     public function authorize(?User $user, Model $model): bool
     {
-        return $user && $user->can('like', $model);
+        return $user && $user->can(strtolower((new ReflectionClass($model))->getShortName()).'.like', $model);
     }
 
     public function shouldRender(Collection $models): bool

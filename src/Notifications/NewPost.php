@@ -15,22 +15,17 @@ class NewPost extends Notification
         $this->post = $post;
     }
 
-    public static function load(Collection $notifications): void
-    {
-        $notifications->load('content.user', 'content.channel');
-    }
-
-    public function sender()
-    {
-        return $this->post->user;
-    }
-
-    public function content()
+    public function content(): Post
     {
         return $this->post;
     }
 
-    public function icon()
+    public function sender(): User
+    {
+        return $this->post->user;
+    }
+
+    public function icon(): string
     {
         return $this->post->channel->icon;
     }
@@ -73,5 +68,10 @@ class NewPost extends Notification
     public static function description(): string
     {
         return 'New posts in followed channels';
+    }
+
+    public static function load(Collection $notifications): void
+    {
+        $notifications->load('content.user', 'content.channel');
     }
 }

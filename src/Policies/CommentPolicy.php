@@ -2,46 +2,43 @@
 
 namespace Waterhole\Policies;
 
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Waterhole\Models\Comment;
 use Waterhole\Models\User;
 
 class CommentPolicy
 {
-    use HandlesAuthorization;
-
-    public function viewAny(?User $user)
+    /**
+     * Any user can create a comment.
+     */
+    public function create(): bool
     {
-        return $this->allow();
+        return true;
     }
 
-    public function view(?User $user, Comment $comment)
+    /**
+     * Users can edit their own comments. Users who can moderate a post can
+     * edit its comments.
+     */
+    public function edit(User $user, Comment $comment): bool
     {
-        return $this->allow();
+        return $comment->user_id === $user->id
+            || $user->can('post.moderate', $comment->post);
     }
 
-    public function create(User $user)
+    /**
+     * Users can delete their own comments. Users who can moderate a post can
+     * delete its comments.
+     */
+    public function delete(User $user, Comment $comment): bool
     {
-        return $this->allow();
+        return $this->edit($user, $comment);
     }
 
-    public function update(User $user, Comment $comment)
+    /**
+     * Any user can like a comment.
+     */
+    public function like(): bool
     {
-        return $comment->user_id === $user->id;
-    }
-
-    public function delete(User $user, Comment $comment)
-    {
-        return $comment->user_id === $user->id;
-    }
-
-    public function reply(User $user, Comment $comment)
-    {
-        return $this->allow();
-    }
-
-    public function like(User $user, Comment $comment)
-    {
-        return $this->allow();
+        return true;
     }
 }

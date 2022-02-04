@@ -22,6 +22,17 @@ class ViewServiceProvider extends ServiceProvider
 
     private function registerComponentsDirective(): void
     {
+        /**
+         * The `@components` directive loops through an array of components and
+         * renders them, optionally passing in data. Components can be any of:
+         *
+         * - An `Illuminate\View\Component` instance
+         * - The name of a `Illuminate\View\Component` class
+         * - The name of a view
+         *
+         * If a component/view can't be found, and debug mode is on, a warning
+         * will be logged to the browser console.
+         */
         Blade::directive('components', function (string $expression): string {
             [$components, $data] = str_contains($expression, ',')
                 ? array_map('trim', explode(',', $expression, 2))

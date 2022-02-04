@@ -82,17 +82,23 @@ class MySqlEngine
         // Finally we get the query results and map them into Hit instances.
         // For each hit we highlight the relevant words and truncate the body
         // to the most relevant part.
+        $highlighter = new Highlighter($q);
+
         $hits = DB::table($query, 'p')
             ->where('r', 1)
             ->take($limit)
             ->skip($offset)
             ->get()
-            ->map(function ($row) use ($q) {
-                $title = highlight_words($row->title, $q);
+            ->map(function ($row) use ($highlighter) {
+                $title = $highlighter->highlight($row->title);
 
-                $body = $row->pscore >= $row->cscore ? $row->post_body : $row->comment_body;
-                $body = Utils::removeFormatting($body);
-                $body = highlight_words(truncate_around($body, $q), $q);
+                $body = $highlighter->highlight(
+                    $highlighter->truncate(
+                        Utils::removeFormatting(
+                            $row->pscore >= $row->cscore ? $row->post_body : $row->comment_body
+                        )
+                    )
+                );
 
                 return new Hit($row->post_id, $title, $body);
             });

@@ -145,7 +145,6 @@ class LineChart extends Component
             ->where('date', '>=', $this->prevPeriodStart)
             ->where('date', '<', $this->prevPeriodEnd)
             ->sum('count');
-
     }
 
     public function render()

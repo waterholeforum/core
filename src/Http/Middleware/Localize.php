@@ -13,7 +13,7 @@ class Localize
     public function handle(Request $request, Closure $next)
     {
         $user = $request->user();
-        $locales = Locales::build();
+        $locales = Locales::keys();
 
         // Allow the locale to be set in a query parameter. If there is a
         // logged-in user, update their preference in the database; otherwise,
@@ -36,7 +36,9 @@ class Localize
             $locale = session(static::SESSION_KEY, $request->getPreferredLanguage($locales));
         }
 
-        app()->setLocale($locale);
+        if ($locale) {
+            app()->setLocale($locale);
+        }
 
         return $next($request);
     }

@@ -17,7 +17,7 @@ class EditChannel extends Link
 
     public function authorize(?User $user, Model $model): bool
     {
-        return $user && $user->can('update', $model);
+        return $user && $user->can('channel.edit', $model);
     }
 
     public function shouldRender(Collection $models): bool

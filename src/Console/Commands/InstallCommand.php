@@ -9,7 +9,7 @@ use Waterhole\Database\Seeders\DefaultSeeder;
 use Waterhole\Models\Group;
 use Waterhole\Models\User;
 
-class Install extends Command
+class InstallCommand extends Command
 {
     use ValidatesInput;
 

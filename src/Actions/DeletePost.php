@@ -9,6 +9,7 @@ use Waterhole\Models\User;
 
 class DeletePost extends Action
 {
+    public bool $confirm = true;
     public bool $destructive = true;
 
     public function appliesTo($model): bool
@@ -18,7 +19,7 @@ class DeletePost extends Action
 
     public function authorize(?User $user, Model $model): bool
     {
-        return $user && $user->can('delete', $model);
+        return $user && $user->can('post.delete', $model);
     }
 
     public function label(Collection $models): string

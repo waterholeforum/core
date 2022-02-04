@@ -11,19 +11,16 @@ h1, h2, h3, h4 {
 .h1, h1 {
   font-size: var(--text-xxl);
   font-weight: var(--font-weight-bold);
-  line-height: 1.2;
 }
 
 .h2, h2 {
   font-size: var(--text-lg);
   font-weight: var(--font-weight-bold);
-  line-height: 1.2;
 }
 
 .h3, h3 {
   font-size: var(--text-md);
   font-weight: var(--font-weight-bold);
-  line-height: 1.2;
 }
 
 .h4, h4 {
@@ -54,7 +51,7 @@ h1, h2, h3, h4 {
   }
 
   a:not([class]) {
-    font-weight: var(--font-weight-bold);
+    //font-weight: var(--font-weight-bold);
     text-decoration: none;
 
     &:hover {
@@ -114,6 +111,20 @@ h1, h2, h3, h4 {
     border: 0;
     border-top: 3px solid var(--color-stroke);
     margin: 2em 0;
+  }
+}
+
+.content--compact {
+  //> * + *, li p {
+  //  margin-top: .5em;
+  //}
+
+  > * + :is(h1, h2, h3, h4) {
+    margin-top: 1em;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
   }
 }
 

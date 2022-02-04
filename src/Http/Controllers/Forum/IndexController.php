@@ -9,6 +9,8 @@ use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Page;
 
+use function Waterhole\resolve_all;
+
 /**
  * Controller for the forum index (home, channels, and pages).
  */
@@ -18,14 +20,17 @@ class IndexController extends Controller
     {
         // Hide posts that the user has ignored, and posts that are in channels
         // that the user has ignored, to ensure the Home post feed is clean and
-        // relevant.
+        // relevant. Also hide posts from "sandboxed" channels.
         $scope = function (Builder $query) {
             $query->whereDoesntHave('userState', function ($query) {
                 $query->where('notifications', 'ignore');
             });
 
-            $query->whereDoesntHave('channel.userState', function ($query) {
-                $query->where('notifications', 'ignore');
+            $query->whereHas('channel', function ($query) {
+                $query->where('sandbox', false);
+                $query->whereDoesntHave('userState', function ($query) {
+                    $query->where('notifications', 'ignore');
+                });
             });
         };
 
@@ -41,8 +46,6 @@ class IndexController extends Controller
 
     public function channel(Channel $channel, Request $request)
     {
-        $this->authorize('view', $channel);
-
         $feed = new PostFeed(
             request: $request,
             filters: resolve_all($channel->filters ?: config('waterhole.forum.post_filters', [])),

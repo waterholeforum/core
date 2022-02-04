@@ -10,9 +10,9 @@
 @endcomponent
 
 
-@isset($actionText)
-@component('mail::button', ['url' => $actionUrl, 'color' => 'primary'])
-{{ $actionText }}
+@isset($button)
+@component('mail::button', ['url' => $url, 'color' => 'primary'])
+{{ $button }}
 @endcomponent
 @endisset
 

@@ -14,12 +14,12 @@ class ResetPassword extends Notification
         $this->token = $token;
     }
 
-    public function via($notifiable)
+    public function via(): array
     {
         return ['mail'];
     }
 
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
         $resetUrl = $this->resetUrl($notifiable);
 
@@ -31,7 +31,7 @@ class ResetPassword extends Notification
             ->line('If you did not request a password reset, no further action is required.');
     }
 
-    protected function resetUrl($notifiable)
+    protected function resetUrl($notifiable): string
     {
         return url(route('waterhole.reset-password', [
             'token' => $this->token,

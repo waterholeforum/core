@@ -46,10 +46,25 @@
             data-dragon-nest-target="list"
             data-action="dragend->form#submit"
         >
-            @foreach ($structure as $node)
+            @foreach ($structure->where('is_listed', true) as $node)
                 <x-waterhole::admin.structure-node :node="$node"/>
             @endforeach
         </ul>
+
+        <div class="stack-md" style="margin-top: 40px">
+            <h2 class="h3">Unlisted</h2>
+            <ul
+                class="card admin-structure"
+                role="list"
+                data-dragon-nest-target="list"
+                data-action="dragend->form#submit"
+            >
+                @foreach ($structure->where('is_listed', false) as $node)
+                    <x-waterhole::admin.structure-node :node="$node"/>
+                @endforeach
+                <li class="placeholder">Move items here to hide them from the navigation menu.</li>
+            </ul>
+        </div>
 
         <form action="{{ route('waterhole.admin.structure') }}" method="post" data-form-target="form" hidden>
             @csrf

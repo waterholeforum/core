@@ -33,7 +33,7 @@ class GroupController extends Controller
 
     public function store(Request $request)
     {
-        $this->save(new Group(), $request);
+        return $this->save(new Group(), $request);
     }
 
     public function edit(Group $group)
@@ -45,15 +45,14 @@ class GroupController extends Controller
 
     public function update(Group $group, Request $request)
     {
-        $this->save($group, $request);
+        return $this->save($group, $request);
     }
 
     private function form()
     {
-        $structure = Structure::query()
+        $structure = Structure::with('content')
             ->orderBy('position')
-            ->get()
-            ->loadMissing('content.permissions.recipient');
+            ->get();
 
         // Construct an array of all abilities that apply to the structure
         // content to use as columns for the permission grid.

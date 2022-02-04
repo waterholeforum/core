@@ -2,41 +2,24 @@
 
 namespace Waterhole\Policies;
 
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Waterhole\Models\Channel;
+use Waterhole\Models\PermissionCollection;
 use Waterhole\Models\User;
 
 class ChannelPolicy
 {
-    use HandlesAuthorization;
+    private PermissionCollection $permissions;
 
-    public function viewAny(?User $user)
+    public function __construct(PermissionCollection $permissions)
     {
-        return $this->allow();
+        $this->permissions = $permissions;
     }
 
-    public function view(?User $user, Channel $channel)
+    /**
+     * Users can post in a channel if they have permission.
+     */
+    public function post(User $user, Channel $channel): bool
     {
-        return $this->allow();
-    }
-
-    public function create(User $user)
-    {
-        return $this->allow();
-    }
-
-    public function update(User $user, Channel $channel)
-    {
-        return $this->allow();
-    }
-
-    public function delete(User $user, Channel $channel)
-    {
-        return $this->allow();
-    }
-
-    public function post(User $user, Channel $channel)
-    {
-        return $this->allow();
+        return $this->permissions->can($user, 'post', $channel);
     }
 }

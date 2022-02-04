@@ -17,6 +17,8 @@
         @csrf
         @isset($user) @method('PATCH') @endif
 
+        <input type="hidden" name="return" value="{{ old('return', request('return')) }}">
+
         <div class="stack-lg">
             <x-waterhole::validation-errors/>
 
@@ -68,6 +70,7 @@
 
                         <div>
                             <div class="field__label">Groups</div>
+                            <input type="hidden" name="groups" value="">
                             <div class="stack-sm">
                                 @foreach ($groups as $group)
                                     <label class="choice">
@@ -75,7 +78,7 @@
                                             type="checkbox"
                                             name="groups[]"
                                             value="{{ $group->id }}"
-                                            @if (in_array($group->id, old('groups', isset($user) ? $user->groups->pluck('id')->all() : []))) checked @endif
+                                            @if (in_array($group->id, (array) old('groups', isset($user) ? $user->groups->pluck('id')->all() : []))) checked @endif
                                             @if ($group->isAdmin() && ($user->id ?? null) === 1) disabled @endif
                                         >
                                         <x-waterhole::group-label :group="$group"/>

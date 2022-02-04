@@ -99,12 +99,12 @@
                                         @endforeach
                                     </td>
                                     <td>
-                                        {{ time_ago($user->created_at) }}
+                                        {{ Waterhole\time_ago($user->created_at) }}
                                     </td>
                                     <td>
-                                        {{ time_ago($user->last_seen_at) }}
+                                        {{ Waterhole\time_ago($user->last_seen_at) }}
                                     </td>
-                                    <td>
+                                    <td class="text-sm">
                                         <x-waterhole::action-menu :for="$user" placement="bottom-end" context="admin"/>
                                     </td>
                                 </tr>

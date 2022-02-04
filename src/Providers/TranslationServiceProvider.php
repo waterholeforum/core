@@ -40,7 +40,7 @@ class TranslationServiceProvider extends ServiceProvider
                 fallback: $app->getFallbackLocale(),
                 bundleOptions: ['allowOverrides' => true],
                 functions: [
-                    'COMPACT_NUMBER' => Closure::fromCallable('compact_number'),
+                    'COMPACT_NUMBER' => Closure::fromCallable('Waterhole\\compact_number'),
                 ],
             );
         });

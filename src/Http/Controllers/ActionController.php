@@ -47,7 +47,7 @@ final class ActionController extends Controller
         // by pressing the submit button in the confirmation view, then we
         // will redirect the user back to the confirmation view with all the
         // same input.
-        if ($action->confirm($models) && ! $request->has('confirmed')) {
+        if ($action->confirm && ! $request->has('confirmed')) {
             return redirect()->route('waterhole.action.create', $request->input());
         }
 
@@ -99,16 +99,7 @@ final class ActionController extends Controller
             abort(400, "The actionable [$actionable] does not exist");
         }
 
-        $query = $model::query();
-
-        // If the model implements the HasVisibility trait, then we need to
-        // ensure its visibility rules are respected to prevent the user
-        // from being able to act on private data.
-        if (method_exists($model, 'scopeVisibleTo')) {
-            $query->visibleTo($request->user());
-        }
-
-        return $query->findMany((array) $request->input('id'));
+        return $model::findMany((array) $request->input('id'));
     }
 
     /**

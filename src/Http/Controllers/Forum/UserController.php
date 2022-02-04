@@ -8,6 +8,8 @@ use Waterhole\Feed\PostFeed;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\User;
 
+use function Waterhole\resolve_all;
+
 /**
  * Controller for user profiles.
  */

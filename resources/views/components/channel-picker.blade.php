@@ -15,7 +15,7 @@
 
         <ui-menu class="menu channel-picker__menu" hidden>
             @foreach ($channels->except($exclude) as $channel)
-                @can('post', $channel)
+                @can('channel.post', $channel)
                     <button
                         type="submit"
                         name="{{ $name }}"

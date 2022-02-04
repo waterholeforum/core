@@ -2,7 +2,6 @@
 
 namespace Waterhole\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Notification;
@@ -13,6 +12,7 @@ use Waterhole\Models\Concerns\HasBody;
 use Waterhole\Models\Concerns\HasLikes;
 use Waterhole\Models\Concerns\ValidatesData;
 use Waterhole\Notifications\Mention;
+use Waterhole\Scopes\CommentIndexScope;
 use Waterhole\Views\Components;
 use Waterhole\Views\TurboStream;
 
@@ -88,12 +88,8 @@ class Comment extends Model
 
         // By default, we calculate each comment's index (ie. how many comments
         // came before it) when querying comments. Since this is an expensive
-        // thing to do, put it in a global scope so it can be disabled.
-        static::addGlobalScope('index', function ($query) {
-            if (! $query->getQuery()->columns) {
-                $query->select($query->qualifyColumn('*'))->withIndex();
-            }
-        });
+        // thing to do, put it in a global scope so that it can be disabled.
+        static::addGlobalScope(new CommentIndexScope());
     }
 
     public function post(): BelongsTo
@@ -130,20 +126,6 @@ class Comment extends Model
     public function isRead(): bool
     {
         return $this->post->userState && ! $this->isUnread();
-    }
-
-    /**
-     * Calculate each comment's index (ie. how many comments came before it)
-     * in the select clause.
-     */
-    public function scopeWithIndex(Builder $query)
-    {
-        $query->selectSub(function ($sub) use ($query) {
-            $sub->selectRaw('count(*)')
-                ->from('comments as before')
-                ->whereColumn('before.post_id', $query->qualifyColumn('post_id'))
-                ->whereColumn('before.created_at', '<', $query->qualifyColumn('created_at'));
-        }, 'index');
     }
 
     /**

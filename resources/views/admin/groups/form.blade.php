@@ -110,16 +110,14 @@
                                                             <input
                                                                 type="hidden"
                                                                 name="permissions[{{ $node->content->getMorphClass() }}:{{ $node->content->getKey() }}][{{ $ability }}]"
-                                                                value="{{ $node->content->permissions->member()->allows($ability) ? 1 : 0 }}"
+                                                                value="{{ Waterhole\Waterhole::permissions()->member()->allows($ability, $node->content) ? 1 : 0 }}"
                                                             >
                                                             <input
                                                                 type="checkbox"
                                                                 name="permissions[{{ $node->content->getMorphClass() }}:{{ $node->content->getKey() }}][{{ $ability }}]"
                                                                 value="1"
-                                                                @if ($node->content->permissions->member()->allows($ability)) disabled
-                                                                @endif
-                                                                @if (old("permissions.{$node->content->getMorphClass()}:{$node->content->getKey()}.$ability", $node->content->permissions->group($group ?? Waterhole\Models\Group::member())->allows($ability))) checked
-                                                                @endif
+                                                                @if (Waterhole\Waterhole::permissions()->member()->allows($ability, $node->content)) disabled @endif
+                                                                @if (old("permissions.{$node->content->getMorphClass()}:{$node->content->getKey()}.$ability", Waterhole\Waterhole::permissions()->group($group ?? Waterhole\Models\Group::member())->allows($ability, $node->content))) checked @endif
                                                                 data-depends-on="
                                                                     @if ($ability !== 'view') permissions[{{ $node->content->getMorphClass() }}:{{ $node->content->getKey() }}][view] @endif
                                                                     "

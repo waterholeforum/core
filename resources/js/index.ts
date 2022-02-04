@@ -20,6 +20,7 @@ declare global {
 export interface Waterhole {
     userId: number;
     alerts: AlertsElement;
+    fetchError: (response: Response) => void;
 }
 
 window.Stimulus = Application.start();

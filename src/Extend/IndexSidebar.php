@@ -15,4 +15,4 @@ abstract class IndexSidebar
 }
 
 IndexSidebar::add('nav', IndexNav::class);
-IndexSidebar::add('footer', IndexFooter::class);
+IndexSidebar::add('footer', IndexFooter::class, 100);

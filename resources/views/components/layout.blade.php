@@ -109,14 +109,20 @@
     Templates for fetch error alert messages. These is cloned into the
     alerts element whenever there is a fetch request error in JavaScript.
 --}}
+<template id="forbidden-alert">
+    <x-waterhole::alert type="danger">
+        @lang('waterhole::system.forbidden')
+    </x-waterhole::alert>
+</template>
+
 <template id="too-many-requests-alert">
-    <x-waterhole::alert type="danger" dismissible>
+    <x-waterhole::alert type="danger">
         @lang('waterhole::system.too-many-requests')
     </x-waterhole::alert>
 </template>
 
 <template id="fatal-error-alert">
-    <x-waterhole::alert type="danger" dismissible>
+    <x-waterhole::alert type="danger">
         @lang('waterhole::system.fatal-error')
     </x-waterhole::alert>
 </template>

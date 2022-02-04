@@ -13,10 +13,9 @@ class StructureController extends Controller
 {
     public function index()
     {
-        $structure = Structure::query()
+        $structure = Structure::with('content')
             ->orderBy('position')
-            ->get()
-            ->loadMissing('content.permissions.recipient');
+            ->get();
 
         return view('waterhole::admin.structure.index', compact('structure'));
     }
@@ -27,12 +26,15 @@ class StructureController extends Controller
 
         $data = $request->validate([
             'order' => 'array',
-            'order.*' => 'integer',
+            'order.*' => 'array:id,listIndex',
         ]);
 
         if ($data['order']) {
             foreach ($data['order'] as $position => $node) {
-                Structure::whereKey($node)->update(compact('position'));
+                Structure::whereKey($node['id'])->update([
+                    'position' => $position,
+                    'is_listed' => ! $node['listIndex'],
+                ]);
             }
         }
 

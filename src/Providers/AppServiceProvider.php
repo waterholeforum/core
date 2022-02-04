@@ -3,7 +3,6 @@
 namespace Waterhole\Providers;
 
 use BladeUI\Icons\Factory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Notifications\ChannelManager;
 use Illuminate\Support\ServiceProvider;
@@ -13,7 +12,7 @@ use Waterhole\Notifications\DatabaseChannel;
 class AppServiceProvider extends ServiceProvider
 {
     protected array $configFiles = [
-        'admin', 'design', 'forum', 'system', 'users'
+        'admin', 'design', 'forum', 'oauth', 'system', 'users'
     ];
 
     public function register()
@@ -32,8 +31,6 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        Model::preventLazyLoading();
-
         Relation::enforceMorphMap([
             'channel' => Models\Channel::class,
             'comment' => Models\Comment::class,
@@ -61,16 +58,5 @@ class AppServiceProvider extends ServiceProvider
         resolve(ChannelManager::class)->extend('database', function () {
             return new DatabaseChannel();
         });
-
-        //
-        // Blade::directive('fluent', function ($expression) {
-        /*    return '<?php echo fluent('.$expression.'); ?>';*/
-        // });
-        //
-
-        // Paginator::useBootstrap();
-
-        // Paginator::defaultView('pagination');
-        // Paginator::defaultSimpleView('pagination-simple');
     }
 }

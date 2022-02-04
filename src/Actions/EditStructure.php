@@ -20,7 +20,7 @@ class EditStructure extends Link
 
     public function authorize(?User $user, Model $model): bool
     {
-        return $user && $user->can('update', $model);
+        return $user && $user->can('structure.edit', $model);
     }
     
     public function label(Collection $models): string

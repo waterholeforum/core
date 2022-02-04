@@ -24,7 +24,7 @@ class CommentController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('waterhole.auth')->except('show');
+        $this->middleware('auth')->except('show');
         $this->middleware('throttle:waterhole.create')->only('store', 'update');
     }
 
@@ -44,8 +44,8 @@ class CommentController extends Controller
 
     public function create(Post $post, Request $request)
     {
-        $this->authorize('create', Comment::class);
-        $this->authorize('reply', $post);
+        $this->authorize('comment.create');
+        $this->authorize('post.reply', $post);
 
         // Comments may be created in reply to a parent comment. The parent ID
         // can either be specified in a query parameter, or it may be present
@@ -70,8 +70,8 @@ class CommentController extends Controller
                 ->withInput();
         }
 
-        $this->authorize('create', Comment::class);
-        $this->authorize('reply', $post);
+        $this->authorize('comment.create', Comment::class);
+        $this->authorize('post.reply', $post);
 
         $data = Comment::validate($request->all());
         $data['user_id'] = $request->user()->id;
@@ -135,14 +135,14 @@ class CommentController extends Controller
 
     public function edit(Post $post, Comment $comment)
     {
-        $this->authorize('update', $comment);
+        $this->authorize('comment.edit', $comment);
 
         return view('waterhole::comments.edit', compact('comment'));
     }
 
     public function update(Post $post, Comment $comment, Request $request)
     {
-        $this->authorize('update', $comment);
+        $this->authorize('comment.edit', $comment);
 
         $comment->fill(Comment::validate($request->all(), $comment))
             ->markAsEdited()

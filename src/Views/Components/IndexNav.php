@@ -19,7 +19,7 @@ class IndexNav extends Component
 
     public function __construct()
     {
-        $structure = Structure::with(['content' => function (MorphTo $morphTo) {
+        $structure = Structure::where('is_listed', true)->with(['content' => function (MorphTo $morphTo) {
             $morphTo->morphWith([
                 Channel::class => ['permissions.recipient'],
             ]);
@@ -29,10 +29,7 @@ class IndexNav extends Component
                     Channel::class => ['newPosts', 'unreadPosts'],
                 ]);
             }
-        }])->orderBy('position')->get()->filter(function (Structure $node) {
-            return ! $node->content->permissions
-                || $node->content->permissions->can(Auth::user(), 'view');
-        });
+        }])->orderBy('position')->get()->filter(fn(Structure $node) => $node->content);
 
         $this->nav = collect([
             [

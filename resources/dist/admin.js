@@ -2052,7 +2052,7 @@ var _default = /*#__PURE__*/function () {
 
     _classCallCheck(this, _default);
 
-    this.dragstart = function (t) {
+    this.lists = [], this.dragstart = function (t) {
       if (t.defaultPrevented) return;
       t.stopPropagation(), _this.dragging = t.target;
 
@@ -2064,12 +2064,14 @@ var _default = /*#__PURE__*/function () {
     }, this.dragover = function (t) {
       t.preventDefault();
 
-      var e = Array.from(_this.list.querySelectorAll('[draggable="true"]')).filter(function (t) {
+      var e = _this.lists.flatMap(function (t) {
+        return Array.from(t.children);
+      }).filter(function (t) {
         return t !== _this.dragging;
       }),
-          n = _this.dragging.getBoundingClientRect(),
-          i = t.clientY - (_this.offsetY || 0),
-          s = t.clientY - (_this.offsetY || 0) + n.height;
+          i = _this.dragging.getBoundingClientRect(),
+          n = t.clientY - (_this.offsetY || 0),
+          s = t.clientY - (_this.offsetY || 0) + i.height;
 
       var _iterator = _createForOfIteratorHelper(e),
           _step;
@@ -2078,9 +2080,9 @@ var _default = /*#__PURE__*/function () {
         for (_iterator.s(); !(_step = _iterator.n()).done;) {
           var _t3 = _step.value;
 
-          var _e = _t3.firstElementChild.getBoundingClientRect();
+          var _e = _t3.getBoundingClientRect();
 
-          if (i > _e.top && i < _e.top + _e.height / 2) {
+          if (n > _e.top && n < _e.top + _e.height / 2) {
             _this.canMove(_t3.parentElement) && _t3.parentElement.insertBefore(_this.dragging, _t3);
             break;
           }
@@ -2100,23 +2102,40 @@ var _default = /*#__PURE__*/function () {
 
       var r = t.clientX - (_this.offsetX || 0);
 
-      if (_this.dragging.previousElementSibling && r > n.left + _this.options.indent) {
+      if (_this.dragging.previousElementSibling && r > i.left + _this.options.indent) {
         var _t = _this.dragging.previousElementSibling.querySelector(':scope > ul, :scope > ol, :scope > [role="list"]');
 
         _t && _this.canMove(_t) && _t.appendChild(_this.dragging);
-      } else if (!_this.dragging.nextElementSibling && r < n.left && _this.dragging.parentNode !== _this.list) {
+      } else if (!_this.dragging.nextElementSibling && r < i.left && _this.dragging.parentNode !== _this.list) {
         var _t2 = _this.dragging.parentElement.parentElement.parentElement;
         _this.canMove(_t2) && _t2.insertBefore(_this.dragging, _this.dragging.parentElement.parentElement.nextElementSibling);
       }
-    }, this.list = t, this.options = Object.assign({
+    }, this.options = Object.assign({
       indent: 40
-    }, e), this.list.addEventListener("dragstart", this.dragstart), this.list.addEventListener("dragend", this.dragend);
+    }, e), Array.isArray(t) ? t.forEach(function (t) {
+      return _this.addList(t);
+    }) : t && this.addList(t);
   }
 
   _createClass(_default, [{
     key: "destroy",
     value: function destroy() {
-      this.list.removeEventListener("dragstart", this.dragstart), this.list.removeEventListener("dragend", this.dragend);
+      var _this2 = this;
+
+      this.lists.forEach(function (t) {
+        return _this2.removeList(t);
+      });
+    }
+  }, {
+    key: "addList",
+    value: function addList(t) {
+      this.lists.includes(t) || (this.lists.push(t), t.addEventListener("dragstart", this.dragstart), t.addEventListener("dragend", this.dragend));
+    }
+  }, {
+    key: "removeList",
+    value: function removeList(t) {
+      var e = this.lists.indexOf(t);
+      -1 !== e && (this.lists.splice(e, 1), t.removeEventListener("dragstart", this.dragstart), t.removeEventListener("dragend", this.dragend));
     }
   }, {
     key: "canMove",
@@ -2293,34 +2312,55 @@ var default_1 = /*#__PURE__*/function (_Controller) {
     _this.end = function (e) {
       e.target.classList.remove('is-dragging');
 
-      var nodes = _this.listTarget.querySelectorAll('[data-id]');
-
-      var result = Array.from(nodes).map(function (el, i) {
-        return el.dataset.id;
+      var result = _this.listTargets.flatMap(function (list, i) {
+        return Array.from(list.querySelectorAll('[data-id]')).map(function (el) {
+          return {
+            id: el.dataset.id,
+            listIndex: i
+          };
+        });
       });
-      _this.orderInputTarget.value = JSON.stringify(result);
+
+      if (result) {
+        _this.orderInputTarget.value = JSON.stringify(result);
+      }
     };
 
     return _this;
   }
 
   _createClass(default_1, [{
+    key: "initialize",
+    value: function initialize() {
+      this.dragonNest = new dragon_nest__WEBPACK_IMPORTED_MODULE_1__["default"]();
+    }
+  }, {
     key: "connect",
     value: function connect() {
-      this.dragonNest = new dragon_nest__WEBPACK_IMPORTED_MODULE_1__["default"](this.listTarget);
-      this.listTarget.addEventListener('dragstart', this.start);
-      this.listTarget.addEventListener('dragend', this.end);
       document.addEventListener('mousedown', this.mousedown);
     }
   }, {
     key: "disconnect",
     value: function disconnect() {
+      document.removeEventListener('mousedown', this.mousedown);
+    }
+  }, {
+    key: "listTargetConnected",
+    value: function listTargetConnected(el) {
       var _a;
 
-      (_a = this.dragonNest) === null || _a === void 0 ? void 0 : _a.destroy();
-      this.listTarget.removeEventListener('dragstart', this.start);
-      this.listTarget.removeEventListener('dragend', this.end);
-      document.removeEventListener('mousedown', this.mousedown);
+      (_a = this.dragonNest) === null || _a === void 0 ? void 0 : _a.addList(el);
+      el.addEventListener('dragstart', this.start);
+      el.addEventListener('dragend', this.end);
+    }
+  }, {
+    key: "listTargetDisconnected",
+    value: function listTargetDisconnected(el) {
+      var _a;
+
+      (_a = this.dragonNest) === null || _a === void 0 ? void 0 : _a.removeList(el);
+      el.removeEventListener('dragstart', this.start);
+      el.removeEventListener('dragend', this.end);
     }
   }]);
 

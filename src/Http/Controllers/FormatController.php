@@ -3,7 +3,6 @@
 namespace Waterhole\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Waterhole\Formatter\Formatter;
 
 /**
@@ -24,6 +23,6 @@ class FormatController extends Controller
     {
         $xml = $this->formatter->parse((string) $request->getContent());
 
-        return $this->formatter->render($xml, ['actor' => Auth::user()]);
+        return $this->formatter->render($xml);
     }
 }

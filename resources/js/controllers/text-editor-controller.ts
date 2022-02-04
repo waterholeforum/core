@@ -96,10 +96,14 @@ export default class extends Controller {
                 method: 'POST',
                 body: this.inputTarget.value,
             })
-                .then(response => response.text())
-                .then(text => {
-                    this.previewTarget!.hidden = false;
-                    this.previewTarget!.innerHTML = text;
+                .then(async response => {
+                    if (! response.ok) {
+                        window.Waterhole.fetchError(response);
+                    } else {
+                        const text = await response.text();
+                        this.previewTarget!.hidden = false;
+                        this.previewTarget!.innerHTML = text;
+                    }
                 });
         }
     }

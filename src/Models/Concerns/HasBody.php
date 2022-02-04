@@ -5,6 +5,7 @@ namespace Waterhole\Models\Concerns;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
+use Waterhole\Formatter\Context;
 use Waterhole\Formatter\Formatter;
 use Waterhole\Formatter\Mentions;
 use Waterhole\Models\Model;
@@ -61,7 +62,7 @@ trait HasBody
         $key = $user->id ?? 0;
 
         if (! isset($this->renderCache[$key])) {
-            $context = ['model' => $this, 'user' => $user];
+            $context = new Context($this, $user);
 
             $this->renderCache[$key] = static::$formatter->render($this->parsed_body, $context);
         }
@@ -76,7 +77,7 @@ trait HasBody
 
     public function setBodyAttribute(string $value)
     {
-        $context = ['model' => $this];
+        $context = new Context($this);
 
         $this->attributes['body'] = $value ? static::$formatter->parse($value, $context) : null;
     }

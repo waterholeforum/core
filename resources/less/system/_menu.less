@@ -6,7 +6,7 @@
   min-width: 15ch;
   width: max-content;
   max-width: 30ch;
-  margin: var(--space-xs) 0;
+  //margin: var(--space-xs) 0;
   z-index: var(--z-index-overlay);
   font-size: var(--text-xs);
   overflow: auto;
@@ -69,6 +69,10 @@
 .menu-item .badge,
 .menu-item-check {
   margin-left: auto;
+}
+
+.menu-item:not(.is-active, [aria-current=page], [aria-checked=true]) .menu-item-check {
+  visibility: hidden;
 }
 
 .menu-divider {
