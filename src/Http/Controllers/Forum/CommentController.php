@@ -25,7 +25,7 @@ class CommentController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->except('show');
-        $this->middleware('throttle:waterhole.create')->only('store', 'update');
+        // $this->middleware('throttle:waterhole.create')->only('store');
     }
 
     public function show(Post $post, Comment $comment, Request $request)
@@ -45,7 +45,7 @@ class CommentController extends Controller
     public function create(Post $post, Request $request)
     {
         $this->authorize('comment.create');
-        $this->authorize('post.reply', $post);
+        $this->authorize('post.comment', $post);
 
         // Comments may be created in reply to a parent comment. The parent ID
         // can either be specified in a query parameter, or it may be present
@@ -71,7 +71,7 @@ class CommentController extends Controller
         }
 
         $this->authorize('comment.create', Comment::class);
-        $this->authorize('post.reply', $post);
+        $this->authorize('post.comment', $post);
 
         $data = Comment::validate($request->all());
         $data['user_id'] = $request->user()->id;

@@ -20,5 +20,5 @@ abstract class PostInfo
 PostInfo::add('unread', PostUnread::class);
 PostInfo::add('channel', PostChannel::class);
 PostInfo::add('locked', PostLocked::class);
-PostInfo::add('activity', PostActivity::class);
 PostInfo::add('notifications', PostNotifications::class);
+PostInfo::add('activity', PostActivity::class);

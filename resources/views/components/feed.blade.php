@@ -3,7 +3,7 @@
     class="stack-md"
     target="_top"
     data-controller="feed"
-    data-feed-sort-value="{{ $feed->filters()->search($feed->currentFilter()) }}"
+    data-feed-filter-value="{{ $feed->currentFilter()->handle() }}"
     data-feed-channels-value="@json($channel ? [$channel->id] : Waterhole\Models\Channel::pluck('id'))"
 >
     @components(Waterhole\Extend\PostFeedHeader::build(), compact('feed', 'channel'))

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Waterhole\Events\NewPost;
 use Waterhole\Models\Concerns\Followable;
 use Waterhole\Models\Concerns\HasBody;
 use Waterhole\Models\Concerns\HasLikes;
@@ -66,6 +67,10 @@ class Post extends Model
 
         static::creating(function (Post $post) {
             $post->last_activity_at ??= now();
+        });
+
+        static::created(function (self $post) {
+            broadcast(new NewPost($post))->toOthers();
         });
 
         // When a new post is created, send notifications to mentioned users.
