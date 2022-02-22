@@ -1,12 +1,16 @@
-<x-waterhole::layout :title="$title" :assets="['admin']">
-    <div hidden data-page-target="title">Administration</div>
+<x-waterhole::layout
+    :title="$title"
+    :assets="['admin']"
+    {{ $attributes->class('admin') }}
+>
+    <div hidden data-page-target="title">{{ __('waterhole::admin.admin-title') }}</div>
 
-    <div class="section container with-sidebar-start">
-        <nav class="sidebar sidebar--sticky">
+    <div class="admin__layout section container with-sidebar">
+        <nav class="admin__nav sidebar sidebar--sticky">
             @components(Waterhole\Extend\AdminNav::build())
         </nav>
 
-        <div style="max-width: 90ch; margin-inline: auto">
+        <div class="admin__content">
             {{ $slot }}
         </div>
     </div>

@@ -32,9 +32,14 @@
   border-left: 3.5ch solid var(--color-fill);
 }
 
-.admin-structure__handle {
+.drag-handle {
+  color: var(--color-text-muted);
   opacity: .5;
   cursor: move;
+
+  .no-js & {
+    display: none;
+  }
 }
 
 .admin-structure__label {

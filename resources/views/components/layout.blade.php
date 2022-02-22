@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ config('app.locale') }}" class="no-js">
+<html lang="{{ config('app.locale') }}" {{ $attributes->class('no-js') }}>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
@@ -36,7 +36,7 @@
 <body class="{{ Auth::check() ? 'logged-in' : 'not-logged-in' }}">
 
 <div id="waterhole" data-controller="page">
-    <a href="#main" class="skip-link">@lang('waterhole::system.skip-to-main-content')</a>
+    <a href="#main" class="skip-link">{{ __('waterhole::system.skip-to-main-content-link') }}</a>
 
     @components(Waterhole\Extend\LayoutBefore::build())
 

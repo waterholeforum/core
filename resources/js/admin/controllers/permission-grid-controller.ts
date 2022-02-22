@@ -11,9 +11,21 @@ export default class extends Controller {
     connect() {
         this.disabled = Array.from(this.element.querySelectorAll('input:disabled'));
         this.update();
+
+        const el = this.element as HTMLElement;
+        el.addEventListener('click', this.click);
+        el.addEventListener('mouseover', this.mouseover);
+        el.addEventListener('mouseout', this.reset);
     }
 
-    mouseover(e: MouseEvent) {
+    disconnect() {
+        const el = this.element as HTMLElement;
+        el.removeEventListener('click', this.click);
+        el.removeEventListener('mouseover', this.mouseover);
+        el.removeEventListener('mouseout', this.reset);
+    }
+
+    private mouseover = (e: MouseEvent) => {
         const target = e.target as HTMLElement;
         if (target.matches('thead th, thead th *')) {
             const index = Array.from(target.parentElement!.children).indexOf(target);
@@ -24,14 +36,14 @@ export default class extends Controller {
             target.closest('tr')!.classList.add('is-highlighted');
             (this.element as HTMLElement).style.cursor = 'pointer';
         }
-    }
+    };
 
-    reset(e: MouseEvent) {
+    private reset = () => {
         this.element.querySelectorAll('col, tr').forEach(el => el.classList.remove('is-highlighted'));
         (this.element as HTMLElement).style.cursor = '';
-    }
+    };
 
-    click(e: MouseEvent) {
+    private click = (e: MouseEvent) => {
         const target = e.target as HTMLElement;
         if (target.matches('thead th, thead th *')) {
             const index = Array.from(target.parentElement!.children).indexOf(target);
@@ -51,7 +63,7 @@ export default class extends Controller {
         }
 
         this.update();
-    }
+    };
 
     update() {
         this.element.querySelectorAll<HTMLInputElement>('tbody td input[type="checkbox"]').forEach(checkbox => {

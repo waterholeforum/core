@@ -2,10 +2,7 @@
 
 namespace Waterhole;
 
-use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\HtmlString;
-use Illuminate\View\Component;
 use Major\Fluent\Formatters\Number\NumberFormatter;
 use Major\Fluent\Formatters\Number\Options;
 use Waterhole\Extend\Emoji;
@@ -79,25 +76,6 @@ function full_time($date): string
 function emojify(string $text, array $attributes = []): HtmlString|string
 {
     return Emoji::emojify($text, $attributes);
-}
-
-/**
- * Render a component instance to HTML.
- *
- * TODO: remove this, as it's been implemented directly into Laravel.
- */
-function render_component(Component $component): string
-{
-    $data = $component->data();
-    $view = value($component->resolveView(), $data);
-
-    if ($view instanceof View) {
-        return $view->with($data)->render();
-    } elseif ($view instanceof Htmlable) {
-        return $view->toHtml();
-    } else {
-        return view($view, $data)->render();
-    }
 }
 
 /**

@@ -1,29 +1,35 @@
-<x-waterhole::admin title="Groups">
+<x-waterhole::admin :title="__('waterhole::admin.groups-title')">
     <div class="stack-md">
-        <div class="toolbar">
-            <h1 class="h2">Groups</h1>
+        <div class="row gap-md">
+            <h1 class="h2">{{ __('waterhole::admin.groups-title') }}</h1>
 
             <div class="spacer"></div>
 
             <a href="{{ route('waterhole.admin.groups.create') }}" type="button" class="btn btn--primary">
                 <x-waterhole::icon icon="heroicon-s-plus"/>
-                <span>Create Group</span>
+                <span>{{ __('waterhole::admin.create-group-button') }}</span>
             </a>
         </div>
 
-        <ul
-            class="card admin-structure"
-            role="list"
-        >
+        <ul class="card" role="list">
             @foreach ($groups as $group)
-                <li class="admin-structure__content toolbar">
-                    <x-waterhole::group-label :group="$group" class="text-xs"/>
+                <li class="card__row row gap-md">
+                    <x-waterhole::group-label
+                        :group="$group"
+                        class="text-xs"
+                    />
+
                     <div class="spacer"></div>
+
                     <a
-                        href="{{ route('waterhole.admin.users.index', ['q' => 'group:'.(str_contains($group->name, ' ') ? '"'.$group->name.'"' : $group->name)]) }}"
+                        href="{{ $group->users_url }}"
                         class="color-muted text-xs"
-                    >{{ $group->users_count }} users</a>
-                    <x-waterhole::action-menu :for="$group" placement="bottom-end" context="admin"/>
+                    >{{ __('waterhole::admin.group-user-count', ['count' => $group->users_count]) }}</a>
+
+                    <x-waterhole::action-menu
+                        :for="$group"
+                        placement="bottom-end"
+                    />
                 </li>
             @endforeach
         </ul>

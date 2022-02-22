@@ -1,11 +1,13 @@
 @php
-    $title = isset($heading) ? 'Edit Heading' : 'Create a Heading';
+    $title = isset($heading)
+        ? __('waterhole::admin.edit-heading-title')
+        : __('waterhole::admin.create-heading-title');
 @endphp
 
 <x-waterhole::admin :title="$title">
     <x-waterhole::admin.title
         :parent-url="route('waterhole.admin.structure')"
-        parent-title="Structure"
+        :parent-title="__('waterhole::admin.structure-title')"
         :title="$title"
     />
 
@@ -20,7 +22,7 @@
         <div class="stack-lg">
             <x-waterhole::validation-errors/>
 
-            <x-waterhole::field name="name" label="Name">
+            <x-waterhole::field name="name" :label="__('waterhole::admin.heading-name-label')">
                 <input
                     type="text"
                     name="name"
@@ -32,11 +34,18 @@
             </x-waterhole::field>
 
             <div>
-                <div class="toolbar">
-                    <button type="submit" class="btn btn--primary btn--wide">
-                        {{ isset($heading) ? 'Save Changes' : 'Create' }}
+                <div class="row gap-md">
+                    <button
+                        type="submit"
+                        class="btn btn--primary btn--wide"
+                    >
+                        {{ isset($heading) ? __('waterhole::system.save-changes-button') : __('waterhole::system.create-button') }}
                     </button>
-                    <a href="{{ route('waterhole.admin.structure') }}" class="btn">Cancel</a>
+
+                    <a
+                        href="{{ route('waterhole.admin.structure') }}"
+                        class="btn"
+                    >{{ __('waterhole::system.cancel-button') }}</a>
                 </div>
             </div>
         </div>

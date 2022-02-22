@@ -17,7 +17,7 @@ class ChannelController extends Controller
 {
     public function create()
     {
-        return view('waterhole::admin.structure.channels.create');
+        return view('waterhole::admin.structure.channel');
     }
 
     public function store(Request $request)
@@ -27,7 +27,7 @@ class ChannelController extends Controller
 
     public function edit(Channel $channel)
     {
-        return view('waterhole::admin.structure.channels.edit', compact('channel'));
+        return view('waterhole::admin.structure.channel', compact('channel'));
     }
 
     public function update(Channel $channel, Request $request)

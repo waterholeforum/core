@@ -2,12 +2,17 @@
 
 namespace Waterhole\Views;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\View\Component;
 
-use function Waterhole\render_component;
-
+/**
+ * Helper class for making <turbo-stream> elements.
+ */
 abstract class TurboStream
 {
+    /**
+     * Make a Turbo Stream to replace a streamable component.
+     */
     public static function replace(Component $component): ?string
     {
         if (! $id = static::getId($component)) {
@@ -17,6 +22,9 @@ abstract class TurboStream
         return static::stream($component, 'replace', $id);
     }
 
+    /**
+     * Make a Turbo Stream to remove a streamable component.
+     */
     public static function remove(Component $component): ?string
     {
         if (! $id = static::getId($component)) {
@@ -28,21 +36,33 @@ abstract class TurboStream
         html;
     }
 
+    /**
+     * Make a Turbo Stream to append a component to a target.
+     */
     public static function append(Component $component, string $target): string
     {
         return static::stream($component, 'append', $target);
     }
 
+    /**
+     * Make a Turbo Stream to prepend a component to a target.
+     */
     public static function prepend(Component $component, string $target): string
     {
         return static::stream($component, 'prepend', $target);
     }
 
+    /**
+     * Make a Turbo Stream to insert a component before a target.
+     */
     public static function before(Component $component, string $target): string
     {
         return static::stream($component, 'before', $target);
     }
 
+    /**
+     * Make a Turbo Stream to insert a component after a target.
+     */
     public static function after(Component $component, string $target): string
     {
         return static::stream($component, 'after', $target);
@@ -50,7 +70,7 @@ abstract class TurboStream
 
     private static function stream(Component $component, string $action, string $target): string
     {
-        $content = render_component($component);
+        $content = Blade::renderComponent($component);
 
         return <<<html
             <turbo-stream action="$action" target="$target">

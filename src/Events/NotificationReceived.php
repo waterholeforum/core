@@ -4,13 +4,12 @@ namespace Waterhole\Events;
 
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\HtmlString;
 use Neves\Events\Contracts\TransactionalEvent;
 use Waterhole\Models\Notification;
 use Waterhole\Views\Components\Alert;
 use Waterhole\Views\Components\Notification as NotificationComponent;
-
-use function Waterhole\render_component;
 
 class NotificationReceived implements ShouldBroadcast, TransactionalEvent
 {
@@ -29,10 +28,10 @@ class NotificationReceived implements ShouldBroadcast, TransactionalEvent
     public function broadcastWith()
     {
         return [
-            'html' => render_component(
+            'html' => Blade::renderComponent(
                 (new Alert(
                     type: 'notification',
-                    message: new HtmlString(render_component(new NotificationComponent($this->notification))),
+                    message: new HtmlString(Blade::renderComponent(new NotificationComponent($this->notification))),
                     dismissible: true,
                 ))
             ),

@@ -3,10 +3,9 @@
 namespace Waterhole\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Blade;
 use Waterhole\Models\User;
 use Waterhole\Views\Components\UserLabel;
-
-use function Waterhole\render_component;
 
 /**
  * Controller to look up users by name.
@@ -37,7 +36,7 @@ class UserLookupController extends Controller
             ->map(fn(User $user) => [
                 'id' => $user->id,
                 'name' => $user->name,
-                'html' => render_component(new UserLabel($user)),
+                'html' => Blade::renderComponent(new UserLabel($user)),
             ]);
     }
 }

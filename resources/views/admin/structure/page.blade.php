@@ -1,11 +1,13 @@
 @php
-    $title = isset($page) ? 'Edit Page' : 'Create a Page';
+    $title = isset($page)
+        ? __('waterhole::admin.edit-page-title')
+        : __('waterhole::admin.create-page-title');
 @endphp
 
 <x-waterhole::admin :title="$title">
     <x-waterhole::admin.title
         :parent-url="route('waterhole.admin.structure')"
-        parent-title="Structure"
+        :parent-title="__('waterhole::admin.structure-title')"
         :title="$title"
     />
 
@@ -20,12 +22,17 @@
         <div class="stack-lg" data-controller="slugger">
             <x-waterhole::validation-errors/>
 
-            <div class="panels">
-                <details class="panel" open>
-                    <summary class="panel__header h4">Details</summary>
+            <div class="stack-md">
+                <details class="card" open>
+                    <summary class="card__header h4">
+                        {{ __('waterhole::admin.page-details-title') }}
+                    </summary>
 
-                    <div class="panel__body form-groups">
-                        <x-waterhole::field name="name" label="Name">
+                    <div class="card__body form-groups">
+                        <x-waterhole::field
+                            name="name"
+                            :label="__('waterhole::admin.page-name-label')"
+                        >
                             <input
                                 type="text"
                                 name="name"
@@ -37,7 +44,10 @@
                             >
                         </x-waterhole::field>
 
-                        <x-waterhole::field name="slug" label="Slug">
+                        <x-waterhole::field
+                            name="slug"
+                            :label="__('waterhole::admin.page-slug-label')"
+                        >
                             <input
                                 type="text"
                                 name="slug"
@@ -48,19 +58,25 @@
                                 data-slugger-target="slug"
                             >
                             <p class="field__description">
-                                This page will be accessible at
-                                {!! preg_replace('~^https?://~', '', str_replace('*', '<span data-slugger-target="mirror">'.old('slug', $page->slug ?? '').'</span>', route('waterhole.page', ['page' => '*']))) !!}.
+                                {{ __('waterhole::admin.page-slug-url-label') }}
+                                {!! preg_replace('~^https?://~', '', str_replace('*', '<span data-slugger-target="mirror">'.old('slug', $page->slug ?? '').'</span>', route('waterhole.page', ['page' => '*']))) !!}
                             </p>
                         </x-waterhole::field>
 
-                        <x-waterhole::field name="icon" label="Icon">
+                        <x-waterhole::field
+                            name="icon"
+                            :label="__('waterhole::admin.page-icon-label')"
+                        >
                             <x-waterhole::admin.icon-picker
                                 name="icon"
                                 :value="old('icon', $page->icon ?? null)"
                             />
                         </x-waterhole::field>
 
-                        <x-waterhole::field name="body" label="Body">
+                        <x-waterhole::field
+                            name="body"
+                            :label="__('waterhole::admin.page-body-label')"
+                        >
                             <x-waterhole::text-editor
                                 name="body"
                                 id="{{ $component->id }}"
@@ -71,10 +87,12 @@
                     </div>
                 </details>
 
-                <details class="panel">
-                    <summary class="panel__header h4">Permissions</summary>
+                <details class="card">
+                    <summary class="card__header h4">
+                        {{ __('waterhole::admin.page-permissions-title') }}
+                    </summary>
 
-                    <div class="panel__body">
+                    <div class="card__body">
                         <x-waterhole::admin.permission-grid
                             :abilities="['view']"
                             :defaults="['view']"
@@ -84,11 +102,18 @@
                 </details>
             </div>
 
-            <div class="toolbar">
-                <button type="submit" class="btn btn--primary btn--wide">
-                    {{ isset($page) ? 'Save Changes' : 'Create' }}
+            <div class="row gap-md">
+                <button
+                    type="submit"
+                    class="btn btn--primary btn--wide"
+                >
+                    {{ isset($heading) ? __('waterhole::system.save-changes-button') : __('waterhole::system.create-button') }}
                 </button>
-                <a href="{{ route('waterhole.admin.structure') }}" class="btn">Cancel</a>
+
+                <a
+                    href="{{ route('waterhole.admin.structure') }}"
+                    class="btn"
+                >{{ __('waterhole::system.cancel-button') }}</a>
             </div>
         </div>
     </form>
