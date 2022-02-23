@@ -1,23 +1,32 @@
-<x-waterhole::layout title="Edit Post">
-    <x-waterhole::dialog title="Edit Post" class="post-create">
-        <form
-            method="POST"
-            action="{{ route('waterhole.posts.update', ['post' => $post]) }}"
-        >
-            @csrf
-            @method('PATCH')
-            <input type="hidden" name="redirect" value="{{ url()->previous() }}">
+@php
+    $title = __('waterhole::forum.edit-post-title');
+@endphp
 
-            <div class="form">
-                <x-waterhole::validation-errors :errors="$errors"/>
+<x-waterhole::layout :title="$title">
+    <div class="container section">
+        <x-waterhole::dialog :title="$title" class="post-editor">
+            <form
+                method="POST"
+                action="{{ route('waterhole.posts.update', ['post' => $post]) }}"
+            >
+                @csrf
+                @method('PATCH')
+                @return
 
-                @include('waterhole::posts.fields')
+                <div class="form">
+                    <x-waterhole::validation-errors/>
 
-                <div class="toolbar">
-                    <button type="submit" class="btn btn--primary">Save</button>
-                    <button onclick="window.history.back()" class="btn">Cancel</button>
+                    @include('waterhole::posts.fields')
+
+                    <div class="row gap-xs wrap">
+                        <button type="submit" class="btn btn--primary">
+                            {{ __('waterhole::system.save-changes-button') }}
+                        </button>
+
+                        <x-waterhole::cancel :default="$post->url" class="btn"/>
+                    </div>
                 </div>
-            </div>
-        </form>
-    </x-waterhole::dialog>
+            </form>
+        </x-waterhole::dialog>
+    </div>
 </x-waterhole::layout>

@@ -7154,34 +7154,58 @@ var _default = /*#__PURE__*/function (_Controller) {
   var _super = _createSuper(_default);
 
   function _default() {
+    var _this;
+
     _classCallCheck(this, _default);
 
-    return _super.apply(this, arguments);
-  }
+    _this = _super.apply(this, arguments);
 
-  _createClass(_default, [{
-    key: "lockScrollPosition",
-    value: function lockScrollPosition(e) {
-      var _this = this;
-
+    _this.lockScrollPosition = function (e) {
       var _a;
 
       if (e.target !== e.currentTarget) return;
-      this.anchor = this.element.nextElementSibling;
+      _this.anchor = _this.element.nextElementSibling;
 
-      if (this.anchor) {
-        this.top = this.anchor.getBoundingClientRect().top;
+      if (_this.anchor) {
+        _this.top = _this.anchor.getBoundingClientRect().top;
       }
 
-      (_a = this.observer) === null || _a === void 0 ? void 0 : _a.disconnect();
-      this.observer = new MutationObserver(function () {
+      (_a = _this.observer) === null || _a === void 0 ? void 0 : _a.disconnect();
+      _this.observer = new MutationObserver(function () {
         return _this.restore();
       });
-      this.observer.observe(document.body, {
+
+      _this.observer.observe(document.body, {
         subtree: true,
         childList: true,
         attributes: true
       });
+    };
+
+    _this.unlockScrollPosition = function (e) {
+      if (e.target !== e.currentTarget) return;
+      setTimeout(function () {
+        var _a;
+
+        (_a = _this.observer) === null || _a === void 0 ? void 0 : _a.disconnect();
+        delete _this.observer;
+      });
+    };
+
+    return _this;
+  }
+
+  _createClass(_default, [{
+    key: "connect",
+    value: function connect() {
+      this.element.addEventListener('turbo:before-fetch-response', this.lockScrollPosition);
+      this.element.addEventListener('turbo:frame-render', this.unlockScrollPosition);
+    }
+  }, {
+    key: "disconnect",
+    value: function disconnect() {
+      this.element.removeEventListener('turbo:before-fetch-response', this.lockScrollPosition);
+      this.element.removeEventListener('turbo:frame-render', this.unlockScrollPosition);
     }
   }, {
     key: "restore",
@@ -7191,19 +7215,6 @@ var _default = /*#__PURE__*/function (_Controller) {
           top: window.scrollY + this.anchor.getBoundingClientRect().top - this.top
         });
       }
-    }
-  }, {
-    key: "unlockScrollPosition",
-    value: function unlockScrollPosition(e) {
-      var _this2 = this;
-
-      if (e.target !== e.currentTarget) return;
-      setTimeout(function () {
-        var _a;
-
-        (_a = _this2.observer) === null || _a === void 0 ? void 0 : _a.disconnect();
-        delete _this2.observer;
-      });
     }
   }]);
 
@@ -7673,13 +7684,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ default_1)
 /* harmony export */ });
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
-/* harmony import */ var _hotwired_turbo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @hotwired/turbo */ "./node_modules/@hotwired/turbo/dist/turbo.es2017-esm.js");
+/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
+/* harmony import */ var _hotwired_turbo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @hotwired/turbo */ "./node_modules/@hotwired/turbo/dist/turbo.es2017-esm.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7701,38 +7708,6 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var __awaiter = undefined && undefined.__awaiter || function (thisArg, _arguments, P, generator) {
-  function adopt(value) {
-    return value instanceof P ? value : new P(function (resolve) {
-      resolve(value);
-    });
-  }
-
-  return new (P || (P = Promise))(function (resolve, reject) {
-    function fulfilled(value) {
-      try {
-        step(generator.next(value));
-      } catch (e) {
-        reject(e);
-      }
-    }
-
-    function rejected(value) {
-      try {
-        step(generator["throw"](value));
-      } catch (e) {
-        reject(e);
-      }
-    }
-
-    function step(result) {
-      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-    }
-
-    step((generator = generator.apply(thisArg, _arguments || [])).next());
-  });
-};
-
 
 
 
@@ -7742,72 +7717,69 @@ var default_1 = /*#__PURE__*/function (_Controller) {
   var _super = _createSuper(default_1);
 
   function default_1() {
+    var _this;
+
     _classCallCheck(this, default_1);
 
-    return _super.apply(this, arguments);
+    _this = _super.apply(this, arguments);
+
+    _this.showPostOnFirstPage = function () {
+      if (document.querySelector('[data-index="0"]')) {
+        _this.postTarget.hidden = false;
+      }
+    };
+
+    _this.beforeStreamRender = function (e) {
+      var _a;
+
+      var stream = e.target;
+
+      if (stream.action === 'remove' && ((_a = stream.target) === null || _a === void 0 ? void 0 : _a.endsWith('post_' + _this.idValue))) {
+        window.history.back();
+        window.addEventListener('popstate', function () {
+          window.requestAnimationFrame(function () {
+            (0,_hotwired_turbo__WEBPACK_IMPORTED_MODULE_1__.renderStreamMessage)(stream.outerHTML);
+          });
+        }, {
+          once: true
+        });
+        e.preventDefault();
+      }
+    };
+
+    return _this;
   }
 
   _createClass(default_1, [{
-    key: "showPostOnFirstPage",
-    value: function showPostOnFirstPage() {
-      if (document.querySelector('[data-index="0"]')) {
-        this.postTarget.hidden = false;
-      }
-    }
-  }, {
-    key: "beforeStreamRender",
-    value: function beforeStreamRender(e) {
-      var _a;
-
-      return __awaiter(this, void 0, void 0, /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var stream;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                stream = e.target;
-
-                if (stream.action === 'remove' && ((_a = stream.target) === null || _a === void 0 ? void 0 : _a.endsWith('post_' + this.idValue))) {
-                  window.history.back();
-                  window.addEventListener('popstate', function () {
-                    window.requestAnimationFrame(function () {
-                      (0,_hotwired_turbo__WEBPACK_IMPORTED_MODULE_2__.renderStreamMessage)(stream.outerHTML);
-                    });
-                  }, {
-                    once: true
-                  });
-                  e.preventDefault();
-                }
-
-              case 2:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-    }
-  }, {
     key: "connect",
     value: function connect() {
-      var _this = this;
+      var _this2 = this;
 
       if (this.idValue) {
         window.Echo.channel("Waterhole.Models.Post.".concat(this.idValue)).listen('NewComment', function (data) {
-          if (_this.bottomTarget) {
+          if (_this2.bottomTarget) {
             var frame = document.createElement('turbo-frame');
             frame.id = data.dom_id;
             frame.src = data.url;
 
-            _this.bottomTarget.before(frame);
+            _this2.bottomTarget.before(frame);
           }
         });
       }
+
+      document.addEventListener('turbo:before-stream-render', this.beforeStreamRender);
+      document.addEventListener('turbo:frame-render', this.showPostOnFirstPage);
+    }
+  }, {
+    key: "disconnect",
+    value: function disconnect() {
+      document.removeEventListener('turbo:before-stream-render', this.beforeStreamRender);
+      document.removeEventListener('turbo:frame-render', this.showPostOnFirstPage);
     }
   }]);
 
   return default_1;
-}(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_1__.Controller);
+}(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
 
 
 default_1.targets = ['post', 'bottom'];
@@ -8170,25 +8142,20 @@ var _default = /*#__PURE__*/function (_Controller) {
   var _super = _createSuper(_default);
 
   function _default() {
+    var _this;
+
     _classCallCheck(this, _default);
 
-    return _super.apply(this, arguments);
-  }
+    _this = _super.apply(this, arguments);
 
-  _createClass(_default, [{
-    key: "connect",
-    value: function connect() {
-      this.onScroll();
-    }
-  }, {
-    key: "onScroll",
-    value: function onScroll() {
-      var links = Array.from(this.links());
+    _this.onScroll = function () {
+      var links = Array.from(_this.links());
       links.forEach(function (a) {
         return a.removeAttribute('aria-current');
       });
       links.reverse().some(function (a) {
-        var id = a.hash.substr(1);
+        var id = a.hash.substring(1);
+        if (!id) return;
         var el = document.getElementById(id);
 
         if (el && el.getBoundingClientRect().top < window.innerHeight / 2) {
@@ -8196,6 +8163,21 @@ var _default = /*#__PURE__*/function (_Controller) {
           return true;
         }
       });
+    };
+
+    return _this;
+  }
+
+  _createClass(_default, [{
+    key: "connect",
+    value: function connect() {
+      this.onScroll();
+      window.addEventListener('scroll', this.onScroll);
+    }
+  }, {
+    key: "disconnect",
+    value: function disconnect() {
+      window.removeEventListener('scroll', this.onScroll);
     }
   }, {
     key: "links",

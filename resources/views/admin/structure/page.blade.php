@@ -19,10 +19,10 @@
         @csrf
         @if (isset($page)) @method('PATCH') @endif
 
-        <div class="stack-lg" data-controller="slugger">
+        <div class="stack gap-lg" data-controller="slugger">
             <x-waterhole::validation-errors/>
 
-            <div class="stack-md">
+            <div class="stack gap-md">
                 <details class="card" open>
                     <summary class="card__header h4">
                         {{ __('waterhole::admin.page-details-title') }}
@@ -102,7 +102,7 @@
                 </details>
             </div>
 
-            <div class="row gap-md">
+            <div class="row gap-xs wrap">
                 <button
                     type="submit"
                     class="btn btn--primary btn--wide"

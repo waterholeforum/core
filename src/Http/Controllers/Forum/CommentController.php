@@ -148,6 +148,6 @@ class CommentController extends Controller
             ->markAsEdited()
             ->save();
 
-        return redirect($request->get('return', $comment->post_url));
+        return redirect($comment->post_url);
     }
 }

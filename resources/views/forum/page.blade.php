@@ -1,14 +1,16 @@
 <x-waterhole::layout>
     <div class="section container">
-        <div class="stack-xl" style="max-width: 80ch">
-            <header class="stack-md">
-                <div class="breadcrumb row gap-xs color-muted">
-                    <a href="{{ route('waterhole.home') }}" class="row gap-xxs">
-                        <x-waterhole::icon icon="heroicon-o-home"/>
-                        Home
-                    </a>
-                    ›
-                </div>
+        <div class="stack gap-xl measure-regular">
+            <header class="stack gap-xs">
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="{{ route('waterhole.home') }}" class="with-icon">
+                            <x-waterhole::icon icon="heroicon-o-home"/>
+                            Home
+                        </a>
+                    </li>
+                    <li aria-hidden="true"></li>
+                </ol>
 
                 <h1 data-page-target="title">{{ $page->name }}</h1>
             </header>

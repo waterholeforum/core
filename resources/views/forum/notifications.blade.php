@@ -1,17 +1,15 @@
 <x-waterhole::layout>
     <div class="container section">
         <turbo-frame id="notifications">
-            <div class="toolbar menu-sticky">
-                <h1 class="menu-heading">Notifications</h1>
+            <div class="row gap-xs justify-between menu-sticky">
+                <h1 class="menu-heading">{{ __('waterhole::notifications.title') }}</h1>
 
-                <div class="spacer"></div>
-
-                <div class="toolbar toolbar--compact">
+                <div class="row">
                     <form action="{{ route('waterhole.notifications.read') }}" method="POST">
                         @csrf
                         <button type="submit" class="btn btn--icon btn--transparent">
                             <x-waterhole::icon icon="heroicon-s-check"/>
-                            <ui-tooltip>Mark All as Read</ui-tooltip>
+                            <ui-tooltip>{{ __('waterhole::notifications.mark-all-as-read-button') }}</ui-tooltip>
                         </button>
                     </form>
 
@@ -21,7 +19,7 @@
                         data-turbo-frame="_top"
                     >
                         <x-waterhole::icon icon="heroicon-o-cog"/>
-                        <ui-tooltip>Notification Preferences</ui-tooltip>
+                        <ui-tooltip>{{ __('waterhole::notifications.preferences-button') }}</ui-tooltip>
                     </a>
                 </div>
             </div>
@@ -51,7 +49,7 @@
             @else
                 <div class="placeholder">
                     <x-waterhole::icon icon="heroicon-o-bell" class="placeholder__visual"/>
-                    <p class="h3">No Notifications</p>
+                    <p class="h3">{{ __('waterhole::notifications.empty-message') }}</p>
                 </div>
             @endif
         </turbo-frame>

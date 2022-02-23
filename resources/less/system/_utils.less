@@ -33,6 +33,16 @@
   flex-grow: 1;
 }
 
+.push-start {
+  margin-inline-end: auto;
+}
+.push-center {
+  margin-inline: auto;
+}
+.push-end {
+  margin-inline-start: auto;
+}
+
 .hide-icon {
   .icon {
     display: none;
@@ -287,7 +297,6 @@
 
 .grid {
   display: grid;
-  gap: var(--space-md);
   grid-template-columns: repeat(auto-fill, minmax(~"min(var(--grid-min, 15ch), 100%)", 1fr));
 }
 
@@ -301,6 +310,10 @@
 
 .measure-narrow {
   max-width: 55ch;
+}
+
+.measure-regular {
+  max-width: 80ch;
 }
 
 .full-width {
@@ -389,4 +402,8 @@
 
 .align-baseline {
   align-items: baseline;
+}
+
+.overflow-visible {
+  overflow: visible;
 }

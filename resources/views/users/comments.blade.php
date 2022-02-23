@@ -1,13 +1,13 @@
 <x-waterhole::user-profile :user="$user" :title="$user->name.'\'s '.$comments->currentFilter()->label().' Comments'">
-    <div class="stack-lg">
-        <div class="toolbar">
+    <div class="stack gap-lg">
+        <div class="row gap-xs wrap">
             <x-waterhole::feed-sort :feed="$comments"/>
             <x-waterhole::feed-top-period :feed="$comments"/>
         </div>
 
         <x-waterhole::feed2 :feed="$comments">
             @foreach ($component->items as $comment)
-                <div class="stack-xs card comment-card" style="margin-bottom: var(--space-lg)">
+                <div class="stack gap-xs card comment-card" style="margin-bottom: var(--space-lg)">
                     <div class="color-muted text-xs comment-card__post">
                         <x-waterhole::channel-label :channel="$comment->post->channel"/> ›
                         <a href="{{ $comment->post_url }}" style="font-weight: var(--font-weight-medium)">

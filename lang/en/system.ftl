@@ -11,3 +11,10 @@ pro-badge = Pro
 
 layout-list = List
 layout-cards = Cards
+
+confirm-action-title = Confirm Action
+
+pagination-first-link = First
+pagination-previous-link = Previous
+pagination-next-link = Next
+pagination-last-link = Last

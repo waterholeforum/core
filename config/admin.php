@@ -38,19 +38,19 @@ return [
         [
             'component' => Waterhole\Widgets\LineChart::class,
             'width' => 100 / 3,
-            'title' => 'Users',
+            'title' => 'waterhole::admin.dashboard-users-title',
             'model' => Waterhole\Models\User::class,
         ],
         [
             'component' => Waterhole\Widgets\LineChart::class,
             'width' => 100 / 3,
-            'title' => 'Posts',
+            'title' => 'waterhole::admin.dashboard-posts-title',
             'model' => Waterhole\Models\Post::class,
         ],
         [
             'component' => Waterhole\Widgets\LineChart::class,
             'width' => 100 / 3,
-            'title' => 'Comments',
+            'title' => 'waterhole::admin.dashboard-comments-title',
             'model' => Waterhole\Models\Comment::class,
         ],
     ],

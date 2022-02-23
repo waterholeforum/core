@@ -1,4 +1,4 @@
-<div class="card stack-lg full-height">
+<div class="card stack gap-lg full-height">
     <h3>
         <a
             href="{{ $feed->link }}"
@@ -14,7 +14,7 @@
     @foreach ($feed->item as $item)
         @continue ($loop->index >= $limit)
 
-        <article class="stack-xxs overlay-container">
+        <article class="stack gap-xxs overlay-container">
             <a
                 href="{{ $item->url }}"
                 class="h5 color-accent block with-overlay"

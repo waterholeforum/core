@@ -13,25 +13,6 @@ export default class extends Controller {
     bottomTarget?: HTMLElement;
     idValue?: number;
 
-    showPostOnFirstPage() {
-        if (document.querySelector('[data-index="0"]')) {
-            this.postTarget!.hidden = false;
-        }
-    }
-
-    async beforeStreamRender(e: CustomEvent) {
-        const stream = e.target as StreamElement;
-        if (stream.action === 'remove' && stream.target?.endsWith('post_'+this.idValue)) {
-            window.history.back();
-            window.addEventListener('popstate', () => {
-                window.requestAnimationFrame(() => {
-                    renderStreamMessage(stream.outerHTML);
-                });
-            }, { once: true });
-            e.preventDefault();
-        }
-    }
-
     connect() {
         if (this.idValue) {
             window.Echo.channel(`Waterhole.Models.Post.${this.idValue}`)
@@ -43,6 +24,33 @@ export default class extends Controller {
                         this.bottomTarget.before(frame);
                     }
                 });
+        }
+
+        document.addEventListener('turbo:before-stream-render', this.beforeStreamRender);
+        document.addEventListener('turbo:frame-render', this.showPostOnFirstPage);
+    }
+
+    disconnect() {
+        document.removeEventListener('turbo:before-stream-render', this.beforeStreamRender);
+        document.removeEventListener('turbo:frame-render', this.showPostOnFirstPage);
+    }
+
+    private showPostOnFirstPage = () => {
+        if (document.querySelector('[data-index="0"]')) {
+            this.postTarget!.hidden = false;
+        }
+    }
+
+    private beforeStreamRender = (e: Event) => {
+        const stream = e.target as StreamElement;
+        if (stream.action === 'remove' && stream.target?.endsWith('post_'+this.idValue)) {
+            window.history.back();
+            window.addEventListener('popstate', () => {
+                window.requestAnimationFrame(() => {
+                    renderStreamMessage(stream.outerHTML);
+                });
+            }, { once: true });
+            e.preventDefault();
         }
     }
 }

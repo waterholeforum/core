@@ -1,7 +1,10 @@
-<x-waterhole::layout title="Confirm Action">
+<x-waterhole::layout :title="__('waterhole::system.confirm-action')">
     <div class="section">
         <turbo-frame id="modal">
-            <x-waterhole::dialog class="dialog--sm confirm-action" aria-label="Confirm Action">
+            <x-waterhole::dialog
+                :aria-label="__('waterhole::system.confirm-action')"
+                class="dialog--sm confirm-action"
+            >
                 <form action="{{ route('waterhole.action.store') }}" method="POST">
                     @csrf
 
@@ -26,7 +29,7 @@
                     @endforeach
 
                     <div class="form">
-                        <x-waterhole::validation-errors :errors="$errors"/>
+                        <x-waterhole::validation-errors/>
 
                         @if (is_string($content = $action->confirm($models)))
                             <p class="h3">{{ $content }}</p>
@@ -34,12 +37,12 @@
                             <div>{{ $content }}</div>
                         @endif
 
-                        <div class="toolbar toolbar--right">
+                        <div class="row gap-xs wrap justify-end">
                             <a
                                 href="{{ old('return', url()->previous()) }}"
                                 class="btn"
                                 data-action="modal#hide"
-                            >Cancel</a>
+                            >{{ __('waterhole::system.cancel-button') }}</a>
 
                             <button
                                 type="submit"

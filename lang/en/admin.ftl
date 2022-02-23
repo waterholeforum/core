@@ -1,10 +1,37 @@
 admin-title = Admin
 
+dashboard-title = Dashboard
+
 getting-started-title = Get Started With Waterhole
+getting-started-strategy-title = Develop Your Strategy
+getting-started-strategy-description = Learn how to build a successful community with Waterhole.
+getting-started-structure-title = Set Up Your Structure
+getting-started-structure-description = Configure the channels and pages that make up the skeleton of your community.
+getting-started-groups-title = Define User Groups
+getting-started-groups-description = Set up groups for moderators, staff, and superusers.
+getting-started-design-title = Customize The Design
+getting-started-design-description = Learn how to integrate Waterhole with your brand and make it your own.
+
+period-today = Today
+period-last-7-days = Last 7 days
+period-last-4-weeks = Last 4 weeks
+period-last-3-months = Last 3 months
+period-last-12-months = Last 12 months
+period-this-month = This month
+period-this-quarter = This quarter
+period-this-year = This year
+period-all-time = All time
+
+period-current-heading = Current Period
+preiod-previous-heading = Previous Period
+
+dashboard-users-title = Users
+dashboard-posts-title = Posts
+dashboard-comments-title = Comments
 
 groups-title = Groups
 create-group-button = Create Group
-group-user-count = {$count} {$count ->
+group-user-count = { $count } { $count ->
     [one] user
     *[other] users
 }
@@ -78,18 +105,40 @@ channel-custom-filters-description = Override the global filter options for this
 channel-permissions-title = Permissions
 
 delete-channel-title = Delete Channel:
-delete-channel-posts-label = Delete {$count} {$count ->
+delete-channel-posts-label = Delete { $count } { $count ->
     [one] post
     *[other] posts
 }
-move-channel-posts-label = Move {$count} {$count ->
+move-channel-posts-label = Move { $count } { $count ->
     [one] post
     *[other] posts
 } to another channel
 
-delete-user-title = Delete {$count ->
+delete-user-title = Delete { $count ->
     [one] User:
-    *[other] {$count} Users
+    *[other] { $count } Users
 }
 keep-user-content-label = Keep content and mark as anonymous
 delete-user-content-label = Delete content permanently
+
+users-title = Users
+users-filter-placeholder = Filter users
+users-filter-group-description = Filter by group
+create-user-button = Create User
+
+users-name-column = Name
+users-email-column = Email
+users-groups-column = Groups
+users-created-at-column = Created
+users-last-seen-at-column = Last Seen
+users-empty-message = No Results Found
+
+edit-user-title = Edit User
+create-user-title = Create a User
+user-account-title = Account
+user-name-label = Name
+user-email-label = Email
+user-password-label = Password
+user-set-password-label = Set new password
+user-groups-label = Groups
+user-profile-title = Profile

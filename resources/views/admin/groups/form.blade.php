@@ -19,7 +19,7 @@
         @csrf
         @if (isset($group)) @method('PATCH') @endif
 
-        <div class="stack-lg">
+        <div class="stack gap-lg">
             <x-waterhole::validation-errors/>
 
             <div class="stack gap-md">
@@ -46,7 +46,7 @@
                         <div data-controller="reveal">
                             <div class="field__label">{{ __('waterhole::admin.group-appearance-label') }}</div>
 
-                            <div class="stack-lg">
+                            <div class="stack gap-lg">
                                 <div>
                                     <input type="hidden" name="is_public" value="0">
                                     <label class="choice">
@@ -169,7 +169,7 @@
                 </details>
             </div>
 
-            <div class="toolbar">
+            <div class="row gap-xs wrap">
                 <button
                     type="submit"
                     class="btn btn--primary btn--wide"

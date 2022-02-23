@@ -2,7 +2,7 @@
     <form action="{{ route('waterhole.preferences.notifications') }}" method="post">
         @csrf
 
-        <div class="stack-md">
+        <div class="stack gap-md">
             <x-waterhole::validation-errors/>
 
             <div class="card form-groups">
@@ -11,7 +11,7 @@
                     <div class="notification-grid card card-list">
                         @foreach (Waterhole\Extend\NotificationTypes::build() as $type)
                             @php $channels = (array) old('notification_channels.'.$type, Auth::user()->notification_channels[$type] ?? []) @endphp
-                            <div class="toolbar">
+                            <div class="row gap-xs wrap">
                                 <div>{{ $type::description() }}</div>
                                 <div class="spacer"></div>
                                 <label class="choice">

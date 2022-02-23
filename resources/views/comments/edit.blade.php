@@ -1,6 +1,6 @@
-<x-waterhole::layout title="Edit Comment">
+<x-waterhole::layout :title="__('waterhole::forum.edit-comment-title')">
     <div class="container section">
-        <turbo-frame id="@domid($comment)">
+        <turbo-frame id="@domid($comment)" target="_top">
             <form
                 method="POST"
                 action="{{ $comment->url }}"
@@ -8,7 +8,6 @@
             >
                 @csrf
                 @method('PATCH')
-                <input type="hidden" name="return" value="{{ old('return', $comment->post_url) }}">
 
                 <div class="comment__main">
                     <x-waterhole::attribution
@@ -16,7 +15,7 @@
                         :date="$comment->created_at"
                     />
 
-                    <x-waterhole::validation-errors :errors="$errors"/>
+                    <x-waterhole::validation-errors/>
 
                     <x-waterhole::text-editor
                         name="body"
@@ -24,16 +23,16 @@
                         class="input"
                     />
 
-                    <div class="toolbar toolbar--right">
+                    <div class="row gap-xs wrap justify-end">
                         <a
                             href="{{ $comment->post_url }}"
                             class="btn"
-                        >Cancel</a>
+                        >{{ __('waterhole::system.cancel-button') }}</a>
 
                         <button
                             type="submit"
                             class="btn btn--primary"
-                        >Save</button>
+                        >{{ __('waterhole::system.save-changes-button') }}</button>
                     </div>
                 </div>
             </form>

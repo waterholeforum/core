@@ -2,7 +2,7 @@
     <div class="section container">
         <div style="display: flex; align-items: flex-start; gap: var(--space-xl)">
             <x-waterhole::avatar :user="$user" style="width: 12ch"/>
-            <div style="flex-grow: 1" class="stack-xs">
+            <div style="flex-grow: 1" class="stack gap-xs">
                 <h1 class="h1" data-page-target="title">
                     {{ $user->name }}
                 </h1>
@@ -12,7 +12,7 @@
                 @if ($user->bio)
                     <p class="content">{{ $user->bio }}</p>
                 @endif
-                <div class="toolbar toolbar--baseline color-muted text-xs">
+                <div class="row gap-xs wrap align-baseline color-muted text-xs">
                     @if ($user->groups->where('is_public')->count())
                         <span>
                             @foreach ($user->groups as $group)
@@ -42,7 +42,7 @@
                     @endif
                 </div>
             </div>
-            <div class="toolbar">
+            <div class="row gap-xs wrap">
                 <x-waterhole::action-menu :for="$user" placement="bottom-end">
                     <x-slot name="button">
                         <button type="button" class="btn">
@@ -56,7 +56,7 @@
         </div>
     </div>
 
-    <div class="section container with-sidebar-start">
+    <div class="section container with-sidebar">
         <div class="sidebar sidebar--sticky">
             <nav class="nav">
                 <a

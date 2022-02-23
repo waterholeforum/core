@@ -1,11 +1,18 @@
 <x-waterhole::layout :title="__('waterhole::auth.forgot-password-title')">
     <div class="section">
-        <x-waterhole::dialog :title="__('waterhole::auth.forgot-password-title')" class="dialog--sm">
-            <div class="stack-lg">
-                <p class="content">{{ __('waterhole::auth.forgot-password-introduction') }}</p>
+        <x-waterhole::dialog
+            :title="__('waterhole::auth.forgot-password-title')"
+            class="dialog--sm"
+        >
+            <div class="stack gap-lg">
+                <p class="content">
+                    {{ __('waterhole::auth.forgot-password-introduction') }}
+                </p>
 
                 @if (session('status'))
-                    <x-waterhole::alert type="success">{{ session('status') }}</x-waterhole::alert>
+                    <x-waterhole::alert type="success">
+                        {{ session('status') }}
+                    </x-waterhole::alert>
                 @else
                     <form action="{{ route('waterhole.forgot-password') }}" method="POST" class="form">
                         @csrf
@@ -25,7 +32,9 @@
                             >
                         </x-waterhole::field>
 
-                        <button type="submit" class="btn btn--primary block">{{ __('waterhole::auth.forgot-password-submit') }}</button>
+                        <button type="submit" class="btn btn--primary block">
+                            {{ __('waterhole::auth.forgot-password-submit') }}
+                        </button>
                     </form>
                 @endif
             </div>

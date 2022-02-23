@@ -5,7 +5,17 @@ export default class extends Controller {
     top?: number;
     observer?: MutationObserver;
 
-    lockScrollPosition(e: CustomEvent) {
+    connect() {
+        this.element.addEventListener('turbo:before-fetch-response', this.lockScrollPosition);
+        this.element.addEventListener('turbo:frame-render', this.unlockScrollPosition);
+    }
+
+    disconnect() {
+        this.element.removeEventListener('turbo:before-fetch-response', this.lockScrollPosition);
+        this.element.removeEventListener('turbo:frame-render', this.unlockScrollPosition);
+    }
+
+    private lockScrollPosition = (e: Event) => {
         if (e.target !== e.currentTarget) return;
 
         this.anchor = this.element.nextElementSibling as HTMLElement;
@@ -24,7 +34,7 @@ export default class extends Controller {
         }
     }
 
-    unlockScrollPosition(e: CustomEvent) {
+    private unlockScrollPosition = (e: Event) => {
         if (e.target !== e.currentTarget) return;
 
         setTimeout(() => {

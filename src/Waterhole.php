@@ -18,6 +18,11 @@ abstract class Waterhole
         return str_starts_with(request()->path(), config('waterhole.admin.path'));
     }
 
+    public static function isWaterholeRoute(): bool
+    {
+        return static::isForumRoute() || static::isAdminRoute();
+    }
+
     public static function permissions(): PermissionCollection
     {
         return app('waterhole.permissions');

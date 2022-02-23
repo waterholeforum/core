@@ -30,7 +30,7 @@
             hidden
         ></div>
 
-        <div class="composer__toolbar toolbar">
+        <div class="composer__toolbar row gap-xs wrap">
             <button
                 type="button"
                 class="btn btn--transparent btn--icon composer__close"

@@ -1,3 +1,4 @@
+# Used in the Waterhole\compact_number() function.
 compact-number-1000 = 0.0K
 compact-number-10000 = 00K
 compact-number-100000 = 000K

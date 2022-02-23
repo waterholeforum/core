@@ -1,10 +1,17 @@
 <x-waterhole::layout :title="__('waterhole::auth.reset-password-title')">
     <div class="section">
-        <x-waterhole::dialog :title="__('waterhole::auth.reset-password-title')" class="dialog--sm">
-            <form action="{{ route('waterhole.reset-password', ['token' => $request->route('token')]) }}" method="POST" class="form">
+        <x-waterhole::dialog
+            :title="__('waterhole::auth.reset-password-title')"
+            class="dialog--sm"
+        >
+            <form
+                action="{{ route('waterhole.reset-password', ['token' => $request->route('token')]) }}"
+                class="form"
+                method="POST"
+            >
                 @csrf
 
-                <x-waterhole::validation-errors :errors="$errors"/>
+                <x-waterhole::validation-errors/>
 
                 <x-waterhole::field
                     name="email"
@@ -49,7 +56,9 @@
                     >
                 </x-waterhole::field>
 
-                <button type="submit" class="btn btn--primary btn--block">{{ __('waterhole::auth.reset-password-submit') }}</button>
+                <button type="submit" class="btn btn--primary btn--block">
+                    {{ __('waterhole::auth.reset-password-submit') }}
+                </button>
             </form>
         </x-waterhole::dialog>
     </div>

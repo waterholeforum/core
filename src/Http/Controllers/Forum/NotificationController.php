@@ -42,7 +42,7 @@ class NotificationController extends Controller
         $notifications
             ->groupBy('type')
             ->each(fn($models, $type) => $type::load($models));
-
+        
         return view('waterhole::forum.notifications', compact('notifications'));
     }
 

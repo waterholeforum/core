@@ -32,7 +32,7 @@
 
 <br>
 
-<div class="nav-text text-xs stack-xs">
+<div class="nav-text text-xs stack gap-xs">
     <p>
         <a href="https://waterhole.dev" class="color-muted" target="_blank">Waterhole {{ Waterhole::VERSION }}</a>
         <a href="#" class="badge">PRO</a>

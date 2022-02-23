@@ -5,7 +5,7 @@
 {{--    </button>--}}
 
 {{--    <div class="menu" hidden style="padding: .75rem">--}}
-{{--        <form action="{{ route('waterhole.search') }}" class="lead toolbar toolbar--nowrap">--}}
+{{--        <form action="{{ route('waterhole.search') }}" class="lead row gap-xs">--}}
 {{--            <input type="text" class="input" placeholder="Search" autofocus style="width: 20em" name="q">--}}
 {{--            <button class="btn btn--primary">Go</button>--}}
 {{--        </form>--}}

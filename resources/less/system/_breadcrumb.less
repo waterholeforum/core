@@ -1,0 +1,16 @@
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  color: var(--color-text-muted);
+
+  > * + ::before {
+    content: '›';
+    margin: 0 var(--space-xs);
+  }
+
+  [aria-current="page"] {
+    color: var(--color-text);
+  }
+}

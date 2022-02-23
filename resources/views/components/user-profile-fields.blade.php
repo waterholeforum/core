@@ -1,8 +1,8 @@
 <div role="group">
     <div class="field__label">Avatar</div>
-    <div class="toolbar toolbar--nowrap" style="gap:var(--space-md)">
+    <div class="row gap-xs" style="gap:var(--space-md)">
         <x-waterhole::avatar :user="$user" style="width: 10ch"/>
-        <div class="stack-md">
+        <div class="stack gap-md">
             <input type="file" class="input" name="avatar" accept="image/*,.jpg,.png,.gif,.bmp" capture="user">
             @if ($user?->avatar)
                 <label class="choice">
@@ -15,14 +15,14 @@
 </div>
 
 <x-waterhole::field name="headline" label="Headline">
-    <div class="stack-xs">
+    <div class="stack gap-xs">
         <input id="{{ $component->id }}" type="text" name="headline" value="{{ old('headline', $user?->headline) }}" class="input block" maxlength="30">
         <p class="field__description">Describe yourself in a few words. This will be displayed next to your name.</p>
     </div>
 </x-waterhole::field>
 
 <x-waterhole::field name="bio" label="Bio">
-    <div class="stack-xs">
+    <div class="stack gap-xs">
         <textarea id="{{ $component->id }}" type="text" name="bio" class="input block" maxlength="255">{{ old('bio', $user?->bio) }}</textarea>
         <p class="field__description">Write more about yourself. This will be displayed on your profile.</p>
     </div>

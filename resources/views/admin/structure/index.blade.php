@@ -1,10 +1,10 @@
 <x-waterhole::admin :title="__('waterhole::admin.structure-title')">
     <div
-        class="stack-md"
+        class="stack gap-md"
         data-controller="form dragon-nest"
         data-action="dragend->form#submit"
     >
-        <div class="row gap-md">
+        <div class="row gap-xs">
             <h1 class="h2">{{ __('waterhole::admin.structure-title') }}</h1>
 
             <div class="spacer"></div>
@@ -47,7 +47,7 @@
             @endforeach
         </ul>
 
-        <div class="stack-md" style="margin-top: var(--space-xxl)">
+        <div class="stack gap-md" style="margin-top: var(--space-xxl)">
             <h2 class="h3">{{ __('waterhole::admin.structure-unlisted-title') }}</h2>
 
             <ul

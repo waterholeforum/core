@@ -34,7 +34,13 @@ class LineChart extends Component
         string $defaultPeriod = 'last_7_days'
     ) {
         $this->id = $id;
-        $this->title = $title;
+
+        if ($title) {
+            if (($translation = __($title)) !== $title) {
+                $title = $translation;
+            }
+            $this->title = $title;
+        }
 
         $this->periods = [
             'today' => [
@@ -87,23 +93,23 @@ class LineChart extends Component
         $this->units = [
             'hour' => [
                 'format' => '%Y-%m-%d %H:00:00',
-                'label' => fn(CarbonImmutable $date) => $date->format('g:i a'),
+                'label' => fn(CarbonImmutable $date) => $date->isoFormat('LT'),
             ],
             'day' => [
                 'format' => '%Y-%m-%d',
-                'label' => fn(CarbonImmutable $date) => $date->format('d M'),
+                'label' => fn(CarbonImmutable $date) => $date->isoFormat('D MMM'),
             ],
             'week' => [
                 'format' => '%YW%v',
-                'label' => fn(CarbonImmutable $date) => $date->format('d M').' - '.$date->addDays(6)->format('d M'),
+                'label' => fn(CarbonImmutable $date) => $date->isoFormat('D MMM').' - '.$date->addDays(6)->isoFormat('D MMM'),
             ],
             'month' => [
                 'format' => '%Y-%m-01',
-                'label' => fn(CarbonImmutable $date) => $date->format('M Y'),
+                'label' => fn(CarbonImmutable $date) => $date->isoFormat('MMM Y'),
             ],
             'year' => [
                 'format' => '%Y',
-                'label' => fn(CarbonImmutable $date) => $date->format('Y'),
+                'label' => fn(CarbonImmutable $date) => $date->isoFormat('Y'),
             ],
         ];
 

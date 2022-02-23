@@ -2,7 +2,7 @@
     {{ $attributes->class(['post-list-item', Waterhole\Extend\PostClasses::build($post)]) }}
     data-controller="post"
 >
-    <div class="post-list-item__content toolbar">
+    <div class="post-list-item__content row gap-xs wrap">
         @components(Waterhole\Extend\PostListItem::build(), compact('post'))
     </div>
     <div class="post-list-item__controls">

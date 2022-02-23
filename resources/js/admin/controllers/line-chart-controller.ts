@@ -14,6 +14,8 @@ export default class extends Controller {
     chartTarget?: HTMLElement;
     summaryTarget?: HTMLElement;
     legendTarget?: HTMLElement;
+    legendAmountTarget?: HTMLElement;
+    legendPeriodTarget?: HTMLElement;
     axisTarget?: HTMLElement;
 
     observer?: ResizeObserver;
@@ -91,10 +93,8 @@ export default class extends Controller {
                 setCursor: [
                     u => {
                         const { idx } = u.cursor;
-                        this.legendTarget!.innerHTML = `
-                            <div class="text-lg">${uPlot.fmtNum(u.data[2][idx!] || 0)}</div>
-                            <div class="text-xs color-muted">${ths[idx!].textContent}</div>
-                        `;
+                        this.legendAmountTarget!.textContent = uPlot.fmtNum(u.data[2][idx!] || 0);
+                        this.legendPeriodTarget!.textContent = ths[idx!].textContent;
                     },
                 ]
             },

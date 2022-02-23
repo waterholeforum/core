@@ -4,6 +4,9 @@ throttle = Too many login attempts. Please try again in { $seconds } seconds.
 
 login-title = Log in to Your Account
 login-submit = Log in
+login-register-prompt = Don't have an account?
+login-register-link = Sign Up
+
 email-label = Email
 password-label = Password
 remember-me-label = Remember me
@@ -21,6 +24,8 @@ reset-password-submit = Reset Password
 register-title = Create an Account
 name-label = Your Name
 register-submit = Create Account
+register-login-prompt = Already have an account?
+register-login-link = Log In
 
 confirm-password-title = Confirm Your Password
 confirm-password-introduction = Please confirm your password before continuing.

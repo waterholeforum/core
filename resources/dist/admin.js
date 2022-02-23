@@ -2859,7 +2859,8 @@ var default_1 = /*#__PURE__*/function (_Controller) {
           }],
           setCursor: [function (u) {
             var idx = u.cursor.idx;
-            _this.legendTarget.innerHTML = "\n                            <div class=\"text-lg\">".concat(uplot__WEBPACK_IMPORTED_MODULE_1__["default"].fmtNum(u.data[2][idx] || 0), "</div>\n                            <div class=\"text-xs color-muted\">").concat(ths[idx].textContent, "</div>\n                        ");
+            _this.legendAmountTarget.textContent = uplot__WEBPACK_IMPORTED_MODULE_1__["default"].fmtNum(u.data[2][idx] || 0);
+            _this.legendPeriodTarget.textContent = ths[idx].textContent;
           }]
         }
       });
@@ -2938,53 +2939,45 @@ var _default = /*#__PURE__*/function (_Controller) {
   var _super = _createSuper(_default);
 
   function _default() {
+    var _this;
+
     _classCallCheck(this, _default);
 
-    return _super.apply(this, arguments);
-  }
+    _this = _super.apply(this, arguments);
 
-  _createClass(_default, [{
-    key: "connect",
-    value: function connect() {
-      this.disabled = Array.from(this.element.querySelectorAll('input:disabled'));
-      this.update();
-    }
-  }, {
-    key: "mouseover",
-    value: function mouseover(e) {
+    _this.mouseover = function (e) {
       var target = e.target;
 
       if (target.matches('thead th, thead th *')) {
         var index = Array.from(target.parentElement.children).indexOf(target);
-        this.element.querySelector('colgroup').children[index].classList.add('is-highlighted');
-        this.element.style.cursor = 'pointer';
+
+        _this.element.querySelector('colgroup').children[index].classList.add('is-highlighted');
+
+        _this.element.style.cursor = 'pointer';
       }
 
       if (target.matches('tbody th, tbody th *')) {
         target.closest('tr').classList.add('is-highlighted');
-        this.element.style.cursor = 'pointer';
+        _this.element.style.cursor = 'pointer';
       }
-    }
-  }, {
-    key: "reset",
-    value: function reset(e) {
-      this.element.querySelectorAll('col, tr').forEach(function (el) {
+    };
+
+    _this.reset = function () {
+      _this.element.querySelectorAll('col, tr').forEach(function (el) {
         return el.classList.remove('is-highlighted');
       });
-      this.element.style.cursor = '';
-    }
-  }, {
-    key: "click",
-    value: function click(e) {
-      var _this = this;
 
+      _this.element.style.cursor = '';
+    };
+
+    _this.click = function (e) {
       var _a, _b;
 
       var target = e.target;
 
       if (target.matches('thead th, thead th *')) {
         var index = Array.from(target.parentElement.children).indexOf(target);
-        var checkboxes = Array.from(this.element.querySelectorAll("tbody tr td:nth-child(".concat(index + 1, ") input[type=\"checkbox\"]"))).filter(function (checkbox) {
+        var checkboxes = Array.from(_this.element.querySelectorAll("tbody tr td:nth-child(".concat(index + 1, ") input[type=\"checkbox\"]"))).filter(function (checkbox) {
           var _a;
 
           return !((_a = _this.disabled) === null || _a === void 0 ? void 0 : _a.includes(checkbox));
@@ -3013,7 +3006,29 @@ var _default = /*#__PURE__*/function (_Controller) {
         });
       }
 
+      _this.update();
+    };
+
+    return _this;
+  }
+
+  _createClass(_default, [{
+    key: "connect",
+    value: function connect() {
+      this.disabled = Array.from(this.element.querySelectorAll('input:disabled'));
       this.update();
+      var el = this.element;
+      el.addEventListener('click', this.click);
+      el.addEventListener('mouseover', this.mouseover);
+      el.addEventListener('mouseout', this.reset);
+    }
+  }, {
+    key: "disconnect",
+    value: function disconnect() {
+      var el = this.element;
+      el.removeEventListener('click', this.click);
+      el.removeEventListener('mouseover', this.mouseover);
+      el.removeEventListener('mouseout', this.reset);
     }
   }, {
     key: "update",

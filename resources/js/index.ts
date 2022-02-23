@@ -1,6 +1,6 @@
 import { Application } from '@hotwired/stimulus';
 import { definitionsFromContext } from '@hotwired/stimulus-webpack-helpers';
-import { AlertsElement } from '../../../../../packages/inclusive-elements';
+import { AlertsElement } from 'inclusive-elements';
 
 import './bootstrap/alerts';
 import './bootstrap/custom-elements';

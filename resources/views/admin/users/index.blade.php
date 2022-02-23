@@ -1,16 +1,18 @@
-<x-waterhole::admin title="Users">
-    <div class="stack-md">
+<x-waterhole::admin :title="__('waterhole::admin.users-title')">
+    <div class="stack gap-md">
 
-        <div class="toolbar">
-            <h1 class="h2">Users</h1>
+        <div class="row gap-sm wrap">
+            <h1 class="h2">
+                {{ __('waterhole::admin.users-title') }}
+            </h1>
 
             <div class="spacer"></div>
 
             <form
-                data-controller="filter-input"
-                data-turbo-frame="users_frame"
-                data-turbo-action="replace"
                 class="combobox"
+                data-controller="filter-input"
+                data-turbo-action="replace"
+                data-turbo-frame="users_frame"
             >
                 <div class="input-container">
                     <x-waterhole::icon
@@ -19,23 +21,47 @@
                     />
                     <input
                         class="input"
+                        data-action="
+                            input->incremental-search#input
+                            focus->filter-input#focus
+                            blur->filter-input#blur
+                            input->filter-input#update
+                        "
                         data-controller="incremental-search"
                         data-filter-input-target="input"
-                        data-action="input->incremental-search#input focus->filter-input#focus blur->filter-input#blur input->filter-input#update"
                         name="q"
-                        placeholder="Filter users"
+                        placeholder="{{ __('waterhole::admin.users-filter-placeholder') }}"
                         type="search"
                         value="{{ request('q') }}"
                     >
                 </div>
 
-                <ul role="listbox" id="filter-suggestions" hidden data-filter-input-target="list" class="menu combobox__list" data-action="combobox-commit->filter-input#commit mousedown->filter-input#preventBlur">
-                    <li id="filter-group" role="option" class="menu-item" data-value="group:">
+                <ul
+                    class="menu combobox__list"
+                    data-action="
+                        combobox-commit->filter-input#commit
+                        mousedown->filter-input#preventBlur
+                    "
+                    data-filter-input-target="list"
+                    hidden
+                    id="filter-suggestions"
+                    role="listbox"
+                >
+                    <li
+                        id="filter-group"
+                        role="option"
+                        class="menu-item"
+                        data-value="group:"
+                    >
                         <span class="menu-item-title">group:</span>
-                        <span class="color-muted">Filter by group</span>
+                        <span class="color-muted">{{ __('waterhole::admin.users-filter-group-description') }}</span>
                     </li>
                     @foreach (Waterhole\Models\Group::selectable()->get() as $group)
-                        <li id="filter-group-{{ $group->id }}" role="option" class="menu-item">
+                        <li
+                            id="filter-group-{{ $group->id }}"
+                            role="option"
+                            class="menu-item"
+                        >
                             <span class="menu-item-title">group:{{ str_contains($group->name, ' ') ? '"'.$group->name.'"' : $group->name }}</span>
                         </li>
                     @endforeach
@@ -44,11 +70,11 @@
 
             <a href="{{ route('waterhole.admin.users.create') }}" type="button" class="btn btn--primary">
                 <x-waterhole::icon icon="heroicon-s-plus"/>
-                <span>Create User</span>
+                <span>{{ __('waterhole::admin.create-user-button') }}</span>
             </a>
         </div>
 
-        <turbo-frame id="users_frame" target="_top" class="stack-md">
+        <turbo-frame id="users_frame" target="_top" class="stack gap-md">
             @if ($users->isNotEmpty())
                 <div class="table-container full-width" style="overflow: visible">
                     <table class="table">
@@ -66,13 +92,15 @@
                                                 href="{{ request()->fullUrlWithQuery(['sort' => $column, 'direction' => $sort === $column ? ($direction === 'asc' ? 'desc' : 'asc') : null]) }}"
                                                 class="with-icon color-text"
                                             >
-                                                <span>{{ Str::headline($column) }}</span>
+                                                <span>
+                                                    {{ __('waterhole::admin.users-'.str_replace('_', '-', $column).'-column') }}
+                                                </span>
                                                 @if ($sort === $column)
-                                                    <x-waterhole::icon icon="heroicon-s-chevron-{{ $direction === 'asc' ? 'up' : 'down' }}"/>
+                                                    <x-waterhole::icon :icon="'heroicon-s-chevron-'.($direction === 'asc' ? 'up' : 'down')"/>
                                                 @endif
                                             </a>
                                         @else
-                                            {{ Str::headline($column) }}
+                                            {{ __('waterhole::admin.users-'.str_replace('_', '-', $column).'-column') }}
                                         @endif
                                     </th>
                                 @endforeach
@@ -88,7 +116,12 @@
 {{--                                        </label>--}}
 {{--                                    </td>--}}
                                     <td>
-                                        <x-waterhole::user-label :user="$user" link class="color-text" target="_blank"/>
+                                        <x-waterhole::user-label
+                                            :user="$user"
+                                            class="color-text"
+                                            link
+                                            target="_blank"
+                                        />
                                     </td>
                                     <td>
                                         <a href="mailto:{{ $user->email }}">{{ Str::limit($user->email, 20) }}</a>
@@ -105,7 +138,11 @@
                                         {{ Waterhole\time_ago($user->last_seen_at) }}
                                     </td>
                                     <td class="text-sm">
-                                        <x-waterhole::action-menu :for="$user" placement="bottom-end" context="admin"/>
+                                        <x-waterhole::action-menu
+                                            :for="$user"
+                                            context="admin"
+                                            placement="bottom-end"
+                                        />
                                     </td>
                                 </tr>
                             @endforeach
@@ -118,8 +155,11 @@
                 </div>
             @else
                 <div class="placeholder card">
-                    <x-waterhole::icon icon="heroicon-o-search" class="placeholder__visual"/>
-                    <h3>No Results Found</h3>
+                    <x-waterhole::icon
+                        class="placeholder__visual"
+                        icon="heroicon-o-search"
+                    />
+                    <h3>{{ __('waterhole::admin.users-empty-message') }}</h3>
                 </div>
             @endif
         </turbo-frame>

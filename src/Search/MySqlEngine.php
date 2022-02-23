@@ -104,7 +104,7 @@ class MySqlEngine
             });
 
         if ($this->containsShortWords($q)) {
-            $error = 'Your keywords are too short – try something longer!';
+            $error = __('waterhole::forum.search-keywords-too-short-message');
         }
 
         return new Results(

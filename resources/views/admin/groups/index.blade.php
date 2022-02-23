@@ -1,5 +1,5 @@
 <x-waterhole::admin :title="__('waterhole::admin.groups-title')">
-    <div class="stack-md">
+    <div class="stack gap-md">
         <div class="row gap-md">
             <h1 class="h2">{{ __('waterhole::admin.groups-title') }}</h1>
 

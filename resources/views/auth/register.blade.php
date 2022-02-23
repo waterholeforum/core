@@ -1,9 +1,16 @@
 <x-waterhole::layout :title="__('waterhole::auth.register-title')">
-    <x-waterhole::dialog :title="__('waterhole::auth.register-title')" class="dialog--sm">
-        <form action="{{ route('waterhole.register') }}" method="POST" class="form">
+    <x-waterhole::dialog
+        :title="__('waterhole::auth.register-title')"
+        class="dialog--sm"
+    >
+        <form
+            action="{{ route('waterhole.register') }}"
+            class="form"
+            method="POST"
+        >
             @csrf
 
-            <x-waterhole::validation-errors :errors="$errors"/>
+            <x-waterhole::validation-errors/>
 
             <x-waterhole::field
                 name="name"
@@ -49,11 +56,13 @@
                 >
             </x-waterhole::field>
 
-            <button type="submit" class="btn btn--primary btn--block">{{ __('waterhole::auth.register-submit') }}</button>
+            <button type="submit" class="btn btn--primary btn--block">
+                {{ __('waterhole::auth.register-submit') }}
+            </button>
 
             <p class="text-center">
-                Already have an account?
-                <a href="{{ route('waterhole.login') }}">Log In</a>
+                {{ __('waterhole::auth.register-login-prompt') }}
+                <a href="{{ route('waterhole.login') }}">{{ __('waterhole::auth.register-login-link') }}</a>
             </p>
         </form>
     </x-waterhole::dialog>

@@ -79,7 +79,7 @@
             </a>
         </div>
 
-        <footer class="comment__footer toolbar">
+        <footer class="comment__footer row gap-xs wrap">
             @components(Waterhole\Extend\CommentFooter::build(), compact('comment', 'withReplies'))
 
             <x-waterhole::action-menu

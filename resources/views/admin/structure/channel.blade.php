@@ -13,16 +13,15 @@
 
     <form
         method="POST"
-        action="{{ isset($channel) ? route('waterhole.admin.structure.channels.update', compact('heading')) : route('waterhole.admin.structure.channels.store') }}"
-        class="card"
+        action="{{ isset($channel) ? route('waterhole.admin.structure.channels.update', compact('channel')) : route('waterhole.admin.structure.channels.store') }}"
     >
         @csrf
         @if (isset($channel)) @method('PATCH') @endif
 
-        <div class="stack-lg">
+        <div class="stack gap-lg">
             <x-waterhole::validation-errors/>
 
-            <div class="stack-md">
+            <div class="stack gap-md">
                 <details class="card" open>
                     <summary class="card__header h4">
                         {{ __('waterhole::admin.channel-details-title') }}
@@ -122,7 +121,7 @@
                                         value="1"
                                         @if (old('sandbox', $channel->sandbox ?? false)) checked @endif
                                     >
-                                    <span class="stack-xxs">
+                                    <span class="stack gap-xxs">
                                         <span>{{ __('waterhole::admin.channel-sandbox-label') }}</span>
                                         <small class="field__description">{{ __('waterhole::admin.channel-sandbox-description') }}</small>
                                     </span>
@@ -134,7 +133,7 @@
                             <div class="field__label">
                                 {{ __('waterhole::admin.channel-default-layout-label') }}
                             </div>
-                            <div class="stack-xs">
+                            <div class="stack gap-xs">
                                 @foreach (['list' => 'heroicon-o-view-list', 'cards' => 'heroicon-o-collection'] as $key => $icon)
                                     <label class="choice">
                                         <input
@@ -157,7 +156,7 @@
                             <div class="field__label">
                                 {{ __('waterhole::admin.channel-filter-options-label') }}
                             </div>
-                            <div data-controller="reveal" class="stack-md">
+                            <div data-controller="reveal" class="stack gap-md">
                                 <label class="choice">
                                     <input
                                         type="checkbox"
@@ -167,7 +166,7 @@
                                         data-reveal-target="if"
                                         @if (old('custom_filters', $channel->filters ?? false)) checked @endif
                                     >
-                                    <span class="stack-xxs">
+                                    <span class="stack gap-xxs">
                                         <span>{{ __('waterhole::admin.channel-custom-filters-label') }}</span>
                                         <small class="field__description">{{ __('waterhole::admin.channel-custom-filters-description') }}</small>
                                     </span>
@@ -180,10 +179,10 @@
                                     data-dragon-nest-target="list"
                                 >
                                     @php
+                                        $filters = old('filters', $channel->filters ?? config('waterhole.forum.post_filters', []));
+
                                         $availableFilters = collect(Waterhole\resolve_all(Waterhole\Extend\PostFilters::values()))
                                             ->sortBy(fn($filter, $key) => ($k = array_search($key, $filters)) === false ? INF : $k);
-
-                                        $filters = old('filters', $channel->filters ?? config('waterhole.forum.post_filters', []));
                                     @endphp
 
                                     @foreach ($availableFilters as $filter)
@@ -230,7 +229,7 @@
             </div>
 
             <div>
-                <div class="row gap-md">
+                <div class="row gap-xs wrap">
                     <button
                         type="submit"
                         class="btn btn--primary btn--wide"

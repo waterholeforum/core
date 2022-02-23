@@ -2,9 +2,9 @@
     data-controller="text-editor"
     {{ $attributes->class('text-editor') }}
 >
-    <ui-toolbar
-        class="toolbar toolbar--compact text-editor__toolbar js-only"
-        data-text-editor-target="toolbar"
+    <ui-toolbar gap-xs wrap
+        class="row wrap text-editor__toolbar js-only"
+        data-text-editor-target="row gap-xs wrap"
     >
         <button
             type="button"
@@ -119,7 +119,7 @@
             data-action="text-editor#togglePreview"
             data-text-editor-target="previewButton"
         >Preview</button>
-    </ui-toolbar>
+    </ui-toolbar gap-xs wrap>
 
     <div class="text-editor__content">
         <text-expander

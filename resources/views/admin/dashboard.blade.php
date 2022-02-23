@@ -1,7 +1,10 @@
-<x-waterhole::admin title="Dashboard">
+<x-waterhole::admin :title="__('waterhole::admin.dashboard-title')">
     <div class="admin-dashboard">
         @foreach (config('waterhole.admin.widgets', []) as $id => $widget)
-            <div style="--admin-dashboard-widget-width: {{ $widget['width'] ?: 100 }}%; --admin-dashboard-widget-height: {{ $widget['height'] ?? 'auto' }}">
+            <div style="
+                --admin-dashboard-widget-width: {{ $widget['width'] ?: 100 }}%;
+                --admin-dashboard-widget-height: {{ $widget['height'] ?? 'auto' }}
+            ">
                 @if (empty($widget['component']::$lazy))
                     @include('waterhole::admin.widget')
                 @else
@@ -10,7 +13,6 @@
                         src="{{ route('waterhole.admin.dashboard.widget', compact('id')) }}"
                         data-controller="turbo-frame"
                         data-action="turbo:frame-load->turbo-frame#removeSrc"
-                        class="full-height"
                     >
                         <div class="card">
                             <div class="loading-indicator"></div>

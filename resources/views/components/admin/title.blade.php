@@ -1,4 +1,4 @@
-<div class="admin-header stack-xs">
+<div class="admin-header stack gap-xs">
     @if ($parentTitle)
         <div class="color-muted">
             <a href="{{ $parentUrl }}">{{ $parentTitle }}</a> ›

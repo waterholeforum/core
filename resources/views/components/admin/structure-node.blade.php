@@ -4,7 +4,7 @@
     data-content-type="{{ $node->content->getMorphClass() }}"
     draggable="true"
 >
-    <div class="admin-structure__content toolbar">
+    <div class="admin-structure__content row gap-xs wrap">
         <x-waterhole::icon icon="heroicon-o-menu" class="color-muted admin-structure__handle js-only" data-handle/>
 
         @if ($node->content instanceof Waterhole\Models\Channel)

@@ -19,7 +19,7 @@
         @csrf
         @if (isset($heading)) @method('PATCH') @endif
 
-        <div class="stack-lg">
+        <div class="stack gap-lg">
             <x-waterhole::validation-errors/>
 
             <x-waterhole::field name="name" :label="__('waterhole::admin.heading-name-label')">
@@ -34,7 +34,7 @@
             </x-waterhole::field>
 
             <div>
-                <div class="row gap-md">
+                <div class="row gap-xs wrap">
                     <button
                         type="submit"
                         class="btn btn--primary btn--wide"

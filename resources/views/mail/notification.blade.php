@@ -19,7 +19,7 @@
 @slot('subcopy')
 {{ $reason }}<br>
 [{{ $unsubscribeText }}]({{ $unsubscribeUrl }}) &nbsp;
-[Manage notification preferences]({{ route('waterhole.preferences.notifications') }})
+[{{ __('waterhole::notifications.manage-notification-preferences-link') }}]({{ route('waterhole.preferences.notifications') }})
 @endslot
 @endcomponent
 

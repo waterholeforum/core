@@ -35,7 +35,7 @@ class MoveChannel extends Action
 
     public function confirm(Collection $models): View
     {
-        return view('waterhole::posts.action-move-channel', ['posts' => $models]);
+        return view('waterhole::posts.move-channel', ['posts' => $models]);
     }
 
     public function confirmButton(Collection $models): string

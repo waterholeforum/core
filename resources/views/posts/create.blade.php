@@ -1,32 +1,40 @@
-<x-waterhole::layout title="New Post">
-    <x-waterhole::dialog
-        class="post-create"
-        title="New Post"
-    >
-        <form method="POST" action="{{ route('waterhole.posts.store') }}">
-            @csrf
+@php
+    $title = __('waterhole::forum.create-post-title');
+@endphp
 
-            <div class="form">
-                <x-waterhole::validation-errors :errors="$errors"/>
+<x-waterhole::layout :title="$title">
+    <div class="container section">
+        <x-waterhole::dialog :title="$title" class="post-editor">
+            <form method="POST" action="{{ route('waterhole.posts.store') }}">
+                @csrf
 
-                <x-waterhole::field
-                    name="channel_id"
-                    label="Channel"
-                >
-                    <x-waterhole::channel-picker
-                        id="channel_id"
+                <div class="form">
+                    <x-waterhole::validation-errors/>
+
+                    <x-waterhole::field
                         name="channel_id"
-                        :value="old('channel_id', $channel?->id)"
-                        allow-null
-                    />
-                </x-waterhole::field>
+                        :label="__('waterhole::forum.post-channel-label')"
+                    >
+                        <x-waterhole::channel-picker
+                            id="channel_id"
+                            name="channel_id"
+                            :value="old('channel_id', $channel?->id)"
+                            allow-null
+                        />
+                    </x-waterhole::field>
 
-                @include('waterhole::posts.fields')
+                    @include('waterhole::posts.fields')
 
-                <div>
-                    <button type="submit" class="btn btn--primary" name="publish" value="1">Post</button>
+                    <div>
+                        <button
+                            class="btn btn--primary"
+                            name="publish"
+                            type="submit"
+                            value="1"
+                        >{{ __('waterhole::forum.post-submit-button') }}</button>
+                    </div>
                 </div>
-            </div>
-        </form>
-    </x-waterhole::dialog>
+            </form>
+        </x-waterhole::dialog>
+    </div>
 </x-waterhole::layout>

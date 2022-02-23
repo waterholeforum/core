@@ -1,7 +1,6 @@
 <x-waterhole::field
     name="title"
-    label="Title"
-    description="Be specific and imagine you’re asking a question to another person"
+    :label="__('waterhole::forum.post-title-label')"
 >
     <input
         id="{{ $component->id }}"
@@ -14,8 +13,7 @@
 
 <x-waterhole::field
     name="body"
-    label="Body"
-    description="Include all the information someone would need to answer your question"
+    :label="__('waterhole::forum.post-body-label')"
 >
     <x-waterhole::text-editor
         name="body"

@@ -7,6 +7,7 @@
 @import '../system/_attribution';
 @import '../system/_avatar';
 @import '../system/_badge';
+@import '../system/_breadcrumb';
 @import '../system/_btn';
 @import '../system/_card';
 @import '../system/_choice';
@@ -43,19 +44,18 @@
 @import '_post-footer';
 @import '_post-full';
 @import '_post-list';
+@import '_post-page';
 @import '_post-summary';
 @import '_user-label';
 
 @import '../system/_utils';
 
 .ruler {
-  .tabs {
-    width: 100%;
-    margin: 0 0 0 ~"calc(-1 * var(--space-md))";
-    flex-direction: column;
-    align-items: stretch;
-    font-size: var(--text-xs);
-  }
+  width: 100%;
+  margin: 0 0 0 ~"calc(-1 * var(--space-md))";
+  flex-direction: column;
+  align-items: stretch;
+  font-size: var(--text-xs);
 
   .tab {
     text-align: left;
@@ -72,6 +72,14 @@
         min-width: 0;
       }
     }
+  }
+
+  > :first-child {
+    margin-bottom: var(--space-xs);
+  }
+
+  > :last-child {
+    margin-top: var(--space-xs);
   }
 }
 

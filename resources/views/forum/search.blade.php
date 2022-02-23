@@ -1,12 +1,16 @@
-<x-waterhole::layout>
-    <div class="container section">
+@php
+    $title = __('waterhole::forum.search-results-title', ['query' => request('q')]);
+@endphp
+
+<x-waterhole::layout :title="$title">
+    <div class="container section stack gap-xl">
         @if (request('q'))
             <h1 hidden data-page-target="title">
-                <span>Search Results for <em>{{ request('q') }}</em></span>
+                <span>{{ $title }}</span>
             </h1>
         @endif
 
-        <form action="{{ route('waterhole.search') }}" class="lead toolbar toolbar--nowrap">
+        <form action="{{ route('waterhole.search') }}" class="lead row gap-xs">
             <div class="input-container full-width">
                 <x-waterhole::icon
                     icon="heroicon-o-search"
@@ -20,15 +24,15 @@
                     placeholder="Search"
                 >
             </div>
-            <button type="submit" class="btn btn--primary">Search</button>
+            <button type="submit" class="btn btn--primary">
+                {{ __('waterhole::forum.search-button') }}
+            </button>
         </form>
 
         @isset($hits)
-            <br><br>
-
             @if ($hits->count())
-                <div class="with-sidebar-start">
-                    <div class="nav sidebar sidebar--sticky">
+                <div class="with-sidebar">
+                    <div class="sidebar sidebar--sticky nav">
                         @foreach ($channels as $channel)
                             <a
                                 href="{{ $selectedChannels->contains($channel) ? request()->fullUrlWithoutQuery(['channels', 'page']) : request()->fullUrlWithQuery(['channels' => $channel->id, 'page' => null]) }}"
@@ -38,7 +42,7 @@
                                 <x-waterhole::icon :icon="$channel->icon"/>
                                 <span>{{ $channel->name }}</span>
                                 @if ($selectedChannels->contains($channel))
-                                    <x-waterhole::icon icon="heroicon-s-x" style="margin-left: auto; font-size: inherit"/>
+                                    <x-waterhole::icon icon="heroicon-s-x" class="push-end text-sm"/>
                                 @elseif (isset($results->channelHits[$channel->id]))
                                     <span class="badge">{{ $results->channelHits[$channel->id] }}</span>
                                 @endif
@@ -46,57 +50,48 @@
                         @endforeach
                     </div>
 
-                    <div class="stack-md">
-                        <div class="toolbar">
-                            <h2 class="h3">Showing {{ number_format($results->total) }}{{ $results->exhaustiveTotal ? '' : '+' }} results</h2>
-                            <div class="spacer"></div>
-                            <ui-popup placement="bottom-end">
-                                <button type="button" class="btn btn--small btn--link">
-                                    <span>Sort by {{ ucfirst($currentSort) }}</span>
-                                    <x-waterhole::icon icon="heroicon-s-chevron-down"/>
-                                </button>
-                                <ui-menu class="menu" hidden>
-                                    @foreach ($sorts as $sort)
-                                        <a
-                                            href="{{ request()->fullUrlWithQuery(['sort' => $sort, 'page' => null]) }}"
-                                            role="menuitem"
-                                            class="menu-item"
-                                            @if ($currentSort === $sort) aria-current="page" @endif
-                                        >
-                                            <span>{{ ucfirst($sort) }}</span>
-                                            @if ($currentSort === $sort)
-                                                <x-waterhole::icon icon="heroicon-s-check" class="menu-item-check"/>
-                                            @endif
-                                        </a>
-                                    @endforeach
-                                </ui-menu>
-                            </ui-popup>
+                    <div class="stack gap-md">
+                        <div class="row gap-xs wrap justify-between">
+                            <h2 class="h3">
+                                {{ __('waterhole::forum.search-showing-results'.($results->exhaustiveTotal ? '' : '-non-exhaustive').'-title', ['total' => $results->total]) }}
+                            </h2>
+
+                            <x-waterhole::selector
+                                placement="bottom-end"
+                                button-class="btn btn--small btn--link"
+                                :value="$currentSort"
+                                :options="$sorts"
+                                :label='fn($sort) => __("waterhole::forum.search-sort-$sort")'
+                                :href="fn($sort) => request()->fullUrlWithQuery(['sort' => $sort, 'page' => null])"
+                            />
                         </div>
 
                         <turbo-frame id="page_{{ $hits->currentPage() }}" target="_top">
                             <ul role="list" class="post-list search-results">
-                                @foreach ($hits as $i => $hit)
-                                    <li data-index="{{ $i }}">
+                                @foreach ($hits as $hit)
+                                    <li>
                                         <div class="post-list-item">
                                             <div class="post-summary">
                                                 <x-waterhole::avatar
                                                     :user="$hit->post->user"
                                                     class="post-summary__avatar"
                                                 />
-                                                <div class="post-summary__content">
+
+                                                <div class="post-summary__content stack gap-xs">
                                                     <h3 class="post-summary__title">
                                                         <a href="{{ $hit->post->url }}">{{ $hit->title }}</a>
                                                     </h3>
+
                                                     <div class="post-summary__info">
                                                         @components(Waterhole\Extend\PostInfo::build(), ['post' => $hit->post])
                                                     </div>
-                                                    <div class="content" style="color: var(--color-text-muted); font-size: var(--text-xs); margin-top: .5em">
+
+                                                    <div class="content color-muted text-xs">
                                                         {{ $hit->body }}
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
                                     </li>
                                 @endforeach
                             </ul>
@@ -121,8 +116,15 @@
                 </div>
             @else
                 <div class="placeholder">
-                    <x-waterhole::icon icon="heroicon-o-search" class="placeholder__visual"/>
-                    <h2 class="h3">No Results Found</h2>
+                    <x-waterhole::icon
+                        class="placeholder__visual"
+                        icon="heroicon-o-search"
+                    />
+
+                    <h2 class="h3">
+                        {{ __('waterhole::forum.search-empty-message') }}
+                    </h2>
+
                     @if ($results->error)
                         <p>{{ $results->error }}</p>
                     @endif

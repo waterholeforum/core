@@ -1,44 +1,34 @@
-<div class="card full-height line-chart-widget stack-xs" data-controller="line-chart">
-    <div class="line-chart-widget__head stack-xs">
+<div
+    class="card line-chart-widget stack gap-xs"
+    data-controller="line-chart"
+>
+    <div class="line-chart-widget__head stack gap-xs">
         <div class="row justify-between">
             <h3>{{ $title }}</h3>
 
-            <ui-popup placement="bottom-end">
-                <button class="btn btn--small btn--transparent btn--inline">
-                    <span>{{ Str::headline($selectedPeriod) }}</span>
-                    <x-waterhole::icon icon="heroicon-s-selector"/>
-                </button>
-
-                <ui-menu class="menu" hidden>
-                    @foreach ($periods as $period => $info)
-                    <a
-                        href="{{ route('waterhole.admin.dashboard.widget', compact('id')) }}?period={{ $period }}"
-                        class="menu-item"
-                        role="menuitemradio"
-                        @if ($selectedPeriod === $period) aria-checked="true" @endif
-                    >
-                        {{ Str::headline($period) }}
-                        @if ($selectedPeriod === $period)
-                            <x-waterhole::icon icon="heroicon-s-check" class="menu-item-check"/>
-                        @endif
-                    </a>
-                    @endforeach
-                </ui-menu>
-            </ui-popup>
+            <x-waterhole::selector
+                placement="bottom-end"
+                button-class="btn btn--small btn--transparent btn--inline"
+                :value="$selectedPeriod"
+                :options="array_keys($periods)"
+                :label="fn($period) => __('waterhole::admin.period-'.str_replace('_', '-', $period))"
+                :href="fn($period) => route('waterhole.admin.dashboard.widget', ['id' => $id]).'?period='.$period"
+            />
         </div>
 
-        <div style="height: 2em">
-            <div class="row gap-sm align-baseline" data-line-chart-target="summary">
-                <span class="text-lg">{{ number_format($periodTotal) }}</span>
-                @if ($prevPeriodTotal && $periodTotal !== $prevPeriodTotal)
-                    <span class="badge badge--{{ $periodTotal < $prevPeriodTotal ? 'warning' : 'success' }}">
-                        <x-waterhole::icon :icon="$periodTotal < $prevPeriodTotal ? 'heroicon-s-arrow-down' : 'heroicon-s-arrow-up'"/>
-                        {{ number_format(abs(round(($periodTotal - $prevPeriodTotal) / $prevPeriodTotal * 100))) }}%
-                    </span>
-                @endif
-            </div>
+        <div class="row gap-sm align-baseline" data-line-chart-target="summary">
+            <span class="text-lg">{{ Waterhole\format_number($periodTotal) }}</span>
+            @if ($prevPeriodTotal && $periodTotal !== $prevPeriodTotal)
+                <span class="badge badge--{{ $periodTotal < $prevPeriodTotal ? 'warning' : 'success' }}">
+                    <x-waterhole::icon :icon="$periodTotal < $prevPeriodTotal ? 'heroicon-s-arrow-down' : 'heroicon-s-arrow-up'"/>
+                    {{ Waterhole\format_number(abs(round(($periodTotal - $prevPeriodTotal) / $prevPeriodTotal)), ['style' => 'percent']) }}
+                </span>
+            @endif
+        </div>
 
-            <div class="row gap-sm align-baseline" data-line-chart-target="legend" hidden></div>
+        <div class="row gap-sm align-baseline" data-line-chart-target="legend" hidden>
+            <span class="text-lg" data-line-chart-target="legendAmount"></span>
+            <span class="text-xs color-muted" data-line-chart-target="legendPeriod"></span>
         </div>
     </div>
 
@@ -54,13 +44,13 @@
             </thead>
             <tbody>
                 <tr>
-                    <th>Current Period</th>
+                    <th>{{ __('waterhole::admin.period-current-heading') }}</th>
                     @for ($i = $periodStart; $i < $periodEnd; $i = $i->add(1, $selectedUnit))
                         <td>{{ $results->where('date', '>=', $i)->where('date', '<', $i->add(1, $selectedUnit))->sum('count') }}</td>
                     @endfor
                 </tr>
                 <tr>
-                    <th>Previous Period</th>
+                    <th>{{ __('waterhole::admin.period-previous-heading') }}</th>
                     @for ($i = $prevPeriodStart; $i < $prevPeriodEnd; $i = $i->add(1, $selectedUnit))
                         <td>{{ $results->where('date', '>=', $i)->where('date', '<', $i->add(1, $selectedUnit))->sum('count') }}</td>
                     @endfor
@@ -77,7 +67,7 @@
 
     <div
         data-line-chart-target="axis"
-        class="row gap-md justify-between color-muted text-xxs"
+        class="line-chart-widget__axis row gap-md justify-between color-muted text-xxs"
         aria-hidden="true"
         hidden
     >

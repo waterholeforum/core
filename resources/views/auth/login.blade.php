@@ -1,8 +1,20 @@
 <x-waterhole::layout :title="__('waterhole::auth.login-title')">
     <div class="section">
-        <x-waterhole::dialog :title="__('waterhole::auth.login-title')" class="dialog--sm">
-            {{-- Opt-out of Turbo so that any fragment that may be present in the redirect URL will be followed --}}
-            <form action="{{ route('waterhole.login') }}" method="POST" class="form" data-controller="login" data-turbo="false">
+        <x-waterhole::dialog
+            :title="__('waterhole::auth.login-title')"
+            class="dialog--sm"
+        >
+            {{--
+                Opt-out of Turbo so that any fragment that may be present in the
+                redirect URL will be followed.
+            --}}
+            <form
+                action="{{ route('waterhole.login') }}"
+                class="form"
+                data-controller="login"
+                data-turbo="false"
+                method="POST"
+            >
                 @csrf
 
                 <x-waterhole::field
@@ -34,7 +46,7 @@
                     >
                 </x-waterhole::field>
 
-                <div class="toolbar">
+                <div class="row gap-sm wrap">
                     <div>
                         <label for="remember_me" class="choice">
                             <input id="remember_me" type="checkbox" name="remember">
@@ -51,11 +63,13 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn--primary btn--block">{{ __('waterhole::auth.login-submit') }}</button>
+                <button type="submit" class="btn btn--primary btn--block">
+                    {{ __('waterhole::auth.login-submit') }}
+                </button>
 
                 <p class="text-center">
-                    Don't have an account?
-                    <a href="{{ route('waterhole.register') }}">Sign Up</a>
+                    {{ __('waterhole::auth.login-register-prompt') }}
+                    <a href="{{ route('waterhole.register') }}">{{ __('waterhole::auth.login-register-link') }}</a>
                 </p>
             </form>
         </x-waterhole::dialog>

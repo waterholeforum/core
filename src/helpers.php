@@ -9,15 +9,23 @@ use Waterhole\Extend\Emoji;
 use Waterhole\Support\TimeAgo;
 
 /**
+ * Format a number.
+ */
+function format_number(float $number, array $options = []): string
+{
+    return (new NumberFormatter(app()->getLocale()))
+        ->format($number, new Options(...$options));
+}
+
+/**
  * Format a number in compact notation.
  */
-function compact_number(int|float $number, string $locale = null): string
+function compact_number(float $number): string
 {
     if ($number >= 100) {
-        $locale ??= app()->getLocale();
         $key = 'waterhole::number.compact-number-1'.str_repeat('0', floor(log10($number)));
 
-        if (($format = __($key, [], $locale)) !== $key) {
+        if (($format = __($key, [], app()->getLocale())) !== $key) {
             [$numberFormat, $unit] = str_split($format, strrpos($format, '0') + 1);
             $split = explode('.', $numberFormat);
             $digits = strlen($split[0]);
@@ -28,7 +36,7 @@ function compact_number(int|float $number, string $locale = null): string
                 $number /= 10;
             }
 
-            $formattedNumber = (new NumberFormatter($locale ?? app()->getLocale()))
+            $formattedNumber = (new NumberFormatter(app()->getLocale()))
                 ->format($number, new Options(maximumFractionDigits: $fractionDigits));
 
             return $formattedNumber.$unit;
@@ -101,4 +109,12 @@ function resolve_all(array $names, array ...$parameters): array
     return array_filter(
         array_map(fn($name) => rescue(fn() => resolve($name, ...$parameters)), $names)
     );
+}
+
+/**
+ *
+ */
+function return_field(string $default = null): string
+{
+    return '<input type="hidden" name="return" value="'.old('return', request('return', $default)).'">';
 }

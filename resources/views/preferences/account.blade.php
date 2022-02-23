@@ -18,7 +18,7 @@
                     <form action="{{ route('waterhole.preferences.email') }}" method="POST">
                         @csrf
                         <x-waterhole::field name="email">
-                            <div class="toolbar toolbar--nowrap">
+                            <div class="row gap-xs">
                                 <input type="email" name="email" value="{{ old('email', Auth::user()->email) }}" class="input grow">
                                 <button class="btn">Change</button>
                             </div>
@@ -41,7 +41,7 @@
                     <form action="{{ route('waterhole.preferences.password') }}" method="POST">
                         @csrf
                         <x-waterhole::field name="password">
-                            <div class="toolbar toolbar--nowrap">
+                            <div class="row gap-xs">
                                 <input type="password" name="password" placeholder="New Password" class="input grow" autocomplete="new-password">
                                 <button class="btn">Change</button>
                             </div>

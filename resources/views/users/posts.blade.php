@@ -2,8 +2,8 @@
     :user="$user"
     :title="$user->name.'\'s '.$posts->currentFilter()->label().' Posts'"
 >
-    <div class="stack-lg">
-        <div class="toolbar">
+    <div class="stack gap-lg">
+        <div class="row gap-xs wrap">
             <x-waterhole::feed-sort :feed="$posts"/>
             <x-waterhole::feed-top-period :feed="$posts"/>
             <x-waterhole::feed-controls :feed="$posts"/>
