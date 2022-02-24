@@ -92,14 +92,17 @@
 
 {{--
     Here we render session "flash" alerts into a separate alerts container.
-    If JavaScript is enabled, this container is hidden, and the alerts-append
-    Stimulus controller will append its children to the main alerts element.
+    If JavaScript is enabled, this container is hidden, and our JS will append
+    its children to the main alerts element.
 --}}
-<div class="alerts js-hidden" data-controller="alerts-append">
+<div
+    id="alerts-append"
+    class="alerts no-js-only"
+>
     @foreach (['success', 'warning', 'error', 'info'] as $type)
         @if (session($type))
             <x-waterhole::alert :type="$type">
-                {{ session($type) }}
+                {!! session($type) !!}
             </x-waterhole::alert>
         @endif
     @endforeach
@@ -111,19 +114,19 @@
 --}}
 <template id="forbidden-alert">
     <x-waterhole::alert type="danger">
-        @lang('waterhole::system.forbidden')
+        {{ __('waterhole::system.forbidden-message') }}
     </x-waterhole::alert>
 </template>
 
 <template id="too-many-requests-alert">
     <x-waterhole::alert type="danger">
-        @lang('waterhole::system.too-many-requests')
+        {{ __('waterhole::system.too-many-requests-message') }}
     </x-waterhole::alert>
 </template>
 
 <template id="fatal-error-alert">
     <x-waterhole::alert type="danger">
-        @lang('waterhole::system.fatal-error')
+        {{ __('waterhole::system.fatal-error-message') }}
     </x-waterhole::alert>
 </template>
 

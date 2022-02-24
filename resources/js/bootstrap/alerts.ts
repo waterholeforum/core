@@ -27,12 +27,29 @@ window.Waterhole.fetchError = function(response: Response): void {
 };
 
 document.addEventListener('turbo:before-fetch-response', async e => {
-    const response = (e as any).detail.fetchResponse;
-    const alerts = document.getElementById('alerts') as AlertsElement;
+    const response = (e as CustomEvent).detail.fetchResponse;
+
     if (response.statusCode >= 400 && response.statusCode !== 422 && response.statusCode <= 599) {
         window.Waterhole.fetchError(response.response);
         e.preventDefault();
-    } else {
-        alerts.dismiss('fetchError');
+        return;
     }
+
+    window.Waterhole.alerts.dismiss('fetchError');
+
+    appendAlertsFromDocument(
+        new DOMParser().parseFromString(await response.responseHTML, 'text/html')
+    );
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    appendAlertsFromDocument(document);
+});
+
+function appendAlertsFromDocument(document: Document) {
+    const append = document.getElementById('alerts-append');
+    if (! append) return;
+    Array.from(append.children).forEach(el => {
+        window.Waterhole.alerts.show(el as HTMLElement);
+    });
+}

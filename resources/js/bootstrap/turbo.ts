@@ -49,6 +49,6 @@ document.addEventListener('turbo:frame-missing', async ({ detail: { fetchRespons
     Turbo.visit(location, { response });
 });
 
-document.addEventListener('turbo:visit', async ({ detail: { fetchResponse }}: any) => {
+document.addEventListener('turbo:visit', async () => {
     window.Waterhole.alerts.clear();
 });

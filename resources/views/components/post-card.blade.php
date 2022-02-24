@@ -12,7 +12,7 @@
             $string = $post->body_html;
 
             //$excerpt = (new Marcgoertz\Shorten\Shorten())->truncateMarkup($string, 300, '...', true);
-            $excerpt = Cake\Utility\Text::truncate($string, 500, [
+            $excerpt = Waterhole\Support\Text::truncate($string, 500, [
                 'exact' => false,
                 'html' => true,
                 'ellipsis' => '...'

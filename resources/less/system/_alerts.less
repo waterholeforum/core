@@ -1,17 +1,16 @@
 .alerts {
-  align-items: center;
+  align-items: flex-start;
   display: flex;
   flex-direction: column;
+  gap: var(--space-sm);
   left: 0;
-  padding: var(--space-sm);
+  padding: var(--space-lg);
   pointer-events: none;
   position: fixed;
-  right: 0;
-  top: 0;
+  bottom: 0;
   z-index: var(--z-index-alerts);
 
   > * {
-    margin-bottom: var(--space-xs);
     max-width: 50ch;
     pointer-events: auto;
     transition: all .3s;
@@ -20,14 +19,9 @@
 
   @media (max-width: @breakpoint-sm) {
     align-items: stretch;
-    bottom: 0;
-    flex-direction: column-reverse;
-    padding-bottom: var(--space-xs);
-    top: auto;
+    right: 0;
 
     > * {
-      margin-bottom: 0;
-      margin-top: var(--space-xs);
       max-width: none;
     }
   }
@@ -38,11 +32,7 @@
   }
 
   .enter-from {
-    transform: translateY(-100%);
-
-    @media (max-width: @breakpoint-sm) {
-      transform: translateY(100%);
-    }
+    transform: translateY(100%);
   }
 
   .leave-active {

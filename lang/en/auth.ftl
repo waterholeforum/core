@@ -22,7 +22,7 @@ confirm-password-label = Confirm Password
 reset-password-submit = Reset Password
 
 register-title = Create an Account
-name-label = Your Name
+name-label = Username
 register-submit = Create Account
 register-login-prompt = Already have an account?
 register-login-link = Log In
