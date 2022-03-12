@@ -68,7 +68,7 @@
                 </ul>
             </form>
 
-            <a href="{{ route('waterhole.admin.users.create') }}" type="button" class="btn btn--primary">
+            <a href="{{ route('waterhole.admin.users.create') }}" type="button" class="btn bg-accent">
                 <x-waterhole::icon icon="heroicon-s-plus"/>
                 <span>{{ __('waterhole::admin.create-user-button') }}</span>
             </a>

@@ -27,7 +27,7 @@
 
                     <div>
                         <button
-                            class="btn btn--primary"
+                            class="btn bg-accent"
                             name="publish"
                             type="submit"
                             value="1"

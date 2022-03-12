@@ -10,7 +10,7 @@
             <div class="spacer"></div>
 
             <ui-popup placement="bottom-end">
-                <button type="button" class="btn btn--primary">
+                <button type="button" class="btn bg-accent">
                     <x-waterhole::icon icon="heroicon-s-plus"/>
                     <span>{{ __('waterhole::system.create-button') }}</span>
                     <x-waterhole::icon icon="heroicon-s-chevron-down"/>

@@ -87,7 +87,7 @@ export default class extends Controller {
 
         this.inputTarget.hidden = previewing;
         this.previewTarget.hidden = ! previewing;
-        this.previewTarget.innerHTML = '<div class="loading-indicator"></div>';
+        this.previewTarget.innerHTML = '<div class="loading"></div>';
         this.previewButtonTarget?.setAttribute('aria-pressed', String(previewing));
         this.element.classList.toggle('is-previewing', previewing);
 

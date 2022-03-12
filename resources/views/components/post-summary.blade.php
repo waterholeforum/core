@@ -5,7 +5,7 @@
     </x-waterhole::user-link>
 
     <div class="post-summary__content">
-        <h3 class="post-summary__title">
+        <h3 class="post-summary__title h4">
             <a
                 href="{{ $post->isUnread() ? $post->unread_url : $post->url }}"
                 data-action="post#appearAsRead"

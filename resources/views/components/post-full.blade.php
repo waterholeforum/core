@@ -26,7 +26,7 @@
 
     <div
         class="sidebar sidebar--sticky"
-        style="overflow: visible; margin-top: 4rem; position: sticky; width: 160px; margin-bottom: 0"
+        style="overflow: visible; margin-top: 4rem; position: sticky; margin-bottom: 0"
     >
         <div class="row gap-xs wrap">
             <x-waterhole::action-menu :for="$post" style="margin-bottom: 1rem;" class="full-width">

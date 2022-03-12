@@ -1,13 +1,15 @@
 .breadcrumb {
-  display: flex;
-  flex-wrap: wrap;
   list-style: none;
   padding: 0;
-  color: var(--color-text-muted);
+  color: var(--color-muted);
+
+  > * {
+    display: inline;
+  }
 
   > * + ::before {
-    content: '›';
-    margin: 0 var(--space-xs);
+    content: ' › ';
+    margin: 0 var(--space-xxs);
   }
 
   [aria-current="page"] {

@@ -3,25 +3,25 @@ ui-tooltip {
 }
 
 .tooltip {
-  background: var(--color-tooltip);
-  border-radius: var(--border-radius);
+  background: var(--color-emphasis);
+  border-radius: var(--radius);
   box-shadow: var(--space-md);
-  color: var(--color-tooltip-contrast);
+  color: var(--color-emphasis-contrast);
   font-size: var(--text-xs);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--weight-medium);
   max-width: 30ch;
   padding: var(--space-xs) var(--space-sm);
   z-index: var(--z-index-overlay);
   text-align: center;
   overflow: hidden;
 
-  --color-text: var(--color-tooltip-contrast);
-  --color-text-muted: rgba(255, 255, 255, 0.5);
-  --color-link: var(--color-text);
+  --color-text: var(--color-emphasis-contrast);
+  --color-muted: rgba(255, 255, 255, 0.5);
+  --color-accent: var(--color-text);
 
   small {
     font-size: var(--text-xxs);
-    color: var(--color-text-muted);
+    color: var(--color-muted);
   }
 
   &.enter-active,

@@ -1,22 +1,5 @@
-/*
-Alerts
-
-Alerts visually highlight important content for the user. They can contain an icon, a message, and actions.
-
-Markup:
-<div class="alert {{.modifier}}">
-  <svg class="alert__icon"><!-- ... --></svg>
-  <div class="alert__message">Something happened!</div>
-  <div class="alert__actions">
-
-  </div>
-</div>
-
-Styleguide card
-*/
-
 .alert {
-  border-radius: var(--border-radius);
+  border-radius: var(--radius);
   padding: var(--space-xs) var(--space-md);
   min-height: var(--control-height);
   background: var(--color-fill);
@@ -66,29 +49,6 @@ Styleguide card
   }
 }
 
-// Colors
-
-.alert--info {
-  background: var(--color-info-light);
-}
-
-.alert--danger {
-  background: var(--color-danger);
-  color: var(--color-danger-contrast);
-  font-weight: var(--font-weight-medium);
-
-  --color-text: var(--color-danger-contrast);
-  --color-text-muted: var(--color-danger-contrast);
-}
-
-.alert--success {
-  background: var(--color-success);
-  color: var(--color-success-contrast);
-  font-weight: var(--font-weight-medium);
-
-  --color-text: var(--color-success-contrast);
-  --color-text-muted: var(--color-success-contrast);
-}
 
 // Notification Alerts
 
@@ -96,7 +56,7 @@ Styleguide card
   max-width: 50ch;
   background: var(--color-bg);
   background-image:
-    linear-gradient(var(--color-unread-light), var(--color-unread-light)),
+    linear-gradient(var(--color-activity-light), var(--color-activity-light)),
     linear-gradient(var(--color-bg), var(--color-bg));
 
   .alert__message {

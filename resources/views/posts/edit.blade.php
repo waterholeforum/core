@@ -11,7 +11,7 @@
             >
                 @csrf
                 @method('PATCH')
-                @return
+                @return($post->url)
 
                 <div class="form">
                     <x-waterhole::validation-errors/>
@@ -19,7 +19,7 @@
                     @include('waterhole::posts.fields')
 
                     <div class="row gap-xs wrap">
-                        <button type="submit" class="btn btn--primary">
+                        <button type="submit" class="btn bg-accent">
                             {{ __('waterhole::system.save-changes-button') }}
                         </button>
 

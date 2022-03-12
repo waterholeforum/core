@@ -1,9 +1,9 @@
 html {
   background: var(--color-bg);
   color: var(--color-text);
-  font-family: var(--font-plain);
+  font-family: var(--font-text);
   font-size: 100%;
-  line-height: 1.3;
+  line-height: var(--line-height-default);
   scroll-padding-top: var(--header-height);// ~"calc(var(--header-height) + var(--space-lg))";
 
   @media (max-width: @breakpoint-xs) {
@@ -12,7 +12,7 @@ html {
 }
 
 a {
-  color: var(--color-link);
+  color: var(--color-accent);
   text-decoration: none;
 
   &:hover {
@@ -45,26 +45,72 @@ hr {
 
 mark {
   background: transparent;
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--weight-bold);
   color: var(--color-text);
 }
 
-.icon {
-  display: inline-block;
-  height: 1.2em;
-  width: 1.2em;
-  vertical-align: -0.2em;
+ui-popup > .enter-active,
+ui-popup > .leave-active {
+  transition: transform .15s, opacity .15s;
 }
 
-.icon--thin path {
-  stroke-width: 1.5;
+ui-popup > .enter-from,
+ui-popup > .leave-to {
+  transform: scale(0);
+  opacity: 0;
 }
 
-.icon--thick path {
-  stroke-width: 2.5;
+ui-popup::part(backdrop),
+ui-popup > :nth-child(2) {
+  z-index: var(--z-index-overlay);
 }
 
-.icon--narrow {
-  margin-left: -.2em;
-  margin-right: -.2em;
+[data-placement="bottom"] {
+  transform-origin: top center;
+}
+[data-placement="bottom-start"] {
+  transform-origin: top left;
+}
+[data-placement="bottom-end"] {
+  transform-origin: top right;
+}
+[data-placement="top"] {
+  transform-origin: bottom center;
+}
+[data-placement="top-start"] {
+  transform-origin: bottom left;
+}
+[data-placement="top-end"] {
+  transform-origin: bottom right;
+}
+[data-placement="left"] {
+  transform-origin: right center;
+}
+[data-placement="left-start"] {
+  transform-origin: right top;
+}
+[data-placement="left-end"] {
+  transform-origin: right bottom;
+}
+[data-placement="right"] {
+  transform-origin: left center;
+}
+[data-placement="right-start"] {
+  transform-origin: left top;
+}
+[data-placement="right-end"] {
+  transform-origin: left bottom;
+}
+
+[data-placement^="top"] {
+  margin-top: -6px;
+}
+[data-placement^="bottom"] {
+  margin-top: 6px;
+}
+[data-placement^="left"] {
+  margin-left: -6px;
+}
+[data-placement^="right"] {
+  margin-left: 6px;
 }

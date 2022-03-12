@@ -24,7 +24,7 @@
                     placeholder="Search"
                 >
             </div>
-            <button type="submit" class="btn btn--primary">
+            <button type="submit" class="btn bg-accent">
                 {{ __('waterhole::forum.search-button') }}
             </button>
         </form>
@@ -52,7 +52,7 @@
 
                     <div class="stack gap-md">
                         <div class="row gap-xs wrap justify-between">
-                            <h2 class="h3">
+                            <h2 class="h4">
                                 {{ __('waterhole::forum.search-showing-results'.($results->exhaustiveTotal ? '' : '-non-exhaustive').'-title', ['total' => $results->total]) }}
                             </h2>
 
@@ -66,7 +66,7 @@
                             />
                         </div>
 
-                        <turbo-frame id="page_{{ $hits->currentPage() }}" target="_top">
+                        <x-waterhole::infinite-scroll :paginator="$hits" divider>
                             <ul role="list" class="post-list search-results">
                                 @foreach ($hits as $hit)
                                     <li>
@@ -78,7 +78,7 @@
                                                 />
 
                                                 <div class="post-summary__content stack gap-xs">
-                                                    <h3 class="post-summary__title">
+                                                    <h3 class="post-summary__title h4">
                                                         <a href="{{ $hit->post->url }}">{{ $hit->title }}</a>
                                                     </h3>
 
@@ -95,23 +95,7 @@
                                     </li>
                                 @endforeach
                             </ul>
-
-                            @if ($hits->hasMorePages())
-                                <turbo-frame
-                                    id="page_{{ $hits->currentPage() + 1 }}"
-                                    src="{{ $hits->nextPageUrl() }}"
-                                    loading="lazy"
-                                    class="next-page"
-                                    target="_top"
-                                >
-                                    <div class="loading-indicator"></div>
-                                </turbo-frame>
-                            @endif
-                        </turbo-frame>
-
-                        <noscript>
-                            {{ $hits->links() }}
-                        </noscript>
+                        </x-waterhole::infinite-scroll>
                     </div>
                 </div>
             @else

@@ -73,7 +73,7 @@
         disabled
     >
         <div class="dialog dialog--sm">
-            <div class="loading-indicator"></div>
+            <div class="loading"></div>
         </div>
     </turbo-frame>
 </ui-modal>
@@ -99,7 +99,7 @@
     id="alerts-append"
     class="alerts no-js-only"
 >
-    @foreach (['success', 'warning', 'error', 'info'] as $type)
+    @foreach (['success', 'attention', 'danger'] as $type)
         @if (session($type))
             <x-waterhole::alert :type="$type">
                 {!! session($type) !!}

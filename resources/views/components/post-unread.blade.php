@@ -3,7 +3,7 @@
     :action="Waterhole\Actions\MarkAsRead::class"
     class="post-summary__unread"
 >
-    <button type="submit" class="badge clickable @if ($isNotifiable) badge--unread @endif">
+    <button type="submit" class="badge clickable @if ($isNotifiable) bg-activity @endif">
         @if ($isNotifiable)
             <x-waterhole::icon icon="heroicon-s-bell"/>
         @endif

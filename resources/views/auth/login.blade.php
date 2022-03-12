@@ -63,7 +63,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn--primary btn--block">
+                <button type="submit" class="btn bg-accent btn--block">
                     {{ __('waterhole::auth.login-submit') }}
                 </button>
 

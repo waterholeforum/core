@@ -6,7 +6,7 @@
         data-color-picker-target="input"
         class="color-picker__input-container"
     >
-        <span class="pointer-events-none">
+        <span class="no-pointer">
             <span
                 class="color-picker__swatch"
                 style="background-color: #{{ $value }}"

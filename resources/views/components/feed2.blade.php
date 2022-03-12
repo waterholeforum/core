@@ -11,7 +11,7 @@
                     class="next-page"
                     target="_top"
                 >
-                    <div class="loading-indicator"></div>
+                    <div class="loading"></div>
                 </turbo-frame>
             @endif
         </turbo-frame>

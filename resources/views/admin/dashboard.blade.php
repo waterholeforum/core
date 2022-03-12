@@ -15,7 +15,7 @@
                         data-action="turbo:frame-load->turbo-frame#removeSrc"
                     >
                         <div class="card">
-                            <div class="loading-indicator"></div>
+                            <div class="loading"></div>
                         </div>
                     </turbo-frame>
                 @endif

@@ -1,3 +1,4 @@
+
 <x-waterhole::layout :title="$title">
     <div class="section container">
         <div style="display: flex; align-items: flex-start; gap: var(--space-xl)">
@@ -7,7 +8,7 @@
                     {{ $user->name }}
                 </h1>
                 @if ($user->headline)
-                    <p class="h3">{{ $user->headline }}</p>
+                    <p class="h4">{{ $user->headline }}</p>
                 @endif
                 @if ($user->bio)
                     <p class="content">{{ $user->bio }}</p>

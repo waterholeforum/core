@@ -8,7 +8,8 @@ use Illuminate\View\Component;
 class InfiniteScroll extends Component
 {
     public function __construct(
-        public Paginator $paginator
+        public Paginator $paginator,
+        public bool $divider = false,
     ) {
     }
 

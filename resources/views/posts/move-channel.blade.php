@@ -1,5 +1,5 @@
 <div class="stack gap-lg">
-    <h1 class="h3">
+    <h1 class="h4">
         {{ __('waterhole::forum.move-post-title', ['count' => $posts->count()]) }}
         @if ($posts->count() === 1)
             {{ $posts[0]->title }}

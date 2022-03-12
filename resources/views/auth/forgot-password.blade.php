@@ -14,27 +14,29 @@
                         {{ session('status') }}
                     </x-waterhole::alert>
                 @else
-                    <form action="{{ route('waterhole.forgot-password') }}" method="POST" class="form">
+                    <form action="{{ route('waterhole.forgot-password') }}" method="POST">
                         @csrf
 
-                        <x-waterhole::field
-                            name="email"
-                            :label="__('waterhole::auth.email-label')"
-                        >
-                            <input
-                                class="input"
-                                type="email"
-                                id="{{ $component->id }}"
+                        <div class="stack gap-lg">
+                            <x-waterhole::field
                                 name="email"
-                                value="{{ old('email') }}"
-                                required
-                                autofocus
+                                :label="__('waterhole::auth.email-label')"
                             >
-                        </x-waterhole::field>
+                                <input
+                                    class="input"
+                                    type="email"
+                                    id="{{ $component->id }}"
+                                    name="email"
+                                    value="{{ old('email') }}"
+                                    required
+                                    autofocus
+                                >
+                            </x-waterhole::field>
 
-                        <button type="submit" class="btn btn--primary block">
-                            {{ __('waterhole::auth.forgot-password-submit') }}
-                        </button>
+                            <button type="submit" class="btn bg-accent block">
+                                {{ __('waterhole::auth.forgot-password-submit') }}
+                            </button>
+                        </div>
                     </form>
                 @endif
             </div>

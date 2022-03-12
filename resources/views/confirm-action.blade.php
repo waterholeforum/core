@@ -32,7 +32,7 @@
                         <x-waterhole::validation-errors/>
 
                         @if (is_string($content = $action->confirm($models)))
-                            <p class="h3">{{ $content }}</p>
+                            <p class="h4">{{ $content }}</p>
                         @else
                             <div>{{ $content }}</div>
                         @endif
@@ -48,7 +48,7 @@
                                 type="submit"
                                 name="confirmed"
                                 value="1"
-                                class="btn {{ $action->destructive ? 'btn--danger' : 'btn--primary' }} btn--wide"
+                                class="btn {{ $action->destructive ? 'bg-danger' : 'bg-accent' }} btn--wide"
                             >{{ $action->confirmButton($models) }}</button>
                         </div>
                     </div>

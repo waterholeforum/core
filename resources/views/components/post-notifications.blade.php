@@ -1,6 +1,6 @@
 @switch ($post->userState->notifications)
     @case('follow')
-        <span class="badge badge--info">
+        <span class="badge bg-attention-light color-attention">
             <x-waterhole::icon icon="heroicon-o-bell"/>
             <span>Following</span>
         </span>

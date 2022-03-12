@@ -19,7 +19,7 @@
                                 <x-waterhole::icon :icon="$item['icon']"/>
                                 <span class="label">{{ $item['label'] }}</span>
                                 @isset ($item['badge'])
-                                    <span class="badge badge--primary">{{ $item['badge'] }}</span>
+                                    <span class="badge bg-accent">{{ $item['badge'] }}</span>
                                 @endisset
                             </a>
                         </li>

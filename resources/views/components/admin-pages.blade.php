@@ -26,7 +26,7 @@
         id="updates_count"
         src="{{ route('waterhole.admin.updates.list') }}"
     >
-        <div class="loading-indicator loading-indicator--inline"></div>
+        <div class="loading loading--inline"></div>
     </turbo-frame>
 </a>
 

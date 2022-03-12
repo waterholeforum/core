@@ -172,7 +172,7 @@
             <div class="row gap-xs wrap">
                 <button
                     type="submit"
-                    class="btn btn--primary btn--wide"
+                    class="btn bg-accent btn--wide"
                 >
                     {{ isset($group) ? __('waterhole::system.save-changes-button') : __('waterhole::system.create-button') }}
                 </button>

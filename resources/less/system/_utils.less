@@ -29,9 +29,18 @@
   justify-content: flex-end;
 }
 
+.justify-start {
+  justify-content: flex-start;
+}
+
 .grow {
   flex-grow: 1;
 }
+
+.shrink {
+  min-width: 0;
+}
+
 
 .push-start {
   margin-inline-end: auto;
@@ -104,7 +113,7 @@
 
 .link {
   cursor: pointer;
-  color: var(--color-link);
+  color: var(--color-accent);
 
   &:hover {
     text-decoration: underline;
@@ -147,35 +156,16 @@
 
 /*
 |--------------------------------------------------------------------------
-| Text Styles
-|--------------------------------------------------------------------------
-*/
-.text-danger {
-  color: var(--color-danger);
-  font-weight: var(--font-weight-bold);
-}
-
-.text-unread {
-  color: var(--color-unread);
-  font-weight: var(--font-weight-bold);
-}
-
-.text-success {
-  color: var(--color-success);
-  font-weight: var(--font-weight-bold);
-}
-
-/*
-|--------------------------------------------------------------------------
 | Text Color
 |--------------------------------------------------------------------------
 */
+
 .color-text {
   color: var(--color-text);
 }
 
 .color-muted {
-  color: var(--color-text-muted);
+  color: var(--color-muted);
 }
 
 .color-accent {
@@ -186,12 +176,16 @@
   color: var(--color-success);
 }
 
-.color-warning {
-  color: var(--color-warning);
+.color-attention {
+  color: var(--color-attention);
 }
 
 .color-danger {
   color: var(--color-danger);
+}
+
+.color-activity {
+  color: var(--color-activity);
 }
 
 .color-inherit {
@@ -232,10 +226,6 @@
   font-size: var(--text-xxl);
 }
 
-.text-xxxl {
-  font-size: var(--text-xxxl);
-}
-
 /*
 |--------------------------------------------------------------------------
 | Animation
@@ -270,8 +260,68 @@
 |--------------------------------------------------------------------------
 */
 
+.bg-accent,
+.bg-accent-light,
+.bg-success,
+.bg-success-light,
+.bg-attention,
+.bg-attention-light,
+.bg-danger,
+.bg-danger-light,
+.bg-activity,
+.bg-activity-light {
+  --color-fill: var(--color-fill-neutral);
+  --color-stroke: var(--color-stroke-neutral);
+  --color-muted: var(--color-muted-neutral);
+}
+
 .bg-fill {
   background-color: var(--color-fill);
+}
+
+.bg-accent {
+  background-color: var(--color-accent);
+  color: var(--color-accent-contrast);
+}
+
+.bg-accent-light {
+  background-color: var(--color-accent-light);
+}
+
+.bg-success {
+  background-color: var(--color-success);
+  color: var(--color-success-contrast);
+}
+
+.bg-success-light {
+  background-color: var(--color-success-light);
+}
+
+.bg-attention {
+  background-color: var(--color-attention);
+  color: var(--color-attention-contrast);
+}
+
+.bg-attention-light {
+  background-color: var(--color-attention-light);
+}
+
+.bg-danger {
+  background-color: var(--color-danger);
+  color: var(--color-danger-contrast);
+}
+
+.bg-danger-light {
+  background-color: var(--color-danger-light);
+}
+
+.bg-activity {
+  background-color: var(--color-activity);
+  color: var(--color-activity-contrast);
+}
+
+.bg-activity-light {
+  background-color: var(--color-activity-light);
 }
 
 /*
@@ -280,7 +330,7 @@
 |--------------------------------------------------------------------------
 */
 
-.pointer-events-none {
+.no-pointer {
   pointer-events: none;
 }
 
@@ -301,7 +351,7 @@
 }
 
 .rounded {
-  border-radius: var(--border-radius);
+  border-radius: var(--radius);
 }
 
 .rounded-full {
@@ -328,7 +378,7 @@
   display: block;
   color: inherit;
   text-decoration: none !important;
-  border-radius: var(--border-radius);
+  border-radius: var(--radius);
   padding: var(--space-md);
 
   &:hover {
@@ -358,6 +408,24 @@
 .gap-xxl { gap: var(--space-xxl) }
 .gap-xxxl { gap: var(--space-xxxl) }
 
+.gap-row-xxs { row-gap: var(--space-xxs) }
+.gap-row-xs { row-gap: var(--space-xs) }
+.gap-row-sm { row-gap: var(--space-sm) }
+.gap-row-md { row-gap: var(--space-md) }
+.gap-row-lg { row-gap: var(--space-lg) }
+.gap-row-xl { row-gap: var(--space-xl) }
+.gap-row-xxl { row-gap: var(--space-xxl) }
+.gap-row-xxxl { row-gap: var(--space-xxxl) }
+
+.gap-col-xxs { column-gap: var(--space-xxs) }
+.gap-col-xs { column-gap: var(--space-xs) }
+.gap-col-sm { column-gap: var(--space-sm) }
+.gap-col-md { column-gap: var(--space-md) }
+.gap-col-lg { column-gap: var(--space-lg) }
+.gap-col-xl { column-gap: var(--space-xl) }
+.gap-col-xxl { column-gap: var(--space-xxl) }
+.gap-col-xxxl { column-gap: var(--space-xxxl) }
+
 .stack {
   display: flex;
   flex-direction: column;
@@ -376,7 +444,7 @@
 }
 
 .overlay,
-.with-overlay::before {
+.pseudo-overlay::before {
   position: absolute;
   top: 0;
   left: 0;
@@ -384,7 +452,7 @@
   bottom: 0;
 }
 
-.with-overlay::before {
+.pseudo-overlay::before {
   content: '';
 }
 
@@ -404,6 +472,22 @@
   align-items: baseline;
 }
 
+.align-stretch {
+  align-items: stretch;
+}
+
 .overflow-visible {
   overflow: visible;
+}
+
+.weight-normal {
+  font-weight: var(--weight-normal);
+}
+
+.weight-medium {
+  font-weight: var(--weight-medium);
+}
+
+.weight-bold {
+  font-weight: var(--weight-bold);
 }

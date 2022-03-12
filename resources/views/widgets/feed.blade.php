@@ -1,8 +1,8 @@
 <div class="card stack gap-lg full-height">
-    <h3>
+    <h3 class="h4">
         <a
             href="{{ $feed->link }}"
-            class="with-icon"
+            class="with-icon color-inherit"
             target="_blank"
             rel="noopener"
         >
@@ -17,7 +17,7 @@
         <article class="stack gap-xxs overlay-container">
             <a
                 href="{{ $item->url }}"
-                class="h5 color-accent block with-overlay"
+                class="h6 color-accent block pseudo-overlay"
                 target="_blank"
                 rel="noopener"
             >{{ $item->title }}</a>

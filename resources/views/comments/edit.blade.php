@@ -31,7 +31,7 @@
 
                         <button
                             type="submit"
-                            class="btn btn--primary"
+                            class="btn bg-accent"
                         >{{ __('waterhole::system.save-changes-button') }}</button>
                     </div>
                 </div>

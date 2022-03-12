@@ -8,7 +8,7 @@
             target="_top"
             data-controller="load-backwards"
         >
-            <div class="loading-indicator"></div>
+            <div class="loading"></div>
         </turbo-frame>
     @endif
 
@@ -16,7 +16,7 @@
         id="page_{{ $paginator->currentPage() }}"
         tabindex="-1"
     >
-        @if (! $paginator->onFirstPage())
+        @if (! $paginator->onFirstPage() && $divider)
             <div class="divider">Page {{ $paginator->currentPage() }}</div>
         @endif
 
@@ -32,7 +32,7 @@
                 class="next-page"
                 target="_top"
             >
-                <div class="loading-indicator"></div>
+                <div class="loading"></div>
             </turbo-frame>
         @endif
     @endif

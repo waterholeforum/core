@@ -5,7 +5,7 @@
 
             <div class="spacer"></div>
 
-            <a href="{{ route('waterhole.admin.groups.create') }}" type="button" class="btn btn--primary">
+            <a href="{{ route('waterhole.admin.groups.create') }}" type="button" class="btn bg-accent">
                 <x-waterhole::icon icon="heroicon-s-plus"/>
                 <span>{{ __('waterhole::admin.create-group-button') }}</span>
             </a>

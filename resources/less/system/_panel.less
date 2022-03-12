@@ -6,13 +6,13 @@
 
 .panel {
   border: 1px solid var(--color-stroke);
-  border-radius: var(--border-radius);
+  border-radius: var(--radius);
 }
 
 .panel__header {
   background: var(--color-fill);
   padding: var(--space-sm) var(--space-md);
-  border-radius: var(--border-radius);
+  border-radius: var(--radius);
 
   summary& {
     .clickable();
@@ -21,7 +21,7 @@
 
     &::marker,
     &::-webkit-details-marker {
-      color: var(--color-text-muted);
+      color: var(--color-muted);
       margin-right: var(--space-sm);
     }
 

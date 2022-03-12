@@ -1,4 +1,7 @@
-<x-waterhole::user-profile :user="$user" :title="$user->name.'\'s '.$comments->currentFilter()->label().' Comments'">
+<x-waterhole::user-profile
+    :user="$user"
+    :title="__('waterhole::user.user-'.$comments->currentFilter()->handle().'-comments-title', ['userName' => $user->name])"
+>
     <div class="stack gap-lg">
         <div class="row gap-xs wrap">
             <x-waterhole::feed-sort :feed="$comments"/>
@@ -6,22 +9,34 @@
         </div>
 
         <x-waterhole::feed2 :feed="$comments">
-            @foreach ($component->items as $comment)
-                <div class="stack gap-xs card comment-card" style="margin-bottom: var(--space-lg)">
-                    <div class="color-muted text-xs comment-card__post">
-                        <x-waterhole::channel-label :channel="$comment->post->channel"/> ›
-                        <a href="{{ $comment->post_url }}" style="font-weight: var(--font-weight-medium)">
-                            {{ $comment->post->title }}
-                        </a>
-                    </div>
-                    <x-waterhole::comment-full :comment="$comment"/>
-                </div>
-            @endforeach
+            <ul role="list" class="stack gap-lg">
+                @foreach ($component->items as $comment)
+                    <li class="stack gap-xs card comment-card">
+                        <ol class="color-muted text-xs comment-card__post breadcrumb">
+                            <li>
+                                <x-waterhole::channel-label :channel="$comment->post->channel"/>
+                            </li>
+                            <li>
+                                <a
+                                    href="{{ $comment->post_url }}"
+                                    class="weight-medium"
+                                >{{ $comment->post->title }}</a>
+                            </li>
+                        </ol>
+                        <x-waterhole::comment-full :comment="$comment"/>
+                    </li>
+                @endforeach
+            </ul>
 
             <x-slot name="empty">
                 <div class="placeholder">
-                    <x-waterhole::icon icon="heroicon-o-chat-alt-2" class="placeholder__visual"/>
-                    <h3>No Comments</h3>
+                    <x-waterhole::icon
+                        icon="heroicon-o-chat-alt-2"
+                        class="placeholder__visual"
+                    />
+                    <h3>
+                        {{ __('waterhole::user.comments-empty-message') }}
+                    </h3>
                 </div>
             </x-slot>
         </x-waterhole::feed2>

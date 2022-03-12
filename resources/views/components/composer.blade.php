@@ -66,13 +66,13 @@
             <div class="spacer"></div>
 
             @if ($errors->any())
-                <div class="text-danger text-xs animate-shake">
+                <div class="color-danger weight-medium text-xs animate-shake">
                     {{ $errors->first() }}
                 </div>
             @endif
 
             <button
-                class="btn btn--primary"
+                class="btn bg-accent"
                 name="commit"
                 value="1"
                 data-hotkey="Meta+Enter,Ctrl+Enter"

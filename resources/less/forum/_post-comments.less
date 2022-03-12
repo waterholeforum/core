@@ -4,12 +4,12 @@
 
 .post-page .composer,
 .composer-area {
-  margin-right: ~"calc(160px + var(--space-xxxl))";
+  margin-right: ~"calc(20ch + var(--space-xxl))";
 }
 
 .composer {
   --height-transition-duration: 0s;
-  border-radius: var(--border-radius);
+  border-radius: var(--radius);
   background: var(--color-bg);
   transition: box-shadow .2s, border .2s, height var(--height-transition-duration), bottom .2s;
   display: flex;
@@ -43,7 +43,7 @@
   &.is-open {
     --focus-shadow: 0 0 0 transparent;
     border: 1px solid var(--color-stroke);
-    bottom: ~"calc(-1 * var(--border-radius))";
+    bottom: ~"calc(-1 * var(--radius))";
     box-shadow: var(--focus-shadow);
     height: 300px;
     min-height: 200px;
@@ -57,7 +57,7 @@
   &.is-sticky {
     border-color: transparent;
     box-shadow: var(--focus-shadow), var(--shadow-md);
-    padding-bottom: var(--border-radius);
+    padding-bottom: var(--radius);
     z-index: var(--z-index-overlay);
   }
 }
@@ -66,11 +66,11 @@
   display: flex;
   align-items: center;
   border: 2px dashed var(--color-stroke);
-  border-radius: var(--border-radius);
+  border-radius: var(--radius);
   padding: var(--space-md);
   gap: var(--space-md);
   cursor: text;
-  color: var(--color-text-muted);
+  color: var(--color-muted);
   transition: box-shadow .2s, border .2s, color .2s;
   text-decoration: none !important;
 
@@ -117,7 +117,7 @@
 }
 
 .composer__parent {
-  background: var(--color-info);
+  background: var(--color-attention);
   border-radius: 999px;
   padding-left: var(--space-xs);
   font-size: var(--text-xs);

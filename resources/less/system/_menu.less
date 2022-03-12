@@ -2,7 +2,7 @@
   background: var(--color-bg);
   box-shadow: var(--shadow-md);
   padding: var(--space-xs);
-  border-radius: var(--border-radius);
+  border-radius: var(--radius);
   min-width: 15ch;
   width: max-content;
   max-width: 30ch;
@@ -13,7 +13,7 @@
 }
 
 .menu-item {
-  border-radius: ~"calc(var(--border-radius) * 2/3)";
+  border-radius: ~"calc(var(--radius) * 2/3)";
   border: 0;
   background: transparent;
   appearance: none;
@@ -56,12 +56,12 @@
 
 .menu-item-title {
   display: block;
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--weight-medium);
 }
 
 .menu-item-description {
   display: block;
-  color: var(--color-text-muted);
+  color: var(--color-muted);
   font-size: var(--text-xxs);
   margin-top: var(--space-xxs);
 }
@@ -88,8 +88,8 @@
 .menu-heading {
   text-transform: uppercase;
   font-size: var(--text-xxs);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-muted);
+  font-weight: var(--weight-bold);
+  color: var(--color-muted);
   padding: var(--space-xs);
 }
 

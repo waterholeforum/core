@@ -1,7 +1,7 @@
 <div {{ $attributes->class('dialog') }}>
     @if (! empty($title) || ! empty($header))
         <header class="dialog__header">
-            <h1 class="dialog__title h3" id="dialog-title">
+            <h1 class="dialog__title h4" id="dialog-title">
                 {{ $title }}
             </h1>
 

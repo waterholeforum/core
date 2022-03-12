@@ -58,7 +58,7 @@
                     data-action="turbo:frame-load->turbo-frame#disable"
                 >
                     @if (! $posts->cursor())
-                        <div class="loading-indicator"></div>
+                        <div class="loading"></div>
                     @else
                         <br>
                         <div class="text-center">

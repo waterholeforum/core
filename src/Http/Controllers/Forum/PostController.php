@@ -121,6 +121,6 @@ class PostController extends Controller
             ->markAsEdited()
             ->save();
 
-        return redirect($request->get('return', $post->url));
+        return redirect($request->input('return', $post->url));
     }
 }

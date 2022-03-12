@@ -1,5 +1,4 @@
-<div
-    role="article"
+<article
     {{ $attributes->class([
         'comment',
         Waterhole\Extend\CommentClasses::build($comment),
@@ -104,7 +103,7 @@
                 </ol>
             @endif
         @else
-            <div class="loading-indicator"></div>
+            <div class="loading"></div>
         @endif
     </turbo-frame>
-</div>
+</article>

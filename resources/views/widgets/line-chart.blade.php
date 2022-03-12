@@ -4,7 +4,7 @@
 >
     <div class="line-chart-widget__head stack gap-xs">
         <div class="row justify-between">
-            <h3>{{ $title }}</h3>
+            <h3 class="h4">{{ $title }}</h3>
 
             <x-waterhole::selector
                 placement="bottom-end"

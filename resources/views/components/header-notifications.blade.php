@@ -8,7 +8,7 @@
             <x-waterhole::icon icon="heroicon-o-bell"/>
 
             <span
-                class="badge badge--unread"
+                class="badge bg-activity"
                 data-notifications-popup-target="badge"
                 id="header-notifications-badge"
                 @if (! $count = Auth::user()->unread_notification_count) hidden @endif
@@ -29,7 +29,7 @@
                 data-notifications-popup-target="frame"
                 disabled
             >
-                <div class="loading-indicator"></div>
+                <div class="loading"></div>
             </turbo-frame>
         </ui-menu>
     </ui-popup>

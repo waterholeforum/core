@@ -1,26 +1,34 @@
 <x-waterhole::user-profile
     :user="$user"
-    :title="$user->name.'\'s '.$posts->currentFilter()->label().' Posts'"
+    :title="__('waterhole::user.user-'.$posts->currentFilter()->handle().'-posts-title', ['userName' => $user->name])"
 >
     <div class="stack gap-lg">
         <div class="row gap-xs wrap">
             <x-waterhole::feed-sort :feed="$posts"/>
             <x-waterhole::feed-top-period :feed="$posts"/>
+            <div class="spacer"></div>
             <x-waterhole::feed-controls :feed="$posts"/>
         </div>
 
         <x-waterhole::feed2 :feed="$posts" class="post-feed">
-            @foreach ($component->items as $post)
-                <x-dynamic-component
-                    :component="'waterhole::post-'.$posts->currentLayout().'-item'"
-                    :post="$post"
-                />
-            @endforeach
+            <div class="post-{{ $posts->currentLayout() }}">
+                @foreach ($component->items as $post)
+                    <x-dynamic-component
+                        :component="'waterhole::post-'.$posts->currentLayout().'-item'"
+                        :post="$post"
+                    />
+                @endforeach
+            </div>
 
             <x-slot name="empty">
                 <div class="placeholder">
-                    <x-waterhole::icon icon="heroicon-o-chat-alt-2" class="placeholder__visual"/>
-                    <h3>No Posts</h3>
+                    <x-waterhole::icon
+                        icon="heroicon-o-chat-alt-2"
+                        class="placeholder__visual"
+                    />
+                    <h3>
+                        {{ __('waterhole::user.posts-empty-message') }}
+                    </h3>
                 </div>
             </x-slot>
         </x-waterhole::feed2>

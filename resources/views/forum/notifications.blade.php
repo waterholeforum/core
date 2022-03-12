@@ -25,27 +25,11 @@
             </div>
 
             @if ($notifications->isNotEmpty())
-                <turbo-frame id="notifications_page_{{ $notifications->currentPage() }}">
+                <x-waterhole::infinite-scroll :paginator="$notifications">
                     @foreach ($notifications as $notification)
                         <x-waterhole::notification :notification="$notification"/>
                     @endforeach
-
-                    @if ($notifications->hasMorePages())
-                        <turbo-frame
-                            id="notifications_page_{{ $notifications->currentPage() + 1 }}"
-                            src="{{ $notifications->nextPageUrl() }}"
-                            loading="lazy"
-                            class="next-page"
-                            target="_top"
-                        >
-                            <div class="loading-indicator"></div>
-                        </turbo-frame>
-                    @endif
-                </turbo-frame>
-
-                <noscript>
-                    {{ $notifications->links() }}
-                </noscript>
+                </x-waterhole::infinite-scroll>
             @else
                 <div class="placeholder">
                     <x-waterhole::icon icon="heroicon-o-bell" class="placeholder__visual"/>

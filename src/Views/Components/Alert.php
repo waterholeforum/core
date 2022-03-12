@@ -17,8 +17,12 @@ class Alert extends Component
     public ?string $icon;
     public bool $dismissible;
 
-    public function __construct(string $type = null, string|HtmlString $message = '', string $icon = null, bool $dismissible = false)
-    {
+    public function __construct(
+        string $type = null,
+        string|HtmlString $message = '',
+        string $icon = null,
+        bool $dismissible = false
+    ) {
         $this->type = $type;
         $this->slot = $message;
         $this->icon = $icon ?? static::ICONS[$type] ?? null;

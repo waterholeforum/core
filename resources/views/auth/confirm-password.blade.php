@@ -31,7 +31,7 @@
                         >
                     </x-waterhole::field>
 
-                    <button type="submit" class="btn btn--primary btn--block">
+                    <button type="submit" class="btn bg-accent btn--block">
                         {{ __('waterhole::auth.confirm-password-submit') }}
                     </button>
                 </div>

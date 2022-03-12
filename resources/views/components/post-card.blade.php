@@ -22,7 +22,7 @@
         {!! Waterhole\emojify($excerpt) !!}
 {{--        {!! Waterhole\emojify($post->body_html) !!}--}}
         @if (str_ends_with(strip_tags($excerpt), '...'))
-            <p><a href="{{ $post->url }}" style="font-weight: var(--font-weight-bold)">Read more</a></p>
+            <p><a href="{{ $post->url }}" style="font-weight: var(--weight-bold)">Read more</a></p>
         @endif
     </div>
 

@@ -1,6 +1,6 @@
 <x-waterhole::layout :title="$post->title">
     <div
-        class="post-page container"
+        class="post-page container stack gap-lg"
         data-controller="post-page"
         data-post-page-id-value="{{ $post->id }}"
     >
@@ -18,11 +18,11 @@
                 tabindex="-1"
             >
                 <div class="stack gap-lg">
-                    <h2>
+                    <h2 class="h3">
                         {{ __('waterhole::forum.post-comment-count', ['count' => $post->comment_count]) }}
                     </h2>
 
-                    <x-waterhole::infinite-scroll :paginator="$comments">
+                    <x-waterhole::infinite-scroll :paginator="$comments" divider>
                         @foreach ($comments as $i => $comment)
                             @if ($lastReadAt && $comment->created_at > $lastReadAt)
                                 @once

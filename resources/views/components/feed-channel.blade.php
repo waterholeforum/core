@@ -2,7 +2,7 @@
     <x-waterhole::icon :icon="$channel->icon" class="channel-card__icon"/>
 
     <div class="channel-card__info">
-        <h2>{{ $channel->name }}</h2>
+        <h2 class="h3">{{ $channel->name }}</h2>
         @if ($channel->description)
             <p>{{ $channel->description }}</p>
         @endif
