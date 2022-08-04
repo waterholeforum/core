@@ -1,4 +1,4 @@
-<div class="getting-started card stack gap-md">
+<div class="getting-started card card__body stack gap-md">
     <h2 class="h4">{{ __('waterhole::admin.getting-started-title') }}</h2>
 
     <div class="getting-started__grid grid">

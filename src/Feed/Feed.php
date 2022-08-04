@@ -15,7 +15,9 @@ use Waterhole\Filters\Filter;
 class Feed
 {
     protected Request $request;
+
     protected Builder $query;
+
     protected Collection $filters;
 
     public function __construct(
@@ -61,6 +63,6 @@ class Feed
     {
         $query = $this->request->query('filter', $this->filters->keys()[0]);
 
-        return $this->filters->first(fn(Filter $filter) => $filter->handle() === $query, $this->filters[0]);
+        return $this->filters->first(fn (Filter $filter) => $filter->handle() === $query, $this->filters[0]);
     }
 }

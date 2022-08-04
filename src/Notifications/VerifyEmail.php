@@ -10,6 +10,7 @@ use Waterhole\Models\User;
 class VerifyEmail extends Notification
 {
     private User $user;
+
     private string $email;
 
     public function __construct(User $user, string $email)

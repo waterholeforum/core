@@ -36,7 +36,7 @@ class PermissionCollection extends Collection
     public function group(Group|int|array|Collection $group): static
     {
         $ids = collect($group instanceof Group ? [$group] : $group)
-            ->map(fn($group) => $group instanceof Group ? $group->id : $group);
+            ->map(fn ($group) => $group instanceof Group ? $group->id : $group);
 
         if (! $ids->contains(Group::GUEST_ID)) {
             $ids->push(Group::GUEST_ID);
@@ -74,7 +74,7 @@ class PermissionCollection extends Collection
             if (class_exists($model)) {
                 $model = (new $model())->getMorphClass();
             }
-            
+
             return $this->where('scope_type', $model);
         }
 
@@ -98,7 +98,7 @@ class PermissionCollection extends Collection
     {
         return $this->where('ability', $ability);
     }
-    
+
     /**
      * Determine whether this set of permissions contains a specific ability.
      */
@@ -118,7 +118,7 @@ class PermissionCollection extends Collection
         if ($user?->groups->contains(Group::ADMIN_ID)) {
             return true;
         }
-        
+
         return $this->user($user)->allows($ability, $model);
     }
 }

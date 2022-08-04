@@ -12,6 +12,7 @@ class Composer extends Component
     use Streamable;
 
     public Post $post;
+
     public ?Comment $parent;
 
     public function __construct(Post $post, Comment $parent = null)

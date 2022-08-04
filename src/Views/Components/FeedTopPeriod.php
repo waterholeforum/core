@@ -10,8 +10,11 @@ use Waterhole\Models\Channel;
 class FeedTopPeriod extends Component
 {
     public Feed $feed;
+
     public ?Channel $channel;
+
     public ?array $periods = null;
+
     public ?string $currentPeriod = null;
 
     public function __construct(Feed $feed, Channel $channel = null)

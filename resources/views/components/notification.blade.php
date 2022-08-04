@@ -12,7 +12,7 @@
     <x-waterhole::icon :icon="$notification->template->icon()"/>
     <span style="min-width: 0">
         {{ Illuminate\Mail\Markdown::parse($notification->template->title()) }}
-        <span class="menu-item-description">
+        <span class="menu-item__description">
             <x-waterhole::user-label :user="$notification->template->sender()"/> ·
             {{ strip_tags($notification->template->excerpt()) }}
         </span>

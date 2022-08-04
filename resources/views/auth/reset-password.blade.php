@@ -56,7 +56,7 @@
                     >
                 </x-waterhole::field>
 
-                <button type="submit" class="btn bg-accent btn--block">
+                <button type="submit" class="btn bg-accent full-width">
                     {{ __('waterhole::auth.reset-password-submit') }}
                 </button>
             </form>

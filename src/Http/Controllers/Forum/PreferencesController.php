@@ -59,7 +59,7 @@ class PreferencesController extends Controller
 
         return redirect()
             ->route('waterhole.preferences.account')
-            ->with('success', "Your password has been changed.");
+            ->with('success', 'Your password has been changed.');
     }
 
     public function profile()

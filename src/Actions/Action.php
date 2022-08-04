@@ -14,7 +14,7 @@ use Waterhole\Models\User;
  *
  * Actions are a mechanism for performing tasks on one or more models – for
  * example, deleting comments, or locking a post. Each item's context menu is
- * really just a list of Actions.
+ * made up of a list of Actions.
  *
  * To define a new action, extend this class, and override and implement methods
  * as required. Use the `Waterhole\Extend\Actions` extender to register an

@@ -11,6 +11,7 @@ class FollowButton extends Component
     use Streamable;
 
     public $followable;
+
     public string $buttonClass;
 
     public function __construct($followable, string $buttonClass = 'btn')

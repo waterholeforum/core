@@ -29,14 +29,14 @@ AdminNav::add('users', new NavLink(
     label: 'Users',
     icon: 'heroicon-o-user',
     route: 'waterhole.admin.users.index',
-    active: fn() => request()->routeIs('waterhole.admin.users*'),
+    active: fn () => request()->routeIs('waterhole.admin.users*'),
 ));
 
 AdminNav::add('groups', new NavLink(
     label: 'Groups',
     icon: 'heroicon-o-user-group',
     route: 'waterhole.admin.groups.index',
-    active: fn() => request()->routeIs('waterhole.admin.groups*'),
+    active: fn () => request()->routeIs('waterhole.admin.groups*'),
 ));
 
 AdminNav::add('version', 'waterhole::admin.nav.version');

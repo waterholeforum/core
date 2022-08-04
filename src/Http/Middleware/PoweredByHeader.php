@@ -11,7 +11,7 @@ class PoweredByHeader
     public function handle(Request $request, Closure $next)
     {
         $response = $next($request);
-        
+
         if (
             config('waterhole.system.send_powered_by_header')
             && $response instanceof Response

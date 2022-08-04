@@ -7,6 +7,7 @@ use Illuminate\View\Component;
 class Layout extends Component
 {
     public ?string $title;
+
     public array $assets;
 
     public function __construct(string $title = null, array $assets = [])

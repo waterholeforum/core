@@ -11,8 +11,11 @@ use Waterhole\Models\Model;
 class ActionButtons extends Component
 {
     public Model $for;
+
     public array $buttonAttributes;
+
     public string $actionable;
+
     public array $actions;
 
     public function __construct(
@@ -28,17 +31,17 @@ class ActionButtons extends Component
         $actions = collect(Actions::for($for));
 
         if (isset($only)) {
-            $actions = $actions->filter(fn($action) => in_array(get_class($action), $only));
+            $actions = $actions->filter(fn ($action) => in_array(get_class($action), $only));
         }
 
         if (isset($exclude)) {
-            $actions = $actions->filter(fn($action) => ! in_array(get_class($action), $exclude));
+            $actions = $actions->filter(fn ($action) => ! in_array(get_class($action), $exclude));
         }
 
         $this->actions = $actions
-            ->filter(fn($action) => ! $action instanceof Action || $action->shouldRender(collect([$for])))
+            ->filter(fn ($action) => ! $action instanceof Action || $action->shouldRender(collect([$for])))
             ->values()
-            ->reject(fn($action, $i) => $action instanceof MenuDivider && $i === 0)
+            ->reject(fn ($action, $i) => $action instanceof MenuDivider && $i === 0)
             ->all();
     }
 

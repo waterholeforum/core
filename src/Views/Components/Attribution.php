@@ -9,6 +9,7 @@ use Waterhole\Models\User;
 class Attribution extends Component
 {
     public ?User $user;
+
     public ?DateTime $date;
 
     public function __construct(?User $user, DateTime $date = null)

@@ -88,12 +88,12 @@
                     </div>
                 </details>
 
-                <details class="panel">
-                    <summary class="panel__header h4">
+                <details class="card">
+                    <summary class="card__header h4">
                         {{ __('waterhole::admin.group-permissions-title') }}
                     </summary>
 
-                    <div class="panel__body">
+                    <div class="card__body">
                         <div class="table-container">
                             <table
                                 class="table permission-grid"

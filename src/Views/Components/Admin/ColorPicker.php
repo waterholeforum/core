@@ -7,7 +7,9 @@ use Illuminate\View\Component;
 class ColorPicker extends Component
 {
     public ?string $name;
+
     public ?string $id;
+
     public ?string $value;
 
     public function __construct(string $name = null, string $id = null, string $value = null)

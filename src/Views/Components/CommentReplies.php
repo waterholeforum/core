@@ -8,6 +8,7 @@ use Waterhole\Models\Comment;
 class CommentReplies extends Component
 {
     public Comment $comment;
+
     public bool $withReplies;
 
     public function __construct(Comment $comment, bool $withReplies = false)

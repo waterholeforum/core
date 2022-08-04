@@ -2,9 +2,6 @@
 
 namespace Waterhole\Extend\Concerns;
 
-/**
- *
- */
 trait UnorderedList
 {
     private static array $items = [];

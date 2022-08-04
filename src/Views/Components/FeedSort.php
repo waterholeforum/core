@@ -9,6 +9,7 @@ use Waterhole\Models\Channel;
 class FeedSort extends Component
 {
     public Feed $feed;
+
     public ?Channel $channel;
 
     public function __construct(Feed $feed, Channel $channel = null)

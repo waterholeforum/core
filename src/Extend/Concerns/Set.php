@@ -2,9 +2,6 @@
 
 namespace Waterhole\Extend\Concerns;
 
-/**
- *
- */
 trait Set
 {
     private static array $values = [];
@@ -28,7 +25,7 @@ trait Set
     {
         static::$values = array_filter(
             static::$values,
-            fn($value) => ! in_array($value, $values)
+            fn ($value) => ! in_array($value, $values)
         );
     }
 

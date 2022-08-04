@@ -8,8 +8,11 @@ use Waterhole\Extend\Actions;
 class ActionForm extends Component
 {
     public $for;
+
     public ?string $action;
+
     public ?string $return;
+
     public ?bool $isAuthorized = null;
 
     public function __construct($for, string $action = null, string $return = null)
@@ -33,6 +36,6 @@ class ActionForm extends Component
         $action ??= $this->action;
 
         return collect(Actions::for($this->for))
-            ->contains(fn($i) => $i instanceof $action);
+            ->contains(fn ($i) => $i instanceof $action);
     }
 }

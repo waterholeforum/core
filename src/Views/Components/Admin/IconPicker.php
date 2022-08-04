@@ -7,9 +7,13 @@ use Illuminate\View\Component;
 class IconPicker extends Component
 {
     public ?string $name;
+
     public ?string $id;
+
     public null|string|array $value;
+
     public ?string $type = null;
+
     public ?string $content = null;
 
     public function __construct(string $name = null, string $id = null, string|array $value = null)

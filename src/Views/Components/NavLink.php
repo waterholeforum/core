@@ -8,10 +8,15 @@ use Illuminate\View\Component;
 class NavLink extends Component
 {
     public string $label;
+
     public ?string $icon;
+
     public ?string $badge;
+
     public ?string $route;
+
     public ?string $href;
+
     public bool|Closure|null $active;
 
     public function __construct(

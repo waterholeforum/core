@@ -15,6 +15,7 @@ use Waterhole\Models\StructureLink;
 class IndexNav extends Component
 {
     public Collection $nav;
+
     public $current;
 
     public function __construct()
@@ -29,7 +30,7 @@ class IndexNav extends Component
                     Channel::class => ['newPosts', 'unreadPosts'],
                 ]);
             }
-        }])->orderBy('position')->get()->filter(fn(Structure $node) => $node->content);
+        }])->orderBy('position')->get()->filter(fn (Structure $node) => $node->content);
 
         $this->nav = collect([
             [
@@ -62,6 +63,7 @@ class IndexNav extends Component
                         'label' => $node->content->name,
                     ];
                 }
+
                 return null;
             })->filter(),
         ]);
@@ -70,6 +72,7 @@ class IndexNav extends Component
             if (isset($item['heading'])) {
                 return isset($this->nav[$i + 1]) && empty($this->nav[$i + 1]['heading']);
             }
+
             return true;
         });
 
@@ -79,6 +82,7 @@ class IndexNav extends Component
             } elseif (isset($item['url'])) {
                 return request()->fullUrlIs($item['url'].'*');
             }
+
             return false;
         });
     }

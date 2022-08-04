@@ -36,7 +36,7 @@ return [
     |
     | This option allows you to configure whether or not the Dark Mode toggle
     | switch is displayed to users. You may choose to disable this if your
-    | customizations are not compatible with the provision of Dark Mode.
+    | customizations are not compatible with Dark Mode.
     |
     */
 

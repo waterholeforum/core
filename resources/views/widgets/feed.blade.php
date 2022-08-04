@@ -1,4 +1,4 @@
-<div class="card stack gap-lg full-height">
+<div class="card card__body stack gap-lg full-height">
     <h3 class="h4">
         <a
             href="{{ $feed->link }}"

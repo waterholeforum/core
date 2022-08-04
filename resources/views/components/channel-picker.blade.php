@@ -25,11 +25,11 @@
                     >
                         <x-waterhole::icon :icon="$channel->icon"/>
                         <span>
-                            <span class="menu-item-title">{{ $channel->name }}</span>
-                            <span class="menu-item-description">{{ $channel->description }}</span>
+                            <span class="menu-item__title">{{ $channel->name }}</span>
+                            <span class="menu-item__description">{{ $channel->description }}</span>
                         </span>
                         @if ($channel->id == $value)
-                            <x-waterhole::icon icon="heroicon-o-check" class="menu-item-check"/>
+                            <x-waterhole::icon icon="heroicon-o-check" class="menu-item__check"/>
                         @endif
                     </button>
                 @endcan

@@ -8,6 +8,7 @@ use Waterhole\Models\Post;
 class PostUnread extends Component
 {
     public Post $post;
+
     public bool $isNotifiable;
 
     public function __construct(Post $post)

@@ -4,16 +4,18 @@ html {
   font-family: var(--font-text);
   font-size: 100%;
   line-height: var(--line-height-default);
-  scroll-padding-top: var(--header-height);// ~"calc(var(--header-height) + var(--space-lg))";
+  scroll-padding-top: var(--header-height);
 
   @media (max-width: @breakpoint-xs) {
     font-size: 90%;
   }
 }
 
-a {
+a,
+.link {
   color: var(--color-accent);
   text-decoration: none;
+  cursor: pointer;
 
   &:hover {
     text-decoration: underline;

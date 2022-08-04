@@ -8,7 +8,9 @@ use Waterhole\Models\PermissionCollection;
 class PermissionGrid extends Component
 {
     public array $abilities;
+
     public ?PermissionCollection $permissions;
+
     public array $defaults;
 
     public function __construct(

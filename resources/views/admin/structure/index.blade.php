@@ -7,7 +7,7 @@
         <div class="row gap-xs">
             <h1 class="h2">{{ __('waterhole::admin.structure-title') }}</h1>
 
-            <div class="spacer"></div>
+            <div class="grow"></div>
 
             <ui-popup placement="bottom-end">
                 <button type="button" class="btn bg-accent">

@@ -100,7 +100,7 @@ class Post extends Model
         //     return Post::visibleTo($user)->whereKey($this->id)->exists();
         // });
 
-        $postUserRows = $users->map(fn(User $user) => [
+        $postUserRows = $users->map(fn (User $user) => [
             'post_id' => $this->getKey(),
             'user_id' => $user->getKey(),
             'mentioned_at' => now(),

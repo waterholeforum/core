@@ -14,7 +14,7 @@
             >
                 {{ $label($option) }}
                 @if ($value === $option)
-                    <x-waterhole::icon icon="heroicon-s-check" class="menu-item-check"/>
+                    <x-waterhole::icon icon="heroicon-s-check" class="menu-item__check"/>
                 @endif
             </a>
         @endforeach

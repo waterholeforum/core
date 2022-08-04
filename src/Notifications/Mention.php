@@ -11,6 +11,7 @@ use Waterhole\Models\User;
 class Mention extends Notification
 {
     protected Post|Comment $content;
+
     protected Post $post;
 
     public function __construct(Post|Comment $content)

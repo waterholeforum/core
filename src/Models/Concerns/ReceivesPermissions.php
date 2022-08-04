@@ -46,7 +46,7 @@ trait ReceivesPermissions
             collect($grid)->flatMap(function ($abilities, $scope) {
                 [$type, $id] = explode(':', $scope) + [null, null];
 
-                return collect($abilities)->filter()->map(fn($v, $ability) => [
+                return collect($abilities)->filter()->map(fn ($v, $ability) => [
                     'scope_type' => $type,
                     'scope_id' => $id,
                     'ability' => $ability,

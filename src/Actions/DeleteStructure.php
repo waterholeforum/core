@@ -12,6 +12,7 @@ use Waterhole\Models\User;
 class DeleteStructure extends Action
 {
     public bool $confirm = true;
+
     public bool $destructive = true;
 
     public function appliesTo($model): bool

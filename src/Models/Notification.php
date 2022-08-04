@@ -59,7 +59,7 @@ class Notification extends DatabaseNotification
     {
         return $this->morphTo();
     }
-    
+
     /**
      * Query notifications that have the same type and group as a notification.
      */

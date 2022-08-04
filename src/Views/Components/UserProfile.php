@@ -8,6 +8,7 @@ use Waterhole\Models\User;
 class UserProfile extends Component
 {
     public User $user;
+
     public string $title;
 
     public function __construct(User $user, string $title = null)

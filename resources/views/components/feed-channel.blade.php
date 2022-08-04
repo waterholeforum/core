@@ -1,4 +1,4 @@
-<div class="card channel-card">
+<div class="card card__body channel-card">
     <x-waterhole::icon :icon="$channel->icon" class="channel-card__icon"/>
 
     <div class="channel-card__info">

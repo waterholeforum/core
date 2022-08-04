@@ -139,7 +139,7 @@ class UserController extends Controller
             ],
             'groups.*' => [
                 'integer',
-                Rule::exists(Group::class, 'id')->whereNotIn('id', [Group::GUEST_ID, Group::MEMBER_ID])
+                Rule::exists(Group::class, 'id')->whereNotIn('id', [Group::GUEST_ID, Group::MEMBER_ID]),
             ],
         ]);
 

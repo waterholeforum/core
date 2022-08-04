@@ -7,9 +7,8 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Neves\Events\Contracts\TransactionalEvent;
-use Waterhole\Models\Comment;
-
 use function Tonysm\TurboLaravel\dom_id;
+use Waterhole\Models\Comment;
 
 class NewComment implements ShouldBroadcast, TransactionalEvent
 {

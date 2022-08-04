@@ -14,7 +14,7 @@ abstract class CommentClasses
     use ClassList;
 }
 
-CommentClasses::add('is-unread', fn(Comment $comment) => $comment->isUnread());
-CommentClasses::add('is-read', fn(Comment $comment) => $comment->isRead());
-CommentClasses::add('is-mine', fn(Comment $comment) => $comment->user_id === Auth::id());
-CommentClasses::add('has-replies', fn(Comment $comment) => $comment->reply_count);
+CommentClasses::add('is-unread', fn (Comment $comment) => $comment->isUnread());
+CommentClasses::add('is-read', fn (Comment $comment) => $comment->isRead());
+CommentClasses::add('is-mine', fn (Comment $comment) => $comment->user_id === Auth::id());
+CommentClasses::add('has-replies', fn (Comment $comment) => $comment->reply_count);

@@ -65,7 +65,7 @@ final class ActionController extends Controller
         // add on streams for any alerts that the action may have flashed.
         if (
             $request->wantsTurboStream()
-            && $streams = $models->flatMap(fn($item) => $action->stream($item))->all()
+            && $streams = $models->flatMap(fn ($item) => $action->stream($item))->all()
         ) {
             if ($success = session()->get('success')) {
                 $streams[] = TurboStream::append(new Alert('success', $success), 'alerts');

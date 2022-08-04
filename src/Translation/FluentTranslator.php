@@ -19,6 +19,7 @@ use Major\Fluent\Bundle\FluentBundle;
  * adding functions to FluentBundle instances.
  *
  * @link https://github.com/jrmajor/laravel-fluent/pull/2
+ *
  * @author Jeremiah Major
  * @license MIT
  */
@@ -36,7 +37,8 @@ final class FluentTranslator implements TranslatorContract
         /** @var array{strict: bool, useIsolating: bool, allowOverrides: bool} */
         protected array $bundleOptions,
         protected array $functions = []
-    ) { }
+    ) {
+    }
 
     public function hasForLocale(string $key, ?string $locale = null): bool
     {
@@ -49,9 +51,9 @@ final class FluentTranslator implements TranslatorContract
     }
 
     /**
-     * @param string $key
-     * @param array<string, mixed> $replace
-     * @param ?string $locale
+     * @param  string  $key
+     * @param  array<string, mixed>  $replace
+     * @param  ?string  $locale
      * @return string|array<string, mixed>
      */
     public function get($key, array $replace = [], $locale = null, bool $fallback = true): string|array
@@ -127,10 +129,10 @@ final class FluentTranslator implements TranslatorContract
     }
 
     /**
-     * @param string $key
-     * @param Countable|int|array<mixed, mixed> $number
-     * @param array<string, mixed> $replace
-     * @param ?string $locale
+     * @param  string  $key
+     * @param  Countable|int|array<mixed, mixed>  $number
+     * @param  array<string, mixed>  $replace
+     * @param  ?string  $locale
      * @return string
      */
     public function choice($key, $number, array $replace = [], $locale = null)
@@ -139,7 +141,7 @@ final class FluentTranslator implements TranslatorContract
     }
 
     /**
-     * @param array<mixed, mixed> $lines
+     * @param  array<mixed, mixed>  $lines
      */
     public function addLines(array $lines, string $locale, string $namespace = '*'): void
     {
@@ -195,7 +197,7 @@ final class FluentTranslator implements TranslatorContract
     }
 
     /**
-     * @param string $locale
+     * @param  string  $locale
      */
     public function setLocale($locale): void
     {

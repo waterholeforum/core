@@ -13,7 +13,7 @@
                 @if ($locale === $currentLocale) aria-checked="true" @endif
             >
                 {{ $name }}
-                @if ($locale === $currentLocale) <x-waterhole::icon icon="heroicon-s-check" class="menu-item-check"/> @endif
+                @if ($locale === $currentLocale) <x-waterhole::icon icon="heroicon-s-check" class="menu-item__check"/> @endif
             </a>
         @endforeach
 </ui-popup>

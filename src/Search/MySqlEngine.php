@@ -22,9 +22,9 @@ class MySqlEngine
         $query = Post::query()
             ->leftJoin('comments', 'comments.post_id', '=', 'posts.id')
             ->where(function ($query) use ($q) {
-                $query->whereRaw("MATCH (posts.title) AGAINST (? IN BOOLEAN MODE)", [$q])
-                    ->orWhereRaw("MATCH (posts.body) AGAINST (? IN BOOLEAN MODE)", [$q])
-                    ->orWhereRaw("MATCH (comments.body) AGAINST (? IN BOOLEAN MODE)", [$q]);
+                $query->whereRaw('MATCH (posts.title) AGAINST (? IN BOOLEAN MODE)', [$q])
+                    ->orWhereRaw('MATCH (posts.body) AGAINST (? IN BOOLEAN MODE)', [$q])
+                    ->orWhereRaw('MATCH (comments.body) AGAINST (? IN BOOLEAN MODE)', [$q]);
             });
 
         // Get a breakdown of each channel and how many hits were found within
@@ -62,9 +62,9 @@ class MySqlEngine
             'comments.body as comment_body'
         )
             ->selectRaw('ROW_NUMBER() OVER (PARTITION BY posts.id ORDER BY MATCH (comments.body) AGAINST (?) DESC) as r', [$q])
-            ->selectRaw("MATCH (posts.title) AGAINST (?) * 10 as tscore", [$q])
-            ->selectRaw("MATCH (posts.body) AGAINST (?) as pscore", [$q])
-            ->selectRaw("MATCH (comments.body) AGAINST (?) as cscore", [$q]);
+            ->selectRaw('MATCH (posts.title) AGAINST (?) * 10 as tscore', [$q])
+            ->selectRaw('MATCH (posts.body) AGAINST (?) as pscore', [$q])
+            ->selectRaw('MATCH (comments.body) AGAINST (?) as cscore', [$q]);
 
         switch ($sort) {
             case 'latest':
@@ -120,6 +120,6 @@ class MySqlEngine
     {
         preg_match_all('/\w+/', $q, $matches);
 
-        return collect($matches[0])->some(fn($word) => strlen($word) < 3);
+        return collect($matches[0])->some(fn ($word) => strlen($word) < 3);
     }
 }

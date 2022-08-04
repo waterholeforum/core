@@ -23,7 +23,9 @@ class Group extends Model
     use ValidatesData;
 
     public const GUEST_ID = 1;
+
     public const MEMBER_ID = 2;
+
     public const ADMIN_ID = 3;
 
     public $timestamps = false;

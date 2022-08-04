@@ -9,6 +9,7 @@ use Waterhole\Models\Channel;
 class PostFeedToolbar extends Component
 {
     public PostFeed $feed;
+
     public ?Channel $channel;
 
     public function __construct(PostFeed $feed, Channel $channel = null)

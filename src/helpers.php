@@ -74,7 +74,7 @@ function full_time($date): string
     }
 
     return __('waterhole::time.full-time', [
-        'date' => new \Tobyz\Fluent\Types\DateTime($date/*, ['timeZone' => 'Australia/Adelaide']*/)
+        'date' => new \Tobyz\Fluent\Types\DateTime($date/*, ['timeZone' => 'Australia/Adelaide']*/),
     ]);
 }
 
@@ -107,13 +107,10 @@ function get_contrast_color(string $hex): string
 function resolve_all(array $names, array ...$parameters): array
 {
     return array_filter(
-        array_map(fn($name) => rescue(fn() => resolve($name, ...$parameters)), $names)
+        array_map(fn ($name) => rescue(fn () => resolve($name, ...$parameters)), $names)
     );
 }
 
-/**
- *
- */
 function return_field(string $default = null): string
 {
     return '<input type="hidden" name="return" value="'.old('return', request('return', $default)).'">';

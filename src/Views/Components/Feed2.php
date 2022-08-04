@@ -9,6 +9,7 @@ use Waterhole\Feed\Feed;
 class Feed2 extends Component
 {
     public Feed $feed;
+
     public CursorPaginator $items;
 
     public function __construct(Feed $feed)

@@ -22,7 +22,9 @@ use Waterhole\Models\User;
 class PermittedScope implements Scope
 {
     private ?string $model;
+
     private string $key;
+
     private string $ability;
 
     public function __construct(string $model = null, string $key = 'id', string $ability = 'view')

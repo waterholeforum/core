@@ -8,9 +8,13 @@ use Waterhole\Models\Model;
 class ActionMenu extends Component
 {
     public Model $for;
+
     public array $buttonAttributes;
+
     public ?array $only;
+
     public ?array $exclude;
+
     public string $placement;
 
     public function __construct(

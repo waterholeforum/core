@@ -22,7 +22,7 @@ class EditStructure extends Link
     {
         return $user && $user->can('structure.edit', $model);
     }
-    
+
     public function label(Collection $models): string
     {
         return 'Edit';

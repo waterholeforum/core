@@ -33,7 +33,7 @@ class UserLookupController extends Controller
             ->orderByRaw('name like ? desc', [$query.'%'])
             ->take(5)
             ->get(['id', 'name', 'avatar'])
-            ->map(fn(User $user) => [
+            ->map(fn (User $user) => [
                 'id' => $user->id,
                 'name' => $user->name,
                 'html' => Blade::renderComponent(new UserLabel($user)),

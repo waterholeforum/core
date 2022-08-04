@@ -27,13 +27,13 @@
             >
                 <x-waterhole::icon icon="heroicon-o-at-symbol"/>
                 <span>
-                    <span class="menu-item-title">Default</span>
-                    <span class="menu-item-description">Receive notifications when you're mentioned.</span>
+                    <span class="menu-item__title">Default</span>
+                    <span class="menu-item__description">Receive notifications when you're mentioned.</span>
                 </span>
                 @if (! $followable->isFollowed() && ! $followable->isIgnored())
                     <x-waterhole::icon
                         icon="heroicon-o-check"
-                        class="menu-item-check"
+                        class="menu-item__check"
                     />
                 @endif
             </button>
@@ -50,13 +50,13 @@
             >
                 <x-waterhole::icon icon="heroicon-o-bell"/>
                 <span>
-                    <span class="menu-item-title">Following</span>
-                    <span class="menu-item-description">Receive notifications when there are new posts in this channel.</span>
+                    <span class="menu-item__title">Following</span>
+                    <span class="menu-item__description">Receive notifications when there are new posts in this channel.</span>
                 </span>
                 @if ($followable->isFollowed())
                     <x-waterhole::icon
                         icon="heroicon-o-check"
-                        class="menu-item-check"
+                        class="menu-item__check"
                     />
                 @endif
             </button>
@@ -73,13 +73,13 @@
             >
                 <x-waterhole::icon icon="heroicon-o-volume-off"/>
                 <span>
-                    <span class="menu-item-title">Ignore</span>
-                    <span class="menu-item-description">Never be notified about activity in this channel, and hide posts from Home.</span>
+                    <span class="menu-item__title">Ignore</span>
+                    <span class="menu-item__description">Never be notified about activity in this channel, and hide posts from Home.</span>
                 </span>
                 @if ($followable->isIgnored())
                     <x-waterhole::icon
                         icon="heroicon-o-check"
-                        class="menu-item-check"
+                        class="menu-item__check"
                     />
                 @endif
             </button>

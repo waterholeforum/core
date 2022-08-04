@@ -9,19 +9,19 @@
         <button class="menu-item" role="menuitemradio" data-action="theme#set" data-theme-name-param="light">
             <x-waterhole::icon icon="heroicon-o-sun"/>
             <span>Light</span>
-            <x-waterhole::icon icon="heroicon-s-check" class="menu-item-check"/>
+            <x-waterhole::icon icon="heroicon-s-check" class="menu-item__check"/>
         </button>
 
         <button class="menu-item" role="menuitemradio" data-action="theme#set" data-theme-name-param="dark">
             <x-waterhole::icon icon="heroicon-o-moon"/>
             <span>Dark</span>
-            <x-waterhole::icon icon="heroicon-s-check" class="menu-item-check"/>
+            <x-waterhole::icon icon="heroicon-s-check" class="menu-item__check"/>
         </button>
 
         <button class="menu-item" role="menuitemradio" data-action="theme#set" data-theme-name-param>
             <x-waterhole::icon icon="heroicon-o-desktop-computer"/>
             <span>Automatic</span>
-            <x-waterhole::icon icon="heroicon-s-check" class="menu-item-check"/>
+            <x-waterhole::icon icon="heroicon-s-check" class="menu-item__check"/>
         </button>
     </ui-menu>
 </ui-popup>

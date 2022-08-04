@@ -51,10 +51,11 @@ class Text
      * - `html` If true, HTML tags would be handled correctly
      * - `trimWidth` If true, $text will be truncated with the width
      *
-     * @param string $text String to truncate.
-     * @param int $length Length of returned string, including ellipsis.
-     * @param array $options An array of HTML attributes and options.
+     * @param  string  $text String to truncate.
+     * @param  int  $length Length of returned string, including ellipsis.
+     * @param  array  $options An array of HTML attributes and options.
      * @return string Trimmed string.
+     *
      * @link https://book.cakephp.org/4/en/core-libraries/text.html#truncating-text
      */
     public static function truncate(string $text, int $length = 100, array $options = []): string
@@ -62,7 +63,7 @@ class Text
         $default = [
             'ellipsis' => '...', 'exact' => true, 'html' => false, 'trimWidth' => false,
         ];
-        if (!empty($options['html']) && strtolower((string)mb_internal_encoding()) === 'utf-8') {
+        if (! empty($options['html']) && strtolower((string) mb_internal_encoding()) === 'utf-8') {
             $default['ellipsis'] = "\xe2\x80\xa6";
         }
         $options += $default;
@@ -81,13 +82,13 @@ class Text
             preg_match_all('/(<\/?([\w+]+)[^>]*>)?([^<>]*)/', $text, $tags, PREG_SET_ORDER);
             foreach ($tags as $tag) {
                 $contentLength = 0;
-                if (!in_array($tag[2], static::$_defaultHtmlNoCount, true)) {
+                if (! in_array($tag[2], static::$_defaultHtmlNoCount, true)) {
                     $contentLength = self::_strlen($tag[3], $options);
                 }
 
                 if ($truncate === '') {
                     if (
-                        !preg_match(
+                        ! preg_match(
                             '/img|br|input|hr|area|base|basefont|col|frame|isindex|link|meta|param/i',
                             $tag[2]
                         )
@@ -126,7 +127,7 @@ class Text
             $length = $truncateLength;
 
             foreach ($openTags as $tag) {
-                $suffix .= '</' . $tag . '>';
+                $suffix .= '</'.$tag.'>';
             }
         } else {
             if (self::_strlen($text, $options) <= $length) {
@@ -137,18 +138,18 @@ class Text
 
         $result = self::_substr($text, 0, $length - $ellipsisLength, $options);
 
-        if (!$options['exact']) {
+        if (! $options['exact']) {
             if (self::_substr($text, $length - $ellipsisLength, 1, $options) !== ' ') {
                 $result = self::_removeLastWord($result);
             }
 
             // If result is empty, then we don't need to count ellipsis in the cut.
-            if (!strlen($result)) {
+            if (! strlen($result)) {
                 $result = self::_substr($text, 0, $length, $options);
             }
         }
 
-        return $prefix . $result . $suffix;
+        return $prefix.$result.$suffix;
     }
 
     /**
@@ -159,8 +160,8 @@ class Text
      * - `html` If true, HTML entities will be handled as decoded characters.
      * - `trimWidth` If true, the width will return.
      *
-     * @param string $text The string being checked for length
-     * @param array $options An array of options.
+     * @param  string  $text The string being checked for length
+     * @param  array  $options An array of options.
      * @return int
      */
     protected static function _strlen(string $text, array $options): int
@@ -197,10 +198,10 @@ class Text
      * - `html` If true, HTML entities will be handled as decoded characters.
      * - `trimWidth` If true, will be truncated with specified width.
      *
-     * @param string $text The input string.
-     * @param int $start The position to begin extracting.
-     * @param int|null $length The desired length.
-     * @param array $options An array of options.
+     * @param  string  $text The input string.
+     * @param  int  $start The position to begin extracting.
+     * @param  int|null  $length The desired length.
+     * @param  array  $options An array of options.
      * @return string
      */
     protected static function _substr(string $text, int $start, ?int $length, array $options): string
@@ -237,7 +238,7 @@ class Text
         }
 
         if (empty($options['html'])) {
-            return (string)$substr($text, $start, $length);
+            return (string) $substr($text, $start, $length);
         }
 
         $totalOffset = 0;
@@ -253,6 +254,7 @@ class Text
                 $len = self::_strlen($part, ['trimWidth' => false] + $options);
                 if ($totalOffset + $len <= $start) {
                     $totalOffset += $len;
+
                     continue;
                 }
 
@@ -288,7 +290,7 @@ class Text
     /**
      * Removes the last word from the input text.
      *
-     * @param string $text The input text
+     * @param  string  $text The input text
      * @return string
      */
     protected static function _removeLastWord(string $text): string

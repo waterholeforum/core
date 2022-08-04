@@ -37,7 +37,7 @@ trait Followable
      */
     public function scopeFollowing(Builder $query): void
     {
-        $query->whereHas('userState', fn($query) => $query->where('notifications', 'follow'));
+        $query->whereHas('userState', fn ($query) => $query->where('notifications', 'follow'));
     }
 
     /**

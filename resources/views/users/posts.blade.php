@@ -6,7 +6,7 @@
         <div class="row gap-xs wrap">
             <x-waterhole::feed-sort :feed="$posts"/>
             <x-waterhole::feed-top-period :feed="$posts"/>
-            <div class="spacer"></div>
+            <div class="grow"></div>
             <x-waterhole::feed-controls :feed="$posts"/>
         </div>
 

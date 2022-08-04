@@ -6,7 +6,7 @@
                 {{ __('waterhole::admin.users-title') }}
             </h1>
 
-            <div class="spacer"></div>
+            <div class="grow"></div>
 
             <form
                 class="combobox"
@@ -53,7 +53,7 @@
                         class="menu-item"
                         data-value="group:"
                     >
-                        <span class="menu-item-title">group:</span>
+                        <span class="menu-item__title">group:</span>
                         <span class="color-muted">{{ __('waterhole::admin.users-filter-group-description') }}</span>
                     </li>
                     @foreach (Waterhole\Models\Group::selectable()->get() as $group)
@@ -62,7 +62,7 @@
                             role="option"
                             class="menu-item"
                         >
-                            <span class="menu-item-title">group:{{ str_contains($group->name, ' ') ? '"'.$group->name.'"' : $group->name }}</span>
+                            <span class="menu-item__title">group:{{ str_contains($group->name, ' ') ? '"'.$group->name.'"' : $group->name }}</span>
                         </li>
                     @endforeach
                 </ul>

@@ -21,12 +21,12 @@
 <a href="{{ route('waterhole.admin.updates') }}" class="nav-link {{ request()->routeIs('waterhole.admin.updates') ? 'is-active' : '' }}">
     <x-waterhole::icon icon="heroicon-o-refresh"/>
     <span class="label">Updates</span>
-    <div class="spacer"></div>
+    <div class="grow"></div>
     <turbo-frame
         id="updates_count"
         src="{{ route('waterhole.admin.updates.list') }}"
     >
-        <div class="loading loading--inline"></div>
+        <div class="loading loading--sm"></div>
     </turbo-frame>
 </a>
 

@@ -11,6 +11,7 @@ class CommentFull extends Component
     use Streamable;
 
     public Comment $comment;
+
     public bool $withReplies;
 
     public function __construct(Comment $comment, bool $withReplies = false)

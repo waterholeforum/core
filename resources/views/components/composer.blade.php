@@ -63,7 +63,7 @@
                 @endif
             </turbo-frame>
 
-            <div class="spacer"></div>
+            <div class="grow"></div>
 
             @if ($errors->any())
                 <div class="color-danger weight-medium text-xs animate-shake">

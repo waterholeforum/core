@@ -1,5 +1,5 @@
 <div
-    class="card line-chart-widget stack gap-xs"
+    class="card card__body line-chart-widget stack gap-xs"
     data-controller="line-chart"
 >
     <div class="line-chart-widget__head stack gap-xs">
@@ -8,7 +8,7 @@
 
             <x-waterhole::selector
                 placement="bottom-end"
-                button-class="btn btn--small btn--transparent btn--inline"
+                button-class="btn btn--small btn--transparent btn--edge"
                 :value="$selectedPeriod"
                 :options="array_keys($periods)"
                 :label="fn($period) => __('waterhole::admin.period-'.str_replace('_', '-', $period))"

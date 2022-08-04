@@ -1,5 +1,5 @@
 <li
-    class="admin-structure__node"
+    class="card__row admin-structure__node"
     data-id="{{ $node->id }}"
     data-content-type="{{ $node->content->getMorphClass() }}"
     draggable="true"
@@ -40,7 +40,7 @@
             </span>
         @endif
 
-        <div class="spacer"></div>
+        <div class="grow"></div>
 
         @if ($permissions = app('waterhole.permissions')->load('recipient')->scope($node->content))
             @if ($permissions->guest()->allows('view'))

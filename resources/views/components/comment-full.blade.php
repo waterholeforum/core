@@ -67,7 +67,7 @@
                     'post' => $comment->post,
                     'parent' => $comment->id
                 ]) }}"
-                class="quotable-button btn btn--tooltip"
+                class="quotable-button btn bg-emphasis"
                 data-turbo-frame="@domid($comment->post, 'comment_parent')"
                 data-quotable-target="button"
                 data-action="quotable#quoteSelectedText"

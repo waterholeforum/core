@@ -21,17 +21,17 @@ class DefaultSeeder extends Seeder
         // Groups
         $guest = Group::create([
             'id' => Group::GUEST_ID,
-            'name' => __('waterhole::seeder.group-guest')
+            'name' => __('waterhole::seeder.group-guest'),
         ]);
 
         $member = Group::create([
             'id' => Group::MEMBER_ID,
-            'name' => __('waterhole::seeder.group-member')
+            'name' => __('waterhole::seeder.group-member'),
         ]);
 
         $admin = Group::create([
             'id' => Group::ADMIN_ID,
-            'name' => __('waterhole::seeder.group-admin')
+            'name' => __('waterhole::seeder.group-admin'),
         ]);
 
         $mod = Group::create([

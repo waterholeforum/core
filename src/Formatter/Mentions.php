@@ -36,7 +36,7 @@ abstract class Mentions
         $tag->attributes->add('id');
         $tag->filterChain->prepend([static::class, 'filterMention']);
 
-        $tag->template = join([
+        $tag->template = implode([
             '<a href="{$MENTION_URL}{@name}" data-user-id="{@id}" data-mention="" data-id="{@name}">',
             '<xsl:attribute name="class">mention<xsl:if test="@id = $USER_ID"> mention--self</xsl:if></xsl:attribute>',
             '@<xsl:value-of select="@name"/>',
@@ -51,6 +51,7 @@ abstract class Mentions
     {
         if ($user = User::where('name', 'like', $tag->getAttribute('name'))->first()) {
             $tag->setAttribute('id', $user->id);
+
             return true;
         }
 

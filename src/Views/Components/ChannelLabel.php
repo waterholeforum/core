@@ -8,6 +8,7 @@ use Waterhole\Models\Channel;
 class ChannelLabel extends Component
 {
     public ?Channel $channel;
+
     public bool $link;
 
     public function __construct(?Channel $channel, bool $link = false)

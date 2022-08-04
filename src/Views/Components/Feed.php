@@ -11,7 +11,9 @@ use Waterhole\Models\Channel;
 class Feed extends Component
 {
     public PostFeed $feed;
+
     public ?Channel $channel;
+
     public bool $showLastVisit;
 
     public function __construct(PostFeed $feed, Channel $channel = null)

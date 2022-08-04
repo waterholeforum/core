@@ -5,9 +5,13 @@ namespace Waterhole\Search;
 class Results
 {
     public array $hits;
+
     public ?int $total;
+
     public bool $exhaustiveTotal;
+
     public array $channelHits;
+
     public ?string $error;
 
     public function __construct(

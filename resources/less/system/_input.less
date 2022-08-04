@@ -10,11 +10,6 @@
   padding: .55em .7em;
   -webkit-appearance: none;
 
-  &::placeholder,
-  *::placeholder {
-    color: var(--color-muted);
-  }
-
   &:focus,
   &:focus-within {
     outline: none;
@@ -46,6 +41,10 @@
   }
 }
 
+*::placeholder {
+  color: var(--color-muted);
+}
+
 textarea.input,
 .input--multiline {
   height: auto;
@@ -64,34 +63,34 @@ select.input,
 }
 
 .input-container {
-  --input-container-size: 2.6em;
+  --input-container-padding: 2.6em;
 
   display: flex;
   align-items: center;
 
   > :not(.input) {
-    width: var(--input-container-size);
+    width: var(--input-container-padding);
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
 
     &:first-child {
-      margin-right: ~"calc(-1 * var(--input-container-size))";
+      margin-right: ~"calc(-1 * var(--input-container-padding))";
     }
 
     &:last-child {
-      margin-left: ~"calc(-1 * var(--input-container-size))";
+      margin-left: ~"calc(-1 * var(--input-container-padding))";
     }
   }
 
   > .input {
     &:nth-child(2) {
-      padding-left: var(--input-container-size);
+      padding-left: var(--input-container-padding);
     }
 
     &:nth-last-child(2) {
-      padding-right: var(--input-container-size);
+      padding-right: var(--input-container-padding);
     }
   }
 }

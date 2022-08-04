@@ -58,7 +58,7 @@
 
                             <x-waterhole::selector
                                 placement="bottom-end"
-                                button-class="btn btn--small btn--link"
+                                button-class="btn btn--small btn--transparent color-accent"
                                 :value="$currentSort"
                                 :options="$sorts"
                                 :label='fn($sort) => __("waterhole::forum.search-sort-$sort")'

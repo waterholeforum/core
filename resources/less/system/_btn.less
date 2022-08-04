@@ -27,13 +27,6 @@
   }
 }
 
-.btn--link {
-  background: transparent;
-  color: var(--color-accent);
-  padding-left: var(--space-xs) !important;
-  padding-right: var(--space-xs) !important;
-}
-
 :not([open]) > .btn--transparent:not(:hover, .is-hovered, :focus, .is-focused, [selected=true], [aria-pressed=true]),
 .btn--transparent:is(:disabled, .is-disabled),
 .btn--transparent:not(button, a, [role=button], [role=link]) {
@@ -47,12 +40,16 @@
   font-size: 90%;
 }
 
-.btn--inline {
-  margin: ~"calc(-.1 * var(--control-height)) calc(-.25 * var(--control-height))";
+.btn--narrow {
+  padding: 0 ~"calc(.3 * var(--control-height))";
 }
 
 .btn--wide {
   padding: 0 ~"calc(.5 * var(--control-height))";
+}
+
+.btn--edge {
+  margin: ~"calc(-.1 * var(--control-height)) calc(-.25 * var(--control-height))";
 }
 
 .btn--icon {
@@ -77,10 +74,6 @@
   }
 }
 
-.btn--block {
-  width: 100%;
-}
-
 .btn.is-active {
   color: var(--color-accent) !important;
   background: var(--color-accent-light) !important;
@@ -91,9 +84,4 @@
   border: 1px solid var(--color-stroke);
   background: var(--color-bg);
   color: var(--color-muted);
-}
-
-.btn--tooltip {
-  background: var(--color-emphasis);
-  color: var(--color-emphasis-contrast);
 }

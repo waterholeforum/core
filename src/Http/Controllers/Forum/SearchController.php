@@ -58,7 +58,7 @@ class SearchController extends Controller
             'channel.userState',
             'lastComment.user',
             'userState',
-            'likedBy'
+            'likedBy',
         ])
             ->whereIn('id', collect($results->hits)->map->postId)
             ->get()
@@ -72,7 +72,7 @@ class SearchController extends Controller
         // are or not, we will wrap the hits in an appropriate paginator
         // instance.
         $paginatorOptions = [
-            'path' => Paginator::resolveCurrentPath()
+            'path' => Paginator::resolveCurrentPath(),
         ];
 
         if ($results->exhaustiveTotal) {
@@ -95,8 +95,8 @@ class SearchController extends Controller
         // In the sidebar, we will only display channels that contain hits, and
         // we will sort them with the most hits at the top.
         $channelsByHits = $channels
-            ->filter(fn($channel) => $results->channelHits[$channel->id])
-            ->sortByDesc(fn($channel) => $results->channelHits[$channel->id]);
+            ->filter(fn ($channel) => $results->channelHits[$channel->id])
+            ->sortByDesc(fn ($channel) => $results->channelHits[$channel->id]);
 
         return view('waterhole::forum.search', [
             'hits' => $hits->withQueryString(),

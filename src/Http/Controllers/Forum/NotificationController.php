@@ -41,8 +41,8 @@ class NotificationController extends Controller
         // relationships.
         $notifications
             ->groupBy('type')
-            ->each(fn($models, $type) => $type::load($models));
-        
+            ->each(fn ($models, $type) => $type::load($models));
+
         return view('waterhole::forum.notifications', compact('notifications'));
     }
 

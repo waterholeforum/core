@@ -53,11 +53,7 @@ use Waterhole\Notifications\VerifyEmail;
  * @property-read \Illuminate\Database\Eloquent\Collection $groups
  * @property-read \Illuminate\Database\Eloquent\Collection $notifications
  */
-class User extends Model implements
-    AuthenticatableContract,
-    MustVerifyEmailContract,
-    CanResetPasswordContract,
-    HasLocalePreference
+class User extends Model implements AuthenticatableContract, MustVerifyEmailContract, CanResetPasswordContract, HasLocalePreference
 {
     use Authenticatable;
     use Authorizable;
@@ -212,7 +208,7 @@ class User extends Model implements
         return $query->distinct()->count([
             'type',
             new Expression('COALESCE(group_type, id)'),
-            new Expression('COALESCE(group_id, id)')
+            new Expression('COALESCE(group_id, id)'),
         ]);
     }
 

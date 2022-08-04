@@ -8,7 +8,6 @@ use Waterhole\Feed\PostFeed;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Page;
-
 use function Waterhole\resolve_all;
 
 /**

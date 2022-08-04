@@ -68,6 +68,7 @@ class Highlighter
             $phrase = preg_quote($phrase);
             $phrase = preg_replace('/\s+/', '\\W+', $phrase);
             $phrase = preg_replace('/\\*/', '\\w+', $phrase);
+
             return '\b'.$phrase.'\b';
         }, $phrases[0]);
 

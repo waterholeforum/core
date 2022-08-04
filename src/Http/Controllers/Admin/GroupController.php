@@ -56,7 +56,7 @@ class GroupController extends Controller
 
         // Construct an array of all abilities that apply to the structure
         // content to use as columns for the permission grid.
-        $abilities = $structure->flatMap(function(Structure $node) {
+        $abilities = $structure->flatMap(function (Structure $node) {
             return method_exists($node->content, 'abilities') ? $node->content->abilities() : [];
         })->unique();
 

@@ -8,8 +8,11 @@ use Waterhole\Models\Post;
 class Hit
 {
     public int $postId;
+
     public HtmlString $title;
+
     public HtmlString $body;
+
     public ?Post $post;
 
     public function __construct(

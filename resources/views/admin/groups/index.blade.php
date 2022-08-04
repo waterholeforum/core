@@ -3,7 +3,7 @@
         <div class="row gap-md">
             <h1 class="h2">{{ __('waterhole::admin.groups-title') }}</h1>
 
-            <div class="spacer"></div>
+            <div class="grow"></div>
 
             <a href="{{ route('waterhole.admin.groups.create') }}" type="button" class="btn bg-accent">
                 <x-waterhole::icon icon="heroicon-s-plus"/>
@@ -19,7 +19,7 @@
                         class="text-xs"
                     />
 
-                    <div class="spacer"></div>
+                    <div class="grow"></div>
 
                     <a
                         href="{{ $group->users_url }}"

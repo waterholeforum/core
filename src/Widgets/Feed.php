@@ -10,7 +10,9 @@ class Feed extends Component
     public static bool $lazy = true;
 
     public string $url;
+
     public int $limit;
+
     public FeedReader $feed;
 
     public function __construct(string $url, int $limit = 3)

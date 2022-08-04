@@ -105,28 +105,6 @@
   text-align: right;
 }
 
-
-
-.ml-auto {
-  margin-left: auto;
-}
-
-.link {
-  cursor: pointer;
-  color: var(--color-accent);
-
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-.link--plain {
-  &:hover {
-    color: var(--color-text);
-    text-decoration: none;
-  }
-}
-
 .clickable {
   &:is(:disabled, .is-disabled) {
     opacity: .5;
@@ -169,7 +147,7 @@
 }
 
 .color-accent {
-  color: var(--color-accent);
+  color: var(--color-accent) !important;
 }
 
 .color-success {
@@ -277,6 +255,11 @@
 
 .bg-fill {
   background-color: var(--color-fill);
+}
+
+.bg-emphasis {
+  background: var(--color-emphasis);
+  color: var(--color-emphasis-contrast);
 }
 
 .bg-accent {

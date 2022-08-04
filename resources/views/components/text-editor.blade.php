@@ -110,7 +110,7 @@
             <ui-tooltip>Mention a User</ui-tooltip>
         </button>
 
-        <div class="spacer"></div>
+        <div class="grow"></div>
 
         <button
             type="button"

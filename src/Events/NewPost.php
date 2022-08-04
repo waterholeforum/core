@@ -7,9 +7,8 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Neves\Events\Contracts\TransactionalEvent;
-use Waterhole\Models\Post;
-
 use function Tonysm\TurboLaravel\dom_id;
+use Waterhole\Models\Post;
 
 class NewPost implements ShouldBroadcast, TransactionalEvent
 {

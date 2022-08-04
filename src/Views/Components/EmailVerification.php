@@ -13,6 +13,7 @@ class EmailVerification extends Component
 
         return $user instanceof MustVerifyEmail && ! $user->hasVerifiedEmail();
     }
+
     public function render()
     {
         return view('waterhole::components.email-verification');

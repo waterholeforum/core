@@ -9,6 +9,7 @@ use Waterhole\Models\Channel;
 class FeedControlsLayout extends Component
 {
     public PostFeed $feed;
+
     public ?Channel $channel;
 
     public function __construct(PostFeed $feed, Channel $channel = null)
@@ -30,7 +31,7 @@ class FeedControlsLayout extends Component
                 <x-waterhole::icon icon="heroicon-o-view-list"/>
                 <span>List</span>
                 @if ($feed->currentLayout() === 'list')
-                    <x-waterhole::icon icon="heroicon-o-check" class="menu-item-check"/>
+                    <x-waterhole::icon icon="heroicon-o-check" class="menu-item__check"/>
                 @endif
             </a>
             <a 
@@ -42,7 +43,7 @@ class FeedControlsLayout extends Component
                 <x-waterhole::icon icon="heroicon-o-collection"/>
                 <span>Cards</span>
                 @if ($feed->currentLayout() === 'cards')
-                    <x-waterhole::icon icon="heroicon-o-check" class="menu-item-check"/>
+                    <x-waterhole::icon icon="heroicon-o-check" class="menu-item__check"/>
                 @endif
             </a>
         blade;

@@ -2,9 +2,6 @@
 
 namespace Waterhole\Extend\Concerns;
 
-/**
- *
- */
 trait OrderedList
 {
     private static array $items = [];
@@ -40,7 +37,7 @@ trait OrderedList
     {
         return collect(static::$items)
             ->sortBy('position')
-            ->map(fn($item) => $item['content'])
+            ->map(fn ($item) => $item['content'])
             ->all();
     }
 }

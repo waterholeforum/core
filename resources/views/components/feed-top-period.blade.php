@@ -16,7 +16,7 @@
                 @if ($currentPeriod === $period)
                     <x-waterhole::icon
                         icon="heroicon-s-check"
-                        class="menu-item-check"
+                        class="menu-item__check"
                     />
                 @endif
             </a>

@@ -7,8 +7,11 @@ use Illuminate\View\Component;
 class Field extends Component
 {
     public string $name;
+
     public ?string $label;
+
     public ?string $description;
+
     public string $id;
 
     public function __construct(string $name, string $label = null, string $description = null)

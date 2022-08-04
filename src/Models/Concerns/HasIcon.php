@@ -48,6 +48,7 @@ trait HasIcon
             $this->removeImage('icon_file', 'icons');
             $this->icon = null;
             $this->save();
+
             return;
         }
 

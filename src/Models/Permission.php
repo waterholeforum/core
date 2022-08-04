@@ -38,6 +38,4 @@ class Permission extends Model
     {
         return new PermissionCollection($models);
     }
-
-
 }

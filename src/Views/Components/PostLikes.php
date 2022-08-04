@@ -8,6 +8,7 @@ use Waterhole\Models\Post;
 class PostLikes extends Component
 {
     public Post $post;
+
     public bool $interactive;
 
     public function __construct(Post $post, bool $interactive = false)

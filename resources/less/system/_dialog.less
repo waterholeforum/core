@@ -4,8 +4,19 @@
   max-width: 100%;
   border: 1px solid var(--color-stroke);
   border-radius: var(--radius);
-  padding: var(--space-xl);
   background: var(--color-bg);
+}
+
+.dialog__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-xl);
+  padding-bottom: 0;
+}
+
+.dialog__body {
+  padding: var(--space-xl);
 }
 
 .dialog--sm {
@@ -22,11 +33,4 @@
 
 .dialog--xl {
   width: 75ch;
-}
-
-.dialog__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--space-md);
 }

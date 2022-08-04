@@ -18,7 +18,7 @@ class EditPost extends Link
     {
         return $user && $user->can('post.edit', $model);
     }
-    
+
     public function label(Collection $models): string
     {
         return 'Edit Post';

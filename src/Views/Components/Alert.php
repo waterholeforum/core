@@ -13,8 +13,11 @@ class Alert extends Component
     ];
 
     public ?string $type;
+
     public string|HtmlString $slot;
+
     public ?string $icon;
+
     public bool $dismissible;
 
     public function __construct(

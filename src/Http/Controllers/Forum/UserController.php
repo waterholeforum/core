@@ -7,7 +7,6 @@ use Waterhole\Feed\CommentFeed;
 use Waterhole\Feed\PostFeed;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\User;
-
 use function Waterhole\resolve_all;
 
 /**
@@ -26,7 +25,7 @@ class UserController extends Controller
             request: $request,
             filters: resolve_all(config('waterhole.users.post_filters', [])),
             defaultLayout: 'cards',
-            scope: fn($query) => $query->whereBelongsTo($user),
+            scope: fn ($query) => $query->whereBelongsTo($user),
         );
 
         return view('waterhole::users.posts', compact('user', 'posts'));

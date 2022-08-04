@@ -14,7 +14,7 @@ class AuthServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        $this->app->singleton('waterhole.permissions', fn() => Permission::all());
+        $this->app->singleton('waterhole.permissions', fn () => Permission::all());
         $this->app->alias('waterhole.permissions', PermissionCollection::class);
 
         // Allow administrators to perform all gated actions.

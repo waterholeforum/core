@@ -6,7 +6,7 @@
         </div>
         <form action="{{ route('waterhole.verify-email.resend') }}" method="POST">
             @csrf
-            <button type="submit" class="btn btn--link">Resend</button>
+            <button type="submit" class="btn">Resend</button>
         </form>
     </div>
 </div>
