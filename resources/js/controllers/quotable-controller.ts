@@ -19,17 +19,12 @@ export default class extends Controller {
     }
 
     async updateQuoteButton() {
-        if (! this.buttonTarget) return;
+        if (!this.buttonTarget) return;
         this.buttonTarget.hidden = true;
 
         const selection = window.getSelection();
 
-        if (
-            ! selection
-            || selection.isCollapsed
-            || ! selection.anchorNode
-            || ! selection.focusNode
-        ) {
+        if (!selection || selection.isCollapsed || !selection.anchorNode || !selection.focusNode) {
             return;
         }
 
@@ -38,7 +33,7 @@ export default class extends Controller {
 
         // If the selection spans outside of the content area, or there
         // is no selection at all, we will not proceed.
-        if (parent !== this.element && ! this.element.contains(parent)) {
+        if (parent !== this.element && !this.element.contains(parent)) {
             return;
         }
 
@@ -53,8 +48,8 @@ export default class extends Controller {
         let placement: Placement;
 
         if (
-            position & Node.DOCUMENT_POSITION_PRECEDING
-            || (! position && selection.focusOffset < selection.anchorOffset)
+            position & Node.DOCUMENT_POSITION_PRECEDING ||
+            (!position && selection.focusOffset < selection.anchorOffset)
         ) {
             const rect = rects[0];
             anchor = new DOMRect(rect.left, rect.top);
@@ -81,10 +76,10 @@ export default class extends Controller {
     quoteSelectedText() {
         const container = document.createElement('div');
         const selection = window.getSelection();
-        if (! selection) return;
+        if (!selection) return;
 
         container.appendChild(selection.getRangeAt(0).cloneContents());
-        container.querySelectorAll('img').forEach(el => el.replaceWith(el.alt));
+        container.querySelectorAll('img').forEach((el) => el.replaceWith(el.alt));
 
         selection.removeAllRanges();
 
@@ -95,7 +90,7 @@ export default class extends Controller {
                 detail: { text: container.textContent },
                 bubbles: true,
                 cancelable: true,
-            })
+            });
         });
     }
 }

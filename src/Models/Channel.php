@@ -69,7 +69,9 @@ class Channel extends Model
      */
     public function unreadPosts(): HasMany
     {
-        return $this->posts()->following()->unread();
+        return $this->posts()
+            ->following()
+            ->unread();
     }
 
     public function abilities(): array
@@ -89,16 +91,24 @@ class Channel extends Model
 
     public static function rules(Channel $instance = null): array
     {
-        return array_merge([
-            'name' => ['required', 'string', 'max:255'],
-            'slug' => ['required', 'string', 'max:255', Rule::unique('channels')->ignore($instance)],
-            'description' => ['nullable', 'string'],
-            'instructions' => ['nullable', 'string'],
-            'sandbox' => ['nullable', 'boolean'],
-            'default_layout' => ['in:list,cards'],
-            'filters' => ['required_with:custom_filters', 'array'],
-            'filters.*' => ['string', 'distinct', Rule::in(PostFilters::values())],
-            'permissions' => ['array'],
-        ], static::iconRules());
+        return array_merge(
+            [
+                'name' => ['required', 'string', 'max:255'],
+                'slug' => [
+                    'required',
+                    'string',
+                    'max:255',
+                    Rule::unique('channels')->ignore($instance),
+                ],
+                'description' => ['nullable', 'string'],
+                'instructions' => ['nullable', 'string'],
+                'sandbox' => ['nullable', 'boolean'],
+                'default_layout' => ['in:list,cards'],
+                'filters' => ['required_with:custom_filters', 'array'],
+                'filters.*' => ['string', 'distinct', Rule::in(PostFilters::values())],
+                'permissions' => ['array'],
+            ],
+            static::iconRules(),
+        );
     }
 }

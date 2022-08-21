@@ -6,11 +6,8 @@ use Illuminate\View\Component;
 
 class Icon extends Component
 {
-    public ?string $icon;
-
-    public function __construct(string $icon = null)
+    public function __construct(public ?string $icon = null)
     {
-        $this->icon = $icon;
     }
 
     public function render()

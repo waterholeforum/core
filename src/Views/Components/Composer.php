@@ -11,13 +11,8 @@ class Composer extends Component
 {
     use Streamable;
 
-    public Post $post;
-
-    public ?Comment $parent;
-
-    public function __construct(Post $post, Comment $parent = null)
+    public function __construct(public Post $post, public ?Comment $parent = null)
     {
-        $this->post = $post;
         $this->parent = $parent?->exists ? $parent : null;
     }
 

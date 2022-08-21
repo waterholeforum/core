@@ -14,11 +14,15 @@ export default class extends Controller {
     }
 
     disconnect() {
-        document.addEventListener('turbo:load', () => {
-            const input = document.querySelector<HTMLInputElement>('input[name=email]');
-            if (input) {
-                input.value = this.email;
-            }
-        }, { once: true });
+        document.addEventListener(
+            'turbo:load',
+            () => {
+                const input = document.querySelector<HTMLInputElement>('input[name=email]');
+                if (input) {
+                    input.value = this.email;
+                }
+            },
+            { once: true }
+        );
     }
 }

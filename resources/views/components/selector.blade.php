@@ -1,7 +1,11 @@
 <ui-popup {{ $attributes }}>
     <button type="button" class="{{ $buttonClass }}">
-        <span>{{ $label($value) }}</span>
-        <x-waterhole::icon icon="heroicon-s-selector"/>
+        @isset($button)
+            {{ $button }}
+        @else
+            <span>{{ $label($value) }}</span>
+            <x-waterhole::icon icon="heroicon-s-selector"/>
+        @endisset
     </button>
 
     <ui-menu class="menu" hidden>

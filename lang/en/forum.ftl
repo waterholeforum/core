@@ -30,11 +30,6 @@ post-comment-count = { $count } { $count ->
     *[other] Comments
 }
 
-comment-reply-count = { $count } { $count ->
-    [one] reply
-    *[other] replies
-}
-
 comments-unread-heading = Unread
 comments-unread-link = Unread
 
@@ -53,3 +48,54 @@ post-submit-button = Post
 edit-post-title = Edit Post
 post-title-label = Title
 post-body-label = Body
+
+channel-picker-placeholder = Select a Channel
+
+comment-in-reply-to-link = In reply to
+comment-show-replies-button = Show { $count } { $count ->
+    [one] reply
+    *[other] replies
+}
+comment-reply-button = Reply
+
+comments-locked-message = Comments are locked.
+
+composer-placeholder = Write a comment...
+composer-reply-to-placeholder = Reply to { $userName }...
+composer-replying-to-label = Replying to
+composer-cancel-reply-button = Clear
+composer-submit = Post
+
+quote-button = Quote
+
+filter-alphabetical = Alphabetical
+filter-following = Following
+filter-ignoring = Ignoring
+filter-latest = Latest
+filter-new-activity = New Activity
+filter-oldest = Oldest
+filter-top = Top
+filter-top-all-time = All Time
+filter-top-year = Year
+filter-top-quarter = Quarter
+filter-top-month = Month
+filter-top-week = Week
+filter-top-day = Day
+
+follow-button = Follow
+follow-button-following = Following
+follow-button-ignored = Ignored
+
+channel-default-notifications-title = Default
+channel-default-notifications-description = Receive notifications when you're mentioned.
+channel-follow-title = Follow
+channel-follow-description = Receive notifications when there are new posts in this channel.
+channel-ignore-title = Ignore
+channel-ignore-description = Never be notified about activity in this channel, and hide posts from Home.
+
+post-default-notifications-title = Default
+post-default-notifications-description = Receive notifications when you're mentioned.
+post-follow-title = Follow
+post-follow-description = Receive notifications when there are new comments on this post.
+post-ignore-title = Ignore
+post-ignore-description = Never be notified about activity in this post, and hide it from Home.

@@ -5,23 +5,14 @@ namespace Waterhole\Views\Components;
 use Illuminate\View\Component;
 use Waterhole\Feed\Feed;
 use Waterhole\Filters\Top;
-use Waterhole\Models\Channel;
 
 class FeedTopPeriod extends Component
 {
-    public Feed $feed;
-
-    public ?Channel $channel;
-
     public ?array $periods = null;
-
     public ?string $currentPeriod = null;
 
-    public function __construct(Feed $feed, Channel $channel = null)
+    public function __construct(public Feed $feed)
     {
-        $this->feed = $feed;
-        $this->channel = $channel;
-
         $filter = $feed->currentFilter();
 
         if ($filter instanceof Top) {

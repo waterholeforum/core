@@ -6,20 +6,13 @@ use Illuminate\View\Component;
 
 class Field extends Component
 {
-    public string $name;
-
-    public ?string $label;
-
-    public ?string $description;
-
     public string $id;
 
-    public function __construct(string $name, string $label = null, string $description = null)
-    {
-        $this->name = $name;
-        $this->label = $label;
-        $this->description = $description;
-
+    public function __construct(
+        public string $name,
+        public ?string $label = null,
+        public ?string $description = null,
+    ) {
         $this->id = $name;
     }
 

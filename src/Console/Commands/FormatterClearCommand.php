@@ -14,9 +14,8 @@ class FormatterClearCommand extends Command
 
     protected $description = 'Clear the Waterhole formatter cache';
 
-    public function __construct(
-        protected Formatter $formatter
-    ) {
+    public function __construct(protected Formatter $formatter)
+    {
         parent::__construct();
     }
 

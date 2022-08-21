@@ -2,6 +2,7 @@
 
 namespace Waterhole\Providers;
 
+use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Waterhole\Models\Group;
@@ -14,15 +15,25 @@ class AuthServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        $this->app->singleton('waterhole.permissions', fn () => Permission::all());
+        $this->app->singleton('waterhole.permissions', fn() => Permission::all());
         $this->app->alias('waterhole.permissions', PermissionCollection::class);
 
-        // Allow administrators to perform all gated actions.
-        Gate::before(function (User $user) {
+        Gate::before(function (User $user, $ability, $arguments) {
+            // Allow administrators to perform all gated actions.
             if ($user->groups->contains(Group::ADMIN_ID)) {
                 return true;
             }
+
+            // Treat users who haven't verified their email like guests.
+            if ($user->exists && !$user->hasVerifiedEmail()) {
+                return Gate::forUser(null)->allows($ability, ...$arguments) ?:
+                    Response::deny('You must verify your email address.');
+            }
         });
+
+        // We don't want to register policies in the usual way because they are
+        // too restrictive - extensions wouldn't be able to add or override
+        // abilities. Instead, we define each ability absolutely.
 
         Gate::define('channel.post', [Policies\ChannelPolicy::class, 'post']);
 

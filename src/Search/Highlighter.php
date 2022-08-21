@@ -8,9 +8,8 @@ class Highlighter
 {
     private ?string $re;
 
-    public function __construct(
-        private string $q
-    ) {
+    public function __construct(private string $q)
+    {
         $this->re = $this->buildRegularExpression($q);
     }
 
@@ -19,14 +18,18 @@ class Highlighter
      */
     public function highlight(string $text): HtmlString
     {
-        if (! $this->re) {
+        if (!$this->re) {
             return new HtmlString(e($text));
         }
 
         return new HtmlString(
-            preg_replace_callback($this->re, function (array $matches) {
-                return "<mark>$matches[0]</mark>";
-            }, e($text))
+            preg_replace_callback(
+                $this->re,
+                function (array $matches) {
+                    return "<mark>$matches[0]</mark>";
+                },
+                e($text),
+            ),
         );
     }
 
@@ -45,11 +48,11 @@ class Highlighter
         }
 
         if ($start > 0) {
-            $text = '...'.substr($text, strpos($text, ' ', $start) + 1);
+            $text = '...' . substr($text, strpos($text, ' ', $start) + 1);
         }
 
         if (strlen($text) > $chars * 2) {
-            $text = substr($text, 0, strrpos(substr($text, 0, $chars * 2), ' ')).'...';
+            $text = substr($text, 0, strrpos(substr($text, 0, $chars * 2), ' ')) . '...';
         }
 
         return $text;
@@ -57,7 +60,7 @@ class Highlighter
 
     private function buildRegularExpression(string $q): ?string
     {
-        if (! trim($q)) {
+        if (!trim($q)) {
             return null;
         }
 
@@ -69,9 +72,9 @@ class Highlighter
             $phrase = preg_replace('/\s+/', '\\W+', $phrase);
             $phrase = preg_replace('/\\*/', '\\w+', $phrase);
 
-            return '\b'.$phrase.'\b';
+            return '\b' . $phrase . '\b';
         }, $phrases[0]);
 
-        return '/'.implode('|', $phrases).'/i';
+        return '/' . implode('|', $phrases) . '/i';
     }
 }

@@ -15,15 +15,17 @@ export default class extends Controller {
 
     connect() {
         if (this.idValue) {
-            window.Echo.channel(`Waterhole.Models.Post.${this.idValue}`)
-                .listen('NewComment', (data: any) => {
+            window.Echo.channel(`Waterhole.Models.Post.${this.idValue}`).listen(
+                'NewComment',
+                (data: any) => {
                     if (this.bottomTarget) {
                         const frame = document.createElement('turbo-frame') as FrameElement;
                         frame.id = data.dom_id;
                         frame.src = data.url;
                         this.bottomTarget.before(frame);
                     }
-                });
+                }
+            );
         }
 
         document.addEventListener('turbo:before-stream-render', this.beforeStreamRender);
@@ -39,18 +41,22 @@ export default class extends Controller {
         if (document.querySelector('[data-index="0"]')) {
             this.postTarget!.hidden = false;
         }
-    }
+    };
 
     private beforeStreamRender = (e: Event) => {
         const stream = e.target as StreamElement;
-        if (stream.action === 'remove' && stream.target?.endsWith('post_'+this.idValue)) {
+        if (stream.action === 'remove' && stream.target?.endsWith('post_' + this.idValue)) {
             window.history.back();
-            window.addEventListener('popstate', () => {
-                window.requestAnimationFrame(() => {
-                    renderStreamMessage(stream.outerHTML);
-                });
-            }, { once: true });
+            window.addEventListener(
+                'popstate',
+                () => {
+                    window.requestAnimationFrame(() => {
+                        renderStreamMessage(stream.outerHTML);
+                    });
+                },
+                { once: true }
+            );
             e.preventDefault();
         }
-    }
+    };
 }

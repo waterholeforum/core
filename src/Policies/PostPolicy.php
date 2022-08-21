@@ -37,8 +37,7 @@ class PostPolicy
      */
     public function edit(?User $user, Post $post): bool
     {
-        return $post->user_id === $user->id
-            || $this->moderate($user, $post);
+        return $post->user_id === $user->id || $this->moderate($user, $post);
     }
 
     /**
@@ -47,8 +46,8 @@ class PostPolicy
      */
     public function delete(User $user, Post $post): bool
     {
-        return ($post->user_id === $user->id && $post->comment_count === 0)
-            || $this->moderate($user, $post);
+        return ($post->user_id === $user->id && $post->comment_count === 0) ||
+            $this->moderate($user, $post);
     }
 
     /**
@@ -66,8 +65,8 @@ class PostPolicy
      */
     public function comment(User $user, Post $post): bool
     {
-        return $this->permissions->can($user, 'comment', $post->channel)
-            && (! $post->is_locked || $this->moderate($user, $post));
+        return $this->permissions->can($user, 'comment', $post->channel) &&
+            (!$post->is_locked || $this->moderate($user, $post));
     }
 
     /**

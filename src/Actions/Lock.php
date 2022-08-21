@@ -13,7 +13,7 @@ class Lock extends Action
 {
     public function appliesTo(Model $model): bool
     {
-        return $model instanceof Post && ! $model->is_locked;
+        return $model instanceof Post && !$model->is_locked;
     }
 
     public function authorize(?User $user, Model $model): bool
@@ -38,9 +38,6 @@ class Lock extends Action
 
     public function stream(Model $model): array
     {
-        return [
-            ...parent::stream($model),
-            TurboStream::replace(new CommentsLocked($model)),
-        ];
+        return [...parent::stream($model), TurboStream::replace(new CommentsLocked($model))];
     }
 }

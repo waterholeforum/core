@@ -12,7 +12,7 @@
 }
 
 .menu-item {
-  border-radius: ~"calc(var(--radius) * 2/3)";
+  border-radius: ~'calc(var(--radius) * 2/3)';
   border: 0;
   background: transparent;
   appearance: none;
@@ -29,7 +29,7 @@
 
   .clickable();
 
-  &:is(:hover, .is-hovered, :focus, .is-focused, [aria-selected=true]) {
+  &:is(:hover, .is-hovered, :focus, .is-focused, [aria-selected='true']) {
     background: var(--color-fill);
     outline: none;
   }
@@ -40,8 +40,8 @@
   }
 
   &.is-active,
-  &[aria-current=page],
-  &[aria-checked=true] {
+  &[aria-current='page'],
+  &[aria-checked='true'] {
     color: var(--color-accent);
     background: var(--color-accent-light);
   }
@@ -62,7 +62,7 @@
 .menu-item__check {
   margin-left: auto;
 
-  .menu-item:not(.is-active, [aria-current=page], [aria-checked=true]) & {
+  .menu-item:not(.is-active, [aria-current='page'], [aria-checked='true']) & {
     visibility: hidden;
   }
 }
@@ -87,8 +87,8 @@
 
 .menu-sticky {
   position: sticky;
-  top: ~"calc(-1 * var(--space-sm))";
-  margin-top: ~"calc(-1 * var(--space-sm))";
+  top: ~'calc(-1 * var(--space-sm))';
+  margin-top: ~'calc(-1 * var(--space-sm))';
   padding-top: var(--space-xs);
   background: var(--color-bg);
   z-index: 1;

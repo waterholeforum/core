@@ -9,7 +9,7 @@
   gap: var(--space-xxs);
   align-items: center;
   justify-content: center;
-  padding: 0 ~"calc(.4 * var(--control-height))";
+  padding: 0 ~'calc(.4 * var(--control-height))';
   text-decoration: none !important;
   font-weight: var(--weight-medium);
   white-space: nowrap;
@@ -19,37 +19,33 @@
     flex-shrink: 0;
   }
 
-  button&,
-  a&,
-  &[role=button],
-  &[role=link] {
-    .clickable();
-  }
+  .clickable();
 }
 
-:not([open]) > .btn--transparent:not(:hover, .is-hovered, :focus, .is-focused, [selected=true], [aria-pressed=true]),
+:not([open])
+  > .btn--transparent:not(:hover, .is-hovered, :focus, .is-focused, [selected='true'], [aria-pressed='true']),
 .btn--transparent:is(:disabled, .is-disabled),
-.btn--transparent:not(button, a, [role=button], [role=link]) {
+.btn--transparent:not(button, a, [role='button'], [role='link']) {
   background: transparent;
   color: var(--color-muted);
 }
 
 .btn--small {
   --control-height: var(--control-height-small);
-  padding: 0 ~"calc(.25 * var(--control-height-small))";
+  padding: 0 ~'calc(.25 * var(--control-height-small))';
   font-size: 90%;
 }
 
 .btn--narrow {
-  padding: 0 ~"calc(.3 * var(--control-height))";
+  padding: 0 ~'calc(.3 * var(--control-height))';
 }
 
 .btn--wide {
-  padding: 0 ~"calc(.5 * var(--control-height))";
+  padding: 0 ~'calc(.5 * var(--control-height))';
 }
 
 .btn--edge {
-  margin: ~"calc(-.1 * var(--control-height)) calc(-.25 * var(--control-height))";
+  margin: ~'calc(-.1 * var(--control-height)) calc(-.25 * var(--control-height))';
 }
 
 .btn--icon {

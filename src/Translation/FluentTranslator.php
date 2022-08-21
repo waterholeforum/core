@@ -36,7 +36,7 @@ final class FluentTranslator implements TranslatorContract
         protected string $fallback,
         /** @var array{strict: bool, useIsolating: bool, allowOverrides: bool} */
         protected array $bundleOptions,
-        protected array $functions = []
+        protected array $functions = [],
     ) {
     }
 
@@ -56,8 +56,12 @@ final class FluentTranslator implements TranslatorContract
      * @param  ?string  $locale
      * @return string|array<string, mixed>
      */
-    public function get($key, array $replace = [], $locale = null, bool $fallback = true): string|array
-    {
+    public function get(
+        $key,
+        array $replace = [],
+        $locale = null,
+        bool $fallback = true,
+    ): string|array {
         $locale ??= $this->locale;
 
         [$namespace, $group, $item] = $this->parseKey($key);
@@ -65,7 +69,10 @@ final class FluentTranslator implements TranslatorContract
         $message = $this->getBundle($namespace, $locale, $group)?->message($item, $replace);
 
         if ($fallback && $this->fallback !== $locale) {
-            $message ??= $this->getBundle($namespace, $this->fallback, $group)?->message($item, $replace);
+            $message ??= $this->getBundle($namespace, $this->fallback, $group)?->message(
+                $item,
+                $replace,
+            );
         }
 
         return $message ?? $this->baseTranslator->get(...func_get_args());
@@ -73,7 +80,9 @@ final class FluentTranslator implements TranslatorContract
 
     private function getBundle(?string $namespace, string $locale, string $group): ?FluentBundle
     {
-        return ($this->loaded[$namespace][$locale][$group] ?? $this->loadFtl($namespace, $locale, $group)) ?: null;
+        return $this->loaded[$namespace][$locale][$group] ??
+            $this->loadFtl($namespace, $locale, $group) ?:
+            null;
     }
 
     private function loadFtl(?string $namespace, string $locale, string $group): ?FluentBundle
@@ -102,8 +111,11 @@ final class FluentTranslator implements TranslatorContract
         return false;
     }
 
-    protected function loadNamespaced(string $locale, string $group, string $namespace): FluentBundle|false
-    {
+    protected function loadNamespaced(
+        string $locale,
+        string $group,
+        string $namespace,
+    ): FluentBundle|false {
         $hints = $this->getLoader()->namespaces();
 
         if (isset($hints[$namespace])) {
@@ -119,9 +131,15 @@ final class FluentTranslator implements TranslatorContract
         return false;
     }
 
-    protected function loadNamespaceOverrides(FluentBundle $bundle, $locale, $group, $namespace): FluentBundle
-    {
-        if ($this->files->exists($full = "{$this->path}/vendor/{$namespace}/{$locale}/{$group}.ftl")) {
+    protected function loadNamespaceOverrides(
+        FluentBundle $bundle,
+        $locale,
+        $group,
+        $namespace,
+    ): FluentBundle {
+        if (
+            $this->files->exists($full = "{$this->path}/vendor/{$namespace}/{$locale}/{$group}.ftl")
+        ) {
             return $bundle->addFtl($this->files->get($full));
         }
 

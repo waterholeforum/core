@@ -9,6 +9,9 @@
     >
         <x-waterhole::icon icon="waterhole-o-comment"/>
         <span aria-hidden="true">{{ $comment->reply_count }}</span>
-        <ui-tooltip class="visually-hidden">Show {{ $comment->reply_count }} replies</ui-tooltip>
+        <ui-tooltip class="visually-hidden">
+            {{ __('waterhole::forum.comment-show-replies-button', ['count' => $comment->reply_count]) }}
+        </ui-tooltip>
     </a>
 @endif
+

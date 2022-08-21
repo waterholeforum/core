@@ -29,10 +29,13 @@ class StructureLink extends Model
 
     public static function rules(StructureLink $instance = null): array
     {
-        return array_merge([
-            'name' => ['required', 'string', 'max:255'],
-            'href' => ['required', 'string', 'max:255'],
-            'permissions' => ['array'],
-        ], static::iconRules());
+        return array_merge(
+            [
+                'name' => ['required', 'string', 'max:255'],
+                'href' => ['required', 'string', 'max:255'],
+                'permissions' => ['array'],
+            ],
+            static::iconRules(),
+        );
     }
 }

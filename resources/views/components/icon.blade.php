@@ -2,7 +2,7 @@
     $attributes = $attributes->class('icon');
 @endphp
 
-@if (! empty($icon))
+@if (!empty($icon))
     @if (str_starts_with($icon, 'file:'))
         <img src="{{ Storage::disk('public')->url('icons/'.substr($icon, 5)) }}" alt="" {{ $attributes }}>
     @elseif (str_starts_with($icon, 'emoji:'))

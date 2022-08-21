@@ -67,7 +67,7 @@ class Group extends Model
      */
     public function isCustom(): bool
     {
-        return ! $this->isGuest() && ! $this->isMember() && ! $this->isAdmin();
+        return !$this->isGuest() && !$this->isMember() && !$this->isAdmin();
     }
 
     /**
@@ -117,16 +117,22 @@ class Group extends Model
 
     public function getUsersUrlAttribute(): string
     {
-        return route('waterhole.admin.users.index', ['q' => 'group:'.(str_contains($this->name, ' ') ? '"'.$this->name.'"' : $this->name)]);
+        return route('waterhole.admin.users.index', [
+            'q' =>
+                'group:' . (str_contains($this->name, ' ') ? '"' . $this->name . '"' : $this->name),
+        ]);
     }
 
     public static function rules(Group $instance = null): array
     {
-        return array_merge([
-            'name' => ['required', 'string', 'max:255'],
-            'is_public' => ['boolean'],
-            'color' => ['nullable', 'string', 'regex:/^[a-f0-9]{3}|[a-f0-9]{6}$/i'],
-            'permissions' => ['array'],
-        ], static::iconRules());
+        return array_merge(
+            [
+                'name' => ['required', 'string', 'max:255'],
+                'is_public' => ['boolean'],
+                'color' => ['nullable', 'string', 'regex:/^[a-f0-9]{3}|[a-f0-9]{6}$/i'],
+                'permissions' => ['array'],
+            ],
+            static::iconRules(),
+        );
     }
 }

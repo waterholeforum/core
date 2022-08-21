@@ -7,8 +7,9 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Neves\Events\Contracts\TransactionalEvent;
-use function Tonysm\TurboLaravel\dom_id;
 use Waterhole\Models\Post;
+
+use function Tonysm\TurboLaravel\dom_id;
 
 class NewPost implements ShouldBroadcast, TransactionalEvent
 {
@@ -26,7 +27,7 @@ class NewPost implements ShouldBroadcast, TransactionalEvent
     {
         return [
             // TODO: private channel depending on permissions
-            new Channel('Waterhole.Models.Channel.'.$this->post->channel->id),
+            new Channel('Waterhole.Models.Channel.' . $this->post->channel->id),
         ];
     }
 

@@ -11,7 +11,7 @@ class Oldest extends Filter
 {
     public function label(): string
     {
-        return 'Oldest';
+        return __('waterhole::forum.filter-oldest');
     }
 
     public function apply(Builder $query): void

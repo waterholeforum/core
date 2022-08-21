@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Authentication Guard
@@ -44,5 +43,4 @@ return [
         \Waterhole\Filters\Latest::class,
         \Waterhole\Filters\Top::class,
     ],
-
 ];

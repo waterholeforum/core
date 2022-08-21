@@ -7,11 +7,8 @@ use Waterhole\Models\Group;
 
 class GroupLabel extends Component
 {
-    public Group $group;
-
-    public function __construct(Group $group)
+    public function __construct(public Group $group)
     {
-        $this->group = $group;
     }
 
     public function render()

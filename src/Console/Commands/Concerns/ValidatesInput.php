@@ -21,13 +21,8 @@ trait ValidatesInput
 
     private function validateInput(array $rules, string $field, ?string $value): ?string
     {
-        $validator = Validator::make(
-            [$field => $value],
-            [$field => $rules]
-        );
+        $validator = Validator::make([$field => $value], [$field => $rules]);
 
-        return $validator->fails()
-            ? $validator->errors()->first($field)
-            : null;
+        return $validator->fails() ? $validator->errors()->first($field) : null;
     }
 }

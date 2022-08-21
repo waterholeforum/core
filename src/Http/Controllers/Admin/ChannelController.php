@@ -39,7 +39,7 @@ class ChannelController extends Controller
     {
         $data = $request->validate(Channel::rules($channel));
 
-        if (! $request->input('custom_filters')) {
+        if (!$request->input('custom_filters')) {
             $data['filters'] = null;
         }
 

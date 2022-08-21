@@ -20,7 +20,7 @@ trait AssetList
      */
     public static function add(string $file, string $bundle = 'default'): void
     {
-        if (! in_array($file, static::$assets[$bundle] ?? [])) {
+        if (!in_array($file, static::$assets[$bundle] ?? [])) {
             static::$assets[$bundle][] = $file;
         }
     }

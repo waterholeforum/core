@@ -17,8 +17,11 @@ class PreferencesController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('password.confirm:waterhole.confirm-password')
-            ->only(['account', 'changeEmail', 'changePassword']);
+        $this->middleware('password.confirm:waterhole.confirm-password')->only([
+            'account',
+            'changeEmail',
+            'changePassword',
+        ]);
     }
 
     public function index()
@@ -40,13 +43,14 @@ class PreferencesController extends Controller
         // Make a copy of the user because we don't want to set the email
         // of the global instance, otherwise a subsequent call to `save` could
         // actually save the new email before it's been verified.
-        (clone $request->user())
-            ->fill($data)
-            ->sendEmailVerificationNotification();
+        (clone $request->user())->fill($data)->sendEmailVerificationNotification();
 
         return redirect()
             ->route('waterhole.preferences.account')
-            ->with('success', "We've sent a verification email to <strong>{$data['email']}</strong>.");
+            ->with(
+                'success',
+                "We've sent a verification email to <strong>{$data['email']}</strong>.",
+            );
     }
 
     public function changePassword(Request $request)
@@ -71,7 +75,8 @@ class PreferencesController extends Controller
     {
         (new UserProfileFields($request->user()))->save($request);
 
-        return redirect()->route('waterhole.preferences.profile')
+        return redirect()
+            ->route('waterhole.preferences.profile')
             ->with('success', 'Profile saved.');
     }
 
@@ -83,7 +88,7 @@ class PreferencesController extends Controller
     public function saveNotifications(Request $request)
     {
         $data = $request->validate([
-            'notification_channels' => 'array:'.implode(',', NotificationTypes::build()),
+            'notification_channels' => 'array:' . implode(',', NotificationTypes::build()),
             'notification_channels.*' => 'array:0,1',
             'notification_channels.*.*' => 'in:database,mail',
             'follow_on_comment' => 'boolean',
@@ -91,7 +96,8 @@ class PreferencesController extends Controller
 
         $request->user()->update($data);
 
-        return redirect()->route('waterhole.preferences.notifications')
+        return redirect()
+            ->route('waterhole.preferences.notifications')
             ->with('success', 'Notification preferences saved.');
     }
 }

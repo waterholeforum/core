@@ -11,7 +11,7 @@
 
             <ul class="nav">
                 @foreach ($nav as $item)
-                    @if (! empty($item['heading']))
+                    @if (!empty($item['heading']))
                         <li class="nav-heading">{{ $item['heading'] }}</li>
                     @else
                         <li>

@@ -15,7 +15,7 @@ export default class extends Controller {
     channelsValue?: number[];
 
     connect() {
-        this.channelsValue?.forEach(id => {
+        this.channelsValue?.forEach((id) => {
             window.Echo.channel(`Waterhole.Models.Channel.${id}`)
                 .listen('NewComment', () => {
                     if (this.filterValue === 'new-activity') {
@@ -27,11 +27,11 @@ export default class extends Controller {
                         this.showNewActivity();
                     }
                 });
-        })
+        });
     }
 
     disconnect() {
-        this.channelsValue?.forEach(id => {
+        this.channelsValue?.forEach((id) => {
             window.Echo.leave(`Waterhole.Models.Channel.${id}`);
         });
     }

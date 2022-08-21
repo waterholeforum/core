@@ -2,14 +2,16 @@
 
 namespace Waterhole\Views\Components;
 
+use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\View\Component;
 
 class InfiniteScroll extends Component
 {
     public function __construct(
-        public Paginator $paginator,
+        public Paginator|CursorPaginator $paginator,
         public bool $divider = false,
+        public bool $endless = false,
     ) {
     }
 

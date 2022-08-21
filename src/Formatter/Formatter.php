@@ -127,7 +127,7 @@ class Formatter
     {
         $components = $this->cache->rememberForever(
             $this->cacheKey,
-            fn () => $this->getConfigurator()->finalize()
+            fn() => $this->getConfigurator()->finalize(),
         );
 
         return $components[$name];
@@ -141,7 +141,7 @@ class Formatter
     protected function getRenderer(): Renderer
     {
         spl_autoload_register(function ($class) {
-            if (file_exists($file = $this->cacheDir.'/'.$class.'.php')) {
+            if (file_exists($file = $this->cacheDir . '/' . $class . '.php')) {
                 include $file;
             }
         });

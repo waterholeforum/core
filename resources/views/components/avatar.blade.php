@@ -1,4 +1,4 @@
-@if (isset($user) && $user->avatar_url)
+@if ($user?->avatar_url)
     <img
         src="{{ $user->avatar_url }}"
         alt="{{ $user->name }}"

@@ -8,7 +8,15 @@ import 'uplot/dist/uPlot.min.css';
  * @internal
  */
 export default class extends Controller {
-    static targets = ['table', 'chart', 'summary', 'legend', 'axis'];
+    static targets = [
+        'table',
+        'chart',
+        'summary',
+        'legend',
+        'legendAmount',
+        'legendPeriod',
+        'axis',
+    ];
 
     tableTarget?: HTMLTableElement;
     chartTarget?: HTMLElement;
@@ -52,7 +60,9 @@ export default class extends Controller {
                     },
                 },
                 {
-                    stroke: getComputedStyle(document.documentElement).getPropertyValue('--color-accent'),
+                    stroke: getComputedStyle(document.documentElement).getPropertyValue(
+                        '--color-accent'
+                    ),
                     width: 2,
                     points: {
                         show: false,
@@ -62,10 +72,7 @@ export default class extends Controller {
             cursor: {
                 y: false,
             },
-            axes: [
-                { show: false },
-                { show: false }
-            ],
+            axes: [{ show: false }, { show: false }],
             scales: {
                 y: {
                     range: (u, dataMin, dataMax) => [dataMin, dataMax],
@@ -79,7 +86,7 @@ export default class extends Controller {
             },
             hooks: {
                 init: [
-                    u => {
+                    (u) => {
                         u.over.addEventListener('mouseenter', () => {
                             this.summaryTarget!.hidden = true;
                             this.legendTarget!.hidden = false;
@@ -88,25 +95,31 @@ export default class extends Controller {
                             this.summaryTarget!.hidden = false;
                             this.legendTarget!.hidden = true;
                         });
-                    }
+                    },
                 ],
                 setCursor: [
-                    u => {
+                    (u) => {
                         const { idx } = u.cursor;
-                        this.legendAmountTarget!.textContent = uPlot.fmtNum(u.data[2][idx!] || 0);
-                        this.legendPeriodTarget!.textContent = ths[idx!].textContent;
+                        this.legendAmountTarget!.textContent =
+                            typeof idx === 'number' ? uPlot.fmtNum(u.data[2][idx] || 0) : '';
+                        this.legendPeriodTarget!.textContent =
+                            typeof idx === 'number' ? ths[idx].textContent : '';
                     },
-                ]
+                ],
             },
         };
 
-        const ths = Array.from(this.tableTarget!.querySelectorAll<HTMLElement>('thead th')).slice(1);
+        const ths = Array.from(this.tableTarget!.querySelectorAll<HTMLElement>('thead th')).slice(
+            1
+        );
 
         const data: uPlot.AlignedData = [
-            ths.map(th => Number(th.dataset.timestamp)),
+            ths.map((th) => Number(th.dataset.timestamp)),
             ...Array.from(this.tableTarget!.querySelectorAll('tbody tr'))
                 .reverse()
-                .map(tr => Array.from(tr.querySelectorAll('td')).map(td => Number(td.textContent))),
+                .map((tr) =>
+                    Array.from(tr.querySelectorAll('td')).map((td) => Number(td.textContent))
+                ),
         ];
 
         this.uplot = new uPlot(options, data, this.chartTarget!);

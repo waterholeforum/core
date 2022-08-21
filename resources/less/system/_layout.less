@@ -13,6 +13,7 @@
   margin-inline: auto;
   padding-inline: var(--space-gutter);
   max-width: @breakpoint-md;
+  width: 100%;
 }
 
 .section {
@@ -54,12 +55,12 @@
   .sidebar--sticky {
     position: sticky;
     top: var(--header-height);
-    margin-top: ~"calc(-1 * var(--space-xl))";
+    margin-top: ~'calc(-1 * var(--space-xl))';
     padding-top: var(--space-xl);
     padding-bottom: var(--space-lg);
     overflow: auto;
-    max-height: ~"calc(100vh - var(--header-height))";
-    margin-left: ~"calc(-1 * var(--space-xl))";
+    max-height: ~'calc(100vh - var(--header-height))';
+    margin-left: ~'calc(-1 * var(--space-xl))';
     padding-left: var(--space-xl);
     box-sizing: content-box;
 

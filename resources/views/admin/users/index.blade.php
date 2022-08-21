@@ -2,7 +2,7 @@
     <div class="stack gap-md">
 
         <div class="row gap-sm wrap">
-            <h1 class="h2">
+            <h1 class="h3">
                 {{ __('waterhole::admin.users-title') }}
             </h1>
 

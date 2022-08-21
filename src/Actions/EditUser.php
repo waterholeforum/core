@@ -30,6 +30,6 @@ class EditUser extends Link
 
     public function url(Model $model): string
     {
-        return $model->edit_url.'?'.http_build_query(['return' => request()->fullUrl()]);
+        return $model->edit_url . '?' . http_build_query(['return' => request()->fullUrl()]);
     }
 }

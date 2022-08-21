@@ -6,6 +6,7 @@ use Illuminate\Support\HtmlString;
 use Major\Fluent\Formatters\Number\NumberFormatter;
 use Major\Fluent\Formatters\Number\Options;
 use Waterhole\Extend\Emoji;
+use Waterhole\Models\User;
 use Waterhole\Support\TimeAgo;
 
 /**
@@ -13,8 +14,7 @@ use Waterhole\Support\TimeAgo;
  */
 function format_number(float $number, array $options = []): string
 {
-    return (new NumberFormatter(app()->getLocale()))
-        ->format($number, new Options(...$options));
+    return (new NumberFormatter(app()->getLocale()))->format($number, new Options(...$options));
 }
 
 /**
@@ -23,7 +23,7 @@ function format_number(float $number, array $options = []): string
 function compact_number(float $number): string
 {
     if ($number >= 100) {
-        $key = 'waterhole::number.compact-number-1'.str_repeat('0', floor(log10($number)));
+        $key = 'waterhole::number.compact-number-1' . str_repeat('0', floor(log10($number)));
 
         if (($format = __($key, [], app()->getLocale())) !== $key) {
             [$numberFormat, $unit] = str_split($format, strrpos($format, '0') + 1);
@@ -36,10 +36,12 @@ function compact_number(float $number): string
                 $number /= 10;
             }
 
-            $formattedNumber = (new NumberFormatter(app()->getLocale()))
-                ->format($number, new Options(maximumFractionDigits: $fractionDigits));
+            $formattedNumber = (new NumberFormatter(app()->getLocale()))->format(
+                $number,
+                new Options(maximumFractionDigits: $fractionDigits),
+            );
 
-            return $formattedNumber.$unit;
+            return $formattedNumber . $unit;
         }
     }
 
@@ -69,12 +71,14 @@ function relative_time($then): string
 
 function full_time($date): string
 {
-    if (! $date instanceof DateTime) {
+    if (!$date instanceof DateTime) {
         $date = new DateTime($date);
     }
 
     return __('waterhole::time.full-time', [
-        'date' => new \Tobyz\Fluent\Types\DateTime($date/*, ['timeZone' => 'Australia/Adelaide']*/),
+        'date' => new \Tobyz\Fluent\Types\DateTime(
+            $date /*, ['timeZone' => 'Australia/Adelaide']*/,
+        ),
     ]);
 }
 
@@ -94,9 +98,9 @@ function get_contrast_color(string $hex): string
     $r = hexdec(substr($hex, 1, 2));
     $g = hexdec(substr($hex, 3, 2));
     $b = hexdec(substr($hex, 5, 2));
-    $yiq = (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
+    $yiq = ($r * 299 + $g * 587 + $b * 114) / 1000;
 
-    return ($yiq >= 128) ? '#000' : '#fff';
+    return $yiq >= 128 ? '#000' : '#fff';
 }
 
 /**
@@ -107,11 +111,25 @@ function get_contrast_color(string $hex): string
 function resolve_all(array $names, array ...$parameters): array
 {
     return array_filter(
-        array_map(fn ($name) => rescue(fn () => resolve($name, ...$parameters)), $names)
+        array_map(fn($name) => rescue(fn() => resolve($name, ...$parameters)), $names),
     );
 }
 
 function return_field(string $default = null): string
 {
-    return '<input type="hidden" name="return" value="'.old('return', request('return', $default)).'">';
+    return '<input type="hidden" name="return" value="' .
+        old('return', request('return', $default)) .
+        '">';
+}
+
+function username(?User $user): string
+{
+    return $user->name ?? __('waterhole::system.anonymous');
+}
+
+function user_variables(?User $user): array
+{
+    return [
+        'userName' => username($user),
+    ];
 }

@@ -28,8 +28,8 @@ export default class extends Controller {
 
                 provide(
                     fetch(`/user-lookup?q=${encodeURIComponent(text)}`)
-                        .then(response => response.json())
-                        .then(json => {
+                        .then((response) => response.json())
+                        .then((json) => {
                             const listbox = document.createElement('ul');
                             listbox.setAttribute('role', 'listbox');
                             listbox.className = 'menu';
@@ -40,7 +40,9 @@ export default class extends Controller {
                                 ...json.map(({ name, html }: any) => {
                                     const option = document.createElement('li');
                                     option.setAttribute('role', 'option');
-                                    option.id = `suggestion-${Math.floor(Math.random() * 100000).toString()}`;
+                                    option.id = `suggestion-${Math.floor(
+                                        Math.random() * 100000
+                                    ).toString()}`;
                                     option.className = 'menu-item';
                                     option.dataset.value = name;
                                     option.innerHTML = html;
@@ -69,7 +71,7 @@ export default class extends Controller {
             }) as EventListener);
 
             this.expanderTarget?.addEventListener('text-expander-value', ((event: CustomEvent) => {
-                const { item }  = event.detail;
+                const { item } = event.detail;
                 event.detail.value = '@' + item.getAttribute('data-value');
             }) as EventListener);
         }
@@ -81,12 +83,12 @@ export default class extends Controller {
     }
 
     togglePreview() {
-        if (! this.inputTarget || ! this.previewTarget) return;
+        if (!this.inputTarget || !this.previewTarget) return;
 
-        const previewing = ! this.inputTarget.hidden;
+        const previewing = !this.inputTarget.hidden;
 
         this.inputTarget.hidden = previewing;
-        this.previewTarget.hidden = ! previewing;
+        this.previewTarget.hidden = !previewing;
         this.previewTarget.innerHTML = '<div class="loading"></div>';
         this.previewButtonTarget?.setAttribute('aria-pressed', String(previewing));
         this.element.classList.toggle('is-previewing', previewing);
@@ -95,21 +97,20 @@ export default class extends Controller {
             fetch('/format', {
                 method: 'POST',
                 body: this.inputTarget.value,
-            })
-                .then(async response => {
-                    if (! response.ok) {
-                        window.Waterhole.fetchError(response);
-                    } else {
-                        const text = await response.text();
-                        this.previewTarget!.hidden = false;
-                        this.previewTarget!.innerHTML = text;
-                    }
-                });
+            }).then(async (response) => {
+                if (!response.ok) {
+                    window.Waterhole.fetchError(response);
+                } else {
+                    const text = await response.text();
+                    this.previewTarget!.hidden = false;
+                    this.previewTarget!.innerHTML = text;
+                }
+            });
         }
     }
 
     insertQuote(e: CustomEvent) {
-        if (! this.inputTarget || ! this.editor) return;
+        if (!this.inputTarget || !this.editor) return;
 
         let text = (this.inputTarget.selectionStart > 0 ? '\n\n' : '') + '> ';
 

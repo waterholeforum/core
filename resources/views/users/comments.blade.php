@@ -4,41 +4,47 @@
 >
     <div class="stack gap-lg">
         <div class="row gap-xs wrap">
-            <x-waterhole::feed-sort :feed="$comments"/>
+            <x-waterhole::feed-filters :feed="$comments"/>
             <x-waterhole::feed-top-period :feed="$comments"/>
         </div>
 
-        <x-waterhole::feed2 :feed="$comments">
-            <ul role="list" class="stack gap-lg">
-                @foreach ($component->items as $comment)
-                    <li class="stack gap-xs card comment-card">
-                        <ol class="color-muted text-xs comment-card__post breadcrumb">
-                            <li>
-                                <x-waterhole::channel-label :channel="$comment->post->channel"/>
-                            </li>
-                            <li>
-                                <a
-                                    href="{{ $comment->post_url }}"
-                                    class="weight-medium"
-                                >{{ $comment->post->title }}</a>
-                            </li>
-                        </ol>
-                        <x-waterhole::comment-full :comment="$comment"/>
-                    </li>
-                @endforeach
-            </ul>
+        @php
+            $items = $comments->items();
+        @endphp
 
-            <x-slot name="empty">
-                <div class="placeholder">
-                    <x-waterhole::icon
-                        icon="heroicon-o-chat-alt-2"
-                        class="placeholder__visual"
-                    />
-                    <h3>
-                        {{ __('waterhole::user.comments-empty-message') }}
-                    </h3>
-                </div>
-            </x-slot>
-        </x-waterhole::feed2>
+        @if ($items->isNotEmpty())
+            <x-waterhole::infinite-scroll :paginator="$items" class="comment-feed">
+                <ul role="list" class="stack gap-lg">
+                    @foreach ($items as $comment)
+                        <li class="card comment-card">
+                            <ol class="color-muted text-xs card__header breadcrumb">
+                                <li>
+                                    <x-waterhole::channel-label :channel="$comment->post->channel"/>
+                                </li>
+                                <li>
+                                    <a
+                                        href="{{ $comment->post_url }}"
+                                        class="weight-medium"
+                                    >{{ $comment->post->title }}</a>
+                                </li>
+                            </ol>
+                            <div class="card__body">
+                                <x-waterhole::comment-full :comment="$comment"/>
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
+            </x-waterhole::infinite-scroll>
+        @else
+            <div class="placeholder">
+                <x-waterhole::icon
+                    icon="heroicon-o-chat-alt-2"
+                    class="placeholder__visual"
+                />
+                <p class="h4">
+                    {{ __('waterhole::user.comments-empty-message') }}
+                </p>
+            </div>
+        @endif
     </div>
 </x-waterhole::user-profile>

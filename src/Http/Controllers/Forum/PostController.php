@@ -22,7 +22,7 @@ class PostController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->except('show');
-        // $this->middleware('throttle:waterhole.create')->only('store');
+        $this->middleware('throttle:waterhole.create')->only('store');
     }
 
     public function show(Post $post, Request $request)
@@ -42,7 +42,8 @@ class PostController extends Controller
 
         $post->load('likedBy');
 
-        $comments = $post->comments()
+        $comments = $post
+            ->comments()
             ->with(['user.groups', 'parent.user.groups', 'likedBy', 'mentions'])
             ->oldest()
             ->paginate();
@@ -81,7 +82,7 @@ class PostController extends Controller
         // Only proceed with post submission if the "post" button was
         // explicitly clicked. This allows the form to be submitted for other
         // purposes, such as selecting a different channel.
-        if (! $request->input('publish')) {
+        if (!$request->input('commit')) {
             return redirect()
                 ->route('waterhole.posts.create', ['channel' => $request->input('channel_id')])
                 ->withInput();
@@ -100,7 +101,7 @@ class PostController extends Controller
         // channel, except for the user who created the post.
         Notification::send(
             $post->channel->followedBy->except($request->user()->id),
-            new NewPost($post)
+            new NewPost($post),
         );
 
         return redirect($post->url);
@@ -117,7 +118,8 @@ class PostController extends Controller
     {
         $this->authorize('post.edit', $post);
 
-        $post->fill(Post::validate($request->all(), $post))
+        $post
+            ->fill(Post::validate($request->all(), $post))
             ->markAsEdited()
             ->save();
 

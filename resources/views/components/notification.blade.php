@@ -5,7 +5,7 @@
 --}}
 <a
     href="{{ route('waterhole.notifications.show', compact('notification')) }}"
-    class="menu-item notification @if (! $notification->read_at) is-unread @endif"
+    class="menu-item notification @if (!$notification->read_at) is-unread @endif"
     role="menuitem"
     target="_top"
 >

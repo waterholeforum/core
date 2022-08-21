@@ -3,7 +3,7 @@
         @if ($errors->count() === 1)
             {{ $errors->first() }}
         @else
-            <h4>The following errors were found:</h4>
+            <p class="weight-bold">The following errors were found:</p>
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>

@@ -19,15 +19,15 @@ export default class extends Controller {
         let value = source.value;
 
         if (
-            source instanceof HTMLInputElement
-            && ['checkbox', 'radio'].includes(source.type)
-            && ! source.checked
+            source instanceof HTMLInputElement &&
+            ['checkbox', 'radio'].includes(source.type) &&
+            !source.checked
         ) {
             value = '';
         }
 
-        this.thenTargets?.forEach(el => {
-            el.hidden = el.dataset.revealValue ? value != el.dataset.revealValue : ! value;
+        this.thenTargets?.forEach((el) => {
+            el.hidden = el.dataset.revealValue ? value != el.dataset.revealValue : !value;
         });
     };
 }

@@ -12,10 +12,10 @@
     margin: 0 auto;
     width: 2em;
     height: 2em;
-    border: .35em solid var(--color-fill);
+    border: 0.35em solid var(--color-fill);
     border-top-color: var(--color-stroke);
     border-radius: 50%;
-    animation: loading-indicator .6s infinite linear;
+    animation: loading-indicator 0.6s infinite linear;
   }
 }
 
@@ -27,11 +27,15 @@
   &::before {
     width: 1.2em;
     height: 1.2em;
-    border-width: .25em;
+    border-width: 0.25em;
   }
 }
 
 @keyframes loading-indicator {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(359deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
 }

@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
@@ -21,8 +20,14 @@ return new class extends Migration
             $table->string('location')->nullable();
             $table->string('website')->nullable();
             $table->string('avatar')->nullable();
-            $table->timestamp('created_at')->nullable()->index();
-            $table->timestamp('last_seen_at')->nullable()->index();
+            $table
+                ->timestamp('created_at')
+                ->nullable()
+                ->index();
+            $table
+                ->timestamp('last_seen_at')
+                ->nullable()
+                ->index();
             $table->boolean('show_online')->default(1);
             $table->json('notification_channels')->nullable();
             $table->timestamp('notifications_read_at')->nullable();

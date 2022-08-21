@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | OAuth Enabled
@@ -43,5 +42,4 @@ return [
         'login' => 'oauth/{provider}',
         'callback' => 'oauth/{provider}/callback',
     ],
-
 ];

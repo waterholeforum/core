@@ -11,6 +11,6 @@ class BroadcastServiceProvider extends ServiceProvider
     {
         Broadcast::routes();
 
-        require __DIR__.'/../../routes/channels.php';
+        require __DIR__ . '/../../routes/channels.php';
     }
 }

@@ -7,8 +7,9 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Neves\Events\Contracts\TransactionalEvent;
-use function Tonysm\TurboLaravel\dom_id;
 use Waterhole\Models\Comment;
+
+use function Tonysm\TurboLaravel\dom_id;
 
 class NewComment implements ShouldBroadcast, TransactionalEvent
 {
@@ -26,8 +27,8 @@ class NewComment implements ShouldBroadcast, TransactionalEvent
     {
         return [
             // TODO: private channel depending on permissions
-            new Channel('Waterhole.Models.Channel.'.$this->comment->post->channel->id),
-            new Channel('Waterhole.Models.Post.'.$this->comment->post->id),
+            new Channel('Waterhole.Models.Channel.' . $this->comment->post->channel->id),
+            new Channel('Waterhole.Models.Post.' . $this->comment->post->id),
         ];
     }
 

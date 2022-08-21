@@ -9,7 +9,7 @@ class Alphabetical extends Filter
 {
     public function label(): string
     {
-        return 'Alphabetical';
+        return __('waterhole::forum.filter-alphabetical');
     }
 
     public function apply($query): void

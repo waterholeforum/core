@@ -17,7 +17,8 @@ class Ignore extends Action
 
     public function shouldRender(Collection $models): bool
     {
-        return ! Waterhole::isAdminRoute() && $models->some(fn ($item) => ! $item->userState->notifications);
+        return !Waterhole::isAdminRoute() &&
+            $models->some(fn($item) => !$item->userState->notifications);
     }
 
     public function label(Collection $models): string
@@ -37,9 +38,6 @@ class Ignore extends Action
 
     public function stream(Model $model): array
     {
-        return [
-            ...parent::stream($model),
-            TurboStream::replace(new FollowButton($model)),
-        ];
+        return [...parent::stream($model), TurboStream::replace(new FollowButton($model))];
     }
 }

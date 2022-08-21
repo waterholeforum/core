@@ -3,10 +3,10 @@
 namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\OrderedList;
-use Waterhole\Views\Components\FeedControls;
-use Waterhole\Views\Components\FeedNewPost;
-use Waterhole\Views\Components\FeedSort;
+use Waterhole\Views\Components\FeedFilters;
 use Waterhole\Views\Components\FeedTopPeriod;
+use Waterhole\Views\Components\PostFeedControls;
+use Waterhole\Views\Components\PostFeedCreate;
 use Waterhole\Views\Components\Spacer;
 
 /**
@@ -17,8 +17,8 @@ abstract class PostFeedToolbar
     use OrderedList;
 }
 
-PostFeedToolbar::add('sort', FeedSort::class);
+PostFeedToolbar::add('sort', FeedFilters::class);
 PostFeedToolbar::add('top-period', FeedTopPeriod::class);
 PostFeedToolbar::add('spacer', Spacer::class);
-PostFeedToolbar::add('controls', FeedControls::class);
-PostFeedToolbar::add('new-post', FeedNewPost::class);
+PostFeedToolbar::add('controls', PostFeedControls::class);
+PostFeedToolbar::add('new-post', PostFeedCreate::class);

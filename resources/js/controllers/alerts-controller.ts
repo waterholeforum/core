@@ -38,10 +38,7 @@ export default class extends Controller {
         // appending to the alerts container. If it is, we will append it via
         // the AlertsElement's show method, rather than just a plain DOM append.
         const stream = e.target as StreamElement;
-        if (
-            stream.targetElements.includes(this.element)
-            && stream.action === 'append'
-        ) {
+        if (stream.targetElements.includes(this.element) && stream.action === 'append') {
             const alert = stream.templateContent.firstElementChild as HTMLElement;
             if (alert) {
                 this.alertsElement.show(alert);

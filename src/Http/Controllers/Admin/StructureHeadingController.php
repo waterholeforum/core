@@ -20,9 +20,7 @@ class StructureHeadingController extends Controller
 
     public function store(Request $request)
     {
-        StructureHeading::create(
-            $request->validate(StructureHeading::rules())
-        );
+        StructureHeading::create($request->validate(StructureHeading::rules()));
 
         return redirect()->route('waterhole.admin.structure');
     }
@@ -34,9 +32,7 @@ class StructureHeadingController extends Controller
 
     public function update(StructureHeading $heading, Request $request)
     {
-        $heading->update(
-            $request->validate(StructureHeading::rules($heading))
-        );
+        $heading->update($request->validate(StructureHeading::rules($heading)));
 
         return redirect()->route('waterhole.admin.structure');
     }

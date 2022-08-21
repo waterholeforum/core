@@ -15,7 +15,7 @@ use Waterhole\Models\User;
  */
 abstract class Mentions
 {
-    const TAG_NAME = 'MENTION';
+    public const TAG_NAME = 'MENTION';
 
     /**
      * Formatter configuration callback.
@@ -27,7 +27,10 @@ abstract class Mentions
      */
     public static function configure(Configurator $config): void
     {
-        $config->rendering->parameters['MENTION_URL'] = rtrim(route('waterhole.users.show', ['user' => '_']), '_');
+        $config->rendering->parameters['MENTION_URL'] = rtrim(
+            route('waterhole.users.show', ['user' => '_']),
+            '_',
+        );
 
         $config->Preg->match('/\B@(?<name>[a-z0-9_-]+)/i', static::TAG_NAME);
 
@@ -69,7 +72,7 @@ abstract class Mentions
      */
     public static function rendering(Renderer $renderer, string &$xml, ?Context $context): void
     {
-        if (! $context?->model?->relationLoaded('mentions')) {
+        if (!$context?->model?->relationLoaded('mentions')) {
             return;
         }
 

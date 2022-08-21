@@ -16,15 +16,15 @@ class DeleteUser extends Action
 
     public function appliesTo(Model $model): bool
     {
-        return $model instanceof User && ! $model->isRootAdmin();
+        return $model instanceof User && !$model->isRootAdmin();
     }
 
     public function authorize(?User $user, Model $model): bool
     {
-        return $user
-            && $user->can('user.delete', $model)
-            && $user->isNot($model)
-            && ! $model->isRootAdmin();
+        return $user &&
+            $user->can('user.delete', $model) &&
+            $user->isNot($model) &&
+            !$model->isRootAdmin();
     }
 
     public function label(Collection $models): string

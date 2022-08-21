@@ -17,19 +17,16 @@ class Stylesheet
 
     private static function compile(array $assets, string $bundle): array
     {
-        $files = array_combine(
-            $assets,
-            array_fill(0, count($assets), url('/'))
-        );
+        $files = array_combine($assets, array_fill(0, count($assets), url('/')));
 
         $compiled = Less_Cache::Get($files, [
             'cache_dir' => storage_path('app/public/css'),
             'prefix' => "$bundle-",
         ]);
 
-        return [asset('storage/css/'.$compiled)];
+        return [asset('storage/css/' . $compiled)];
     }
 }
 
-Stylesheet::add(__DIR__.'/../../resources/less/forum/app.less');
-Stylesheet::add(__DIR__.'/../../resources/less/admin/app.less', bundle: 'admin');
+Stylesheet::add(__DIR__ . '/../../resources/less/forum/app.less');
+Stylesheet::add(__DIR__ . '/../../resources/less/admin/app.less', bundle: 'admin');

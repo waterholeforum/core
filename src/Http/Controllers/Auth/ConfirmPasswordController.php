@@ -21,10 +21,12 @@ class ConfirmPasswordController extends Controller
 
     public function confirm(Request $request)
     {
-        if (! Auth::guard('web')->validate([
-            'email' => $request->user()->email,
-            'password' => $request->password,
-        ])) {
+        if (
+            !Auth::guard('web')->validate([
+                'email' => $request->user()->email,
+                'password' => $request->password,
+            ])
+        ) {
             throw ValidationException::withMessages([
                 'password' => __('waterhole::auth.password'),
             ]);

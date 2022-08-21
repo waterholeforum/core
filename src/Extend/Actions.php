@@ -29,24 +29,26 @@ abstract class Actions
      */
     public static function for($models, User $user = null): array
     {
-        if (! $models instanceof Collection) {
+        if (!$models instanceof Collection) {
             $models = collect(is_array($models) ? $models : [$models]);
         }
 
         $actions = collect(static::build())
             ->values()
-            ->map(fn ($class) => resolve($class));
+            ->map(fn($class) => resolve($class));
 
         if ($models->count() > 1) {
-            $actions = $actions->filter(
-                fn ($action) => ! $action instanceof Action || $action->bulk
-            );
+            $actions = $actions->filter(fn($action) => !$action instanceof Action || $action->bulk);
         }
 
         return $actions
-            ->filter(fn ($action) => $models->every(
-                fn ($model) => ! $action instanceof Action || ($action->appliesTo($model) && $action->authorize($user ?: Auth::user(), $model))
-            ))
+            ->filter(
+                fn($action) => $models->every(
+                    fn($model) => !$action instanceof Action ||
+                        ($action->appliesTo($model) &&
+                            $action->authorize($user ?: Auth::user(), $model)),
+                ),
+            )
             ->all();
     }
 }

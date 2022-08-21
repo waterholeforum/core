@@ -10,7 +10,7 @@
                 <li aria-hidden="true"></li>
             </ol>
 
-            <h1 class="h2">{{ $title }}</h1>
+            <h1 class="h3">{{ $title }}</h1>
         </header>
 
         <x-waterhole::composer

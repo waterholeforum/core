@@ -54,17 +54,14 @@ trait HasIcon
 
         if ($icon['type'] === 'file') {
             if ($icon['file'] ?? null instanceof UploadedFile) {
-                $this->uploadImage(
-                    Image::make($icon['file']),
-                    'icon_file',
-                    'icons',
-                    function (ImageObject $image) {
-                        return $image->fit(50)->encode('png');
-                    }
-                );
+                $this->uploadImage(Image::make($icon['file']), 'icon_file', 'icons', function (
+                    ImageObject $image,
+                ) {
+                    return $image->fit(50)->encode('png');
+                });
             }
         } else {
-            $this->icon = $icon['type'].':'.($icon[$icon['type']] ?? '');
+            $this->icon = $icon['type'] . ':' . ($icon[$icon['type']] ?? '');
             $this->save();
         }
     }
@@ -76,6 +73,6 @@ trait HasIcon
 
     public function setIconFileAttribute(?string $value): void
     {
-        $this->icon = $value ? 'file:'.$value : null;
+        $this->icon = $value ? 'file:' . $value : null;
     }
 }

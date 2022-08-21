@@ -18,3 +18,8 @@ comments-empty-message = No Comments
 user-top-posts-title = { $userName }'s Top Posts
 user-latest-posts-title = { $userName }'s Latest Posts
 posts-empty-message = No Posts
+
+profile-link = Profile
+preferences-link = Preferences
+administration-link = Administration
+log-out-link = Log Out

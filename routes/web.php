@@ -29,8 +29,13 @@ Route::get('confirm-action', [ActionController::class, 'confirm'])->name('action
 Route::post('action', [ActionController::class, 'run'])->name('action.store');
 
 // Posts
-Route::resource('posts', PostController::class)
-    ->only(['show', 'create', 'store', 'edit', 'update']);
+Route::resource('posts', PostController::class)->only([
+    'show',
+    'create',
+    'store',
+    'edit',
+    'update',
+]);
 
 // Comments
 Route::resource('posts.comments', CommentController::class)
@@ -47,19 +52,33 @@ Route::resource('users', UserController::class)
 // Preferences
 Route::get('preferences', [PreferencesController::class, 'index'])->name('preferences');
 
-Route::get('preferences/account', [PreferencesController::class, 'account'])->name('preferences.account');
-Route::post('preferences/email', [PreferencesController::class, 'changeEmail'])->name('preferences.email');
-Route::post('preferences/password', [PreferencesController::class, 'changePassword'])->name('preferences.password');
+Route::get('preferences/account', [PreferencesController::class, 'account'])->name(
+    'preferences.account',
+);
+Route::post('preferences/email', [PreferencesController::class, 'changeEmail'])->name(
+    'preferences.email',
+);
+Route::post('preferences/password', [PreferencesController::class, 'changePassword'])->name(
+    'preferences.password',
+);
 
-Route::get('preferences/profile', [PreferencesController::class, 'profile'])->name('preferences.profile');
+Route::get('preferences/profile', [PreferencesController::class, 'profile'])->name(
+    'preferences.profile',
+);
 Route::post('preferences/profile', [PreferencesController::class, 'saveProfile']);
 
-Route::get('preferences/notifications', [PreferencesController::class, 'notifications'])->name('preferences.notifications');
+Route::get('preferences/notifications', [PreferencesController::class, 'notifications'])->name(
+    'preferences.notifications',
+);
 Route::post('preferences/notifications', [PreferencesController::class, 'saveNotifications']);
 
 // Notifications
-Route::get('notifications/unsubscribe', [NotificationController::class, 'unsubscribe'])->name('notifications.unsubscribe');
-Route::post('notifications/read', [NotificationController::class, 'read'])->name('notifications.read');
+Route::get('notifications/unsubscribe', [NotificationController::class, 'unsubscribe'])->name(
+    'notifications.unsubscribe',
+);
+Route::post('notifications/read', [NotificationController::class, 'read'])->name(
+    'notifications.read',
+);
 Route::resource('notifications', NotificationController::class)->only(['index', 'show']);
 
 // Search
@@ -74,11 +93,15 @@ Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
 
 // Forgot Password
-Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('forgot-password');
+Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name(
+    'forgot-password',
+);
 Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail']);
 
 // Reset Password
-Route::get('reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('reset-password');
+Route::get('reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name(
+    'reset-password',
+);
 Route::post('reset-password/{token}', [ResetPasswordController::class, 'reset']);
 
 // Verify Email
@@ -86,7 +109,9 @@ Route::get('verify-email/{id}', [VerifyEmailController::class, 'verify'])->name(
 Route::post('verify-email', [VerifyEmailController::class, 'resend'])->name('verify-email.resend');
 
 // Confirm Password
-Route::get('confirm-password', [ConfirmPasswordController::class, 'showConfirmForm'])->name('confirm-password');
+Route::get('confirm-password', [ConfirmPasswordController::class, 'showConfirmForm'])->name(
+    'confirm-password',
+);
 Route::post('confirm-password', [ConfirmPasswordController::class, 'confirm']);
 
 // Logout
@@ -95,3 +120,7 @@ Route::post('logout', [LogoutController::class, 'logout'])->name('logout');
 // Utils
 Route::get('user-lookup', UserLookupController::class)->name('user-lookup');
 Route::post('format', FormatController::class)->name('format');
+
+if (config('app.debug')) {
+    Route::get('kitchen-sink', fn() => view('waterhole::kitchen-sink'))->name('kitchen-sink');
+}

@@ -2,7 +2,6 @@
     <table
         class="table permission-grid"
         data-controller="permission-grid"
-        data-action="click->permission-grid#click mouseover->permission-grid#mouseover mouseout->permission-grid#reset"
     >
         <colgroup>
             <col>

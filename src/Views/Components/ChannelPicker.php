@@ -3,31 +3,33 @@
 namespace Waterhole\Views\Components;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\View\Component;
 use Waterhole\Models\Channel;
+use Waterhole\Models\Structure;
 
 class ChannelPicker extends Component
 {
-    public string $name;
-
-    public ?string $value;
-
-    public array $exclude;
-
-    public bool $allowNull;
-
     public Collection $channels;
-
     public ?Channel $selectedChannel;
 
-    public function __construct(string $name, string $value = null, array $exclude = [], bool $allowNull = false)
-    {
-        $this->name = $name;
-        $this->value = $value;
-        $this->exclude = $exclude;
-        $this->allowNull = $allowNull;
+    public function __construct(
+        public string $name,
+        public ?string $value = null,
+        array $exclude = [],
+        public bool $allowNull = false,
+    ) {
+        $this->channels = new Collection(
+            Structure::with('content')
+                ->whereMorphedTo('content', Channel::class)
+                ->orderBy('position')
+                ->get()
+                ->except($exclude)
+                ->map->content->filter(
+                    fn($channel) => $channel && Gate::allows('channel.post', $channel),
+                ),
+        );
 
-        $this->channels = Channel::all();
         $this->selectedChannel = $this->channels->find($value);
     }
 

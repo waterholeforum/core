@@ -33,7 +33,7 @@ class StructureController extends Controller
             foreach ($data['order'] as $position => $node) {
                 Structure::whereKey($node['id'])->update([
                     'position' => $position,
-                    'is_listed' => ! $node['listIndex'],
+                    'is_listed' => !$node['listIndex'],
                 ]);
             }
         }

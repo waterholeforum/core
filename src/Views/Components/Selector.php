@@ -9,10 +9,10 @@ class Selector extends Component
 {
     public function __construct(
         public string $buttonClass,
-        public string $value,
+        public $value,
         public array $options,
         public Closure $label,
-        public Closure $href
+        public Closure $href,
     ) {
     }
 

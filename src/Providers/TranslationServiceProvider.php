@@ -13,17 +13,14 @@ class TranslationServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->loadTranslationsFrom(__DIR__.'/../../lang', 'waterhole');
+        $this->loadTranslationsFrom(__DIR__ . '/../../lang', 'waterhole');
 
         // Extend the Laravel translator to load auth/validation messages from
         // the `waterhole` namespace if this is a Waterhole request. This way
         // we can provide comprehensive translations in the Waterhole package
         // without the user having to manually load them into their skeleton.
         $this->app->extend('translator', function (Translator $translator) {
-            $extended = new LaravelTranslator(
-                $translator->getLoader(),
-                $translator->getLocale()
-            );
+            $extended = new LaravelTranslator($translator->getLoader(), $translator->getLocale());
             $extended->setFallback($translator->getFallback());
 
             return $extended;
@@ -31,7 +28,10 @@ class TranslationServiceProvider extends ServiceProvider
 
         // On top of that, extend the translator to support loading Fluent
         // translations.
-        $this->app->extend('translator', function (LaravelTranslator $translator, Application $app) {
+        $this->app->extend('translator', function (
+            LaravelTranslator $translator,
+            Application $app,
+        ) {
             return new FluentTranslator(
                 baseTranslator: $translator,
                 files: $app['files'],

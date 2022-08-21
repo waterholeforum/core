@@ -8,11 +8,14 @@ export default class extends Controller {
     observer?: IntersectionObserver;
 
     initialize() {
-        this.observer = new IntersectionObserver(entries => {
-            this.breadcrumbTarget!.hidden = entries[0].isIntersecting;
-        }, {
-            rootMargin: `-${this.headerTarget?.offsetHeight || 0}px`,
-        });
+        this.observer = new IntersectionObserver(
+            (entries) => {
+                this.breadcrumbTarget!.hidden = entries[0].isIntersecting;
+            },
+            {
+                rootMargin: `-${this.headerTarget?.offsetHeight || 0}px`,
+            }
+        );
     }
 
     titleTargetConnected(element: HTMLElement) {

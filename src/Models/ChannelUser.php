@@ -35,8 +35,6 @@ class ChannelUser extends Model
 
     protected function setKeysForSaveQuery($query): Builder
     {
-        return $query
-            ->where('channel_id', $this->channel_id)
-            ->where('user_id', $this->user_id);
+        return $query->where('channel_id', $this->channel_id)->where('user_id', $this->user_id);
     }
 }

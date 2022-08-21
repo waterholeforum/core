@@ -1,10 +1,10 @@
 .comment {
-  padding-left: ~"calc(2.5em + var(--space-md))";
+  padding-left: ~'calc(2.5em + var(--space-md))';
   position: relative;
   border-top: 1px solid var(--color-stroke);
   padding-top: var(--space-md);
   //padding-bottom: var(--space-lg);
-  transition: background .2s;
+  transition: background 0.2s;
 
   .divider + * > & {
     border-top: 0;
@@ -24,13 +24,19 @@
   }
 
   &.is-new {
-    animation: appear .5s;
+    animation: appear 0.5s;
   }
 }
 
 @keyframes appear {
-  0% { transform: scale(.9); opacity: 0 }
-  100% { transform: none; opacity: 1 }
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
 }
 
 //.comment[aria-expanded="false"] {
@@ -183,7 +189,6 @@
   display: none;
 }
 
-
 .comment__replies {
   //margin-top: var(--space-md);
   margin-bottom: var(--space-lg);
@@ -199,21 +204,19 @@
 
   .comment {
     //padding-left: ~"calc(2.5em + var(--space-md) * 2)";
-    font-size: .9rem;
+    font-size: 0.9rem;
   }
 }
 
 @media (hover: hover) {
-  .comment__buttons, .comment__control {
-    transition: opacity .2s;
+  .control {
+    transition: opacity 0.2s;
 
-    .comment__main:not(:hover, :focus-within) & {
+    .has-controls:not(:hover, :focus-within) & {
       opacity: 0;
     }
   }
 }
-
-
 
 //.comment__view-replies {
 //  font-size: 90%;

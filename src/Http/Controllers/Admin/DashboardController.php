@@ -23,7 +23,7 @@ class DashboardController extends Controller
      */
     public function widget(int $id)
     {
-        abort_unless($widget = config('waterhole.admin.widgets.'.$id), 404);
+        abort_unless($widget = config('waterhole.admin.widgets.' . $id), 404);
 
         return view('waterhole::admin.widget', compact('id', 'widget'));
     }

@@ -24,7 +24,7 @@
 
             <div class="stack gap-md">
                 <details class="card" open>
-                    <summary class="card__header h4">
+                    <summary class="card__header h5">
                         {{ __('waterhole::admin.page-details-title') }}
                     </summary>
 
@@ -88,7 +88,7 @@
                 </details>
 
                 <details class="card">
-                    <summary class="card__header h4">
+                    <summary class="card__header h5">
                         {{ __('waterhole::admin.page-permissions-title') }}
                     </summary>
 

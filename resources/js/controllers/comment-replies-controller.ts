@@ -8,22 +8,28 @@ import { FrameElement } from '@hotwired/turbo/dist/types/elements';
  */
 export default class extends Controller {
     connect() {
-        this.element.addEventListener('click', e => {
+        this.element.addEventListener('click', (e) => {
             const expanded = this.element.getAttribute('aria-expanded') === 'false';
             this.element.setAttribute('aria-expanded', String(expanded));
-            const controlled = this.element.closest('.comment')?.querySelector<HTMLElement>('.comment__replies');
+            const controlled = this.element
+                .closest('.comment')
+                ?.querySelector<HTMLElement>('.comment__replies');
             if (controlled) {
-                controlled.hidden = ! expanded;
+                controlled.hidden = !expanded;
             }
-            if (! expanded) {
+            if (!expanded) {
                 e.preventDefault();
             }
         });
     }
 
     focusAfterLoad() {
-        addEventListener('turbo:frame-render', e => {
-            (e.target as FrameElement).querySelector<HTMLElement>('.comment__replies')?.focus();
-        }, { once: true });
+        addEventListener(
+            'turbo:frame-render',
+            (e) => {
+                (e.target as FrameElement).querySelector<HTMLElement>('.comment__replies')?.focus();
+            },
+            { once: true }
+        );
     }
 }

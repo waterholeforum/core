@@ -21,21 +21,25 @@ export default class extends Controller {
     }
 
     get parentElements(): HTMLElement[] {
-        return Array.from(document.querySelectorAll<HTMLElement>(`[data-comment-id="${this.parentId}"]`));
+        return Array.from(
+            document.querySelectorAll<HTMLElement>(`[data-comment-id="${this.parentId}"]`)
+        );
     }
 
     highlightParent() {
-        this.parentElements.forEach(el => {
+        this.parentElements.forEach((el) => {
             el.classList.add('is-highlighted');
         });
 
         if (this.parentTooltipTarget) {
-            this.parentTooltipTarget.disabled = this.parentElements.some(el => isElementInViewport(el, .5));
+            this.parentTooltipTarget.disabled = this.parentElements.some((el) =>
+                isElementInViewport(el, 0.5)
+            );
         }
     }
 
     stopHighlightingParent() {
-        this.parentElements.forEach(el => {
+        this.parentElements.forEach((el) => {
             el.classList.remove('is-highlighted');
         });
     }

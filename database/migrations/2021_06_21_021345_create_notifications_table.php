@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     public function up()
     {
         Schema::create('notifications', function (Blueprint $table) {
@@ -13,7 +12,12 @@ return new class extends Migration
             $table->string('type');
             $table->morphs('notifiable');
             $table->text('data');
-            $table->foreignId('sender_id')->nullable()->constrained('users')->cascadeOnUpdate()->nullOnDelete();
+            $table
+                ->foreignId('sender_id')
+                ->nullable()
+                ->constrained('users')
+                ->cascadeOnUpdate()
+                ->nullOnDelete();
             $table->nullableMorphs('group');
             $table->nullableMorphs('content');
             $table->timestamps();

@@ -8,17 +8,22 @@
     data-controller="comment"
     tabindex="-1"
 >
-    <div class="comment__main">
+    <div class="comment__main has-controls">
         <header class="comment__header">
             <x-waterhole::attribution
                 :user="$comment->user"
                 :date="$comment->created_at"
+                :permalink="$comment->url"
             />
 
             @if ($comment->parent)
                 <div
                     class="comment__parent"
-                    data-action="mouseenter->comment#highlightParent mouseleave->comment#stopHighlightingParent click->comment#stopHighlightingParent"
+                    data-action="
+                        mouseenter->comment#highlightParent
+                        mouseleave->comment#stopHighlightingParent
+                        click->comment#stopHighlightingParent
+                    "
                 >
                     <a
                         href="{{ $comment->parent->post_url }}"
@@ -27,7 +32,7 @@
                     >
                         <x-waterhole::icon icon="heroicon-s-reply" class="rotate-180"/>
                         <span>
-                            In reply to
+                            {{ __('waterhole::forum.comment-in-reply-to-link') }}
                             <span class="user-label">
                                 <x-waterhole::avatar :user="$comment->parent->user"/>
                                 <span>{{ $comment->parent->user?->name ?: 'Anonymous' }}</span>
@@ -74,7 +79,7 @@
                 hidden
             >
                 <x-waterhole::icon icon="heroicon-o-annotation"/>
-                <span>Quote</span>
+                <span>{{ __('waterhole::forum.quote-button') }}</span>
             </a>
         </div>
 
@@ -84,7 +89,7 @@
             <x-waterhole::action-menu
                 :for="$comment"
                 placement="bottom-end"
-                class="comment__control"
+                class="control"
             />
         </footer>
     </div>
@@ -95,9 +100,7 @@
                 <ol role="list" tabindex="-1" class="comment__replies">
                     @foreach ($comment->children as $child)
                         <li>
-                            <turbo-frame id="@domid($child)">
-                                <x-waterhole::comment-full :comment="$child"/>
-                            </turbo-frame>
+                            <x-waterhole::comment-frame :comment="$child"/>
                         </li>
                     @endforeach
                 </ol>

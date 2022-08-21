@@ -7,11 +7,8 @@ use Waterhole\Models\Comment;
 
 class CommentReactions extends Component
 {
-    public Comment $comment;
-
-    public function __construct(Comment $comment)
+    public function __construct(public Comment $comment)
     {
-        $this->comment = $comment;
     }
 
     public function render()

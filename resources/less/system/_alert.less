@@ -24,11 +24,10 @@
 
 .alert__actions {
   display: flex;
-  margin: ~"calc(-1 * var(--space-xxs))" ~"calc(-1 * var(--space-xs))";
+  margin: ~'calc(-1 * var(--space-xxs))' ~'calc(-1 * var(--space-xs))';
   margin-left: var(--space-md);
   font-size: var(--text-xs);
 }
-
 
 // Sizes
 
@@ -49,18 +48,16 @@
   }
 }
 
-
 // Notification Alerts
 
 .alert--notification {
   max-width: 50ch;
   background: var(--color-bg);
-  background-image:
-    linear-gradient(var(--color-activity-light), var(--color-activity-light)),
+  background-image: linear-gradient(var(--color-activity-light), var(--color-activity-light)),
     linear-gradient(var(--color-bg), var(--color-bg));
 
   .alert__message {
     line-height: inherit;
-    margin: 0 ~"calc(-1 * var(--space-xs))";
+    margin: 0 ~'calc(-1 * var(--space-xs))';
   }
 }

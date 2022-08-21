@@ -1,16 +1,13 @@
 {
-  "compilerOptions": {
-    "target": "es6",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "strict": true,
-    "sourceMap": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "lib": ["esnext", "dom"]
-  },
-  "include": [
-    "resources/js/**/*.ts",
-    "resources/js/**/*.d.ts"
-  ]
+    "compilerOptions": {
+        "target": "es6",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "strict": true,
+        "sourceMap": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "lib": ["esnext", "dom"]
+    },
+    "include": ["resources/js/**/*.ts", "resources/js/**/*.d.ts"]
 }

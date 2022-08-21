@@ -37,7 +37,7 @@
 
 .header-breadcrumb {
   color: var(--color-muted);
-  transition: opacity .2s, transform .2s;
+  transition: opacity 0.2s, transform 0.2s;
   display: inline-flex !important;
   align-items: center;
 
@@ -50,11 +50,12 @@
     margin: 0 var(--space-xs);
   }
 
-  &[hidden], [data-turbo-preview] & {
+  &[hidden],
+  [data-turbo-preview] & {
     visibility: hidden;
     transform: translateY(10px);
     opacity: 0;
-    transition: opacity .2s, transform .2s, visibility 0s .2s;
+    transition: opacity 0.2s, transform 0.2s, visibility 0s 0.2s;
   }
 
   > a:not(:hover) {
@@ -63,12 +64,5 @@
 
   > a {
     color: inherit;
-  }
-}
-
-
-.header-search {
-  .menu {
-    max-width: none;
   }
 }

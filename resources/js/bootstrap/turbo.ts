@@ -12,9 +12,9 @@ Turbo.start();
 
 window.Turbo = Turbo;
 
-document.addEventListener('turbo:submit-start', e => {
+document.addEventListener('turbo:submit-start', (e) => {
     const submitter = (e as any).detail.formSubmission.submitter;
-    if (! submitter) return;
+    if (!submitter) return;
     submitter.disabled = true;
     const popupButton = submitter.closest('ui-popup')?.children[0] as HTMLButtonElement;
     if (popupButton) {
@@ -22,9 +22,9 @@ document.addEventListener('turbo:submit-start', e => {
     }
 });
 
-document.addEventListener('turbo:submit-end', e => {
+document.addEventListener('turbo:submit-end', (e) => {
     const submitter = (e as any).detail.formSubmission.submitter;
-    if (! submitter) return;
+    if (!submitter) return;
     submitter.disabled = false;
     const popupButton = submitter.closest('ui-popup')?.children[0] as HTMLButtonElement;
     if (popupButton) {
@@ -32,17 +32,17 @@ document.addEventListener('turbo:submit-end', e => {
     }
 });
 
-document.addEventListener('turbo:before-stream-render', e => {
+document.addEventListener('turbo:before-stream-render', (e) => {
     const stream = e.target as StreamElement;
     if (stream.action === 'replace') {
         e.preventDefault();
-        stream.targetElements.forEach(el => {
+        stream.targetElements.forEach((el) => {
             morphdom(el, stream.templateContent.firstElementChild!);
         });
     }
 });
 
-document.addEventListener('turbo:frame-missing', async ({ detail: { fetchResponse }}: any) => {
+document.addEventListener('turbo:frame-missing', async ({ detail: { fetchResponse } }: any) => {
     const { location, redirected, statusCode, responseHTML } = fetchResponse;
     const response = { redirected, statusCode, responseHTML: await responseHTML };
 

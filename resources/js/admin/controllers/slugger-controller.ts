@@ -4,7 +4,7 @@ import { slug } from '../../utils';
 /**
  * Controller to automatically populate a slug field as you type.
  *
- * 
+ *
  */
 export default class extends Controller {
     static targets = ['slug', 'mirror'];
@@ -17,7 +17,7 @@ export default class extends Controller {
     updateName(e: Event) {
         const input = e.target as HTMLInputElement;
 
-        if (! this.locked) {
+        if (!this.locked) {
             this.slugTarget!.value = slug(input.value);
             this.mirror();
         }
@@ -32,7 +32,7 @@ export default class extends Controller {
     }
 
     mirror() {
-        this.mirrorTargets?.forEach(el => {
+        this.mirrorTargets?.forEach((el) => {
             el.textContent = this.slugTarget!.value;
         });
     }

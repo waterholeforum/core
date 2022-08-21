@@ -88,8 +88,7 @@ abstract class Action
      */
     public function render(Collection $models, array $attributes): HtmlString
     {
-        $attributes = (new ComponentAttributeBag($attributes))
-            ->merge($this->attributes($models));
+        $attributes = (new ComponentAttributeBag($attributes))->merge($this->attributes($models));
 
         // If the action requires confirmation, we will override the form's
         // method and action to take the user to the confirmation route.
@@ -108,9 +107,12 @@ abstract class Action
         $class = e(static::class);
         $content = $this->renderContent($models);
 
-        return new HtmlString(<<<html
-            <button type="submit" name="action_class" value="$class" $attributes>$content</button>
-        html);
+        return new HtmlString(
+            <<<html
+                <button type="submit" name="action_class" value="$class" $attributes>$content</button>
+            html
+            ,
+        );
     }
 
     /**

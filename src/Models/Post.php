@@ -53,7 +53,7 @@ class Post extends Model
     use HasUserState;
     use ValidatesData;
 
-    const UPDATED_AT = null;
+    public const UPDATED_AT = null;
 
     protected $casts = [
         'edited_at' => 'datetime',
@@ -78,13 +78,11 @@ class Post extends Model
         // synced to the database in the `saved` event, and `created` is always
         // run before `saved`.
         static::saved(function (Post $post) {
-            if (! $post->wasRecentlyCreated) {
+            if (!$post->wasRecentlyCreated) {
                 return;
             }
 
-            $post->usersWereMentioned(
-                $users = $post->mentions->except($post->user_id)
-            );
+            $post->usersWereMentioned($users = $post->mentions->except($post->user_id));
 
             Notification::send($users, new Mention($post));
         });
@@ -100,11 +98,15 @@ class Post extends Model
         //     return Post::visibleTo($user)->whereKey($this->id)->exists();
         // });
 
-        $postUserRows = $users->map(fn (User $user) => [
-            'post_id' => $this->getKey(),
-            'user_id' => $user->getKey(),
-            'mentioned_at' => now(),
-        ])->all();
+        $postUserRows = $users
+            ->map(
+                fn(User $user) => [
+                    'post_id' => $this->getKey(),
+                    'user_id' => $user->getKey(),
+                    'mentioned_at' => now(),
+                ],
+            )
+            ->all();
 
         PostUser::upsert($postUserRows, ['post_id', 'user_id'], ['mentioned_at']);
     }
@@ -155,7 +157,7 @@ class Post extends Model
             ->withoutGlobalScope(CommentIndexScope::class)
             ->whereRaw(
                 'created_at > COALESCE((select last_read_at from post_user where post_id = comments.post_id and post_user.user_id = ?), 0)',
-                [Auth::id()]
+                [Auth::id()],
             );
     }
 
@@ -174,7 +176,7 @@ class Post extends Model
     {
         $params = ['post' => $this];
 
-        if (($page = floor($index / (new Comment)->getPerPage()) + 1) > 1) {
+        if (($page = floor($index / (new Comment())->getPerPage()) + 1) > 1) {
             $params['page'] = $page;
         }
 
@@ -196,7 +198,11 @@ class Post extends Model
      */
     public function refreshCommentMetadata(): static
     {
-        $this->last_activity_at = $this->comments()->latest()->value('created_at') ?: $this->created_at;
+        $this->last_activity_at =
+            $this->comments()
+                ->latest()
+                ->value('created_at') ?:
+            $this->created_at;
         $this->comment_count = $this->comments()->count();
 
         return $this;
@@ -215,7 +221,7 @@ class Post extends Model
      */
     public function isRead(): bool
     {
-        return $this->userState && ! $this->isUnread();
+        return $this->userState && !$this->isUnread();
     }
 
     /**
@@ -223,7 +229,7 @@ class Post extends Model
      */
     public function isNew(): bool
     {
-        return $this->userState && ! $this->userState->last_read_at;
+        return $this->userState && !$this->userState->last_read_at;
     }
 
     /**
@@ -258,14 +264,12 @@ class Post extends Model
 
     public function getRouteKey(): string
     {
-        return $this->id.($this->slug ? '-'.$this->slug : '');
+        return $this->id . ($this->slug ? '-' . $this->slug : '');
     }
 
     public function resolveRouteBinding($value, $field = null)
     {
-        return $this
-            ->whereKey(explode('-', $value)[0])
-            ->firstOrFail();
+        return $this->whereKey(explode('-', $value)[0])->firstOrFail();
     }
 
     public function getUrlAttribute(): string
@@ -286,7 +290,7 @@ class Post extends Model
             default => '#bottom',
         };
 
-        return $this->url($this->comment_count - $this->unread_comments_count).$fragment;
+        return $this->url($this->comment_count - $this->unread_comments_count) . $fragment;
     }
 
     public function setTitleAttribute($value)
@@ -302,7 +306,7 @@ class Post extends Model
             'body' => ['required', 'string'],
         ];
 
-        if (! $instance) {
+        if (!$instance) {
             $rules['channel_id'] = ['required', Rule::exists(Channel::class, 'id')];
         }
 

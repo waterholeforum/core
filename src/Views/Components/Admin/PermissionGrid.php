@@ -16,7 +16,7 @@ class PermissionGrid extends Component
     public function __construct(
         array $abilities,
         ?PermissionCollection $permissions,
-        array $defaults = []
+        array $defaults = [],
     ) {
         $this->abilities = $abilities;
         $this->permissions = $permissions;

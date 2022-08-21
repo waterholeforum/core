@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Forum Name
@@ -40,8 +39,8 @@ return [
     'post_filters' => [
         \Waterhole\Filters\Latest::class,
         \Waterhole\Filters\NewActivity::class,
-        \Waterhole\Filters\Oldest::class,
         \Waterhole\Filters\Top::class,
+        \Waterhole\Filters\Oldest::class,
     ],
 
     /*
@@ -80,8 +79,7 @@ return [
     |
     */
 
-    'create_per_minute' => 2,
+    'create_per_minute' => 3,
 
     'search_per_minute' => 10,
-
 ];

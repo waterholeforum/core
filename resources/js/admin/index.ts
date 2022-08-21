@@ -2,6 +2,4 @@ import { definitionsFromContext } from '@hotwired/stimulus-webpack-helpers';
 import 'vanilla-colorful';
 import 'vanilla-colorful/hex-input.js';
 
-window.Stimulus.load(definitionsFromContext(
-    require.context('./controllers', true, /\.ts$/)
-));
+window.Stimulus.load(definitionsFromContext(require.context('./controllers', true, /\.ts$/)));

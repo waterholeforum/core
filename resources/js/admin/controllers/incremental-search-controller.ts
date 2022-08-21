@@ -4,7 +4,7 @@ import { debounce } from 'lodash-es';
 /**
  * Controller to power incremental search.
  *
- * 
+ *
  */
 export default class extends Controller {
     input(e: InputEvent) {

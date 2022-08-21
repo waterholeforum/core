@@ -10,15 +10,10 @@
                 <li aria-hidden="true"></li>
             </ol>
 
-            <h1 class="h2">{{ $title }}</h1>
+            <h1 class="h3">{{ $title }}</h1>
         </header>
 
-        <turbo-frame id="@domid($comment)">
-            <x-waterhole::comment-full
-                :comment="$comment"
-                with-replies
-            />
-        </turbo-frame>
+        <x-waterhole::comment-frame :comment="$comment" with-replies/>
 
         <x-waterhole::composer
             :post="$post"

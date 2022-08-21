@@ -14,11 +14,15 @@ class TextEditor extends Component
 
     public ?string $placeholder;
 
-    public function __construct(string $name, string $id = null, string $value = null, string $placeholder = null)
-    {
+    public function __construct(
+        string $name,
+        string $id = null,
+        string $value = null,
+        string $placeholder = null,
+    ) {
         $this->name = $name;
         $this->value = $value;
-        $this->id = $id ?: 'text-editor-'.uniqid();
+        $this->id = $id ?: 'text-editor-' . uniqid();
         $this->placeholder = $placeholder;
     }
 

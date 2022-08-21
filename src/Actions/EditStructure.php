@@ -13,9 +13,9 @@ class EditStructure extends Link
 {
     public function appliesTo($model): bool
     {
-        return $model instanceof StructureHeading
-            || $model instanceof StructureLink
-            || $model instanceof Page;
+        return $model instanceof StructureHeading ||
+            $model instanceof StructureLink ||
+            $model instanceof Page;
     }
 
     public function authorize(?User $user, Model $model): bool

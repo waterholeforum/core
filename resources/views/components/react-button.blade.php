@@ -5,6 +5,6 @@
     {{ $attributes->class('btn btn--small btn--transparent') }}
 />
 
-{{--<button class="btn btn--small btn--transparent btn--icon comment__control">--}}
+{{--<button class="btn btn--small btn--transparent btn--icon control">--}}
 {{--    <x-waterhole::icon icon="heroicon-o-emoji-happy"/>--}}
 {{--</button>--}}

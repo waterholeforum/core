@@ -21,8 +21,7 @@ class CommentPolicy
      */
     public function edit(User $user, Comment $comment): bool
     {
-        return $comment->user_id === $user->id
-            || $user->can('post.moderate', $comment->post);
+        return $comment->user_id === $user->id || $user->can('post.moderate', $comment->post);
     }
 
     /**

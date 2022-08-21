@@ -15,11 +15,8 @@ class Hit
 
     public ?Post $post;
 
-    public function __construct(
-        int $postId,
-        HtmlString $title,
-        HtmlString $body,
-    ) {
+    public function __construct(int $postId, HtmlString $title, HtmlString $body)
+    {
         $this->postId = $postId;
         $this->title = $title;
         $this->body = $body;

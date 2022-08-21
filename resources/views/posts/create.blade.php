@@ -28,7 +28,7 @@
                     <div>
                         <button
                             class="btn bg-accent"
-                            name="publish"
+                            name="commit"
                             type="submit"
                             value="1"
                         >{{ __('waterhole::forum.post-submit-button') }}</button>

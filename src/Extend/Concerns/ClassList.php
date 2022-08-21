@@ -11,7 +11,9 @@ trait ClassList
      */
     public static function build($model): string
     {
-        $classes = array_keys(array_filter(array_map(fn ($callback) => $callback($model), static::$items)));
+        $classes = array_keys(
+            array_filter(array_map(fn($callback) => $callback($model), static::$items)),
+        );
 
         return implode(' ', $classes);
     }

@@ -33,7 +33,7 @@
             @else
                 <div class="placeholder">
                     <x-waterhole::icon icon="heroicon-o-bell" class="placeholder__visual"/>
-                    <p class="h3">{{ __('waterhole::notifications.empty-message') }}</p>
+                    <p class="h4">{{ __('waterhole::notifications.empty-message') }}</p>
                 </div>
             @endif
         </turbo-frame>

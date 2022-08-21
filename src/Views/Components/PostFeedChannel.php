@@ -25,6 +25,6 @@ class PostFeedChannel extends Component
 
     public function render()
     {
-        return view('waterhole::components.feed-channel');
+        return view('waterhole::components.post-feed-channel');
     }
 }

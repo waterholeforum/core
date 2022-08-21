@@ -21,7 +21,7 @@ class LoginController extends Controller
     {
         // Copy any URL passed in the `return` query parameter into the session
         // so that after the login is complete we can redirect back to it.
-        if (! session()->has('url.intended')) {
+        if (!session()->has('url.intended')) {
             session()->put('url.intended', $request->query('return', url()->previous()));
         }
 
@@ -37,7 +37,7 @@ class LoginController extends Controller
 
         $this->ensureIsNotRateLimited($request);
 
-        if (! Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
+        if (!Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey($request));
 
             throw ValidationException::withMessages([
@@ -54,7 +54,7 @@ class LoginController extends Controller
 
     private function ensureIsNotRateLimited(Request $request)
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey($request), 5)) {
+        if (!RateLimiter::tooManyAttempts($this->throttleKey($request), 5)) {
             return;
         }
 
@@ -72,6 +72,6 @@ class LoginController extends Controller
 
     private function throttleKey(Request $request)
     {
-        return Str::lower($request->input('email')).'|'.$request->ip();
+        return Str::lower($request->input('email')) . '|' . $request->ip();
     }
 }

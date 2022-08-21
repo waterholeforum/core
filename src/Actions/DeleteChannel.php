@@ -46,7 +46,7 @@ class DeleteChannel extends Action
         $channel = $models[0];
         $postCount = $channel->posts()->count();
 
-        return view('waterhole::admin.structure.channels.delete', compact('channel', 'postCount'));
+        return view('waterhole::admin.structure.delete-channel', compact('channel', 'postCount'));
     }
 
     public function confirmButton(Collection $models): string

@@ -20,3 +20,11 @@ pagination-first-link = First
 pagination-previous-link = Previous
 pagination-next-link = Next
 pagination-last-link = Last
+
+load-more-button = Load More
+page-number-heading = Page { $number }
+
+anonymous = Anonymous
+
+controls-button = Controls
+more-button = More

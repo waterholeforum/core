@@ -15,21 +15,21 @@ use DateTime;
 
 class TimeAgo
 {
-    const MINUTE = 60;
+    public const MINUTE = 60;
 
-    const HOUR = self::MINUTE * 60;
+    public const HOUR = self::MINUTE * 60;
 
-    const DAY = self::HOUR * 24;
+    public const DAY = self::HOUR * 24;
 
-    const WEEK = self::DAY * 7;
+    public const WEEK = self::DAY * 7;
 
-    const MONTH = self::DAY * 30;
+    public const MONTH = self::DAY * 30;
 
-    const YEAR = self::DAY * 365;
+    public const YEAR = self::DAY * 365;
 
     public static function calculate($then): array
     {
-        if (! $then instanceof DateTime) {
+        if (!$then instanceof DateTime) {
             $then = new DateTime($then);
         }
 

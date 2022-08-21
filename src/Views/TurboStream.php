@@ -15,7 +15,7 @@ abstract class TurboStream
      */
     public static function replace(Component $component): ?string
     {
-        if (! $id = static::getId($component)) {
+        if (!($id = static::getId($component))) {
             return null;
         }
 
@@ -27,7 +27,7 @@ abstract class TurboStream
      */
     public static function remove(Component $component): ?string
     {
-        if (! $id = static::getId($component)) {
+        if (!($id = static::getId($component))) {
             return null;
         }
 
@@ -83,7 +83,7 @@ abstract class TurboStream
 
     private static function getId(Component $component)
     {
-        if (! method_exists($component, 'id')) {
+        if (!method_exists($component, 'id')) {
             return null;
         }
 

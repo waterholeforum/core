@@ -38,11 +38,19 @@ class Page extends Model
 
     public static function rules(Page $instance = null): array
     {
-        return array_merge([
-            'name' => ['required', 'string', 'max:255'],
-            'slug' => ['required', 'string', 'max:255', Rule::unique('pages')->ignore($instance)],
-            'body' => ['required', 'string'],
-            'permissions' => ['array'],
-        ], static::iconRules());
+        return array_merge(
+            [
+                'name' => ['required', 'string', 'max:255'],
+                'slug' => [
+                    'required',
+                    'string',
+                    'max:255',
+                    Rule::unique('pages')->ignore($instance),
+                ],
+                'body' => ['required', 'string'],
+                'permissions' => ['array'],
+            ],
+            static::iconRules(),
+        );
     }
 }

@@ -22,9 +22,7 @@ use Waterhole\Models\User;
 class PermittedScope implements Scope
 {
     private ?string $model;
-
     private string $key;
-
     private string $ability;
 
     public function __construct(string $model = null, string $key = 'id', string $ability = 'view')
@@ -42,7 +40,7 @@ class PermittedScope implements Scope
 
         // If the list of IDs is null, then the user must be an administrator,
         // and therefore there are no restrictions to apply.
-        if (! is_null($ids = $model::allPermitted($user, $this->ability))) {
+        if (!is_null($ids = $model::allPermitted($user, $this->ability))) {
             $builder->whereIn($this->key, $ids);
         }
     }

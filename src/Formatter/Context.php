@@ -7,9 +7,7 @@ use Waterhole\Models\User;
 
 class Context
 {
-    public function __construct(
-        public ?Model $model = null,
-        public ?User $user = null,
-    ) {
+    public function __construct(public ?Model $model = null, public ?User $user = null)
+    {
     }
 }

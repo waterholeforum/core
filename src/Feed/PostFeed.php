@@ -17,13 +17,7 @@ class PostFeed extends Feed
         Closure $scope = null,
     ) {
         $query = Post::query()
-            ->with([
-                'user',
-                'channel.userState',
-                'lastComment.user',
-                'userState',
-                'likedBy',
-            ])
+            ->with(['user', 'channel.userState', 'lastComment.user', 'userState', 'likedBy'])
             ->withCount('unreadComments');
 
         if ($scope) {

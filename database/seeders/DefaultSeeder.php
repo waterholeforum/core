@@ -47,9 +47,9 @@ class DefaultSeeder extends Seeder
             'body' => __('waterhole::seeder.guide-body'),
         ]);
 
-        $guide->permissions()->save(
-            (new Permission(['ability' => 'view']))->recipient()->associate($guest)
-        );
+        $guide
+            ->permissions()
+            ->save((new Permission(['ability' => 'view']))->recipient()->associate($guest));
 
         // Channels
         $channels = [
@@ -86,12 +86,20 @@ class DefaultSeeder extends Seeder
 
             $channel = Channel::create(Arr::except($data, 'group'));
 
-            $channel->permissions()->saveMany([
-                (new Permission(['ability' => 'view']))->recipient()->associate($data['group'] ?? $guest),
-                (new Permission(['ability' => 'post']))->recipient()->associate($data['group'] ?? $member),
-                (new Permission(['ability' => 'comment']))->recipient()->associate($data['group'] ?? $member),
-                (new Permission(['ability' => 'moderate']))->recipient()->associate($mod),
-            ]);
+            $channel
+                ->permissions()
+                ->saveMany([
+                    (new Permission(['ability' => 'view']))
+                        ->recipient()
+                        ->associate($data['group'] ?? $guest),
+                    (new Permission(['ability' => 'post']))
+                        ->recipient()
+                        ->associate($data['group'] ?? $member),
+                    (new Permission(['ability' => 'comment']))
+                        ->recipient()
+                        ->associate($data['group'] ?? $member),
+                    (new Permission(['ability' => 'moderate']))->recipient()->associate($mod),
+                ]);
         }
     }
 }

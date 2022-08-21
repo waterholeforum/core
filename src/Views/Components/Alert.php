@@ -7,29 +7,21 @@ use Illuminate\View\Component;
 
 class Alert extends Component
 {
-    const ICONS = [
+    public const ICONS = [
         'success' => 'heroicon-o-check',
         'danger' => 'heroicon-o-exclamation-circle',
     ];
 
-    public ?string $type;
-
     public string|HtmlString $slot;
 
-    public ?string $icon;
-
-    public bool $dismissible;
-
     public function __construct(
-        string $type = null,
-        string|HtmlString $message = '',
-        string $icon = null,
-        bool $dismissible = false
+        public ?string $type = null,
+        public string|HtmlString $message = '',
+        public ?string $icon = null,
+        public bool $dismissible = false,
     ) {
-        $this->type = $type;
         $this->slot = $message;
-        $this->icon = $icon ?? static::ICONS[$type] ?? null;
-        $this->dismissible = $dismissible;
+        $this->icon = $icon ?? (static::ICONS[$type] ?? null);
     }
 
     public function render()

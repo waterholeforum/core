@@ -45,20 +45,20 @@ class UserController extends Controller
                 } elseif (filter_var($token[0], FILTER_VALIDATE_EMAIL)) {
                     $query->where('email', $token[0]);
                 } else {
-                    $query->where('name', 'LIKE', $token[0].'%');
+                    $query->where('name', 'LIKE', $token[0] . '%');
                 }
             }
         }
 
         // Apply sorting to the query. Ensure the requested sort and direction
         // is valid before doing so.
-        if (! isset(self::SORTABLE_COLUMNS[$sort = $request->query('sort')])) {
+        if (!isset(self::SORTABLE_COLUMNS[($sort = $request->query('sort'))])) {
             $sort = array_key_first(self::SORTABLE_COLUMNS);
         }
 
         $direction = $request->query('direction', self::SORTABLE_COLUMNS[$sort] ?? 'asc');
 
-        if (! in_array($direction, ['asc', 'desc'])) {
+        if (!in_array($direction, ['asc', 'desc'])) {
             $direction = 'asc';
         }
 
@@ -95,8 +95,10 @@ class UserController extends Controller
     {
         $this->save($user, $request);
 
-        return redirect($request->input('return', route('waterhole.admin.users.index')))
-            ->with('success', 'User saved.');
+        return redirect($request->input('return', route('waterhole.admin.users.index')))->with(
+            'success',
+            'User saved.',
+        );
     }
 
     private function form()
@@ -110,7 +112,7 @@ class UserController extends Controller
     {
         $data = User::validate($request->all(), $user);
 
-        if (! empty($data['password'])) {
+        if (!empty($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         } else {
             unset($data['password']);
@@ -132,14 +134,17 @@ class UserController extends Controller
                 'nullable',
                 'array',
                 function ($attribute, $value, $fail) use ($user) {
-                    if ($user->isRootAdmin() && ! in_array(Group::ADMIN_ID, $value)) {
+                    if ($user->isRootAdmin() && !in_array(Group::ADMIN_ID, $value)) {
                         $fail('Cannot revoke the admin status of a root admin.');
                     }
                 },
             ],
             'groups.*' => [
                 'integer',
-                Rule::exists(Group::class, 'id')->whereNotIn('id', [Group::GUEST_ID, Group::MEMBER_ID]),
+                Rule::exists(Group::class, 'id')->whereNotIn('id', [
+                    Group::GUEST_ID,
+                    Group::MEMBER_ID,
+                ]),
             ],
         ]);
 

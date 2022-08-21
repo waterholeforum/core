@@ -3,7 +3,9 @@
         @foreach (config('waterhole.admin.widgets', []) as $id => $widget)
             <div style="
                 --admin-dashboard-widget-width: {{ $widget['width'] ?: 100 }}%;
-                --admin-dashboard-widget-height: {{ $widget['height'] ?? 'auto' }}
+                @isset($widget['height'])
+                    --admin-dashboard-widget-height: {{ $widget['height'] . (is_numeric($widget['height']) ? 'px' : '') }}
+                @endisset
             ">
                 @if (empty($widget['component']::$lazy))
                     @include('waterhole::admin.widget')

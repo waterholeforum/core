@@ -34,7 +34,7 @@ export default class extends Controller {
 
         animateScrollTo(document.documentElement.offsetHeight, {
             minDuration: 200,
-            maxDuration: 200
+            maxDuration: 200,
         });
     }
 
@@ -75,9 +75,13 @@ export default class extends Controller {
 
         el.classList.add('is-resizing');
         document.addEventListener('mousemove', move);
-        document.addEventListener('mouseup', () => {
-            document.removeEventListener('mousemove', move);
-            el.classList.remove('is-resizing');
-        }, { once: true });
+        document.addEventListener(
+            'mouseup',
+            () => {
+                document.removeEventListener('mousemove', move);
+                el.classList.remove('is-resizing');
+            },
+            { once: true }
+        );
     }
 }

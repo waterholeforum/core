@@ -22,7 +22,8 @@ class MySqlEngine
         $query = Post::query()
             ->leftJoin('comments', 'comments.post_id', '=', 'posts.id')
             ->where(function ($query) use ($q) {
-                $query->whereRaw('MATCH (posts.title) AGAINST (? IN BOOLEAN MODE)', [$q])
+                $query
+                    ->whereRaw('MATCH (posts.title) AGAINST (? IN BOOLEAN MODE)', [$q])
                     ->orWhereRaw('MATCH (posts.body) AGAINST (? IN BOOLEAN MODE)', [$q])
                     ->orWhereRaw('MATCH (comments.body) AGAINST (? IN BOOLEAN MODE)', [$q]);
             });
@@ -34,10 +35,11 @@ class MySqlEngine
         $channels = Channel::query()
             ->select('id')
             ->selectSub(
-                $query->clone()
+                $query
+                    ->clone()
                     ->select(DB::raw('count(distinct posts.id)'))
                     ->whereColumn('posts.channel_id', 'channels.id'),
-                'hits'
+                'hits',
             )
             ->get();
 
@@ -54,14 +56,18 @@ class MySqlEngine
         // information we need. We will wrap a final "outer" query around this
         // to ensure that we only get one result per post, even if it contains
         // multiple relevant comments inside.
-        $query->select(
-            'posts.id as post_id',
-            'comments.id as comment_id',
-            'posts.title',
-            'posts.body as post_body',
-            'comments.body as comment_body'
-        )
-            ->selectRaw('ROW_NUMBER() OVER (PARTITION BY posts.id ORDER BY MATCH (comments.body) AGAINST (?) DESC) as r', [$q])
+        $query
+            ->select(
+                'posts.id as post_id',
+                'comments.id as comment_id',
+                'posts.title',
+                'posts.body as post_body',
+                'comments.body as comment_body',
+            )
+            ->selectRaw(
+                'ROW_NUMBER() OVER (PARTITION BY posts.id ORDER BY MATCH (comments.body) AGAINST (?) DESC) as r',
+                [$q],
+            )
             ->selectRaw('MATCH (posts.title) AGAINST (?) * 10 as tscore', [$q])
             ->selectRaw('MATCH (posts.body) AGAINST (?) as pscore', [$q])
             ->selectRaw('MATCH (comments.body) AGAINST (?) as cscore', [$q]);
@@ -95,9 +101,9 @@ class MySqlEngine
                 $body = $highlighter->highlight(
                     $highlighter->truncate(
                         Utils::removeFormatting(
-                            $row->pscore >= $row->cscore ? $row->post_body : $row->comment_body
-                        )
-                    )
+                            $row->pscore >= $row->cscore ? $row->post_body : $row->comment_body,
+                        ),
+                    ),
                 );
 
                 return new Hit($row->post_id, $title, $body);
@@ -120,6 +126,6 @@ class MySqlEngine
     {
         preg_match_all('/\w+/', $q, $matches);
 
-        return collect($matches[0])->some(fn ($word) => strlen($word) < 3);
+        return collect($matches[0])->some(fn($word) => strlen($word) < 3);
     }
 }

@@ -7,11 +7,11 @@
         </div>
     @endif
 
-    <div class="alert__message">
+    <div class="alert__message content">
         {{ $slot }}
     </div>
 
-    @if (! empty($action) || $dismissible)
+    @if (!empty($action) || $dismissible)
         <div class="alert__actions">
             {{ $action ?? '' }}
 

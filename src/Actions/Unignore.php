@@ -17,7 +17,7 @@ class Unignore extends Action
 
     public function shouldRender(Collection $models): bool
     {
-        return ! Waterhole::isAdminRoute() && $models->some->isIgnored();
+        return !Waterhole::isAdminRoute() && $models->some->isIgnored();
     }
 
     public function label(Collection $models): string
@@ -37,9 +37,6 @@ class Unignore extends Action
 
     public function stream(Model $model): array
     {
-        return [
-            ...parent::stream($model),
-            TurboStream::replace(new FollowButton($model)),
-        ];
+        return [...parent::stream($model), TurboStream::replace(new FollowButton($model))];
     }
 }

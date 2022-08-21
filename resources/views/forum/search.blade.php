@@ -21,7 +21,8 @@
                     type="search"
                     name="q"
                     value="{{ request('q') }}"
-                    placeholder="Search"
+                    placeholder="{{ __('waterhole::forum.search-placeholder') }}"
+                    autofocus
                 >
             </div>
             <button type="submit" class="btn bg-accent">
@@ -105,9 +106,9 @@
                         icon="heroicon-o-search"
                     />
 
-                    <h2 class="h3">
+                    <p class="h4">
                         {{ __('waterhole::forum.search-empty-message') }}
-                    </h2>
+                    </p>
 
                     @if ($results->error)
                         <p>{{ $results->error }}</p>

@@ -23,7 +23,7 @@
 
             <div class="stack gap-md">
                 <details class="card" open>
-                    <summary class="card__header h4">
+                    <summary class="card__header h5">
                         {{ __('waterhole::admin.channel-details-title') }}
                     </summary>
 
@@ -102,7 +102,7 @@
                 </details>
 
                 <details class="card">
-                    <summary class="card__header h4">
+                    <summary class="card__header h5">
                         {{ __('waterhole::admin.channel-options-title') }}
                     </summary>
 
@@ -214,7 +214,7 @@
                 </details>
 
                 <details class="card">
-                    <summary class="card__header h4">
+                    <summary class="card__header h5">
                         {{ __('waterhole::admin.channel-permissions-title') }}
                     </summary>
 

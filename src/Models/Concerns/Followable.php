@@ -37,7 +37,15 @@ trait Followable
      */
     public function scopeFollowing(Builder $query): void
     {
-        $query->whereHas('userState', fn ($query) => $query->where('notifications', 'follow'));
+        $query->whereHas('userState', fn($query) => $query->where('notifications', 'follow'));
+    }
+
+    /**
+     * Find only models that the current user is ignoring.
+     */
+    public function scopeIgnoring(Builder $query): void
+    {
+        $query->whereHas('userState', fn($query) => $query->where('notifications', 'ignore'));
     }
 
     /**

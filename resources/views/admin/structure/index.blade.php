@@ -5,7 +5,7 @@
         data-action="dragend->form#submit"
     >
         <div class="row gap-xs">
-            <h1 class="h2">{{ __('waterhole::admin.structure-title') }}</h1>
+            <h1 class="h3">{{ __('waterhole::admin.structure-title') }}</h1>
 
             <div class="grow"></div>
 

@@ -4,7 +4,7 @@ import DragonNest from 'dragon-nest';
 /**
  * A controller to hook up a dragon-nest instance.
  *
- * 
+ *
  */
 export default class extends Controller {
     static targets = ['list', 'orderInput'];
@@ -58,12 +58,13 @@ export default class extends Controller {
         (e.target as HTMLElement).classList.remove('is-dragging');
 
         const result = this.listTargets!.flatMap((list, i) =>
-            Array.from(list.querySelectorAll<HTMLElement>('[data-id]')).map(el => {
+            Array.from(list.querySelectorAll<HTMLElement>('[data-id]')).map((el) => {
                 return { id: el.dataset.id, listIndex: i };
-            }));
+            })
+        );
 
         if (result) {
             this.orderInputTarget!.value = JSON.stringify(result);
         }
-    }
+    };
 }

@@ -11,19 +11,17 @@ use Waterhole\Notifications\DatabaseChannel;
 
 class AppServiceProvider extends ServiceProvider
 {
-    protected array $configFiles = [
-        'admin', 'design', 'forum', 'oauth', 'system', 'users',
-    ];
+    protected array $configFiles = ['admin', 'design', 'forum', 'oauth', 'system', 'users'];
 
     public function register()
     {
         collect($this->configFiles)->each(function ($config) {
-            $this->mergeConfigFrom(__DIR__."/../../config/$config.php", "waterhole.$config");
+            $this->mergeConfigFrom(__DIR__ . "/../../config/$config.php", "waterhole.$config");
         });
 
         $this->callAfterResolving(Factory::class, function (Factory $factory) {
             $factory->add('waterhole', [
-                'path' => __DIR__.'/../../resources/svg',
+                'path' => __DIR__ . '/../../resources/svg',
                 'prefix' => 'waterhole',
             ]);
         });
@@ -42,12 +40,12 @@ class AppServiceProvider extends ServiceProvider
             'user' => Models\User::class,
         ]);
 
-        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
 
         collect($this->configFiles)->each(function ($config) {
             $this->publishes(
-                [__DIR__."/../../config/$config.php" => config_path("waterhole/$config.php")],
-                'waterhole'
+                [__DIR__ . "/../../config/$config.php" => config_path("waterhole/$config.php")],
+                'waterhole',
             );
         });
 

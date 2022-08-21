@@ -1,7 +1,6 @@
 import { Controller } from '@hotwired/stimulus';
 import { FrameElement } from '@hotwired/turbo/dist/types/elements';
-import { PopupElement } from 'inclusive-elements';
-import { htmlToElement, shouldOpenInNewTab } from '../utils';
+import { htmlToElement } from '../utils';
 
 export default class extends Controller {
     static targets = ['badge', 'frame'];
@@ -15,10 +14,11 @@ export default class extends Controller {
     connect() {
         this.frameTarget!.removeAttribute('disabled');
 
-        window.Echo.private('Waterhole.Models.User.' + Waterhole.userId)
-            .listen('NotificationReceived', ({ unreadCount, html }: any) => {
+        window.Echo.private('Waterhole.Models.User.' + Waterhole.userId).listen(
+            'NotificationReceived',
+            ({ unreadCount, html }: any) => {
                 if (this.hasBadgeTarget) {
-                    this.badgeTarget!.hidden = ! unreadCount;
+                    this.badgeTarget!.hidden = !unreadCount;
                     this.badgeTarget!.innerText = unreadCount;
                 }
 
@@ -30,21 +30,15 @@ export default class extends Controller {
                 if (alert) {
                     Waterhole.alerts.show(alert, { key: 'notification' });
                 }
-            });
+            }
+        );
     }
 
     disconnect() {
         window.Echo.leave('Waterhole.Models.User.' + Waterhole.userId);
     }
 
-    open(e: MouseEvent) {
-        // TODO: maybe move this functionality into inclusive-elements
-        if (shouldOpenInNewTab(e)) {
-            (this.element as PopupElement).open = false;
-        } else {
-            e.preventDefault();
-        }
-
+    open() {
         if (this.hasBadgeTarget) {
             this.badgeTarget!.hidden = true;
         }

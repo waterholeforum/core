@@ -11,7 +11,7 @@ class ViewServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        $this->loadViewsFrom(__DIR__.'/../../resources/views', 'waterhole');
+        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'waterhole');
 
         Blade::componentNamespace('Waterhole\\Views\\Components', 'waterhole');
 
@@ -42,14 +42,21 @@ class ViewServiceProvider extends ServiceProvider
                 : [$expression, ''];
 
             return implode("\n", [
-                '<?php foreach ('.$components.' as $component): ?>',
+                '<?php foreach (' . $components . ' as $component): ?>',
                 '<?php unset($instance); ?>',
+                '<?php if ($component instanceof Closure): ?>',
+                '<?php $component = $component(' . $data . '); ?>',
+                '<?php endif; ?>',
                 '<?php if ($component instanceof Illuminate\View\Component): ?>',
                 '<?php $instance = $component; ?>',
                 '<?php elseif (class_exists($component)): ?>',
-                '<?php $instance = $__env->getContainer()->make($component, '.($data ?: '[]').'); ?>',
+                '<?php $instance = $__env->getContainer()->make($component, ' .
+                ($data ?: '[]') .
+                '); ?>',
                 '<?php elseif ($__env->getContainer()->make(Illuminate\View\Factory::class)->exists($component)): ?>',
-                '<?php $instance = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, [\'view\' => $component, \'data\' => '.($data ?: '[]').']); ?>',
+                '<?php $instance = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, [\'view\' => $component, \'data\' => ' .
+                ($data ?: '[]') .
+                ']); ?>',
                 '<?php elseif (config(\'app.debug\')): ?>',
                 '<script>console.warn(\'Component [<?php echo e(addslashes($component)); ?>] not found\')</script>',
                 '<?php endif; ?>',
@@ -62,7 +69,7 @@ class ViewServiceProvider extends ServiceProvider
         });
 
         Blade::directive('return', function (string $expression): string {
-            return '<?php echo Waterhole\return_field('.$expression.'); ?>';
+            return '<?php echo Waterhole\return_field(' . $expression . '); ?>';
         });
     }
 }

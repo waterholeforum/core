@@ -17,7 +17,7 @@ class VerifyEmailController extends Controller
 
     public function verify(Request $request)
     {
-        if (! hash_equals((string) $request->route('id'), (string) $request->user()->getKey())) {
+        if (!hash_equals((string) $request->route('id'), (string) $request->user()->getKey())) {
             throw new AuthorizationException();
         }
 
@@ -27,7 +27,8 @@ class VerifyEmailController extends Controller
 
         event(new Verified($request->user()));
 
-        return redirect()->intended(route('waterhole.home'))
+        return redirect()
+            ->intended(route('waterhole.home'))
             ->with('success', 'Thanks for verifying your email!');
     }
 
@@ -39,6 +40,6 @@ class VerifyEmailController extends Controller
 
         $request->user()->sendEmailVerificationNotification();
 
-        return back()->with('success', 'Email verification sent.');
+        return back()->with('success', 'Verification email sent.');
     }
 }

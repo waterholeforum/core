@@ -33,7 +33,7 @@ export default class extends Controller {
     }
 
     show() {
-        if (! (this.element as ModalElement).open) {
+        if (!(this.element as ModalElement).open) {
             (this.element as ModalElement).open = true;
         }
     }

@@ -28,15 +28,17 @@ class UserLookupController extends Controller
         }
 
         return User::query()
-            ->where('name', 'like', $query.'%')
+            ->where('name', 'like', $query . '%')
             ->orderByRaw('name = ? desc', [$query])
-            ->orderByRaw('name like ? desc', [$query.'%'])
+            ->orderByRaw('name like ? desc', [$query . '%'])
             ->take(5)
             ->get(['id', 'name', 'avatar'])
-            ->map(fn (User $user) => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'html' => Blade::renderComponent(new UserLabel($user)),
-            ]);
+            ->map(
+                fn(User $user) => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'html' => Blade::renderComponent(new UserLabel($user)),
+                ],
+            );
     }
 }

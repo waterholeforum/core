@@ -23,7 +23,7 @@ trait HasUserState
      */
     public function userState(User $user = null): HasOne
     {
-        $relation = $this->hasOne($this->userStateModel ?? get_class($this).'User');
+        $relation = $this->hasOne($this->userStateModel ?? get_class($this) . 'User');
 
         if ($userId = $user->id ?? Auth::id()) {
             $relation->withDefault(['user_id' => $userId]);

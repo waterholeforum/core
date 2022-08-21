@@ -22,8 +22,8 @@ class Mention extends Notification
 
     public function shouldSend($notifiable): bool
     {
-        return ! $this->post->ignoredBy->contains($notifiable)
-            && ! $this->post->channel->ignoredBy->contains($notifiable);
+        return !$this->post->ignoredBy->contains($notifiable) &&
+            !$this->post->channel->ignoredBy->contains($notifiable);
     }
 
     public function content(): Post|Comment
@@ -58,7 +58,7 @@ class Mention extends Notification
 
     public function button(): string
     {
-        return 'View '.($this->content instanceof Post ? 'Post' : 'Comment');
+        return 'View ' . ($this->content instanceof Post ? 'Post' : 'Comment');
     }
 
     public function reason(): string

@@ -12,7 +12,7 @@ trait Set
     public static function add(...$values): void
     {
         foreach ($values as $value) {
-            if (! in_array($value, static::$values)) {
+            if (!in_array($value, static::$values)) {
                 static::$values[] = $value;
             }
         }
@@ -23,10 +23,7 @@ trait Set
      */
     public static function remove(...$values): void
     {
-        static::$values = array_filter(
-            static::$values,
-            fn ($value) => ! in_array($value, $values)
-        );
+        static::$values = array_filter(static::$values, fn($value) => !in_array($value, $values));
     }
 
     /**
@@ -34,7 +31,7 @@ trait Set
      */
     public static function contains(...$values): bool
     {
-        return ! array_diff($values, static::$values);
+        return !array_diff($values, static::$values);
     }
 
     /**

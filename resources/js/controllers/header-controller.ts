@@ -12,5 +12,5 @@ export default class extends Controller {
 
     handleScroll = () => {
         this.element.classList.toggle('is-sticky', window.scrollY > 0);
-    }
+    };
 }

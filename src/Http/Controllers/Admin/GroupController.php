@@ -38,7 +38,7 @@ class GroupController extends Controller
 
     public function edit(Group $group)
     {
-        abort_if(! $group->isCustom(), 404);
+        abort_if(!$group->isCustom(), 404);
 
         return $this->form()->with(compact('group'));
     }
@@ -56,9 +56,13 @@ class GroupController extends Controller
 
         // Construct an array of all abilities that apply to the structure
         // content to use as columns for the permission grid.
-        $abilities = $structure->flatMap(function (Structure $node) {
-            return method_exists($node->content, 'abilities') ? $node->content->abilities() : [];
-        })->unique();
+        $abilities = $structure
+            ->flatMap(function (Structure $node) {
+                return method_exists($node->content, 'abilities')
+                    ? $node->content->abilities()
+                    : [];
+            })
+            ->unique();
 
         return view('waterhole::admin.groups.form', compact('structure', 'abilities'));
     }

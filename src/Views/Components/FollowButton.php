@@ -4,6 +4,7 @@ namespace Waterhole\Views\Components;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
+use ReflectionClass;
 use Waterhole\Views\Components\Concerns\Streamable;
 
 class FollowButton extends Component
@@ -11,13 +12,13 @@ class FollowButton extends Component
     use Streamable;
 
     public $followable;
+    public string $localePrefix;
 
-    public string $buttonClass;
-
-    public function __construct($followable, string $buttonClass = 'btn')
+    public function __construct($followable, public string $buttonClass = 'btn')
     {
         $this->followable = $followable;
-        $this->buttonClass = $buttonClass;
+        $this->localePrefix =
+            'waterhole::forum.' . strtolower((new ReflectionClass($followable))->getShortName());
     }
 
     public function shouldRender(): bool

@@ -15,7 +15,7 @@ use Waterhole\Search\MySqlEngine;
  */
 class SearchController extends Controller
 {
-    const SORTS = ['relevance', 'latest', 'top'];
+    public const SORTS = ['relevance', 'latest', 'top'];
 
     public function __construct()
     {
@@ -24,13 +24,15 @@ class SearchController extends Controller
 
     public function __invoke(Request $request)
     {
-        if (! $q = $request->input('q')) {
+        if (!($q = $request->input('q'))) {
             return view('waterhole::forum.search');
         }
 
         $channels = $selectedChannels = Channel::all();
 
-        $currentSort = in_array($sort = $request->input('sort'), static::SORTS) ? $sort : static::SORTS[0];
+        $currentSort = in_array($sort = $request->input('sort'), static::SORTS)
+            ? $sort
+            : static::SORTS[0];
         $currentPage = Paginator::resolveCurrentPage();
         $perPage = (new Post())->getPerPage();
 
@@ -81,22 +83,17 @@ class SearchController extends Controller
                 $results->total,
                 $perPage,
                 $currentPage,
-                $paginatorOptions
+                $paginatorOptions,
             );
         } else {
-            $hits = new Paginator(
-                $results->hits,
-                $perPage,
-                $currentPage,
-                $paginatorOptions
-            );
+            $hits = new Paginator($results->hits, $perPage, $currentPage, $paginatorOptions);
         }
 
         // In the sidebar, we will only display channels that contain hits, and
         // we will sort them with the most hits at the top.
         $channelsByHits = $channels
-            ->filter(fn ($channel) => $results->channelHits[$channel->id])
-            ->sortByDesc(fn ($channel) => $results->channelHits[$channel->id]);
+            ->filter(fn($channel) => $results->channelHits[$channel->id])
+            ->sortByDesc(fn($channel) => $results->channelHits[$channel->id]);
 
         return view('waterhole::forum.search', [
             'hits' => $hits->withQueryString(),

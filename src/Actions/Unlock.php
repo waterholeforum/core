@@ -38,9 +38,6 @@ class Unlock extends Action
 
     public function stream(Model $model): array
     {
-        return [
-            ...parent::stream($model),
-            TurboStream::replace(new CommentsLocked($model)),
-        ];
+        return [...parent::stream($model), TurboStream::replace(new CommentsLocked($model))];
     }
 }

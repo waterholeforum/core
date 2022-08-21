@@ -52,7 +52,7 @@
 
 .ruler {
   width: 100%;
-  margin: 0 0 0 ~"calc(-1 * var(--space-md))";
+  margin: 0 0 0 ~'calc(-1 * var(--space-md))';
   flex-direction: column;
   align-items: stretch;
   font-size: var(--text-xs);
@@ -62,7 +62,7 @@
     padding-left: var(--space-md);
 
     &.is-active,
-    &[aria-current=page] {
+    &[aria-current='page'] {
       &::after {
         width: 3px;
         height: 100%;
@@ -103,8 +103,8 @@
 
 .feed__new-activity {
   position: sticky;
-  top: ~"calc(var(--header-height) + var(--space-md))";
-  animation: appear .5s;
+  top: ~'calc(var(--header-height) + var(--space-md))';
+  animation: appear 0.5s;
   margin: 0;
 
   > * {
@@ -123,8 +123,8 @@
 .channel-picker__menu {
   max-width: 50ch;
 
-  --space-xxs: .3rem;
-  --space-xs: .6rem;
+  --space-xxs: 0.3rem;
+  --space-xs: 0.6rem;
 
   .icon:first-child {
     font-size: var(--text-lg);
@@ -146,22 +146,13 @@
 }
 
 .email-verification-notice {
-  background: var(--color-attention);
-  padding-block: var(--space-md);
+  padding-block: var(--space-xs);
   font-size: var(--text-xs);
-
-  .container {
-    display: flex;
-  }
-
-  .btn {
-    height: auto;
-  }
 }
 
 .notifications-menu {
-  width: 50ch;
-  max-width: none;
+  width: 55ch;
+  max-width: 100%;
   max-height: 40em;
 
   .menu-item {
@@ -181,11 +172,11 @@
   }
 
   &.is-unread {
-    background-image:
-      linear-gradient(var(--color-activity-light), var(--color-activity-light)),
+    background-image: linear-gradient(var(--color-activity-light), var(--color-activity-light)),
       linear-gradient(var(--color-bg), var(--color-bg));
 
-    > .icon, time {
+    > .icon,
+    time {
       color: var(--color-activity);
     }
 
@@ -205,26 +196,22 @@
   display: flex;
 }
 
+// TODO: remove padding and border from .comment by default, add as part of the
+// "comment stream" context
 .comment-card {
-  padding: var(--space-md);
-  padding-bottom: 0;
-
   .comment {
     border: 0;
     padding-top: 0;
+  }
+
+  .comment__main {
+    padding-bottom: 0;
   }
 
   .comment__body {
     max-height: 10em;
     overflow: auto;
   }
-}
-
-.comment-card__post {
-  background: var(--color-fill);
-  padding: var(--space-xs) var(--space-md);
-  margin: ~"calc(-1 * var(--space-md))";
-  margin-bottom: var(--space-md);
 }
 
 .notification-grid {
@@ -236,5 +223,17 @@
 .post-list {
   > * {
     padding: var(--space-md) 0;
+  }
+}
+
+@media (max-width: (@breakpoint-sm - 1)) {
+  .header-search__form {
+    display: none;
+  }
+}
+
+@media (min-width: @breakpoint-sm) {
+  .header-search__button {
+    display: none;
   }
 }

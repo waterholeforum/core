@@ -4,33 +4,37 @@
 >
     <div class="stack gap-lg">
         <div class="row gap-xs wrap">
-            <x-waterhole::feed-sort :feed="$posts"/>
+            <x-waterhole::feed-filters :feed="$posts"/>
             <x-waterhole::feed-top-period :feed="$posts"/>
             <div class="grow"></div>
-            <x-waterhole::feed-controls :feed="$posts"/>
+            <x-waterhole::post-feed-controls :feed="$posts"/>
         </div>
 
-        <x-waterhole::feed2 :feed="$posts" class="post-feed">
-            <div class="post-{{ $posts->currentLayout() }}">
-                @foreach ($component->items as $post)
-                    <x-dynamic-component
-                        :component="'waterhole::post-'.$posts->currentLayout().'-item'"
-                        :post="$post"
-                    />
-                @endforeach
-            </div>
+        @php
+            $items = $posts->items();
+        @endphp
 
-            <x-slot name="empty">
-                <div class="placeholder">
-                    <x-waterhole::icon
-                        icon="heroicon-o-chat-alt-2"
-                        class="placeholder__visual"
-                    />
-                    <h3>
-                        {{ __('waterhole::user.posts-empty-message') }}
-                    </h3>
+        @if ($items->isNotEmpty())
+            <x-waterhole::infinite-scroll :paginator="$items" class="post-feed">
+                <div class="post-{{ $posts->currentLayout() }}">
+                    @foreach ($items as $post)
+                        <x-dynamic-component
+                            :component="'waterhole::post-'.$posts->currentLayout().'-item'"
+                            :post="$post"
+                        />
+                    @endforeach
                 </div>
-            </x-slot>
-        </x-waterhole::feed2>
+            </x-waterhole::infinite-scroll>
+        @else
+            <div class="placeholder">
+                <x-waterhole::icon
+                    icon="heroicon-o-chat-alt-2"
+                    class="placeholder__visual"
+                />
+                <p class="h4">
+                    {{ __('waterhole::user.posts-empty-message') }}
+                </p>
+            </div>
+        @endif
     </div>
 </x-waterhole::user-profile>

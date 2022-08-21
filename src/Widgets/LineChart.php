@@ -13,29 +13,17 @@ class LineChart extends Component
     public static bool $lazy = true;
 
     public int $id;
-
     public string $title;
-
     public array $periods;
-
     public array $units;
-
     public string $selectedPeriod;
-
     public string $selectedUnit;
-
     public CarbonImmutable $periodStart;
-
     public CarbonImmutable $periodEnd;
-
     public CarbonImmutable $prevPeriodStart;
-
     public CarbonImmutable $prevPeriodEnd;
-
     public Collection $results;
-
     public int $periodTotal;
-
     public int $prevPeriodTotal;
 
     public function __construct(
@@ -43,7 +31,7 @@ class LineChart extends Component
         string $title,
         $model,
         string $column = 'created_at',
-        string $defaultPeriod = 'last_7_days'
+        string $defaultPeriod = 'last_7_days',
     ) {
         $this->id = $id;
 
@@ -56,48 +44,48 @@ class LineChart extends Component
 
         $this->periods = [
             'today' => [
-                'start' => fn (CarbonImmutable $date) => $date->startOfDay(),
-                'end' => fn (CarbonImmutable $date) => $date->endOfDay(),
+                'start' => fn(CarbonImmutable $date) => $date->startOfDay(),
+                'end' => fn(CarbonImmutable $date) => $date->endOfDay(),
                 'units' => ['hour'],
             ],
             'last_7_days' => [
-                'start' => fn (CarbonImmutable $date) => $date->startOfDay()->subDays(6),
-                'end' => fn (CarbonImmutable $date) => $date->endOfDay(),
+                'start' => fn(CarbonImmutable $date) => $date->startOfDay()->subDays(6),
+                'end' => fn(CarbonImmutable $date) => $date->endOfDay(),
                 'units' => ['day', 'hour'],
             ],
             'last_4_weeks' => [
-                'start' => fn (CarbonImmutable $date) => $date->startOfWeek()->subWeeks(3),
-                'end' => fn (CarbonImmutable $date) => $date->endOfWeek(),
+                'start' => fn(CarbonImmutable $date) => $date->startOfWeek()->subWeeks(3),
+                'end' => fn(CarbonImmutable $date) => $date->endOfWeek(),
                 'units' => ['day', 'week'],
             ],
             'last_3_months' => [
-                'start' => fn (CarbonImmutable $date) => $date->startOfMonth()->subMonths(2),
-                'end' => fn (CarbonImmutable $date) => $date->endOfMonth(),
+                'start' => fn(CarbonImmutable $date) => $date->startOfMonth()->subMonths(2),
+                'end' => fn(CarbonImmutable $date) => $date->endOfMonth(),
                 'units' => ['week', 'month'],
             ],
             'last_12_months' => [
-                'start' => fn (CarbonImmutable $date) => $date->startOfMonth()->subMonths(11),
-                'end' => fn (CarbonImmutable $date) => $date->endOfMonth(),
+                'start' => fn(CarbonImmutable $date) => $date->startOfMonth()->subMonths(11),
+                'end' => fn(CarbonImmutable $date) => $date->endOfMonth(),
                 'units' => ['month', 'week'],
             ],
             'this_month' => [
-                'start' => fn (CarbonImmutable $date) => $date->startOfMonth(),
-                'end' => fn (CarbonImmutable $date) => $date->endOfMonth(),
+                'start' => fn(CarbonImmutable $date) => $date->startOfMonth(),
+                'end' => fn(CarbonImmutable $date) => $date->endOfMonth(),
                 'units' => ['day', 'week'],
             ],
             'this_quarter' => [
-                'start' => fn (CarbonImmutable $date) => $date->startOfQuarter(),
-                'end' => fn (CarbonImmutable $date) => $date->endOfQuarter(),
+                'start' => fn(CarbonImmutable $date) => $date->startOfQuarter(),
+                'end' => fn(CarbonImmutable $date) => $date->endOfQuarter(),
                 'units' => ['day', 'week'],
             ],
             'this_year' => [
-                'start' => fn (CarbonImmutable $date) => $date->startOfYear(),
-                'end' => fn (CarbonImmutable $date) => $date->endOfYear(),
+                'start' => fn(CarbonImmutable $date) => $date->startOfYear(),
+                'end' => fn(CarbonImmutable $date) => $date->endOfYear(),
                 'units' => ['month', 'week'],
             ],
             'all_time' => [
-                'start' => fn () => CarbonImmutable::parse($model::min($column)),
-                'end' => fn (CarbonImmutable $date) => $date,
+                'start' => fn() => CarbonImmutable::parse($model::min($column)),
+                'end' => fn(CarbonImmutable $date) => $date,
                 'units' => ['month', 'year'],
             ],
         ];
@@ -105,27 +93,31 @@ class LineChart extends Component
         $this->units = [
             'hour' => [
                 'format' => '%Y-%m-%d %H:00:00',
-                'label' => fn (CarbonImmutable $date) => $date->isoFormat('LT'),
+                'label' => fn(CarbonImmutable $date) => $date->isoFormat('LT'),
             ],
             'day' => [
                 'format' => '%Y-%m-%d',
-                'label' => fn (CarbonImmutable $date) => $date->isoFormat('D MMM'),
+                'label' => fn(CarbonImmutable $date) => $date->isoFormat('D MMM'),
             ],
             'week' => [
                 'format' => '%YW%v',
-                'label' => fn (CarbonImmutable $date) => $date->isoFormat('D MMM').' - '.$date->addDays(6)->isoFormat('D MMM'),
+                'label' => fn(CarbonImmutable $date) => $date->isoFormat('D MMM') .
+                    ' - ' .
+                    $date->addDays(6)->isoFormat('D MMM'),
             ],
             'month' => [
                 'format' => '%Y-%m-01',
-                'label' => fn (CarbonImmutable $date) => $date->isoFormat('MMM Y'),
+                'label' => fn(CarbonImmutable $date) => $date->isoFormat('MMM Y'),
             ],
             'year' => [
                 'format' => '%Y',
-                'label' => fn (CarbonImmutable $date) => $date->isoFormat('Y'),
+                'label' => fn(CarbonImmutable $date) => $date->isoFormat('Y'),
             ],
         ];
 
-        $this->selectedPeriod = isset($this->periods[$p = request('period')]) ? $p : $defaultPeriod;
+        $this->selectedPeriod = isset($this->periods[($p = request('period'))])
+            ? $p
+            : $defaultPeriod;
 
         $period = $this->periods[$this->selectedPeriod];
         $now = CarbonImmutable::now();
@@ -138,7 +130,7 @@ class LineChart extends Component
 
         $unit = $this->units[$this->selectedUnit];
 
-        if (! $model instanceof QueryBuilder && ! $model instanceof EloquentBuilder) {
+        if (!$model instanceof QueryBuilder && !$model instanceof EloquentBuilder) {
             $model = $model::query();
         }
 
@@ -149,10 +141,12 @@ class LineChart extends Component
             ->where($column, '<', $this->periodEnd)
             ->groupBy('time_group')
             ->get(['count', 'time_group'])
-            ->map(fn ($row) => [
-                'count' => $row['count'],
-                'date' => CarbonImmutable::parse($row['time_group']),
-            ]);
+            ->map(
+                fn($row) => [
+                    'count' => $row['count'],
+                    'date' => CarbonImmutable::parse($row['time_group']),
+                ],
+            );
 
         $this->periodTotal = $this->results
             ->where('date', '>=', $this->periodStart)

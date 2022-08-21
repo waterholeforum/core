@@ -6,7 +6,7 @@
     >
         <div class="stack gap-xxxl">
             <div
-                @if (! $comments->onFirstPage()) hidden @endif
+                @if (!$comments->onFirstPage()) hidden @endif
                 data-post-page-target="post"
             >
                 <x-waterhole::post-full :post="$post"/>
@@ -22,7 +22,7 @@
                         {{ __('waterhole::forum.post-comment-count', ['count' => $post->comment_count]) }}
                     </h2>
 
-                    <x-waterhole::infinite-scroll :paginator="$comments" divider>
+                    <x-waterhole::infinite-scroll :paginator="$comments" divider endless>
                         @foreach ($comments as $i => $comment)
                             @if ($lastReadAt && $comment->created_at > $lastReadAt)
                                 @once
@@ -42,7 +42,7 @@
                             </turbo-frame>
                         @endforeach
 
-                        @if (! $comments->hasMorePages())
+                        @if (!$comments->hasMorePages())
                             <div
                                 class="stack gap-md"
                                 data-post-page-target="bottom"

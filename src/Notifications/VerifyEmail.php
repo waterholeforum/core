@@ -32,7 +32,11 @@ class VerifyEmail extends Notification
             ->subject('Verify Email Address')
             ->line('Please click the button below to verify your email address.')
             ->action('Verify Email Address', $verificationUrl)
-            ->line('If you do not have an account on '.config('waterhole.forum.title').', no further action is required.');
+            ->line(
+                'If you do not have an account on ' .
+                    config('waterhole.forum.name') .
+                    ', no further action is required.',
+            );
     }
 
     protected function verificationUrl(): string
@@ -43,7 +47,7 @@ class VerifyEmail extends Notification
             [
                 'id' => $this->user->getKey(),
                 'email' => $this->email,
-            ]
+            ],
         );
     }
 }

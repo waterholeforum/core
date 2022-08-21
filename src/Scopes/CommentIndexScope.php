@@ -18,13 +18,11 @@ class CommentIndexScope implements Scope
             return;
         }
 
-        $builder
-            ->select($builder->qualifyColumn('*'))
-            ->selectSub(function ($sub) use ($builder) {
-                $sub->selectRaw('count(*)')
-                    ->from('comments as before')
-                    ->whereColumn('before.post_id', $builder->qualifyColumn('post_id'))
-                    ->whereColumn('before.created_at', '<', $builder->qualifyColumn('created_at'));
-            }, 'index');
+        $builder->select($builder->qualifyColumn('*'))->selectSub(function ($sub) use ($builder) {
+            $sub->selectRaw('count(*)')
+                ->from('comments as before')
+                ->whereColumn('before.post_id', $builder->qualifyColumn('post_id'))
+                ->whereColumn('before.created_at', '<', $builder->qualifyColumn('created_at'));
+        }, 'index');
     }
 }

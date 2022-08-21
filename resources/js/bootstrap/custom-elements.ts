@@ -1,5 +1,12 @@
 import '@github/text-expander-element';
-import { AlertsElement, MenuElement, ModalElement, PopupElement, ToolbarElement, TooltipElement } from 'inclusive-elements';
+import {
+    AlertsElement,
+    MenuElement,
+    ModalElement,
+    PopupElement,
+    ToolbarElement,
+    TooltipElement,
+} from 'inclusive-elements';
 
 window.customElements.define('ui-alerts', AlertsElement);
 window.customElements.define('ui-menu', MenuElement);

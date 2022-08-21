@@ -9,8 +9,8 @@
         href="{{ route('waterhole.login', ['return' => $comment->post_url]) }}"
         data-turbo-frame="_top"
     @endif
-    class="btn btn--small btn--transparent comment__control"
+    class="btn btn--small btn--transparent control"
 >
     <x-waterhole::icon icon="heroicon-o-reply"/>
-    <span>Reply</span>
+    <span>{{ __('waterhole::forum.comment-reply-button') }}</span>
 </a>

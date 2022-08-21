@@ -12,13 +12,15 @@ class PermissionCollection extends Collection
      */
     public function user(?User $user): static
     {
-        if (! $user) {
+        if (!$user) {
             return $this->guest();
         }
 
         return $this->group($user->groups)->merge(
-            $this->where('recipient_type', $user->getMorphClass())
-                ->where('recipient_id', $user->getKey())
+            $this->where('recipient_type', $user->getMorphClass())->where(
+                'recipient_id',
+                $user->getKey(),
+            ),
         );
     }
 
@@ -35,13 +37,14 @@ class PermissionCollection extends Collection
      */
     public function group(Group|int|array|Collection $group): static
     {
-        $ids = collect($group instanceof Group ? [$group] : $group)
-            ->map(fn ($group) => $group instanceof Group ? $group->id : $group);
+        $ids = collect($group instanceof Group ? [$group] : $group)->map(
+            fn($group) => $group instanceof Group ? $group->id : $group,
+        );
 
-        if (! $ids->contains(Group::GUEST_ID)) {
+        if (!$ids->contains(Group::GUEST_ID)) {
             $ids->push(Group::GUEST_ID);
 
-            if (! $ids->contains(Group::MEMBER_ID)) {
+            if (!$ids->contains(Group::MEMBER_ID)) {
                 $ids->push(Group::MEMBER_ID);
             }
         }
@@ -78,9 +81,10 @@ class PermissionCollection extends Collection
             return $this->where('scope_type', $model);
         }
 
-        return $this
-            ->where('scope_type', $model->getMorphClass())
-            ->where('scope_id', $model->getKey());
+        return $this->where('scope_type', $model->getMorphClass())->where(
+            'scope_id',
+            $model->getKey(),
+        );
     }
 
     /**
@@ -104,8 +108,7 @@ class PermissionCollection extends Collection
      */
     public function allows(string $ability, Model $model = null): bool
     {
-        return ($model ? $this->scope($model) : $this)
-            ->ability($ability)->isNotEmpty();
+        return ($model ? $this->scope($model) : $this)->ability($ability)->isNotEmpty();
     }
 
     /**

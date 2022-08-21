@@ -2,7 +2,7 @@ import { AlertsElement } from 'inclusive-elements';
 
 window.Waterhole.alerts = document.getElementById('alerts') as AlertsElement;
 
-window.Waterhole.fetchError = function(response: Response): void {
+window.Waterhole.fetchError = function (response: Response): void {
     let templateId;
     switch (response.status) {
         case 401:
@@ -26,7 +26,7 @@ window.Waterhole.fetchError = function(response: Response): void {
     }
 };
 
-document.addEventListener('turbo:before-fetch-response', async e => {
+document.addEventListener('turbo:before-fetch-response', async (e) => {
     const response = (e as CustomEvent).detail.fetchResponse;
 
     if (response.statusCode >= 400 && response.statusCode !== 422 && response.statusCode <= 599) {
@@ -37,9 +37,11 @@ document.addEventListener('turbo:before-fetch-response', async e => {
 
     window.Waterhole.alerts.dismiss('fetchError');
 
-    appendAlertsFromDocument(
-        new DOMParser().parseFromString(await response.responseHTML, 'text/html')
-    );
+    requestAnimationFrame(async () => {
+        appendAlertsFromDocument(
+            new DOMParser().parseFromString(await response.responseHTML, 'text/html')
+        );
+    });
 });
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -48,8 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function appendAlertsFromDocument(document: Document) {
     const append = document.getElementById('alerts-append');
-    if (! append) return;
-    Array.from(append.children).forEach(el => {
+    if (!append) return;
+    Array.from(append.children).forEach((el) => {
         window.Waterhole.alerts.show(el as HTMLElement);
     });
 }

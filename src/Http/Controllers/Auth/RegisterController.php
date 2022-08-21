@@ -20,7 +20,7 @@ class RegisterController extends Controller
     {
         // Copy any URL passed in the `return` query parameter into the session
         // so that after the registration is complete we can redirect back to it.
-        if (! session()->has('url.intended')) {
+        if (!session()->has('url.intended')) {
             session()->put('url.intended', $request->query('return', url()->previous()));
         }
 
@@ -41,6 +41,8 @@ class RegisterController extends Controller
 
         // Remove the fragment so that the email verification notice at the top
         // of the page is visible.
-        return redirect()->intended(route('waterhole.home'))->withoutFragment();
+        return redirect()
+            ->intended(route('waterhole.home'))
+            ->withoutFragment();
     }
 }

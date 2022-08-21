@@ -28,7 +28,7 @@ class CopyLink extends Link
 
     public function shouldRender(Collection $models): bool
     {
-        return ! Waterhole::isAdminRoute();
+        return !Waterhole::isAdminRoute();
     }
 
     public function label(Collection $models): string

@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Admin Panel Path
@@ -54,5 +53,4 @@ return [
             'model' => Waterhole\Models\Comment::class,
         ],
     ],
-
 ];

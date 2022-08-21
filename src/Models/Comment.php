@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rule;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
-use function Tonysm\TurboLaravel\dom_id;
 use Waterhole\Events\NewComment;
 use Waterhole\Models\Concerns\HasBody;
 use Waterhole\Models\Concerns\HasLikes;
@@ -16,6 +15,8 @@ use Waterhole\Notifications\Mention;
 use Waterhole\Scopes\CommentIndexScope;
 use Waterhole\Views\Components;
 use Waterhole\Views\TurboStream;
+
+use function Tonysm\TurboLaravel\dom_id;
 
 /**
  * @property int $id
@@ -42,7 +43,7 @@ class Comment extends Model
     use HasRecursiveRelationships;
     use ValidatesData;
 
-    const UPDATED_AT = null;
+    public const UPDATED_AT = null;
 
     protected $casts = [
         'edited_at' => 'datetime',
@@ -74,12 +75,12 @@ class Comment extends Model
         // synced to the database in the `saved` event, and `created` is always
         // run before `saved`.
         static::saved(function (Comment $comment) {
-            if (! $comment->wasRecentlyCreated) {
+            if (!$comment->wasRecentlyCreated) {
                 return;
             }
 
             $comment->post->usersWereMentioned(
-                $users = $comment->mentions->except($comment->user_id)
+                $users = $comment->mentions->except($comment->user_id),
             );
 
             Notification::send($users, new Mention($comment));
@@ -124,7 +125,7 @@ class Comment extends Model
      */
     public function isRead(): bool
     {
-        return $this->post->userState && ! $this->isUnread();
+        return $this->post->userState && !$this->isUnread();
     }
 
     /**
@@ -157,9 +158,7 @@ class Comment extends Model
      */
     public function streamUpdated(): array
     {
-        return [
-            TurboStream::replace(new Components\CommentFull($this)),
-        ];
+        return [TurboStream::replace(new Components\CommentFull($this))];
     }
 
     /**
@@ -186,10 +185,10 @@ class Comment extends Model
     public function getPostUrlAttribute(): string
     {
         if (isset($this->index)) {
-            return $this->post->url($this->index).'#'.dom_id($this);
+            return $this->post->url($this->index) . '#' . dom_id($this);
         }
 
-        return $this->post->url.'?comment='.$this->id;
+        return $this->post->url . '?comment=' . $this->id;
     }
 
     public static function rules(Comment $instance = null): array

@@ -74,8 +74,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "prune": () => (/* binding */ prune)
 /* harmony export */ });
 /*
-Stimulus 3.0.1
-Copyright © 2021 Basecamp, LLC
+Stimulus 3.1.0
+Copyright © 2022 Basecamp, LLC
  */
 class EventListener {
     constructor(eventTarget, eventName, eventOptions) {
@@ -262,24 +262,15 @@ class Action {
         return `${this.eventName}${eventNameSuffix}->${this.identifier}#${this.methodName}`;
     }
     get params() {
-        if (this.eventTarget instanceof Element) {
-            return this.getParamsFromEventTargetAttributes(this.eventTarget);
-        }
-        else {
-            return {};
-        }
-    }
-    getParamsFromEventTargetAttributes(eventTarget) {
         const params = {};
         const pattern = new RegExp(`^data-${this.identifier}-(.+)-param$`);
-        const attributes = Array.from(eventTarget.attributes);
-        attributes.forEach(({ name, value }) => {
+        for (const { name, value } of Array.from(this.element.attributes)) {
             const match = name.match(pattern);
             const key = match && match[1];
             if (key) {
-                Object.assign(params, { [camelize(key)]: typecast(value) });
+                params[camelize(key)] = typecast(value);
             }
-        });
+        }
         return params;
     }
     get eventTargetName() {
@@ -331,7 +322,9 @@ class Binding {
         return this.context.identifier;
     }
     handleEvent(event) {
-        if (this.willBeInvokedByEvent(event)) {
+        if (this.willBeInvokedByEvent(event) && this.shouldBeInvokedPerSelf(event)) {
+            this.processStopPropagation(event);
+            this.processPreventDefault(event);
             this.invokeWithEvent(event);
         }
     }
@@ -345,6 +338,16 @@ class Binding {
         }
         throw new Error(`Action "${this.action}" references undefined method "${this.methodName}"`);
     }
+    processStopPropagation(event) {
+        if (this.eventOptions.stop) {
+            event.stopPropagation();
+        }
+    }
+    processPreventDefault(event) {
+        if (this.eventOptions.prevent) {
+            event.preventDefault();
+        }
+    }
     invokeWithEvent(event) {
         const { target, currentTarget } = event;
         try {
@@ -357,6 +360,14 @@ class Binding {
             const { identifier, controller, element, index } = this;
             const detail = { identifier, controller, element, index, event };
             this.context.handleError(error, `invoking action "${this.action}"`, detail);
+        }
+    }
+    shouldBeInvokedPerSelf(event) {
+        if (this.action.eventOptions.self === true) {
+            return this.action.element === event.target;
+        }
+        else {
+            return true;
         }
     }
     willBeInvokedByEvent(event) {
@@ -973,10 +984,10 @@ class ValueObserver {
         this.receiver = receiver;
         this.stringMapObserver = new StringMapObserver(this.element, this);
         this.valueDescriptorMap = this.controller.valueDescriptorMap;
-        this.invokeChangedCallbacksForDefaultValues();
     }
     start() {
         this.stringMapObserver.start();
+        this.invokeChangedCallbacksForDefaultValues();
     }
     stop() {
         this.stringMapObserver.stop();
@@ -1028,12 +1039,19 @@ class ValueObserver {
         const changedMethod = this.receiver[changedMethodName];
         if (typeof changedMethod == "function") {
             const descriptor = this.valueDescriptorNameMap[name];
-            const value = descriptor.reader(rawValue);
-            let oldValue = rawOldValue;
-            if (rawOldValue) {
-                oldValue = descriptor.reader(rawOldValue);
+            try {
+                const value = descriptor.reader(rawValue);
+                let oldValue = rawOldValue;
+                if (rawOldValue) {
+                    oldValue = descriptor.reader(rawOldValue);
+                }
+                changedMethod.call(this.receiver, value, oldValue);
             }
-            changedMethod.call(this.receiver, value, oldValue);
+            catch (error) {
+                if (!(error instanceof TypeError))
+                    throw error;
+                throw new TypeError(`Stimulus Value "${this.context.identifier}.${descriptor.name}" - ${error.message}`);
+            }
         }
     }
     get valueDescriptors() {
@@ -1709,13 +1727,15 @@ class Application {
         this.logDebugActivity("application", "stop");
     }
     register(identifier, controllerConstructor) {
-        if (controllerConstructor.shouldLoad) {
-            this.load({ identifier, controllerConstructor });
-        }
+        this.load({ identifier, controllerConstructor });
     }
     load(head, ...rest) {
         const definitions = Array.isArray(head) ? head : [head, ...rest];
-        definitions.forEach(definition => this.router.loadDefinition(definition));
+        definitions.forEach(definition => {
+            if (definition.controllerConstructor.shouldLoad) {
+                this.router.loadDefinition(definition);
+            }
+        });
     }
     unload(head, ...rest) {
         const identifiers = Array.isArray(head) ? head : [head, ...rest];
@@ -1822,7 +1842,7 @@ function ValuePropertiesBlessing(constructor) {
         valueDescriptorMap: {
             get() {
                 return valueDefinitionPairs.reduce((result, valueDefinitionPair) => {
-                    const valueDescriptor = parseValueDefinitionPair(valueDefinitionPair);
+                    const valueDescriptor = parseValueDefinitionPair(valueDefinitionPair, this.identifier);
                     const attributeName = this.data.getAttributeNameForKey(valueDescriptor.key);
                     return Object.assign(result, { [attributeName]: valueDescriptor });
                 }, {});
@@ -1833,8 +1853,8 @@ function ValuePropertiesBlessing(constructor) {
         return Object.assign(properties, propertiesForValueDefinitionPair(valueDefinitionPair));
     }, propertyDescriptorMap);
 }
-function propertiesForValueDefinitionPair(valueDefinitionPair) {
-    const definition = parseValueDefinitionPair(valueDefinitionPair);
+function propertiesForValueDefinitionPair(valueDefinitionPair, controller) {
+    const definition = parseValueDefinitionPair(valueDefinitionPair, controller);
     const { key, name, reader: read, writer: write } = definition;
     return {
         [name]: {
@@ -1863,8 +1883,12 @@ function propertiesForValueDefinitionPair(valueDefinitionPair) {
         }
     };
 }
-function parseValueDefinitionPair([token, typeDefinition]) {
-    return valueDescriptorForTokenAndTypeDefinition(token, typeDefinition);
+function parseValueDefinitionPair([token, typeDefinition], controller) {
+    return valueDescriptorForTokenAndTypeDefinition({
+        controller,
+        token,
+        typeDefinition,
+    });
 }
 function parseValueTypeConstant(constant) {
     switch (constant) {
@@ -1886,24 +1910,30 @@ function parseValueTypeDefault(defaultValue) {
     if (Object.prototype.toString.call(defaultValue) === "[object Object]")
         return "object";
 }
-function parseValueTypeObject(typeObject) {
-    const typeFromObject = parseValueTypeConstant(typeObject.type);
-    if (typeFromObject) {
-        const defaultValueType = parseValueTypeDefault(typeObject.default);
-        if (typeFromObject !== defaultValueType) {
-            throw new Error(`Type "${typeFromObject}" must match the type of the default value. Given default value: "${typeObject.default}" as "${defaultValueType}"`);
-        }
-        return typeFromObject;
+function parseValueTypeObject(payload) {
+    const typeFromObject = parseValueTypeConstant(payload.typeObject.type);
+    if (!typeFromObject)
+        return;
+    const defaultValueType = parseValueTypeDefault(payload.typeObject.default);
+    if (typeFromObject !== defaultValueType) {
+        const propertyPath = payload.controller ? `${payload.controller}.${payload.token}` : payload.token;
+        throw new Error(`The specified default value for the Stimulus Value "${propertyPath}" must match the defined type "${typeFromObject}". The provided default value of "${payload.typeObject.default}" is of type "${defaultValueType}".`);
     }
+    return typeFromObject;
 }
-function parseValueTypeDefinition(typeDefinition) {
-    const typeFromObject = parseValueTypeObject(typeDefinition);
-    const typeFromDefaultValue = parseValueTypeDefault(typeDefinition);
-    const typeFromConstant = parseValueTypeConstant(typeDefinition);
+function parseValueTypeDefinition(payload) {
+    const typeFromObject = parseValueTypeObject({
+        controller: payload.controller,
+        token: payload.token,
+        typeObject: payload.typeDefinition
+    });
+    const typeFromDefaultValue = parseValueTypeDefault(payload.typeDefinition);
+    const typeFromConstant = parseValueTypeConstant(payload.typeDefinition);
     const type = typeFromObject || typeFromDefaultValue || typeFromConstant;
     if (type)
         return type;
-    throw new Error(`Unknown value type "${typeDefinition}"`);
+    const propertyPath = payload.controller ? `${payload.controller}.${payload.typeDefinition}` : payload.token;
+    throw new Error(`Unknown value type "${propertyPath}" for "${payload.token}" value`);
 }
 function defaultValueForDefinition(typeDefinition) {
     const constant = parseValueTypeConstant(typeDefinition);
@@ -1914,15 +1944,15 @@ function defaultValueForDefinition(typeDefinition) {
         return defaultValue;
     return typeDefinition;
 }
-function valueDescriptorForTokenAndTypeDefinition(token, typeDefinition) {
-    const key = `${dasherize(token)}-value`;
-    const type = parseValueTypeDefinition(typeDefinition);
+function valueDescriptorForTokenAndTypeDefinition(payload) {
+    const key = `${dasherize(payload.token)}-value`;
+    const type = parseValueTypeDefinition(payload);
     return {
         type,
         key,
         name: camelize(key),
-        get defaultValue() { return defaultValueForDefinition(typeDefinition); },
-        get hasCustomDefaultValue() { return parseValueTypeDefault(typeDefinition) !== undefined; },
+        get defaultValue() { return defaultValueForDefinition(payload.typeDefinition); },
+        get hasCustomDefaultValue() { return parseValueTypeDefault(payload.typeDefinition) !== undefined; },
         reader: readers[type],
         writer: writers[type] || writers.default
     };
@@ -1938,12 +1968,12 @@ const readers = {
     array(value) {
         const array = JSON.parse(value);
         if (!Array.isArray(array)) {
-            throw new TypeError("Expected array");
+            throw new TypeError(`expected value of type "array" but instead got value "${value}" of type "${parseValueTypeDefault(array)}"`);
         }
         return array;
     },
     boolean(value) {
-        return !(value == "0" || value == "false");
+        return !(value == "0" || String(value).toLowerCase() == "false");
     },
     number(value) {
         return Number(value);
@@ -1951,7 +1981,7 @@ const readers = {
     object(value) {
         const object = JSON.parse(value);
         if (object === null || typeof object != "object" || Array.isArray(object)) {
-            throw new TypeError("Expected object");
+            throw new TypeError(`expected value of type "object" but instead got value "${value}" of type "${parseValueTypeDefault(object)}"`);
         }
         return object;
     },
@@ -2042,7 +2072,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
 var _default = /*#__PURE__*/function () {
   function _default(t) {
@@ -2170,17 +2200,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ default_1)
 /* harmony export */ });
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
@@ -2190,7 +2220,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
 /**
@@ -2253,17 +2283,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
 /* harmony import */ var dragon_nest__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! dragon-nest */ "../../../packages/dragon-nest/dist/index.es.js");
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
@@ -2273,7 +2303,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
 
@@ -2386,17 +2416,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _github_combobox_nav__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @github/combobox-nav */ "./node_modules/@github/combobox-nav/dist/index.js");
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
 /* harmony import */ var text_field_edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! text-field-edit */ "./node_modules/text-field-edit/index.js");
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
@@ -2406,7 +2436,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
 
@@ -2506,17 +2536,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ default_1)
 /* harmony export */ });
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
@@ -2526,7 +2556,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
 /**
@@ -2581,17 +2611,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ default_1)
 /* harmony export */ });
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
@@ -2601,7 +2631,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
 /**
@@ -2650,17 +2680,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
 /* harmony import */ var lodash_es__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash-es */ "./node_modules/lodash-es/debounce.js");
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
@@ -2670,7 +2700,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
 
@@ -2734,7 +2764,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
 /* harmony import */ var uplot__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! uplot */ "./node_modules/uplot/dist/uPlot.esm.js");
 /* harmony import */ var uplot_dist_uPlot_min_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! uplot/dist/uPlot.min.css */ "./node_modules/uplot/dist/uPlot.min.css");
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -2752,11 +2782,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
@@ -2766,7 +2796,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
 
@@ -2859,8 +2889,8 @@ var default_1 = /*#__PURE__*/function (_Controller) {
           }],
           setCursor: [function (u) {
             var idx = u.cursor.idx;
-            _this.legendAmountTarget.textContent = uplot__WEBPACK_IMPORTED_MODULE_1__["default"].fmtNum(u.data[2][idx] || 0);
-            _this.legendPeriodTarget.textContent = ths[idx].textContent;
+            _this.legendAmountTarget.textContent = typeof idx === 'number' ? uplot__WEBPACK_IMPORTED_MODULE_1__["default"].fmtNum(u.data[2][idx] || 0) : '';
+            _this.legendPeriodTarget.textContent = typeof idx === 'number' ? ths[idx].textContent : '';
           }]
         }
       });
@@ -2888,7 +2918,7 @@ var default_1 = /*#__PURE__*/function (_Controller) {
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
 
 
-default_1.targets = ['table', 'chart', 'summary', 'legend', 'axis'];
+default_1.targets = ['table', 'chart', 'summary', 'legend', 'legendAmount', 'legendPeriod', 'axis'];
 
 /***/ }),
 
@@ -2904,17 +2934,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ _default)
 /* harmony export */ });
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
@@ -2924,7 +2954,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
 /**
@@ -2948,7 +2978,7 @@ var _default = /*#__PURE__*/function (_Controller) {
     _this.mouseover = function (e) {
       var target = e.target;
 
-      if (target.matches('thead th, thead th *')) {
+      if (target.closest('thead th')) {
         var index = Array.from(target.parentElement.children).indexOf(target);
 
         _this.element.querySelector('colgroup').children[index].classList.add('is-highlighted');
@@ -2956,7 +2986,7 @@ var _default = /*#__PURE__*/function (_Controller) {
         _this.element.style.cursor = 'pointer';
       }
 
-      if (target.matches('tbody th, tbody th *')) {
+      if (target.closest('tbody th')) {
         target.closest('tr').classList.add('is-highlighted');
         _this.element.style.cursor = 'pointer';
       }
@@ -2975,7 +3005,7 @@ var _default = /*#__PURE__*/function (_Controller) {
 
       var target = e.target;
 
-      if (target.matches('thead th, thead th *')) {
+      if (target.closest('thead th')) {
         var index = Array.from(target.parentElement.children).indexOf(target);
         var checkboxes = Array.from(_this.element.querySelectorAll("tbody tr td:nth-child(".concat(index + 1, ") input[type=\"checkbox\"]"))).filter(function (checkbox) {
           var _a;
@@ -2990,7 +3020,7 @@ var _default = /*#__PURE__*/function (_Controller) {
         });
       }
 
-      if (target.matches('tbody th, tbody th *')) {
+      if (target.closest('tbody th')) {
         var _checkboxes = Array.from(target.closest('tr').querySelectorAll("td input[type=\"checkbox\"]")).filter(function (checkbox) {
           var _a;
 
@@ -3039,31 +3069,28 @@ var _default = /*#__PURE__*/function (_Controller) {
         var _a;
 
         if (!((_a = _this2.disabled) === null || _a === void 0 ? void 0 : _a.includes(checkbox))) {
-          checkbox.disabled = false; //setAttribute('aria-disabled', 'false');
+          checkbox.disabled = false;
         }
       });
       this.element.querySelectorAll('[data-implied-by], [data-depends-on]').forEach(function (el) {
-        if (el.dataset.impliedBy) {
-          el.dataset.impliedBy.trim().split(/\s+/).filter(Boolean).forEach(function (name) {
-            var ref = document.querySelector("[name=\"".concat(name, "\"]:last-of-type"));
+        var _a, _b;
 
-            if (ref && ref.checked) {
-              el.checked = true;
-              el.disabled = true; //setAttribute('aria-disabled', 'true');
-            }
-          });
-        }
+        (_a = el.dataset.impliedBy) === null || _a === void 0 ? void 0 : _a.trim().split(/\s+/).filter(Boolean).forEach(function (name) {
+          var ref = document.querySelector("[name=\"".concat(name, "\"]:last-of-type"));
 
-        if (el.dataset.dependsOn) {
-          el.dataset.dependsOn.trim().split(/\s+/).filter(Boolean).forEach(function (name) {
-            var ref = document.querySelector("[name=\"".concat(name, "\"]:last-of-type"));
+          if (ref && ref.checked) {
+            el.checked = true;
+            el.disabled = true;
+          }
+        });
+        (_b = el.dataset.dependsOn) === null || _b === void 0 ? void 0 : _b.trim().split(/\s+/).filter(Boolean).forEach(function (name) {
+          var ref = document.querySelector("[name=\"".concat(name, "\"]:last-of-type"));
 
-            if (ref && !ref.checked) {
-              el.checked = false;
-              el.disabled = true; //setAttribute('aria-disabled', 'true');
-            }
-          });
-        }
+          if (ref && !ref.checked) {
+            el.checked = false;
+            el.disabled = true;
+          }
+        });
       });
     }
   }]);
@@ -3088,17 +3115,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../utils */ "./resources/js/utils.ts");
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
@@ -3108,7 +3135,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
 
@@ -3180,10 +3207,10 @@ default_1.targets = ['slug', 'mirror'];
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "shouldOpenInNewTab": () => (/* binding */ shouldOpenInNewTab),
-/* harmony export */   "isElementInViewport": () => (/* binding */ isElementInViewport),
 /* harmony export */   "getHeaderHeight": () => (/* binding */ getHeaderHeight),
 /* harmony export */   "htmlToElement": () => (/* binding */ htmlToElement),
+/* harmony export */   "isElementInViewport": () => (/* binding */ isElementInViewport),
+/* harmony export */   "shouldOpenInNewTab": () => (/* binding */ shouldOpenInNewTab),
 /* harmony export */   "slug": () => (/* binding */ slug)
 /* harmony export */ });
 /**
@@ -3247,7 +3274,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".uplot, .uplot *, .uplot *::before, .uplot *::after {box-sizing: border-box;}.uplot {font-family: system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\";line-height: 1.5;width: -webkit-min-content;width: -moz-min-content;width: min-content;}.u-title {text-align: center;font-size: 18px;font-weight: bold;}.u-wrap {position: relative;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}.u-over, .u-under {position: absolute;}.u-under {overflow: hidden;}.uplot canvas {display: block;position: relative;width: 100%;height: 100%;}.u-axis {position: absolute;}.u-legend {font-size: 14px;margin: auto;text-align: center;}.u-inline {display: block;}.u-inline * {display: inline-block;}.u-inline tr {margin-right: 16px;}.u-legend th {font-weight: 600;}.u-legend th > * {vertical-align: middle;display: inline-block;}.u-legend .u-marker {width: 1em;height: 1em;margin-right: 4px;background-clip: padding-box !important;}.u-inline.u-live th::after {content: \":\";vertical-align: middle;}.u-inline:not(.u-live) .u-value {display: none;}.u-series > * {padding: 4px;}.u-series th {cursor: pointer;}.u-legend .u-off > * {opacity: 0.3;}.u-select {background: rgba(0,0,0,0.07);position: absolute;pointer-events: none;}.u-cursor-x, .u-cursor-y {position: absolute;left: 0;top: 0;pointer-events: none;will-change: transform;z-index: 100;}.u-hz .u-cursor-x, .u-vt .u-cursor-y {height: 100%;border-right: 1px dashed #607D8B;}.u-hz .u-cursor-y, .u-vt .u-cursor-x {width: 100%;border-bottom: 1px dashed #607D8B;}.u-cursor-pt {position: absolute;top: 0;left: 0;border-radius: 50%;border: 0 solid;pointer-events: none;will-change: transform;z-index: 100;/*this has to be !important since we set inline \"background\" shorthand */background-clip: padding-box !important;}.u-axis.u-off, .u-select.u-off, .u-cursor-x.u-off, .u-cursor-y.u-off, .u-cursor-pt.u-off {display: none;}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".uplot, .uplot *, .uplot *::before, .uplot *::after {box-sizing: border-box;}.uplot {font-family: system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\";line-height: 1.5;width: -webkit-min-content;width: -moz-min-content;width: min-content;}.u-title {text-align: center;font-size: 18px;font-weight: bold;}.u-wrap {position: relative;-webkit-user-select: none;-moz-user-select: none;user-select: none;}.u-over, .u-under {position: absolute;}.u-under {overflow: hidden;}.uplot canvas {display: block;position: relative;width: 100%;height: 100%;}.u-axis {position: absolute;}.u-legend {font-size: 14px;margin: auto;text-align: center;}.u-inline {display: block;}.u-inline * {display: inline-block;}.u-inline tr {margin-right: 16px;}.u-legend th {font-weight: 600;}.u-legend th > * {vertical-align: middle;display: inline-block;}.u-legend .u-marker {width: 1em;height: 1em;margin-right: 4px;background-clip: padding-box !important;}.u-inline.u-live th::after {content: \":\";vertical-align: middle;}.u-inline:not(.u-live) .u-value {display: none;}.u-series > * {padding: 4px;}.u-series th {cursor: pointer;}.u-legend .u-off > * {opacity: 0.3;}.u-select {background: rgba(0,0,0,0.07);position: absolute;pointer-events: none;}.u-cursor-x, .u-cursor-y {position: absolute;left: 0;top: 0;pointer-events: none;will-change: transform;z-index: 100;}.u-hz .u-cursor-x, .u-vt .u-cursor-y {height: 100%;border-right: 1px dashed #607D8B;}.u-hz .u-cursor-y, .u-vt .u-cursor-x {width: 100%;border-bottom: 1px dashed #607D8B;}.u-cursor-pt {position: absolute;top: 0;left: 0;border-radius: 50%;border: 0 solid;pointer-events: none;will-change: transform;z-index: 100;/*this has to be !important since we set inline \"background\" shorthand */background-clip: padding-box !important;}.u-axis.u-off, .u-select.u-off, .u-cursor-x.u-off, .u-cursor-y.u-off, .u-cursor-pt.u-off {display: none;}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -3651,15 +3678,175 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ uPlot)
 /* harmony export */ });
 /**
-* Copyright (c) 2021, Leon Sorokin
+* Copyright (c) 2022, Leon Sorokin
 * All rights reserved. (MIT Licensed)
 *
 * uPlot.js (μPlot)
 * A small, fast chart for time series, lines, areas, ohlc & bars
-* https://github.com/leeoniya/uPlot (v1.6.17)
+* https://github.com/leeoniya/uPlot (v1.6.22)
 */
 
 const FEAT_TIME          = true;
+
+const pre = "u-";
+
+const UPLOT          =       "uplot";
+const ORI_HZ         = pre + "hz";
+const ORI_VT         = pre + "vt";
+const TITLE          = pre + "title";
+const WRAP           = pre + "wrap";
+const UNDER          = pre + "under";
+const OVER           = pre + "over";
+const AXIS           = pre + "axis";
+const OFF            = pre + "off";
+const SELECT         = pre + "select";
+const CURSOR_X       = pre + "cursor-x";
+const CURSOR_Y       = pre + "cursor-y";
+const CURSOR_PT      = pre + "cursor-pt";
+const LEGEND         = pre + "legend";
+const LEGEND_LIVE    = pre + "live";
+const LEGEND_INLINE  = pre + "inline";
+const LEGEND_THEAD   = pre + "thead";
+const LEGEND_SERIES  = pre + "series";
+const LEGEND_MARKER  = pre + "marker";
+const LEGEND_LABEL   = pre + "label";
+const LEGEND_VALUE   = pre + "value";
+
+const WIDTH       = "width";
+const HEIGHT      = "height";
+const TOP         = "top";
+const BOTTOM      = "bottom";
+const LEFT        = "left";
+const RIGHT       = "right";
+const hexBlack    = "#000";
+const transparent = hexBlack + "0";
+
+const mousemove   = "mousemove";
+const mousedown   = "mousedown";
+const mouseup     = "mouseup";
+const mouseenter  = "mouseenter";
+const mouseleave  = "mouseleave";
+const dblclick    = "dblclick";
+const resize      = "resize";
+const scroll      = "scroll";
+
+const change      = "change";
+const dppxchange  = "dppxchange";
+
+const domEnv = typeof window != 'undefined';
+
+const doc = domEnv ? document  : null;
+const win = domEnv ? window    : null;
+const nav = domEnv ? navigator : null;
+
+let pxRatio;
+
+let query;
+
+function setPxRatio() {
+	let _pxRatio = devicePixelRatio;
+
+	// during print preview, Chrome fires off these dppx queries even without changes
+	if (pxRatio != _pxRatio) {
+		pxRatio = _pxRatio;
+
+		query && off(change, query, setPxRatio);
+		query = matchMedia(`(min-resolution: ${pxRatio - 0.001}dppx) and (max-resolution: ${pxRatio + 0.001}dppx)`);
+		on(change, query, setPxRatio);
+
+		win.dispatchEvent(new CustomEvent(dppxchange));
+	}
+}
+
+function addClass(el, c) {
+	if (c != null) {
+		let cl = el.classList;
+		!cl.contains(c) && cl.add(c);
+	}
+}
+
+function remClass(el, c) {
+	let cl = el.classList;
+	cl.contains(c) && cl.remove(c);
+}
+
+function setStylePx(el, name, value) {
+	el.style[name] = value + "px";
+}
+
+function placeTag(tag, cls, targ, refEl) {
+	let el = doc.createElement(tag);
+
+	if (cls != null)
+		addClass(el, cls);
+
+	if (targ != null)
+		targ.insertBefore(el, refEl);
+
+	return el;
+}
+
+function placeDiv(cls, targ) {
+	return placeTag("div", cls, targ);
+}
+
+const xformCache = new WeakMap();
+
+function elTrans(el, xPos, yPos, xMax, yMax) {
+	let xform = "translate(" + xPos + "px," + yPos + "px)";
+	let xformOld = xformCache.get(el);
+
+	if (xform != xformOld) {
+		el.style.transform = xform;
+		xformCache.set(el, xform);
+
+		if (xPos < 0 || yPos < 0 || xPos > xMax || yPos > yMax)
+			addClass(el, OFF);
+		else
+			remClass(el, OFF);
+	}
+}
+
+const colorCache = new WeakMap();
+
+function elColor(el, background, borderColor) {
+	let newColor = background + borderColor;
+	let oldColor = colorCache.get(el);
+
+	if (newColor != oldColor) {
+		colorCache.set(el, newColor);
+		el.style.background = background;
+		el.style.borderColor = borderColor;
+	}
+}
+
+const sizeCache = new WeakMap();
+
+function elSize(el, newWid, newHgt, centered) {
+	let newSize = newWid + "" + newHgt;
+	let oldSize = sizeCache.get(el);
+
+	if (newSize != oldSize) {
+		sizeCache.set(el, newSize);
+		el.style.height = newHgt + "px";
+		el.style.width = newWid + "px";
+		el.style.marginLeft = centered ? -newWid/2 + "px" : 0;
+		el.style.marginTop = centered ? -newHgt/2 + "px" : 0;
+	}
+}
+
+const evOpts = {passive: true};
+const evOpts2 = {...evOpts, capture: true};
+
+function on(ev, el, cb, capt) {
+	el.addEventListener(ev, cb, capt ? evOpts2 : evOpts);
+}
+
+function off(ev, el, cb, capt) {
+	el.removeEventListener(ev, cb, capt ? evOpts2 : evOpts);
+}
+
+domEnv && setPxRatio();
 
 // binary search for index of closest value
 function closestIdx(num, arr, lo, hi) {
@@ -3909,7 +4096,8 @@ function _rangeNum(_min, _max, cfg) {
 }
 
 // alternative: https://stackoverflow.com/a/2254896
-const fmtNum = new Intl.NumberFormat(navigator.language).format;
+const numFormatter = new Intl.NumberFormat(domEnv ? nav.language : 'en-US');
+const fmtNum = val => numFormatter.format(val);
 
 const M = Math;
 
@@ -4023,6 +4211,8 @@ function fastIsObj(v) {
 	return v != null && typeof v == 'object';
 }
 
+const TypedArray = Object.getPrototypeOf(Uint8Array);
+
 function copy(o, _isObj = isObj) {
 	let out;
 
@@ -4032,11 +4222,13 @@ function copy(o, _isObj = isObj) {
 		if (isArr(val) || _isObj(val)) {
 			out = Array(o.length);
 			for (let i = 0; i < o.length; i++)
-			  out[i] = copy(o[i], _isObj);
+				out[i] = copy(o[i], _isObj);
 		}
 		else
 			out = o.slice();
 	}
+	else if (o instanceof TypedArray) // also (ArrayBuffer.isView(o) && !(o instanceof DataView))
+		out = o.slice();
 	else if (_isObj(o)) {
 		out = {};
 		for (let k in o)
@@ -4149,162 +4341,6 @@ function join(tables, nullModes) {
 }
 
 const microTask = typeof queueMicrotask == "undefined" ? fn => Promise.resolve().then(fn) : queueMicrotask;
-
-const WIDTH       = "width";
-const HEIGHT      = "height";
-const TOP         = "top";
-const BOTTOM      = "bottom";
-const LEFT        = "left";
-const RIGHT       = "right";
-const hexBlack    = "#000";
-const transparent = hexBlack + "0";
-
-const mousemove   = "mousemove";
-const mousedown   = "mousedown";
-const mouseup     = "mouseup";
-const mouseenter  = "mouseenter";
-const mouseleave  = "mouseleave";
-const dblclick    = "dblclick";
-const resize      = "resize";
-const scroll      = "scroll";
-
-const change      = "change";
-const dppxchange  = "dppxchange";
-
-const pre = "u-";
-
-const UPLOT          =       "uplot";
-const ORI_HZ         = pre + "hz";
-const ORI_VT         = pre + "vt";
-const TITLE          = pre + "title";
-const WRAP           = pre + "wrap";
-const UNDER          = pre + "under";
-const OVER           = pre + "over";
-const AXIS           = pre + "axis";
-const OFF            = pre + "off";
-const SELECT         = pre + "select";
-const CURSOR_X       = pre + "cursor-x";
-const CURSOR_Y       = pre + "cursor-y";
-const CURSOR_PT      = pre + "cursor-pt";
-const LEGEND         = pre + "legend";
-const LEGEND_LIVE    = pre + "live";
-const LEGEND_INLINE  = pre + "inline";
-const LEGEND_THEAD   = pre + "thead";
-const LEGEND_SERIES  = pre + "series";
-const LEGEND_MARKER  = pre + "marker";
-const LEGEND_LABEL   = pre + "label";
-const LEGEND_VALUE   = pre + "value";
-
-const doc = document;
-const win = window;
-let pxRatio;
-
-let query;
-
-function setPxRatio() {
-	let _pxRatio = devicePixelRatio;
-
-	// during print preview, Chrome fires off these dppx queries even without changes
-	if (pxRatio != _pxRatio) {
-		pxRatio = _pxRatio;
-
-		query && off(change, query, setPxRatio);
-		query = matchMedia(`(min-resolution: ${pxRatio - 0.001}dppx) and (max-resolution: ${pxRatio + 0.001}dppx)`);
-		on(change, query, setPxRatio);
-
-		win.dispatchEvent(new CustomEvent(dppxchange));
-	}
-}
-
-function addClass(el, c) {
-	if (c != null) {
-		let cl = el.classList;
-		!cl.contains(c) && cl.add(c);
-	}
-}
-
-function remClass(el, c) {
-	let cl = el.classList;
-	cl.contains(c) && cl.remove(c);
-}
-
-function setStylePx(el, name, value) {
-	el.style[name] = value + "px";
-}
-
-function placeTag(tag, cls, targ, refEl) {
-	let el = doc.createElement(tag);
-
-	if (cls != null)
-		addClass(el, cls);
-
-	if (targ != null)
-		targ.insertBefore(el, refEl);
-
-	return el;
-}
-
-function placeDiv(cls, targ) {
-	return placeTag("div", cls, targ);
-}
-
-const xformCache = new WeakMap();
-
-function elTrans(el, xPos, yPos, xMax, yMax) {
-	let xform = "translate(" + xPos + "px," + yPos + "px)";
-	let xformOld = xformCache.get(el);
-
-	if (xform != xformOld) {
-		el.style.transform = xform;
-		xformCache.set(el, xform);
-
-		if (xPos < 0 || yPos < 0 || xPos > xMax || yPos > yMax)
-			addClass(el, OFF);
-		else
-			remClass(el, OFF);
-	}
-}
-
-const colorCache = new WeakMap();
-
-function elColor(el, background, borderColor) {
-	let newColor = background + borderColor;
-	let oldColor = colorCache.get(el);
-
-	if (newColor != oldColor) {
-		colorCache.set(el, newColor);
-		el.style.background = background;
-		el.style.borderColor = borderColor;
-	}
-}
-
-const sizeCache = new WeakMap();
-
-function elSize(el, newWid, newHgt, centered) {
-	let newSize = newWid + "" + newHgt;
-	let oldSize = sizeCache.get(el);
-
-	if (newSize != oldSize) {
-		sizeCache.set(el, newSize);
-		el.style.height = newHgt + "px";
-		el.style.width = newWid + "px";
-		el.style.marginLeft = centered ? -newWid/2 + "px" : 0;
-		el.style.marginTop = centered ? -newHgt/2 + "px" : 0;
-	}
-}
-
-const evOpts = {passive: true};
-const evOpts2 = assign({capture: true}, evOpts);
-
-function on(ev, el, cb, capt) {
-	el.addEventListener(ev, cb, capt ? evOpts2 : evOpts);
-}
-
-function off(ev, el, cb, capt) {
-	el.removeEventListener(ev, cb, capt ? evOpts2 : evOpts);
-}
-
-setPxRatio();
 
 const months = [
 	"January",
@@ -4868,15 +4904,24 @@ const cursorOpts = {
 	idxs: null,
 };
 
-const grid = {
+const axisLines = {
 	show: true,
 	stroke: "rgba(0,0,0,0.07)",
 	width: 2,
 //	dash: [],
-	filter: retArg1,
 };
 
-const ticks = assign({}, grid, {size: 10});
+const grid = assign({}, axisLines, {
+	filter: retArg1,
+});
+
+const ticks = assign({}, grid, {
+	size: 10,
+});
+
+const border = assign({}, axisLines, {
+	show: false,
+});
 
 const font      = '12px system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
 const labelFont = "bold " + font;
@@ -4899,6 +4944,7 @@ const xAxisOpts = {
 //	filter: retArg1,
 	grid,
 	ticks,
+	border,
 	font,
 	rotate: 0,
 };
@@ -5028,6 +5074,7 @@ const yAxisOpts = {
 //	filter: retArg1,
 	grid,
 	ticks,
+	border,
 	font,
 	rotate: 0,
 };
@@ -5051,15 +5098,10 @@ function seriesPointsShow(self, si) {
 	return idxs[1] - idxs[0] <= maxPts;
 }
 
-function seriesFillTo(self, seriesIdx, dataMin, dataMax) {
-	let scale = self.scales[self.series[seriesIdx].scale];
-	let isUpperBandEdge = self.bands && self.bands.some(b => b.series[0] == seriesIdx);
-	return scale.distr == 3 || isUpperBandEdge ? scale.min : 0;
-}
-
 const facet = {
 	scale: null,
 	auto: true,
+	sorted: 0,
 
 	// internal caches
 	min: inf,
@@ -5224,8 +5266,57 @@ function orient(u, seriesIdx, cb) {
 	);
 }
 
-// creates inverted band clip path (towards from stroke path -> yMax)
-function clipBandLine(self, seriesIdx, idx0, idx1, strokePath) {
+function bandFillClipDirs(self, seriesIdx) {
+	let fillDir = 0;
+
+	// 2 bits, -1 | 1
+	let clipDirs = 0;
+
+	let bands = ifNull(self.bands, EMPTY_ARR);
+
+	for (let i = 0; i < bands.length; i++) {
+		let b = bands[i];
+
+		// is a "from" band edge
+		if (b.series[0] == seriesIdx)
+			fillDir = b.dir;
+		// is a "to" band edge
+		else if (b.series[1] == seriesIdx) {
+			if (b.dir == 1)
+				clipDirs |= 1;
+			else
+				clipDirs |= 2;
+		}
+	}
+
+	return [
+		fillDir,
+		(
+			clipDirs == 1 ? -1 : // neg only
+			clipDirs == 2 ?  1 : // pos only
+			clipDirs == 3 ?  2 : // both
+			                 0   // neither
+		)
+	];
+}
+
+function seriesFillTo(self, seriesIdx, dataMin, dataMax, bandFillDir) {
+	let scale = self.scales[self.series[seriesIdx].scale];
+
+	return (
+		bandFillDir == -1 ? scale.min :
+		bandFillDir ==  1 ? scale.max :
+		scale.distr ==  3 ? (
+			scale.dir == 1 ? scale.min :
+			scale.max
+		) : 0
+	);
+}
+
+// creates inverted band clip path (from stroke path -> yMax || yMin)
+// clipDir is always inverse of fillDir
+// default clip dir is upwards (1), since default band fill is downwards/fillBelowTo (-1) (highIdx -> lowIdx)
+function clipBandLine(self, seriesIdx, idx0, idx1, strokePath, clipDir) {
 	return orient(self, seriesIdx, (series, dataX, dataY, scaleX, scaleY, valToPosX, valToPosY, xOff, yOff, xDim, yDim) => {
 		let pxRound = series.pxRound;
 
@@ -5248,8 +5339,8 @@ function clipBandLine(self, seriesIdx, idx0, idx1, strokePath) {
 		let y0 = pxRound(valToPosY(dataY[frIdx], scaleY, yDim, yOff));
 		// path end x
 		let x1 = pxRound(valToPosX(dataX[toIdx], scaleX, xDim, xOff));
-		// upper y limit
-		let yLimit = pxRound(valToPosY(scaleY.max, scaleY, yDim, yOff));
+		// upper or lower y limit
+		let yLimit = pxRound(valToPosY(clipDir == 1 ? scaleY.max : scaleY.min, scaleY, yDim, yOff));
 
 		let clip = new Path2D(strokePath);
 
@@ -5276,13 +5367,17 @@ function clipGaps(gaps, ori, plotLft, plotTop, plotWid, plotHgt) {
 			let g = gaps[i];
 
 			if (g[1] > g[0]) {
-				rect(clip, prevGapEnd, plotTop, g[0] - prevGapEnd, plotTop + plotHgt);
+				let w = g[0] - prevGapEnd;
+
+				w > 0 && rect(clip, prevGapEnd, plotTop, w, plotTop + plotHgt);
 
 				prevGapEnd = g[1];
 			}
 		}
 
-		rect(clip, prevGapEnd, plotTop, plotLft + plotWid - prevGapEnd, plotTop + plotHgt);
+		let w = plotLft + plotWid - prevGapEnd;
+
+		w > 0 && rect(clip, prevGapEnd, plotTop, w, plotTop + plotHgt);
 	}
 
 	return clip;
@@ -5295,6 +5390,49 @@ function addGap(gaps, fromX, toX) {
 		prevGap[1] = toX;
 	else
 		gaps.push([fromX, toX]);
+}
+
+function findGaps(xs, ys, idx0, idx1, dir, pixelForX, align) {
+	let gaps = [];
+
+	for (let i = dir == 1 ? idx0 : idx1; i >= idx0 && i <= idx1; i += dir) {
+		let yVal = ys[i];
+
+		if (yVal === null) {
+			let fr = i, to = i;
+
+			if (dir == 1) {
+				while (++i <= idx1 && ys[i] === null)
+					to = i;
+			}
+			else {
+				while (--i >= idx0 && ys[i] === null)
+					to = i;
+			}
+
+			let frPx = pixelForX(xs[fr]);
+			let toPx = to == fr ? frPx : pixelForX(xs[to]);
+
+			// if value adjacent to edge null is same pixel, then it's partially
+			// filled and gap should start at next pixel
+			let frPx2 = align <= 0 ? pixelForX(xs[fr-dir]) : frPx;
+		//	if (frPx2 == frPx)
+		//		frPx++;
+		//	else
+				frPx = frPx2;
+
+			let toPx2 = align >= 0 ? pixelForX(xs[to+dir]) : toPx;
+		//	if (toPx2 == toPx)
+		//		toPx--;
+		//	else
+				toPx = toPx2;
+
+			if (toPx >= frPx)
+				gaps.push([frPx, toPx]); // addGap
+		}
+	}
+
+	return gaps;
 }
 
 function pxRoundGen(pxAlign) {
@@ -5318,7 +5456,7 @@ function rect(ori) {
 		if (r == 0)
 			rect(p, x, y, w, h);
 		else {
-			r = Math.min(r, w / 2, h / 2);
+			r = min(r, w / 2, h / 2);
 
 			// adapted from https://stackoverflow.com/questions/1255512/how-to-draw-a-rounded-rectangle-using-html-canvas/7838871#7838871
 			moveTo(p, x + r, y);
@@ -5422,10 +5560,15 @@ function _drawAcc(lineTo) {
 const drawAccH = _drawAcc(lineToH);
 const drawAccV = _drawAcc(lineToV);
 
-function linear() {
+function linear(opts) {
+	const alignGaps = ifNull(opts?.alignGaps, 0);
+
 	return (u, seriesIdx, idx0, idx1) => {
 		return orient(u, seriesIdx, (series, dataX, dataY, scaleX, scaleY, valToPosX, valToPosY, xOff, yOff, xDim, yDim) => {
 			let pxRound = series.pxRound;
+
+			let pixelForX = val => pxRound(valToPosX(val, scaleX, xDim, xOff));
+			let pixelForY = val => pxRound(valToPosY(val, scaleY, yDim, yOff));
 
 			let lineTo, drawAcc;
 
@@ -5445,29 +5588,22 @@ function linear() {
 
 			let minY = inf,
 				maxY = -inf,
-				inY, outY, outX, drawnAtX;
+				inY, outY, drawnAtX;
 
-			let gaps = [];
-
-			let accX = pxRound(valToPosX(dataX[dir == 1 ? idx0 : idx1], scaleX, xDim, xOff));
-			let accGaps = false;
-			let prevYNull = false;
+			let accX = pixelForX(dataX[dir == 1 ? idx0 : idx1]);
 
 			// data edges
 			let lftIdx = nonNullIdx(dataY, idx0, idx1,  1 * dir);
 			let rgtIdx = nonNullIdx(dataY, idx0, idx1, -1 * dir);
-			let lftX =  pxRound(valToPosX(dataX[lftIdx], scaleX, xDim, xOff));
-			let rgtX =  pxRound(valToPosX(dataX[rgtIdx], scaleX, xDim, xOff));
-
-			if (lftX > xOff)
-				addGap(gaps, xOff, lftX);
+			let lftX   =  pixelForX(dataX[lftIdx]);
+			let rgtX   =  pixelForX(dataX[rgtIdx]);
 
 			for (let i = dir == 1 ? idx0 : idx1; i >= idx0 && i <= idx1; i += dir) {
-				let x = pxRound(valToPosX(dataX[i], scaleX, xDim, xOff));
+				let x = pixelForX(dataX[i]);
 
 				if (x == accX) {
 					if (dataY[i] != null) {
-						outY = pxRound(valToPosY(dataY[i], scaleY, yDim, yOff));
+						outY = pixelForY(dataY[i]);
 
 						if (minY == inf) {
 							lineTo(stroke, x, outY);
@@ -5477,45 +5613,22 @@ function linear() {
 						minY = min(outY, minY);
 						maxY = max(outY, maxY);
 					}
-					else if (dataY[i] === null)
-						accGaps = prevYNull = true;
 				}
 				else {
-					let _addGap = false;
-
 					if (minY != inf) {
 						drawAcc(stroke, accX, minY, maxY, inY, outY);
-						outX = drawnAtX = accX;
-					}
-					else if (accGaps) {
-						_addGap = true;
-						accGaps = false;
+						drawnAtX = accX;
 					}
 
 					if (dataY[i] != null) {
-						outY = pxRound(valToPosY(dataY[i], scaleY, yDim, yOff));
+						outY = pixelForY(dataY[i]);
 						lineTo(stroke, x, outY);
 						minY = maxY = inY = outY;
-
-						// prior pixel can have data but still start a gap if ends with null
-						if (prevYNull && x - accX > 1)
-							_addGap = true;
-
-						prevYNull = false;
 					}
 					else {
 						minY = inf;
 						maxY = -inf;
-
-						if (dataY[i] === null) {
-							accGaps = true;
-
-							if (x - accX > 1)
-								_addGap = true;
-						}
 					}
-
-					_addGap && addGap(gaps, outX, x);
 
 					accX = x;
 				}
@@ -5524,27 +5637,38 @@ function linear() {
 			if (minY != inf && minY != maxY && drawnAtX != accX)
 				drawAcc(stroke, accX, minY, maxY, inY, outY);
 
-			if (rgtX < xOff + xDim)
-				addGap(gaps, rgtX, xOff + xDim);
+			let [ bandFillDir, bandClipDir ] = bandFillClipDirs(u, seriesIdx);
 
-			if (series.fill != null) {
+			if (series.fill != null || bandFillDir != 0) {
 				let fill = _paths.fill = new Path2D(stroke);
 
-				let fillTo = pxRound(valToPosY(series.fillTo(u, seriesIdx, series.min, series.max), scaleY, yDim, yOff));
+				let fillToVal = series.fillTo(u, seriesIdx, series.min, series.max, bandFillDir);
+				let fillToY = pixelForY(fillToVal);
 
-				lineTo(fill, rgtX, fillTo);
-				lineTo(fill, lftX, fillTo);
+				lineTo(fill, rgtX, fillToY);
+				lineTo(fill, lftX, fillToY);
 			}
 
-			_paths.gaps = gaps = series.gaps(u, seriesIdx, idx0, idx1, gaps);
+			if (!series.spanGaps) {
+			//	console.time('gaps');
+				let gaps = [];
 
-			if (!series.spanGaps)
+				gaps.push(...findGaps(dataX, dataY, idx0, idx1, dir, pixelForX, alignGaps));
+
+			//	console.timeEnd('gaps');
+
+			//	console.log('gaps', JSON.stringify(gaps));
+
+				_paths.gaps = gaps = series.gaps(u, seriesIdx, idx0, idx1, gaps);
+
 				_paths.clip = clipGaps(gaps, scaleX.ori, xOff, yOff, xDim, yDim);
+			}
 
-			if (u.bands.length > 0) {
-				// ADDL OPT: only create band clips for series that are band lower edges
-				// if (b.series[1] == i && _paths.band == null)
-				_paths.band = clipBandLine(u, seriesIdx, idx0, idx1, stroke);
+			if (bandClipDir != 0) {
+				_paths.band = bandClipDir == 2 ? [
+					clipBandLine(u, seriesIdx, idx0, idx1, stroke, -1),
+					clipBandLine(u, seriesIdx, idx0, idx1, stroke,  1),
+				] : clipBandLine(u, seriesIdx, idx0, idx1, stroke, bandClipDir);
 			}
 
 			return _paths;
@@ -5557,58 +5681,39 @@ function stepped(opts) {
 	// whether to draw ascenders/descenders at null/gap bondaries
 	const ascDesc = ifNull(opts.ascDesc, false);
 
+	const alignGaps = ifNull(opts.alignGaps, 0);
+
 	return (u, seriesIdx, idx0, idx1) => {
 		return orient(u, seriesIdx, (series, dataX, dataY, scaleX, scaleY, valToPosX, valToPosY, xOff, yOff, xDim, yDim) => {
 			let pxRound = series.pxRound;
+
+			let pixelForX = val => pxRound(valToPosX(val, scaleX, xDim, xOff));
+			let pixelForY = val => pxRound(valToPosY(val, scaleY, yDim, yOff));
 
 			let lineTo = scaleX.ori == 0 ? lineToH : lineToV;
 
 			const _paths = {stroke: new Path2D(), fill: null, clip: null, band: null, gaps: null, flags: BAND_CLIP_FILL};
 			const stroke = _paths.stroke;
 
-			const _dir = 1 * scaleX.dir * (scaleX.ori == 0 ? 1 : -1);
+			const dir = scaleX.dir * (scaleX.ori == 0 ? 1 : -1);
 
 			idx0 = nonNullIdx(dataY, idx0, idx1,  1);
 			idx1 = nonNullIdx(dataY, idx0, idx1, -1);
 
-			let gaps = [];
-			let inGap = false;
-			let prevYPos  = pxRound(valToPosY(dataY[_dir == 1 ? idx0 : idx1], scaleY, yDim, yOff));
-			let firstXPos = pxRound(valToPosX(dataX[_dir == 1 ? idx0 : idx1], scaleX, xDim, xOff));
+			let prevYPos  = pixelForY(dataY[dir == 1 ? idx0 : idx1]);
+			let firstXPos = pixelForX(dataX[dir == 1 ? idx0 : idx1]);
 			let prevXPos = firstXPos;
 
 			lineTo(stroke, firstXPos, prevYPos);
 
-			for (let i = _dir == 1 ? idx0 : idx1; i >= idx0 && i <= idx1; i += _dir) {
+			for (let i = dir == 1 ? idx0 : idx1; i >= idx0 && i <= idx1; i += dir) {
 				let yVal1 = dataY[i];
 
-				let x1 = pxRound(valToPosX(dataX[i], scaleX, xDim, xOff));
-
-				if (yVal1 == null) {
-					if (yVal1 === null) {
-						addGap(gaps, prevXPos, x1);
-						inGap = true;
-					}
+				if (yVal1 == null)
 					continue;
-				}
 
-				let y1 = pxRound(valToPosY(yVal1, scaleY, yDim, yOff));
-
-				if (inGap) {
-					addGap(gaps, prevXPos, x1);
-
-					// don't clip vertical extenders
-					if (prevYPos != y1) {
-						let halfStroke = (series.width * pxRatio) / 2;
-
-						let lastGap = gaps[gaps.length - 1];
-
-						lastGap[0] += (ascDesc || align ==  1) ? halfStroke : -halfStroke;
-						lastGap[1] -= (ascDesc || align == -1) ? halfStroke : -halfStroke;
-					}
-
-					inGap = false;
-				}
+				let x1 = pixelForX(dataX[i]);
+				let y1 = pixelForY(yVal1);
 
 				if (align == 1)
 					lineTo(stroke, x1, prevYPos);
@@ -5621,25 +5726,48 @@ function stepped(opts) {
 				prevXPos = x1;
 			}
 
-			if (series.fill != null) {
+			let [ bandFillDir, bandClipDir ] = bandFillClipDirs(u, seriesIdx);
+
+			if (series.fill != null || bandFillDir != 0) {
 				let fill = _paths.fill = new Path2D(stroke);
 
-				let fillTo = series.fillTo(u, seriesIdx, series.min, series.max);
-				let minY = pxRound(valToPosY(fillTo, scaleY, yDim, yOff));
+				let fillTo = series.fillTo(u, seriesIdx, series.min, series.max, bandFillDir);
+				let fillToY = pixelForY(fillTo);
 
-				lineTo(fill, prevXPos, minY);
-				lineTo(fill, firstXPos, minY);
+				lineTo(fill, prevXPos, fillToY);
+				lineTo(fill, firstXPos, fillToY);
 			}
 
-			_paths.gaps = gaps = series.gaps(u, seriesIdx, idx0, idx1, gaps);
+			if (!series.spanGaps) {
+			//	console.time('gaps');
+				let gaps = [];
 
-			if (!series.spanGaps)
+				gaps.push(...findGaps(dataX, dataY, idx0, idx1, dir, pixelForX, alignGaps));
+
+			//	console.timeEnd('gaps');
+
+			//	console.log('gaps', JSON.stringify(gaps));
+
+				// expand/contract clips for ascenders/descenders
+				let halfStroke = (series.width * pxRatio) / 2;
+				let startsOffset = (ascDesc || align ==  1) ?  halfStroke : -halfStroke;
+				let endsOffset   = (ascDesc || align == -1) ? -halfStroke :  halfStroke;
+
+				gaps.forEach(g => {
+					g[0] += startsOffset;
+					g[1] += endsOffset;
+				});
+
+				_paths.gaps = gaps = series.gaps(u, seriesIdx, idx0, idx1, gaps);
+
 				_paths.clip = clipGaps(gaps, scaleX.ori, xOff, yOff, xDim, yDim);
+			}
 
-			if (u.bands.length > 0) {
-				// ADDL OPT: only create band clips for series that are band lower edges
-				// if (b.series[1] == i && _paths.band == null)
-				_paths.band = clipBandLine(u, seriesIdx, idx0, idx1, stroke);
+			if (bandClipDir != 0) {
+				_paths.band = bandClipDir == 2 ? [
+					clipBandLine(u, seriesIdx, idx0, idx1, stroke, -1),
+					clipBandLine(u, seriesIdx, idx0, idx1, stroke,  1),
+				] : clipBandLine(u, seriesIdx, idx0, idx1, stroke, bandClipDir);
 			}
 
 			return _paths;
@@ -5653,14 +5781,16 @@ function bars(opts) {
 	const align = opts.align || 0;
 	const extraGap = (opts.gap || 0) * pxRatio;
 
-	const radius = ifNull(opts.radius, 0) * pxRatio;
+	const radius = ifNull(opts.radius, 0);
 
 	const gapFactor = 1 - size[0];
 	const maxWidth  = ifNull(size[1], inf) * pxRatio;
 	const minWidth  = ifNull(size[2], 1) * pxRatio;
 
-	const disp = opts.disp;
+	const disp = ifNull(opts.disp, EMPTY_OBJ);
 	const _each = ifNull(opts.each, _ => {});
+
+	const { fill: dispFills, stroke: dispStrokes } = disp;
 
 	return (u, seriesIdx, idx0, idx1) => {
 		return orient(u, seriesIdx, (series, dataX, dataY, scaleX, scaleY, valToPosX, valToPosY, xOff, yOff, xDim, yDim) => {
@@ -5675,10 +5805,14 @@ function bars(opts) {
 				_each(u, seriesIdx, i, lft, top, wid, hgt);
 			};
 
-			let fillToY = series.fillTo(u, seriesIdx, series.min, series.max);
+			let [ bandFillDir, bandClipDir ] = bandFillClipDirs(u, seriesIdx);
+
+		//	let fillToY = series.fillTo(u, seriesIdx, series.min, series.max, bandFillDir);
+			let fillToY = scaleY.distr == 3 ? (bandFillDir == 1 ? scaleY.max : scaleY.min) : 0;
 
 			let y0Pos = valToPosY(fillToY, scaleY, yDim, yOff);
 
+			// barWid is to center of stroke
 			let xShift, barWid;
 
 			let strokeWidth = pxRound(series.width * pxRatio);
@@ -5690,34 +5824,38 @@ function bars(opts) {
 			let strokeColors = null;
 			let strokePaths = null;
 
-			if (disp != null) {
-				if (disp.fill != null && disp.stroke != null) {
-					multiPath = true;
+			if (dispFills != null && (strokeWidth == 0 || dispStrokes != null)) {
+				multiPath = true;
 
-					fillColors = disp.fill.values(u, seriesIdx, idx0, idx1);
-					fillPaths = new Map();
-					(new Set(fillColors)).forEach(color => {
-						if (color != null)
-							fillPaths.set(color, new Path2D());
-					});
+				fillColors = dispFills.values(u, seriesIdx, idx0, idx1);
+				fillPaths = new Map();
+				(new Set(fillColors)).forEach(color => {
+					if (color != null)
+						fillPaths.set(color, new Path2D());
+				});
 
-					strokeColors = disp.stroke.values(u, seriesIdx, idx0, idx1);
+				if (strokeWidth > 0) {
+					strokeColors = dispStrokes.values(u, seriesIdx, idx0, idx1);
 					strokePaths = new Map();
 					(new Set(strokeColors)).forEach(color => {
 						if (color != null)
 							strokePaths.set(color, new Path2D());
 					});
 				}
+			}
 
-				dataX = disp.x0.values(u, seriesIdx, idx0, idx1);
+			let { x0, size } = disp;
 
-				if (disp.x0.unit == 2)
+			if (x0 != null && size != null) {
+				dataX = x0.values(u, seriesIdx, idx0, idx1);
+
+				if (x0.unit == 2)
 					dataX = dataX.map(pct => u.posToVal(xOff + pct * xDim, scaleX.key, true));
 
 				// assumes uniform sizes, for now
-				let sizes = disp.size.values(u, seriesIdx, idx0, idx1);
+				let sizes = size.values(u, seriesIdx, idx0, idx1);
 
-				if (disp.size.unit == 2)
+				if (size.unit == 2)
 					barWid = sizes[0] * xDim;
 				else
 					barWid = valToPosX(sizes[0], scaleX, xDim, xOff) - valToPosX(0, scaleX, xDim, xOff); // assumes linear scale (delta from 0)
@@ -5760,21 +5898,31 @@ function bars(opts) {
 
 			const _paths = {stroke: null, fill: null, clip: null, band: null, gaps: null, flags: BAND_CLIP_FILL | BAND_CLIP_STROKE};  // disp, geom
 
-			const hasBands = u.bands.length > 0;
 			let yLimit;
 
-			if (hasBands) {
-				// ADDL OPT: only create band clips for series that are band lower edges
-				// if (b.series[1] == i && _paths.band == null)
+			if (bandClipDir != 0) {
 				_paths.band = new Path2D();
-				yLimit = pxRound(valToPosY(scaleY.max, scaleY, yDim, yOff));
+				yLimit = pxRound(valToPosY(bandClipDir == 1 ? scaleY.max : scaleY.min, scaleY, yDim, yOff));
 			}
 
 			const stroke = multiPath ? null : new Path2D();
 			const band = _paths.band;
 
+			let { y0, y1 } = disp;
+
+			let dataY0 = null;
+
+			if (y0 != null && y1 != null) {
+				dataY = y1.values(u, seriesIdx, idx0, idx1);
+				dataY0 = y0.values(u, seriesIdx, idx0, idx1);
+			}
+
 			for (let i = _dirX == 1 ? idx0 : idx1; i >= idx0 && i <= idx1; i += _dirX) {
 				let yVal = dataY[i];
+
+				// we can skip both, drawing and band clipping for alignment artifacts
+				if (yVal === undefined)
+					continue;
 
 			/*
 				// interpolate upwards band clips
@@ -5790,34 +5938,40 @@ function bars(opts) {
 
 				// TODO: all xPos can be pre-computed once for all series in aligned set
 				let xPos = valToPosX(xVal, scaleX, xDim, xOff);
-				let yPos = valToPosY(yVal, scaleY, yDim, yOff);
+				let yPos = valToPosY(ifNull(yVal, fillToY), scaleY, yDim, yOff);
+
+				if (dataY0 != null && yVal != null)
+					y0Pos = valToPosY(dataY0[i], scaleY, yDim, yOff);
 
 				let lft = pxRound(xPos - xShift);
 				let btm = pxRound(max(yPos, y0Pos));
 				let top = pxRound(min(yPos, y0Pos));
+				// this includes the stroke
 				let barHgt = btm - top;
 
-				if (dataY[i] != null) {
+				let r = radius * barWid;
+
+				if (yVal != null) {  // && yVal != fillToY (0 height bar)
 					if (multiPath) {
 						if (strokeWidth > 0 && strokeColors[i] != null)
-							rect(strokePaths.get(strokeColors[i]), lft, top, barWid, barHgt, radius * barWid);
+							rect(strokePaths.get(strokeColors[i]), lft, top + floor(strokeWidth / 2), barWid, max(0, barHgt - strokeWidth), r);
 
 						if (fillColors[i] != null)
-							rect(fillPaths.get(fillColors[i]), lft, top, barWid, barHgt, radius * barWid);
+							rect(fillPaths.get(fillColors[i]), lft, top + floor(strokeWidth / 2), barWid, max(0, barHgt - strokeWidth), r);
 					}
 					else
-						rect(stroke, lft, top, barWid, barHgt, radius * barWid);
+						rect(stroke, lft, top + floor(strokeWidth / 2), barWid, max(0, barHgt - strokeWidth), r);
 
 					each(u, seriesIdx, i,
 						lft    - strokeWidth / 2,
-						top    - strokeWidth / 2,
+						top,
 						barWid + strokeWidth,
-						barHgt + strokeWidth,
+						barHgt,
 					);
 				}
 
-				if (hasBands) {
-					if (_dirY == 1) {
+				if (bandClipDir != 0) {
+					if (_dirY * bandClipDir == 1) {
 						btm = top;
 						top = yLimit;
 					}
@@ -5828,7 +5982,7 @@ function bars(opts) {
 
 					barHgt = btm - top;
 
-					rect(band, lft - strokeWidth / 2, top + strokeWidth / 2, barWid + strokeWidth, barHgt - strokeWidth, 0);
+					rect(band, lft - strokeWidth / 2, top, barWid + strokeWidth, max(0, barHgt), 0);
 				}
 			}
 
@@ -5843,9 +5997,14 @@ function bars(opts) {
 }
 
 function splineInterp(interp, opts) {
+	const alignGaps = ifNull(opts?.alignGaps, 0);
+
 	return (u, seriesIdx, idx0, idx1) => {
 		return orient(u, seriesIdx, (series, dataX, dataY, scaleX, scaleY, valToPosX, valToPosY, xOff, yOff, xDim, yDim) => {
 			let pxRound = series.pxRound;
+
+			let pixelForX = val => pxRound(valToPosX(val, scaleX, xDim, xOff));
+			let pixelForY = val => pxRound(valToPosY(val, scaleY, yDim, yOff));
 
 			let moveTo, bezierCurveTo, lineTo;
 
@@ -5860,64 +6019,64 @@ function splineInterp(interp, opts) {
 				bezierCurveTo = bezierCurveToV;
 			}
 
-			const _dir = 1 * scaleX.dir * (scaleX.ori == 0 ? 1 : -1);
+			const dir = scaleX.dir * (scaleX.ori == 0 ? 1 : -1);
 
 			idx0 = nonNullIdx(dataY, idx0, idx1,  1);
 			idx1 = nonNullIdx(dataY, idx0, idx1, -1);
 
-			let gaps = [];
-			let inGap = false;
-			let firstXPos = pxRound(valToPosX(dataX[_dir == 1 ? idx0 : idx1], scaleX, xDim, xOff));
+			let firstXPos = pixelForX(dataX[dir == 1 ? idx0 : idx1]);
 			let prevXPos = firstXPos;
 
 			let xCoords = [];
 			let yCoords = [];
 
-			for (let i = _dir == 1 ? idx0 : idx1; i >= idx0 && i <= idx1; i += _dir) {
+			for (let i = dir == 1 ? idx0 : idx1; i >= idx0 && i <= idx1; i += dir) {
 				let yVal = dataY[i];
-				let xVal = dataX[i];
-				let xPos = valToPosX(xVal, scaleX, xDim, xOff);
 
-				if (yVal == null) {
-					if (yVal === null) {
-						addGap(gaps, prevXPos, xPos);
-						inGap = true;
-					}
-					continue;
-				}
-				else {
-					if (inGap) {
-						addGap(gaps, prevXPos, xPos);
-						inGap = false;
-					}
+				if (yVal != null) {
+					let xVal = dataX[i];
+					let xPos = pixelForX(xVal);
 
-					xCoords.push((prevXPos = xPos));
-					yCoords.push(valToPosY(dataY[i], scaleY, yDim, yOff));
+					xCoords.push(prevXPos = xPos);
+					yCoords.push(pixelForY(dataY[i]));
 				}
 			}
 
 			const _paths = {stroke: interp(xCoords, yCoords, moveTo, lineTo, bezierCurveTo, pxRound), fill: null, clip: null, band: null, gaps: null, flags: BAND_CLIP_FILL};
 			const stroke = _paths.stroke;
 
-			if (series.fill != null && stroke != null) {
+			let [ bandFillDir, bandClipDir ] = bandFillClipDirs(u, seriesIdx);
+
+			if (series.fill != null || bandFillDir != 0) {
 				let fill = _paths.fill = new Path2D(stroke);
 
-				let fillTo = series.fillTo(u, seriesIdx, series.min, series.max);
-				let minY = pxRound(valToPosY(fillTo, scaleY, yDim, yOff));
+				let fillTo = series.fillTo(u, seriesIdx, series.min, series.max, bandFillDir);
+				let fillToY = pixelForY(fillTo);
 
-				lineTo(fill, prevXPos, minY);
-				lineTo(fill, firstXPos, minY);
+				lineTo(fill, prevXPos, fillToY);
+				lineTo(fill, firstXPos, fillToY);
 			}
 
-			_paths.gaps = gaps = series.gaps(u, seriesIdx, idx0, idx1, gaps);
+			if (!series.spanGaps) {
+			//	console.time('gaps');
+				let gaps = [];
 
-			if (!series.spanGaps)
+				gaps.push(...findGaps(dataX, dataY, idx0, idx1, dir, pixelForX, alignGaps));
+
+			//	console.timeEnd('gaps');
+
+			//	console.log('gaps', JSON.stringify(gaps));
+
+				_paths.gaps = gaps = series.gaps(u, seriesIdx, idx0, idx1, gaps);
+
 				_paths.clip = clipGaps(gaps, scaleX.ori, xOff, yOff, xDim, yDim);
+			}
 
-			if (u.bands.length > 0) {
-				// ADDL OPT: only create band clips for series that are band lower edges
-				// if (b.series[1] == i && _paths.band == null)
-				_paths.band = clipBandLine(u, seriesIdx, idx0, idx1, stroke);
+			if (bandClipDir != 0) {
+				_paths.band = bandClipDir == 2 ? [
+					clipBandLine(u, seriesIdx, idx0, idx1, stroke, -1),
+					clipBandLine(u, seriesIdx, idx0, idx1, stroke,  1),
+				] : clipBandLine(u, seriesIdx, idx0, idx1, stroke, bandClipDir);
 			}
 
 			return _paths;
@@ -5938,7 +6097,7 @@ function splineInterp(interp, opts) {
 }
 
 function monotoneCubic(opts) {
-	return splineInterp(_monotoneCubic);
+	return splineInterp(_monotoneCubic, opts);
 }
 
 // Monotone Cubic Spline interpolation, adapted from the Chartist.js implementation:
@@ -6012,8 +6171,11 @@ function invalidateRects() {
 	});
 }
 
-on(resize, win, invalidateRects);
-on(scroll, win, invalidateRects, true);
+if (domEnv) {
+	on(resize, win, invalidateRects);
+	on(scroll, win, invalidateRects, true);
+	on(dppxchange, win, () => { uPlot.pxRatio = pxRatio; });
+}
 
 const linearPath = linear() ;
 const pointsPath = points() ;
@@ -6170,6 +6332,7 @@ function uPlot(opts, data, then) {
 
 	bands.forEach(b => {
 		b.fill = fnOrSelf(b.fill || null);
+		b.dir = ifNull(b.dir, -1);
 	});
 
 	const xScaleKey = mode == 2 ? series[1].facets[0].scale : series[0].scale;
@@ -6196,9 +6359,6 @@ function uPlot(opts, data, then) {
 			else {
 				sc = scales[scaleKey] = assign({}, (scaleKey == xScaleKey ? xScaleOpts : yScaleOpts), scaleOpts);
 
-				if (mode == 2)
-					sc.time = false;
-
 				sc.key = scaleKey;
 
 				let isTime = sc.time;
@@ -6207,7 +6367,7 @@ function uPlot(opts, data, then) {
 
 				let rangeIsArr = isArr(rn);
 
-				if (scaleKey != xScaleKey || mode == 2) {
+				if (scaleKey != xScaleKey || (mode == 2 && !isTime)) {
 					// if range array has null limits, it should be auto
 					if (rangeIsArr && (rn[0] == null || rn[1] == null)) {
 						rn = {
@@ -6731,6 +6891,8 @@ function uPlot(opts, data, then) {
 			let pt = initCursorPt(s, i);
 			pt && cursorPts.splice(i, 0, pt);
 		}
+
+		fire("addSeries", i);
 	}
 
 	function addSeries(opts, si) {
@@ -6762,6 +6924,8 @@ function uPlot(opts, data, then) {
 		}
 
 		// TODO: de-init no-longer-needed scales?
+
+		fire("delSeries", i);
 	}
 
 	self.delSeries = delSeries;
@@ -6791,9 +6955,10 @@ function uPlot(opts, data, then) {
 			axis.incrs  = fnOrSelf(axis.incrs  || (          sc.distr == 2 ? wholeIncrs : (isTime ? (ms == 1 ? timeIncrsMs : timeIncrsS) : numIncrs)));
 			axis.splits = fnOrSelf(axis.splits || (isTime && sc.distr == 1 ? _timeAxisSplits : sc.distr == 3 ? logAxisSplits : sc.distr == 4 ? asinhAxisSplits : numAxisSplits));
 
-			axis.stroke       = fnOrSelf(axis.stroke);
-			axis.grid.stroke  = fnOrSelf(axis.grid.stroke);
-			axis.ticks.stroke = fnOrSelf(axis.ticks.stroke);
+			axis.stroke        = fnOrSelf(axis.stroke);
+			axis.grid.stroke   = fnOrSelf(axis.grid.stroke);
+			axis.ticks.stroke  = fnOrSelf(axis.ticks.stroke);
+			axis.border.stroke = fnOrSelf(axis.border.stroke);
 
 			let av = axis.values;
 
@@ -6826,10 +6991,10 @@ function uPlot(opts, data, then) {
 			axis._splits =
 			axis._values = null;
 
-			if (axis._size > 0)
+			if (axis._size > 0) {
 				sidesWithAxes[i] = true;
-
-			axis._el = placeDiv(AXIS, wrap);
+				axis._el = placeDiv(AXIS, wrap);
+			}
 
 			// debug
 		//	axis._el.style.background = "#"  + Math.floor(Math.random()*16777215).toString(16) + '80';
@@ -6865,6 +7030,8 @@ function uPlot(opts, data, then) {
 	let viaAutoScaleX = false;
 
 	function setData(_data, _resetScales) {
+		data = _data == null ? [] : copy(_data, fastIsObj);
+
 		if (mode == 2) {
 			dataLen = 0;
 			for (let i = 1; i < series.length; i++)
@@ -6872,15 +7039,19 @@ function uPlot(opts, data, then) {
 			self.data = data = _data;
 		}
 		else {
-			data = (_data || []).slice();
-			data[0] = data[0] || [];
+			if (data[0] == null)
+				data[0] = [];
 
 			self.data = data.slice();
+
 			data0 = data[0];
 			dataLen = data0.length;
 
-			if (xScaleDistr == 2)
-				data[0] = data0.map((v, i) => i);
+			if (xScaleDistr == 2) {
+				data[0] = Array(dataLen);
+				for (let i = 0; i < dataLen; i++)
+					data[0][i] = i;
+			}
 		}
 
 		self._data = data;
@@ -6888,6 +7059,24 @@ function uPlot(opts, data, then) {
 		resetYSeries(true);
 
 		fire("setData");
+
+		// forces x axis tick values to re-generate when neither x scale nor y scale changes
+		// in ordinal mode, scale range is by index, so will not change if new data has same length, but tick values are from data
+		if (xScaleDistr == 2) {
+			shouldConvergeSize = true;
+
+			/* or somewhat cheaper, and uglier:
+			if (ready) {
+				// logic extracted from axesCalc()
+				let i = 0;
+				let axis = axes[i];
+				let _splits = axis._splits.map(i => data0[i]);
+				let [_incr, _space] = axis._found;
+				let incr = data0[_splits[1]] - data0[_splits[0]];
+				axis._values = axis.values(self, axis.filter(self, _splits, i, _space, incr), i, _space, incr);
+			}
+			*/
+		}
 
 		if (_resetScales !== false) {
 			let xsc = scaleX;
@@ -6971,13 +7160,13 @@ function uPlot(opts, data, then) {
 			ctx.textBaseline = ctxBaseline = baseline;
 	}
 
-	function accScale(wsc, psc, facet, data) {
-		if (wsc.auto(self, viaAutoScaleX) && (psc == null || psc.min == null)) {
+	function accScale(wsc, psc, facet, data, sorted = 0) {
+		if (data.length > 0 && wsc.auto(self, viaAutoScaleX) && (psc == null || psc.min == null)) {
 			let _i0 = ifNull(i0, 0);
 			let _i1 = ifNull(i1, data.length - 1);
 
 			// only run getMinMax() for invalidated series data, else reuse
-			let minMax = facet.min == null ? (wsc.distr == 3 ? getMinMaxLog(data, _i0, _i1) : getMinMax(data, _i0, _i1)) : [facet.min, facet.max];
+			let minMax = facet.min == null ? (wsc.distr == 3 ? getMinMaxLog(data, _i0, _i1) : getMinMax(data, _i0, _i1, sorted)) : [facet.min, facet.max];
 
 			// initial min/max
 			wsc.min = min(wsc.min, facet.min = minMax[0]);
@@ -7042,7 +7231,7 @@ function uPlot(opts, data, then) {
 						s.max = data0[i1];
 					}
 					else if (s.show && s.auto)
-						accScale(wsc, psc, s, data[i]);
+						accScale(wsc, psc, s, data[i], s.sorted);
 
 					s.idxs[0] = i0;
 					s.idxs[1] = i1;
@@ -7056,8 +7245,8 @@ function uPlot(opts, data, then) {
 							let yScaleKey = yFacet.scale;
 							let [ xData, yData ] = data[i];
 
-							accScale(wipScales[xScaleKey], pendScales[xScaleKey], xFacet, xData);
-							accScale(wipScales[yScaleKey], pendScales[yScaleKey], yFacet, yData);
+							accScale(wipScales[xScaleKey], pendScales[xScaleKey], xFacet, xData, xFacet.sorted);
+							accScale(wipScales[yScaleKey], pendScales[yScaleKey], yFacet, yData, yFacet.sorted);
 
 							// temp
 							s.min = yFacet.min;
@@ -7268,6 +7457,10 @@ function uPlot(opts, data, then) {
 				let lowerData = data[b.series[1]];
 
 				let bandClip = (lowerEdge._paths || EMPTY_OBJ).band;
+
+				if (isArr(bandClip))
+					bandClip = b.dir == 1 ? bandClip[0] : bandClip[1];
+
 				let gapsClip2;
 
 				let _fillStyle = null;
@@ -7551,6 +7744,7 @@ function uPlot(opts, data, then) {
 			let incr   = scale.distr == 2 ? data0[_splits[1]] - data0[_splits[0]] : _incr;
 
 			let ticks = axis.ticks;
+			let border = axis.border;
 			let tickSize = ticks.show ? round(ticks.size * pxRatio) : 0;
 
 			// rotating of labels only supported on bottom x axis
@@ -7641,6 +7835,21 @@ function uPlot(opts, data, then) {
 					grid.cap,
 				);
 			}
+
+			if (border.show) {
+				drawOrthoLines(
+					[basePos],
+					[1],
+					ori == 0 ? 1 : 0,
+					ori == 0 ? 1 : 2,
+					ori == 1 ? plotTop : plotLft,
+					ori == 1 ? plotHgt : plotWid,
+					roundDec(border.width * pxRatio, 3),
+					border.stroke(self, i),
+					border.dash,
+					border.cap,
+				);
+			}
 		}
 
 		fire("drawAxes");
@@ -7710,30 +7919,29 @@ function uPlot(opts, data, then) {
 			can.width  = round(fullWidCss * pxRatio);
 			can.height = round(fullHgtCss * pxRatio);
 
+			axes.forEach(({ _el, _show, _size, _pos, side }) => {
+				if (_el != null) {
+					if (_show) {
+						let posOffset = (side === 3 || side === 0 ? _size : 0);
+						let isVt = side % 2 == 1;
 
-			axes.forEach(a => {
-				let { _show, _el, _size, _pos, side } = a;
+						setStylePx(_el, isVt ? "left"   : "top",    _pos - posOffset);
+						setStylePx(_el, isVt ? "width"  : "height", _size);
+						setStylePx(_el, isVt ? "top"    : "left",   isVt ? plotTopCss : plotLftCss);
+						setStylePx(_el, isVt ? "height" : "width",  isVt ? plotHgtCss : plotWidCss);
 
-				if (_show) {
-					let posOffset = (side === 3 || side === 0 ? _size : 0);
-					let isVt = side % 2 == 1;
-
-					setStylePx(_el, isVt ? "left"   : "top",    _pos - posOffset);
-					setStylePx(_el, isVt ? "width"  : "height", _size);
-					setStylePx(_el, isVt ? "top"    : "left",   isVt ? plotTopCss : plotLftCss);
-					setStylePx(_el, isVt ? "height" : "width",  isVt ? plotHgtCss : plotWidCss);
-
-					_el && remClass(_el, OFF);
+						remClass(_el, OFF);
+					}
+					else
+						addClass(_el, OFF);
 				}
-				else
-					_el && addClass(_el, OFF);
 			});
 
 			// invalidate ctx style cache
 			ctxStroke = ctxFill = ctxWidth = ctxJoin = ctxCap = ctxFont = ctxAlign = ctxBaseline = ctxDash = null;
 			ctxAlpha = 1;
 
-			syncRect(false);
+			syncRect(true);
 
 			fire("setSize");
 
@@ -7810,6 +8018,9 @@ function uPlot(opts, data, then) {
 				if (sc.distr == 2 && dataLen > 0) {
 					opts.min = closestIdx(opts.min, data[0]);
 					opts.max = closestIdx(opts.max, data[0]);
+
+					if (opts.min == opts.max)
+						opts.max++;
 				}
 			}
 
@@ -7914,17 +8125,19 @@ function uPlot(opts, data, then) {
 	function setSeries(i, opts, _fire, _pub) {
 	//	log("setSeries()", arguments);
 
-		let s = series[i];
-
 		if (opts.focus != null)
 			setFocus(i);
 
 		if (opts.show != null) {
-			s.show = opts.show;
-			toggleDOM(i, opts.show);
+			series.forEach((s, si) => {
+				if (si > 0 && (i == si || i == null)) {
+					s.show = opts.show;
+					toggleDOM(si, opts.show);
 
-			_setScale(mode == 2 ? s.facets[1].scale : s.scale, null, null);
-			commit();
+					_setScale(mode == 2 ? s.facets[1].scale : s.scale, null, null);
+					commit();
+				}
+			});
 		}
 
 		_fire !== false && fire("setSeries", i, opts);
@@ -7940,6 +8153,7 @@ function uPlot(opts, data, then) {
 
 	function addBand(opts, bi) {
 		opts.fill = fnOrSelf(opts.fill || null);
+		opts.dir = ifNull(opts.dir, -1);
 		bi = bi == null ? bands.length : bi;
 		bands.splice(bi, 0, opts);
 	}
@@ -7970,7 +8184,6 @@ function uPlot(opts, data, then) {
 	let closestSeries;
 	let focusedSeries;
 	const FOCUS_TRUE  = {focus: true};
-	const FOCUS_FALSE = {focus: false};
 
 	function setFocus(i) {
 		if (i != focusedSeries) {
@@ -7995,8 +8208,9 @@ function uPlot(opts, data, then) {
 		on(mouseleave, legendEl, e => {
 			if (cursor._lock)
 				return;
-			setSeries(null, FOCUS_FALSE, true, syncOpts.setSeries);
-			updateCursor(null, true, false);
+
+			if (focusedSeries != null)
+				setSeries(null, FOCUS_TRUE, true, syncOpts.setSeries);
 		});
 	}
 
@@ -8283,27 +8497,27 @@ function uPlot(opts, data, then) {
 				dragX = sdrag._x;
 				dragY = sdrag._y;
 
-				let { left, top, width, height } = src.select;
+				if (dragX || dragY) {
+					let { left, top, width, height } = src.select;
 
-				let sori = src.scales[xKey].ori;
-				let sPosToVal = src.posToVal;
+					let sori = src.scales[xKey].ori;
+					let sPosToVal = src.posToVal;
 
-				let sOff, sDim, sc, a, b;
+					let sOff, sDim, sc, a, b;
 
-				let matchingX = xKey != null && matchXKeys(xKey, xKeySrc);
-				let matchingY = yKey != null && matchYKeys(yKey, yKeySrc);
+					let matchingX = xKey != null && matchXKeys(xKey, xKeySrc);
+					let matchingY = yKey != null && matchYKeys(yKey, yKeySrc);
 
-				if (matchingX) {
-					if (sori == 0) {
-						sOff = left;
-						sDim = width;
-					}
-					else {
-						sOff = top;
-						sDim = height;
-					}
+					if (matchingX && dragX) {
+						if (sori == 0) {
+							sOff = left;
+							sDim = width;
+						}
+						else {
+							sOff = top;
+							sDim = height;
+						}
 
-					if (dragX) {
 						sc = scales[xKey];
 
 						a = valToPosX(sPosToVal(sOff, xKeySrc),        sc, xDim, 0);
@@ -8314,21 +8528,16 @@ function uPlot(opts, data, then) {
 					else
 						setSelX(0, xDim);
 
-					if (!matchingY)
-						setSelY(0, yDim);
-				}
+					if (matchingY && dragY) {
+						if (sori == 1) {
+							sOff = left;
+							sDim = width;
+						}
+						else {
+							sOff = top;
+							sDim = height;
+						}
 
-				if (matchingY) {
-					if (sori == 1) {
-						sOff = left;
-						sDim = width;
-					}
-					else {
-						sOff = top;
-						sDim = height;
-					}
-
-					if (dragY) {
 						sc = scales[yKey];
 
 						a = valToPosY(sPosToVal(sOff, yKeySrc),        sc, yDim, 0);
@@ -8338,10 +8547,9 @@ function uPlot(opts, data, then) {
 					}
 					else
 						setSelY(0, yDim);
-
-					if (!matchingX)
-						setSelX(0, xDim);
 				}
+				else
+					hideSelect();
 			}
 			else {
 				let rawDX = abs(rawMouseLeft1 - rawMouseLeft0);
@@ -8499,7 +8707,7 @@ function uPlot(opts, data, then) {
 			let [xKeySrc, yKeySrc] = syncOptsSrc.scales;
 			let [matchXKeys, matchYKeys] = syncOpts.match;
 
-			let rotSrc = src.scales[xKeySrc].ori == 1;
+			let rotSrc = src.axes[0].side % 2 == 1;
 
 			let xDim = scaleX.ori == 0 ? plotWidCss : plotHgtCss,
 				yDim = scaleX.ori == 1 ? plotWidCss : plotHgtCss,
@@ -8545,11 +8753,13 @@ function uPlot(opts, data, then) {
 		}
 	}
 
+	const _hideProps = {
+		width: 0,
+		height: 0,
+	};
+
 	function hideSelect() {
-		setSelect({
-			width: 0,
-			height: 0,
-		}, false);
+		setSelect(_hideProps, false);
 	}
 
 	function mouseDown(e, src, _l, _t, _w, _h, _i) {
@@ -8817,6 +9027,7 @@ uPlot.rangeNum = rangeNum;
 uPlot.rangeLog = rangeLog;
 uPlot.rangeAsinh = rangeAsinh;
 uPlot.orient   = orient;
+uPlot.pxRatio = pxRatio;
 
 {
 	uPlot.join = join;
@@ -8847,892 +9058,6 @@ uPlot.orient   = orient;
 
 
 
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/hex-color-picker.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/vanilla-colorful/hex-color-picker.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "HexColorPicker": () => (/* binding */ HexColorPicker)
-/* harmony export */ });
-/* harmony import */ var _lib_entrypoints_hex_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lib/entrypoints/hex.js */ "./node_modules/vanilla-colorful/lib/entrypoints/hex.js");
-
-/**
- * A color picker custom element that uses HEX format.
- *
- * @element hex-color-picker
- *
- * @prop {string} color - Selected color in HEX format.
- * @attr {string} color - Selected color in HEX format.
- *
- * @fires color-changed - Event fired when color property changes.
- *
- * @csspart hue - A hue selector container.
- * @csspart saturation - A saturation selector container
- * @csspart hue-pointer - A hue pointer element.
- * @csspart saturation-pointer - A saturation pointer element.
- */
-class HexColorPicker extends _lib_entrypoints_hex_js__WEBPACK_IMPORTED_MODULE_0__.HexBase {
-}
-customElements.define('hex-color-picker', HexColorPicker);
-//# sourceMappingURL=hex-color-picker.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/hex-input.js":
-/*!****************************************************!*\
-  !*** ./node_modules/vanilla-colorful/hex-input.js ***!
-  \****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "HexInput": () => (/* binding */ HexInput)
-/* harmony export */ });
-/* harmony import */ var _lib_entrypoints_hex_input_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lib/entrypoints/hex-input.js */ "./node_modules/vanilla-colorful/lib/entrypoints/hex-input.js");
-
-/**
- * A color picker custom element that uses HEX format.
- *
- * @element hex-input
- *
- * @prop {string} color - Color in HEX format.
- * @attr {string} color - Selected color in HEX format.
- *
- * @fires color-changed - Event fired when color is changed.
- *
- * @csspart input - A native input element.
- */
-class HexInput extends _lib_entrypoints_hex_input_js__WEBPACK_IMPORTED_MODULE_0__.HexInputBase {
-}
-customElements.define('hex-input', HexInput);
-//# sourceMappingURL=hex-input.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/components/color-picker.js":
-/*!**********************************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/components/color-picker.js ***!
-  \**********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "$css": () => (/* binding */ $css),
-/* harmony export */   "$sliders": () => (/* binding */ $sliders),
-/* harmony export */   "ColorPicker": () => (/* binding */ ColorPicker)
-/* harmony export */ });
-/* harmony import */ var _utils_compare_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/compare.js */ "./node_modules/vanilla-colorful/lib/utils/compare.js");
-/* harmony import */ var _utils_dom_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/dom.js */ "./node_modules/vanilla-colorful/lib/utils/dom.js");
-/* harmony import */ var _hue_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./hue.js */ "./node_modules/vanilla-colorful/lib/components/hue.js");
-/* harmony import */ var _saturation_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./saturation.js */ "./node_modules/vanilla-colorful/lib/components/saturation.js");
-/* harmony import */ var _styles_color_picker_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../styles/color-picker.js */ "./node_modules/vanilla-colorful/lib/styles/color-picker.js");
-/* harmony import */ var _styles_hue_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styles/hue.js */ "./node_modules/vanilla-colorful/lib/styles/hue.js");
-/* harmony import */ var _styles_saturation_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../styles/saturation.js */ "./node_modules/vanilla-colorful/lib/styles/saturation.js");
-
-
-
-
-
-
-
-const $isSame = Symbol('same');
-const $color = Symbol('color');
-const $hsva = Symbol('hsva');
-const $change = Symbol('change');
-const $update = Symbol('update');
-const $parts = Symbol('parts');
-const $css = Symbol('css');
-const $sliders = Symbol('sliders');
-class ColorPicker extends HTMLElement {
-    static get observedAttributes() {
-        return ['color'];
-    }
-    get [$css]() {
-        return [_styles_color_picker_js__WEBPACK_IMPORTED_MODULE_0__["default"], _styles_hue_js__WEBPACK_IMPORTED_MODULE_1__["default"], _styles_saturation_js__WEBPACK_IMPORTED_MODULE_2__["default"]];
-    }
-    get [$sliders]() {
-        return [_saturation_js__WEBPACK_IMPORTED_MODULE_3__.Saturation, _hue_js__WEBPACK_IMPORTED_MODULE_4__.Hue];
-    }
-    get color() {
-        return this[$color];
-    }
-    set color(newColor) {
-        if (!this[$isSame](newColor)) {
-            const newHsva = this.colorModel.toHsva(newColor);
-            this[$update](newHsva);
-            this[$change](newColor);
-        }
-    }
-    constructor() {
-        super();
-        const template = (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_5__.tpl)(`<style>${this[$css].join('')}</style>`);
-        const root = this.attachShadow({ mode: 'open' });
-        root.appendChild(template.content.cloneNode(true));
-        root.addEventListener('move', this);
-        this[$parts] = this[$sliders].map((slider) => new slider(root));
-    }
-    connectedCallback() {
-        // A user may set a property on an _instance_ of an element,
-        // before its prototype has been connected to this class.
-        // If so, we need to run it through the proper class setter.
-        if (this.hasOwnProperty('color')) {
-            const value = this.color;
-            delete this['color'];
-            this.color = value;
-        }
-        else if (!this.color) {
-            this.color = this.colorModel.defaultColor;
-        }
-    }
-    attributeChangedCallback(_attr, _oldVal, newVal) {
-        const color = this.colorModel.fromAttr(newVal);
-        if (!this[$isSame](color)) {
-            this.color = color;
-        }
-    }
-    handleEvent(event) {
-        // Merge the current HSV color object with updated params.
-        const oldHsva = this[$hsva];
-        const newHsva = { ...oldHsva, ...event.detail };
-        this[$update](newHsva);
-        let newColor;
-        if (!(0,_utils_compare_js__WEBPACK_IMPORTED_MODULE_6__.equalColorObjects)(newHsva, oldHsva) &&
-            !this[$isSame]((newColor = this.colorModel.fromHsva(newHsva)))) {
-            this[$change](newColor);
-        }
-    }
-    [$isSame](color) {
-        return this.color && this.colorModel.equal(color, this.color);
-    }
-    [$update](hsva) {
-        this[$hsva] = hsva;
-        this[$parts].forEach((part) => part.update(hsva));
-    }
-    [$change](value) {
-        this[$color] = value;
-        (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_5__.fire)(this, 'color-changed', { value });
-    }
-}
-//# sourceMappingURL=color-picker.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/components/hue.js":
-/*!*************************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/components/hue.js ***!
-  \*************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Hue": () => (/* binding */ Hue)
-/* harmony export */ });
-/* harmony import */ var _slider_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./slider.js */ "./node_modules/vanilla-colorful/lib/components/slider.js");
-/* harmony import */ var _utils_convert_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/convert.js */ "./node_modules/vanilla-colorful/lib/utils/convert.js");
-/* harmony import */ var _utils_math_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/math.js */ "./node_modules/vanilla-colorful/lib/utils/math.js");
-
-
-
-class Hue extends _slider_js__WEBPACK_IMPORTED_MODULE_0__.Slider {
-    constructor(root) {
-        super(root, 'hue', 'aria-label="Hue" aria-valuemin="0" aria-valuemax="360"', false);
-    }
-    update({ h }) {
-        this.h = h;
-        this.style([
-            {
-                left: `${(h / 360) * 100}%`,
-                color: (0,_utils_convert_js__WEBPACK_IMPORTED_MODULE_1__.hsvaToHslString)({ h, s: 100, v: 100, a: 1 })
-            }
-        ]);
-        this.el.setAttribute('aria-valuenow', `${(0,_utils_math_js__WEBPACK_IMPORTED_MODULE_2__.round)(h)}`);
-    }
-    getMove(offset, key) {
-        // Hue measured in degrees of the color circle ranging from 0 to 360
-        return { h: key ? (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_2__.clamp)(this.h + offset.x * 360, 0, 360) : 360 * offset.x };
-    }
-}
-//# sourceMappingURL=hue.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/components/saturation.js":
-/*!********************************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/components/saturation.js ***!
-  \********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Saturation": () => (/* binding */ Saturation)
-/* harmony export */ });
-/* harmony import */ var _slider_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./slider.js */ "./node_modules/vanilla-colorful/lib/components/slider.js");
-/* harmony import */ var _utils_convert_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/convert.js */ "./node_modules/vanilla-colorful/lib/utils/convert.js");
-/* harmony import */ var _utils_math_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/math.js */ "./node_modules/vanilla-colorful/lib/utils/math.js");
-
-
-
-class Saturation extends _slider_js__WEBPACK_IMPORTED_MODULE_0__.Slider {
-    constructor(root) {
-        super(root, 'saturation', 'aria-label="Color"', true);
-    }
-    update(hsva) {
-        this.hsva = hsva;
-        this.style([
-            {
-                top: `${100 - hsva.v}%`,
-                left: `${hsva.s}%`,
-                color: (0,_utils_convert_js__WEBPACK_IMPORTED_MODULE_1__.hsvaToHslString)(hsva)
-            },
-            {
-                'background-color': (0,_utils_convert_js__WEBPACK_IMPORTED_MODULE_1__.hsvaToHslString)({ h: hsva.h, s: 100, v: 100, a: 1 })
-            }
-        ]);
-        this.el.setAttribute('aria-valuetext', `Saturation ${(0,_utils_math_js__WEBPACK_IMPORTED_MODULE_2__.round)(hsva.s)}%, Brightness ${(0,_utils_math_js__WEBPACK_IMPORTED_MODULE_2__.round)(hsva.v)}%`);
-    }
-    getMove(offset, key) {
-        // Saturation and brightness always fit into [0, 100] range
-        return {
-            s: key ? (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_2__.clamp)(this.hsva.s + offset.x * 100, 0, 100) : offset.x * 100,
-            v: key ? (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_2__.clamp)(this.hsva.v - offset.y * 100, 0, 100) : Math.round(100 - offset.y * 100)
-        };
-    }
-}
-//# sourceMappingURL=saturation.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/components/slider.js":
-/*!****************************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/components/slider.js ***!
-  \****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Slider": () => (/* binding */ Slider)
-/* harmony export */ });
-/* harmony import */ var _utils_dom_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/dom.js */ "./node_modules/vanilla-colorful/lib/utils/dom.js");
-/* harmony import */ var _utils_math_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/math.js */ "./node_modules/vanilla-colorful/lib/utils/math.js");
-
-
-let hasTouched = false;
-// Check if an event was triggered by touch
-const isTouch = (e) => 'touches' in e;
-// Prevent mobile browsers from handling mouse events (conflicting with touch ones).
-// If we detected a touch interaction before, we prefer reacting to touch events only.
-const isValid = (event) => {
-    if (hasTouched && !isTouch(event))
-        return false;
-    if (!hasTouched)
-        hasTouched = isTouch(event);
-    return true;
-};
-const pointerMove = (target, event) => {
-    const pointer = isTouch(event) ? event.touches[0] : event;
-    const rect = target.el.getBoundingClientRect();
-    (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_0__.fire)(target.el, 'move', target.getMove({
-        x: (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_1__.clamp)((pointer.pageX - (rect.left + window.pageXOffset)) / rect.width),
-        y: (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_1__.clamp)((pointer.pageY - (rect.top + window.pageYOffset)) / rect.height)
-    }));
-};
-const keyMove = (target, event) => {
-    // We use `keyCode` instead of `key` to reduce the size of the library.
-    const keyCode = event.keyCode;
-    // Ignore all keys except arrow ones, Page Up, Page Down, Home and End.
-    if (keyCode > 40 || (target.xy && keyCode < 37) || keyCode < 33)
-        return;
-    // Do not scroll page by keys when color picker element has focus.
-    event.preventDefault();
-    // Send relative offset to the parent component.
-    (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_0__.fire)(target.el, 'move', target.getMove({
-        x: keyCode === 39 // Arrow Right
-            ? 0.01
-            : keyCode === 37 // Arrow Left
-                ? -0.01
-                : keyCode === 34 // Page Down
-                    ? 0.05
-                    : keyCode === 33 // Page Up
-                        ? -0.05
-                        : keyCode === 35 // End
-                            ? 1
-                            : keyCode === 36 // Home
-                                ? -1
-                                : 0,
-        y: keyCode === 40 // Arrow down
-            ? 0.01
-            : keyCode === 38 // Arrow Up
-                ? -0.01
-                : 0
-    }, true));
-};
-class Slider {
-    constructor(root, part, aria, xy) {
-        const template = (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_0__.tpl)(`<div role="slider" tabindex="0" part="${part}" ${aria}><div part="${part}-pointer"></div></div>`);
-        root.appendChild(template.content.cloneNode(true));
-        const el = root.querySelector(`[part=${part}]`);
-        el.addEventListener('mousedown', this);
-        el.addEventListener('touchstart', this);
-        el.addEventListener('keydown', this);
-        this.el = el;
-        this.xy = xy;
-        this.nodes = [el.firstChild, el];
-    }
-    set dragging(state) {
-        const toggleEvent = state ? document.addEventListener : document.removeEventListener;
-        toggleEvent(hasTouched ? 'touchmove' : 'mousemove', this);
-        toggleEvent(hasTouched ? 'touchend' : 'mouseup', this);
-    }
-    handleEvent(event) {
-        switch (event.type) {
-            case 'mousedown':
-            case 'touchstart':
-                event.preventDefault();
-                // event.button is 0 in mousedown for left button activation
-                if (!isValid(event) || (!hasTouched && event.button != 0))
-                    return;
-                this.el.focus();
-                pointerMove(this, event);
-                this.dragging = true;
-                break;
-            case 'mousemove':
-            case 'touchmove':
-                event.preventDefault();
-                pointerMove(this, event);
-                break;
-            case 'mouseup':
-            case 'touchend':
-                this.dragging = false;
-                break;
-            case 'keydown':
-                keyMove(this, event);
-                break;
-        }
-    }
-    style(styles) {
-        styles.forEach((style, i) => {
-            for (const p in style) {
-                this.nodes[i].style.setProperty(p, style[p]);
-            }
-        });
-    }
-}
-//# sourceMappingURL=slider.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/entrypoints/hex-input.js":
-/*!********************************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/entrypoints/hex-input.js ***!
-  \********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "HexInputBase": () => (/* binding */ HexInputBase)
-/* harmony export */ });
-/* harmony import */ var _utils_validate_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/validate.js */ "./node_modules/vanilla-colorful/lib/utils/validate.js");
-/* harmony import */ var _utils_dom_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/dom.js */ "./node_modules/vanilla-colorful/lib/utils/dom.js");
-
-
-const template = (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_0__.tpl)('<slot><input part="input" spellcheck="false"></slot>');
-// Escapes all non-hexadecimal characters including "#"
-const escape = (hex) => hex.replace(/([^0-9A-F]+)/gi, '').substr(0, 6);
-const $color = Symbol('color');
-const $saved = Symbol('saved');
-const $input = Symbol('saved');
-const $update = Symbol('update');
-class HexInputBase extends HTMLElement {
-    static get observedAttributes() {
-        return ['color'];
-    }
-    get color() {
-        return this[$color];
-    }
-    set color(hex) {
-        this[$color] = hex;
-        this[$update](hex);
-    }
-    connectedCallback() {
-        const root = this.attachShadow({ mode: 'open' });
-        root.appendChild(template.content.cloneNode(true));
-        const slot = root.firstElementChild;
-        const setInput = () => {
-            let input = this.querySelector('input');
-            if (!input) {
-                // remove all child node if no input found
-                let c;
-                while ((c = this.firstChild)) {
-                    c.remove();
-                }
-                input = slot.firstChild;
-            }
-            input.addEventListener('input', this);
-            input.addEventListener('blur', this);
-            this[$input] = input;
-        };
-        slot.addEventListener('slotchange', setInput);
-        setInput();
-        // A user may set a property on an _instance_ of an element,
-        // before its prototype has been connected to this class.
-        // If so, we need to run it through the proper class setter.
-        if (this.hasOwnProperty('color')) {
-            const value = this.color;
-            delete this['color'];
-            this.color = value;
-        }
-        else if (this.color == null) {
-            this.color = this.getAttribute('color') || '';
-        }
-        else if (this[$color]) {
-            this[$update](this[$color]);
-        }
-    }
-    handleEvent(event) {
-        const target = event.target;
-        const { value } = target;
-        switch (event.type) {
-            case 'input':
-                const hex = escape(value);
-                this[$saved] = this.color;
-                if ((0,_utils_validate_js__WEBPACK_IMPORTED_MODULE_1__.validHex)(hex)) {
-                    this.color = hex;
-                    this.dispatchEvent(new CustomEvent('color-changed', { bubbles: true, detail: { value: '#' + hex } }));
-                }
-                break;
-            case 'blur':
-                if (!(0,_utils_validate_js__WEBPACK_IMPORTED_MODULE_1__.validHex)(value)) {
-                    this.color = this[$saved];
-                }
-        }
-    }
-    attributeChangedCallback(_attr, _oldVal, newVal) {
-        if (this.color !== newVal) {
-            this.color = newVal;
-        }
-    }
-    [$update](hex) {
-        if (this[$input]) {
-            this[$input].value = hex == null || hex == '' ? '' : escape(hex);
-        }
-    }
-}
-//# sourceMappingURL=hex-input.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/entrypoints/hex.js":
-/*!**************************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/entrypoints/hex.js ***!
-  \**************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "HexBase": () => (/* binding */ HexBase)
-/* harmony export */ });
-/* harmony import */ var _components_color_picker_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/color-picker.js */ "./node_modules/vanilla-colorful/lib/components/color-picker.js");
-/* harmony import */ var _utils_convert_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/convert.js */ "./node_modules/vanilla-colorful/lib/utils/convert.js");
-/* harmony import */ var _utils_compare_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/compare.js */ "./node_modules/vanilla-colorful/lib/utils/compare.js");
-
-
-
-const colorModel = {
-    defaultColor: '#000',
-    toHsva: _utils_convert_js__WEBPACK_IMPORTED_MODULE_0__.hexToHsva,
-    fromHsva: _utils_convert_js__WEBPACK_IMPORTED_MODULE_0__.hsvaToHex,
-    equal: _utils_compare_js__WEBPACK_IMPORTED_MODULE_1__.equalHex,
-    fromAttr: (color) => color
-};
-class HexBase extends _components_color_picker_js__WEBPACK_IMPORTED_MODULE_2__.ColorPicker {
-    get colorModel() {
-        return colorModel;
-    }
-}
-//# sourceMappingURL=hex.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/styles/color-picker.js":
-/*!******************************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/styles/color-picker.js ***!
-  \******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (`:host{display:flex;flex-direction:column;position:relative;width:200px;height:200px;user-select:none;-webkit-user-select:none;cursor:default}:host([hidden]){display:none!important}[role=slider]{position:relative;touch-action:none;user-select:none;-webkit-user-select:none;outline:0}[role=slider]:last-child{border-radius:0 0 8px 8px}[part$=pointer]{position:absolute;z-index:1;box-sizing:border-box;width:28px;height:28px;transform:translate(-50%,-50%);background-color:#fff;border:2px solid #fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.2)}[part$=pointer]::after{display:block;content:'';position:absolute;left:0;top:0;right:0;bottom:0;border-radius:inherit;background-color:currentColor}[role=slider]:focus [part$=pointer]{transform:translate(-50%,-50%) scale(1.1)}`);
-//# sourceMappingURL=color-picker.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/styles/hue.js":
-/*!*********************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/styles/hue.js ***!
-  \*********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (`[part=hue]{flex:0 0 24px;background:linear-gradient(to right,red 0,#ff0 17%,#0f0 33%,#0ff 50%,#00f 67%,#f0f 83%,red 100%)}[part=hue-pointer]{top:50%;z-index:2}`);
-//# sourceMappingURL=hue.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/styles/saturation.js":
-/*!****************************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/styles/saturation.js ***!
-  \****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (`[part=saturation]{flex-grow:1;border-color:transparent;border-bottom:12px solid #000;border-radius:8px 8px 0 0;background-image:linear-gradient(to top,#000,transparent),linear-gradient(to right,#fff,rgba(255,255,255,0));box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)}[part=saturation-pointer]{z-index:3}`);
-//# sourceMappingURL=saturation.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/utils/compare.js":
-/*!************************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/utils/compare.js ***!
-  \************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "equalColorObjects": () => (/* binding */ equalColorObjects),
-/* harmony export */   "equalColorString": () => (/* binding */ equalColorString),
-/* harmony export */   "equalHex": () => (/* binding */ equalHex)
-/* harmony export */ });
-/* harmony import */ var _convert_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./convert.js */ "./node_modules/vanilla-colorful/lib/utils/convert.js");
-
-const equalColorObjects = (first, second) => {
-    if (first === second)
-        return true;
-    for (const prop in first) {
-        // The following allows for a type-safe calling of this function (first & second have to be HSL, HSV, or RGB)
-        // with type-unsafe iterating over object keys. TS does not allow this without an index (`[key: string]: number`)
-        // on an object to define how iteration is normally done. To ensure extra keys are not allowed on our types,
-        // we must cast our object to unknown (as RGB demands `r` be a key, while `Record<string, x>` does not care if
-        // there is or not), and then as a type TS can iterate over.
-        if (first[prop] !==
-            second[prop])
-            return false;
-    }
-    return true;
-};
-const equalColorString = (first, second) => {
-    return first.replace(/\s/g, '') === second.replace(/\s/g, '');
-};
-const equalHex = (first, second) => {
-    if (first.toLowerCase() === second.toLowerCase())
-        return true;
-    // To compare colors like `#FFF` and `ffffff` we convert them into RGB objects
-    return equalColorObjects((0,_convert_js__WEBPACK_IMPORTED_MODULE_0__.hexToRgba)(first), (0,_convert_js__WEBPACK_IMPORTED_MODULE_0__.hexToRgba)(second));
-};
-//# sourceMappingURL=compare.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/utils/convert.js":
-/*!************************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/utils/convert.js ***!
-  \************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "hexToHsva": () => (/* binding */ hexToHsva),
-/* harmony export */   "hexToRgba": () => (/* binding */ hexToRgba),
-/* harmony export */   "parseHue": () => (/* binding */ parseHue),
-/* harmony export */   "hslaStringToHsva": () => (/* binding */ hslaStringToHsva),
-/* harmony export */   "hslStringToHsva": () => (/* binding */ hslStringToHsva),
-/* harmony export */   "hslaToHsva": () => (/* binding */ hslaToHsva),
-/* harmony export */   "hsvaToHex": () => (/* binding */ hsvaToHex),
-/* harmony export */   "hsvaToHsla": () => (/* binding */ hsvaToHsla),
-/* harmony export */   "hsvaToHsvString": () => (/* binding */ hsvaToHsvString),
-/* harmony export */   "hsvaToHsvaString": () => (/* binding */ hsvaToHsvaString),
-/* harmony export */   "hsvaToHslString": () => (/* binding */ hsvaToHslString),
-/* harmony export */   "hsvaToHslaString": () => (/* binding */ hsvaToHslaString),
-/* harmony export */   "hsvaToRgba": () => (/* binding */ hsvaToRgba),
-/* harmony export */   "hsvaToRgbString": () => (/* binding */ hsvaToRgbString),
-/* harmony export */   "hsvaToRgbaString": () => (/* binding */ hsvaToRgbaString),
-/* harmony export */   "hsvaStringToHsva": () => (/* binding */ hsvaStringToHsva),
-/* harmony export */   "hsvStringToHsva": () => (/* binding */ hsvStringToHsva),
-/* harmony export */   "rgbaStringToHsva": () => (/* binding */ rgbaStringToHsva),
-/* harmony export */   "rgbStringToHsva": () => (/* binding */ rgbStringToHsva),
-/* harmony export */   "rgbaToHex": () => (/* binding */ rgbaToHex),
-/* harmony export */   "rgbaToHsva": () => (/* binding */ rgbaToHsva),
-/* harmony export */   "roundHsva": () => (/* binding */ roundHsva),
-/* harmony export */   "rgbaToRgb": () => (/* binding */ rgbaToRgb),
-/* harmony export */   "hslaToHsl": () => (/* binding */ hslaToHsl),
-/* harmony export */   "hsvaToHsv": () => (/* binding */ hsvaToHsv)
-/* harmony export */ });
-/* harmony import */ var _math_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./math.js */ "./node_modules/vanilla-colorful/lib/utils/math.js");
-
-/**
- * Valid CSS <angle> units.
- * https://developer.mozilla.org/en-US/docs/Web/CSS/angle
- */
-const angleUnits = {
-    grad: 360 / 400,
-    turn: 360,
-    rad: 360 / (Math.PI * 2)
-};
-const hexToHsva = (hex) => rgbaToHsva(hexToRgba(hex));
-const hexToRgba = (hex) => {
-    if (hex[0] === '#')
-        hex = hex.substr(1);
-    if (hex.length < 6) {
-        return {
-            r: parseInt(hex[0] + hex[0], 16),
-            g: parseInt(hex[1] + hex[1], 16),
-            b: parseInt(hex[2] + hex[2], 16),
-            a: 1
-        };
-    }
-    return {
-        r: parseInt(hex.substr(0, 2), 16),
-        g: parseInt(hex.substr(2, 2), 16),
-        b: parseInt(hex.substr(4, 2), 16),
-        a: 1
-    };
-};
-const parseHue = (value, unit = 'deg') => {
-    return Number(value) * (angleUnits[unit] || 1);
-};
-const hslaStringToHsva = (hslString) => {
-    const matcher = /hsla?\(?\s*(-?\d*\.?\d+)(deg|rad|grad|turn)?[,\s]+(-?\d*\.?\d+)%?[,\s]+(-?\d*\.?\d+)%?,?\s*[/\s]*(-?\d*\.?\d+)?(%)?\s*\)?/i;
-    const match = matcher.exec(hslString);
-    if (!match)
-        return { h: 0, s: 0, v: 0, a: 1 };
-    return hslaToHsva({
-        h: parseHue(match[1], match[2]),
-        s: Number(match[3]),
-        l: Number(match[4]),
-        a: match[5] === undefined ? 1 : Number(match[5]) / (match[6] ? 100 : 1)
-    });
-};
-const hslStringToHsva = hslaStringToHsva;
-const hslaToHsva = ({ h, s, l, a }) => {
-    s *= (l < 50 ? l : 100 - l) / 100;
-    return {
-        h: h,
-        s: s > 0 ? ((2 * s) / (l + s)) * 100 : 0,
-        v: l + s,
-        a
-    };
-};
-const hsvaToHex = (hsva) => rgbaToHex(hsvaToRgba(hsva));
-const hsvaToHsla = ({ h, s, v, a }) => {
-    const hh = ((200 - s) * v) / 100;
-    return {
-        h: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(h),
-        s: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hh > 0 && hh < 200 ? ((s * v) / 100 / (hh <= 100 ? hh : 200 - hh)) * 100 : 0),
-        l: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hh / 2),
-        a: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(a, 2)
-    };
-};
-const hsvaToHsvString = (hsva) => {
-    const { h, s, v } = roundHsva(hsva);
-    return `hsv(${h}, ${s}%, ${v}%)`;
-};
-const hsvaToHsvaString = (hsva) => {
-    const { h, s, v, a } = roundHsva(hsva);
-    return `hsva(${h}, ${s}%, ${v}%, ${a})`;
-};
-const hsvaToHslString = (hsva) => {
-    const { h, s, l } = hsvaToHsla(hsva);
-    return `hsl(${h}, ${s}%, ${l}%)`;
-};
-const hsvaToHslaString = (hsva) => {
-    const { h, s, l, a } = hsvaToHsla(hsva);
-    return `hsla(${h}, ${s}%, ${l}%, ${a})`;
-};
-const hsvaToRgba = ({ h, s, v, a }) => {
-    h = (h / 360) * 6;
-    s = s / 100;
-    v = v / 100;
-    const hh = Math.floor(h), b = v * (1 - s), c = v * (1 - (h - hh) * s), d = v * (1 - (1 - h + hh) * s), module = hh % 6;
-    return {
-        r: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)([v, c, b, b, d, v][module] * 255),
-        g: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)([d, v, v, c, b, b][module] * 255),
-        b: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)([b, b, d, v, v, c][module] * 255),
-        a: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(a, 2)
-    };
-};
-const hsvaToRgbString = (hsva) => {
-    const { r, g, b } = hsvaToRgba(hsva);
-    return `rgb(${r}, ${g}, ${b})`;
-};
-const hsvaToRgbaString = (hsva) => {
-    const { r, g, b, a } = hsvaToRgba(hsva);
-    return `rgba(${r}, ${g}, ${b}, ${a})`;
-};
-const hsvaStringToHsva = (hsvString) => {
-    const matcher = /hsva?\(?\s*(-?\d*\.?\d+)(deg|rad|grad|turn)?[,\s]+(-?\d*\.?\d+)%?[,\s]+(-?\d*\.?\d+)%?,?\s*[/\s]*(-?\d*\.?\d+)?(%)?\s*\)?/i;
-    const match = matcher.exec(hsvString);
-    if (!match)
-        return { h: 0, s: 0, v: 0, a: 1 };
-    return roundHsva({
-        h: parseHue(match[1], match[2]),
-        s: Number(match[3]),
-        v: Number(match[4]),
-        a: match[5] === undefined ? 1 : Number(match[5]) / (match[6] ? 100 : 1)
-    });
-};
-const hsvStringToHsva = hsvaStringToHsva;
-const rgbaStringToHsva = (rgbaString) => {
-    const matcher = /rgba?\(?\s*(-?\d*\.?\d+)(%)?[,\s]+(-?\d*\.?\d+)(%)?[,\s]+(-?\d*\.?\d+)(%)?,?\s*[/\s]*(-?\d*\.?\d+)?(%)?\s*\)?/i;
-    const match = matcher.exec(rgbaString);
-    if (!match)
-        return { h: 0, s: 0, v: 0, a: 1 };
-    return rgbaToHsva({
-        r: Number(match[1]) / (match[2] ? 100 / 255 : 1),
-        g: Number(match[3]) / (match[4] ? 100 / 255 : 1),
-        b: Number(match[5]) / (match[6] ? 100 / 255 : 1),
-        a: match[7] === undefined ? 1 : Number(match[7]) / (match[8] ? 100 : 1)
-    });
-};
-const rgbStringToHsva = rgbaStringToHsva;
-const format = (number) => {
-    const hex = number.toString(16);
-    return hex.length < 2 ? '0' + hex : hex;
-};
-const rgbaToHex = ({ r, g, b }) => {
-    return '#' + format(r) + format(g) + format(b);
-};
-const rgbaToHsva = ({ r, g, b, a }) => {
-    const max = Math.max(r, g, b);
-    const delta = max - Math.min(r, g, b);
-    // prettier-ignore
-    const hh = delta
-        ? max === r
-            ? (g - b) / delta
-            : max === g
-                ? 2 + (b - r) / delta
-                : 4 + (r - g) / delta
-        : 0;
-    return {
-        h: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(60 * (hh < 0 ? hh + 6 : hh)),
-        s: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(max ? (delta / max) * 100 : 0),
-        v: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)((max / 255) * 100),
-        a
-    };
-};
-const roundHsva = (hsva) => ({
-    h: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hsva.h),
-    s: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hsva.s),
-    v: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hsva.v),
-    a: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hsva.a, 2)
-});
-const rgbaToRgb = ({ r, g, b }) => ({ r, g, b });
-const hslaToHsl = ({ h, s, l }) => ({ h, s, l });
-const hsvaToHsv = (hsva) => {
-    const { h, s, v } = roundHsva(hsva);
-    return { h, s, v };
-};
-//# sourceMappingURL=convert.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/utils/dom.js":
-/*!********************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/utils/dom.js ***!
-  \********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "tpl": () => (/* binding */ tpl),
-/* harmony export */   "fire": () => (/* binding */ fire)
-/* harmony export */ });
-const cache = {};
-const tpl = (html) => {
-    let template = cache[html];
-    if (!template) {
-        template = document.createElement('template');
-        template.innerHTML = html;
-        cache[html] = template;
-    }
-    return template;
-};
-const fire = (target, type, detail) => {
-    target.dispatchEvent(new CustomEvent(type, {
-        bubbles: true,
-        detail
-    }));
-};
-//# sourceMappingURL=dom.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/utils/math.js":
-/*!*********************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/utils/math.js ***!
-  \*********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "clamp": () => (/* binding */ clamp),
-/* harmony export */   "round": () => (/* binding */ round)
-/* harmony export */ });
-// Clamps a value between an upper and lower bound.
-// We use ternary operators because it makes the minified code
-// 2 times shorter then `Math.min(Math.max(a,b),c)`
-const clamp = (number, min = 0, max = 1) => {
-    return number > max ? max : number < min ? min : number;
-};
-const round = (number, digits = 0, base = Math.pow(10, digits)) => {
-    return Math.round(base * number) / base;
-};
-//# sourceMappingURL=math.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/utils/validate.js":
-/*!*************************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/utils/validate.js ***!
-  \*************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "validHex": () => (/* binding */ validHex)
-/* harmony export */ });
-const hex3 = /^#?[0-9A-F]{3}$/i;
-const hex6 = /^#?[0-9A-F]{6}$/i;
-const validHex = (color) => hex6.test(color) || hex3.test(color);
-//# sourceMappingURL=validate.js.map
 
 /***/ }),
 
@@ -9787,17 +9112,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ Combobox)
 /* harmony export */ });
-const ctrlBindings = !!navigator.userAgent.match(/Macintosh/);
 class Combobox {
-    constructor(input, list) {
+    constructor(input, list, { tabInsertsSuggestions, defaultFirstOption } = {}) {
         this.input = input;
         this.list = list;
+        this.tabInsertsSuggestions = tabInsertsSuggestions !== null && tabInsertsSuggestions !== void 0 ? tabInsertsSuggestions : true;
+        this.defaultFirstOption = defaultFirstOption !== null && defaultFirstOption !== void 0 ? defaultFirstOption : false;
         this.isComposing = false;
         if (!list.id) {
-            list.id = `combobox-${Math.random()
-                .toString()
-                .slice(2, 6)}`;
+            list.id = `combobox-${Math.random().toString().slice(2, 6)}`;
         }
+        this.ctrlBindings = !!navigator.userAgent.match(/Macintosh/);
         this.keyboardEventHandler = event => keyboardBindings(event, this);
         this.compositionEventHandler = event => trackComposition(event, this);
         this.inputHandler = this.clearSelection.bind(this);
@@ -9823,6 +9148,7 @@ class Combobox {
         this.input.addEventListener('input', this.inputHandler);
         this.input.addEventListener('keydown', this.keyboardEventHandler);
         this.list.addEventListener('click', commitWithElement);
+        this.indicateDefaultOption();
     }
     stop() {
         this.clearSelection();
@@ -9832,6 +9158,13 @@ class Combobox {
         this.input.removeEventListener('input', this.inputHandler);
         this.input.removeEventListener('keydown', this.keyboardEventHandler);
         this.list.removeEventListener('click', commitWithElement);
+    }
+    indicateDefaultOption() {
+        var _a;
+        if (this.defaultFirstOption) {
+            (_a = Array.from(this.list.querySelectorAll('[role="option"]:not([aria-disabled="true"])'))
+                .filter(visible)[0]) === null || _a === void 0 ? void 0 : _a.setAttribute('data-combobox-option-default', 'true');
+        }
     }
     navigate(indexDiff = 1) {
         const focusEl = Array.from(this.list.querySelectorAll('[aria-selected="true"]')).filter(visible)[0];
@@ -9852,34 +9185,40 @@ class Combobox {
         if (!target)
             return;
         for (const el of els) {
+            el.removeAttribute('data-combobox-option-default');
             if (target === el) {
                 this.input.setAttribute('aria-activedescendant', target.id);
                 target.setAttribute('aria-selected', 'true');
                 scrollTo(this.list, target);
             }
             else {
-                el.setAttribute('aria-selected', 'false');
+                el.removeAttribute('aria-selected');
             }
         }
     }
     clearSelection() {
         this.input.removeAttribute('aria-activedescendant');
         for (const el of this.list.querySelectorAll('[aria-selected="true"]')) {
-            el.setAttribute('aria-selected', 'false');
+            el.removeAttribute('aria-selected');
         }
+        this.indicateDefaultOption();
     }
 }
 function keyboardBindings(event, combobox) {
     if (event.shiftKey || event.metaKey || event.altKey)
         return;
-    if (!ctrlBindings && event.ctrlKey)
+    if (!combobox.ctrlBindings && event.ctrlKey)
         return;
     if (combobox.isComposing)
         return;
     switch (event.key) {
         case 'Enter':
-        case 'Tab':
             if (commit(combobox.input, combobox.list)) {
+                event.preventDefault();
+            }
+            break;
+        case 'Tab':
+            if (combobox.tabInsertsSuggestions && commit(combobox.input, combobox.list)) {
                 event.preventDefault();
             }
             break;
@@ -9895,13 +9234,13 @@ function keyboardBindings(event, combobox) {
             event.preventDefault();
             break;
         case 'n':
-            if (ctrlBindings && event.ctrlKey) {
+            if (combobox.ctrlBindings && event.ctrlKey) {
                 combobox.navigate(1);
                 event.preventDefault();
             }
             break;
         case 'p':
-            if (ctrlBindings && event.ctrlKey) {
+            if (combobox.ctrlBindings && event.ctrlKey) {
                 combobox.navigate(-1);
                 event.preventDefault();
             }
@@ -9923,7 +9262,7 @@ function commitWithElement(event) {
     fireCommitEvent(target);
 }
 function commit(input, list) {
-    const target = list.querySelector('[aria-selected="true"]');
+    const target = list.querySelector('[aria-selected="true"], [data-combobox-option-default="true"]');
     if (!target)
         return false;
     if (target.getAttribute('aria-disabled') === 'true')
@@ -10717,12 +10056,19 @@ function toNumber(value) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "insert": () => (/* binding */ insert),
-/* harmony export */   "set": () => (/* binding */ set),
 /* harmony export */   "getSelection": () => (/* binding */ getSelection),
-/* harmony export */   "wrapSelection": () => (/* binding */ wrapSelection),
-/* harmony export */   "replace": () => (/* binding */ replace)
+/* harmony export */   "insert": () => (/* binding */ insert),
+/* harmony export */   "replace": () => (/* binding */ replace),
+/* harmony export */   "set": () => (/* binding */ set),
+/* harmony export */   "wrapSelection": () => (/* binding */ wrapSelection)
 /* harmony export */ });
+// https://github.com/fregante/text-field-edit/issues/16
+function safeTextInsert(text) {
+    if (text === '') {
+        return document.execCommand('delete');
+    }
+    return document.execCommand('insertText', false, text);
+}
 function insertTextFirefox(field, text) {
     // Found on https://www.everythingfrontend.com/posts/insert-text-into-textarea-at-cursor-position.html 🎈
     field.setRangeText(text, field.selectionStart || 0, field.selectionEnd || 0, 'end');
@@ -10738,7 +10084,7 @@ function insert(field, text) {
     if (initialFocus !== field) {
         field.focus();
     }
-    if (!document.execCommand('insertText', false, text)) {
+    if (!safeTextInsert(text)) {
         insertTextFirefox(field, text);
     }
     if (initialFocus === document.body) {
@@ -10789,6 +10135,891 @@ function replace(field, searchValue, replacer) {
     });
 }
 
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/hex-color-picker.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/vanilla-colorful/hex-color-picker.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "HexColorPicker": () => (/* binding */ HexColorPicker)
+/* harmony export */ });
+/* harmony import */ var _lib_entrypoints_hex_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lib/entrypoints/hex.js */ "./node_modules/vanilla-colorful/lib/entrypoints/hex.js");
+
+/**
+ * A color picker custom element that uses HEX format.
+ *
+ * @element hex-color-picker
+ *
+ * @prop {string} color - Selected color in HEX format.
+ * @attr {string} color - Selected color in HEX format.
+ *
+ * @fires color-changed - Event fired when color property changes.
+ *
+ * @csspart hue - A hue selector container.
+ * @csspart saturation - A saturation selector container
+ * @csspart hue-pointer - A hue pointer element.
+ * @csspart saturation-pointer - A saturation pointer element.
+ */
+class HexColorPicker extends _lib_entrypoints_hex_js__WEBPACK_IMPORTED_MODULE_0__.HexBase {
+}
+customElements.define('hex-color-picker', HexColorPicker);
+//# sourceMappingURL=hex-color-picker.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/hex-input.js":
+/*!****************************************************!*\
+  !*** ./node_modules/vanilla-colorful/hex-input.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "HexInput": () => (/* binding */ HexInput)
+/* harmony export */ });
+/* harmony import */ var _lib_entrypoints_hex_input_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lib/entrypoints/hex-input.js */ "./node_modules/vanilla-colorful/lib/entrypoints/hex-input.js");
+
+/**
+ * A custom element for entering color in HEX format.
+ *
+ * @element hex-input
+ *
+ * @prop {string} color - Color in HEX format.
+ * @attr {string} color - Selected color in HEX format.
+ *
+ * @fires color-changed - Event fired when color is changed.
+ *
+ * @csspart input - A native input element.
+ */
+class HexInput extends _lib_entrypoints_hex_input_js__WEBPACK_IMPORTED_MODULE_0__.HexInputBase {
+}
+customElements.define('hex-input', HexInput);
+//# sourceMappingURL=hex-input.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/components/color-picker.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/components/color-picker.js ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "$css": () => (/* binding */ $css),
+/* harmony export */   "$sliders": () => (/* binding */ $sliders),
+/* harmony export */   "ColorPicker": () => (/* binding */ ColorPicker)
+/* harmony export */ });
+/* harmony import */ var _utils_compare_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/compare.js */ "./node_modules/vanilla-colorful/lib/utils/compare.js");
+/* harmony import */ var _utils_dom_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/dom.js */ "./node_modules/vanilla-colorful/lib/utils/dom.js");
+/* harmony import */ var _hue_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./hue.js */ "./node_modules/vanilla-colorful/lib/components/hue.js");
+/* harmony import */ var _saturation_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./saturation.js */ "./node_modules/vanilla-colorful/lib/components/saturation.js");
+/* harmony import */ var _styles_color_picker_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../styles/color-picker.js */ "./node_modules/vanilla-colorful/lib/styles/color-picker.js");
+/* harmony import */ var _styles_hue_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styles/hue.js */ "./node_modules/vanilla-colorful/lib/styles/hue.js");
+/* harmony import */ var _styles_saturation_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../styles/saturation.js */ "./node_modules/vanilla-colorful/lib/styles/saturation.js");
+
+
+
+
+
+
+
+const $isSame = Symbol('same');
+const $color = Symbol('color');
+const $hsva = Symbol('hsva');
+const $update = Symbol('update');
+const $parts = Symbol('parts');
+const $css = Symbol('css');
+const $sliders = Symbol('sliders');
+class ColorPicker extends HTMLElement {
+    static get observedAttributes() {
+        return ['color'];
+    }
+    get [$css]() {
+        return [_styles_color_picker_js__WEBPACK_IMPORTED_MODULE_0__["default"], _styles_hue_js__WEBPACK_IMPORTED_MODULE_1__["default"], _styles_saturation_js__WEBPACK_IMPORTED_MODULE_2__["default"]];
+    }
+    get [$sliders]() {
+        return [_saturation_js__WEBPACK_IMPORTED_MODULE_3__.Saturation, _hue_js__WEBPACK_IMPORTED_MODULE_4__.Hue];
+    }
+    get color() {
+        return this[$color];
+    }
+    set color(newColor) {
+        if (!this[$isSame](newColor)) {
+            const newHsva = this.colorModel.toHsva(newColor);
+            this[$update](newHsva);
+            this[$color] = newColor;
+        }
+    }
+    constructor() {
+        super();
+        const template = (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_5__.tpl)(`<style>${this[$css].join('')}</style>`);
+        const root = this.attachShadow({ mode: 'open' });
+        root.appendChild(template.content.cloneNode(true));
+        root.addEventListener('move', this);
+        this[$parts] = this[$sliders].map((slider) => new slider(root));
+    }
+    connectedCallback() {
+        // A user may set a property on an _instance_ of an element,
+        // before its prototype has been connected to this class.
+        // If so, we need to run it through the proper class setter.
+        if (this.hasOwnProperty('color')) {
+            const value = this.color;
+            delete this['color'];
+            this.color = value;
+        }
+        else if (!this.color) {
+            this.color = this.colorModel.defaultColor;
+        }
+    }
+    attributeChangedCallback(_attr, _oldVal, newVal) {
+        const color = this.colorModel.fromAttr(newVal);
+        if (!this[$isSame](color)) {
+            this.color = color;
+        }
+    }
+    handleEvent(event) {
+        // Merge the current HSV color object with updated params.
+        const oldHsva = this[$hsva];
+        const newHsva = { ...oldHsva, ...event.detail };
+        this[$update](newHsva);
+        let newColor;
+        if (!(0,_utils_compare_js__WEBPACK_IMPORTED_MODULE_6__.equalColorObjects)(newHsva, oldHsva) &&
+            !this[$isSame]((newColor = this.colorModel.fromHsva(newHsva)))) {
+            this[$color] = newColor;
+            (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_5__.fire)(this, 'color-changed', { value: newColor });
+        }
+    }
+    [$isSame](color) {
+        return this.color && this.colorModel.equal(color, this.color);
+    }
+    [$update](hsva) {
+        this[$hsva] = hsva;
+        this[$parts].forEach((part) => part.update(hsva));
+    }
+}
+//# sourceMappingURL=color-picker.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/components/hue.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/components/hue.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Hue": () => (/* binding */ Hue)
+/* harmony export */ });
+/* harmony import */ var _slider_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./slider.js */ "./node_modules/vanilla-colorful/lib/components/slider.js");
+/* harmony import */ var _utils_convert_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/convert.js */ "./node_modules/vanilla-colorful/lib/utils/convert.js");
+/* harmony import */ var _utils_math_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/math.js */ "./node_modules/vanilla-colorful/lib/utils/math.js");
+
+
+
+class Hue extends _slider_js__WEBPACK_IMPORTED_MODULE_0__.Slider {
+    constructor(root) {
+        super(root, 'hue', 'aria-label="Hue" aria-valuemin="0" aria-valuemax="360"', false);
+    }
+    update({ h }) {
+        this.h = h;
+        this.style([
+            {
+                left: `${(h / 360) * 100}%`,
+                color: (0,_utils_convert_js__WEBPACK_IMPORTED_MODULE_1__.hsvaToHslString)({ h, s: 100, v: 100, a: 1 })
+            }
+        ]);
+        this.el.setAttribute('aria-valuenow', `${(0,_utils_math_js__WEBPACK_IMPORTED_MODULE_2__.round)(h)}`);
+    }
+    getMove(offset, key) {
+        // Hue measured in degrees of the color circle ranging from 0 to 360
+        return { h: key ? (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_2__.clamp)(this.h + offset.x * 360, 0, 360) : 360 * offset.x };
+    }
+}
+//# sourceMappingURL=hue.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/components/saturation.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/components/saturation.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Saturation": () => (/* binding */ Saturation)
+/* harmony export */ });
+/* harmony import */ var _slider_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./slider.js */ "./node_modules/vanilla-colorful/lib/components/slider.js");
+/* harmony import */ var _utils_convert_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/convert.js */ "./node_modules/vanilla-colorful/lib/utils/convert.js");
+/* harmony import */ var _utils_math_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/math.js */ "./node_modules/vanilla-colorful/lib/utils/math.js");
+
+
+
+class Saturation extends _slider_js__WEBPACK_IMPORTED_MODULE_0__.Slider {
+    constructor(root) {
+        super(root, 'saturation', 'aria-label="Color"', true);
+    }
+    update(hsva) {
+        this.hsva = hsva;
+        this.style([
+            {
+                top: `${100 - hsva.v}%`,
+                left: `${hsva.s}%`,
+                color: (0,_utils_convert_js__WEBPACK_IMPORTED_MODULE_1__.hsvaToHslString)(hsva)
+            },
+            {
+                'background-color': (0,_utils_convert_js__WEBPACK_IMPORTED_MODULE_1__.hsvaToHslString)({ h: hsva.h, s: 100, v: 100, a: 1 })
+            }
+        ]);
+        this.el.setAttribute('aria-valuetext', `Saturation ${(0,_utils_math_js__WEBPACK_IMPORTED_MODULE_2__.round)(hsva.s)}%, Brightness ${(0,_utils_math_js__WEBPACK_IMPORTED_MODULE_2__.round)(hsva.v)}%`);
+    }
+    getMove(offset, key) {
+        // Saturation and brightness always fit into [0, 100] range
+        return {
+            s: key ? (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_2__.clamp)(this.hsva.s + offset.x * 100, 0, 100) : offset.x * 100,
+            v: key ? (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_2__.clamp)(this.hsva.v - offset.y * 100, 0, 100) : Math.round(100 - offset.y * 100)
+        };
+    }
+}
+//# sourceMappingURL=saturation.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/components/slider.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/components/slider.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Slider": () => (/* binding */ Slider)
+/* harmony export */ });
+/* harmony import */ var _utils_dom_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/dom.js */ "./node_modules/vanilla-colorful/lib/utils/dom.js");
+/* harmony import */ var _utils_math_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/math.js */ "./node_modules/vanilla-colorful/lib/utils/math.js");
+
+
+let hasTouched = false;
+// Check if an event was triggered by touch
+const isTouch = (e) => 'touches' in e;
+// Prevent mobile browsers from handling mouse events (conflicting with touch ones).
+// If we detected a touch interaction before, we prefer reacting to touch events only.
+const isValid = (event) => {
+    if (hasTouched && !isTouch(event))
+        return false;
+    if (!hasTouched)
+        hasTouched = isTouch(event);
+    return true;
+};
+const pointerMove = (target, event) => {
+    const pointer = isTouch(event) ? event.touches[0] : event;
+    const rect = target.el.getBoundingClientRect();
+    (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_0__.fire)(target.el, 'move', target.getMove({
+        x: (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_1__.clamp)((pointer.pageX - (rect.left + window.pageXOffset)) / rect.width),
+        y: (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_1__.clamp)((pointer.pageY - (rect.top + window.pageYOffset)) / rect.height)
+    }));
+};
+const keyMove = (target, event) => {
+    // We use `keyCode` instead of `key` to reduce the size of the library.
+    const keyCode = event.keyCode;
+    // Ignore all keys except arrow ones, Page Up, Page Down, Home and End.
+    if (keyCode > 40 || (target.xy && keyCode < 37) || keyCode < 33)
+        return;
+    // Do not scroll page by keys when color picker element has focus.
+    event.preventDefault();
+    // Send relative offset to the parent component.
+    (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_0__.fire)(target.el, 'move', target.getMove({
+        x: keyCode === 39 // Arrow Right
+            ? 0.01
+            : keyCode === 37 // Arrow Left
+                ? -0.01
+                : keyCode === 34 // Page Down
+                    ? 0.05
+                    : keyCode === 33 // Page Up
+                        ? -0.05
+                        : keyCode === 35 // End
+                            ? 1
+                            : keyCode === 36 // Home
+                                ? -1
+                                : 0,
+        y: keyCode === 40 // Arrow down
+            ? 0.01
+            : keyCode === 38 // Arrow Up
+                ? -0.01
+                : 0
+    }, true));
+};
+class Slider {
+    constructor(root, part, aria, xy) {
+        const template = (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_0__.tpl)(`<div role="slider" tabindex="0" part="${part}" ${aria}><div part="${part}-pointer"></div></div>`);
+        root.appendChild(template.content.cloneNode(true));
+        const el = root.querySelector(`[part=${part}]`);
+        el.addEventListener('mousedown', this);
+        el.addEventListener('touchstart', this);
+        el.addEventListener('keydown', this);
+        this.el = el;
+        this.xy = xy;
+        this.nodes = [el.firstChild, el];
+    }
+    set dragging(state) {
+        const toggleEvent = state ? document.addEventListener : document.removeEventListener;
+        toggleEvent(hasTouched ? 'touchmove' : 'mousemove', this);
+        toggleEvent(hasTouched ? 'touchend' : 'mouseup', this);
+    }
+    handleEvent(event) {
+        switch (event.type) {
+            case 'mousedown':
+            case 'touchstart':
+                event.preventDefault();
+                // event.button is 0 in mousedown for left button activation
+                if (!isValid(event) || (!hasTouched && event.button != 0))
+                    return;
+                this.el.focus();
+                pointerMove(this, event);
+                this.dragging = true;
+                break;
+            case 'mousemove':
+            case 'touchmove':
+                event.preventDefault();
+                pointerMove(this, event);
+                break;
+            case 'mouseup':
+            case 'touchend':
+                this.dragging = false;
+                break;
+            case 'keydown':
+                keyMove(this, event);
+                break;
+        }
+    }
+    style(styles) {
+        styles.forEach((style, i) => {
+            for (const p in style) {
+                this.nodes[i].style.setProperty(p, style[p]);
+            }
+        });
+    }
+}
+//# sourceMappingURL=slider.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/entrypoints/hex-input.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/entrypoints/hex-input.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "HexInputBase": () => (/* binding */ HexInputBase)
+/* harmony export */ });
+/* harmony import */ var _utils_validate_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/validate.js */ "./node_modules/vanilla-colorful/lib/utils/validate.js");
+/* harmony import */ var _utils_dom_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/dom.js */ "./node_modules/vanilla-colorful/lib/utils/dom.js");
+
+
+const template = (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_0__.tpl)('<slot><input part="input" spellcheck="false"></slot>');
+// Escapes all non-hexadecimal characters including "#"
+const escape = (hex) => hex.replace(/([^0-9A-F]+)/gi, '').substr(0, 6);
+const $color = Symbol('color');
+const $saved = Symbol('saved');
+const $input = Symbol('saved');
+const $update = Symbol('update');
+class HexInputBase extends HTMLElement {
+    static get observedAttributes() {
+        return ['color'];
+    }
+    get color() {
+        return this[$color];
+    }
+    set color(hex) {
+        this[$color] = hex;
+        this[$update](hex);
+    }
+    connectedCallback() {
+        const root = this.attachShadow({ mode: 'open' });
+        root.appendChild(template.content.cloneNode(true));
+        const slot = root.firstElementChild;
+        const setInput = () => {
+            let input = this.querySelector('input');
+            if (!input) {
+                // remove all child node if no input found
+                let c;
+                while ((c = this.firstChild)) {
+                    c.remove();
+                }
+                input = slot.firstChild;
+            }
+            input.addEventListener('input', this);
+            input.addEventListener('blur', this);
+            this[$input] = input;
+        };
+        slot.addEventListener('slotchange', setInput);
+        setInput();
+        // A user may set a property on an _instance_ of an element,
+        // before its prototype has been connected to this class.
+        // If so, we need to run it through the proper class setter.
+        if (this.hasOwnProperty('color')) {
+            const value = this.color;
+            delete this['color'];
+            this.color = value;
+        }
+        else if (this.color == null) {
+            this.color = this.getAttribute('color') || '';
+        }
+        else if (this[$color]) {
+            this[$update](this[$color]);
+        }
+    }
+    handleEvent(event) {
+        const target = event.target;
+        const { value } = target;
+        switch (event.type) {
+            case 'input':
+                const hex = escape(value);
+                this[$saved] = this.color;
+                if ((0,_utils_validate_js__WEBPACK_IMPORTED_MODULE_1__.validHex)(hex) || value === '') {
+                    this.color = hex;
+                    this.dispatchEvent(new CustomEvent('color-changed', {
+                        bubbles: true,
+                        detail: { value: hex ? '#' + hex : '' }
+                    }));
+                }
+                break;
+            case 'blur':
+                if (value && !(0,_utils_validate_js__WEBPACK_IMPORTED_MODULE_1__.validHex)(value)) {
+                    this.color = this[$saved];
+                }
+        }
+    }
+    attributeChangedCallback(_attr, _oldVal, newVal) {
+        if (this.color !== newVal) {
+            this.color = newVal;
+        }
+    }
+    [$update](hex) {
+        if (this[$input]) {
+            this[$input].value = hex == null || hex == '' ? '' : escape(hex);
+        }
+    }
+}
+//# sourceMappingURL=hex-input.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/entrypoints/hex.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/entrypoints/hex.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "HexBase": () => (/* binding */ HexBase)
+/* harmony export */ });
+/* harmony import */ var _components_color_picker_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/color-picker.js */ "./node_modules/vanilla-colorful/lib/components/color-picker.js");
+/* harmony import */ var _utils_convert_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/convert.js */ "./node_modules/vanilla-colorful/lib/utils/convert.js");
+/* harmony import */ var _utils_compare_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/compare.js */ "./node_modules/vanilla-colorful/lib/utils/compare.js");
+
+
+
+const colorModel = {
+    defaultColor: '#000',
+    toHsva: _utils_convert_js__WEBPACK_IMPORTED_MODULE_0__.hexToHsva,
+    fromHsva: _utils_convert_js__WEBPACK_IMPORTED_MODULE_0__.hsvaToHex,
+    equal: _utils_compare_js__WEBPACK_IMPORTED_MODULE_1__.equalHex,
+    fromAttr: (color) => color
+};
+class HexBase extends _components_color_picker_js__WEBPACK_IMPORTED_MODULE_2__.ColorPicker {
+    get colorModel() {
+        return colorModel;
+    }
+}
+//# sourceMappingURL=hex.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/styles/color-picker.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/styles/color-picker.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (`:host{display:flex;flex-direction:column;position:relative;width:200px;height:200px;user-select:none;-webkit-user-select:none;cursor:default}:host([hidden]){display:none!important}[role=slider]{position:relative;touch-action:none;user-select:none;-webkit-user-select:none;outline:0}[role=slider]:last-child{border-radius:0 0 8px 8px}[part$=pointer]{position:absolute;z-index:1;box-sizing:border-box;width:28px;height:28px;display:flex;place-content:center center;transform:translate(-50%,-50%);background-color:#fff;border:2px solid #fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.2)}[part$=pointer]::after{content:"";width:100%;height:100%;border-radius:inherit;background-color:currentColor}[role=slider]:focus [part$=pointer]{transform:translate(-50%,-50%) scale(1.1)}`);
+//# sourceMappingURL=color-picker.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/styles/hue.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/styles/hue.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (`[part=hue]{flex:0 0 24px;background:linear-gradient(to right,red 0,#ff0 17%,#0f0 33%,#0ff 50%,#00f 67%,#f0f 83%,red 100%)}[part=hue-pointer]{top:50%;z-index:2}`);
+//# sourceMappingURL=hue.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/styles/saturation.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/styles/saturation.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (`[part=saturation]{flex-grow:1;border-color:transparent;border-bottom:12px solid #000;border-radius:8px 8px 0 0;background-image:linear-gradient(to top,#000,transparent),linear-gradient(to right,#fff,rgba(255,255,255,0));box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)}[part=saturation-pointer]{z-index:3}`);
+//# sourceMappingURL=saturation.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/utils/compare.js":
+/*!************************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/utils/compare.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "equalColorObjects": () => (/* binding */ equalColorObjects),
+/* harmony export */   "equalColorString": () => (/* binding */ equalColorString),
+/* harmony export */   "equalHex": () => (/* binding */ equalHex)
+/* harmony export */ });
+/* harmony import */ var _convert_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./convert.js */ "./node_modules/vanilla-colorful/lib/utils/convert.js");
+
+const equalColorObjects = (first, second) => {
+    if (first === second)
+        return true;
+    for (const prop in first) {
+        // The following allows for a type-safe calling of this function (first & second have to be HSL, HSV, or RGB)
+        // with type-unsafe iterating over object keys. TS does not allow this without an index (`[key: string]: number`)
+        // on an object to define how iteration is normally done. To ensure extra keys are not allowed on our types,
+        // we must cast our object to unknown (as RGB demands `r` be a key, while `Record<string, x>` does not care if
+        // there is or not), and then as a type TS can iterate over.
+        if (first[prop] !==
+            second[prop])
+            return false;
+    }
+    return true;
+};
+const equalColorString = (first, second) => {
+    return first.replace(/\s/g, '') === second.replace(/\s/g, '');
+};
+const equalHex = (first, second) => {
+    if (first.toLowerCase() === second.toLowerCase())
+        return true;
+    // To compare colors like `#FFF` and `ffffff` we convert them into RGB objects
+    return equalColorObjects((0,_convert_js__WEBPACK_IMPORTED_MODULE_0__.hexToRgba)(first), (0,_convert_js__WEBPACK_IMPORTED_MODULE_0__.hexToRgba)(second));
+};
+//# sourceMappingURL=compare.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/utils/convert.js":
+/*!************************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/utils/convert.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "hexToHsva": () => (/* binding */ hexToHsva),
+/* harmony export */   "hexToRgba": () => (/* binding */ hexToRgba),
+/* harmony export */   "hslStringToHsva": () => (/* binding */ hslStringToHsva),
+/* harmony export */   "hslaStringToHsva": () => (/* binding */ hslaStringToHsva),
+/* harmony export */   "hslaToHsl": () => (/* binding */ hslaToHsl),
+/* harmony export */   "hslaToHsva": () => (/* binding */ hslaToHsva),
+/* harmony export */   "hsvStringToHsva": () => (/* binding */ hsvStringToHsva),
+/* harmony export */   "hsvaStringToHsva": () => (/* binding */ hsvaStringToHsva),
+/* harmony export */   "hsvaToHex": () => (/* binding */ hsvaToHex),
+/* harmony export */   "hsvaToHslString": () => (/* binding */ hsvaToHslString),
+/* harmony export */   "hsvaToHsla": () => (/* binding */ hsvaToHsla),
+/* harmony export */   "hsvaToHslaString": () => (/* binding */ hsvaToHslaString),
+/* harmony export */   "hsvaToHsv": () => (/* binding */ hsvaToHsv),
+/* harmony export */   "hsvaToHsvString": () => (/* binding */ hsvaToHsvString),
+/* harmony export */   "hsvaToHsvaString": () => (/* binding */ hsvaToHsvaString),
+/* harmony export */   "hsvaToRgbString": () => (/* binding */ hsvaToRgbString),
+/* harmony export */   "hsvaToRgba": () => (/* binding */ hsvaToRgba),
+/* harmony export */   "hsvaToRgbaString": () => (/* binding */ hsvaToRgbaString),
+/* harmony export */   "parseHue": () => (/* binding */ parseHue),
+/* harmony export */   "rgbStringToHsva": () => (/* binding */ rgbStringToHsva),
+/* harmony export */   "rgbaStringToHsva": () => (/* binding */ rgbaStringToHsva),
+/* harmony export */   "rgbaToHex": () => (/* binding */ rgbaToHex),
+/* harmony export */   "rgbaToHsva": () => (/* binding */ rgbaToHsva),
+/* harmony export */   "rgbaToRgb": () => (/* binding */ rgbaToRgb),
+/* harmony export */   "roundHsva": () => (/* binding */ roundHsva)
+/* harmony export */ });
+/* harmony import */ var _math_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./math.js */ "./node_modules/vanilla-colorful/lib/utils/math.js");
+
+/**
+ * Valid CSS <angle> units.
+ * https://developer.mozilla.org/en-US/docs/Web/CSS/angle
+ */
+const angleUnits = {
+    grad: 360 / 400,
+    turn: 360,
+    rad: 360 / (Math.PI * 2)
+};
+const hexToHsva = (hex) => rgbaToHsva(hexToRgba(hex));
+const hexToRgba = (hex) => {
+    if (hex[0] === '#')
+        hex = hex.substr(1);
+    if (hex.length < 6) {
+        return {
+            r: parseInt(hex[0] + hex[0], 16),
+            g: parseInt(hex[1] + hex[1], 16),
+            b: parseInt(hex[2] + hex[2], 16),
+            a: 1
+        };
+    }
+    return {
+        r: parseInt(hex.substr(0, 2), 16),
+        g: parseInt(hex.substr(2, 2), 16),
+        b: parseInt(hex.substr(4, 2), 16),
+        a: 1
+    };
+};
+const parseHue = (value, unit = 'deg') => {
+    return Number(value) * (angleUnits[unit] || 1);
+};
+const hslaStringToHsva = (hslString) => {
+    const matcher = /hsla?\(?\s*(-?\d*\.?\d+)(deg|rad|grad|turn)?[,\s]+(-?\d*\.?\d+)%?[,\s]+(-?\d*\.?\d+)%?,?\s*[/\s]*(-?\d*\.?\d+)?(%)?\s*\)?/i;
+    const match = matcher.exec(hslString);
+    if (!match)
+        return { h: 0, s: 0, v: 0, a: 1 };
+    return hslaToHsva({
+        h: parseHue(match[1], match[2]),
+        s: Number(match[3]),
+        l: Number(match[4]),
+        a: match[5] === undefined ? 1 : Number(match[5]) / (match[6] ? 100 : 1)
+    });
+};
+const hslStringToHsva = hslaStringToHsva;
+const hslaToHsva = ({ h, s, l, a }) => {
+    s *= (l < 50 ? l : 100 - l) / 100;
+    return {
+        h: h,
+        s: s > 0 ? ((2 * s) / (l + s)) * 100 : 0,
+        v: l + s,
+        a
+    };
+};
+const hsvaToHex = (hsva) => rgbaToHex(hsvaToRgba(hsva));
+const hsvaToHsla = ({ h, s, v, a }) => {
+    const hh = ((200 - s) * v) / 100;
+    return {
+        h: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(h),
+        s: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hh > 0 && hh < 200 ? ((s * v) / 100 / (hh <= 100 ? hh : 200 - hh)) * 100 : 0),
+        l: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hh / 2),
+        a: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(a, 2)
+    };
+};
+const hsvaToHsvString = (hsva) => {
+    const { h, s, v } = roundHsva(hsva);
+    return `hsv(${h}, ${s}%, ${v}%)`;
+};
+const hsvaToHsvaString = (hsva) => {
+    const { h, s, v, a } = roundHsva(hsva);
+    return `hsva(${h}, ${s}%, ${v}%, ${a})`;
+};
+const hsvaToHslString = (hsva) => {
+    const { h, s, l } = hsvaToHsla(hsva);
+    return `hsl(${h}, ${s}%, ${l}%)`;
+};
+const hsvaToHslaString = (hsva) => {
+    const { h, s, l, a } = hsvaToHsla(hsva);
+    return `hsla(${h}, ${s}%, ${l}%, ${a})`;
+};
+const hsvaToRgba = ({ h, s, v, a }) => {
+    h = (h / 360) * 6;
+    s = s / 100;
+    v = v / 100;
+    const hh = Math.floor(h), b = v * (1 - s), c = v * (1 - (h - hh) * s), d = v * (1 - (1 - h + hh) * s), module = hh % 6;
+    return {
+        r: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)([v, c, b, b, d, v][module] * 255),
+        g: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)([d, v, v, c, b, b][module] * 255),
+        b: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)([b, b, d, v, v, c][module] * 255),
+        a: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(a, 2)
+    };
+};
+const hsvaToRgbString = (hsva) => {
+    const { r, g, b } = hsvaToRgba(hsva);
+    return `rgb(${r}, ${g}, ${b})`;
+};
+const hsvaToRgbaString = (hsva) => {
+    const { r, g, b, a } = hsvaToRgba(hsva);
+    return `rgba(${r}, ${g}, ${b}, ${a})`;
+};
+const hsvaStringToHsva = (hsvString) => {
+    const matcher = /hsva?\(?\s*(-?\d*\.?\d+)(deg|rad|grad|turn)?[,\s]+(-?\d*\.?\d+)%?[,\s]+(-?\d*\.?\d+)%?,?\s*[/\s]*(-?\d*\.?\d+)?(%)?\s*\)?/i;
+    const match = matcher.exec(hsvString);
+    if (!match)
+        return { h: 0, s: 0, v: 0, a: 1 };
+    return roundHsva({
+        h: parseHue(match[1], match[2]),
+        s: Number(match[3]),
+        v: Number(match[4]),
+        a: match[5] === undefined ? 1 : Number(match[5]) / (match[6] ? 100 : 1)
+    });
+};
+const hsvStringToHsva = hsvaStringToHsva;
+const rgbaStringToHsva = (rgbaString) => {
+    const matcher = /rgba?\(?\s*(-?\d*\.?\d+)(%)?[,\s]+(-?\d*\.?\d+)(%)?[,\s]+(-?\d*\.?\d+)(%)?,?\s*[/\s]*(-?\d*\.?\d+)?(%)?\s*\)?/i;
+    const match = matcher.exec(rgbaString);
+    if (!match)
+        return { h: 0, s: 0, v: 0, a: 1 };
+    return rgbaToHsva({
+        r: Number(match[1]) / (match[2] ? 100 / 255 : 1),
+        g: Number(match[3]) / (match[4] ? 100 / 255 : 1),
+        b: Number(match[5]) / (match[6] ? 100 / 255 : 1),
+        a: match[7] === undefined ? 1 : Number(match[7]) / (match[8] ? 100 : 1)
+    });
+};
+const rgbStringToHsva = rgbaStringToHsva;
+const format = (number) => {
+    const hex = number.toString(16);
+    return hex.length < 2 ? '0' + hex : hex;
+};
+const rgbaToHex = ({ r, g, b }) => {
+    return '#' + format(r) + format(g) + format(b);
+};
+const rgbaToHsva = ({ r, g, b, a }) => {
+    const max = Math.max(r, g, b);
+    const delta = max - Math.min(r, g, b);
+    // prettier-ignore
+    const hh = delta
+        ? max === r
+            ? (g - b) / delta
+            : max === g
+                ? 2 + (b - r) / delta
+                : 4 + (r - g) / delta
+        : 0;
+    return {
+        h: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(60 * (hh < 0 ? hh + 6 : hh)),
+        s: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(max ? (delta / max) * 100 : 0),
+        v: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)((max / 255) * 100),
+        a
+    };
+};
+const roundHsva = (hsva) => ({
+    h: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hsva.h),
+    s: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hsva.s),
+    v: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hsva.v),
+    a: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hsva.a, 2)
+});
+const rgbaToRgb = ({ r, g, b }) => ({ r, g, b });
+const hslaToHsl = ({ h, s, l }) => ({ h, s, l });
+const hsvaToHsv = (hsva) => {
+    const { h, s, v } = roundHsva(hsva);
+    return { h, s, v };
+};
+//# sourceMappingURL=convert.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/utils/dom.js":
+/*!********************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/utils/dom.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "fire": () => (/* binding */ fire),
+/* harmony export */   "tpl": () => (/* binding */ tpl)
+/* harmony export */ });
+const cache = {};
+const tpl = (html) => {
+    let template = cache[html];
+    if (!template) {
+        template = document.createElement('template');
+        template.innerHTML = html;
+        cache[html] = template;
+    }
+    return template;
+};
+const fire = (target, type, detail) => {
+    target.dispatchEvent(new CustomEvent(type, {
+        bubbles: true,
+        detail
+    }));
+};
+//# sourceMappingURL=dom.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/utils/math.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/utils/math.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "clamp": () => (/* binding */ clamp),
+/* harmony export */   "round": () => (/* binding */ round)
+/* harmony export */ });
+// Clamps a value between an upper and lower bound.
+// We use ternary operators because it makes the minified code
+// 2 times shorter then `Math.min(Math.max(a,b),c)`
+const clamp = (number, min = 0, max = 1) => {
+    return number > max ? max : number < min ? min : number;
+};
+const round = (number, digits = 0, base = Math.pow(10, digits)) => {
+    return Math.round(base * number) / base;
+};
+//# sourceMappingURL=math.js.map
+
+/***/ }),
+
+/***/ "./node_modules/vanilla-colorful/lib/utils/validate.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/vanilla-colorful/lib/utils/validate.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "validHex": () => (/* binding */ validHex)
+/* harmony export */ });
+const hex3 = /^#?[0-9A-F]{3}$/i;
+const hex6 = /^#?[0-9A-F]{6}$/i;
+const validHex = (color) => hex6.test(color) || hex3.test(color);
+//# sourceMappingURL=validate.js.map
 
 /***/ })
 
@@ -10857,6 +11088,11 @@ function replace(field, searchValue, replacer) {
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/nonce */
+/******/ 	(() => {
+/******/ 		__webpack_require__.nc = undefined;
 /******/ 	})();
 /******/ 	
 /************************************************************************/

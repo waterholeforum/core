@@ -15,21 +15,16 @@ use Waterhole\Filters\Filter;
 class Feed
 {
     protected Request $request;
-
     protected Builder $query;
-
     protected Collection $filters;
 
-    public function __construct(
-        Request $request,
-        Builder $query,
-        array $filters
-    ) {
+    public function __construct(Request $request, Builder $query, array $filters)
+    {
         $this->request = $request;
         $this->query = $query;
         $this->filters = collect($filters);
 
-        if (! $this->filters->count()) {
+        if (!$this->filters->count()) {
             throw new RuntimeException('A feed must have at least 1 filter');
         }
     }
@@ -63,6 +58,9 @@ class Feed
     {
         $query = $this->request->query('filter', $this->filters->keys()[0]);
 
-        return $this->filters->first(fn (Filter $filter) => $filter->handle() === $query, $this->filters[0]);
+        return $this->filters->first(
+            fn(Filter $filter) => $filter->handle() === $query,
+            $this->filters[0],
+        );
     }
 }

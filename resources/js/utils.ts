@@ -2,8 +2,13 @@
  * Determine whether the user is trying to open a link in a new tab.
  */
 export function shouldOpenInNewTab(e: MouseEvent): boolean {
-    return e.altKey || e.ctrlKey || e.metaKey || e.shiftKey
-        || (e.button !== undefined && e.button !== 0);
+    return (
+        e.altKey ||
+        e.ctrlKey ||
+        e.metaKey ||
+        e.shiftKey ||
+        (e.button !== undefined && e.button !== 0)
+    );
 }
 
 /**
@@ -12,8 +17,10 @@ export function shouldOpenInNewTab(e: MouseEvent): boolean {
 export function isElementInViewport(el: HTMLElement, proportion: number = 1): boolean {
     const rect = el.getBoundingClientRect();
 
-    return -rect.top / rect.height < proportion
-        && (rect.bottom - window.innerHeight) / rect.height < proportion;
+    return (
+        -rect.top / rect.height < proportion &&
+        (rect.bottom - window.innerHeight) / rect.height < proportion
+    );
 }
 
 /**
@@ -38,7 +45,8 @@ export function htmlToElement(html: string): Element | null {
  * converted to hyphens.
  */
 export function slug(string: string): string {
-    return string.toLowerCase()
+    return string
+        .toLowerCase()
         .replace(/[^a-z0-9]/gi, '-')
         .replace(/-+/g, '-')
         .replace(/-$|^-/g, '');

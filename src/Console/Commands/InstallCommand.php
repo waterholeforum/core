@@ -50,11 +50,15 @@ class InstallCommand extends Command
         $data = [
             'name' => $this->askValid('Admin username', 'name', $rules['name']),
             'email' => $this->askValid('Admin email', 'email', $rules['email']),
-            'password' => Hash::make($this->askValid('Admin password', 'password', $rules['password'], secret: true)),
+            'password' => Hash::make(
+                $this->askValid('Admin password', 'password', $rules['password'], secret: true),
+            ),
             'email_verified_at' => now(),
         ];
 
-        User::create($data)->groups()->attach(Group::ADMIN_ID);
+        User::create($data)
+            ->groups()
+            ->attach(Group::ADMIN_ID);
 
         $this->info('Admin user created.');
     }

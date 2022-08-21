@@ -10,7 +10,7 @@ import './bootstrap/turbo';
 
 declare global {
     const Waterhole: Waterhole;
-    
+
     interface Window {
         Stimulus: Application;
         Waterhole: Waterhole;
@@ -24,6 +24,4 @@ export interface Waterhole {
 }
 
 window.Stimulus = Application.start();
-window.Stimulus.load(definitionsFromContext(
-    require.context('./controllers', true, /\.ts$/)
-));
+window.Stimulus.load(definitionsFromContext(require.context('./controllers', true, /\.ts$/)));

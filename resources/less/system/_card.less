@@ -6,7 +6,7 @@
 .card__header {
   background: var(--color-fill);
   padding: var(--space-sm) var(--space-md);
-  border-radius: var(--radius);
+  border-radius: var(--radius) var(--radius) 0 0;
 
   summary& {
     .clickable();
@@ -24,9 +24,8 @@
     }
   }
 
-  .card[open] & {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
+  details.card:not([open]) & {
+    border-radius: var(--radius);
   }
 }
 

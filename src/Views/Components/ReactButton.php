@@ -7,11 +7,8 @@ use Waterhole\Models\Model;
 
 class ReactButton extends Component
 {
-    public Model $model;
-
-    public function __construct(Model $model)
+    public function __construct(public Model $model)
     {
-        $this->model = $model;
     }
 
     public function render()

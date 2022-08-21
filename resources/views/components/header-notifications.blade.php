@@ -1,5 +1,9 @@
 @auth
-    <ui-popup placement="bottom-end" data-controller="notifications-popup" data-turbo-permanent>
+    <ui-popup
+        placement="bottom-end"
+        data-controller="notifications-popup"
+        data-turbo-permanent
+    >
         <a
             href="{{ route('waterhole.notifications.index') }}"
             class="btn btn--icon btn--transparent"
@@ -11,7 +15,7 @@
                 class="badge bg-activity"
                 data-notifications-popup-target="badge"
                 id="header-notifications-badge"
-                @if (! $count = Auth::user()->unread_notification_count) hidden @endif
+                @if (!$count = Auth::user()->unread_notification_count) hidden @endif
             >{{ $count }}</span>
 
             <ui-tooltip>Notifications</ui-tooltip>

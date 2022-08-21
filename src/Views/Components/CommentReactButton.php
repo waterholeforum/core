@@ -8,11 +8,8 @@ use Waterhole\Models\Comment;
 
 class CommentReactButton extends Component
 {
-    public Comment $comment;
-
-    public function __construct(Comment $comment)
+    public function __construct(public Comment $comment)
     {
-        $this->comment = $comment;
     }
 
     public function shouldRender()
@@ -23,7 +20,7 @@ class CommentReactButton extends Component
     public function render()
     {
         return <<<'blade'
-            <x-waterhole::react-button :model="$comment" class="comment__control"/>
+            <x-waterhole::react-button :model="$comment" class="control"/>
         blade;
     }
 }

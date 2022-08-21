@@ -1,5 +1,5 @@
 <div class="stack gap-lg" data-controller="reveal">
-    <h1 class="h3">
+    <h1 class="h4">
         {{ __('waterhole::admin.delete-channel-title') }}
         <x-waterhole::channel-label :channel="$channel"/>
     </h1>
@@ -7,7 +7,7 @@
     <div class="stack gap-sm">
         <label class="choice">
             <input
-                @if (! request('move_posts')) checked @endif
+                @if (!request('move_posts')) checked @endif
             data-reveal-target="if"
                 name="move_posts"
                 type="radio"

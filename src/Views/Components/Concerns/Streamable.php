@@ -3,6 +3,7 @@
 namespace Waterhole\Views\Components\Concerns;
 
 use ReflectionClass;
+
 use function Tonysm\TurboLaravel\dom_id;
 
 trait Streamable

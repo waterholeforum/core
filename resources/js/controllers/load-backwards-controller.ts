@@ -26,11 +26,13 @@ export default class extends Controller {
         this.observer?.disconnect();
         this.observer = new MutationObserver(() => this.restore());
         this.observer.observe(document.body, { subtree: true, childList: true, attributes: true });
-    }
+    };
 
     restore() {
         if (this.anchor && this.top) {
-            window.scroll({ top: window.scrollY + this.anchor.getBoundingClientRect().top - this.top });
+            window.scroll({
+                top: window.scrollY + this.anchor.getBoundingClientRect().top - this.top,
+            });
         }
     }
 
@@ -41,5 +43,5 @@ export default class extends Controller {
             this.observer?.disconnect();
             delete this.observer;
         });
-    }
+    };
 }

@@ -8,7 +8,7 @@ use Waterhole\Extend\Locales;
 
 class Localize
 {
-    const SESSION_KEY = 'locale';
+    public const SESSION_KEY = 'locale';
 
     public function handle(Request $request, Closure $next)
     {

@@ -11,7 +11,7 @@ class NewActivity extends Filter
 {
     public function label(): string
     {
-        return 'New Activity';
+        return __('waterhole::forum.filter-new-activity');
     }
 
     public function apply(Builder $query): void

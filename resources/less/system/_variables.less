@@ -10,14 +10,14 @@
 
   --color-bg: #fff;
 
-  --color-fill: ~"hsla(var(--base-h), var(--base-s), 50%, 0.1)";
+  --color-fill: ~'hsla(var(--base-h), var(--base-s), 50%, 0.1)';
   --color-fill-neutral: rgba(0, 0, 0, 0.05);
 
-  --color-stroke: ~"hsla(var(--base-h), var(--base-s), 50%, 0.25)";
+  --color-stroke: ~'hsla(var(--base-h), var(--base-s), 50%, 0.25)';
   --color-stroke-neutral: rgba(0, 0, 0, 0.1);
 
   --color-text: #000;
-  --color-muted: ~"hsl(var(--base-h), calc(var(--base-s) / 2), 50%)";
+  --color-muted: ~'hsl(var(--base-h), calc(var(--base-s) / 2), 50%)';
   --color-muted-neutral: rgba(0, 0, 0, 0.5);
 
   // Accent color
@@ -26,10 +26,10 @@
   --accent-l: 60%;
   --accent-hsl: var(--accent-h), var(--accent-s), var(--accent-l);
 
-  --color-accent: ~"hsl(var(--accent-hsl))";
+  --color-accent: ~'hsl(var(--accent-hsl))';
   --color-accent-contrast: #fff;
   //--color-accent-light: ~"hsla(var(--accent-hsl), 0.2)";
-  --color-accent-light: #08FFE7;
+  --color-accent-light: #08ffe7;
 
   // Emphasis color
   --color-emphasis: #303742;
@@ -41,9 +41,9 @@
   --color-danger-light: #e8560033;
 
   // Attention color
-  --color-attention: #9f9600;
+  --color-attention: #da8e00;
   --color-attention-contrast: var(--color-bg);
-  --color-attention-light: ~"hsla(60, 100%, 50%, .2)";
+  --color-attention-light: ~'hsla(60, 100%, 50%, .2)';
 
   // Success color
   --color-success: #008a10;
@@ -53,7 +53,7 @@
   // Activity color
   --color-activity: #d25000;
   --color-activity-contrast: var(--color-bg);
-  --color-activity-light: #FF680022;
+  --color-activity-light: #ff680022;
 
   // Border radius
   --radius: 10px;
@@ -71,9 +71,10 @@
   --color-overlay-dropdown: rgba(0, 0, 0, 0.3);
 
   // Font
-  --font-text: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --font-text: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   --font-display: var(--font-text);
-  --font-mono: SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+  --font-mono: SFMono-Regular, Menlo, Monaco, Consolas, 'Courier New', monospace;
 
   // Font weights
   --weight-normal: 400;
@@ -91,8 +92,8 @@
   --z-index-alerts: 300;
 
   // Font size
-  --text-xxs: .8rem;
-  --text-xs: .875rem;
+  --text-xxs: 0.8rem;
+  --text-xs: 0.875rem;
   --text-sm: 1rem;
   --text-md: 1.125rem;
   --text-lg: 1.5rem;
@@ -101,15 +102,15 @@
 
   // Spacing
   --ratio: 1.5;
-  --space-xxs: ~"calc(var(--space-xs) / var(--ratio))";
-  --space-xs: ~"calc(var(--space-sm) / var(--ratio))";
-  --space-sm: ~"calc(var(--space-md) / var(--ratio))";
+  --space-xxs: ~'calc(var(--space-xs) / var(--ratio))';
+  --space-xs: ~'calc(var(--space-sm) / var(--ratio))';
+  --space-sm: ~'calc(var(--space-md) / var(--ratio))';
   --space-md: 1rem;
-  --space-lg: ~"calc(var(--space-md) * var(--ratio))";
-  --space-xl: ~"calc(var(--space-lg) * var(--ratio))";
-  --space-xxl: ~"calc(var(--space-xl) * var(--ratio))";
-  --space-xxxl: ~"calc(var(--space-xxl) * var(--ratio))";
-  --space-gutter: ~"min(2rem, 5vw)";
+  --space-lg: ~'calc(var(--space-md) * var(--ratio))';
+  --space-xl: ~'calc(var(--space-lg) * var(--ratio))';
+  --space-xxl: ~'calc(var(--space-xl) * var(--ratio))';
+  --space-xxxl: ~'calc(var(--space-xxl) * var(--ratio))';
+  --space-gutter: ~'min(2rem, 5vw)';
 
   --control-height: 2.5em;
   --control-height-small: 2em;
@@ -117,19 +118,19 @@
   --header-height: 4rem;
 }
 
-:root[data-theme="dark"] {
+:root[data-theme='dark'] {
   --color-bg: #212028;
   --color-bg-translucent: rgba(17, 17, 17, 0.9);
   --color-bg-transparent: rgba(17, 17, 17, 0);
 
-  --color-fill: ~"hsla(var(--base-h), var(--base-s), 50%, 0.2)";
+  --color-fill: ~'hsla(var(--base-h), var(--base-s), 50%, 0.2)';
   --color-fill-neutral: rgba(255, 255, 255, 0.1);
 
-  --color-stroke: ~"hsla(var(--base-h), var(--base-s), 50%, 0.4)";
+  --color-stroke: ~'hsla(var(--base-h), var(--base-s), 50%, 0.4)';
   --color-stroke-neutral: rgba(255, 255, 255, 0.2);
 
   --color-text: #eee;
-  --color-muted: ~"hsl(var(--base-h), calc(var(--base-s) / 2), 60%)";
+  --color-muted: ~'hsl(var(--base-h), calc(var(--base-s) / 2), 60%)';
 
   --accent-l: 75%;
   --color-accent-contrast: #222;
@@ -139,7 +140,7 @@
   --shadow-md: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-:root[data-theme="dark"] .light-only,
-:root:not([data-theme="dark"]) .dark-only {
+:root[data-theme='dark'] .light-only,
+:root:not([data-theme='dark']) .dark-only {
   display: none;
 }

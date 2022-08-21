@@ -29,8 +29,17 @@ export default class extends Controller {
 
     currentToken() {
         const start = this.inputTarget!.selectionStart || 0;
-        const matches = this.inputTarget!.value.slice(0, start).matchAll(/([^\s"]*)"([^"]*)(?:"|$)|[^\s"]+/gi);
-        return Array.from(matches).reverse().find(match => match.index !== undefined && match.index < start && match.index + match[0].length >= start);
+        const matches = this.inputTarget!.value.slice(0, start).matchAll(
+            /([^\s"]*)"([^"]*)(?:"|$)|[^\s"]+/gi
+        );
+        return Array.from(matches)
+            .reverse()
+            .find(
+                (match) =>
+                    match.index !== undefined &&
+                    match.index < start &&
+                    match.index + match[0].length >= start
+            );
     }
 
     update() {
@@ -39,13 +48,15 @@ export default class extends Controller {
 
         const children = Array.from(this.listTarget!.children) as HTMLElement[];
 
-        children.forEach(el => {
+        children.forEach((el) => {
             const text = (el.dataset.value || el.textContent)?.trim().toLowerCase() || '';
-            const relevant = (! query && text.endsWith(':')) || (query && text.startsWith(query) && (query.includes(':') !== text.endsWith(':')));
-            (el as HTMLElement).hidden = ! relevant;
+            const relevant =
+                (!query && text.endsWith(':')) ||
+                (query && text.startsWith(query) && query.includes(':') !== text.endsWith(':'));
+            (el as HTMLElement).hidden = !relevant;
         });
 
-        this.listTarget!.hidden = ! children.some(el => ! el.hidden);
+        this.listTarget!.hidden = !children.some((el) => !el.hidden);
     }
 
     commit(e: CustomEvent) {
@@ -53,7 +64,12 @@ export default class extends Controller {
         const token = this.currentToken();
         const replacement = (el.dataset.value || el.textContent)?.trim() || '';
 
-        set(this.inputTarget!, this.inputTarget!.value.slice(0, token?.index) + replacement + (replacement.endsWith(':') ? '' : ' '));
+        set(
+            this.inputTarget!,
+            this.inputTarget!.value.slice(0, token?.index) +
+                replacement +
+                (replacement.endsWith(':') ? '' : ' ')
+        );
     }
 
     preventBlur(e: Event) {

@@ -11,7 +11,7 @@ class Latest extends Filter
 {
     public function label(): string
     {
-        return 'Latest';
+        return __('waterhole::forum.filter-latest');
     }
 
     public function apply(Builder $query): void

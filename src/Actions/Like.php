@@ -20,7 +20,8 @@ class Like extends Action
 
     public function authorize(?User $user, Model $model): bool
     {
-        return $user && $user->can(strtolower((new ReflectionClass($model))->getShortName()).'.like', $model);
+        return $user &&
+            $user->can(strtolower((new ReflectionClass($model))->getShortName()) . '.like', $model);
     }
 
     public function shouldRender(Collection $models): bool
@@ -48,8 +49,6 @@ class Like extends Action
 
     public function stream(Model $model): array
     {
-        return [
-            TurboStream::replace(new Reactions($model)),
-        ];
+        return [TurboStream::replace(new Reactions($model))];
     }
 }

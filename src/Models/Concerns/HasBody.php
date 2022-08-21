@@ -40,9 +40,7 @@ trait HasBody
         // Whenever the model is saved, sync the users mentioned in the body
         // into the `mentions` relationship.
         static::saved(function (Model $model) {
-            $model->mentions()->sync(
-                Mentions::getMentionedUsers($model->parsed_body)
-            );
+            $model->mentions()->sync(Mentions::getMentionedUsers($model->parsed_body));
         });
     }
 
@@ -61,7 +59,7 @@ trait HasBody
     {
         $key = $user->id ?? 0;
 
-        if (! isset($this->renderCache[$key])) {
+        if (!isset($this->renderCache[$key])) {
             $context = new Context($this, $user);
 
             $this->renderCache[$key] = static::$formatter->render($this->parsed_body, $context);

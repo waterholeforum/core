@@ -11,11 +11,11 @@ use Waterhole\Models\Post;
  */
 class Top extends Filter
 {
-    const PERIODS = ['year', 'quarter', 'month', 'week', 'day'];
+    public const PERIODS = ['year', 'quarter', 'month', 'week', 'day'];
 
     public function label(): string
     {
-        return 'Top';
+        return __('waterhole::forum.filter-top');
     }
 
     public function apply(Builder $query): void
@@ -27,7 +27,9 @@ class Top extends Filter
         }
 
         if ($period = $this->currentPeriod()) {
-            $query->whereRaw('created_at > DATE_SUB(NOW(), INTERVAL 1 '.strtoupper($period).')');
+            $query->whereRaw(
+                'created_at > DATE_SUB(NOW(), INTERVAL 1 ' . strtoupper($period) . ')',
+            );
         }
     }
 

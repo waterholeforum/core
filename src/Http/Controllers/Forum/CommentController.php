@@ -25,7 +25,7 @@ class CommentController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->except('show');
-        // $this->middleware('throttle:waterhole.create')->only('store');
+        $this->middleware('throttle:waterhole.create')->only('store');
     }
 
     public function show(Post $post, Comment $comment, Request $request)
@@ -34,7 +34,10 @@ class CommentController extends Controller
         // relationships, and pre-fill the `post` relationship for each comment.
         $comment = $comment->childrenAndSelf
             ->load('user.groups', 'likedBy', 'parent.user.groups')
-            ->each->setRelation('post', $post)
+            ->each(function ($comment) use ($post) {
+                $comment->setRelation('post', $post);
+                $comment->parent?->setRelation('post', $post);
+            })
             ->toTree()[0];
 
         $request->user()?->markNotificationsRead($comment);
@@ -64,7 +67,7 @@ class CommentController extends Controller
         // Only proceed with comment submission if the "post" button was
         // explicitly clicked. This allows the form to be submitted for other
         // purposes, such as clearing the parent comment.
-        if (! $request->input('commit')) {
+        if (!$request->input('commit')) {
             return redirect()
                 ->route('waterhole.posts.comments.create', compact('post'))
                 ->withInput();
@@ -82,12 +85,14 @@ class CommentController extends Controller
         if ($parentId = $data['parent_id'] ?? null) {
             $parent = Comment::find($parentId);
 
-            abort_if($parent->post_id !== $post->id, 400, 'Parent comment is from a different post.');
+            abort_if(
+                $parent->post_id !== $post->id,
+                400,
+                'Parent comment is from a different post.',
+            );
         }
 
-        $post->comments()->save(
-            $comment = new Comment($data)
-        );
+        $post->comments()->save($comment = new Comment($data));
 
         $post->userState->read()->save();
 
@@ -99,7 +104,7 @@ class CommentController extends Controller
         // except for the user who made the comment.
         Notification::send(
             $post->followedBy->except($request->user()->id),
-            new NewComment($comment)
+            new NewComment($comment),
         );
 
         // If the client supports Turbo Streams, we can append the new comment
@@ -109,7 +114,9 @@ class CommentController extends Controller
         if ($request->wantsTurboStream()) {
             $streams = [
                 TurboStream::before(new CommentFrame($comment), 'bottom'),
-                TurboStream::replace((new Composer($post))->withAttributes(['class' => 'can-sticky'])),
+                TurboStream::replace(
+                    (new Composer($post))->withAttributes(['class' => 'can-sticky']),
+                ),
             ];
 
             if (isset($parent)) {
@@ -127,7 +134,7 @@ class CommentController extends Controller
         // to the new comment on the parent comment's page. Otherwise, redirect
         // to the new comment on the post's page.
         if (isset($parent)) {
-            return redirect($parent->url.'#comment-'.$parent->id);
+            return redirect($parent->url . '#comment-' . $parent->id);
         }
 
         return redirect($comment->post_url);
@@ -144,7 +151,8 @@ class CommentController extends Controller
     {
         $this->authorize('comment.edit', $comment);
 
-        $comment->fill(Comment::validate($request->all(), $comment))
+        $comment
+            ->fill(Comment::validate($request->all(), $comment))
             ->markAsEdited()
             ->save();
 

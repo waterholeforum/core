@@ -52,7 +52,7 @@ trait HasPermissions
     {
         $this->permissions()->delete();
 
-        if (! $grid) {
+        if (!$grid) {
             return;
         }
 
@@ -60,12 +60,17 @@ trait HasPermissions
             collect($grid)->flatMap(function ($abilities, $recipient) {
                 [$type, $id] = explode(':', $recipient) + [null, null];
 
-                return collect($abilities)->filter()->map(fn ($v, $ability) => [
-                    'recipient_type' => $type,
-                    'recipient_id' => $id,
-                    'ability' => $ability,
-                ])->values();
-            })
+                return collect($abilities)
+                    ->filter()
+                    ->map(
+                        fn($v, $ability) => [
+                            'recipient_type' => $type,
+                            'recipient_id' => $id,
+                            'ability' => $ability,
+                        ],
+                    )
+                    ->values();
+            }),
         );
     }
 

@@ -33,10 +33,7 @@ class Text
      *
      * @var array
      */
-    protected static $_defaultHtmlNoCount = [
-        'style',
-        'script',
-    ];
+    protected static $_defaultHtmlNoCount = ['style', 'script'];
 
     /**
      * Truncates text.
@@ -61,9 +58,12 @@ class Text
     public static function truncate(string $text, int $length = 100, array $options = []): string
     {
         $default = [
-            'ellipsis' => '...', 'exact' => true, 'html' => false, 'trimWidth' => false,
+            'ellipsis' => '...',
+            'exact' => true,
+            'html' => false,
+            'trimWidth' => false,
         ];
-        if (! empty($options['html']) && strtolower((string) mb_internal_encoding()) === 'utf-8') {
+        if (!empty($options['html']) && strtolower((string) mb_internal_encoding()) === 'utf-8') {
             $default['ellipsis'] = "\xe2\x80\xa6";
         }
         $options += $default;
@@ -82,15 +82,15 @@ class Text
             preg_match_all('/(<\/?([\w+]+)[^>]*>)?([^<>]*)/', $text, $tags, PREG_SET_ORDER);
             foreach ($tags as $tag) {
                 $contentLength = 0;
-                if (! in_array($tag[2], static::$_defaultHtmlNoCount, true)) {
+                if (!in_array($tag[2], static::$_defaultHtmlNoCount, true)) {
                     $contentLength = self::_strlen($tag[3], $options);
                 }
 
                 if ($truncate === '') {
                     if (
-                        ! preg_match(
+                        !preg_match(
                             '/img|br|input|hr|area|base|basefont|col|frame|isindex|link|meta|param/i',
-                            $tag[2]
+                            $tag[2],
                         )
                     ) {
                         if (preg_match('/<[\w]+[^>]*>/', $tag[0])) {
@@ -127,7 +127,7 @@ class Text
             $length = $truncateLength;
 
             foreach ($openTags as $tag) {
-                $suffix .= '</'.$tag.'>';
+                $suffix .= '</' . $tag . '>';
             }
         } else {
             if (self::_strlen($text, $options) <= $length) {
@@ -138,18 +138,18 @@ class Text
 
         $result = self::_substr($text, 0, $length - $ellipsisLength, $options);
 
-        if (! $options['exact']) {
+        if (!$options['exact']) {
             if (self::_substr($text, $length - $ellipsisLength, 1, $options) !== ' ') {
                 $result = self::_removeLastWord($result);
             }
 
             // If result is empty, then we don't need to count ellipsis in the cut.
-            if (! strlen($result)) {
+            if (!strlen($result)) {
                 $result = self::_substr($text, 0, $length, $options);
             }
         }
 
-        return $prefix.$result.$suffix;
+        return $prefix . $result . $suffix;
     }
 
     /**
@@ -184,7 +184,7 @@ class Text
 
                 return str_repeat(' ', $strlen($utf8, 'UTF-8'));
             },
-            $text
+            $text,
         );
 
         return $strlen($replace);
@@ -204,8 +204,12 @@ class Text
      * @param  array  $options An array of options.
      * @return string
      */
-    protected static function _substr(string $text, int $start, ?int $length, array $options): string
-    {
+    protected static function _substr(
+        string $text,
+        int $start,
+        ?int $length,
+        array $options,
+    ): string {
         if (empty($options['trimWidth'])) {
             $substr = 'mb_substr';
         } else {
@@ -265,9 +269,9 @@ class Text
             $len = self::_strlen($part, $options);
             if ($offset !== 0 || $totalLength + $len > $length) {
                 if (
-                    strpos($part, '&') === 0
-                    && preg_match($pattern, $part)
-                    && $part !== html_entity_decode($part, ENT_HTML5 | ENT_QUOTES, 'UTF-8')
+                    strpos($part, '&') === 0 &&
+                    preg_match($pattern, $part) &&
+                    $part !== html_entity_decode($part, ENT_HTML5 | ENT_QUOTES, 'UTF-8')
                 ) {
                     // Entities cannot be passed substr.
                     continue;

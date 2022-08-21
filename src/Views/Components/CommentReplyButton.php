@@ -10,16 +10,8 @@ use Waterhole\Models\User;
 
 class CommentReplyButton extends Component
 {
-    public Comment $comment;
-
-    public function __construct(Comment $comment)
+    public function __construct(public Comment $comment)
     {
-        $this->comment = $comment;
-    }
-
-    public function render(): View
-    {
-        return view('waterhole::components.comment-reply-button');
     }
 
     public function shouldRender(): bool
@@ -30,5 +22,10 @@ class CommentReplyButton extends Component
         $user = Auth::user() ?: new User();
 
         return $user->can('post.comment', $this->comment->post);
+    }
+
+    public function render(): View
+    {
+        return view('waterhole::components.comment-reply-button');
     }
 }

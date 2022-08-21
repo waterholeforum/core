@@ -48,8 +48,6 @@ class PostUser extends Model
 
     protected function setKeysForSaveQuery($query)
     {
-        return $query
-            ->where('post_id', $this->post_id)
-            ->where('user_id', $this->user_id);
+        return $query->where('post_id', $this->post_id)->where('user_id', $this->user_id);
     }
 }

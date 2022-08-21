@@ -53,7 +53,11 @@ use Waterhole\Notifications\VerifyEmail;
  * @property-read \Illuminate\Database\Eloquent\Collection $groups
  * @property-read \Illuminate\Database\Eloquent\Collection $notifications
  */
-class User extends Model implements AuthenticatableContract, MustVerifyEmailContract, CanResetPasswordContract, HasLocalePreference
+class User extends Model implements
+    AuthenticatableContract,
+    MustVerifyEmailContract,
+    CanResetPasswordContract,
+    HasLocalePreference
 {
     use Authenticatable;
     use Authorizable;
@@ -64,11 +68,9 @@ class User extends Model implements AuthenticatableContract, MustVerifyEmailCont
     use ReceivesPermissions;
     use ValidatesData;
 
-    const UPDATED_AT = null;
+    public const UPDATED_AT = null;
 
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+    protected $hidden = ['password', 'remember_token'];
 
     protected $casts = [
         'email_verified_at' => 'datetime',
@@ -205,18 +207,26 @@ class User extends Model implements AuthenticatableContract, MustVerifyEmailCont
             $query->where('notifications.created_at', '>', $this->notifications_read_at);
         }
 
-        return $query->distinct()->count([
-            'type',
-            new Expression('COALESCE(group_type, id)'),
-            new Expression('COALESCE(group_id, id)'),
-        ]);
+        return $query
+            ->distinct()
+            ->count([
+                'type',
+                new Expression('COALESCE(group_type, id)'),
+                new Expression('COALESCE(group_id, id)'),
+            ]);
     }
 
     public static function rules(User $instance = null): array
     {
         return [
             'name' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($instance)],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($instance)],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('users')->ignore($instance),
+            ],
             'password' => [$instance ? 'nullable' : 'required', Password::defaults()],
         ];
     }

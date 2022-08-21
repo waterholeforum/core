@@ -4,5 +4,5 @@
             <a href="{{ $parentUrl }}">{{ $parentTitle }}</a> ›
         </div>
     @endif
-    <h1 class="h2">{{ $title }}</h1>
+    <h1 class="h3">{{ $title }}</h1>
 </div>

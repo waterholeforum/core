@@ -47,7 +47,7 @@ final class ActionController extends Controller
         // by pressing the submit button in the confirmation view, then we
         // will redirect the user back to the confirmation view with all the
         // same input.
-        if ($action->confirm && ! $request->has('confirmed')) {
+        if ($action->confirm && !$request->has('confirmed')) {
             return redirect()->route('waterhole.action.create', $request->input());
         }
 
@@ -64,8 +64,8 @@ final class ActionController extends Controller
         // each of the actioned models from the action class. We will also
         // add on streams for any alerts that the action may have flashed.
         if (
-            $request->wantsTurboStream()
-            && $streams = $models->flatMap(fn ($item) => $action->stream($item))->all()
+            $request->wantsTurboStream() &&
+            ($streams = $models->flatMap(fn($item) => $action->stream($item))->all())
         ) {
             if ($success = session()->get('success')) {
                 $streams[] = TurboStream::append(new Alert('success', $success), 'alerts');
@@ -73,9 +73,7 @@ final class ActionController extends Controller
 
             session()->ageFlashData();
 
-            return TurboResponseFactory::makeStream(
-                implode(PHP_EOL, $streams)
-            );
+            return TurboResponseFactory::makeStream(implode(PHP_EOL, $streams));
         }
 
         if ($response) {
@@ -95,7 +93,7 @@ final class ActionController extends Controller
     {
         $actionable = $request->input('actionable');
 
-        if (! $model = Extend\Actionables::get($actionable)) {
+        if (!($model = Extend\Actionables::get($actionable))) {
             abort(400, "The actionable [$actionable] does not exist");
         }
 

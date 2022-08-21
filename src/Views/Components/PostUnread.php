@@ -15,21 +15,18 @@ class PostUnread extends Component
     {
         $this->post = $post;
 
-        $this->isNotifiable = $post->isFollowed()
-            || (
-                ! $post->isIgnored()
-                && $post->userState?->mentioned_at > $post->userState?->last_read_at
-            )
-            || (
-                $post->channel->isFollowed()
-                && $post->last_activity_at > $post->channel->userState->followed_at
-                && ! $post->userState->last_read_at
-            );
+        $this->isNotifiable =
+            $post->isFollowed() ||
+            (!$post->isIgnored() &&
+                $post->userState?->mentioned_at > $post->userState?->last_read_at) ||
+            ($post->channel->isFollowed() &&
+                $post->last_activity_at > $post->channel->userState->followed_at &&
+                !$post->userState->last_read_at);
     }
 
     public function shouldRender()
     {
-        return $this->post->isUnread() && (! $this->post->isNew() || $this->isNotifiable);
+        return $this->post->isUnread() && (!$this->post->isNew() || $this->isNotifiable);
     }
 
     public function render()

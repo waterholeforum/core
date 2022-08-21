@@ -22,18 +22,20 @@ class NotificationReceived implements ShouldBroadcast, TransactionalEvent
 
     public function broadcastOn()
     {
-        return new PrivateChannel('Waterhole.Models.User.'.$this->notification->notifiable->id);
+        return new PrivateChannel('Waterhole.Models.User.' . $this->notification->notifiable->id);
     }
 
     public function broadcastWith()
     {
         return [
             'html' => Blade::renderComponent(
-                (new Alert(
+                new Alert(
                     type: 'notification',
-                    message: new HtmlString(Blade::renderComponent(new NotificationComponent($this->notification))),
+                    message: new HtmlString(
+                        Blade::renderComponent(new NotificationComponent($this->notification)),
+                    ),
                     dismissible: true,
-                ))
+                ),
             ),
             'unreadCount' => $this->notification->notifiable->unread_notification_count,
         ];

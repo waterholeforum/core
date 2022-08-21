@@ -13,30 +13,42 @@ abstract class AdminNav
     use OrderedList;
 }
 
-AdminNav::add('dashboard', new NavLink(
-    label: 'Dashboard',
-    icon: 'heroicon-o-chart-square-bar',
-    route: 'waterhole.admin.dashboard',
-));
+AdminNav::add(
+    'dashboard',
+    new NavLink(
+        label: __('waterhole::admin.dashboard-title'),
+        icon: 'heroicon-o-chart-square-bar',
+        route: 'waterhole.admin.dashboard',
+    ),
+);
 
-AdminNav::add('structure', new NavLink(
-    label: 'Structure',
-    icon: 'heroicon-o-collection',
-    route: 'waterhole.admin.structure',
-));
+AdminNav::add(
+    'structure',
+    new NavLink(
+        label: __('waterhole::admin.structure-title'),
+        icon: 'heroicon-o-collection',
+        route: 'waterhole.admin.structure',
+    ),
+);
 
-AdminNav::add('users', new NavLink(
-    label: 'Users',
-    icon: 'heroicon-o-user',
-    route: 'waterhole.admin.users.index',
-    active: fn () => request()->routeIs('waterhole.admin.users*'),
-));
+AdminNav::add(
+    'users',
+    new NavLink(
+        label: __('waterhole::admin.users-title'),
+        icon: 'heroicon-o-user',
+        route: 'waterhole.admin.users.index',
+        active: fn() => request()->routeIs('waterhole.admin.users*'),
+    ),
+);
 
-AdminNav::add('groups', new NavLink(
-    label: 'Groups',
-    icon: 'heroicon-o-user-group',
-    route: 'waterhole.admin.groups.index',
-    active: fn () => request()->routeIs('waterhole.admin.groups*'),
-));
+AdminNav::add(
+    'groups',
+    new NavLink(
+        label: __('waterhole::admin.groups-title'),
+        icon: 'heroicon-o-user-group',
+        route: 'waterhole.admin.groups.index',
+        active: fn() => request()->routeIs('waterhole.admin.groups*'),
+    ),
+);
 
 AdminNav::add('version', 'waterhole::admin.nav.version');

@@ -1,7 +1,7 @@
 .tabs {
   display: flex;
   flex-wrap: wrap;
-  margin: 0 ~"calc(-1 * var(--space-xs))";
+  margin: 0 ~'calc(-1 * var(--space-xs))';
 }
 
 .tab {
@@ -15,7 +15,7 @@
   position: relative;
   flex-shrink: 0;
 
-  &:not(.is-disabled, [aria-disabled=true]) {
+  &:not(.is-disabled, [aria-disabled='true']) {
     &:hover,
     &.is-hovered {
       color: var(--color-text);
@@ -23,7 +23,7 @@
   }
 
   &.is-active,
-  &[aria-current=page] {
+  &[aria-current='page'] {
     color: var(--color-accent) !important;
 
     &::after {
@@ -33,15 +33,15 @@
       left: 50%;
       transform: translateX(-50%);
       min-width: 2ch;
-      width: ~"calc(100% - 2 * var(--space-xs))";
+      width: ~'calc(100% - 2 * var(--space-xs))';
       background: var(--color-accent-light);
       height: 3px;
     }
   }
 
   &.is-disabled,
-  &[aria-disabled=true] {
-    opacity: .3;
+  &[aria-disabled='true'] {
+    opacity: 0.3;
     cursor: default;
   }
 }

@@ -9,22 +9,16 @@
     </div>
 
     <div class="channel-card__controls">
-        @php
-            $buttonActions = [
+        <x-waterhole::follow-button :followable="$channel"/>
+
+        <x-waterhole::action-menu
+            :for="$channel"
+            :exclude="[
                 Waterhole\Actions\Follow::class,
                 Waterhole\Actions\Unfollow::class,
                 Waterhole\Actions\Ignore::class,
                 Waterhole\Actions\Unignore::class,
-            ];
-        @endphp
-
-        <x-waterhole::follow-button
-            :followable="$channel"
-        />
-
-        <x-waterhole::action-menu
-            :for="$channel"
-            :exclude="$buttonActions"
+            ]"
             placement="bottom-end"
         />
     </div>

@@ -15,7 +15,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::middlewareGroup('waterhole.web', [
             \Illuminate\Cookie\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
-            \Illuminate\Session\Middleware\StartSession::class,
+            \Waterhole\Http\Middleware\StartSession::class,
             \Illuminate\Session\Middleware\AuthenticateSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \Tonysm\TurboLaravel\Http\Middleware\TurboMiddleware::class,
@@ -38,20 +38,23 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('waterhole.web')
                 ->name('waterhole.')
                 ->prefix(config('waterhole.forum.path'))
-                ->group(__DIR__.'/../../routes/web.php');
+                ->group(__DIR__ . '/../../routes/web.php');
 
             Route::middleware(['waterhole.web', 'waterhole.admin'])
                 ->name('waterhole.admin.')
                 ->prefix(config('waterhole.admin.path'))
-                ->group(__DIR__.'/../../routes/admin.php');
+                ->group(__DIR__ . '/../../routes/admin.php');
         });
     }
 
     protected function configureRateLimiting()
     {
         RateLimiter::for('waterhole.create', function (Request $request) {
-            return Limit::perMinute(config('waterhole.forum.create_per_minute', 2))
-                ->by($request->user()->id);
+            return $request->input('commit')
+                ? Limit::perMinute(config('waterhole.forum.create_per_minute', 3))->by(
+                    $request->user()->id,
+                )
+                : Limit::none();
         });
 
         RateLimiter::for('waterhole.search', function (Request $request) {

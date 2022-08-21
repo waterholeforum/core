@@ -1,10 +1,12 @@
 <turbo-frame
     {{ $attributes->class('composer') }}
     data-controller="composer watch-sticky"
-    data-action="turbo:before-fetch-request->composer#open
+    data-action="
+        turbo:before-fetch-request->composer#open
         turbo:frame-render->composer#open
         comment:quote-text@document->text-editor#insertQuote
-        turbo:submit-end->composer#submitEnd"
+        turbo:submit-end->composer#submitEnd
+    "
 >
     <a
         href="{{ route('waterhole.posts.comments.create', compact('post', 'parent')) }}"
@@ -13,7 +15,11 @@
         data-hotkey="r"
     >
         <x-waterhole::avatar :user="Auth::user()"/>
-        <span>{{ $parent ? 'Reply to '.($parent->user->name ?? 'Anonymous').'...' : 'Write a comment...' }}</span>
+        <span>{{
+            $parent
+                ? __('waterhole::forum.composer-reply-to-placeholder', Waterhole\user_variables($parent->user))
+                : __('waterhole::forum.composer-placeholder')
+        }}</span>
     </a>
 
     <form
@@ -41,7 +47,7 @@
                 <x-waterhole::icon icon="heroicon-o-chevron-down"/>
             </button>
 
-            <div class="h4">Write a Comment</div>
+            <div class="h5">{{ __('waterhole::forum.create-comment-title') }}</div>
 
             <turbo-frame
                 class="composer__parent"
@@ -51,7 +57,8 @@
                     <input type="hidden" name="parent_id" value="{{ $parent->id }}">
 
                     <a href="{{ $parent->post_url }}" data-turbo-frame="_top">
-                        Replying to <x-waterhole::user-label :user="$parent->user"/>
+                        {{ __('waterhole::forum.composer-replying-to-label') }}
+                        <x-waterhole::user-label :user="$parent->user"/>
                     </a>
 
                     <button
@@ -59,6 +66,7 @@
                         name="parent_id"
                     >
                         <x-waterhole::icon icon="heroicon-o-x"/>
+                        <ui-tooltip>{{ __('waterhole::forum.composer-clear-reply-button') }}</ui-tooltip>
                     </button>
                 @endif
             </turbo-frame>
@@ -78,14 +86,14 @@
                 data-hotkey="Meta+Enter,Ctrl+Enter"
                 data-hotkey-scope="new-comment"
             >
-                Post
+                {{ __('waterhole::forum.composer-submit') }}
             </button>
         </div>
 
         <x-waterhole::text-editor
             name="body"
             :value="old('body')"
-            placeholder="Write a comment..."
+            placeholder="{{ __('waterhole::forum.composer-placeholder') }}"
             id="new-comment"
             data-action="quotable:quote-text@document->text-editor#insertQuote"
         />
