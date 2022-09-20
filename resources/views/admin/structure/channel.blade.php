@@ -119,7 +119,7 @@
                                         id="sandbox"
                                         name="sandbox"
                                         value="1"
-                                        @if (old('sandbox', $channel->sandbox ?? false)) checked @endif
+                                        @checked(old('sandbox', $channel->sandbox ?? false))
                                     >
                                     <span class="stack gap-xxs">
                                         <span>{{ __('waterhole::admin.channel-sandbox-label') }}</span>
@@ -134,14 +134,14 @@
                                 {{ __('waterhole::admin.channel-default-layout-label') }}
                             </div>
                             <div class="stack gap-xs">
-                                @foreach (['list' => 'heroicon-o-view-list', 'cards' => 'heroicon-o-collection'] as $key => $icon)
+                                @foreach (['list' => 'tabler-list', 'cards' => 'tabler-layout-list'] as $key => $icon)
                                     <label class="choice">
                                         <input
                                             type="radio"
                                             name="default_layout"
                                             id="default_layout_{{ $key }}"
                                             value="{{ $key }}"
-                                            @if (old('default_layout', $channel->default_layout ?? config('waterhole.forum.default_layout')) === $key) checked @endif
+                                            @checked(old('default_layout', $channel->default_layout ?? config('waterhole.forum.default_layout')) === $key)
                                         >
                                         <span class="with-icon">
                                             <x-waterhole::icon :icon="$icon"/>
@@ -164,7 +164,7 @@
                                         name="custom_filters"
                                         value="1"
                                         data-reveal-target="if"
-                                        @if (old('custom_filters', $channel->filters ?? false)) checked @endif
+                                        @checked(old('custom_filters', $channel->filters ?? false))
                                     >
                                     <span class="stack gap-xxs">
                                         <span>{{ __('waterhole::admin.channel-custom-filters-label') }}</span>
@@ -191,7 +191,7 @@
                                             draggable="true"
                                         >
                                             <x-waterhole::icon
-                                                icon="heroicon-o-menu"
+                                                icon="tabler-menu"
                                                 class="drag-handle"
                                                 data-handle
                                             />
@@ -201,7 +201,7 @@
                                                     type="checkbox"
                                                     name="filters[]"
                                                     value="{{ $filter::class }}"
-                                                    @if (in_array($filter::class, $filters)) checked @endif
+                                                    @checked(in_array($filter::class, $filters))
                                                 >
                                                 {{ $filter->label() }}
                                             </label>

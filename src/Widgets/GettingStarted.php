@@ -13,19 +13,19 @@ class GettingStarted extends Component
         $this->items = [
             'strategy' => [
                 'url' => '#',
-                'icon' => 'heroicon-o-map',
+                'icon' => 'tabler-map',
             ],
             'structure' => [
                 'url' => route('waterhole.admin.structure'),
-                'icon' => 'heroicon-o-collection',
+                'icon' => 'tabler-layout-list',
             ],
             'groups' => [
                 'url' => route('waterhole.admin.groups.index'),
-                'icon' => 'heroicon-o-user-group',
+                'icon' => 'tabler-users',
             ],
             'design' => [
                 'url' => '#',
-                'icon' => 'heroicon-o-color-swatch',
+                'icon' => 'tabler-color-swatch',
             ],
         ];
     }

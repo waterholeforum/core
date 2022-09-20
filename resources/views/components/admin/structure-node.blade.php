@@ -4,23 +4,36 @@
     data-content-type="{{ $node->content->getMorphClass() }}"
     draggable="true"
 >
-    <div class="admin-structure__content row gap-xs wrap">
-        <x-waterhole::icon icon="heroicon-o-menu" class="color-muted admin-structure__handle js-only" data-handle/>
+    <div class="admin-structure__content row gap-xs">
+        <x-waterhole::icon
+            icon="tabler-menu-2"
+            class="color-muted drag-handle js-only"
+            data-handle
+        />
 
         @if ($node->content instanceof Waterhole\Models\Channel)
-            <x-waterhole::channel-label :channel="$node->content" class="admin-structure__label" link target="_blank"/>
-            <span class="with-icon text-xs color-muted">
-                <x-waterhole::icon icon="heroicon-o-chat-alt-2"/>
+            <x-waterhole::channel-label
+                :channel="$node->content"
+                class="admin-structure__label"
+                link
+                target="_blank"
+            />
+            <span class="with-icon text-xs color-muted hide-xs">
+                <x-waterhole::icon icon="tabler-message-circle-2"/>
                 <span>Channel</span>
             </span>
 
         @elseif ($node->content instanceof Waterhole\Models\Page)
-            <a href="{{ $node->content->url }}" class="admin-structure__label with-icon color-text" target="_blank">
+            <a
+                href="{{ $node->content->url }}"
+                class="admin-structure__label with-icon color-text"
+                target="_blank"
+            >
                 <x-waterhole::icon :icon="$node->content->icon ?? null"/>
                 <span>{{ $node->content->name ?? 'Page' }}</span>
             </a>
-            <span class="with-icon text-xs color-muted">
-                <x-waterhole::icon icon="heroicon-o-document-text"/>
+            <span class="with-icon text-xs color-muted hide-xs">
+                <x-waterhole::icon icon="tabler-file-text"/>
                 <span>Page</span>
             </span>
 
@@ -30,27 +43,34 @@
             </span>
 
         @elseif ($node->content instanceof Waterhole\Models\StructureLink)
-            <a href="{{ $node->content->href }}" class="admin-structure__label with-icon color-text" target="_blank">
+            <a
+                href="{{ $node->content->href }}"
+                class="admin-structure__label with-icon color-text"
+                target="_blank"
+            >
                 <x-waterhole::icon :icon="$node->content->icon ?? null"/>
                 <span>{{ $node->content->name ?? 'Link' }}</span>
             </a>
-            <span class="with-icon text-xs color-muted">
-                <x-waterhole::icon icon="heroicon-s-link"/>
+            <span class="with-icon text-xs color-muted hide-xs">
+                <x-waterhole::icon icon="tabler-link"/>
                 <span>Link</span>
             </span>
         @endif
 
         <div class="grow"></div>
 
-        @if ($permissions = app('waterhole.permissions')->load('recipient')->scope($node->content))
+        @if (
+            method_exists($node->content, 'permissions')
+            && $permissions = app('waterhole.permissions')->load('recipient')->scope($node->content)
+        )
             @if ($permissions->guest()->allows('view'))
                 <span class="with-icon text-xs color-muted">
-                    <x-waterhole::icon icon="heroicon-o-globe"/>
+                    <x-waterhole::icon icon="tabler-world"/>
                     Public
                 </span>
             @elseif ($permissions->member()->allows('view'))
                 <span class="with-icon text-xs color-muted">
-                    <x-waterhole::icon icon="heroicon-o-user"/>
+                    <x-waterhole::icon icon="tabler-user"/>
                     Member
                 </span>
             @else

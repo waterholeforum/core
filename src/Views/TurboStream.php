@@ -2,6 +2,7 @@
 
 namespace Waterhole\Views;
 
+use Exception;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\View\Component;
 
@@ -31,8 +32,11 @@ abstract class TurboStream
             return null;
         }
 
+        // TODO: remove <template> after turbo bug is fixed
         return <<<html
-            <turbo-stream action="remove" target="$id"></turbo-stream>
+            <turbo-stream action="remove" target="$id">
+                <template></template>
+            </turbo-stream>
         html;
     }
 
@@ -84,7 +88,7 @@ abstract class TurboStream
     private static function getId(Component $component)
     {
         if (!method_exists($component, 'id')) {
-            return null;
+            throw new Exception(get_class($component) . ' is not streamable');
         }
 
         return $component->id();

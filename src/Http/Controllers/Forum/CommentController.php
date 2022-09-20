@@ -13,7 +13,10 @@ use Waterhole\Views\Components\CommentFrame;
 use Waterhole\Views\Components\CommentFull;
 use Waterhole\Views\Components\Composer;
 use Waterhole\Views\Components\FollowButton;
+use Waterhole\Views\Components\PostCommentsHeading;
 use Waterhole\Views\TurboStream;
+
+use function Tonysm\TurboLaravel\dom_id;
 
 /**
  * Controller for comments (show, create, update).
@@ -41,6 +44,8 @@ class CommentController extends Controller
             ->toTree()[0];
 
         $request->user()?->markNotificationsRead($comment);
+
+        $post->userState?->read()->save();
 
         return view('waterhole::comments.show', compact('post', 'comment'));
     }
@@ -96,8 +101,9 @@ class CommentController extends Controller
 
         $post->userState->read()->save();
 
-        if ($request->user()->follow_on_comment) {
+        if ($request->user()->follow_on_comment && !$post->isFollowed()) {
             $post->follow();
+            $wasFollowed = true;
         }
 
         // Send out a "new comment" notification to all followers of this post,
@@ -114,16 +120,15 @@ class CommentController extends Controller
         if ($request->wantsTurboStream()) {
             $streams = [
                 TurboStream::before(new CommentFrame($comment), 'bottom'),
-                TurboStream::replace(
-                    (new Composer($post))->withAttributes(['class' => 'can-sticky']),
-                ),
+                TurboStream::replace(new Composer($post)),
+                TurboStream::replace(new PostCommentsHeading($post->refresh())),
             ];
 
             if (isset($parent)) {
-                $streams[] = TurboStream::replace(new CommentFull($parent->fresh()));
+                $streams[] = TurboStream::replace(new CommentFull($parent->refresh()));
             }
 
-            if ($post->isFollowed()) {
+            if (isset($wasFollowed)) {
                 $streams[] = TurboStream::replace(new FollowButton($post));
             }
 
@@ -134,7 +139,7 @@ class CommentController extends Controller
         // to the new comment on the parent comment's page. Otherwise, redirect
         // to the new comment on the post's page.
         if (isset($parent)) {
-            return redirect($parent->url . '#comment-' . $parent->id);
+            return redirect($parent->url . '#' . dom_id($parent));
         }
 
         return redirect($comment->post_url);

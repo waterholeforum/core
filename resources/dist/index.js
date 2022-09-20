@@ -1603,7 +1603,7 @@ function onPaste$2(event) {
         return;
     event.stopPropagation();
     event.preventDefault();
-    insertText(field, linkify(selectedText, text));
+    insertText(field, linkify(selectedText, text.trim()));
 }
 function hasPlainText(transfer) {
     return Array.from(transfer.types).includes('text/plain');
@@ -1622,7 +1622,16 @@ function linkify(selectedText, text) {
     return `[${selectedText}](${text})`;
 }
 function isURL(url) {
-    return /^https?:\/\//i.test(url);
+    try {
+        const parsedURL = new URL(url);
+        return removeTrailingSlash(parsedURL.href).trim() === removeTrailingSlash(url).trim();
+    }
+    catch (_a) {
+        return false;
+    }
+}
+function removeTrailingSlash(url) {
+    return url.endsWith('/') ? url.slice(0, url.length - 1) : url;
 }
 
 function install$1(el) {
@@ -3819,10 +3828,14 @@ Controller.values = {};
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "FrameElement": () => (/* binding */ FrameElement),
+/* harmony export */   "FrameLoadingStyle": () => (/* binding */ FrameLoadingStyle),
 /* harmony export */   "FrameRenderer": () => (/* binding */ FrameRenderer),
 /* harmony export */   "PageRenderer": () => (/* binding */ PageRenderer),
 /* harmony export */   "PageSnapshot": () => (/* binding */ PageSnapshot),
 /* harmony export */   "StreamActions": () => (/* binding */ StreamActions),
+/* harmony export */   "StreamElement": () => (/* binding */ StreamElement),
+/* harmony export */   "StreamSourceElement": () => (/* binding */ StreamSourceElement),
 /* harmony export */   "cache": () => (/* binding */ cache),
 /* harmony export */   "clearCache": () => (/* binding */ clearCache),
 /* harmony export */   "connectStreamSource": () => (/* binding */ connectStreamSource),
@@ -3838,7 +3851,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "visit": () => (/* binding */ visit)
 /* harmony export */ });
 /*
-Turbo 7.2.0-beta.2
+Turbo 7.2.0-rc.1
 Copyright © 2022 Basecamp, LLC
  */
 (function () {
@@ -4243,6 +4256,9 @@ function getAttribute(attributeName, ...elements) {
     }
     return null;
 }
+function hasAttribute(attributeName, ...elements) {
+    return elements.some((element) => element && element.hasAttribute(attributeName));
+}
 function markAsBusy(...elements) {
     for (const element of elements) {
         if (element.localName == "turbo-frame") {
@@ -4359,7 +4375,9 @@ class FetchRequest {
         }
         catch (error) {
             if (error.name !== "AbortError") {
-                this.delegate.requestErrored(this, error);
+                if (this.willDelegateErrorHandling(error)) {
+                    this.delegate.requestErrored(this, error);
+                }
                 throw error;
             }
         }
@@ -4424,6 +4442,14 @@ class FetchRequest {
         });
         if (event.defaultPrevented)
             await requestInterception;
+    }
+    willDelegateErrorHandling(error) {
+        const event = dispatch("turbo:fetch-request-error", {
+            target: this.target,
+            cancelable: true,
+            detail: { request: this, error: error },
+        });
+        return !event.defaultPrevented;
     }
 }
 
@@ -4518,7 +4544,7 @@ class FormSubmission {
         this.fetchRequest = new FetchRequest(this, this.method, this.location, this.body, this.formElement);
         this.mustRedirect = mustRedirect;
     }
-    static confirmMethod(message, _element) {
+    static confirmMethod(message, _element, _submitter) {
         return Promise.resolve(confirm(message));
     }
     get method() {
@@ -4556,17 +4582,11 @@ class FormSubmission {
             return entries.concat(typeof value == "string" ? [[name, value]] : []);
         }, []);
     }
-    get confirmationMessage() {
-        var _a;
-        return ((_a = this.submitter) === null || _a === void 0 ? void 0 : _a.getAttribute("data-turbo-confirm")) || this.formElement.getAttribute("data-turbo-confirm");
-    }
-    get needsConfirmation() {
-        return this.confirmationMessage !== null;
-    }
     async start() {
         const { initialized, requesting } = FormSubmissionState;
-        if (this.needsConfirmation) {
-            const answer = await FormSubmission.confirmMethod(this.confirmationMessage, this.formElement);
+        const confirmationMessage = getAttribute("data-turbo-confirm", this.submitter, this.formElement);
+        if (typeof confirmationMessage === "string") {
+            const answer = await FormSubmission.confirmMethod(confirmationMessage, this.formElement, this.submitter);
             if (!answer) {
                 return;
             }
@@ -4628,10 +4648,6 @@ class FormSubmission {
     }
     requestErrored(request, error) {
         this.result = { success: false, error };
-        dispatch("turbo:fetch-request-error", {
-            target: this.formElement,
-            detail: { request, error },
-        });
         this.delegate.formSubmissionErrored(this, error);
     }
     requestFinished(_request) {
@@ -4648,7 +4664,7 @@ class FormSubmission {
         return !request.isIdempotent && this.mustRedirect;
     }
     requestAcceptsTurboStreamResponse(request) {
-        return !request.isIdempotent || this.formElement.hasAttribute("data-turbo-stream");
+        return !request.isIdempotent || hasAttribute("data-turbo-stream", this.submitter, this.formElement);
     }
 }
 function buildFormData(formElement, submitter) {
@@ -4714,10 +4730,10 @@ class Snapshot {
         return null;
     }
     get permanentElements() {
-        return [...this.element.querySelectorAll("[id][data-turbo-permanent]")];
+        return queryPermanentElementsAll(this.element);
     }
     getPermanentElementById(id) {
-        return this.element.querySelector(`#${id}[data-turbo-permanent]`);
+        return getPermanentElementById(this.element, id);
     }
     getPermanentElementMapForSnapshot(snapshot) {
         const permanentElementMap = {};
@@ -4730,6 +4746,12 @@ class Snapshot {
         }
         return permanentElementMap;
     }
+}
+function getPermanentElementById(node, id) {
+    return node.querySelector(`#${id}[data-turbo-permanent]`);
+}
+function queryPermanentElementsAll(node) {
+    return node.querySelectorAll("[id][data-turbo-permanent]");
 }
 
 class FormSubmitObserver {
@@ -4972,6 +4994,9 @@ class FormLinkClickObserver {
         const turboFrame = link.getAttribute("data-turbo-frame");
         if (turboFrame)
             form.setAttribute("data-turbo-frame", turboFrame);
+        const turboAction = link.getAttribute("data-turbo-action");
+        if (turboAction)
+            form.setAttribute("data-turbo-action", turboAction);
         const turboConfirm = link.getAttribute("data-turbo-confirm");
         if (turboConfirm)
             form.setAttribute("data-turbo-confirm", turboConfirm);
@@ -4980,8 +5005,8 @@ class FormLinkClickObserver {
             form.setAttribute("data-turbo-stream", "");
         this.delegate.submittedFormLinkToLocation(link, location, form);
         document.body.appendChild(form);
-        form.requestSubmit();
-        form.remove();
+        form.addEventListener("turbo:submit-end", () => form.remove(), { once: true });
+        requestAnimationFrame(() => form.requestSubmit());
     }
 }
 
@@ -5352,19 +5377,19 @@ function elementIsTracked(element) {
     return element.getAttribute("data-turbo-track") == "reload";
 }
 function elementIsScript(element) {
-    const tagName = element.tagName.toLowerCase();
+    const tagName = element.localName;
     return tagName == "script";
 }
 function elementIsNoscript(element) {
-    const tagName = element.tagName.toLowerCase();
+    const tagName = element.localName;
     return tagName == "noscript";
 }
 function elementIsStylesheet(element) {
-    const tagName = element.tagName.toLowerCase();
+    const tagName = element.localName;
     return tagName == "style" || (tagName == "link" && element.getAttribute("rel") == "stylesheet");
 }
 function elementIsMetaElementWithName(element, name) {
-    const tagName = element.tagName.toLowerCase();
+    const tagName = element.localName;
     return tagName == "meta" && element.getAttribute("name") == name;
 }
 function elementWithoutNonce(element) {
@@ -5389,7 +5414,20 @@ class PageSnapshot extends Snapshot {
         return new this(body, new HeadSnapshot(head));
     }
     clone() {
-        return new PageSnapshot(this.element.cloneNode(true), this.headSnapshot);
+        const clonedElement = this.element.cloneNode(true);
+        const selectElements = this.element.querySelectorAll("select");
+        const clonedSelectElements = clonedElement.querySelectorAll("select");
+        for (const [index, source] of selectElements.entries()) {
+            const clone = clonedSelectElements[index];
+            for (const option of clone.selectedOptions)
+                option.selected = false;
+            for (const option of source.selectedOptions)
+                clone.options[option.index].selected = true;
+        }
+        for (const clonedPasswordInput of clonedElement.querySelectorAll('input[type="password"]')) {
+            clonedPasswordInput.value = "";
+        }
+        return new PageSnapshot(clonedElement, this.headSnapshot);
     }
     get headElement() {
         return this.headSnapshot.element;
@@ -5439,6 +5477,7 @@ const defaultOptions = {
     updateHistory: true,
     shouldCacheSnapshot: true,
     acceptsStreamResponse: false,
+    initiator: document.documentElement,
 };
 var SystemStatusCode;
 (function (SystemStatusCode) {
@@ -5448,7 +5487,6 @@ var SystemStatusCode;
 })(SystemStatusCode || (SystemStatusCode = {}));
 class Visit {
     constructor(delegate, location, restorationIdentifier, options = {}) {
-        this.identifier = uuid();
         this.timingMetrics = {};
         this.followedRedirect = false;
         this.historyChanged = false;
@@ -5461,7 +5499,7 @@ class Visit {
         this.location = location;
         this.restorationIdentifier = restorationIdentifier || uuid();
         this.promise = new Promise((resolve, reject) => (this.resolvingFunctions = { resolve, reject }));
-        const { action, historyChanged, referrer, snapshotHTML, response, visitCachedSnapshot, willRender, updateHistory, shouldCacheSnapshot, acceptsStreamResponse, } = Object.assign(Object.assign({}, defaultOptions), options);
+        const { action, historyChanged, referrer, snapshotHTML, response, visitCachedSnapshot, willRender, updateHistory, shouldCacheSnapshot, acceptsStreamResponse, initiator, } = Object.assign(Object.assign({}, defaultOptions), options);
         this.action = action;
         this.historyChanged = historyChanged;
         this.referrer = referrer;
@@ -5474,6 +5512,7 @@ class Visit {
         this.scrolled = !willRender;
         this.shouldCacheSnapshot = shouldCacheSnapshot;
         this.acceptsStreamResponse = acceptsStreamResponse;
+        this.initiator = initiator;
     }
     get adapter() {
         return this.delegate.adapter;
@@ -5541,7 +5580,7 @@ class Visit {
             this.simulateRequest();
         }
         else if (this.shouldIssueRequest() && !this.request) {
-            this.request = new FetchRequest(this, FetchMethod.get, this.location);
+            this.request = new FetchRequest(this, FetchMethod.get, this.location, undefined, this.initiator);
             this.request.perform();
         }
     }
@@ -5637,7 +5676,6 @@ class Visit {
         if (this.redirectedToLocation && !this.followedRedirect && ((_a = this.response) === null || _a === void 0 ? void 0 : _a.redirected)) {
             this.adapter.visitProposedToLocation(this.redirectedToLocation, {
                 action: "replace",
-                willRender: false,
                 response: this.response,
             });
             this.followedRedirect = true;
@@ -6047,7 +6085,7 @@ class Navigator {
         this.delegate = delegate;
     }
     proposeVisit(location, options = {}) {
-        if (this.delegate.allowsVisitingLocationWithAction(location, options.action)) {
+        if (this.delegate.allowsVisitingLocation(location, options)) {
             if (locationIsVisitable(location, this.view.snapshot.rootLocation)) {
                 return this.delegate.visitProposedToLocation(location, options);
             }
@@ -6253,6 +6291,30 @@ class ScrollObserver {
     updatePosition(position) {
         this.delegate.scrollPositionChanged(position);
     }
+}
+
+class StreamMessageRenderer {
+    render({ fragment }) {
+        Bardo.preservingPermanentElements(this, getPermanentElementMapForFragment(fragment), () => document.documentElement.appendChild(fragment));
+    }
+    enteringBardo(currentPermanentElement, newPermanentElement) {
+        newPermanentElement.replaceWith(currentPermanentElement.cloneNode(true));
+    }
+    leavingBardo() { }
+}
+function getPermanentElementMapForFragment(fragment) {
+    const permanentElementsInDocument = queryPermanentElementsAll(document.documentElement);
+    const permanentElementMap = {};
+    for (const permanentElementInDocument of permanentElementsInDocument) {
+        const { id } = permanentElementInDocument;
+        for (const streamElement of fragment.querySelectorAll("turbo-stream")) {
+            const elementInStream = getPermanentElementById(streamElement.templateElement.content, id);
+            if (elementInStream) {
+                permanentElementMap[id] = [permanentElementInDocument, elementInStream];
+            }
+        }
+    }
+    return permanentElementMap;
 }
 
 class StreamObserver {
@@ -6615,6 +6677,7 @@ class Session {
         this.streamObserver = new StreamObserver(this);
         this.formLinkClickObserver = new FormLinkClickObserver(this, document.documentElement);
         this.frameRedirector = new FrameRedirector(this, document.documentElement);
+        this.streamMessageRenderer = new StreamMessageRenderer();
         this.drive = true;
         this.enabled = true;
         this.progressBarDelay = 500;
@@ -6658,7 +6721,7 @@ class Session {
         this.adapter = adapter;
     }
     visit(location, options = {}) {
-        const frameElement = document.getElementById(options.frame || "");
+        const frameElement = options.frame ? document.getElementById(options.frame) : null;
         if (frameElement instanceof FrameElement) {
             frameElement.src = location.toString();
             return frameElement.loaded;
@@ -6674,7 +6737,7 @@ class Session {
         this.streamObserver.disconnectStreamSource(source);
     }
     renderStreamMessage(message) {
-        document.documentElement.appendChild(StreamMessage.wrap(message).fragment);
+        this.streamMessageRenderer.render(StreamMessage.wrap(message));
     }
     clearCache() {
         this.view.clearSnapshotCache();
@@ -6719,22 +6782,27 @@ class Session {
     followedLinkToLocation(link, location) {
         const action = this.getActionForLink(link);
         const acceptsStreamResponse = link.hasAttribute("data-turbo-stream");
-        this.visit(location.href, { action, acceptsStreamResponse });
+        this.visit(location.href, { action, acceptsStreamResponse, initiator: link });
     }
-    allowsVisitingLocationWithAction(location, action) {
-        return this.locationWithActionIsSamePage(location, action) || this.applicationAllowsVisitingLocation(location);
+    allowsVisitingLocation(location, options = {}) {
+        return (this.locationWithActionIsSamePage(location, options.action) ||
+            this.applicationAllowsVisitingLocation(location, options));
     }
     visitProposedToLocation(location, options) {
         extendURLWithDeprecatedProperties(location);
         return this.adapter.visitProposedToLocation(location, options);
     }
     visitStarted(visit) {
+        if (!visit.acceptsStreamResponse) {
+            markAsBusy(document.documentElement);
+        }
         extendURLWithDeprecatedProperties(visit.location);
         if (!visit.silent) {
-            this.notifyApplicationAfterVisitingLocation(visit.location, visit.action);
+            this.notifyApplicationAfterVisitingLocation(visit.location, visit.action, visit.initiator);
         }
     }
     visitCompleted(visit) {
+        clearBusyState(document.documentElement);
         this.notifyApplicationAfterPageLoad(visit.getTimingMetrics());
     }
     locationWithActionIsSamePage(location, action) {
@@ -6794,16 +6862,12 @@ class Session {
     frameRendered(fetchResponse, frame) {
         this.notifyApplicationAfterFrameRender(fetchResponse, frame);
     }
-    frameMissing(frame, fetchResponse) {
-        console.warn(`Completing full-page visit as matching frame for #${frame.id} was missing from the response`);
-        return this.visit(fetchResponse.location);
-    }
     applicationAllowsFollowingLinkToLocation(link, location, ev) {
         const event = this.notifyApplicationAfterClickingLinkToLocation(link, location, ev);
         return !event.defaultPrevented;
     }
-    applicationAllowsVisitingLocation(location) {
-        const event = this.notifyApplicationBeforeVisitingLocation(location);
+    applicationAllowsVisitingLocation(location, options = {}) {
+        const event = this.notifyApplicationBeforeVisitingLocation(location, options.initiator);
         return !event.defaultPrevented;
     }
     notifyApplicationAfterClickingLinkToLocation(link, location, event) {
@@ -6813,15 +6877,18 @@ class Session {
             cancelable: true,
         });
     }
-    notifyApplicationBeforeVisitingLocation(location) {
+    notifyApplicationBeforeVisitingLocation(location, element) {
         return dispatch("turbo:before-visit", {
+            target: element,
             detail: { url: location.href },
             cancelable: true,
         });
     }
-    notifyApplicationAfterVisitingLocation(location, action) {
-        markAsBusy(document.documentElement);
-        return dispatch("turbo:visit", { detail: { url: location.href, action } });
+    notifyApplicationAfterVisitingLocation(location, action, element) {
+        return dispatch("turbo:visit", {
+            target: element,
+            detail: { url: location.href, action },
+        });
     }
     notifyApplicationBeforeCachingSnapshot() {
         return dispatch("turbo:before-cache");
@@ -6836,7 +6903,6 @@ class Session {
         return dispatch("turbo:render");
     }
     notifyApplicationAfterPageLoad(timing = {}) {
-        clearBusyState(document.documentElement);
         return dispatch("turbo:load", {
             detail: { url: this.location.href, timing },
         });
@@ -7118,8 +7184,9 @@ class FrameController {
                     session.frameLoaded(this.element);
                     this.fetchResponseLoaded(fetchResponse);
                 }
-                else if (this.sessionWillHandleMissingFrame(fetchResponse)) {
-                    await session.frameMissing(this.element, fetchResponse);
+                else if (this.willHandleFrameMissingFromResponse(fetchResponse)) {
+                    console.warn(`A matching frame for #${this.element.id} was missing from the response, transforming into full-page Visit.`);
+                    this.visitResponse(fetchResponse.response);
                 }
             }
         }
@@ -7177,16 +7244,13 @@ class FrameController {
         await this.loadResponse(response);
         this.resolveVisitPromise();
     }
-    requestFailedWithResponse(request, response) {
+    async requestFailedWithResponse(request, response) {
         console.error(response);
+        await this.loadResponse(response);
         this.resolveVisitPromise();
     }
     requestErrored(request, error) {
         console.error(error);
-        dispatch("turbo:fetch-request-error", {
-            target: this.element,
-            detail: { request, error },
-        });
         this.resolveVisitPromise();
     }
     requestFinished(_request) {
@@ -7280,14 +7344,29 @@ class FrameController {
             session.history.update(method, expandURL(this.frame.src || ""), this.restorationIdentifier);
         }
     }
-    sessionWillHandleMissingFrame(fetchResponse) {
+    willHandleFrameMissingFromResponse(fetchResponse) {
         this.element.setAttribute("complete", "");
+        const response = fetchResponse.response;
+        const visit = async (url, options = {}) => {
+            if (url instanceof Response) {
+                this.visitResponse(url);
+            }
+            else {
+                session.visit(url, options);
+            }
+        };
         const event = dispatch("turbo:frame-missing", {
             target: this.element,
-            detail: { fetchResponse },
+            detail: { response, visit },
             cancelable: true,
         });
         return !event.defaultPrevented;
+    }
+    async visitResponse(response) {
+        const wrapped = new FetchResponse(response);
+        const responseHTML = await wrapped.responseHTML;
+        const { location, redirected, statusCode } = wrapped;
+        return session.visit(location, { response: { redirected, statusCode, responseHTML } });
     }
     findFrameElement(element, submitter) {
         var _a;
@@ -7424,6 +7503,9 @@ function activateElement(element, currentURL) {
 }
 
 class StreamElement extends HTMLElement {
+    static async renderElement(newElement) {
+        await newElement.performAction();
+    }
     async connectedCallback() {
         try {
             await this.render();
@@ -7438,9 +7520,10 @@ class StreamElement extends HTMLElement {
     async render() {
         var _a;
         return ((_a = this.renderPromise) !== null && _a !== void 0 ? _a : (this.renderPromise = (async () => {
-            if (this.dispatchEvent(this.beforeRenderEvent)) {
+            const event = this.beforeRenderEvent;
+            if (this.dispatchEvent(event)) {
                 await nextAnimationFrame();
-                this.performAction();
+                await event.detail.render(this);
             }
         })()));
     }
@@ -7484,7 +7567,12 @@ class StreamElement extends HTMLElement {
         return this.templateElement.content.cloneNode(true);
     }
     get templateElement() {
-        if (this.firstElementChild instanceof HTMLTemplateElement) {
+        if (this.firstElementChild === null) {
+            const template = this.ownerDocument.createElement("template");
+            this.appendChild(template);
+            return template;
+        }
+        else if (this.firstElementChild instanceof HTMLTemplateElement) {
             return this.firstElementChild;
         }
         this.raise("first child element must be a <template> element");
@@ -7509,7 +7597,7 @@ class StreamElement extends HTMLElement {
         return new CustomEvent("turbo:before-stream-render", {
             bubbles: true,
             cancelable: true,
-            detail: { newStream: this },
+            detail: { newStream: this, render: StreamElement.renderElement },
         });
     }
     get targetElementsById() {
@@ -7762,6 +7850,67 @@ window.customElements.define('ui-tooltip', inclusive_elements__WEBPACK_IMPORTED_
 
 /***/ }),
 
+/***/ "./resources/js/bootstrap/document-title.ts":
+/*!**************************************************!*\
+  !*** ./resources/js/bootstrap/document-title.ts ***!
+  \**************************************************/
+/***/ (() => {
+
+"use strict";
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+var DocumentTitle = /*#__PURE__*/function () {
+  function DocumentTitle() {
+    _classCallCheck(this, DocumentTitle);
+
+    this.title = '';
+    this.count = 0;
+  }
+
+  _createClass(DocumentTitle, [{
+    key: "initialize",
+    value: function initialize() {
+      this.title = document.title;
+      this.count = 0;
+    }
+  }, {
+    key: "increment",
+    value: function increment() {
+      this.count++;
+      this.update();
+    }
+  }, {
+    key: "reset",
+    value: function reset() {
+      this.count = 0;
+      this.update();
+    }
+  }, {
+    key: "update",
+    value: function update() {
+      document.title = (this.count ? "(".concat(this.count, ") ") : '') + this.title;
+    }
+  }]);
+
+  return DocumentTitle;
+}();
+
+Waterhole.documentTitle = new DocumentTitle();
+document.addEventListener('turbo:load', function () {
+  Waterhole.documentTitle.initialize();
+});
+window.addEventListener('focus', function () {
+  Waterhole.documentTitle.reset();
+});
+
+/***/ }),
+
 /***/ "./resources/js/bootstrap/echo.ts":
 /*!****************************************!*\
   !*** ./resources/js/bootstrap/echo.ts ***!
@@ -7783,9 +7932,7 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   forceTLS: true,
   namespace: 'Waterhole.Events'
 });
-document.addEventListener('turbo:before-fetch-request', function (e) {
-  e.detail.fetchOptions.headers['X-Socket-ID'] = window.Echo.socketId();
-});
+window.Echo.registerTurboRequestInterceptor();
 
 /***/ }),
 
@@ -7816,7 +7963,8 @@ document.addEventListener('turbo:load', function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _hotwired_turbo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/turbo */ "./node_modules/@hotwired/turbo/dist/turbo.es2017-esm.js");
-/* harmony import */ var morphdom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! morphdom */ "./node_modules/morphdom/dist/morphdom-esm.js");
+/* harmony import */ var idiomorph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! idiomorph */ "./node_modules/idiomorph/dist/idiomorph.js");
+/* harmony import */ var idiomorph__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(idiomorph__WEBPACK_IMPORTED_MODULE_1__);
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) { if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; } return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) { keys.push(key); } return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) { "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); } }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
@@ -7853,91 +8001,35 @@ var __awaiter = undefined && undefined.__awaiter || function (thisArg, _argument
   });
 };
 
+ // @ts-ignore
 
 
 _hotwired_turbo__WEBPACK_IMPORTED_MODULE_0__.start();
 window.Turbo = _hotwired_turbo__WEBPACK_IMPORTED_MODULE_0__;
-document.addEventListener('turbo:submit-start', function (e) {
-  var _a;
-
-  var submitter = e.detail.formSubmission.submitter;
-  if (!submitter) return;
-  submitter.disabled = true;
-  var popupButton = (_a = submitter.closest('ui-popup')) === null || _a === void 0 ? void 0 : _a.children[0];
-
-  if (popupButton) {
-    popupButton.disabled = true;
-  }
-});
-document.addEventListener('turbo:submit-end', function (e) {
-  var _a;
-
-  var submitter = e.detail.formSubmission.submitter;
-  if (!submitter) return;
-  submitter.disabled = false;
-  var popupButton = (_a = submitter.closest('ui-popup')) === null || _a === void 0 ? void 0 : _a.children[0];
-
-  if (popupButton) {
-    popupButton.disabled = false;
-  }
-});
 document.addEventListener('turbo:before-stream-render', function (e) {
   var stream = e.target;
 
   if (stream.action === 'replace') {
     e.preventDefault();
     stream.targetElements.forEach(function (el) {
-      (0,morphdom__WEBPACK_IMPORTED_MODULE_1__["default"])(el, stream.templateContent.firstElementChild);
+      (0,idiomorph__WEBPACK_IMPORTED_MODULE_1__.morph)(el, stream.templateContent.firstElementChild);
     });
   }
 });
-document.addEventListener('turbo:frame-missing', function (_ref) {
-  var fetchResponse = _ref.detail.fetchResponse;
+document.addEventListener('turbo:visit', function () {
   return __awaiter(void 0, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-    var location, redirected, statusCode, responseHTML, response;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
-          case 0:
-            location = fetchResponse.location, redirected = fetchResponse.redirected, statusCode = fetchResponse.statusCode, responseHTML = fetchResponse.responseHTML;
-            _context.t0 = redirected;
-            _context.t1 = statusCode;
-            _context.next = 5;
-            return responseHTML;
-
-          case 5:
-            _context.t2 = _context.sent;
-            response = {
-              redirected: _context.t0,
-              statusCode: _context.t1,
-              responseHTML: _context.t2
-            };
-            _hotwired_turbo__WEBPACK_IMPORTED_MODULE_0__.visit(location, {
-              response: response
-            });
-
-          case 8:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee);
-  }));
-});
-document.addEventListener('turbo:visit', function () {
-  return __awaiter(void 0, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
           case 0:
             window.Waterhole.alerts.clear();
 
           case 1:
           case "end":
-            return _context2.stop();
+            return _context.stop();
         }
       }
-    }, _callee2);
+    }, _callee);
   }));
 });
 
@@ -8111,7 +8203,12 @@ var default_1 = /*#__PURE__*/function (_Controller) {
 
   _createClass(default_1, [{
     key: "commentId",
-    get: function get() {
+    get: // connect() {
+    //     if (window.location.hash.replace('#comment_', '') === this.commentId) {
+    //         this.element.classList.add('is-highlighted');
+    //     }
+    // }
+    function get() {
       return this.element.getAttribute('data-comment-id') || '';
     }
   }, {
@@ -8314,7 +8411,7 @@ var default_1 = /*#__PURE__*/function (_Controller) {
         this.element.style.height = height + 'px';
       }
 
-      if (window.location.hash.substr(1) === this.element.id) {
+      if (window.location.hash.substring(1) === this.element.id) {
         this.open();
       }
     }
@@ -8920,6 +9017,8 @@ var default_1 = /*#__PURE__*/function (_Controller) {
             key: 'notification'
           });
         }
+
+        Waterhole.documentTitle.increment();
       });
     }
   }, {
@@ -8929,12 +9028,17 @@ var default_1 = /*#__PURE__*/function (_Controller) {
     }
   }, {
     key: "open",
-    value: function open() {
+    value: function open(e) {
       if (this.hasBadgeTarget) {
         this.badgeTarget.hidden = true;
       }
 
-      Waterhole.alerts.dismiss('notification');
+      Waterhole.alerts.dismiss('notification'); // breakpoint-xs
+
+      if (window.innerWidth < 576) {
+        window.Turbo.visit(e.currentTarget.href);
+        this.element.open = false;
+      }
     }
   }]);
 
@@ -9150,7 +9254,10 @@ var default_1 = /*#__PURE__*/function (_Controller) {
       var _a;
 
       (_a = this.channelsValue) === null || _a === void 0 ? void 0 : _a.forEach(function (id) {
-        window.Echo.channel("Waterhole.Models.Channel.".concat(id)).listen('NewComment', function () {
+        var _a;
+
+        var method = ((_a = _this.publicChannelsValue) === null || _a === void 0 ? void 0 : _a.includes(id)) ? 'channel' : 'private';
+        window.Echo[method]("Waterhole.Models.Channel.".concat(id)).listen('NewComment', function () {
           if (_this.filterValue === 'new-activity') {
             _this.showNewActivity();
           }
@@ -9175,14 +9282,19 @@ var default_1 = /*#__PURE__*/function (_Controller) {
     value: function showNewActivity() {
       if (this.newActivityTarget) {
         this.newActivityTarget.hidden = false;
+        Waterhole.documentTitle.increment();
       }
     }
   }, {
     key: "scrollToTop",
     value: function scrollToTop() {
-      (0,animated_scroll_to__WEBPACK_IMPORTED_MODULE_1__["default"])(this.element, {
-        verticalOffset: -(0,_utils__WEBPACK_IMPORTED_MODULE_2__.getHeaderHeight)() - 20
-      });
+      var offset = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.getHeaderHeight)() + 20;
+
+      if (this.element.getBoundingClientRect().top < offset) {
+        (0,animated_scroll_to__WEBPACK_IMPORTED_MODULE_1__["default"])(this.element, {
+          verticalOffset: -offset
+        });
+      }
     }
   }]);
 
@@ -9193,7 +9305,8 @@ var default_1 = /*#__PURE__*/function (_Controller) {
 default_1.targets = ['newActivity'];
 default_1.values = {
   filter: String,
-  channels: Array
+  channels: Array,
+  publicChannels: Array
 };
 
 /***/ }),
@@ -9278,20 +9391,6 @@ var default_1 = /*#__PURE__*/function (_Controller) {
   _createClass(default_1, [{
     key: "connect",
     value: function connect() {
-      var _this2 = this;
-
-      if (this.idValue) {
-        window.Echo.channel("Waterhole.Models.Post.".concat(this.idValue)).listen('NewComment', function (data) {
-          if (_this2.bottomTarget) {
-            var frame = document.createElement('turbo-frame');
-            frame.id = data.dom_id;
-            frame.src = data.url;
-
-            _this2.bottomTarget.before(frame);
-          }
-        });
-      }
-
       document.addEventListener('turbo:before-stream-render', this.beforeStreamRender);
       document.addEventListener('turbo:frame-render', this.showPostOnFirstPage);
     }
@@ -9307,7 +9406,7 @@ var default_1 = /*#__PURE__*/function (_Controller) {
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
 
 
-default_1.targets = ['post', 'bottom'];
+default_1.targets = ['post'];
 default_1.values = {
   id: Number
 };
@@ -9623,10 +9722,10 @@ default_1.targets = ['if', 'then'];
 
 /***/ }),
 
-/***/ "./resources/js/controllers/scrollspy-controller.ts":
-/*!**********************************************************!*\
-  !*** ./resources/js/controllers/scrollspy-controller.ts ***!
-  \**********************************************************/
+/***/ "./resources/js/controllers/scroll-into-view-controller.ts":
+/*!*****************************************************************!*\
+  !*** ./resources/js/controllers/scroll-into-view-controller.ts ***!
+  \*****************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -9671,18 +9770,108 @@ var _default = /*#__PURE__*/function (_Controller) {
 
     _this = _super.apply(this, arguments);
 
+    _this.scrollIntoView = function () {
+      var rect = _this.element.getBoundingClientRect();
+
+      if (rect.top < 0 || rect.bottom > window.innerHeight) {
+        _this.element.scrollIntoView();
+      }
+    };
+
+    return _this;
+  }
+
+  _createClass(_default, [{
+    key: "connect",
+    value: function connect() {
+      this.element.addEventListener('turbo:frame-render', this.scrollIntoView);
+    }
+  }, {
+    key: "disconnect",
+    value: function disconnect() {
+      this.element.removeEventListener('turbo:frame-render', this.scrollIntoView);
+    }
+  }]);
+
+  return _default;
+}(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
+
+
+
+/***/ }),
+
+/***/ "./resources/js/controllers/scrollspy-controller.ts":
+/*!**********************************************************!*\
+  !*** ./resources/js/controllers/scrollspy-controller.ts ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ default_1)
+/* harmony export */ });
+/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+var default_1 = /*#__PURE__*/function (_Controller) {
+  _inherits(default_1, _Controller);
+
+  var _super = _createSuper(default_1);
+
+  function default_1() {
+    var _this;
+
+    _classCallCheck(this, default_1);
+
+    _this = _super.apply(this, arguments);
+
     _this.onScroll = function () {
       var links = Array.from(_this.links());
       links.forEach(function (a) {
         return a.removeAttribute('aria-current');
       });
       links.reverse().some(function (a) {
+        var _a;
+
         var id = a.hash.substring(1);
         if (!id) return;
         var el = document.getElementById(id);
 
         if (el && el.getBoundingClientRect().top < window.innerHeight / 2) {
           a.setAttribute('aria-current', 'page');
+
+          if (_this.current !== a) {
+            (_a = _this.containerTarget) === null || _a === void 0 ? void 0 : _a.scroll({
+              top: a.offsetTop + a.offsetHeight / 2 - _this.containerTarget.offsetHeight / 2,
+              left: a.offsetLeft + a.offsetWidth / 2 - _this.containerTarget.offsetWidth / 2,
+              behavior: _this.current ? 'smooth' : 'auto'
+            });
+          }
+
+          _this.current = a;
           return true;
         }
       });
@@ -9691,7 +9880,7 @@ var _default = /*#__PURE__*/function (_Controller) {
     return _this;
   }
 
-  _createClass(_default, [{
+  _createClass(default_1, [{
     key: "connect",
     value: function connect() {
       this.onScroll();
@@ -9709,10 +9898,11 @@ var _default = /*#__PURE__*/function (_Controller) {
     }
   }]);
 
-  return _default;
+  return default_1;
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
 
 
+default_1.targets = ['container'];
 
 /***/ }),
 
@@ -9871,6 +10061,18 @@ var default_1 = /*#__PURE__*/function (_Controller) {
       }
     }
   }, {
+    key: "hotkeyLabelTargetConnected",
+    value: function hotkeyLabelTargetConnected(element) {
+      var mac = navigator.userAgent.match(/Macintosh/);
+      element.innerText = element.innerText.split('+').map(function (part) {
+        if (part === 'Meta') return mac ? '⌘' : 'Ctrl';
+        if (part === 'Shift' && mac) return '⇧';
+        if (part === 'Alt' && mac) return '⌥';
+        if (part.length === 1) return part.toUpperCase();
+        return part;
+      }).join(mac ? '' : '-');
+    }
+  }, {
     key: "format",
     value: function format(e) {
       var _a;
@@ -9945,7 +10147,7 @@ var default_1 = /*#__PURE__*/function (_Controller) {
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_1__.Controller);
 
 
-default_1.targets = ['input', 'preview', 'toolbar', 'previewButton', 'expander'];
+default_1.targets = ['input', 'preview', 'previewButton', 'expander', 'hotkeyLabel'];
 
 /***/ }),
 
@@ -10136,6 +10338,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ _default)
 /* harmony export */ });
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
+/* harmony import */ var sticky_observer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! sticky-observer */ "./node_modules/sticky-observer/dist/index.js");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -10160,6 +10363,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
 var _default = /*#__PURE__*/function (_Controller) {
   _inherits(_default, _Controller);
 
@@ -10174,21 +10378,18 @@ var _default = /*#__PURE__*/function (_Controller) {
   _createClass(_default, [{
     key: "connect",
     value: function connect() {
-      this.observer = new IntersectionObserver(function (entries) {
-        var el = entries[0].target;
-        var isSticky = entries[0].intersectionRatio < 1 && getComputedStyle(el).position === 'sticky';
-        el.classList.toggle('is-sticky', isSticky);
-      }, {
-        threshold: 1
+      var _this = this;
+
+      this.observer = new sticky_observer__WEBPACK_IMPORTED_MODULE_1__["default"](this.element, function (stuck) {
+        _this.element.classList.toggle('is-stuck', stuck);
       });
-      this.observer.observe(this.element);
     }
   }, {
     key: "disconnect",
     value: function disconnect() {
       var _a;
 
-      (_a = this.observer) === null || _a === void 0 ? void 0 : _a.disconnect();
+      (_a = this.observer) === null || _a === void 0 ? void 0 : _a.stop();
     }
   }]);
 
@@ -10255,6 +10456,136 @@ function htmlToElement(html) {
 function slug(string) {
   return string.toLowerCase().replace(/[^a-z0-9]/gi, '-').replace(/-+/g, '-').replace(/-$|^-/g, '');
 }
+
+/***/ }),
+
+/***/ "./resources/js/elements/turbo-echo-stream-tag.js":
+/*!********************************************************!*\
+  !*** ./resources/js/elements/turbo-echo-stream-tag.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _hotwired_turbo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/turbo */ "./node_modules/@hotwired/turbo/dist/turbo.es2017-esm.js");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) { if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; } return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) { keys.push(key); } return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) { "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); } }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
+
+function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct.bind(); } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+var subscribeTo = function subscribeTo(type, channel) {
+  if (type === 'presence') {
+    return window.Echo.join(channel);
+  }
+
+  return window.Echo[type](channel);
+};
+
+var TurboEchoStreamSourceElement = /*#__PURE__*/function (_HTMLElement) {
+  _inherits(TurboEchoStreamSourceElement, _HTMLElement);
+
+  var _super = _createSuper(TurboEchoStreamSourceElement);
+
+  function TurboEchoStreamSourceElement() {
+    _classCallCheck(this, TurboEchoStreamSourceElement);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(TurboEchoStreamSourceElement, [{
+    key: "connectedCallback",
+    value: function () {
+      var _connectedCallback = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        var _this = this;
+
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                (0,_hotwired_turbo__WEBPACK_IMPORTED_MODULE_0__.connectStreamSource)(this);
+                this.subscription = subscribeTo(this.type, this.channel).listenToAll(function (event, data) {
+                  _this.dispatchMessageEvent(data.streams);
+                });
+
+              case 2:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function connectedCallback() {
+        return _connectedCallback.apply(this, arguments);
+      }
+
+      return connectedCallback;
+    }()
+  }, {
+    key: "disconnectedCallback",
+    value: function disconnectedCallback() {
+      (0,_hotwired_turbo__WEBPACK_IMPORTED_MODULE_0__.disconnectStreamSource)(this);
+
+      if (this.subscription) {
+        window.Echo.leave(this.channel);
+        this.subscription = null;
+      }
+    }
+  }, {
+    key: "dispatchMessageEvent",
+    value: function dispatchMessageEvent(data) {
+      var event = new MessageEvent('message', {
+        data: data
+      });
+      return this.dispatchEvent(event);
+    }
+  }, {
+    key: "channel",
+    get: function get() {
+      return this.getAttribute('channel');
+    }
+  }, {
+    key: "type",
+    get: function get() {
+      return this.getAttribute('type') || 'private';
+    }
+  }]);
+
+  return TurboEchoStreamSourceElement;
+}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
+
+customElements.define('turbo-echo-stream-source', TurboEchoStreamSourceElement);
 
 /***/ }),
 
@@ -10349,6 +10680,607 @@ module.exports = function (str) {
 
 	return str.replace(matchOperatorsRe, '\\$&');
 };
+
+
+/***/ }),
+
+/***/ "./node_modules/idiomorph/dist/idiomorph.js":
+/*!**************************************************!*\
+  !*** ./node_modules/idiomorph/dist/idiomorph.js ***!
+  \**************************************************/
+/***/ (function(module, exports) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//=============================================================================
+// AMD insanity... i hate javascript so much
+//
+// IGNORE EVERYTHING FROM HERE UNTIL THE COMMENT SAYING 'AND NOW IT BEGINS..."
+//=============================================================================
+(function (root, factory) {
+    //@ts-ignore
+    if (true) {
+        // AMD. Register as an anonymous module.
+        //@ts-ignore
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {}
+}(typeof self !== 'undefined' ? self : this,
+    function () {
+        return (function () {
+            'use strict';
+
+            //=============================================================================
+            // AND NOW IT BEGINS...
+            //=============================================================================
+            let EMPTY_SET = new Set();
+
+            //=============================================================================
+            // Core Morphing Algorithm - morph, morphOldNodeTo, morphChildren
+            //=============================================================================
+
+            function morph(oldNode, newContent, config = {}) {
+
+                if (typeof newContent === 'string') {
+                    newContent = parseContent(newContent);
+                }
+
+                let normalizedContent = normalizeContent(newContent);
+
+                let ctx = createMorphContext(oldNode, normalizedContent, config);
+
+                if (config.morphStyle === "innerHTML") {
+
+                    // innerHTML, so we are only updating the children
+                    morphChildren(normalizedContent, oldNode, ctx);
+                    return oldNode.children;
+
+                } else if(config.morphStyle === "outerHTML" || config.morphStyle == null) {
+                    // otherwise find the best element match in the new content, morph that, and merge its siblings
+                    // into either side of the best match
+                    let bestMatch = findBestNodeMatch(normalizedContent, oldNode, ctx);
+
+                    // stash the siblings that will need to be inserted on either side of the best match
+                    let previousSibling = bestMatch?.previousSibling;
+                    let nextSibling = bestMatch?.nextSibling;
+
+                    // morph it
+                    let morphedNode = morphOldNodeTo(oldNode, bestMatch, ctx);
+
+                    if (bestMatch) {
+                        // if there was a best match, merge the siblings in too and return the
+                        // whole bunch
+                        return insertSiblings(previousSibling, morphedNode, nextSibling);
+                    } else {
+                        // otherwise nothing was added to the DOM
+                        return []
+                    }
+                } else {
+                    throw "Do not understand how to morph style " + config.morphStyle;
+                }
+            }
+
+            /**
+             * @param oldNode root node to merge content into
+             * @param newContent new content to merge
+             * @param ctx the merge context
+             * @returns {Element} the element that ended up in the DOM
+             */
+            function morphOldNodeTo(oldNode, newContent, ctx) {
+                if (newContent == null) {
+                    ctx.callbacks.beforeNodeRemoved(oldNode);
+                    oldNode.remove()
+                    ctx.callbacks.afterNodeRemoved(oldNode);
+                    return null;
+                } else if (!isSoftMatch(oldNode, newContent)) {
+                    ctx.callbacks.beforeNodeRemoved(oldNode);
+                    ctx.callbacks.beforeNodeAdded(newContent);
+                    oldNode.parentElement.replaceChild(newContent, oldNode);
+                    ctx.callbacks.afterNodeAdded(newContent);
+                    ctx.callbacks.afterNodeRemoved(oldNode);
+                    return newContent;
+                } else {
+                    ctx.callbacks.beforeNodeMorphed(oldNode, newContent)
+                    syncNodeFrom(newContent, oldNode);
+                    morphChildren(newContent, oldNode, ctx);
+                    ctx.callbacks.afterNodeMorphed(oldNode, newContent)
+                    return oldNode;
+                }
+            }
+
+            /**
+             * This is the core algorithm for matching up children.  The idea is to use id sets to try to match up
+             * nodes as faithfully as possible.  We greedily match, which allows us to keep the algorithm fast, but
+             * by using id sets, we are able to better match up with content deeper in the DOM.
+             *
+             * Basic algorithm is, for each node in the new content:
+             *
+             * - if we have reached the end of the old parent, append the new content
+             * - if the new content has an id set match with the current insertion point, morph
+             * - search for an id set match
+             * - if id set match found, morph
+             * - otherwise search for a "soft" match
+             * - if a soft match is found, morph
+             * - otherwise, prepend the new node before the current insertion point
+             *
+             * The two search algorithms terminate if competing node matches appear to outweigh what can be achieved
+             * with the current node.  See findIdSetMatch() and findSoftMatch() for details.
+             *
+             * @param {Element} newParent the parent element of the new content
+             * @param {Element } oldParent the old content that we are merging the new content into
+             * @param ctx the merge context
+             */
+            function morphChildren(newParent, oldParent, ctx) {
+
+                let nextNewChild = newParent.firstChild;
+                let insertionPoint = oldParent.firstChild;
+
+                // run through all the new content
+                while (nextNewChild) {
+
+                    let newChild = nextNewChild;
+                    nextNewChild = newChild.nextSibling;
+
+                    // if we are at the end of the exiting parent's children, just append
+                    if (insertionPoint == null) {
+
+                        ctx.callbacks.beforeNodeAdded(newChild);
+                        oldParent.appendChild(newChild);
+                        ctx.callbacks.afterNodeAdded(newChild);
+
+                        // if the current node has an id set match then morph
+                    } else if (isIdSetMatch(newChild, insertionPoint, ctx)) {
+
+                        morphOldNodeTo(insertionPoint, newChild, ctx);
+                        insertionPoint = insertionPoint.nextSibling;
+
+                    } else {
+
+                        // otherwise search forward in the existing old children for an id set match
+                        let idSetMatch = findIdSetMatch(newParent, oldParent, newChild, insertionPoint, ctx);
+
+                        // if we found a potential match, remove the nodes until that point and morph
+                        if (idSetMatch) {
+
+                            insertionPoint = removeNodesBetween(insertionPoint, idSetMatch, ctx);
+                            morphOldNodeTo(idSetMatch, newChild, ctx);
+
+                        } else {
+
+                            // no id set match found, so scan forward for a soft match for the current node
+                            let softMatch = findSoftMatch(newParent, oldParent, newChild, insertionPoint, ctx);
+
+                            // if we found a soft match for the current node, morph
+                            if (softMatch) {
+
+                                insertionPoint = removeNodesBetween(insertionPoint, softMatch, ctx);
+                                morphOldNodeTo(softMatch, newChild, ctx);
+
+                            } else {
+
+                                // abandon all hope of morphing, just insert the new child before the insertion point
+                                // and move on
+                                ctx.callbacks.beforeNodeAdded(newChild);
+                                oldParent.insertBefore(newChild, insertionPoint);
+                                ctx.callbacks.afterNodeAdded(newChild);
+
+                            }
+                        }
+                    }
+
+                    // remove the processed new contents ids from consideration in future merge decisions
+                    removeIdsFromConsideration(ctx, newChild);
+                }
+
+                // remove any remaining old nodes that didn't match up with new content
+                while (insertionPoint !== null) {
+
+                    let tempNode = insertionPoint;
+                    insertionPoint = insertionPoint.nextSibling;
+                    removeNode(tempNode, ctx);
+                }
+            }
+
+            //=============================================================================
+            // Attribute Syncing Code
+            //=============================================================================
+
+            /**
+             * syncs a given node with another node, copying over all attributes and
+             * inner element state from the 'from' node to the 'to' node
+             *
+             * @param {Element} from the element to copy attributes & state from
+             * @param {Element} to the element to copy attributes & state to
+             */
+            function syncNodeFrom(from, to) {
+                let type = from.nodeType
+
+                // if is an element type, sync the attributes from the
+                // new node into the new node
+                if (type === 1 /* element type */) {
+                    const fromAttributes = from.attributes;
+                    const toAttributes = to.attributes;
+                    for (const fromAttribute of fromAttributes) {
+                        if (to.getAttribute(fromAttribute.name) !== fromAttribute.value) {
+                            to.setAttribute(fromAttribute.name, fromAttribute.value);
+                        }
+                    }
+                    for (const toAttribute of toAttributes) {
+                        if (!from.hasAttribute(toAttribute.name)) {
+                            to.removeAttribute(toAttribute.name);
+                        }
+                    }
+                }
+
+                // sync text nodes
+                if (type === 8 /* comment */ || type === 3 /* text */) {
+                    if (to.nodeValue !== from.nodeValue) {
+                        to.nodeValue = from.nodeValue;
+                    }
+                }
+
+                // NB: many bothans died to bring us information:
+                //
+                // https://github.com/patrick-steele-idem/morphdom/blob/master/src/specialElHandlers.js
+                // https://github.com/choojs/nanomorph/blob/master/lib/morph.jsL113
+
+                // sync input value
+                if (from instanceof HTMLInputElement &&
+                    to instanceof HTMLInputElement &&
+                    from.type !== 'file') {
+
+                    let fromValue = from.value;
+                    let toValue = to.value;
+
+                    // sync boolean attributes
+                    syncBooleanAttribute(from, to, 'checked');
+                    syncBooleanAttribute(from, to, 'disabled');
+
+                    if (!from.hasAttribute('value')) {
+                        to.value = '';
+                        to.removeAttribute('value');
+                    } else if (fromValue !== toValue) {
+                        to.setAttribute('value', fromValue);
+                        to.value = fromValue;
+                    }
+                } else if (from instanceof HTMLOptionElement) {
+                    syncBooleanAttribute(from, to, 'selected')
+                } else if (from instanceof HTMLTextAreaElement && to instanceof HTMLTextAreaElement) {
+                    let fromValue = from.value;
+                    let toValue = to.value;
+                    if (fromValue !== toValue) {
+                        to.value = fromValue;
+                    }
+                    if (to.firstChild && to.firstChild.nodeValue !== fromValue) {
+                        to.firstChild.nodeValue = fromValue
+                    }
+                }
+            }
+
+            function syncBooleanAttribute(from, to, attributeName) {
+                if (from[attributeName] !== to[attributeName]) {
+                    to[attributeName] = from[attributeName];
+                    if (from[attributeName]) {
+                        to.setAttribute(attributeName, '');
+                    } else {
+                        to.removeAttribute(attributeName);
+                    }
+                }
+            }
+
+            //=============================================================================
+            // Misc
+            //=============================================================================
+
+            function noOp() {}
+
+            function createMorphContext(oldNode, newContent, config) {
+                return {
+                    idMap: createIdMap(oldNode, newContent),
+                    deadIds: new Set(),
+                    callbacks: Object.assign({
+                        beforeNodeAdded: noOp,
+                        afterNodeAdded : noOp,
+                        beforeNodeMorphed: noOp,
+                        afterNodeMorphed : noOp,
+                        beforeNodeRemoved: noOp,
+                        afterNodeRemoved : noOp,
+                    }, config.callbacks),
+                }
+            }
+
+            function isIdSetMatch(node1, node2, ctx) {
+                if (node1 == null || node2 == null) {
+                    return false;
+                }
+                if (node1.nodeType === node2.nodeType && node1.tagName === node2.tagName) {
+                    if (node1.id !== "" && node1.id === node2.id) {
+                        return true;
+                    } else {
+                        return getIdIntersectionCount(ctx, node1, node2) > 0;
+                    }
+                }
+                return false;
+            }
+
+            function isSoftMatch(node1, node2) {
+                if (node1 == null || node2 == null) {
+                    return false;
+                }
+                return node1.nodeType === node2.nodeType && node1.tagName === node2.tagName
+            }
+
+            function removeNodesBetween(startInclusive, endExclusive, ctx) {
+                while (startInclusive !== endExclusive) {
+                    let tempNode = startInclusive;
+                    startInclusive = startInclusive.nextSibling;
+                    removeNode(tempNode, ctx);
+                }
+                removeIdsFromConsideration(ctx, endExclusive);
+                return endExclusive.nextSibling;
+            }
+
+            //=============================================================================
+            // Scans forward from the insertionPoint in the old parent looking for a potential id match
+            // for the newChild.  We stop if we find a potential id match for the new child OR
+            // if the number of potential id matches we are discarding is greater than the
+            // potential id matches for the new child
+            //=============================================================================
+            function findIdSetMatch(newContent, oldParent, newChild, insertionPoint, ctx) {
+
+                // max id matches we are willing to discard in our search
+                let newChildPotentialIdCount = getIdIntersectionCount(ctx, newChild, oldParent);
+
+                let potentialMatch = null;
+
+                // only search forward if there is a possibility of an id match
+                if (newChildPotentialIdCount > 0) {
+                    let potentialMatch = insertionPoint;
+                    // if there is a possibility of an id match, scan forward
+                    // keep track of the potential id match count we are discarding (the
+                    // newChildPotentialIdCount must be greater than this to make it likely
+                    // worth it)
+                    let otherMatchCount = 0;
+                    while (potentialMatch != null) {
+
+                        // If we have an id match, return the current potential match
+                        if (isIdSetMatch(newChild, potentialMatch, ctx)) {
+                            return potentialMatch;
+                        }
+
+                        // computer the other potential matches of this new content
+                        otherMatchCount += getIdIntersectionCount(ctx, potentialMatch, newContent);
+                        if (otherMatchCount > newChildPotentialIdCount) {
+                            // if we have more potential id matches in _other_ content, we
+                            // do not have a good candidate for an id match, so return null
+                            return null;
+                        }
+
+                        // advanced to the next old content child
+                        potentialMatch = potentialMatch.nextSibling;
+                    }
+                }
+                return potentialMatch;
+            }
+
+            //=============================================================================
+            // Scans forward from the insertionPoint in the old parent looking for a potential soft match
+            // for the newChild.  We stop if we find a potential soft match for the new child OR
+            // if we find a potential id match in the old parents children OR if we find two
+            // potential soft matches for the next two pieces of new content
+            //=============================================================================
+            function findSoftMatch(newContent, oldParent, newChild, insertionPoint, ctx) {
+
+                let potentialSoftMatch = insertionPoint;
+                let nextSibling = newChild.nextSibling;
+                let siblingSoftMatchCount = 0;
+
+                while (potentialSoftMatch != null) {
+
+                    if (getIdIntersectionCount(ctx, potentialSoftMatch, newContent) > 0) {
+                        // the current potential soft match has a potential id set match with the remaining new
+                        // content so bail out of looking
+                        return null;
+                    }
+
+                    // if we have a soft match with the current node, return it
+                    if (isSoftMatch(newChild, potentialSoftMatch)) {
+                        return potentialSoftMatch;
+                    }
+
+                    if (isSoftMatch(nextSibling, potentialSoftMatch)) {
+                        // the next new node has a soft match with this node, so
+                        // increment the count of future soft matches
+                        siblingSoftMatchCount++;
+                        nextSibling = nextSibling.nextSibling;
+
+                        // If there are two future soft matches, bail to allow the siblings to soft match
+                        // so that we don't consume future soft matches for the sake of the current node
+                        if (siblingSoftMatchCount >= 2) {
+                            return null;
+                        }
+                    }
+
+                    // advanced to the next old content child
+                    potentialSoftMatch = potentialSoftMatch.nextSibling;
+                }
+
+                return potentialSoftMatch;
+            }
+
+            function parseContent(newContent) {
+                let parser = new DOMParser();
+                let responseDoc = parser.parseFromString("<body><template>" + newContent + "</template></body>", "text/html");
+                let content = responseDoc.body.querySelector('template').content;
+                content.generatedByIdiomorph = true;
+                return content
+            }
+
+            function normalizeContent(newContent) {
+                if (newContent == null) {
+                    const dummyParent = document.createElement('div');
+                    return dummyParent;
+                } else if (newContent.generatedByIdiomorph) {
+                    // the template tag created by idiomorph parsing can serve as a dummy parent
+                    return newContent;
+                } else if (newContent instanceof Node) {
+                    // a single node is added as a child to a dummy parent
+                    const dummyParent = document.createElement('div');
+                    dummyParent.append(newContent);
+                    return dummyParent;
+                } else {
+                    // all nodes in the array or HTMLElement collection are consolidated under
+                    // a single dummy parent element
+                    const dummyParent = document.createElement('div');
+                    for (const elt of [...newContent]) {
+                        dummyParent.append(elt);
+                    }
+                    return dummyParent;
+                }
+            }
+
+            function insertSiblings(previousSibling, morphedNode, nextSibling) {
+                let stack = []
+                let added = []
+                while (previousSibling != null) {
+                    stack.push(previousSibling);
+                    previousSibling = previousSibling.previousSibling;
+                }
+                while (stack.length > 0) {
+                    let node = stack.pop();
+                    added.push(node); // push added preceding siblings on in order and insert
+                    morphedNode.parentElement.insertBefore(node, morphedNode);
+                }
+                added.push(morphedNode);
+                while (nextSibling != null) {
+                    stack.push(nextSibling);
+                    added.push(nextSibling); // here we are going in order, so push on as we scan, rather than add
+                    nextSibling = nextSibling.nextSibling;
+                }
+                while (stack.length > 0) {
+                    morphedNode.parentElement.insertBefore(stack.pop(), morphedNode.nextSibling);
+                }
+                return added;
+            }
+
+            function findBestNodeMatch(newContent, oldNode, ctx) {
+                let currentElement = null;
+                currentElement = newContent.firstChild;
+                let bestElement = currentElement;
+                let score = 0;
+                while (currentElement) {
+                    let newScore = scoreElement(currentElement, oldNode, ctx);
+                    if (newScore > score) {
+                        bestElement = currentElement;
+                        score = newScore;
+                    }
+                    currentElement = currentElement.nextSibling;
+                }
+                return bestElement;
+            }
+
+            function scoreElement(node1, node2, ctx) {
+                if (isSoftMatch(node1, node2)) {
+                    return .5 + getIdIntersectionCount(ctx, node1, node2);
+                }
+                return 0;
+            }
+
+            function removeNode(tempNode, ctx) {
+                removeIdsFromConsideration(ctx, tempNode)
+                ctx.callbacks.beforeNodeRemoved(tempNode);
+                tempNode.remove();
+                ctx.callbacks.afterNodeRemoved(tempNode);
+            }
+
+            //=============================================================================
+            // ID Set Functions
+            //=============================================================================
+
+            function isIdInConsideration(ctx, id) {
+                return !ctx.deadIds.has(id);
+            }
+
+            function idIsWithinNode(ctx, id, targetNode) {
+                let idSet = ctx.idMap.get(targetNode) || EMPTY_SET;
+                return idSet.has(id);
+            }
+
+            function removeIdsFromConsideration(ctx, node) {
+                let idSet = ctx.idMap.get(node) || EMPTY_SET;
+                for (const id of idSet) {
+                    ctx.deadIds.add(id);
+                }
+            }
+
+            function getIdIntersectionCount(ctx, node1, node2) {
+                let sourceSet = ctx.idMap.get(node1) || EMPTY_SET;
+                let matchCount = 0;
+                for (const id of sourceSet) {
+                    // a potential match is an id in the source and potentialIdsSet, but
+                    // that has not already been merged into the DOM
+                    if (isIdInConsideration(ctx, id) && idIsWithinNode(ctx, id, node2)) {
+                        ++matchCount;
+                    }
+                }
+                return matchCount;
+            }
+
+            /**
+             * A bottom up algorithm that finds all elements with ids inside of the node
+             * argument and populates id sets for those nodes and all their parents, generating
+             * a set of ids contained within all nodes for the entire hierarchy in the DOM
+             *
+             * @param node {Element}
+             * @param {Map<Node, Set<String>>} idMap
+             */
+            function populateIdMapForNode(node, idMap) {
+                let nodeParent = node.parentElement;
+                // find all elements with an id property
+                let idElements = node.querySelectorAll('[id]');
+                for (const elt of idElements) {
+                    let current = elt;
+                    // walk up the parent hierarchy of that element, adding the id
+                    // of element to the parent's id set
+                    while (current !== nodeParent && current != null) {
+                        let idSet = idMap.get(current);
+                        // if the id set doesn't exist, create it and insert it in the  map
+                        if (idSet == null) {
+                            idSet = new Set();
+                            idMap.set(current, idSet);
+                        }
+                        idSet.add(elt.id);
+                        current = current.parentElement;
+                    }
+                }
+            }
+
+            /**
+             * This function computes a map of nodes to all ids contained within that node (inclusive of the
+             * node).  This map can be used to ask if two nodes have intersecting sets of ids, which allows
+             * for a looser definition of "matching" than tradition id matching, and allows child nodes
+             * to contribute to a parent nodes matching.
+             *
+             * @param {Element} oldContent  the old content that will be morphed
+             * @param {Element} newContent  the new content to morph to
+             * @returns {Map<Node, Set<String>>} a map of nodes to id sets for the
+             */
+            function createIdMap(oldContent, newContent) {
+                let idMap = new Map();
+                populateIdMapForNode(oldContent, idMap);
+                populateIdMapForNode(newContent, idMap);
+                return idMap;
+            }
+
+            //=============================================================================
+            // This is what ends up becoming the Idiomorph global object
+            //=============================================================================
+            return {
+                morph
+            }
+        })()
+    }));
+
 
 
 /***/ }),
@@ -11309,6 +12241,7 @@ var Connector = /*#__PURE__*/function () {
       },
       broadcaster: 'pusher',
       csrfToken: null,
+      bearerToken: null,
       host: null,
       key: null,
       namespace: 'App.Events'
@@ -11330,6 +12263,13 @@ var Connector = /*#__PURE__*/function () {
       if (token) {
         this.options.auth.headers['X-CSRF-TOKEN'] = token;
         this.options.userAuthentication.headers['X-CSRF-TOKEN'] = token;
+      }
+
+      token = this.options.bearerToken;
+
+      if (token) {
+        this.options.auth.headers['Authorization'] = 'Bearer ' + token;
+        this.options.userAuthentication.headers['Authorization'] = 'Bearer ' + token;
       }
 
       return options;
@@ -11988,776 +12928,6 @@ var Echo = /*#__PURE__*/function () {
 
 /***/ }),
 
-/***/ "./node_modules/morphdom/dist/morphdom-esm.js":
-/*!****************************************************!*\
-  !*** ./node_modules/morphdom/dist/morphdom-esm.js ***!
-  \****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-var DOCUMENT_FRAGMENT_NODE = 11;
-
-function morphAttrs(fromNode, toNode) {
-    var toNodeAttrs = toNode.attributes;
-    var attr;
-    var attrName;
-    var attrNamespaceURI;
-    var attrValue;
-    var fromValue;
-
-    // document-fragments dont have attributes so lets not do anything
-    if (toNode.nodeType === DOCUMENT_FRAGMENT_NODE || fromNode.nodeType === DOCUMENT_FRAGMENT_NODE) {
-      return;
-    }
-
-    // update attributes on original DOM element
-    for (var i = toNodeAttrs.length - 1; i >= 0; i--) {
-        attr = toNodeAttrs[i];
-        attrName = attr.name;
-        attrNamespaceURI = attr.namespaceURI;
-        attrValue = attr.value;
-
-        if (attrNamespaceURI) {
-            attrName = attr.localName || attrName;
-            fromValue = fromNode.getAttributeNS(attrNamespaceURI, attrName);
-
-            if (fromValue !== attrValue) {
-                if (attr.prefix === 'xmlns'){
-                    attrName = attr.name; // It's not allowed to set an attribute with the XMLNS namespace without specifying the `xmlns` prefix
-                }
-                fromNode.setAttributeNS(attrNamespaceURI, attrName, attrValue);
-            }
-        } else {
-            fromValue = fromNode.getAttribute(attrName);
-
-            if (fromValue !== attrValue) {
-                fromNode.setAttribute(attrName, attrValue);
-            }
-        }
-    }
-
-    // Remove any extra attributes found on the original DOM element that
-    // weren't found on the target element.
-    var fromNodeAttrs = fromNode.attributes;
-
-    for (var d = fromNodeAttrs.length - 1; d >= 0; d--) {
-        attr = fromNodeAttrs[d];
-        attrName = attr.name;
-        attrNamespaceURI = attr.namespaceURI;
-
-        if (attrNamespaceURI) {
-            attrName = attr.localName || attrName;
-
-            if (!toNode.hasAttributeNS(attrNamespaceURI, attrName)) {
-                fromNode.removeAttributeNS(attrNamespaceURI, attrName);
-            }
-        } else {
-            if (!toNode.hasAttribute(attrName)) {
-                fromNode.removeAttribute(attrName);
-            }
-        }
-    }
-}
-
-var range; // Create a range object for efficently rendering strings to elements.
-var NS_XHTML = 'http://www.w3.org/1999/xhtml';
-
-var doc = typeof document === 'undefined' ? undefined : document;
-var HAS_TEMPLATE_SUPPORT = !!doc && 'content' in doc.createElement('template');
-var HAS_RANGE_SUPPORT = !!doc && doc.createRange && 'createContextualFragment' in doc.createRange();
-
-function createFragmentFromTemplate(str) {
-    var template = doc.createElement('template');
-    template.innerHTML = str;
-    return template.content.childNodes[0];
-}
-
-function createFragmentFromRange(str) {
-    if (!range) {
-        range = doc.createRange();
-        range.selectNode(doc.body);
-    }
-
-    var fragment = range.createContextualFragment(str);
-    return fragment.childNodes[0];
-}
-
-function createFragmentFromWrap(str) {
-    var fragment = doc.createElement('body');
-    fragment.innerHTML = str;
-    return fragment.childNodes[0];
-}
-
-/**
- * This is about the same
- * var html = new DOMParser().parseFromString(str, 'text/html');
- * return html.body.firstChild;
- *
- * @method toElement
- * @param {String} str
- */
-function toElement(str) {
-    str = str.trim();
-    if (HAS_TEMPLATE_SUPPORT) {
-      // avoid restrictions on content for things like `<tr><th>Hi</th></tr>` which
-      // createContextualFragment doesn't support
-      // <template> support not available in IE
-      return createFragmentFromTemplate(str);
-    } else if (HAS_RANGE_SUPPORT) {
-      return createFragmentFromRange(str);
-    }
-
-    return createFragmentFromWrap(str);
-}
-
-/**
- * Returns true if two node's names are the same.
- *
- * NOTE: We don't bother checking `namespaceURI` because you will never find two HTML elements with the same
- *       nodeName and different namespace URIs.
- *
- * @param {Element} a
- * @param {Element} b The target element
- * @return {boolean}
- */
-function compareNodeNames(fromEl, toEl) {
-    var fromNodeName = fromEl.nodeName;
-    var toNodeName = toEl.nodeName;
-    var fromCodeStart, toCodeStart;
-
-    if (fromNodeName === toNodeName) {
-        return true;
-    }
-
-    fromCodeStart = fromNodeName.charCodeAt(0);
-    toCodeStart = toNodeName.charCodeAt(0);
-
-    // If the target element is a virtual DOM node or SVG node then we may
-    // need to normalize the tag name before comparing. Normal HTML elements that are
-    // in the "http://www.w3.org/1999/xhtml"
-    // are converted to upper case
-    if (fromCodeStart <= 90 && toCodeStart >= 97) { // from is upper and to is lower
-        return fromNodeName === toNodeName.toUpperCase();
-    } else if (toCodeStart <= 90 && fromCodeStart >= 97) { // to is upper and from is lower
-        return toNodeName === fromNodeName.toUpperCase();
-    } else {
-        return false;
-    }
-}
-
-/**
- * Create an element, optionally with a known namespace URI.
- *
- * @param {string} name the element name, e.g. 'div' or 'svg'
- * @param {string} [namespaceURI] the element's namespace URI, i.e. the value of
- * its `xmlns` attribute or its inferred namespace.
- *
- * @return {Element}
- */
-function createElementNS(name, namespaceURI) {
-    return !namespaceURI || namespaceURI === NS_XHTML ?
-        doc.createElement(name) :
-        doc.createElementNS(namespaceURI, name);
-}
-
-/**
- * Copies the children of one DOM element to another DOM element
- */
-function moveChildren(fromEl, toEl) {
-    var curChild = fromEl.firstChild;
-    while (curChild) {
-        var nextChild = curChild.nextSibling;
-        toEl.appendChild(curChild);
-        curChild = nextChild;
-    }
-    return toEl;
-}
-
-function syncBooleanAttrProp(fromEl, toEl, name) {
-    if (fromEl[name] !== toEl[name]) {
-        fromEl[name] = toEl[name];
-        if (fromEl[name]) {
-            fromEl.setAttribute(name, '');
-        } else {
-            fromEl.removeAttribute(name);
-        }
-    }
-}
-
-var specialElHandlers = {
-    OPTION: function(fromEl, toEl) {
-        var parentNode = fromEl.parentNode;
-        if (parentNode) {
-            var parentName = parentNode.nodeName.toUpperCase();
-            if (parentName === 'OPTGROUP') {
-                parentNode = parentNode.parentNode;
-                parentName = parentNode && parentNode.nodeName.toUpperCase();
-            }
-            if (parentName === 'SELECT' && !parentNode.hasAttribute('multiple')) {
-                if (fromEl.hasAttribute('selected') && !toEl.selected) {
-                    // Workaround for MS Edge bug where the 'selected' attribute can only be
-                    // removed if set to a non-empty value:
-                    // https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/12087679/
-                    fromEl.setAttribute('selected', 'selected');
-                    fromEl.removeAttribute('selected');
-                }
-                // We have to reset select element's selectedIndex to -1, otherwise setting
-                // fromEl.selected using the syncBooleanAttrProp below has no effect.
-                // The correct selectedIndex will be set in the SELECT special handler below.
-                parentNode.selectedIndex = -1;
-            }
-        }
-        syncBooleanAttrProp(fromEl, toEl, 'selected');
-    },
-    /**
-     * The "value" attribute is special for the <input> element since it sets
-     * the initial value. Changing the "value" attribute without changing the
-     * "value" property will have no effect since it is only used to the set the
-     * initial value.  Similar for the "checked" attribute, and "disabled".
-     */
-    INPUT: function(fromEl, toEl) {
-        syncBooleanAttrProp(fromEl, toEl, 'checked');
-        syncBooleanAttrProp(fromEl, toEl, 'disabled');
-
-        if (fromEl.value !== toEl.value) {
-            fromEl.value = toEl.value;
-        }
-
-        if (!toEl.hasAttribute('value')) {
-            fromEl.removeAttribute('value');
-        }
-    },
-
-    TEXTAREA: function(fromEl, toEl) {
-        var newValue = toEl.value;
-        if (fromEl.value !== newValue) {
-            fromEl.value = newValue;
-        }
-
-        var firstChild = fromEl.firstChild;
-        if (firstChild) {
-            // Needed for IE. Apparently IE sets the placeholder as the
-            // node value and vise versa. This ignores an empty update.
-            var oldValue = firstChild.nodeValue;
-
-            if (oldValue == newValue || (!newValue && oldValue == fromEl.placeholder)) {
-                return;
-            }
-
-            firstChild.nodeValue = newValue;
-        }
-    },
-    SELECT: function(fromEl, toEl) {
-        if (!toEl.hasAttribute('multiple')) {
-            var selectedIndex = -1;
-            var i = 0;
-            // We have to loop through children of fromEl, not toEl since nodes can be moved
-            // from toEl to fromEl directly when morphing.
-            // At the time this special handler is invoked, all children have already been morphed
-            // and appended to / removed from fromEl, so using fromEl here is safe and correct.
-            var curChild = fromEl.firstChild;
-            var optgroup;
-            var nodeName;
-            while(curChild) {
-                nodeName = curChild.nodeName && curChild.nodeName.toUpperCase();
-                if (nodeName === 'OPTGROUP') {
-                    optgroup = curChild;
-                    curChild = optgroup.firstChild;
-                } else {
-                    if (nodeName === 'OPTION') {
-                        if (curChild.hasAttribute('selected')) {
-                            selectedIndex = i;
-                            break;
-                        }
-                        i++;
-                    }
-                    curChild = curChild.nextSibling;
-                    if (!curChild && optgroup) {
-                        curChild = optgroup.nextSibling;
-                        optgroup = null;
-                    }
-                }
-            }
-
-            fromEl.selectedIndex = selectedIndex;
-        }
-    }
-};
-
-var ELEMENT_NODE = 1;
-var DOCUMENT_FRAGMENT_NODE$1 = 11;
-var TEXT_NODE = 3;
-var COMMENT_NODE = 8;
-
-function noop() {}
-
-function defaultGetNodeKey(node) {
-  if (node) {
-      return (node.getAttribute && node.getAttribute('id')) || node.id;
-  }
-}
-
-function morphdomFactory(morphAttrs) {
-
-    return function morphdom(fromNode, toNode, options) {
-        if (!options) {
-            options = {};
-        }
-
-        if (typeof toNode === 'string') {
-            if (fromNode.nodeName === '#document' || fromNode.nodeName === 'HTML' || fromNode.nodeName === 'BODY') {
-                var toNodeHtml = toNode;
-                toNode = doc.createElement('html');
-                toNode.innerHTML = toNodeHtml;
-            } else {
-                toNode = toElement(toNode);
-            }
-        }
-
-        var getNodeKey = options.getNodeKey || defaultGetNodeKey;
-        var onBeforeNodeAdded = options.onBeforeNodeAdded || noop;
-        var onNodeAdded = options.onNodeAdded || noop;
-        var onBeforeElUpdated = options.onBeforeElUpdated || noop;
-        var onElUpdated = options.onElUpdated || noop;
-        var onBeforeNodeDiscarded = options.onBeforeNodeDiscarded || noop;
-        var onNodeDiscarded = options.onNodeDiscarded || noop;
-        var onBeforeElChildrenUpdated = options.onBeforeElChildrenUpdated || noop;
-        var childrenOnly = options.childrenOnly === true;
-
-        // This object is used as a lookup to quickly find all keyed elements in the original DOM tree.
-        var fromNodesLookup = Object.create(null);
-        var keyedRemovalList = [];
-
-        function addKeyedRemoval(key) {
-            keyedRemovalList.push(key);
-        }
-
-        function walkDiscardedChildNodes(node, skipKeyedNodes) {
-            if (node.nodeType === ELEMENT_NODE) {
-                var curChild = node.firstChild;
-                while (curChild) {
-
-                    var key = undefined;
-
-                    if (skipKeyedNodes && (key = getNodeKey(curChild))) {
-                        // If we are skipping keyed nodes then we add the key
-                        // to a list so that it can be handled at the very end.
-                        addKeyedRemoval(key);
-                    } else {
-                        // Only report the node as discarded if it is not keyed. We do this because
-                        // at the end we loop through all keyed elements that were unmatched
-                        // and then discard them in one final pass.
-                        onNodeDiscarded(curChild);
-                        if (curChild.firstChild) {
-                            walkDiscardedChildNodes(curChild, skipKeyedNodes);
-                        }
-                    }
-
-                    curChild = curChild.nextSibling;
-                }
-            }
-        }
-
-        /**
-         * Removes a DOM node out of the original DOM
-         *
-         * @param  {Node} node The node to remove
-         * @param  {Node} parentNode The nodes parent
-         * @param  {Boolean} skipKeyedNodes If true then elements with keys will be skipped and not discarded.
-         * @return {undefined}
-         */
-        function removeNode(node, parentNode, skipKeyedNodes) {
-            if (onBeforeNodeDiscarded(node) === false) {
-                return;
-            }
-
-            if (parentNode) {
-                parentNode.removeChild(node);
-            }
-
-            onNodeDiscarded(node);
-            walkDiscardedChildNodes(node, skipKeyedNodes);
-        }
-
-        // // TreeWalker implementation is no faster, but keeping this around in case this changes in the future
-        // function indexTree(root) {
-        //     var treeWalker = document.createTreeWalker(
-        //         root,
-        //         NodeFilter.SHOW_ELEMENT);
-        //
-        //     var el;
-        //     while((el = treeWalker.nextNode())) {
-        //         var key = getNodeKey(el);
-        //         if (key) {
-        //             fromNodesLookup[key] = el;
-        //         }
-        //     }
-        // }
-
-        // // NodeIterator implementation is no faster, but keeping this around in case this changes in the future
-        //
-        // function indexTree(node) {
-        //     var nodeIterator = document.createNodeIterator(node, NodeFilter.SHOW_ELEMENT);
-        //     var el;
-        //     while((el = nodeIterator.nextNode())) {
-        //         var key = getNodeKey(el);
-        //         if (key) {
-        //             fromNodesLookup[key] = el;
-        //         }
-        //     }
-        // }
-
-        function indexTree(node) {
-            if (node.nodeType === ELEMENT_NODE || node.nodeType === DOCUMENT_FRAGMENT_NODE$1) {
-                var curChild = node.firstChild;
-                while (curChild) {
-                    var key = getNodeKey(curChild);
-                    if (key) {
-                        fromNodesLookup[key] = curChild;
-                    }
-
-                    // Walk recursively
-                    indexTree(curChild);
-
-                    curChild = curChild.nextSibling;
-                }
-            }
-        }
-
-        indexTree(fromNode);
-
-        function handleNodeAdded(el) {
-            onNodeAdded(el);
-
-            var curChild = el.firstChild;
-            while (curChild) {
-                var nextSibling = curChild.nextSibling;
-
-                var key = getNodeKey(curChild);
-                if (key) {
-                    var unmatchedFromEl = fromNodesLookup[key];
-                    // if we find a duplicate #id node in cache, replace `el` with cache value
-                    // and morph it to the child node.
-                    if (unmatchedFromEl && compareNodeNames(curChild, unmatchedFromEl)) {
-                        curChild.parentNode.replaceChild(unmatchedFromEl, curChild);
-                        morphEl(unmatchedFromEl, curChild);
-                    } else {
-                      handleNodeAdded(curChild);
-                    }
-                } else {
-                  // recursively call for curChild and it's children to see if we find something in
-                  // fromNodesLookup
-                  handleNodeAdded(curChild);
-                }
-
-                curChild = nextSibling;
-            }
-        }
-
-        function cleanupFromEl(fromEl, curFromNodeChild, curFromNodeKey) {
-            // We have processed all of the "to nodes". If curFromNodeChild is
-            // non-null then we still have some from nodes left over that need
-            // to be removed
-            while (curFromNodeChild) {
-                var fromNextSibling = curFromNodeChild.nextSibling;
-                if ((curFromNodeKey = getNodeKey(curFromNodeChild))) {
-                    // Since the node is keyed it might be matched up later so we defer
-                    // the actual removal to later
-                    addKeyedRemoval(curFromNodeKey);
-                } else {
-                    // NOTE: we skip nested keyed nodes from being removed since there is
-                    //       still a chance they will be matched up later
-                    removeNode(curFromNodeChild, fromEl, true /* skip keyed nodes */);
-                }
-                curFromNodeChild = fromNextSibling;
-            }
-        }
-
-        function morphEl(fromEl, toEl, childrenOnly) {
-            var toElKey = getNodeKey(toEl);
-
-            if (toElKey) {
-                // If an element with an ID is being morphed then it will be in the final
-                // DOM so clear it out of the saved elements collection
-                delete fromNodesLookup[toElKey];
-            }
-
-            if (!childrenOnly) {
-                // optional
-                if (onBeforeElUpdated(fromEl, toEl) === false) {
-                    return;
-                }
-
-                // update attributes on original DOM element first
-                morphAttrs(fromEl, toEl);
-                // optional
-                onElUpdated(fromEl);
-
-                if (onBeforeElChildrenUpdated(fromEl, toEl) === false) {
-                    return;
-                }
-            }
-
-            if (fromEl.nodeName !== 'TEXTAREA') {
-              morphChildren(fromEl, toEl);
-            } else {
-              specialElHandlers.TEXTAREA(fromEl, toEl);
-            }
-        }
-
-        function morphChildren(fromEl, toEl) {
-            var curToNodeChild = toEl.firstChild;
-            var curFromNodeChild = fromEl.firstChild;
-            var curToNodeKey;
-            var curFromNodeKey;
-
-            var fromNextSibling;
-            var toNextSibling;
-            var matchingFromEl;
-
-            // walk the children
-            outer: while (curToNodeChild) {
-                toNextSibling = curToNodeChild.nextSibling;
-                curToNodeKey = getNodeKey(curToNodeChild);
-
-                // walk the fromNode children all the way through
-                while (curFromNodeChild) {
-                    fromNextSibling = curFromNodeChild.nextSibling;
-
-                    if (curToNodeChild.isSameNode && curToNodeChild.isSameNode(curFromNodeChild)) {
-                        curToNodeChild = toNextSibling;
-                        curFromNodeChild = fromNextSibling;
-                        continue outer;
-                    }
-
-                    curFromNodeKey = getNodeKey(curFromNodeChild);
-
-                    var curFromNodeType = curFromNodeChild.nodeType;
-
-                    // this means if the curFromNodeChild doesnt have a match with the curToNodeChild
-                    var isCompatible = undefined;
-
-                    if (curFromNodeType === curToNodeChild.nodeType) {
-                        if (curFromNodeType === ELEMENT_NODE) {
-                            // Both nodes being compared are Element nodes
-
-                            if (curToNodeKey) {
-                                // The target node has a key so we want to match it up with the correct element
-                                // in the original DOM tree
-                                if (curToNodeKey !== curFromNodeKey) {
-                                    // The current element in the original DOM tree does not have a matching key so
-                                    // let's check our lookup to see if there is a matching element in the original
-                                    // DOM tree
-                                    if ((matchingFromEl = fromNodesLookup[curToNodeKey])) {
-                                        if (fromNextSibling === matchingFromEl) {
-                                            // Special case for single element removals. To avoid removing the original
-                                            // DOM node out of the tree (since that can break CSS transitions, etc.),
-                                            // we will instead discard the current node and wait until the next
-                                            // iteration to properly match up the keyed target element with its matching
-                                            // element in the original tree
-                                            isCompatible = false;
-                                        } else {
-                                            // We found a matching keyed element somewhere in the original DOM tree.
-                                            // Let's move the original DOM node into the current position and morph
-                                            // it.
-
-                                            // NOTE: We use insertBefore instead of replaceChild because we want to go through
-                                            // the `removeNode()` function for the node that is being discarded so that
-                                            // all lifecycle hooks are correctly invoked
-                                            fromEl.insertBefore(matchingFromEl, curFromNodeChild);
-
-                                            // fromNextSibling = curFromNodeChild.nextSibling;
-
-                                            if (curFromNodeKey) {
-                                                // Since the node is keyed it might be matched up later so we defer
-                                                // the actual removal to later
-                                                addKeyedRemoval(curFromNodeKey);
-                                            } else {
-                                                // NOTE: we skip nested keyed nodes from being removed since there is
-                                                //       still a chance they will be matched up later
-                                                removeNode(curFromNodeChild, fromEl, true /* skip keyed nodes */);
-                                            }
-
-                                            curFromNodeChild = matchingFromEl;
-                                        }
-                                    } else {
-                                        // The nodes are not compatible since the "to" node has a key and there
-                                        // is no matching keyed node in the source tree
-                                        isCompatible = false;
-                                    }
-                                }
-                            } else if (curFromNodeKey) {
-                                // The original has a key
-                                isCompatible = false;
-                            }
-
-                            isCompatible = isCompatible !== false && compareNodeNames(curFromNodeChild, curToNodeChild);
-                            if (isCompatible) {
-                                // We found compatible DOM elements so transform
-                                // the current "from" node to match the current
-                                // target DOM node.
-                                // MORPH
-                                morphEl(curFromNodeChild, curToNodeChild);
-                            }
-
-                        } else if (curFromNodeType === TEXT_NODE || curFromNodeType == COMMENT_NODE) {
-                            // Both nodes being compared are Text or Comment nodes
-                            isCompatible = true;
-                            // Simply update nodeValue on the original node to
-                            // change the text value
-                            if (curFromNodeChild.nodeValue !== curToNodeChild.nodeValue) {
-                                curFromNodeChild.nodeValue = curToNodeChild.nodeValue;
-                            }
-
-                        }
-                    }
-
-                    if (isCompatible) {
-                        // Advance both the "to" child and the "from" child since we found a match
-                        // Nothing else to do as we already recursively called morphChildren above
-                        curToNodeChild = toNextSibling;
-                        curFromNodeChild = fromNextSibling;
-                        continue outer;
-                    }
-
-                    // No compatible match so remove the old node from the DOM and continue trying to find a
-                    // match in the original DOM. However, we only do this if the from node is not keyed
-                    // since it is possible that a keyed node might match up with a node somewhere else in the
-                    // target tree and we don't want to discard it just yet since it still might find a
-                    // home in the final DOM tree. After everything is done we will remove any keyed nodes
-                    // that didn't find a home
-                    if (curFromNodeKey) {
-                        // Since the node is keyed it might be matched up later so we defer
-                        // the actual removal to later
-                        addKeyedRemoval(curFromNodeKey);
-                    } else {
-                        // NOTE: we skip nested keyed nodes from being removed since there is
-                        //       still a chance they will be matched up later
-                        removeNode(curFromNodeChild, fromEl, true /* skip keyed nodes */);
-                    }
-
-                    curFromNodeChild = fromNextSibling;
-                } // END: while(curFromNodeChild) {}
-
-                // If we got this far then we did not find a candidate match for
-                // our "to node" and we exhausted all of the children "from"
-                // nodes. Therefore, we will just append the current "to" node
-                // to the end
-                if (curToNodeKey && (matchingFromEl = fromNodesLookup[curToNodeKey]) && compareNodeNames(matchingFromEl, curToNodeChild)) {
-                    fromEl.appendChild(matchingFromEl);
-                    // MORPH
-                    morphEl(matchingFromEl, curToNodeChild);
-                } else {
-                    var onBeforeNodeAddedResult = onBeforeNodeAdded(curToNodeChild);
-                    if (onBeforeNodeAddedResult !== false) {
-                        if (onBeforeNodeAddedResult) {
-                            curToNodeChild = onBeforeNodeAddedResult;
-                        }
-
-                        if (curToNodeChild.actualize) {
-                            curToNodeChild = curToNodeChild.actualize(fromEl.ownerDocument || doc);
-                        }
-                        fromEl.appendChild(curToNodeChild);
-                        handleNodeAdded(curToNodeChild);
-                    }
-                }
-
-                curToNodeChild = toNextSibling;
-                curFromNodeChild = fromNextSibling;
-            }
-
-            cleanupFromEl(fromEl, curFromNodeChild, curFromNodeKey);
-
-            var specialElHandler = specialElHandlers[fromEl.nodeName];
-            if (specialElHandler) {
-                specialElHandler(fromEl, toEl);
-            }
-        } // END: morphChildren(...)
-
-        var morphedNode = fromNode;
-        var morphedNodeType = morphedNode.nodeType;
-        var toNodeType = toNode.nodeType;
-
-        if (!childrenOnly) {
-            // Handle the case where we are given two DOM nodes that are not
-            // compatible (e.g. <div> --> <span> or <div> --> TEXT)
-            if (morphedNodeType === ELEMENT_NODE) {
-                if (toNodeType === ELEMENT_NODE) {
-                    if (!compareNodeNames(fromNode, toNode)) {
-                        onNodeDiscarded(fromNode);
-                        morphedNode = moveChildren(fromNode, createElementNS(toNode.nodeName, toNode.namespaceURI));
-                    }
-                } else {
-                    // Going from an element node to a text node
-                    morphedNode = toNode;
-                }
-            } else if (morphedNodeType === TEXT_NODE || morphedNodeType === COMMENT_NODE) { // Text or comment node
-                if (toNodeType === morphedNodeType) {
-                    if (morphedNode.nodeValue !== toNode.nodeValue) {
-                        morphedNode.nodeValue = toNode.nodeValue;
-                    }
-
-                    return morphedNode;
-                } else {
-                    // Text node to something else
-                    morphedNode = toNode;
-                }
-            }
-        }
-
-        if (morphedNode === toNode) {
-            // The "to node" was not compatible with the "from node" so we had to
-            // toss out the "from node" and use the "to node"
-            onNodeDiscarded(fromNode);
-        } else {
-            if (toNode.isSameNode && toNode.isSameNode(morphedNode)) {
-                return;
-            }
-
-            morphEl(morphedNode, toNode, childrenOnly);
-
-            // We now need to loop over any keyed nodes that might need to be
-            // removed. We only do the removal if we know that the keyed node
-            // never found a match. When a keyed node is matched up we remove
-            // it out of fromNodesLookup and we use fromNodesLookup to determine
-            // if a keyed node has been matched up or not
-            if (keyedRemovalList) {
-                for (var i=0, len=keyedRemovalList.length; i<len; i++) {
-                    var elToRemove = fromNodesLookup[keyedRemovalList[i]];
-                    if (elToRemove) {
-                        removeNode(elToRemove, elToRemove.parentNode, false);
-                    }
-                }
-            }
-        }
-
-        if (!childrenOnly && morphedNode !== fromNode && fromNode.parentNode) {
-            if (morphedNode.actualize) {
-                morphedNode = morphedNode.actualize(fromNode.ownerDocument || doc);
-            }
-            // If we had to swap out the from node with a new node because the old
-            // node was not compatible with the target node then we need to
-            // replace the old DOM node in the original DOM tree. This is only
-            // possible if the original DOM node was part of a DOM tree which
-            // we know is the case if it has a parent node.
-            fromNode.parentNode.replaceChild(morphedNode, fromNode);
-        }
-
-        return morphedNode;
-    };
-}
-
-var morphdom = morphdomFactory(morphAttrs);
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (morphdom);
-
-
-/***/ }),
-
 /***/ "./node_modules/pusher-js/dist/web/pusher.js":
 /*!***************************************************!*\
   !*** ./node_modules/pusher-js/dist/web/pusher.js ***!
@@ -12765,7 +12935,7 @@ var morphdom = morphdomFactory(morphAttrs);
 /***/ ((module) => {
 
 /*!
- * Pusher JavaScript Library v7.3.0
+ * Pusher JavaScript Library v7.4.0
  * https://pusher.com/
  *
  * Copyright 2020, Pusher
@@ -13354,7 +13524,7 @@ var ScriptReceivers = new ScriptReceiverFactory('_pusher_script_', 'Pusher.Scrip
 
 // CONCATENATED MODULE: ./src/core/defaults.ts
 var Defaults = {
-    VERSION: "7.3.0",
+    VERSION: "7.4.0",
     PROTOCOL: 7,
     wsPort: 80,
     wssPort: 443,
@@ -15234,6 +15404,41 @@ var presence_channel_extends = ( false) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __awaiter = ( false) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = ( false) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 
 
 
@@ -15247,21 +15452,38 @@ var presence_channel_PresenceChannel = (function (_super) {
     }
     PresenceChannel.prototype.authorize = function (socketId, callback) {
         var _this = this;
-        _super.prototype.authorize.call(this, socketId, function (error, authData) {
-            if (!error) {
-                authData = authData;
-                if (authData.channel_data === undefined) {
-                    var suffix = url_store.buildLogSuffix('authenticationEndpoint');
-                    logger.error("Invalid auth response for channel '" + _this.name + "'," +
-                        ("expected 'channel_data' field. " + suffix));
-                    callback('Invalid auth response');
-                    return;
+        _super.prototype.authorize.call(this, socketId, function (error, authData) { return __awaiter(_this, void 0, void 0, function () {
+            var channelData, suffix;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!!error) return [3, 3];
+                        authData = authData;
+                        if (!(authData.channel_data != null)) return [3, 1];
+                        channelData = JSON.parse(authData.channel_data);
+                        this.members.setMyID(channelData.user_id);
+                        return [3, 3];
+                    case 1: return [4, this.pusher.user.signinDonePromise];
+                    case 2:
+                        _a.sent();
+                        if (this.pusher.user.user_data != null) {
+                            this.members.setMyID(this.pusher.user.user_data.id);
+                        }
+                        else {
+                            suffix = url_store.buildLogSuffix('authorizationEndpoint');
+                            logger.error("Invalid auth response for channel '" + this.name + "', " +
+                                ("expected 'channel_data' field. " + suffix + ", ") +
+                                "or the user should be signed in.");
+                            callback('Invalid auth response');
+                            return [2];
+                        }
+                        _a.label = 3;
+                    case 3:
+                        callback(error, authData);
+                        return [2];
                 }
-                var channelData = JSON.parse(authData.channel_data);
-                _this.members.setMyID(channelData.user_id);
-            }
-            callback(error, authData);
-        });
+            });
+        }); });
     };
     PresenceChannel.prototype.handleEvent = function (event) {
         var eventName = event.event;
@@ -17246,6 +17468,17 @@ function buildChannelAuthorizer(opts, pusher) {
     return channel_authorizer(channelAuthorization);
 }
 
+// CONCATENATED MODULE: ./src/core/utils/flat_promise.ts
+function flatPromise() {
+    var resolve, reject;
+    var promise = new Promise(function (res, rej) {
+        resolve = res;
+        reject = rej;
+    });
+    return { promise: promise, resolve: resolve, reject: reject };
+}
+/* harmony default export */ var flat_promise = (flatPromise);
+
 // CONCATENATED MODULE: ./src/core/user.ts
 var user_extends = ( false) || (function () {
     var extendStatics = function (d, b) {
@@ -17263,6 +17496,7 @@ var user_extends = ( false) || (function () {
 
 
 
+
 var user_UserFacade = (function (_super) {
     user_extends(UserFacade, _super);
     function UserFacade(pusher) {
@@ -17272,15 +17506,29 @@ var user_UserFacade = (function (_super) {
         _this.signin_requested = false;
         _this.user_data = null;
         _this.serverToUserChannel = null;
+        _this.signinDonePromise = null;
+        _this._signinDoneResolve = null;
+        _this._onAuthorize = function (err, authData) {
+            if (err) {
+                logger.warn("Error during signin: " + err);
+                _this._cleanup();
+                return;
+            }
+            _this.pusher.send_event('pusher:signin', {
+                auth: authData.auth,
+                user_data: authData.user_data
+            });
+        };
         _this.pusher = pusher;
-        _this.pusher.connection.bind('connected', function () {
-            _this._signin();
-        });
-        _this.pusher.connection.bind('connecting', function () {
-            _this._disconnect();
-        });
-        _this.pusher.connection.bind('disconnected', function () {
-            _this._disconnect();
+        _this.pusher.connection.bind('state_change', function (_a) {
+            var previous = _a.previous, current = _a.current;
+            if (previous !== 'connected' && current === 'connected') {
+                _this._signin();
+            }
+            if (previous === 'connected' && current !== 'connected') {
+                _this._cleanup();
+                _this._newSigninPromiseIfNeeded();
+            }
         });
         _this.pusher.connection.bind('message', function (event) {
             var eventName = event.event;
@@ -17302,26 +17550,16 @@ var user_UserFacade = (function (_super) {
         this._signin();
     };
     UserFacade.prototype._signin = function () {
-        var _this = this;
         if (!this.signin_requested) {
             return;
         }
+        this._newSigninPromiseIfNeeded();
         if (this.pusher.connection.state !== 'connected') {
             return;
         }
-        var onAuthorize = function (err, authData) {
-            if (err) {
-                logger.warn("Error during signin: " + err);
-                return;
-            }
-            _this.pusher.send_event('pusher:signin', {
-                auth: authData.auth,
-                user_data: authData.user_data
-            });
-        };
         this.pusher.config.userAuthenticator({
             socketId: this.pusher.connection.socket_id
-        }, onAuthorize);
+        }, this._onAuthorize);
     };
     UserFacade.prototype._onSigninSuccess = function (data) {
         try {
@@ -17329,12 +17567,15 @@ var user_UserFacade = (function (_super) {
         }
         catch (e) {
             logger.error("Failed parsing user data after signin: " + data.user_data);
+            this._cleanup();
             return;
         }
         if (typeof this.user_data.id !== 'string' || this.user_data.id === '') {
             logger.error("user_data doesn't contain an id. user_data: " + this.user_data);
+            this._cleanup();
             return;
         }
+        this._signinDoneResolve();
         this._subscribeChannels();
     };
     UserFacade.prototype._subscribeChannels = function () {
@@ -17358,13 +17599,32 @@ var user_UserFacade = (function (_super) {
         });
         ensure_subscribed(this.serverToUserChannel);
     };
-    UserFacade.prototype._disconnect = function () {
+    UserFacade.prototype._cleanup = function () {
         this.user_data = null;
         if (this.serverToUserChannel) {
             this.serverToUserChannel.unbind_all();
             this.serverToUserChannel.disconnect();
             this.serverToUserChannel = null;
         }
+        if (this.signin_requested) {
+            this._signinDoneResolve();
+        }
+    };
+    UserFacade.prototype._newSigninPromiseIfNeeded = function () {
+        if (!this.signin_requested) {
+            return;
+        }
+        if (this.signinDonePromise && !this.signinDonePromise.done) {
+            return;
+        }
+        var _a = flat_promise(), promise = _a.promise, resolve = _a.resolve, _ = _a.reject;
+        promise.done = false;
+        var setDone = function () {
+            promise.done = true;
+        };
+        promise.then(setDone)["catch"](setDone);
+        this.signinDonePromise = promise;
+        this._signinDoneResolve = resolve;
     };
     return UserFacade;
 }(dispatcher));
@@ -18366,6 +18626,7 @@ var map = {
 	"./post-page-controller.ts": "./resources/js/controllers/post-page-controller.ts",
 	"./quotable-controller.ts": "./resources/js/controllers/quotable-controller.ts",
 	"./reveal-controller.ts": "./resources/js/controllers/reveal-controller.ts",
+	"./scroll-into-view-controller.ts": "./resources/js/controllers/scroll-into-view-controller.ts",
 	"./scrollspy-controller.ts": "./resources/js/controllers/scrollspy-controller.ts",
 	"./text-editor-controller.ts": "./resources/js/controllers/text-editor-controller.ts",
 	"./theme-controller.ts": "./resources/js/controllers/theme-controller.ts",
@@ -21360,7 +21621,7 @@ function getWindow(node) {
   return node;
 }
 
-function getComputedStyle$1(element) {
+function getComputedStyle(element) {
   return getWindow(element).getComputedStyle(element);
 }
 
@@ -21402,7 +21663,7 @@ function isOverflowElement(element) {
     overflow,
     overflowX,
     overflowY
-  } = getComputedStyle$1(element);
+  } = getComputedStyle(element);
   return /auto|scroll|overlay|hidden/.test(overflow + overflowY + overflowX);
 }
 function isTableElement(element) {
@@ -21411,7 +21672,7 @@ function isTableElement(element) {
 function isContainingBlock(element) {
   // TODO: Try and use feature detection here instead
   const isFirefox = /firefox/i.test(getUAString());
-  const css = getComputedStyle$1(element); // This is non-exhaustive but covers the most common CSS properties that
+  const css = getComputedStyle(element); // This is non-exhaustive but covers the most common CSS properties that
   // create a containing block.
   // https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block
 
@@ -21554,7 +21815,55 @@ function getTrueOffsetParent(element) {
     return null;
   }
 
-  return element.offsetParent;
+  return composedOffsetParent(element);
+}
+/**
+ * Polyfills the old offsetParent behavior from before the spec was changed:
+ * https://github.com/w3c/csswg-drafts/issues/159
+ */
+
+
+function composedOffsetParent(element) {
+  let {
+    offsetParent
+  } = element;
+  let ancestor = element;
+  let foundInsideSlot = false;
+
+  while (ancestor && ancestor !== offsetParent) {
+    const {
+      assignedSlot
+    } = ancestor;
+
+    if (assignedSlot) {
+      let newOffsetParent = assignedSlot.offsetParent;
+
+      if (getComputedStyle(assignedSlot).display === 'contents') {
+        const hadStyleAttribute = assignedSlot.hasAttribute('style');
+        const oldDisplay = assignedSlot.style.display;
+        assignedSlot.style.display = getComputedStyle(ancestor).display;
+        newOffsetParent = assignedSlot.offsetParent;
+        assignedSlot.style.display = oldDisplay;
+
+        if (!hadStyleAttribute) {
+          assignedSlot.removeAttribute('style');
+        }
+      }
+
+      ancestor = assignedSlot;
+
+      if (offsetParent !== newOffsetParent) {
+        offsetParent = newOffsetParent;
+        foundInsideSlot = true;
+      }
+    } else if (isShadowRoot(ancestor) && ancestor.host && foundInsideSlot) {
+      break;
+    }
+
+    ancestor = isShadowRoot(ancestor) && ancestor.host || ancestor.parentNode;
+  }
+
+  return offsetParent;
 }
 
 function getContainingBlock(element) {
@@ -21568,7 +21877,8 @@ function getContainingBlock(element) {
     if (isContainingBlock(currentNode)) {
       return currentNode;
     } else {
-      currentNode = currentNode.parentNode;
+      const parent = currentNode.parentNode;
+      currentNode = isShadowRoot(parent) ? parent.host : parent;
     }
   }
 
@@ -21692,7 +22002,7 @@ function getDocumentRect(element) {
   let x = -scroll.scrollLeft + getWindowScrollBarX(element);
   const y = -scroll.scrollTop;
 
-  if (getComputedStyle$1(body || html).direction === 'rtl') {
+  if (getComputedStyle(body || html).direction === 'rtl') {
     x += max(html.clientWidth, body ? body.clientWidth : 0) - width;
   }
 
@@ -21791,7 +22101,7 @@ function getClientRectFromClippingAncestor(element, clippingParent, strategy) {
 
 function getClippingAncestors(element) {
   const clippingAncestors = getOverflowAncestors(element);
-  const canEscapeClipping = ['absolute', 'fixed'].includes(getComputedStyle$1(element).position);
+  const canEscapeClipping = ['absolute', 'fixed'].includes(getComputedStyle(element).position);
   const clipperElement = canEscapeClipping && isHTMLElement(element) ? getOffsetParent(element) : element;
 
   if (!isElement(clipperElement)) {
@@ -21852,7 +22162,7 @@ const platform = {
     };
   },
   getClientRects: element => Array.from(element.getClientRects()),
-  isRTL: element => getComputedStyle$1(element).direction === 'rtl'
+  isRTL: element => getComputedStyle(element).direction === 'rtl'
 };
 
 /**
@@ -22751,6 +23061,731 @@ if (!window.customElements.get('text-expander')) {
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (TextExpanderElement);
+
+
+/***/ }),
+
+/***/ "./node_modules/@github/time-elements/dist/index.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/@github/time-elements/dist/index.js ***!
+  \**********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "LocalTimeElement": () => (/* binding */ LocalTimeElement),
+/* harmony export */   "RelativeTimeElement": () => (/* binding */ RelativeTimeElement),
+/* harmony export */   "TimeAgoElement": () => (/* binding */ TimeAgoElement),
+/* harmony export */   "TimeUntilElement": () => (/* binding */ TimeUntilElement)
+/* harmony export */ });
+const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+];
+function pad(num) {
+    return `0${num}`.slice(-2);
+}
+function strftime(time, formatString) {
+    const day = time.getDay();
+    const date = time.getDate();
+    const month = time.getMonth();
+    const year = time.getFullYear();
+    const hour = time.getHours();
+    const minute = time.getMinutes();
+    const second = time.getSeconds();
+    return formatString.replace(/%([%aAbBcdeHIlmMpPSwyYZz])/g, function (_arg) {
+        let match;
+        const modifier = _arg[1];
+        switch (modifier) {
+            case '%':
+                return '%';
+            case 'a':
+                return weekdays[day].slice(0, 3);
+            case 'A':
+                return weekdays[day];
+            case 'b':
+                return months[month].slice(0, 3);
+            case 'B':
+                return months[month];
+            case 'c':
+                return time.toString();
+            case 'd':
+                return pad(date);
+            case 'e':
+                return String(date);
+            case 'H':
+                return pad(hour);
+            case 'I':
+                return pad(strftime(time, '%l'));
+            case 'l':
+                if (hour === 0 || hour === 12) {
+                    return String(12);
+                }
+                else {
+                    return String((hour + 12) % 12);
+                }
+            case 'm':
+                return pad(month + 1);
+            case 'M':
+                return pad(minute);
+            case 'p':
+                if (hour > 11) {
+                    return 'PM';
+                }
+                else {
+                    return 'AM';
+                }
+            case 'P':
+                if (hour > 11) {
+                    return 'pm';
+                }
+                else {
+                    return 'am';
+                }
+            case 'S':
+                return pad(second);
+            case 'w':
+                return String(day);
+            case 'y':
+                return pad(year % 100);
+            case 'Y':
+                return String(year);
+            case 'Z':
+                match = time.toString().match(/\((\w+)\)$/);
+                return match ? match[1] : '';
+            case 'z':
+                match = time.toString().match(/\w([+-]\d\d\d\d) /);
+                return match ? match[1] : '';
+        }
+        return '';
+    });
+}
+function makeFormatter(options) {
+    let format;
+    return function () {
+        if (format)
+            return format;
+        if ('Intl' in window) {
+            try {
+                format = new Intl.DateTimeFormat(undefined, options);
+                return format;
+            }
+            catch (e) {
+                if (!(e instanceof RangeError)) {
+                    throw e;
+                }
+            }
+        }
+    };
+}
+let dayFirst = null;
+const dayFirstFormatter = makeFormatter({ day: 'numeric', month: 'short' });
+function isDayFirst() {
+    if (dayFirst !== null) {
+        return dayFirst;
+    }
+    const formatter = dayFirstFormatter();
+    if (formatter) {
+        const output = formatter.format(new Date(0));
+        dayFirst = !!output.match(/^\d/);
+        return dayFirst;
+    }
+    else {
+        return false;
+    }
+}
+let yearSeparator = null;
+const yearFormatter = makeFormatter({ day: 'numeric', month: 'short', year: 'numeric' });
+function isYearSeparator() {
+    if (yearSeparator !== null) {
+        return yearSeparator;
+    }
+    const formatter = yearFormatter();
+    if (formatter) {
+        const output = formatter.format(new Date(0));
+        yearSeparator = !!output.match(/\d,/);
+        return yearSeparator;
+    }
+    else {
+        return true;
+    }
+}
+function isThisYear(date) {
+    const now = new Date();
+    return now.getUTCFullYear() === date.getUTCFullYear();
+}
+function makeRelativeFormat(locale, options) {
+    if ('Intl' in window && 'RelativeTimeFormat' in window.Intl) {
+        try {
+            return new Intl.RelativeTimeFormat(locale, options);
+        }
+        catch (e) {
+            if (!(e instanceof RangeError)) {
+                throw e;
+            }
+        }
+    }
+}
+function localeFromElement(el) {
+    const container = el.closest('[lang]');
+    if (container instanceof HTMLElement && container.lang) {
+        return container.lang;
+    }
+    return 'default';
+}
+
+const datetimes = new WeakMap();
+class ExtendedTimeElement extends HTMLElement {
+    static get observedAttributes() {
+        return [
+            'datetime',
+            'day',
+            'format',
+            'lang',
+            'hour',
+            'minute',
+            'month',
+            'second',
+            'title',
+            'weekday',
+            'year',
+            'time-zone-name'
+        ];
+    }
+    connectedCallback() {
+        const title = this.getFormattedTitle();
+        if (title && !this.hasAttribute('title')) {
+            this.setAttribute('title', title);
+        }
+        const text = this.getFormattedDate();
+        if (text) {
+            this.textContent = text;
+        }
+    }
+    attributeChangedCallback(attrName, oldValue, newValue) {
+        const oldTitle = this.getFormattedTitle();
+        if (attrName === 'datetime') {
+            const millis = Date.parse(newValue);
+            if (isNaN(millis)) {
+                datetimes.delete(this);
+            }
+            else {
+                datetimes.set(this, new Date(millis));
+            }
+        }
+        const title = this.getFormattedTitle();
+        const currentTitle = this.getAttribute('title');
+        if (attrName !== 'title' && title && (!currentTitle || currentTitle === oldTitle)) {
+            this.setAttribute('title', title);
+        }
+        const text = this.getFormattedDate();
+        if (text) {
+            this.textContent = text;
+        }
+    }
+    get date() {
+        return datetimes.get(this);
+    }
+    getFormattedTitle() {
+        const date = this.date;
+        if (!date)
+            return;
+        const formatter = titleFormatter();
+        if (formatter) {
+            return formatter.format(date);
+        }
+        else {
+            try {
+                return date.toLocaleString();
+            }
+            catch (e) {
+                if (e instanceof RangeError) {
+                    return date.toString();
+                }
+                else {
+                    throw e;
+                }
+            }
+        }
+    }
+    getFormattedDate() {
+        return;
+    }
+}
+const titleFormatter = makeFormatter({
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    timeZoneName: 'short'
+});
+
+const formatters = new WeakMap();
+class LocalTimeElement extends ExtendedTimeElement {
+    attributeChangedCallback(attrName, oldValue, newValue) {
+        if (attrName === 'hour' || attrName === 'minute' || attrName === 'second' || attrName === 'time-zone-name') {
+            formatters.delete(this);
+        }
+        super.attributeChangedCallback(attrName, oldValue, newValue);
+    }
+    getFormattedDate() {
+        const d = this.date;
+        if (!d)
+            return;
+        const date = formatDate(this, d) || '';
+        const time = formatTime(this, d) || '';
+        return `${date} ${time}`.trim();
+    }
+}
+function formatDate(el, date) {
+    const props = {
+        weekday: {
+            short: '%a',
+            long: '%A'
+        },
+        day: {
+            numeric: '%e',
+            '2-digit': '%d'
+        },
+        month: {
+            short: '%b',
+            long: '%B'
+        },
+        year: {
+            numeric: '%Y',
+            '2-digit': '%y'
+        }
+    };
+    let format = isDayFirst() ? 'weekday day month year' : 'weekday month day, year';
+    for (const prop in props) {
+        const value = props[prop][el.getAttribute(prop) || ''];
+        format = format.replace(prop, value || '');
+    }
+    format = format.replace(/(\s,)|(,\s$)/, '');
+    return strftime(date, format).replace(/\s+/, ' ').trim();
+}
+function formatTime(el, date) {
+    const options = {};
+    const hour = el.getAttribute('hour');
+    if (hour === 'numeric' || hour === '2-digit')
+        options.hour = hour;
+    const minute = el.getAttribute('minute');
+    if (minute === 'numeric' || minute === '2-digit')
+        options.minute = minute;
+    const second = el.getAttribute('second');
+    if (second === 'numeric' || second === '2-digit')
+        options.second = second;
+    const tz = el.getAttribute('time-zone-name');
+    if (tz === 'short' || tz === 'long')
+        options.timeZoneName = tz;
+    if (Object.keys(options).length === 0) {
+        return;
+    }
+    let factory = formatters.get(el);
+    if (!factory) {
+        factory = makeFormatter(options);
+        formatters.set(el, factory);
+    }
+    const formatter = factory();
+    if (formatter) {
+        return formatter.format(date);
+    }
+    else {
+        const timef = options.second ? '%H:%M:%S' : '%H:%M';
+        return strftime(date, timef);
+    }
+}
+if (!window.customElements.get('local-time')) {
+    window.LocalTimeElement = LocalTimeElement;
+    window.customElements.define('local-time', LocalTimeElement);
+}
+
+class RelativeTime {
+    constructor(date, locale) {
+        this.date = date;
+        this.locale = locale;
+    }
+    toString() {
+        const ago = this.timeElapsed();
+        if (ago) {
+            return ago;
+        }
+        else {
+            const ahead = this.timeAhead();
+            if (ahead) {
+                return ahead;
+            }
+            else {
+                return `on ${this.formatDate()}`;
+            }
+        }
+    }
+    timeElapsed() {
+        const ms = new Date().getTime() - this.date.getTime();
+        const sec = Math.round(ms / 1000);
+        const min = Math.round(sec / 60);
+        const hr = Math.round(min / 60);
+        const day = Math.round(hr / 24);
+        if (ms >= 0 && day < 30) {
+            return this.timeAgoFromMs(ms);
+        }
+        else {
+            return null;
+        }
+    }
+    timeAhead() {
+        const ms = this.date.getTime() - new Date().getTime();
+        const sec = Math.round(ms / 1000);
+        const min = Math.round(sec / 60);
+        const hr = Math.round(min / 60);
+        const day = Math.round(hr / 24);
+        if (ms >= 0 && day < 30) {
+            return this.timeUntil();
+        }
+        else {
+            return null;
+        }
+    }
+    timeAgo() {
+        const ms = new Date().getTime() - this.date.getTime();
+        return this.timeAgoFromMs(ms);
+    }
+    timeAgoFromMs(ms) {
+        const sec = Math.round(ms / 1000);
+        const min = Math.round(sec / 60);
+        const hr = Math.round(min / 60);
+        const day = Math.round(hr / 24);
+        const month = Math.round(day / 30);
+        const year = Math.round(month / 12);
+        if (ms < 0) {
+            return formatRelativeTime(this.locale, 0, 'second');
+        }
+        else if (sec < 10) {
+            return formatRelativeTime(this.locale, 0, 'second');
+        }
+        else if (sec < 45) {
+            return formatRelativeTime(this.locale, -sec, 'second');
+        }
+        else if (sec < 90) {
+            return formatRelativeTime(this.locale, -min, 'minute');
+        }
+        else if (min < 45) {
+            return formatRelativeTime(this.locale, -min, 'minute');
+        }
+        else if (min < 90) {
+            return formatRelativeTime(this.locale, -hr, 'hour');
+        }
+        else if (hr < 24) {
+            return formatRelativeTime(this.locale, -hr, 'hour');
+        }
+        else if (hr < 36) {
+            return formatRelativeTime(this.locale, -day, 'day');
+        }
+        else if (day < 30) {
+            return formatRelativeTime(this.locale, -day, 'day');
+        }
+        else if (month < 18) {
+            return formatRelativeTime(this.locale, -month, 'month');
+        }
+        else {
+            return formatRelativeTime(this.locale, -year, 'year');
+        }
+    }
+    microTimeAgo() {
+        const ms = new Date().getTime() - this.date.getTime();
+        const sec = Math.round(ms / 1000);
+        const min = Math.round(sec / 60);
+        const hr = Math.round(min / 60);
+        const day = Math.round(hr / 24);
+        const month = Math.round(day / 30);
+        const year = Math.round(month / 12);
+        if (min < 1) {
+            return '1m';
+        }
+        else if (min < 60) {
+            return `${min}m`;
+        }
+        else if (hr < 24) {
+            return `${hr}h`;
+        }
+        else if (day < 365) {
+            return `${day}d`;
+        }
+        else {
+            return `${year}y`;
+        }
+    }
+    timeUntil() {
+        const ms = this.date.getTime() - new Date().getTime();
+        return this.timeUntilFromMs(ms);
+    }
+    timeUntilFromMs(ms) {
+        const sec = Math.round(ms / 1000);
+        const min = Math.round(sec / 60);
+        const hr = Math.round(min / 60);
+        const day = Math.round(hr / 24);
+        const month = Math.round(day / 30);
+        const year = Math.round(month / 12);
+        if (month >= 18) {
+            return formatRelativeTime(this.locale, year, 'year');
+        }
+        else if (month >= 12) {
+            return formatRelativeTime(this.locale, year, 'year');
+        }
+        else if (day >= 45) {
+            return formatRelativeTime(this.locale, month, 'month');
+        }
+        else if (day >= 30) {
+            return formatRelativeTime(this.locale, month, 'month');
+        }
+        else if (hr >= 36) {
+            return formatRelativeTime(this.locale, day, 'day');
+        }
+        else if (hr >= 24) {
+            return formatRelativeTime(this.locale, day, 'day');
+        }
+        else if (min >= 90) {
+            return formatRelativeTime(this.locale, hr, 'hour');
+        }
+        else if (min >= 45) {
+            return formatRelativeTime(this.locale, hr, 'hour');
+        }
+        else if (sec >= 90) {
+            return formatRelativeTime(this.locale, min, 'minute');
+        }
+        else if (sec >= 45) {
+            return formatRelativeTime(this.locale, min, 'minute');
+        }
+        else if (sec >= 10) {
+            return formatRelativeTime(this.locale, sec, 'second');
+        }
+        else {
+            return formatRelativeTime(this.locale, 0, 'second');
+        }
+    }
+    microTimeUntil() {
+        const ms = this.date.getTime() - new Date().getTime();
+        const sec = Math.round(ms / 1000);
+        const min = Math.round(sec / 60);
+        const hr = Math.round(min / 60);
+        const day = Math.round(hr / 24);
+        const month = Math.round(day / 30);
+        const year = Math.round(month / 12);
+        if (day >= 365) {
+            return `${year}y`;
+        }
+        else if (hr >= 24) {
+            return `${day}d`;
+        }
+        else if (min >= 60) {
+            return `${hr}h`;
+        }
+        else if (min > 1) {
+            return `${min}m`;
+        }
+        else {
+            return '1m';
+        }
+    }
+    formatDate() {
+        let format = isDayFirst() ? '%e %b' : '%b %e';
+        if (!isThisYear(this.date)) {
+            format += isYearSeparator() ? ', %Y' : ' %Y';
+        }
+        return strftime(this.date, format);
+    }
+    formatTime() {
+        const formatter = timeFormatter();
+        if (formatter) {
+            return formatter.format(this.date);
+        }
+        else {
+            return strftime(this.date, '%l:%M%P');
+        }
+    }
+}
+function formatRelativeTime(locale, value, unit) {
+    const formatter = makeRelativeFormat(locale, { numeric: 'auto' });
+    if (formatter) {
+        return formatter.format(value, unit);
+    }
+    else {
+        return formatEnRelativeTime(value, unit);
+    }
+}
+function formatEnRelativeTime(value, unit) {
+    if (value === 0) {
+        switch (unit) {
+            case 'year':
+            case 'quarter':
+            case 'month':
+            case 'week':
+                return `this ${unit}`;
+            case 'day':
+                return 'today';
+            case 'hour':
+            case 'minute':
+                return `in 0 ${unit}s`;
+            case 'second':
+                return 'now';
+        }
+    }
+    else if (value === 1) {
+        switch (unit) {
+            case 'year':
+            case 'quarter':
+            case 'month':
+            case 'week':
+                return `next ${unit}`;
+            case 'day':
+                return 'tomorrow';
+            case 'hour':
+            case 'minute':
+            case 'second':
+                return `in 1 ${unit}`;
+        }
+    }
+    else if (value === -1) {
+        switch (unit) {
+            case 'year':
+            case 'quarter':
+            case 'month':
+            case 'week':
+                return `last ${unit}`;
+            case 'day':
+                return 'yesterday';
+            case 'hour':
+            case 'minute':
+            case 'second':
+                return `1 ${unit} ago`;
+        }
+    }
+    else if (value > 1) {
+        switch (unit) {
+            case 'year':
+            case 'quarter':
+            case 'month':
+            case 'week':
+            case 'day':
+            case 'hour':
+            case 'minute':
+            case 'second':
+                return `in ${value} ${unit}s`;
+        }
+    }
+    else if (value < -1) {
+        switch (unit) {
+            case 'year':
+            case 'quarter':
+            case 'month':
+            case 'week':
+            case 'day':
+            case 'hour':
+            case 'minute':
+            case 'second':
+                return `${-value} ${unit}s ago`;
+        }
+    }
+    throw new RangeError(`Invalid unit argument for format() '${unit}'`);
+}
+const timeFormatter = makeFormatter({ hour: 'numeric', minute: '2-digit' });
+
+class RelativeTimeElement extends ExtendedTimeElement {
+    getFormattedDate() {
+        const date = this.date;
+        if (!date)
+            return;
+        return new RelativeTime(date, localeFromElement(this)).toString();
+    }
+    connectedCallback() {
+        nowElements.push(this);
+        if (!updateNowElementsId) {
+            updateNowElements();
+            updateNowElementsId = window.setInterval(updateNowElements, 60 * 1000);
+        }
+        super.connectedCallback();
+    }
+    disconnectedCallback() {
+        const ix = nowElements.indexOf(this);
+        if (ix !== -1) {
+            nowElements.splice(ix, 1);
+        }
+        if (!nowElements.length) {
+            if (updateNowElementsId) {
+                clearInterval(updateNowElementsId);
+                updateNowElementsId = null;
+            }
+        }
+    }
+}
+const nowElements = [];
+let updateNowElementsId;
+function updateNowElements() {
+    let time;
+    let i;
+    let len;
+    for (i = 0, len = nowElements.length; i < len; i++) {
+        time = nowElements[i];
+        time.textContent = time.getFormattedDate() || '';
+    }
+}
+if (!window.customElements.get('relative-time')) {
+    window.RelativeTimeElement = RelativeTimeElement;
+    window.customElements.define('relative-time', RelativeTimeElement);
+}
+
+class TimeAgoElement extends RelativeTimeElement {
+    getFormattedDate() {
+        const format = this.getAttribute('format');
+        const date = this.date;
+        if (!date)
+            return;
+        if (format === 'micro') {
+            return new RelativeTime(date, localeFromElement(this)).microTimeAgo();
+        }
+        else {
+            return new RelativeTime(date, localeFromElement(this)).timeAgo();
+        }
+    }
+}
+if (!window.customElements.get('time-ago')) {
+    window.TimeAgoElement = TimeAgoElement;
+    window.customElements.define('time-ago', TimeAgoElement);
+}
+
+class TimeUntilElement extends RelativeTimeElement {
+    getFormattedDate() {
+        const format = this.getAttribute('format');
+        const date = this.date;
+        if (!date)
+            return;
+        if (format === 'micro') {
+            return new RelativeTime(date, localeFromElement(this)).microTimeUntil();
+        }
+        else {
+            return new RelativeTime(date, localeFromElement(this)).timeUntil();
+        }
+    }
+}
+if (!window.customElements.get('time-until')) {
+    window.TimeUntilElement = TimeUntilElement;
+    window.customElements.define('time-until', TimeUntilElement);
+}
+
+
 
 
 /***/ }),
@@ -23738,6 +24773,22 @@ var h = c;
 s(h, "delay", 100), s(h, "placement", "top"), s(h, "tooltipClass", "tooltip");
 
 
+/***/ }),
+
+/***/ "./node_modules/sticky-observer/dist/index.js":
+/*!****************************************************!*\
+  !*** ./node_modules/sticky-observer/dist/index.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ t)
+/* harmony export */ });
+class t{el;callback;options;observer;constructor(t,s,o={}){this.el=t,this.callback=s,this.options=o,this.start()}start(){this.stop();const t=getComputedStyle(this.el),s=["top","right","bottom","left"].map((s=>"auto"===t[s]?"100%":-1*parseInt(t[s])-1+"px")).join(" ");this.observer=new IntersectionObserver((t=>{this.callback(!t[0].isIntersecting,this.el)}),{threshold:[1],rootMargin:s,root:this.options.root}),this.observer.observe(this.el)}stop(){this.observer?.disconnect()}}
+
+
 /***/ })
 
 /******/ 	});
@@ -23760,7 +24811,7 @@ s(h, "delay", 100), s(h, "placement", "top"), s(h, "tooltipClass", "tooltip");
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
@@ -23816,13 +24867,17 @@ var __webpack_exports__ = {};
   !*** ./resources/js/index.ts ***!
   \*******************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
-/* harmony import */ var _hotwired_stimulus_webpack_helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @hotwired/stimulus-webpack-helpers */ "./node_modules/@hotwired/stimulus-webpack-helpers/dist/stimulus-webpack-helpers.js");
-/* harmony import */ var _bootstrap_alerts__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./bootstrap/alerts */ "./resources/js/bootstrap/alerts.ts");
-/* harmony import */ var _bootstrap_custom_elements__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./bootstrap/custom-elements */ "./resources/js/bootstrap/custom-elements.ts");
-/* harmony import */ var _bootstrap_echo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./bootstrap/echo */ "./resources/js/bootstrap/echo.ts");
-/* harmony import */ var _bootstrap_hotkeys__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./bootstrap/hotkeys */ "./resources/js/bootstrap/hotkeys.ts");
-/* harmony import */ var _bootstrap_turbo__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./bootstrap/turbo */ "./resources/js/bootstrap/turbo.ts");
+/* harmony import */ var _github_time_elements__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @github/time-elements */ "./node_modules/@github/time-elements/dist/index.js");
+/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
+/* harmony import */ var _hotwired_stimulus_webpack_helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @hotwired/stimulus-webpack-helpers */ "./node_modules/@hotwired/stimulus-webpack-helpers/dist/stimulus-webpack-helpers.js");
+/* harmony import */ var _bootstrap_alerts__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./bootstrap/alerts */ "./resources/js/bootstrap/alerts.ts");
+/* harmony import */ var _bootstrap_custom_elements__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./bootstrap/custom-elements */ "./resources/js/bootstrap/custom-elements.ts");
+/* harmony import */ var _bootstrap_document_title__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./bootstrap/document-title */ "./resources/js/bootstrap/document-title.ts");
+/* harmony import */ var _bootstrap_document_title__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_bootstrap_document_title__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _bootstrap_echo__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./bootstrap/echo */ "./resources/js/bootstrap/echo.ts");
+/* harmony import */ var _bootstrap_hotkeys__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./bootstrap/hotkeys */ "./resources/js/bootstrap/hotkeys.ts");
+/* harmony import */ var _bootstrap_turbo__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./bootstrap/turbo */ "./resources/js/bootstrap/turbo.ts");
+/* harmony import */ var _elements_turbo_echo_stream_tag__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./elements/turbo-echo-stream-tag */ "./resources/js/elements/turbo-echo-stream-tag.js");
 
 
 
@@ -23830,8 +24885,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-window.Stimulus = _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Application.start();
-window.Stimulus.load((0,_hotwired_stimulus_webpack_helpers__WEBPACK_IMPORTED_MODULE_1__.definitionsFromContext)(__webpack_require__("./resources/js/controllers sync recursive \\.ts$")));
+
+
+
+window.Stimulus = _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_1__.Application.start();
+window.Stimulus.load((0,_hotwired_stimulus_webpack_helpers__WEBPACK_IMPORTED_MODULE_2__.definitionsFromContext)(__webpack_require__("./resources/js/controllers sync recursive \\.ts$")));
 })();
 
 /******/ })()

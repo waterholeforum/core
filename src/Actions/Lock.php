@@ -28,7 +28,7 @@ class Lock extends Action
 
     public function icon(Collection $models): string
     {
-        return 'heroicon-o-lock-closed';
+        return 'tabler-lock';
     }
 
     public function run(Collection $models)

@@ -25,7 +25,7 @@ class EditUser extends Link
 
     public function icon(Collection $models): string
     {
-        return 'heroicon-o-pencil';
+        return 'tabler-pencil';
     }
 
     public function url(Model $model): string

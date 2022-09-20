@@ -121,7 +121,9 @@ abstract class Action
     protected function renderContent(Collection $models): HtmlString
     {
         $label = e($this->label($models));
-        $icon = ($iconName = $this->icon($models)) ? svg($iconName, 'icon')->toHtml() : '';
+        $icon = ($iconName = $this->icon($models))
+            ? svg($iconName, 'icon icon-' . $iconName)->toHtml()
+            : '';
 
         return new HtmlString("$icon <span>$label</span>");
     }
@@ -130,7 +132,7 @@ abstract class Action
      * Confirmation message or view to prompt the user with before the action
      * is run.
      */
-    public function confirm(Collection $models): null|string|View
+    public function confirm(Collection $models): null|string|HtmlString|View
     {
         return null;
     }

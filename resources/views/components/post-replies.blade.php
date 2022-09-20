@@ -1,11 +1,11 @@
-@if ($post->comment_count)
-    <a
-        href="{{ $post->url }}#comments"
-        class="btn btn--small btn--outline"
-        data-action="post#appearAsRead"
-    >
-        <x-waterhole::icon icon="waterhole-o-comment"/>
-        <span>{{ Waterhole\compact_number($post->comment_count) }}</span>
-        <ui-tooltip class="visually-hidden">{{ $post->comment_count }} comments</ui-tooltip>
-    </a>
-@endif
+<a
+    href="{{ $post->url }}#comments"
+    class="btn btn--small btn--outline @if (!$post->comment_count) is-disabled @endif"
+    data-action="post#appearAsRead"
+>
+    <x-waterhole::icon icon="tabler-message-circle-2"/>
+    <span>{{ Waterhole\compact_number($post->comment_count) }}</span>
+    <ui-tooltip>
+        {{ __('waterhole::forum.post-comments-link', ['count' => $post->comment_count]) }}
+    </ui-tooltip>
+</a>

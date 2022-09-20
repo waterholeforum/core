@@ -7,14 +7,10 @@ use Waterhole\Models\Post;
 
 class PostUnread extends Component
 {
-    public Post $post;
-
     public bool $isNotifiable;
 
-    public function __construct(Post $post)
+    public function __construct(public Post $post)
     {
-        $this->post = $post;
-
         $this->isNotifiable =
             $post->isFollowed() ||
             (!$post->isIgnored() &&

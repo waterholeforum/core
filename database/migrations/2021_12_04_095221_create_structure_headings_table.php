@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('structure_headings', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->nullable();
         });
     }
 

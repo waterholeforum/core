@@ -1,4 +1,4 @@
 <span class="badge">
-    <x-waterhole::icon icon="heroicon-s-lock-closed"/>
-    <span>Locked</span>
+    <x-waterhole::icon icon="tabler-lock"/>
+    <span>{{ __('waterhole::forum.post-locked-badge') }}</span>
 </span>

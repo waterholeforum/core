@@ -10,11 +10,8 @@ class PostFull extends Component
 {
     use Streamable;
 
-    public Post $post;
-
-    public function __construct(Post $post)
+    public function __construct(public Post $post)
     {
-        $this->post = $post;
     }
 
     public function render()

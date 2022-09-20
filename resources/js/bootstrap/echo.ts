@@ -18,6 +18,4 @@ window.Echo = new Echo({
     namespace: 'Waterhole.Events',
 });
 
-document.addEventListener('turbo:before-fetch-request', (e) => {
-    (e as CustomEvent).detail.fetchOptions.headers['X-Socket-ID'] = window.Echo.socketId();
-});
+window.Echo.registerTurboRequestInterceptor();

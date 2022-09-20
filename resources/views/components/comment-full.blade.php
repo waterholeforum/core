@@ -30,12 +30,15 @@
                         class="with-icon"
                         data-turbo-frame="_top"
                     >
-                        <x-waterhole::icon icon="heroicon-s-reply" class="rotate-180"/>
+                        <x-waterhole::icon
+                            icon="tabler-arrow-back-up"
+                            class="rotate-180"
+                        />
                         <span>
                             {{ __('waterhole::forum.comment-in-reply-to-link') }}
                             <span class="user-label">
                                 <x-waterhole::avatar :user="$comment->parent->user"/>
-                                <span>{{ $comment->parent->user?->name ?: 'Anonymous' }}</span>
+                                <span>{{ Waterhole\username($comment->parent->user) }}</span>
                             </span>
                         </span>
                     </a>
@@ -53,7 +56,7 @@
                             />
 
                             <div class="content">
-                                {!! Str::limit(strip_tags($comment->parent->body), 300) !!}
+                                {!! Waterhole\emojify(Waterhole\truncate_html($comment->parent->body, 300)) !!}
                             </div>
                         </div>
                     </ui-tooltip>
@@ -67,20 +70,22 @@
         >
             {{ Waterhole\emojify($comment->body_html) }}
 
-            <a
-                href="{{ route('waterhole.posts.comments.create', [
-                    'post' => $comment->post,
-                    'parent' => $comment->id
-                ]) }}"
-                class="quotable-button btn bg-emphasis"
-                data-turbo-frame="@domid($comment->post, 'comment_parent')"
-                data-quotable-target="button"
-                data-action="quotable#quoteSelectedText"
-                hidden
-            >
-                <x-waterhole::icon icon="heroicon-o-annotation"/>
-                <span>{{ __('waterhole::forum.quote-button') }}</span>
-            </a>
+            @can('post.comment', $comment->post)
+                <a
+                    href="{{ route('waterhole.posts.comments.create', [
+                        'post' => $comment->post,
+                        'parent' => $comment->id
+                    ]) }}"
+                    class="quotable-button btn bg-emphasis"
+                    data-turbo-frame="@domid($comment->post, 'comment_parent')"
+                    data-quotable-target="button"
+                    data-action="quotable#quoteSelectedText"
+                    hidden
+                >
+                    <x-waterhole::icon icon="tabler-quote"/>
+                    <span>{{ __('waterhole::forum.quote-button') }}</span>
+                </a>
+            @endcan
         </div>
 
         <footer class="comment__footer row gap-xs wrap">
@@ -94,7 +99,9 @@
         </footer>
     </div>
 
-    <turbo-frame id="@domid($comment, 'replies')" @unless ($withReplies) hidden @endunless>
+    <turbo-frame
+        id="@domid($comment, 'replies')"
+        @unless ($withReplies) hidden @endunless>
         @if ($withReplies)
             @if (count($comment->children))
                 <ol role="list" tabindex="-1" class="comment__replies">

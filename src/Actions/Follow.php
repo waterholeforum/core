@@ -28,7 +28,7 @@ class Follow extends Action
 
     public function icon(Collection $models): string
     {
-        return 'heroicon-o-bell';
+        return 'tabler-bell';
     }
 
     public function run(Collection $models)

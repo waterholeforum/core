@@ -38,7 +38,7 @@ class CopyLink extends Link
 
     public function icon(Collection $models): string
     {
-        return 'heroicon-o-link';
+        return 'tabler-link';
     }
 
     public function attributes(Collection $models): array

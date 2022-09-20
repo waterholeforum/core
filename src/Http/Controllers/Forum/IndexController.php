@@ -2,6 +2,7 @@
 
 namespace Waterhole\Http\Controllers\Forum;
 
+use Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Waterhole\Feed\PostFeed;
@@ -68,6 +69,11 @@ class IndexController extends Controller
 
     private function addFilters(array $filters)
     {
-        return [...$filters, new Following(), new Ignoring()];
+        if (Auth::user()) {
+            $filters[] = new Following();
+            $filters[] = new Ignoring();
+        }
+
+        return $filters;
     }
 }

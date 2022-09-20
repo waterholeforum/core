@@ -13,16 +13,13 @@ use Waterhole\Views\Components\Notification as NotificationComponent;
 
 class NotificationReceived implements ShouldBroadcast, TransactionalEvent
 {
-    protected Notification $notification;
-
-    public function __construct(Notification $notification)
+    public function __construct(protected Notification $notification)
     {
-        $this->notification = $notification;
     }
 
     public function broadcastOn()
     {
-        return new PrivateChannel('Waterhole.Models.User.' . $this->notification->notifiable->id);
+        return new PrivateChannel($this->notification->notifiable->broadcastChannel());
     }
 
     public function broadcastWith()

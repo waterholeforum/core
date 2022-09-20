@@ -15,10 +15,11 @@
 
         <x-waterhole::comment-frame :comment="$comment" with-replies/>
 
-        <x-waterhole::composer
-            :post="$post"
-            :parent="$comment"
-            class="can-sticky"
-        />
+        @can('post.comment', $post)
+            <x-waterhole::composer
+                :post="$post"
+                :parent="$comment"
+            />
+        @endcan
     </div>
 </x-waterhole::layout>

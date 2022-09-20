@@ -6,22 +6,14 @@ use Illuminate\View\Component;
 
 class IconPicker extends Component
 {
-    public ?string $name;
-
-    public ?string $id;
-
-    public null|string|array $value;
-
     public ?string $type = null;
-
     public ?string $content = null;
 
-    public function __construct(string $name = null, string $id = null, string|array $value = null)
-    {
-        $this->name = $name;
-        $this->id = $id;
-        $this->value = $value;
-
+    public function __construct(
+        public ?string $name = null,
+        public ?string $id = null,
+        public null|string|array $value = null,
+    ) {
         if (is_array($value)) {
             $this->type = $value['type'] ?? null;
             $this->content = $value[$this->type] ?? null;

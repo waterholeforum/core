@@ -1,5 +1,5 @@
 <x-waterhole::layout :title="__('waterhole::auth.confirm-password-title')">
-    <div class="section">
+    <div class="container section">
         <x-waterhole::dialog
             :title="__('waterhole::auth.confirm-password-title')"
             class="dialog--sm"

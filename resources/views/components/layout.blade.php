@@ -3,17 +3,20 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <meta name="theme-color" content="{{ config('waterhole.design.accent_color') }}">
+    <meta
+        name="theme-color"
+        content="{{ config('waterhole.design.accent_color') }}"
+    >
 
     <title>{{ $title ? $title.' - ' : '' }}{{ config('waterhole.forum.name') }}</title>
 
     <script>
-      document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+        document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
 
-      @if (config('waterhole.design.support_dark_mode'))
-        document.documentElement.dataset.theme = localStorage.getItem('theme')
-          || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-      @endif
+        @if (config('waterhole.design.support_dark_mode'))
+            document.documentElement.dataset.theme = localStorage.getItem('theme')
+            || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        @endif
     </script>
 
     @foreach (Waterhole\Extend\Stylesheet::urls(['default', 'default-'.App::getLocale(), ...$assets]) as $url)
@@ -25,7 +28,7 @@
     @endforeach
 
     <script>
-      window.Waterhole = @json([
+        window.Waterhole = @json([
         'userId' => Auth::id(),
       ]);
     </script>
@@ -36,7 +39,10 @@
 <body class="{{ Auth::check() ? 'logged-in' : 'not-logged-in' }}">
 
 <div id="waterhole" data-controller="page">
-    <a href="#main" class="skip-link">{{ __('waterhole::system.skip-to-main-content-link') }}</a>
+    <a
+        href="#main"
+        class="skip-link"
+    >{{ __('waterhole::system.skip-to-main-content-link') }}</a>
 
     @components(Waterhole\Extend\LayoutBefore::build())
 
@@ -62,8 +68,10 @@
         turbo:before-render@document->modal#hide"
     data-turbo-permanent
 >
+    {{-- https://github.com/hotwired/turbo/pull/445#issuecomment-995305287 --}}
     <turbo-frame
-        id="modal"
+        data-id="modal"
+        data-controller="turbo-frame"
         class="modal__frame"
         data-modal-target="frame"
         data-action="

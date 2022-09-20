@@ -7,14 +7,8 @@ use Waterhole\Models\User;
 
 class UserLabel extends Component
 {
-    public ?User $user;
-
-    public bool $link;
-
-    public function __construct(?User $user, bool $link = false)
+    public function __construct(public ?User $user = null, public bool $link = false)
     {
-        $this->user = $user;
-        $this->link = $link;
     }
 
     public function render()

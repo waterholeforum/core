@@ -30,7 +30,7 @@ class MoveChannel extends Action
 
     public function icon(Collection $models): string
     {
-        return 'heroicon-o-arrow-right';
+        return 'tabler-arrow-right';
     }
 
     public function confirm(Collection $models): View

@@ -34,3 +34,27 @@
 .dialog--xl {
   width: 75ch;
 }
+
+@media (max-width: @breakpoint-xs) {
+  .dialog__header,
+  .dialog__body {
+    padding: var(--space-gutter);
+  }
+
+  .dialog__header {
+    padding-bottom: 0;
+  }
+
+  .container.section .dialog {
+    border: 0;
+
+    .dialog__header,
+    .dialog__body {
+      padding: 0;
+    }
+
+    .dialog__header {
+      margin-bottom: var(--space-gutter);
+    }
+  }
+}

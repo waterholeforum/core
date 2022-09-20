@@ -12,11 +12,8 @@ use Waterhole\Formatter\Formatter;
  */
 class FormatController extends Controller
 {
-    private Formatter $formatter;
-
-    public function __construct(Formatter $formatter)
+    public function __construct(private Formatter $formatter)
     {
-        $this->formatter = $formatter;
     }
 
     public function __invoke(Request $request): string

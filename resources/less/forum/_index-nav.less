@@ -1,14 +1,14 @@
-@media (min-width: (@breakpoint-sm + 1)) {
+@media (min-width: @breakpoint-sm) {
   .index-nav-structure {
-    display: block;
-
-    > :first-child {
-      display: none;
-    }
-
     > :last-child {
-      all: initial !important;
       display: contents !important;
     }
+  }
+}
+
+@media (max-width: (@breakpoint-sm - 1)) {
+  .index-create-post {
+    order: 1;
+    margin-left: auto;
   }
 }

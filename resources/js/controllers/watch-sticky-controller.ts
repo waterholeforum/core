@@ -1,24 +1,16 @@
 import { Controller } from '@hotwired/stimulus';
+import StickyObserver from 'sticky-observer';
 
 export default class extends Controller {
-    observer?: IntersectionObserver;
+    observer?: StickyObserver;
 
     connect() {
-        this.observer = new IntersectionObserver(
-            (entries) => {
-                const el = entries[0].target;
-                const isSticky =
-                    entries[0].intersectionRatio < 1 && getComputedStyle(el).position === 'sticky';
-
-                el.classList.toggle('is-sticky', isSticky);
-            },
-            { threshold: 1 }
-        );
-
-        this.observer.observe(this.element);
+        this.observer = new StickyObserver(this.element, (stuck) => {
+            this.element.classList.toggle('is-stuck', stuck);
+        });
     }
 
     disconnect() {
-        this.observer?.disconnect();
+        this.observer?.stop();
     }
 }

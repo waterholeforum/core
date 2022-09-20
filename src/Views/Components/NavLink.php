@@ -7,32 +7,15 @@ use Illuminate\View\Component;
 
 class NavLink extends Component
 {
-    public string $label;
-
-    public ?string $icon;
-
-    public ?string $badge;
-
-    public ?string $route;
-
-    public ?string $href;
-
-    public bool|Closure|null $active;
-
     public function __construct(
-        string $label,
-        string $icon = null,
-        string $badge = null,
-        string $route = null,
-        string $href = null,
-        bool|Closure $active = null,
+        public string $label,
+        public ?string $icon = null,
+        public ?string $badge = null,
+        public ?string $route = null,
+        public ?string $href = null,
+        public bool|Closure|null $active = null,
+        public ?string $badgeClass = null,
     ) {
-        $this->label = $label;
-        $this->icon = $icon;
-        $this->badge = $badge;
-        $this->route = $route;
-        $this->href = $href;
-        $this->active = $active;
     }
 
     public function render()
@@ -52,6 +35,8 @@ class NavLink extends Component
 
         if ($this->route) {
             return request()->routeIs($this->route);
+        } elseif ($this->href) {
+            return request()->fullUrlIs($this->href.'*');
         }
 
         return false;

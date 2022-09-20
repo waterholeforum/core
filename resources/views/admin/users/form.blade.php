@@ -82,19 +82,19 @@
                             @endisset
                         </x-waterhole::field>
 
-                        <div>
+                        <div class="field">
                             <div class="field__label">
                                 {{ __('waterhole::admin.user-groups-label') }}
                             </div>
-                            <input type="hidden" name="groups" value="">
                             <div class="stack gap-sm">
+                                <input type="hidden" name="groups" value="">
                                 @foreach ($groups as $group)
                                     <label class="choice">
                                         <input
                                             type="checkbox"
                                             name="groups[]"
                                             value="{{ $group->id }}"
-                                            @if (in_array($group->id, (array) old('groups', isset($user) ? $user->groups->pluck('id')->all() : []))) checked @endif
+                                            @checked(in_array($group->id, (array) old('groups', isset($user) ? $user->groups->pluck('id')->all() : [])))
                                             @if ($group->isAdmin() && ($user->id ?? null) === 1) disabled @endif
                                         >
                                         <x-waterhole::group-label :group="$group"/>

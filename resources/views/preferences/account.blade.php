@@ -2,8 +2,8 @@
     :user="Auth::user()"
     :title="__('waterhole::user.account-settings-title')"
 >
-    <div class="card form-groups">
-        <div>
+    <div class="card card__body form-groups">
+        <div class="field">
             <h4 class="field__label">
                 {{ __('waterhole::auth.name-label') }}
             </h4>
@@ -12,12 +12,15 @@
             </div>
         </div>
 
-        <div>
+        <div class="field">
             <h4 class="field__label">
                 {{ __('waterhole::auth.email-label') }}
             </h4>
             <turbo-frame id="change-email">
-                <form action="{{ route('waterhole.preferences.email') }}" method="POST">
+                <form
+                    action="{{ route('waterhole.preferences.email') }}"
+                    method="POST"
+                >
                     @csrf
                     <x-waterhole::field name="email">
                         <div class="row gap-xs">
@@ -36,12 +39,15 @@
             </turbo-frame>
         </div>
 
-        <div>
+        <div class="field">
             <h4 class="field__label">
                 {{ __('waterhole::auth.password-label') }}
             </h4>
             <turbo-frame id="change-password">
-                <form action="{{ route('waterhole.preferences.password') }}" method="POST">
+                <form
+                    action="{{ route('waterhole.preferences.password') }}"
+                    method="POST"
+                >
                     @csrf
                     <x-waterhole::field name="password">
                         <div class="row gap-xs">
@@ -61,10 +67,10 @@
             </turbo-frame>
         </div>
 
-{{--        <div>--}}
-{{--            <button class="btn btn--danger">--}}
-{{--                {{ __('waterhole::user.delete-account-button') }}--}}
-{{--            </button>--}}
-{{--        </div>--}}
+        <x-waterhole::action-button
+            :for="Auth::user()"
+            :action="Waterhole\Actions\DeleteSelf::class"
+            class="btn bg-danger"
+        />
     </div>
 </x-waterhole::user-profile>

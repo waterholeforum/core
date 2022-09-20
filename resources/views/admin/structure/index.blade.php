@@ -11,26 +11,44 @@
 
             <ui-popup placement="bottom-end">
                 <button type="button" class="btn bg-accent">
-                    <x-waterhole::icon icon="heroicon-s-plus"/>
+                    <x-waterhole::icon icon="tabler-plus"/>
                     <span>{{ __('waterhole::system.create-button') }}</span>
-                    <x-waterhole::icon icon="heroicon-s-chevron-down"/>
+                    <x-waterhole::icon icon="tabler-chevron-down"/>
                 </button>
 
                 <ui-menu class="menu" hidden>
-                    <a href="{{ route('waterhole.admin.structure.channels.create') }}" type="button" class="menu-item" role="menuitem">
-                        <x-waterhole::icon icon="heroicon-o-chat-alt-2"/>
+                    <a
+                        href="{{ route('waterhole.admin.structure.channels.create') }}"
+                        type="button"
+                        class="menu-item"
+                        role="menuitem"
+                    >
+                        <x-waterhole::icon icon="tabler-message-circle-2"/>
                         <span>{{ __('waterhole::admin.structure-channel-label') }}</span>
                     </a>
-                    <a href="{{ route('waterhole.admin.structure.pages.create') }}" type="button" class="menu-item" role="menuitem">
-                        <x-waterhole::icon icon="heroicon-o-document-text"/>
+                    <a
+                        href="{{ route('waterhole.admin.structure.pages.create') }}"
+                        type="button"
+                        class="menu-item"
+                        role="menuitem"
+                    >
+                        <x-waterhole::icon icon="tabler-file-text"/>
                         <span>{{ __('waterhole::admin.structure-page-label') }}</span>
                     </a>
-                    <a href="{{ route('waterhole.admin.structure.links.create') }}" class="menu-item" role="menuitem">
-                        <x-waterhole::icon icon="heroicon-o-link"/>
+                    <a
+                        href="{{ route('waterhole.admin.structure.links.create') }}"
+                        class="menu-item"
+                        role="menuitem"
+                    >
+                        <x-waterhole::icon icon="tabler-link"/>
                         <span>{{ __('waterhole::admin.structure-link-label') }}</span>
                     </a>
-                    <a href="{{ route('waterhole.admin.structure.headings.create') }}" class="menu-item" role="menuitem">
-                        <x-waterhole::icon icon="heroicon-o-hashtag"/>
+                    <a
+                        href="{{ route('waterhole.admin.structure.headings.create') }}"
+                        class="menu-item"
+                        role="menuitem"
+                    >
+                        <x-waterhole::icon icon="tabler-hash"/>
                         <span>{{ __('waterhole::admin.structure-heading-label') }}</span>
                     </a>
                 </ui-menu>
@@ -47,8 +65,8 @@
             @endforeach
         </ul>
 
-        <div class="stack gap-md" style="margin-top: var(--space-xxl)">
-            <h2 class="h3">{{ __('waterhole::admin.structure-unlisted-title') }}</h2>
+        <div class="stack gap-md" style="margin-top: var(--space-xl)">
+            <h2 class="h4">{{ __('waterhole::admin.structure-unlisted-title') }}</h2>
 
             <ul
                 class="card"
@@ -59,13 +77,22 @@
                     <x-waterhole::admin.structure-node :node="$node"/>
                 @endforeach
 
-                <li class="placeholder">{{ __('waterhole::admin.structure-unlisted-description') }}</li>
+                <li class="placeholder hide-if-not-only-child">{{ __('waterhole::admin.structure-unlisted-description') }}</li>
             </ul>
         </div>
 
-        <form action="{{ route('waterhole.admin.structure') }}" method="post" data-form-target="form" hidden>
+        <form
+            action="{{ route('waterhole.admin.structure') }}"
+            method="post"
+            data-form-target="form"
+            hidden
+        >
             @csrf
-            <input type="hidden" name="order" data-dragon-nest-target="orderInput">
+            <input
+                type="hidden"
+                name="order"
+                data-dragon-nest-target="orderInput"
+            >
         </form>
     </div>
 </x-waterhole::admin>

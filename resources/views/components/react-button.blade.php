@@ -6,5 +6,5 @@
 />
 
 {{--<button class="btn btn--small btn--transparent btn--icon control">--}}
-{{--    <x-waterhole::icon icon="heroicon-o-emoji-happy"/>--}}
+{{--    <x-waterhole::icon icon="tabler-emoji-happy"/>--}}
 {{--</button>--}}

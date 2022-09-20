@@ -13,8 +13,8 @@
         <form action="{{ route('waterhole.search') }}" class="lead row gap-xs">
             <div class="input-container full-width">
                 <x-waterhole::icon
-                    icon="heroicon-o-search"
-                    class="pointer-events-none"
+                    icon="tabler-search"
+                    class="no-pointer"
                 />
                 <input
                     class="input"
@@ -33,22 +33,23 @@
         @isset($hits)
             @if ($hits->count())
                 <div class="with-sidebar">
-                    <div class="sidebar sidebar--sticky nav">
-                        @foreach ($channels as $channel)
-                            <a
-                                href="{{ $selectedChannels->contains($channel) ? request()->fullUrlWithoutQuery(['channels', 'page']) : request()->fullUrlWithQuery(['channels' => $channel->id, 'page' => null]) }}"
-                                class="nav-link"
-                                @if ($selectedChannels->contains($channel)) aria-current="page" @endif
-                            >
-                                <x-waterhole::icon :icon="$channel->icon"/>
-                                <span>{{ $channel->name }}</span>
-                                @if ($selectedChannels->contains($channel))
-                                    <x-waterhole::icon icon="heroicon-s-x" class="push-end text-sm"/>
-                                @elseif (isset($results->channelHits[$channel->id]))
-                                    <span class="badge">{{ $results->channelHits[$channel->id] }}</span>
-                                @endif
-                            </a>
-                        @endforeach
+                    <div class="sidebar sidebar--sticky">
+                        <x-waterhole::responsive-nav
+                            :components="$channels
+                                ->map(fn($channel) => new Waterhole\Views\Components\NavLink(
+                                    label: $channel->name,
+                                    icon: $channel->icon,
+                                    badge: $results->channelHits[$channel->id] ?? null,
+                                    href: $selectedChannels->contains($channel) ? request()->fullUrlWithoutQuery(['channels', 'page']) : request()->fullUrlWithQuery(['channels' => $channel->id, 'page' => null]),
+                                    active: $selectedChannels->contains($channel)
+                                ))
+                                ->all()"
+                        >
+                            <x-slot name="empty">
+                                <x-waterhole::icon icon="tabler-filter"/>
+                                <span>{{ __('waterhole::forum.search-filter-button') }}</span>
+                            </x-slot>
+                        </x-waterhole::responsive-nav>
                     </div>
 
                     <div class="stack gap-md">
@@ -103,7 +104,7 @@
                 <div class="placeholder">
                     <x-waterhole::icon
                         class="placeholder__visual"
-                        icon="heroicon-o-search"
+                        icon="tabler-search"
                     />
 
                     <p class="h4">

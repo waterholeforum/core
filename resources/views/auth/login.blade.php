@@ -1,5 +1,7 @@
+{{-- TODO: make extensible --}}
+
 <x-waterhole::layout :title="__('waterhole::auth.login-title')">
-    <div class="section">
+    <div class="container section">
         <x-waterhole::dialog
             :title="__('waterhole::auth.login-title')"
             class="dialog--sm"

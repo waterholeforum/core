@@ -28,7 +28,7 @@ class Ignore extends Action
 
     public function icon(Collection $models): string
     {
-        return 'heroicon-o-volume-off';
+        return 'tabler-volume-3';
     }
 
     public function run(Collection $models)

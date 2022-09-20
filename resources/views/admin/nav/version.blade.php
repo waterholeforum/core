@@ -1,5 +1,4 @@
 <div class="admin__version text-xs row gap-xs" style="margin-top: var(--space-md)">
-    <x-waterhole::index-footer-theme/>
     <p>
         <a
             href="https://waterhole.dev"

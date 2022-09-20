@@ -2,7 +2,11 @@
 
 namespace Waterhole;
 
+use Cake\Utility\Text;
+use Closure;
 use Illuminate\Support\HtmlString;
+use Illuminate\View\AnonymousComponent;
+use Illuminate\View\Component;
 use Major\Fluent\Formatters\Number\NumberFormatter;
 use Major\Fluent\Formatters\Number\Options;
 use Waterhole\Extend\Emoji;
@@ -91,6 +95,18 @@ function emojify(string $text, array $attributes = []): HtmlString|string
 }
 
 /**
+ * Truncate a string, handing HTML tags and words correctly.
+ */
+function truncate_html(string $html, int $limit, string $end = '...'): string
+{
+    return Text::truncate($html, $limit, [
+        'exact' => false,
+        'html' => true,
+        'ellipsis' => $end,
+    ]);
+}
+
+/**
  * Get the best contrast color for text on a background color.
  */
 function get_contrast_color(string $hex): string
@@ -124,7 +140,7 @@ function return_field(string $default = null): string
 
 function username(?User $user): string
 {
-    return $user->name ?? __('waterhole::system.anonymous');
+    return $user->name ?? __('waterhole::system.deleted-user');
 }
 
 function user_variables(?User $user): array
@@ -132,4 +148,20 @@ function user_variables(?User $user): array
     return [
         'userName' => username($user),
     ];
+}
+
+function build_components(array $components, array $data = []): array
+{
+    return array_map(function ($component) use ($data) {
+        if ($component instanceof Closure) {
+            $component = app()->call($component, $data);
+        }
+        if ($component instanceof Component) {
+            return $component;
+        } elseif (class_exists($component)) {
+            return resolve($component, $data);
+        } elseif (view()->exists($component)) {
+            return resolve(AnonymousComponent::class, ['view' => $component, 'data' => $data]);
+        }
+    }, $components);
 }

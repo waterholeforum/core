@@ -43,7 +43,7 @@
                             >
                         </x-waterhole::field>
 
-                        <div data-controller="reveal">
+                        <div class="field" data-controller="reveal">
                             <div class="field__label">{{ __('waterhole::admin.group-appearance-label') }}</div>
 
                             <div class="stack gap-lg">
@@ -55,7 +55,7 @@
                                             type="checkbox"
                                             name="is_public"
                                             value="1"
-                                            @if (old('is_public', $group->is_public ?? null)) checked @endif
+                                            @checked(old('is_public', $group->is_public ?? null))
                                         >
                                         {{ __('waterhole::admin.group-show-as-badge-label') }}
                                     </label>
@@ -148,7 +148,7 @@
                                                                     Check this box if it was checked before, or if the ability is
                                                                     allowed for this group, or for members in general.
                                                                 --}}
-                                                                @if (old("permissions.$key.$ability", Waterhole::permissions()->group($group ?? Waterhole\Models\Group::member())->allows($ability, $node->content))) checked @endif
+                                                                @checked(old("permissions.$key.$ability", Waterhole::permissions()->group($group ?? Waterhole\Models\Group::member())->allows($ability, $node->content)))
                                                                 {{--
                                                                     Non-"view" abilities depend on the "view" ability being allowed.
                                                                 --}}

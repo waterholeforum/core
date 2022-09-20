@@ -29,7 +29,7 @@ class NewComment extends Notification
 
     public function icon(): string
     {
-        return 'heroicon-o-chat-alt';
+        return 'tabler-message-circle-2';
     }
 
     public function title(): string

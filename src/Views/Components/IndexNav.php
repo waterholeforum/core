@@ -15,17 +15,12 @@ use Waterhole\Models\StructureLink;
 class IndexNav extends Component
 {
     public Collection $nav;
-    public $current;
 
     public function __construct()
     {
         $structure = Structure::where('is_listed', true)
             ->with([
                 'content' => function (MorphTo $morphTo) {
-                    $morphTo->morphWith([
-                        Channel::class => ['permissions.recipient'],
-                    ]);
-
                     if (Auth::check()) {
                         $morphTo->morphWithCount([
                             Channel::class => ['newPosts', 'unreadPosts'],
@@ -38,39 +33,36 @@ class IndexNav extends Component
             ->filter(fn(Structure $node) => $node->content);
 
         $this->nav = collect([
-            [
-                'route' => 'waterhole.home',
-                'icon' => 'heroicon-o-home',
-                'label' => __('waterhole::forum.home'),
-            ],
+            new NavLink(
+                label: __('waterhole::forum.home'),
+                icon: 'tabler-home',
+                route: 'waterhole.home',
+            ),
             ...$structure
                 ->map(function (Structure $node) {
                     if ($node->content instanceof StructureHeading) {
-                        return [
-                            'heading' => $node->content->name,
-                        ];
+                        return new NavHeading($node->content->name ?: '');
                     } elseif ($node->content instanceof Channel) {
-                        return [
-                            'url' => $node->content->url,
-                            'icon' => $node->content->icon,
-                            'label' => $node->content->name,
-                            'badge' =>
-                                $node->content->new_posts_count +
-                                $node->content->unread_posts_count ?:
-                                null,
-                        ];
+                        return new NavLink(
+                            label: $node->content->name,
+                            icon: $node->content->icon,
+                            badge: $node->content->new_posts_count +
+                            $node->content->unread_posts_count ?:
+                            null,
+                            href: $node->content->url,
+                        );
                     } elseif ($node->content instanceof StructureLink) {
-                        return [
-                            'url' => $node->content->href,
-                            'icon' => $node->content->icon,
-                            'label' => $node->content->name,
-                        ];
+                        return new NavLink(
+                            label: $node->content->name,
+                            icon: $node->content->icon,
+                            href: $node->content->href,
+                        );
                     } elseif ($node->content instanceof Page) {
-                        return [
-                            'url' => $node->content->url,
-                            'icon' => $node->content->icon,
-                            'label' => $node->content->name,
-                        ];
+                        return new NavLink(
+                            label: $node->content->name,
+                            icon: $node->content->icon,
+                            href: $node->content->url,
+                        );
                     }
 
                     return null;
@@ -78,22 +70,13 @@ class IndexNav extends Component
                 ->filter(),
         ]);
 
-        $this->nav = $this->nav->filter(function (array $item, $i) {
-            if (isset($item['heading'])) {
-                return isset($this->nav[$i + 1]) && empty($this->nav[$i + 1]['heading']);
+        // Filter out headings with no items after them
+        $this->nav = $this->nav->filter(function ($item, $i) {
+            if ($item instanceof NavHeading) {
+                return isset($this->nav[$i + 1]) && !($this->nav[$i + 1] instanceof NavHeading);
             }
 
             return true;
-        });
-
-        $this->current = $this->nav->first(function ($item) {
-            if (isset($item['route'])) {
-                return request()->routeIs($item['route'] . '*');
-            } elseif (isset($item['url'])) {
-                return request()->fullUrlIs($item['url'] . '*');
-            }
-
-            return false;
         });
     }
 

@@ -8,7 +8,6 @@ use Waterhole\Extend\Locales;
 class IndexFooterLanguage extends Component
 {
     public array $locales;
-
     public string $currentLocale;
 
     public function __construct()

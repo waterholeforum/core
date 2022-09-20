@@ -2,7 +2,9 @@
     @if (is_string($value) && $value)
         <div class="row gap-sm" data-icon-picker-target="preview">
             <x-waterhole::icon icon="{{ $value }}" class="text-md"/>
-            <button type="button" class="btn" data-action="icon-picker#change">Change</button>
+            <button type="button" class="btn" data-action="icon-picker#change">
+                {{ __('waterhole::system.icon-picker-change-button') }}
+            </button>
         </div>
     @endif
 
@@ -12,22 +14,77 @@
         data-controller="reveal"
         @if (is_string($value) && $value) hidden @endif
     >
-        <select class="input" style="width: auto" data-reveal-target="if" name="{{ $name }}[type]">
-            <option value="">None</option>
-            <option value="emoji" @if ($type === 'emoji') selected @endif>Emoji</option>
-            <option value="svg" @if ($type === 'svg') selected @endif>SVG Icon</option>
-            <option value="file" @if ($type === 'file') selected @endif>Image</option>
+        <select
+            class="input"
+            style="width: auto"
+            data-reveal-target="if"
+            name="{{ $name }}[type]"
+        >
+            <option value="">
+                {{ __('waterhole::system.icon-picker-none-option') }}
+            </option>
+            <option value="emoji" @selected($type === 'emoji')>
+                {{ __('waterhole::system.icon-picker-emoji-option') }}
+            </option>
+            <option value="svg" @selected($type === 'svg')>
+                {{ __('waterhole::system.icon-picker-svg-option') }}
+            </option>
+            <option value="file" @selected($type === 'file')>
+                {{ __('waterhole::system.icon-picker-image-option') }}
+            </option>
         </select>
 
-        <div class="stack gap-xs full-width" data-reveal-target="then" data-reveal-value="emoji">
-            <input type="text" class="input" name="{{ $name }}[emoji]" @if ($type === 'emoji') value="{{ $content }}" @endif>
-            <div class="field__description">Enter a single emoji character using your system keyboard, or paste one from <a href="https://emojipedia.org" target="_blank" rel="noopener">Emojipedia</a>.</div>
+        <div
+            class="stack gap-xs full-width"
+            data-reveal-target="then"
+            data-reveal-value="emoji"
+        >
+            <input
+                type="text"
+                class="input"
+                name="{{ $name }}[emoji]"
+                @if ($type === 'emoji') value="{{ $content }}" @endif
+                style="width: 5ch"
+            >
+            <div class="field__description">
+                {{ __('waterhole::system.icon-picker-emoji-description') }}
+                <a href="https://emojipedia.org" target="_blank" rel="noopener" class="with-icon">
+                    <span>Emojipedia</span>
+                    <x-waterhole::icon icon="tabler-external-link"/>
+                </a>
+            </div>
         </div>
 
-        <div class="stack gap-xs full-width" data-reveal-target="then" data-reveal-value="svg">
-            <input type="text" class="input" list="icons" name="{{ $name }}[svg]" @if ($type === 'svg') value="{{ $content }}" @endif>
-            <div class="field__description">Enter the name of a <a href="https://blade-ui-kit.com/blade-icons#search" target="_blank" rel="noopener">Blade Icon</a> from one of the following installed sets: {{ implode(', ', array_map(fn($set) => $set['prefix'], app(BladeUI\Icons\Factory::class)->all())) }}</div>
-            <div class="field__description"><a href="" class="with-icon"><x-waterhole::icon icon="heroicon-s-question-mark-circle"/>Learn more about SVG icons</a></div>
+        <div
+            class="stack gap-xs full-width"
+            data-reveal-target="then"
+            data-reveal-value="svg"
+        >
+            <input
+                type="text"
+                class="input"
+                list="icons"
+                name="{{ $name }}[svg]"
+                @if ($type === 'svg') value="{{ $content }}" @endif
+            >
+
+            <div class="field__description">
+                {{ __('waterhole::system.icon-picker-svg-description', [
+                    'sets' => implode(', ', array_map(fn($set) => $set['prefix'], app(BladeUI\Icons\Factory::class)->all()))
+                ]) }}
+                <a href="https://blade-ui-kit.com/blade-icons#search" target="_blank" rel="noopener" class="with-icon">
+                    <span>{{ __('waterhole::system.icon-picker-svg-search-link') }}</span>
+                    <x-waterhole::icon icon="tabler-external-link"/>
+                </a>
+            </div>
+
+{{--            <div class="field__description">--}}
+{{--                <a href="" class="with-icon">--}}
+{{--                    <x-waterhole::icon icon="tabler-question-mark-circle"/>--}}
+{{--                    Learn more about SVG icons--}}
+{{--                </a>--}}
+{{--            </div>--}}
+
             <datalist id="icons">
                 @foreach (app(BladeUI\Icons\IconsManifest::class)->getManifest($sets = app(BladeUI\Icons\Factory::class)->all()) as $set => $paths)
                     @foreach ($paths as $icons)
@@ -39,7 +96,11 @@
             </datalist>
         </div>
 
-        <div class="stack gap-xs full-width" data-reveal-target="then" data-reveal-value="file">
+        <div
+            class="stack gap-xs full-width"
+            data-reveal-target="then"
+            data-reveal-value="file"
+        >
             <input type="file" class="input" name="{{ $name }}[file]">
         </div>
     </div>

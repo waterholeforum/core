@@ -1,25 +1,17 @@
-<h4 class="menu-heading">Display as</h4>
-<a
-    href="{{ request()->fullUrlWithQuery(['layout' => 'list']) }}"
-    class="menu-item"
-    role="menuitemradio"
-    @if ($feed->currentLayout() === 'list') aria-checked="true" @endif
->
-    <x-waterhole::icon icon="heroicon-o-view-list"/>
-    <span>List</span>
-    @if ($feed->currentLayout() === 'list')
-        <x-waterhole::icon icon="heroicon-o-check" class="menu-item__check"/>
-    @endif
-</a>
-<a
-    href="{{ request()->fullUrlWithQuery(['layout' => 'cards']) }}"
-    class="menu-item"
-    role="menuitemradio"
-    @if ($feed->currentLayout() === 'cards') aria-checked="true" @endif
->
-    <x-waterhole::icon icon="heroicon-o-collection"/>
-    <span>Cards</span>
-    @if ($feed->currentLayout() === 'cards')
-        <x-waterhole::icon icon="heroicon-o-check" class="menu-item__check"/>
-    @endif
-</a>
+<h4 class="menu-heading">
+    {{ __('waterhole::forum.feed-controls-layout-heading') }}
+</h4>
+
+<x-waterhole::menu-item
+    icon="tabler-list"
+    :label="__('waterhole::system.layout-list')"
+    :href="request()->fullUrlWithQuery(['layout' => 'list'])"
+    :active="$feed->currentLayout() === 'list'"
+/>
+
+<x-waterhole::menu-item
+    icon="tabler-layout-list"
+    :label="__('waterhole::system.layout-cards')"
+    :href="request()->fullUrlWithQuery(['layout' => 'cards'])"
+    :active="$feed->currentLayout() === 'cards'"
+/>

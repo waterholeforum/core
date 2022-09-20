@@ -5,19 +5,19 @@
 >
     <button type="submit" class="badge clickable @if ($isNotifiable) bg-activity @endif">
         @if ($isNotifiable)
-            <x-waterhole::icon icon="heroicon-s-bell"/>
+            <x-waterhole::icon icon="tabler-bell"/>
         @endif
         @if ($post->isNew())
-            <span>{{ __('waterhole::forum.post-new-post') }}</span>
+            <span>{{ __('waterhole::forum.post-new-badge') }}</span>
             <ui-tooltip placement="bottom">
-                New post<br>
-                <small>Click to mark as read</small>
+                {{ __('waterhole::forum.post-new-badge-tooltip') }}<br>
+                <small>{{ __('waterhole::forum.mark-as-read-instruction') }}</small>
             </ui-tooltip>
         @else
             <span>{{ $post->unread_comments_count }}</span>
             <ui-tooltip placement="bottom">
-                {{ $post->unread_comments_count }} unread comments<br>
-                <small>Click to mark as read</small>
+                {{ __('waterhole::forum.post-unread-comments-badge-tooltip', ['count' => $post->unread_comments_count]) }}<br>
+                <small>{{ __('waterhole::forum.mark-as-read-instruction') }}</small>
             </ui-tooltip>
         @endif
     </button>

@@ -16,6 +16,11 @@ class Composer extends Component
         $this->parent = $parent?->exists ? $parent : null;
     }
 
+    public function id(): ?string
+    {
+        return 'reply';
+    }
+
     public function render()
     {
         return view('waterhole::components.composer');

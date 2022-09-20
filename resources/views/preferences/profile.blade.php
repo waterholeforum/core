@@ -9,7 +9,7 @@
     >
         @csrf
 
-        <div class="card form-groups">
+        <div class="card card__body form-groups">
             <x-waterhole::user-profile-fields :user="Auth::user()"/>
 
             <div>

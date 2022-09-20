@@ -1,7 +1,7 @@
 .nav {
   list-style: none;
-  margin: 0;
-  padding: 0;
+  margin-inline: 0;
+  padding-inline: 0;
 }
 
 .nav-heading {
@@ -11,6 +11,7 @@
   text-transform: uppercase;
   margin-bottom: var(--space-xs);
   padding: 0 var(--space-xs);
+  width: 100%;
 
   * + & {
     margin-top: var(--space-lg);
@@ -19,7 +20,7 @@
 
 .nav-link {
   display: flex;
-  width: 100%;
+  //width: 100%;
   align-items: center;
   gap: var(--space-xs);
   min-height: var(--control-height);
@@ -55,8 +56,8 @@
     background: var(--color-accent-light);
 
     .badge {
-      background: none;
-      color: var(--color-accent);
+      background: inherit;
+      color: inherit;
     }
   }
 }

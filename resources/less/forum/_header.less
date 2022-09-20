@@ -10,7 +10,7 @@
     height: var(--header-height);
     display: flex;
     align-items: center;
-    //gap: var(--space-sm);
+    //gap: var(--space-xs);
   }
 
   &.is-sticky {
@@ -38,8 +38,13 @@
 .header-breadcrumb {
   color: var(--color-muted);
   transition: opacity 0.2s, transform 0.2s;
-  display: inline-flex !important;
   align-items: center;
+  margin-left: var(--space-xs);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  flex-shrink: 99;
 
   > * + * {
     margin-left: var(--space-xs);

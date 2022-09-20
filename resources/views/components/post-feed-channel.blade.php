@@ -1,17 +1,12 @@
 <div class="card card__body channel-card">
-    <x-waterhole::icon :icon="$channel->icon" class="channel-card__icon"/>
-
-    <div class="channel-card__info">
-        <h2 class="h3">{{ $channel->name }}</h2>
-        @if ($channel->description)
-            <p>{{ $channel->description }}</p>
-        @endif
-    </div>
-
-    <div class="channel-card__controls">
+    <div
+        class="channel-card__controls row gap-xs justify-end"
+        style="float: right; margin-bottom: -50%; position: relative"
+    >
         <x-waterhole::follow-button :followable="$channel"/>
 
         <x-waterhole::action-menu
+            placement="bottom-end"
             :for="$channel"
             :exclude="[
                 Waterhole\Actions\Follow::class,
@@ -19,7 +14,17 @@
                 Waterhole\Actions\Ignore::class,
                 Waterhole\Actions\Unignore::class,
             ]"
-            placement="bottom-end"
         />
+    </div>
+
+    <div class="row wrap gap-md">
+        <x-waterhole::icon :icon="$channel->icon" class="channel-card__icon"/>
+
+        <div class="channel-card__info">
+            <h2 class="h3">{{ $channel->name }}</h2>
+            @if ($channel->description)
+                <p>{{ $channel->description }}</p>
+            @endif
+        </div>
     </div>
 </div>

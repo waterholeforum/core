@@ -9,11 +9,8 @@ use Waterhole\Models\User;
 
 class UserProfileFields extends Component
 {
-    public ?User $user;
-
-    public function __construct(User $user = null)
+    public function __construct(public ?User $user = null)
     {
-        $this->user = $user;
     }
 
     public function render()

@@ -7,11 +7,8 @@ use Waterhole\Models\User;
 
 class UserLink extends Component
 {
-    public ?User $user;
-
-    public function __construct(?User $user)
+    public function __construct(public ?User $user = null, public bool $link = true)
     {
-        $this->user = $user;
     }
 
     public function render()

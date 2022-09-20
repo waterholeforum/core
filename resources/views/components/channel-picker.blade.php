@@ -10,7 +10,7 @@
             @else
                 <span>{{ __('waterhole::forum.channel-picker-placeholder') }}</span>
             @endif
-            <x-waterhole::icon icon="heroicon-s-chevron-down"/>
+            <x-waterhole::icon icon="tabler-chevron-down"/>
         </button>
 
         <ui-menu class="menu channel-picker__menu" hidden>
@@ -28,7 +28,7 @@
                         <span class="menu-item__description">{{ $channel->description }}</span>
                     </span>
                     @if ($channel->id == $value)
-                        <x-waterhole::icon icon="heroicon-o-check" class="menu-item__check"/>
+                        <x-waterhole::icon icon="tabler-check" class="menu-item__check"/>
                     @endif
                 </button>
             @endforeach

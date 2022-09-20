@@ -7,7 +7,7 @@
     <div class="stack gap-sm">
         <label class="choice">
             <input
-                @if (!request('move_posts')) checked @endif
+                @checked(!request('move_posts'))
             data-reveal-target="if"
                 name="move_posts"
                 type="radio"
@@ -21,7 +21,7 @@
                 type="radio"
                 name="move_posts"
                 value="1"
-                @if (request('move_posts')) checked @endif
+                @checked(request('move_posts'))
             data-reveal-target="if"
             >
             {{ __('waterhole::admin.move-channel-posts-label', ['count' => $postCount]) }}

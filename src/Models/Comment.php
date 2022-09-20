@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rule;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
+use Tonysm\TurboLaravel\Models\Broadcasts;
 use Waterhole\Events\NewComment;
 use Waterhole\Models\Concerns\HasBody;
 use Waterhole\Models\Concerns\HasLikes;
@@ -42,6 +43,7 @@ class Comment extends Model
     use HasLikes;
     use HasRecursiveRelationships;
     use ValidatesData;
+    use Broadcasts;
 
     public const UPDATED_AT = null;
 

@@ -4,6 +4,8 @@ search-placeholder = Search or ask a question
 search-results-title = Search Results for "{ $query }"
 search-button = Search
 
+search-filter-button = Filter
+
 search-showing-results-title = Showing { $total } { $total ->
     [one] result
     *[other] results
@@ -21,13 +23,29 @@ search-sort-top = Sort by Top
 search-empty-message = No Results Found
 search-keywords-too-short-message = Your keywords are too short – try something longer!
 
-post-activity-replied = { $userName } replied 2 days ago
-post-activity-posted = { $userName } posted 2 days ago
-post-new-post = New
-post-new-comments = { $count } New
-post-comment-count = { $count } { $count ->
+post-activity-replied = replied
+post-activity-posted = posted
+
+post-new-badge = New
+post-new-badge-tooltip = New post
+
+post-unread-comments-badge-tooltip = { $count } { $count ->
+    [one] unread comment
+    *[other] unread comments
+}
+
+post-comments-heading = { $count } { $count ->
     [one] Comment
     *[other] Comments
+}
+
+mark-as-read-instruction = Click to mark as read
+
+post-read-more-link = Read more
+
+post-comments-link = { $count } { $count ->
+    [one] comment
+    *[other] comments
 }
 
 comments-unread-heading = Unread
@@ -42,6 +60,7 @@ move-post-title = Move { $count ->
     *[other] { $count } Posts
 }
 
+create-post-button = Create a Post
 create-post-title = New Post
 post-channel-label = Channel
 post-submit-button = Post
@@ -63,7 +82,7 @@ comments-locked-message = Comments are locked.
 composer-placeholder = Write a comment...
 composer-reply-to-placeholder = Reply to { $userName }...
 composer-replying-to-label = Replying to
-composer-cancel-reply-button = Clear
+composer-clear-reply-button = Clear
 composer-submit = Post
 
 quote-button = Quote
@@ -99,3 +118,20 @@ post-follow-title = Follow
 post-follow-description = Receive notifications when there are new comments on this post.
 post-ignore-title = Ignore
 post-ignore-description = Never be notified about activity in this post, and hide it from Home.
+
+post-following-badge = Following
+post-ignored-badge = Ignored
+
+menu-button = Menu
+navigation-title = Forum Navigation
+
+feed-new-activity-button = New Activity
+feed-new-activity-heading = New Activity
+
+feed-empty-message = No Posts
+
+feed-controls-layout-heading = Display as
+
+post-locked-badge = Locked
+
+reaction-like = Like

@@ -1,9 +1,9 @@
 <a
     @can('post.comment', $comment->post)
-        href="{{ route('waterhole.posts.comments.create', [
+        href="{{ route('waterhole.posts.comments.show', [
             'post' => $comment->post,
-            'parent' => $comment->id
-        ]) }}"
+            'comment' => $comment->id,
+        ]) }}#reply"
         data-turbo-frame="@domid($comment->post, 'comment_parent')"
     @else
         href="{{ route('waterhole.login', ['return' => $comment->post_url]) }}"
@@ -11,6 +11,6 @@
     @endif
     class="btn btn--small btn--transparent control"
 >
-    <x-waterhole::icon icon="heroicon-o-reply"/>
+    <x-waterhole::icon icon="tabler-arrow-back-up"/>
     <span>{{ __('waterhole::forum.comment-reply-button') }}</span>
 </a>

@@ -1,14 +1,4 @@
-@php
-    $tag = 'span';
-    $attributes = $attributes->class('user-label');
-
-    if ($link && ($href = $user->url)) {
-        $tag = 'a';
-        $attributes = $attributes->merge(compact('href'));
-    }
-@endphp
-
-<{{ $tag }} {{ $attributes }}>
+<x-waterhole::user-link :user="$user" {{ $attributes->class('user-label') }} :link="$link">
     <x-waterhole::avatar :user="$user"/>
-    <span>{{ $user?->name ?: 'Anonymous' }}</span>
-</{{ $tag }}>
+    <span>{{ Waterhole\username($user) }}</span>
+</x-waterhole::user-link>

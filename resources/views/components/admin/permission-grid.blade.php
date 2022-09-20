@@ -13,7 +13,7 @@
             <tr>
                 <td></td>
                 @foreach ($abilities as $ability)
-                    <th>{{ ucfirst($ability) }}</th>
+                    <th>{{ __('waterhole::system.ability-'.$ability) }}</th>
                 @endforeach
             </tr>
         </thead>
@@ -42,7 +42,7 @@
                                         type="checkbox"
                                         name="permissions[{{ $group->getMorphClass() }}:{{ $group->getKey() }}][{{ $ability }}]"
                                         value="1"
-                                        @if (old("permissions.{$group->getMorphClass()}:{$group->getKey()}.$ability", isset($permissions) ? $permissions->group($group)->allows($ability) : in_array($ability, $defaults))) checked @endif
+                                        @checked(old("permissions.{$group->getMorphClass()}:{$group->getKey()}.$ability", isset($permissions) ? $permissions->group($group)->allows($ability) : in_array($ability, $defaults)))
                                         data-implied-by="
                                             @if ($group->isMember()) permissions[group:1][{{ $ability }}] @endif
                                             @if ($group->isCustom()) permissions[group:2][{{ $ability }}] @endif

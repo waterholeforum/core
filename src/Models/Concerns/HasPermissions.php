@@ -4,6 +4,7 @@ namespace Waterhole\Models\Concerns;
 
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Waterhole\Models\Permission;
+use Waterhole\Models\PermissionCollection;
 use Waterhole\Models\User;
 use Waterhole\Scopes\PermittedScope;
 use Waterhole\Waterhole;
@@ -15,7 +16,7 @@ use Waterhole\Waterhole;
  * that can be acted *upon*, rather than models that take the action (users
  * and groups).
  *
- * @property-read \Waterhole\Models\PermissionCollection $permissions
+ * @property-read PermissionCollection $permissions
  */
 trait HasPermissions
 {

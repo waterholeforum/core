@@ -13,7 +13,7 @@ use Intervention\Image\Image as ImageObject;
  * following:
  *
  * - `emoji`, where `value` is an emoji character (eg. `emoji:😊`)
- * - `svg`, where `value` is the name of a Blade Icon (eg. `svg:heroicon-o-heart`)
+ * - `svg`, where `value` is the name of a Blade Icon (eg. `svg:tabler-heart`)
  * - `file`, where `value` is the path to an image file
  *
  * @property string $icon

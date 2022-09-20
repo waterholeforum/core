@@ -4,7 +4,7 @@
             {{ $button }}
         @else
             <span>{{ $label($value) }}</span>
-            <x-waterhole::icon icon="heroicon-s-selector"/>
+            <x-waterhole::icon icon="tabler-selector" class="icon--narrow"/>
         @endisset
     </button>
 
@@ -18,7 +18,7 @@
             >
                 {{ $label($option) }}
                 @if ($value === $option)
-                    <x-waterhole::icon icon="heroicon-s-check" class="menu-item__check"/>
+                    <x-waterhole::icon icon="tabler-check" class="menu-item__check"/>
                 @endif
             </a>
         @endforeach

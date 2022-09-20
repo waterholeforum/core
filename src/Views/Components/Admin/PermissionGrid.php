@@ -7,20 +7,11 @@ use Waterhole\Models\PermissionCollection;
 
 class PermissionGrid extends Component
 {
-    public array $abilities;
-
-    public ?PermissionCollection $permissions;
-
-    public array $defaults;
-
     public function __construct(
-        array $abilities,
-        ?PermissionCollection $permissions,
-        array $defaults = [],
+        public array $abilities,
+        public ?PermissionCollection $permissions,
+        public array $defaults = [],
     ) {
-        $this->abilities = $abilities;
-        $this->permissions = $permissions;
-        $this->defaults = $defaults;
     }
 
     public function render()

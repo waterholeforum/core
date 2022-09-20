@@ -1,5 +1,5 @@
 <x-waterhole::layout :title="$channel->name">
-    <x-waterhole::index>
+    <x-waterhole::index :channel="$channel">
         <x-waterhole::post-feed
             :feed="$feed"
             :channel="$channel"

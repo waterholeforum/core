@@ -13,8 +13,8 @@
         @endphp
 
         @if ($items->isNotEmpty())
-            <x-waterhole::infinite-scroll :paginator="$items" class="comment-feed">
-                <ul role="list" class="stack gap-lg">
+            <x-waterhole::infinite-scroll :paginator="$items">
+                <ul role="list" class="card-list">
                     @foreach ($items as $comment)
                         <li class="card comment-card">
                             <ol class="color-muted text-xs card__header breadcrumb">
@@ -38,7 +38,7 @@
         @else
             <div class="placeholder">
                 <x-waterhole::icon
-                    icon="heroicon-o-chat-alt-2"
+                    icon="tabler-messages"
                     class="placeholder__visual"
                 />
                 <p class="h4">

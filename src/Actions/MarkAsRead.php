@@ -20,7 +20,7 @@ class MarkAsRead extends Action
 
     public function icon(Collection $models): ?string
     {
-        return 'heroicon-s-check';
+        return 'tabler-check';
     }
 
     public function run(Collection $models)

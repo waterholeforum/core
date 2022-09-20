@@ -50,17 +50,21 @@ class RouteServiceProvider extends ServiceProvider
     protected function configureRateLimiting()
     {
         RateLimiter::for('waterhole.create', function (Request $request) {
-            return $request->input('commit')
-                ? Limit::perMinute(config('waterhole.forum.create_per_minute', 3))->by(
-                    $request->user()->id,
-                )
-                : Limit::none();
+            if ($request->user()?->isAdmin() || !$request->input('commit')) {
+                return Limit::none();
+            }
+
+            return Limit::perMinute(config('waterhole.forum.create_per_minute', 3))->by(
+                $request->user()->id,
+            );
         });
 
         RateLimiter::for('waterhole.search', function (Request $request) {
-            return $request->input('q')
-                ? Limit::perMinute(config('waterhole.forum.search_per_minute', 10))
-                : Limit::none();
+            if ($request->user()?->isAdmin() || !$request->input('q')) {
+                return Limit::none();
+            }
+
+            return Limit::perMinute(config('waterhole.forum.search_per_minute', 10));
         });
     }
 }

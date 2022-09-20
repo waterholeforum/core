@@ -1,11 +1,17 @@
 @if ($post->lastComment)
-    <span>{{ __('waterhole::forum.post-activity-replied', [
-        'userName' => $post->lastComment->user?->name ?? 'Anonymous',
-        'date' => $post->last_activity_at,
-    ]) }}</span>
+    <span>
+        <x-waterhole::user-link :user="$post->lastComment->user" class="color-inherit">
+            {{ Waterhole\username($post->lastComment->user) }}
+        </x-waterhole::user-link>
+        {{ __('waterhole::forum.post-activity-replied') }}
+        <x-waterhole::time-ago :datetime="$post->last_activity_at"/>
+    </span>
 @elseif ($post->user)
-    <span>{{ __('waterhole::forum.post-activity-posted', [
-        'userName' => $post->user->name,
-        'date' => $post->created_at,
-    ]) }}</span>
+    <span>
+        <x-waterhole::user-link :user="$post->user" class="color-inherit">
+            {{ Waterhole\username($post->user) }}
+        </x-waterhole::user-link>
+        {{ __('waterhole::forum.post-activity-posted') }}
+        <x-waterhole::time-ago :datetime="$post->created_at"/>
+    </span>
 @endif

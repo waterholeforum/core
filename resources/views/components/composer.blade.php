@@ -36,7 +36,7 @@
             hidden
         ></div>
 
-        <div class="composer__toolbar row gap-xs wrap">
+        <div class="composer__toolbar row gap-xs">
             <button
                 type="button"
                 class="btn btn--transparent btn--icon composer__close"
@@ -44,13 +44,13 @@
                 data-hotkey="Escape"
                 data-hotkey-scope="new-comment"
             >
-                <x-waterhole::icon icon="heroicon-o-chevron-down"/>
+                <x-waterhole::icon icon="tabler-chevron-down"/>
             </button>
 
-            <div class="h5">{{ __('waterhole::forum.create-comment-title') }}</div>
+            <div class="h5 overflow-ellipsis">{{ __('waterhole::forum.create-comment-title') }}</div>
 
             <turbo-frame
-                class="composer__parent"
+                class="composer__parent nowrap"
                 id="@domid($post, 'comment_parent')"
             >
                 @if ($parent)
@@ -65,7 +65,7 @@
                         class="btn btn--small btn--transparent btn--icon"
                         name="parent_id"
                     >
-                        <x-waterhole::icon icon="heroicon-o-x"/>
+                        <x-waterhole::icon icon="tabler-x"/>
                         <ui-tooltip>{{ __('waterhole::forum.composer-clear-reply-button') }}</ui-tooltip>
                     </button>
                 @endif

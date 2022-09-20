@@ -13,9 +13,13 @@
   align-items: baseline;
 
   > .icon {
-    margin-right: 0.2em;
     align-self: center;
     margin-top: -1px;
+    margin-right: 0.2em;
+
+    &:not(:first-child) {
+      margin-left: 0.2em;
+    }
   }
 }
 
@@ -49,6 +53,24 @@
 }
 .push-end {
   margin-inline-start: auto;
+}
+
+@media (max-width: (@breakpoint-xs - 1)) {
+  .order-end-xs {
+    order: 999;
+    width: 100%;
+    flex-grow: 1;
+  }
+}
+
+.overflow-ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.nowrap {
+  white-space: nowrap;
 }
 
 .hide-icon {
@@ -110,7 +132,11 @@
     cursor: default;
   }
 
-  &:not(:disabled, .is-disabled) {
+  .is-inert {
+    cursor: default;
+  }
+
+  &:not(:disabled, .is-disabled, .is-inert) {
     cursor: pointer;
 
     &:is(:hover, .is-hovered, :focus, .is-focused, [aria-selected='true']) {

@@ -1,5 +1,6 @@
 import { Controller } from '@hotwired/stimulus';
 import { FrameElement } from '@hotwired/turbo/dist/types/elements';
+import { PopupElement } from 'inclusive-elements';
 import { htmlToElement } from '../utils';
 
 export default class extends Controller {
@@ -30,6 +31,8 @@ export default class extends Controller {
                 if (alert) {
                     Waterhole.alerts.show(alert, { key: 'notification' });
                 }
+
+                Waterhole.documentTitle.increment();
             }
         );
     }
@@ -38,11 +41,17 @@ export default class extends Controller {
         window.Echo.leave('Waterhole.Models.User.' + Waterhole.userId);
     }
 
-    open() {
+    open(e: MouseEvent) {
         if (this.hasBadgeTarget) {
             this.badgeTarget!.hidden = true;
         }
 
         Waterhole.alerts.dismiss('notification');
+
+        // breakpoint-xs
+        if (window.innerWidth < 576) {
+            window.Turbo.visit((e.currentTarget as HTMLAnchorElement).href);
+            (this.element as PopupElement).open = false;
+        }
     }
 }

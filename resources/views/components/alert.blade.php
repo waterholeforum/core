@@ -1,6 +1,6 @@
 <div {{ $attributes
     ->merge(['role' => 'alert'])
-    ->class(['alert', $type ? "bg-$type" : null]) }}>
+    ->class(['alert', $type ? "alert--$type bg-$type" : null]) }}>
     @if ($icon)
         <div class="alert__icon">
             <x-waterhole::icon :icon="$icon"/>
@@ -21,7 +21,7 @@
                     data-action="alerts#dismiss"
                     type="button"
                 >
-                    <x-waterhole::icon icon="heroicon-s-x"/>
+                    <x-waterhole::icon icon="tabler-x"/>
                 </button>
             @endif
         </div>

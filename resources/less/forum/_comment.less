@@ -19,8 +19,10 @@
     margin-left: var(--space-xxs);
   }
 
-  &.is-highlighted {
-    background: var(--color-attention);
+  &.is-highlighted,
+  :focus > &,
+  :target > & {
+    background: var(--color-attention-light);
   }
 
   &.is-new {

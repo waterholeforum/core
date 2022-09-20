@@ -27,7 +27,7 @@ class Unfollow extends Action
 
     public function icon(Collection $models): string
     {
-        return 'heroicon-o-x-circle';
+        return 'tabler-circle-x';
     }
 
     public function run(Collection $models)

@@ -27,11 +27,14 @@ class ViewServiceProvider extends ServiceProvider
     {
         /**
          * The `@components` directive loops through an array of components and
-         * renders them, optionally passing in data. Components can be any of:
+         * renders them, optionally passing in data. A component can be any of:
          *
          * - An `Illuminate\View\Component` instance
          * - The name of a `Illuminate\View\Component` class
-         * - The name of a view
+         * - The name of an anonymous component view
+         * - `null`, in which case the directive will yield a section named
+         *   with the corresponding key
+         * - A closure that receives the data and returns any of the above
          *
          * If a component/view can't be found, and debug mode is on, a warning
          * will be logged to the browser console.
@@ -42,23 +45,16 @@ class ViewServiceProvider extends ServiceProvider
                 : [$expression, ''];
 
             return implode("\n", [
-                '<?php foreach (' . $components . ' as $component): ?>',
-                '<?php unset($instance); ?>',
-                '<?php if ($component instanceof Closure): ?>',
-                '<?php $component = $component(' . $data . '); ?>',
-                '<?php endif; ?>',
-                '<?php if ($component instanceof Illuminate\View\Component): ?>',
-                '<?php $instance = $component; ?>',
-                '<?php elseif (class_exists($component)): ?>',
-                '<?php $instance = $__env->getContainer()->make($component, ' .
+                '<?php $_components = ' . $components . '; ?>',
+                '<?php foreach (Waterhole\build_components($_components, ' .
                 ($data ?: '[]') .
-                '); ?>',
-                '<?php elseif ($__env->getContainer()->make(Illuminate\View\Factory::class)->exists($component)): ?>',
-                '<?php $instance = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, [\'view\' => $component, \'data\' => ' .
-                ($data ?: '[]') .
-                ']); ?>',
-                '<?php elseif (config(\'app.debug\')): ?>',
-                '<script>console.warn(\'Component [<?php echo e(addslashes($component)); ?>] not found\')</script>',
+                ') as $key => $instance): ?>',
+                '<?php if ($instance === null && !is_numeric($key)): ?>',
+                '<?php echo $__env->yieldContent($key); ?>',
+                '<?php elseif (!$instance && config(\'app.debug\')): ?>',
+                '<script>console.warn(\'Component [<?php echo e(addslashes($_components[$key])); ?>] not found in ' .
+                e($components) .
+                '\')</script>',
                 '<?php endif; ?>',
                 '<?php if (isset($instance) && $instance->shouldRender()): ?>',
                 '<?php $__env->startComponent($instance->resolveView(), $instance->data()); ?>',

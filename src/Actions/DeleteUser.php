@@ -11,7 +11,6 @@ use Waterhole\Models\User;
 class DeleteUser extends Action
 {
     public bool $confirm = true;
-
     public bool $destructive = true;
 
     public function appliesTo(Model $model): bool
@@ -21,10 +20,7 @@ class DeleteUser extends Action
 
     public function authorize(?User $user, Model $model): bool
     {
-        return $user &&
-            $user->can('user.delete', $model) &&
-            $user->isNot($model) &&
-            !$model->isRootAdmin();
+        return $user && $user->can('user.delete', $model) && $user->isNot($model);
     }
 
     public function label(Collection $models): string
@@ -34,7 +30,7 @@ class DeleteUser extends Action
 
     public function icon(Collection $models): string
     {
-        return 'heroicon-o-trash';
+        return 'tabler-trash';
     }
 
     public function confirm(Collection $models): View

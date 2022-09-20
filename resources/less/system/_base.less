@@ -4,11 +4,14 @@ html {
   font-family: var(--font-text);
   font-size: 100%;
   line-height: var(--line-height-default);
-  scroll-padding-top: var(--header-height);
 
   @media (max-width: @breakpoint-xs) {
     font-size: 90%;
   }
+}
+
+[id] {
+  scroll-margin-top: var(--header-height);
 }
 
 a,
@@ -115,4 +118,37 @@ ui-popup > :nth-child(2) {
 }
 [data-placement^='right'] {
   margin-left: 6px;
+}
+
+// TODO these classes suck
+@media (max-width: (@breakpoint-xs - 1)) {
+  .hide-xs {
+    display: none !important;
+  }
+}
+
+@media (min-width: @breakpoint-sm) and (max-width: (@breakpoint-md - 1)) {
+  .hide-md {
+    display: none !important;
+  }
+}
+
+@media (min-width: @breakpoint-md) and (max-width: (@breakpoint-lg - 1)) {
+  .hide-lg {
+    display: none !important;
+  }
+}
+
+[class*='icon-tabler-lock'] circle {
+  display: none;
+}
+
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 0.3em 0.1em;
+  border-radius: 100%;
+  background: currentColor;
+  vertical-align: -5px;
 }

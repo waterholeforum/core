@@ -1,16 +1,16 @@
 <ui-popup {{ $attributes->merge(['placement' => 'bottom-start']) }}>
     <button type="button" class="{{ $buttonClass }} {{ $followable->isFollowed() ? 'bg-attention-light color-attention' : '' }}">
         @if ($followable->isFollowed())
-            <x-waterhole::icon icon="heroicon-o-bell"/>
+            <x-waterhole::icon icon="tabler-bell"/>
             <span>{{ __('waterhole::forum.follow-button-following') }}</span>
         @elseif ($followable->isIgnored())
-            <x-waterhole::icon icon="heroicon-o-volume-off"/>
+            <x-waterhole::icon icon="tabler-volume-3"/>
             <span>{{ __('waterhole::forum.follow-button-ignored') }}</span>
         @else
-            <x-waterhole::icon icon="heroicon-o-bell"/>
+            <x-waterhole::icon icon="tabler-bell"/>
             <span>{{ __('waterhole::forum.follow-button') }}</span>
         @endif
-        <x-waterhole::icon icon="heroicon-s-chevron-down"/>
+        <x-waterhole::icon icon="tabler-chevron-down"/>
     </button>
 
     <ui-menu class="menu" hidden>
@@ -20,7 +20,7 @@
                 name="action_class"
                 :value="Waterhole\Actions\Unfollow::class"
                 :active="!$followable->isFollowed() && !$followable->isIgnored()"
-                icon="heroicon-o-at-symbol"
+                icon="tabler-at"
                 :label="__($localePrefix.'-default-notifications-title')"
                 :description="__($localePrefix.'-default-notifications-description')"
             />
@@ -30,7 +30,7 @@
                 name="action_class"
                 :value="Waterhole\Actions\Follow::class"
                 :active="$followable->isFollowed()"
-                icon="heroicon-o-bell"
+                icon="tabler-bell"
                 :label="__($localePrefix.'-follow-title')"
                 :description="__($localePrefix.'-follow-description')"
             />
@@ -40,7 +40,7 @@
                 name="action_class"
                 :value="Waterhole\Actions\Ignore::class"
                 :active="$followable->isIgnored()"
-                icon="heroicon-o-volume-off"
+                icon="tabler-volume-3"
                 :label="__($localePrefix.'-ignore-title')"
                 :description="__($localePrefix.'-ignore-description')"
             />

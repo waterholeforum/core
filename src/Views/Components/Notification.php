@@ -7,11 +7,8 @@ use Waterhole\Models\Notification as NotificationModel;
 
 class Notification extends Component
 {
-    public NotificationModel $notification;
-
-    public function __construct(NotificationModel $notification)
+    public function __construct(public NotificationModel $notification)
     {
-        $this->notification = $notification;
     }
 
     public function shouldRender()

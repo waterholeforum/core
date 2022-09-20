@@ -13,7 +13,7 @@
                 data-color-picker-target="swatch"
             ></span>
         </span>
-        
+
         <input
             type="text"
             name="{{ $name }}"

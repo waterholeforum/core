@@ -5,14 +5,14 @@ use Waterhole\Models\Channel;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
 
-Broadcast::channel('Waterhole.Models.User.{id}', function (User $user, int $id) {
-    return $user->id === $id;
+Broadcast::channel(User::class, function (User $actor, User $user) {
+    return $actor->id === $user->id;
 });
 
-Broadcast::channel('Waterhole.Models.Channel.{id}', function (User $user, int $id) {
-    return (bool) Channel::find($id);
+Broadcast::channel(Channel::class, function (User $user, Channel $channel) {
+    return $channel->exists();
 });
 
-Broadcast::channel('Waterhole.Models.Post.{id}', function (User $user, int $id) {
-    return (bool) Post::find($id);
+Broadcast::channel(Post::class, function (User $user, Post $post) {
+    return $post->exists();
 });

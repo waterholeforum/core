@@ -1,4 +1,4 @@
-@guest
+<div class="row">
     <a
         href="{{ route('waterhole.login') }}"
         class="btn btn--transparent btn--narrow color-accent"
@@ -8,4 +8,4 @@
         href="{{ route('waterhole.register') }}"
         class="btn btn--transparent btn--narrow color-accent"
     >{{ __('waterhole::header.register') }}</a>
-@endguest
+</div>

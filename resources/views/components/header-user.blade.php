@@ -1,5 +1,5 @@
 @auth
-    <ui-popup placement="bottom-end" style="margin-left: var(--space-xs)">
+    <ui-popup placement="bottom-end" style="margin-inline: var(--space-xs)">
         <a href="{{ Auth::user()->url }}" class="btn btn--icon">
             <x-waterhole::avatar :user="Auth::user()"/>
             <ui-tooltip>{{ Auth::user()->name }}</ui-tooltip>
@@ -14,7 +14,7 @@
             <form action="{{ route('waterhole.logout') }}" method="POST" data-turbo="false">
                 @csrf
                 <x-waterhole::menu-item
-                    icon="heroicon-o-logout"
+                    icon="tabler-logout"
                     :label="__('waterhole::user.log-out-link')"
                 />
             </form>

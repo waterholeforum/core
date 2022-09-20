@@ -17,7 +17,7 @@ AdminNav::add(
     'dashboard',
     new NavLink(
         label: __('waterhole::admin.dashboard-title'),
-        icon: 'heroicon-o-chart-square-bar',
+        icon: 'tabler-report-analytics',
         route: 'waterhole.admin.dashboard',
     ),
 );
@@ -26,8 +26,9 @@ AdminNav::add(
     'structure',
     new NavLink(
         label: __('waterhole::admin.structure-title'),
-        icon: 'heroicon-o-collection',
+        icon: 'tabler-layout-list',
         route: 'waterhole.admin.structure',
+        active: fn() => request()->routeIs('waterhole.admin.structure*'),
     ),
 );
 
@@ -35,7 +36,7 @@ AdminNav::add(
     'users',
     new NavLink(
         label: __('waterhole::admin.users-title'),
-        icon: 'heroicon-o-user',
+        icon: 'tabler-user',
         route: 'waterhole.admin.users.index',
         active: fn() => request()->routeIs('waterhole.admin.users*'),
     ),
@@ -45,7 +46,7 @@ AdminNav::add(
     'groups',
     new NavLink(
         label: __('waterhole::admin.groups-title'),
-        icon: 'heroicon-o-user-group',
+        icon: 'tabler-users',
         route: 'waterhole.admin.groups.index',
         active: fn() => request()->routeIs('waterhole.admin.groups*'),
     ),

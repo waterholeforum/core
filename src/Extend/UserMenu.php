@@ -18,7 +18,7 @@ abstract class UserMenu
 UserMenu::add(
     'profile',
     new MenuItem(
-        icon: 'heroicon-o-user',
+        icon: 'tabler-user',
         label: __('waterhole::user.profile-link'),
         href: Auth::user()->url,
     ),
@@ -27,7 +27,7 @@ UserMenu::add(
 UserMenu::add(
     'preferences',
     new MenuItem(
-        icon: 'heroicon-o-adjustments',
+        icon: 'tabler-settings',
         label: __('waterhole::user.preferences-link'),
         href: route('waterhole.preferences'),
     ),
@@ -39,7 +39,7 @@ if (Auth::user()->can('administrate')) {
     UserMenu::add(
         'administration',
         new MenuItem(
-            icon: 'heroicon-o-cog',
+            icon: 'tabler-tool',
             label: __('waterhole::user.administration-link'),
             href: route('waterhole.admin.dashboard'),
         ),

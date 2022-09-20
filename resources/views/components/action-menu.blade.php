@@ -14,7 +14,7 @@
                     type="button"
                     {{ (new Illuminate\View\ComponentAttributeBag($buttonAttributes))->class('btn btn--icon btn--transparent text-xs') }}
                 >
-                    <x-waterhole::icon icon="heroicon-o-dots-horizontal"/>
+                    <x-waterhole::icon icon="tabler-dots"/>
                 </button>
             @endif
             <ui-menu class="menu" hidden>

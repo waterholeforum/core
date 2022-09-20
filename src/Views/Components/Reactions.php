@@ -10,11 +10,8 @@ class Reactions extends Component
 {
     use Streamable;
 
-    public Model $model;
-
-    public function __construct(Model $model)
+    public function __construct(public Model $model)
     {
-        $this->model = $model;
     }
 
     public function render()

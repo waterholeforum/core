@@ -10,11 +10,11 @@
     target="_top"
 >
     <x-waterhole::icon :icon="$notification->template->icon()"/>
-    <span style="min-width: 0">
-        {{ Illuminate\Mail\Markdown::parse($notification->template->title()) }}
+    <span class="shrink">
+        {{ Waterhole\emojify(Illuminate\Mail\Markdown::parse($notification->template->title())) }}
         <span class="menu-item__description">
             <x-waterhole::user-label :user="$notification->template->sender()"/> ·
-            {{ strip_tags($notification->template->excerpt()) }}
+            {{ Waterhole\emojify(strip_tags($notification->template->excerpt())) }}
         </span>
     </span>
 </a>

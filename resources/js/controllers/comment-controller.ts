@@ -12,6 +12,12 @@ export default class extends Controller {
 
     parentTooltipTarget?: TooltipElement;
 
+    // connect() {
+    //     if (window.location.hash.replace('#comment_', '') === this.commentId) {
+    //         this.element.classList.add('is-highlighted');
+    //     }
+    // }
+
     get commentId(): string {
         return this.element.getAttribute('data-comment-id') || '';
     }

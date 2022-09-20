@@ -30,7 +30,7 @@ class DeletePost extends Action
 
     public function icon(Collection $models): string
     {
-        return 'heroicon-o-trash';
+        return 'tabler-trash';
     }
 
     public function confirm(Collection $models): string

@@ -16,7 +16,7 @@
         <x-waterhole::composer
             :post="$post"
             :parent="$parent"
-            class="is-open"
+            class="is-open is-static"
         />
     </div>
 </x-waterhole::layout>

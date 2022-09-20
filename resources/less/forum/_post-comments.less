@@ -2,25 +2,19 @@
   margin-top: var(--space-lg);
 }
 
-.post-page .composer,
-.composer-area {
-  margin-right: ~'calc(20ch + var(--space-xxl))';
-}
-
 .composer {
-  --height-transition-duration: 0s;
   border-radius: var(--radius);
   background: var(--color-bg);
   transition: box-shadow 0.2s, border 0.2s, height var(--height-transition-duration), bottom 0.2s;
   display: flex;
   flex-direction: column;
   max-height: 90vh;
+  position: sticky;
+  --height-transition-duration: 0.2s;
 
-  &.can-sticky {
-    position: sticky;
-  }
-
-  &:not(.can-sticky) {
+  &.is-static {
+    position: static;
+    --height-transition-duration: 0s;
     height: 70vh !important;
 
     .composer__close {
@@ -35,7 +29,6 @@
   }
 
   &:not(.is-open) {
-    --height-transition-duration: 0.2s;
     height: 4.75em !important; // override user resizing
     bottom: -4.75em;
   }
@@ -54,7 +47,11 @@
     }
   }
 
-  &.is-sticky {
+  &.is-resizing {
+    --height-transition-duration: 0s;
+  }
+
+  &.is-stuck {
     border-color: transparent;
     box-shadow: var(--focus-shadow), var(--shadow-md);
     padding-bottom: var(--radius);
@@ -128,5 +125,12 @@
 
   a {
     color: inherit;
+  }
+}
+
+@media (min-width: (@breakpoint-sm + 1)) {
+  .post-page .composer,
+  .composer-area {
+    margin-right: ~'calc(20ch + var(--space-xxl))';
   }
 }

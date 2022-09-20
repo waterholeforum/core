@@ -7,11 +7,13 @@ use Waterhole\Models\Model;
 
 class ReactionsCondensed extends Component
 {
-    public Model $model;
-
-    public function __construct(Model $model)
+    public function __construct(public Model $model)
     {
-        $this->model = $model;
+    }
+
+    public function shouldRender()
+    {
+        return (bool) $this->model->score;
     }
 
     public function render()

@@ -122,5 +122,5 @@ Route::get('user-lookup', UserLookupController::class)->name('user-lookup');
 Route::post('format', FormatController::class)->name('format');
 
 if (config('app.debug')) {
-    Route::get('kitchen-sink', fn() => view('waterhole::kitchen-sink'))->name('kitchen-sink');
+    Route::view('kitchen-sink', 'waterhole::kitchen-sink')->name('kitchen-sink');
 }

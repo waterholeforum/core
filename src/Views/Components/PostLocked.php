@@ -7,11 +7,8 @@ use Waterhole\Models\Post;
 
 class PostLocked extends Component
 {
-    public Post $post;
-
-    public function __construct(Post $post)
+    public function __construct(public Post $post)
     {
-        $this->post = $post;
     }
 
     public function shouldRender()

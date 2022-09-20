@@ -4,38 +4,28 @@ namespace Waterhole\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Neves\Events\Contracts\TransactionalEvent;
+use Waterhole\Models\Channel as ChannelModel;
 use Waterhole\Models\Post;
-
-use function Tonysm\TurboLaravel\dom_id;
 
 class NewPost implements ShouldBroadcast, TransactionalEvent
 {
     use Dispatchable;
     use InteractsWithSockets;
 
-    protected Post $post;
-
-    public function __construct(Post $post)
+    public function __construct(protected Post $post)
     {
-        $this->post = $post;
     }
 
     public function broadcastOn()
     {
-        return [
-            // TODO: private channel depending on permissions
-            new Channel('Waterhole.Models.Channel.' . $this->post->channel->id),
-        ];
-    }
+        $class = in_array($this->post->channel->id, ChannelModel::allPermitted(null))
+            ? Channel::class
+            : PrivateChannel::class;
 
-    public function broadcastWith(): array
-    {
-        return [
-            'url' => $this->post->url,
-            'dom_id' => dom_id($this->post),
-        ];
+        return new $class($this->post->channel->broadcastChannel());
     }
 }

@@ -36,7 +36,7 @@ class Like extends Action
 
     public function icon(Collection $models): string
     {
-        return 'heroicon-o-thumb-up';
+        return 'tabler-thumb-up';
     }
 
     public function run(Collection $models)

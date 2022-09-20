@@ -8,8 +8,8 @@ use Illuminate\View\Component;
 class Alert extends Component
 {
     public const ICONS = [
-        'success' => 'heroicon-o-check',
-        'danger' => 'heroicon-o-exclamation-circle',
+        'success' => 'tabler-check',
+        'danger' => 'tabler-alert-circle',
     ];
 
     public string|HtmlString $slot;

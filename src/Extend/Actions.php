@@ -60,6 +60,7 @@ Actions::add('follow', Waterhole\Actions\Follow::class);
 Actions::add('unfollow', Waterhole\Actions\Unfollow::class);
 Actions::add('ignore', Waterhole\Actions\Ignore::class);
 Actions::add('unignore', Waterhole\Actions\Unignore::class);
+Actions::add('delete-self', Waterhole\Actions\DeleteSelf::class);
 
 // Divider
 Actions::add('divider', Waterhole\Views\Components\MenuDivider::class);

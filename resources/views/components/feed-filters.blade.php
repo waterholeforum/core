@@ -22,7 +22,7 @@
         >
             <x-slot name="button">
                 <x-waterhole::icon
-                    icon="heroicon-s-dots-horizontal"
+                    icon="tabler-dots"
                     :aria-label="__('waterhole::system.more-button')"
                 />
             </x-slot>

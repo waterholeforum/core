@@ -28,7 +28,7 @@ class Unlock extends Action
 
     public function icon(Collection $models): string
     {
-        return 'heroicon-o-lock-open';
+        return 'tabler-lock-open';
     }
 
     public function run(Collection $models)

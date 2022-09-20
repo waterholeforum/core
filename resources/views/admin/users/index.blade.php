@@ -9,15 +9,15 @@
             <div class="grow"></div>
 
             <form
-                class="combobox"
+                class="combobox order-end-xs"
                 data-controller="filter-input"
                 data-turbo-action="replace"
                 data-turbo-frame="users_frame"
             >
                 <div class="input-container">
                     <x-waterhole::icon
-                        icon="heroicon-o-search"
-                        class="pointer-events-none"
+                        icon="tabler-search"
+                        class="no-pointer color-muted"
                     />
                     <input
                         class="input"
@@ -69,14 +69,14 @@
             </form>
 
             <a href="{{ route('waterhole.admin.users.create') }}" type="button" class="btn bg-accent">
-                <x-waterhole::icon icon="heroicon-s-plus"/>
+                <x-waterhole::icon icon="tabler-plus"/>
                 <span>{{ __('waterhole::admin.create-user-button') }}</span>
             </a>
         </div>
 
         <turbo-frame id="users_frame" target="_top" class="stack gap-md">
             @if ($users->isNotEmpty())
-                <div class="table-container full-width" style="overflow: visible">
+                <div class="table-container full-width">
                     <table class="table">
                         <thead>
                             <tr>
@@ -96,7 +96,7 @@
                                                     {{ __('waterhole::admin.users-'.str_replace('_', '-', $column).'-column') }}
                                                 </span>
                                                 @if ($sort === $column)
-                                                    <x-waterhole::icon :icon="'heroicon-s-chevron-'.($direction === 'asc' ? 'up' : 'down')"/>
+                                                    <x-waterhole::icon :icon="'tabler-chevron-'.($direction === 'asc' ? 'up' : 'down')"/>
                                                 @endif
                                             </a>
                                         @else
@@ -127,9 +127,11 @@
                                         <a href="mailto:{{ $user->email }}">{{ Str::limit($user->email, 20) }}</a>
                                     </td>
                                     <td>
-                                        @foreach ($user->groups as $group)
-                                            <x-waterhole::group-label :group="$group"/>
-                                        @endforeach
+                                        <div class="row wrap gap-xxs">
+                                            @foreach ($user->groups as $group)
+                                                <x-waterhole::group-label :group="$group"/>
+                                            @endforeach
+                                        </div>
                                     </td>
                                     <td>
                                         {{ Waterhole\time_ago($user->created_at) }}
@@ -157,7 +159,7 @@
                 <div class="placeholder card">
                     <x-waterhole::icon
                         class="placeholder__visual"
-                        icon="heroicon-o-search"
+                        icon="tabler-search"
                     />
                     <h3>{{ __('waterhole::admin.users-empty-message') }}</h3>
                 </div>

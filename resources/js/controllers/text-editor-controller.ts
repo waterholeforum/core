@@ -4,7 +4,7 @@ import { ActionEvent, Controller } from '@hotwired/stimulus';
 import TextareaEditor from 'textarea-editor';
 
 export default class extends Controller {
-    static targets = ['input', 'preview', 'toolbar', 'previewButton', 'expander'];
+    static targets = ['input', 'preview', 'previewButton', 'expander', 'hotkeyLabel'];
 
     inputTarget?: HTMLTextAreaElement;
     previewTarget?: HTMLDivElement;
@@ -75,6 +75,20 @@ export default class extends Controller {
                 event.detail.value = '@' + item.getAttribute('data-value');
             }) as EventListener);
         }
+    }
+
+    hotkeyLabelTargetConnected(element: HTMLElement) {
+        const mac = navigator.userAgent.match(/Macintosh/);
+        element.innerText = element.innerText
+            .split('+')
+            .map((part) => {
+                if (part === 'Meta') return mac ? '⌘' : 'Ctrl';
+                if (part === 'Shift' && mac) return '⇧';
+                if (part === 'Alt' && mac) return '⌥';
+                if (part.length === 1) return part.toUpperCase();
+                return part;
+            })
+            .join(mac ? '' : '-');
     }
 
     format(e: ActionEvent) {

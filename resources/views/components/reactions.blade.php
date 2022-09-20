@@ -8,18 +8,19 @@
             <{{ $component->isAuthorized ? 'button type="submit"' : 'span' }} {{ $attributes->class([
                 'btn btn--small btn--outline',
                 'is-active' => $model->likedBy->contains(Auth::id()),
+                'is-inert' => !$component->isAuthorized,
             ]) }}>
                 <x-waterhole::icon icon="emoji:👍"/>
                 <span>{{ $model->score }}</span>
 
                 <ui-tooltip tooltip-class="tooltip tooltip--block">
-                    <strong>Like</strong>
+                    <strong>{{ __('waterhole::forum.reaction-like') }}</strong>
                     <ul role="list">
                         @foreach ($model->likedBy->take(20) as $user)
                             <li>{{ $user->name }}</li>
                         @endforeach
                         @if ($model->likedBy->count() > 20)
-                            <li>{{ $model->likedBy->count() - 20 }} others</li>
+                            <li>{{ __('waterhole::system.user-list-overflow', ['count' => $model->likedBy->count() - 20]) }}</li>
                         @endif
                     </ul>
                 </ui-tooltip>

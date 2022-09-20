@@ -1,33 +1,18 @@
 import { Controller } from '@hotwired/stimulus';
 import { renderStreamMessage } from '@hotwired/turbo';
-import { FrameElement, StreamElement } from '@hotwired/turbo/dist/types/elements';
+import { StreamElement } from '@hotwired/turbo/dist/types/elements';
 
 export default class extends Controller {
-    static targets = ['post', 'bottom'];
+    static targets = ['post'];
 
     static values = {
         id: Number,
     };
 
     postTarget?: HTMLElement;
-    bottomTarget?: HTMLElement;
     idValue?: number;
 
     connect() {
-        if (this.idValue) {
-            window.Echo.channel(`Waterhole.Models.Post.${this.idValue}`).listen(
-                'NewComment',
-                (data: any) => {
-                    if (this.bottomTarget) {
-                        const frame = document.createElement('turbo-frame') as FrameElement;
-                        frame.id = data.dom_id;
-                        frame.src = data.url;
-                        this.bottomTarget.before(frame);
-                    }
-                }
-            );
-        }
-
         document.addEventListener('turbo:before-stream-render', this.beforeStreamRender);
         document.addEventListener('turbo:frame-render', this.showPostOnFirstPage);
     }

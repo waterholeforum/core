@@ -14,7 +14,7 @@
     <form
         method="POST"
         action="{{ isset($heading) ? route('waterhole.admin.structure.headings.update', compact('heading')) : route('waterhole.admin.structure.headings.store') }}"
-        class="card"
+        class="card card__body"
     >
         @csrf
         @if (isset($heading)) @method('PATCH') @endif

@@ -7,22 +7,27 @@
         <div class="stack gap-xxxl">
             <div
                 @if (!$comments->onFirstPage()) hidden @endif
-                data-post-page-target="post"
+            data-post-page-target="post"
             >
                 <x-waterhole::post-full :post="$post"/>
             </div>
 
-            <section
-                class="post-page__comments with-sidebar"
-                id="comments"
-                tabindex="-1"
-            >
+            <section class="post-page__comments with-sidebar">
                 <div class="stack gap-lg">
-                    <h2 class="h3">
-                        {{ __('waterhole::forum.post-comment-count', ['count' => $post->comment_count]) }}
+
+                    <h2
+                        class="h3"
+                        id="comments"
+                        style="padding-top: var(--space-lg); margin-top: calc(-1 * var(--space-lg))"
+                    >
+                        <x-waterhole::post-comments-heading :post="$post"/>
                     </h2>
 
-                    <x-waterhole::infinite-scroll :paginator="$comments" divider endless>
+                    <x-waterhole::infinite-scroll
+                        :paginator="$comments"
+                        divider
+                        endless
+                    >
                         @foreach ($comments as $i => $comment)
                             @if ($lastReadAt && $comment->created_at > $lastReadAt)
                                 @once
@@ -34,7 +39,8 @@
                                 @endonce
                             @endif
 
-                            <turbo-frame id="@domid($comment)">
+
+                            <turbo-frame id="@domid($comment)" data-controller="scroll-into-view">
                                 <x-waterhole::comment-full
                                     :comment="$comment"
                                     :data-index="$comments->firstItem() - 1 + $i"
@@ -45,7 +51,6 @@
                         @if (!$comments->hasMorePages())
                             <div
                                 class="stack gap-md"
-                                data-post-page-target="bottom"
                                 id="bottom"
                                 tabindex="-1"
                             >
@@ -55,23 +60,30 @@
                     </x-waterhole::infinite-scroll>
                 </div>
 
-                <div class="sidebar sidebar--sticky overflow-visible">
-                    <div class="stack gap-lg">
-                        <x-waterhole::follow-button :followable="$post"/>
+                <div
+                    class="sidebar sidebar--sticky sidebar--bottom overflow-visible stack gap-lg"
+                    data-controller="watch-sticky"
+                >
+                    <x-waterhole::follow-button :followable="$post"/>
 
-                        @if ($comments->total())
-                            <nav class="ruler tabs" data-controller="scrollspy">
-                                <a
-                                    class="tab with-icon"
-                                    href="{{ $post->url }}#top"
-                                >
-                                    <x-waterhole::icon
-                                        icon="heroicon-s-chevron-double-up"
-                                        class="text-xs icon--narrow"
-                                    />
-                                    <span>{{ __('waterhole::system.pagination-first-link') }}</span>
-                                </a>
+                    @if ($comments->total())
+                        <nav class="ruler tabs" data-controller="scrollspy">
+                            <a
+                                class="tab with-icon"
+                                href="{{ $post->url }}#top"
+                            >
+                                <x-waterhole::icon
+                                    icon="tabler-chevrons-up"
+                                    class="text-xs icon--narrow"
+                                />
+                                <span class="hide-xs">{{ __('waterhole::system.pagination-first-link') }}</span>
+                            </a>
 
+                            <div
+                                class="scrollable stack ruler__pages"
+                                style="max-height: 20rem"
+                                data-scrollspy-target="container"
+                            >
                                 @for ($page = 1; $page <= $comments->lastPage(); $page++)
                                     <a
                                         class="tab"
@@ -86,20 +98,20 @@
                                         >{{ __('waterhole::forum.comments-unread-link') }}</a>
                                     @endif
                                 @endfor
+                            </div>
 
-                                <a
-                                    class="tab with-icon"
-                                    href="{{ $comments->fragment('bottom')->url($comments->lastPage()) }}"
-                                >
-                                    <x-waterhole::icon
-                                        icon="heroicon-s-chevron-double-down"
-                                        class="text-xs icon--narrow"
-                                    />
-                                    <span>{{ __('waterhole::system.pagination-last-link') }}</span>
-                                </a>
-                            </nav>
-                        @endif
-                    </div>
+                            <a
+                                class="tab with-icon"
+                                href="{{ $comments->fragment('bottom')->url($comments->lastPage()) }}"
+                            >
+                                <x-waterhole::icon
+                                    icon="tabler-chevrons-down"
+                                    class="text-xs icon--narrow"
+                                />
+                                <span class="hide-xs">{{ __('waterhole::system.pagination-last-link') }}</span>
+                            </a>
+                        </nav>
+                    @endif
                 </div>
             </section>
         </div>
@@ -107,9 +119,13 @@
         @can('post.comment', $post)
             <x-waterhole::composer
                 :post="$post"
-                class="can-sticky"
                 data-turbo-permanent
             />
         @endcan
     </div>
+
+    <x-turbo-stream-from
+        :source="$post"
+        :type="in_array($post->channel->id, Waterhole\Models\Channel::allPermitted(null)) ? 'channel' : 'private'"
+    />
 </x-waterhole::layout>

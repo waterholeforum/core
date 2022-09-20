@@ -23,12 +23,12 @@
   // Accent color
   --accent-h: 250;
   --accent-s: 100%;
-  --accent-l: 60%;
+  --accent-l: 65%;
   --accent-hsl: var(--accent-h), var(--accent-s), var(--accent-l);
 
   --color-accent: ~'hsl(var(--accent-hsl))';
-  --color-accent-contrast: #fff;
-  //--color-accent-light: ~"hsla(var(--accent-hsl), 0.2)";
+  --color-accent-contrast: var(--color-bg);
+  //--color-accent-light: ~'hsla(var(--accent-hsl), 0.15)';
   --color-accent-light: #08ffe7;
 
   // Emphasis color
@@ -38,22 +38,22 @@
   // Danger color
   --color-danger: #c40000;
   --color-danger-contrast: var(--color-bg);
-  --color-danger-light: #e8560033;
+  --color-danger-light: #c4000033;
 
   // Attention color
-  --color-attention: #da8e00;
+  --color-attention: hsl(50, 100%, 40%);
   --color-attention-contrast: var(--color-bg);
-  --color-attention-light: ~'hsla(60, 100%, 50%, .2)';
+  --color-attention-light: hsla(60, 100%, 50%, 0.2);
 
   // Success color
   --color-success: #008a10;
   --color-success-contrast: var(--color-bg);
-  --color-success-light: #32b64333;
+  --color-success-light: #008a1033;
 
   // Activity color
   --color-activity: #d25000;
   --color-activity-contrast: var(--color-bg);
-  --color-activity-light: #ff680022;
+  --color-activity-light: #d2500022;
 
   // Border radius
   --radius: 10px;
@@ -132,9 +132,7 @@
   --color-text: #eee;
   --color-muted: ~'hsl(var(--base-h), calc(var(--base-s) / 2), 60%)';
 
-  --accent-l: 75%;
-  --color-accent-contrast: #222;
-  --color-accent-light: #004146;
+  --color-accent-light: #00292c;
 
   --shadow-sm: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 1px 4px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 5px 15px rgba(0, 0, 0, 0.2);

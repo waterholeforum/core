@@ -7,14 +7,8 @@ use Waterhole\Models\Post;
 
 class PostReplies extends Component
 {
-    public Post $post;
-
-    public bool $interactive;
-
-    public function __construct(Post $post, bool $interactive = false)
+    public function __construct(public Post $post)
     {
-        $this->post = $post;
-        $this->interactive = $interactive;
     }
 
     public function render()

@@ -15,7 +15,7 @@
         @endphp
 
         @if ($items->isNotEmpty())
-            <x-waterhole::infinite-scroll :paginator="$items" class="post-feed">
+            <x-waterhole::infinite-scroll :paginator="$items">
                 <div class="post-{{ $posts->currentLayout() }}">
                     @foreach ($items as $post)
                         <x-dynamic-component
@@ -28,7 +28,7 @@
         @else
             <div class="placeholder">
                 <x-waterhole::icon
-                    icon="heroicon-o-chat-alt-2"
+                    icon="tabler-messages"
                     class="placeholder__visual"
                 />
                 <p class="h4">

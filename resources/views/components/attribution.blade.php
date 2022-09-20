@@ -2,7 +2,14 @@
     <span class="attribution__user">
         <x-waterhole::user-link :user="$user" class="attribution__name">
             <x-waterhole::avatar :user="$user"/>
-            <span>{{ $user?->name ?? 'Anonymous' }}</span>
+
+            @if ($user?->isOnline())
+                <span class="dot bg-success">
+                    <ui-tooltip>{{ __('waterhole::user.online-label') }}</ui-tooltip>
+                </span>
+            @endif
+
+            <span>{{ Waterhole\username($user) }}</span>
         </x-waterhole::user-link>
 
         @foreach ($user->groups ?? [] as $group)

@@ -1,6 +1,11 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
+    static targets = ['container'];
+
+    containerTarget?: HTMLElement;
+    current?: HTMLElement;
+
     connect() {
         this.onScroll();
 
@@ -22,6 +27,20 @@ export default class extends Controller {
             const el = document.getElementById(id);
             if (el && el.getBoundingClientRect().top < window.innerHeight / 2) {
                 a.setAttribute('aria-current', 'page');
+
+                if (this.current !== a) {
+                    this.containerTarget?.scroll({
+                        top:
+                            a.offsetTop +
+                            a.offsetHeight / 2 -
+                            this.containerTarget.offsetHeight / 2,
+                        left:
+                            a.offsetLeft + a.offsetWidth / 2 - this.containerTarget.offsetWidth / 2,
+                        behavior: this.current ? 'smooth' : 'auto',
+                    });
+                }
+
+                this.current = a;
                 return true;
             }
         });

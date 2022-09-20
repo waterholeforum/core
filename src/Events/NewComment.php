@@ -4,39 +4,44 @@ namespace Waterhole\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Neves\Events\Contracts\TransactionalEvent;
+use Waterhole\Models\Channel as ChannelModel;
 use Waterhole\Models\Comment;
-
-use function Tonysm\TurboLaravel\dom_id;
+use Waterhole\Views\Components\CommentFrame;
+use Waterhole\Views\Components\PostCommentsHeading;
+use Waterhole\Views\TurboStream;
 
 class NewComment implements ShouldBroadcast, TransactionalEvent
 {
     use Dispatchable;
     use InteractsWithSockets;
 
-    protected Comment $comment;
-
-    public function __construct(Comment $comment)
+    public function __construct(protected Comment $comment)
     {
-        $this->comment = $comment;
     }
 
     public function broadcastOn()
     {
+        $class = in_array($this->comment->post->channel->id, ChannelModel::allPermitted(null))
+            ? Channel::class
+            : PrivateChannel::class;
+
         return [
-            // TODO: private channel depending on permissions
-            new Channel('Waterhole.Models.Channel.' . $this->comment->post->channel->id),
-            new Channel('Waterhole.Models.Post.' . $this->comment->post->id),
+            new $class($this->comment->post->broadcastChannel()),
+            new $class($this->comment->post->channel->broadcastChannel()),
         ];
     }
 
     public function broadcastWith(): array
     {
         return [
-            'url' => $this->comment->url,
-            'dom_id' => dom_id($this->comment),
+            'streams' => implode([
+                TurboStream::before(new CommentFrame($this->comment, lazy: true), 'bottom'),
+                TurboStream::replace(new PostCommentsHeading($this->comment->post)),
+            ]),
         ];
     }
 }

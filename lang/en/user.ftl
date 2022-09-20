@@ -23,3 +23,26 @@ profile-link = Profile
 preferences-link = Preferences
 administration-link = Administration
 log-out-link = Log Out
+
+user-joined-text = Joined { $date }
+user-last-seen-text = Last seen { $date }
+
+posts-link = Posts
+comments-link = Comments
+preferences-heading = Preferences
+account-settings-link = Account
+edit-profile-link = Profile
+notification-preferences-link = Notifications
+
+avatar-label = Avatar
+remove-avatar-label = Remove avatar
+headline-label = Headline
+headline-description = Describe yourself in a few words. This will be displayed next to your name.
+bio-label = Bio
+bio-description = Write more about yourself. This will be displayed on your profile.
+location-label = Location
+website-label = Website
+privacy-title = Privacy
+show-online-label = Show when I was last online
+
+online-label = Online

@@ -19,18 +19,15 @@
         </turbo-frame>
     @endif
 
-    <div
-        id="page_{{ $current }}"
-        tabindex="-1"
-    >
-        @if (!$isCursor && !$paginator->onFirstPage() && $divider)
-            <div class="divider">
-                {{ __('waterhole::system.page-number-heading', ['number' => $paginator->currentPage()]) }}
-            </div>
-        @endif
+    <div id="page_{{ $current }}" tabindex="-1"></div>
 
-        {{ $slot ?? '' }}
-    </div>
+    @if (!$isCursor && !$paginator->onFirstPage() && $divider)
+        <div class="divider">
+            {{ __('waterhole::system.page-number-heading', ['number' => $paginator->currentPage()]) }}
+        </div>
+    @endif
+
+    {{ $slot ?? '' }}
 
     @if ($paginator->hasMorePages() && request('direction') !== 'backwards')
         <turbo-frame
@@ -38,14 +35,18 @@
             class="next-page"
             @if ($paginator->onFirstPage() || $endless)
                 src="{{ $paginator->appends('direction', 'forwards')->nextPageUrl() }}"
-                loading="lazy"
+            loading="lazy"
             @endif
         >
             @if ($paginator->onFirstPage() || $endless)
                 <div class="loading"></div>
             @else
-                <div class="text-center" style="margin-top: var(--space-md)">
-                    <a href="{{ $paginator->appends('direction', 'forwards')->nextPageUrl() }}" class="btn">
+                <div class="text-center" style="padding: var(--space-md)">
+                    <a
+                        href="{{ $paginator->appends('direction', 'forwards')->nextPageUrl() }}"
+                        class="btn"
+                        onclick="this.classList.add('is-disabled')"
+                    >
                         {{ __('waterhole::system.load-more-button') }}
                     </a>
                 </div>

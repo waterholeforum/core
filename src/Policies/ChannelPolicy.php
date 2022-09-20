@@ -8,11 +8,8 @@ use Waterhole\Models\User;
 
 class ChannelPolicy
 {
-    private PermissionCollection $permissions;
-
-    public function __construct(PermissionCollection $permissions)
+    public function __construct(private PermissionCollection $permissions)
     {
-        $this->permissions = $permissions;
     }
 
     /**

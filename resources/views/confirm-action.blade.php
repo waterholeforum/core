@@ -1,5 +1,5 @@
 <x-waterhole::layout :title="__('waterhole::system.confirm-action')">
-    <div class="section">
+    <div class="container section">
         <turbo-frame id="modal">
             <x-waterhole::dialog
                 :aria-label="__('waterhole::system.confirm-action')"
@@ -31,7 +31,7 @@
                     <div class="form">
                         <x-waterhole::validation-errors/>
 
-                        @if (is_string($content = $action->confirm($models)))
+                        @if ($isSimpleContent = is_string($content = $action->confirm($models)))
                             <p class="h4">{{ $content }}</p>
                         @else
                             <div>{{ $content }}</div>
@@ -49,6 +49,7 @@
                                 name="confirmed"
                                 value="1"
                                 class="btn {{ $action->destructive ? 'bg-danger' : 'bg-accent' }} btn--wide"
+                                @if ($isSimpleContent) autofocus @endif
                             >{{ $action->confirmButton($models) }}</button>
                         </div>
                     </div>

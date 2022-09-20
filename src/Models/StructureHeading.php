@@ -25,7 +25,7 @@ class StructureHeading extends Model
     public static function rules(StructureHeading $instance = null): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

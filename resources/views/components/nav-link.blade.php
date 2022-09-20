@@ -7,6 +7,6 @@
     <span class="label">{{ $label }}</span>
     {{ $slot ?? null }}
     @isset ($badge)
-        <span class="badge">{{ $badge }}</span>
+        <span class="badge {{ $badgeClass }}">{{ $badge }}</span>
     @endisset
 </a>

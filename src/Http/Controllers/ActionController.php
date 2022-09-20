@@ -68,7 +68,10 @@ final class ActionController extends Controller
             ($streams = $models->flatMap(fn($item) => $action->stream($item))->all())
         ) {
             if ($success = session()->get('success')) {
-                $streams[] = TurboStream::append(new Alert('success', $success), 'alerts');
+                $streams[] = TurboStream::append(
+                    new Alert(type: 'success', message: $success),
+                    'alerts',
+                );
             }
 
             session()->ageFlashData();

@@ -9,5 +9,8 @@
         "esModuleInterop": true,
         "lib": ["esnext", "dom"]
     },
-    "include": ["resources/js/**/*.ts", "resources/js/**/*.d.ts"]
+    "include": [
+      "resources/js/**/*.ts",
+      "resources/js/**/*.d.ts"
+    ]
 }

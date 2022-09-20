@@ -184,6 +184,14 @@ class User extends Model implements
         return $this->id === 1;
     }
 
+    /**
+     * Determine whether the user is online (active in the last 5 minutes).
+     */
+    public function isOnline(): bool
+    {
+        return $this->show_online && $this->last_seen_at?->isAfter(now()->subMinutes(5));
+    }
+
     public function getUrlAttribute(): string
     {
         return route('waterhole.users.show', ['user' => $this]);

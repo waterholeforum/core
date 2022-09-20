@@ -22,6 +22,6 @@
     @endif
 
     @if ($active)
-        <x-waterhole::icon icon="heroicon-o-check" class="menu-item__check"/>
+        <x-waterhole::icon icon="tabler-check" class="menu-item__check"/>
     @endif
 </{{ $tag }}>

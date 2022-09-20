@@ -38,7 +38,7 @@ class Mention extends Notification
 
     public function icon(): string
     {
-        return 'heroicon-o-at-symbol';
+        return 'tabler-at';
     }
 
     public function title(): string

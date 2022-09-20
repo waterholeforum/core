@@ -16,7 +16,7 @@ export default class extends Controller {
             (this.element as HTMLElement).style.height = height + 'px';
         }
 
-        if (window.location.hash.substr(1) === this.element.id) {
+        if (window.location.hash.substring(1) === this.element.id) {
             this.open();
         }
     }
