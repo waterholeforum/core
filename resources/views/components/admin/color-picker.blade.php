@@ -1,5 +1,6 @@
 <div data-controller="color-picker" class="color-picker">
     <hex-input
+        alpha
         color="#{{ $value }}"
         class="input-container"
         data-action="color-changed->color-picker#colorChanged"
@@ -21,16 +22,16 @@
             id="{{ $id }}"
             class="input color-picker__input"
             maxlength="6"
-            pattern="[0-9a-f]{3}|[0-9a-f]{6}"
+            pattern="[0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8}"
             data-action="focus->color-picker#show blur->color-picker#hide"
         >
     </hex-input>
 
-    <hex-color-picker
+    <hex-alpha-color-picker
         class="color-picker__picker"
         color="#{{ $value }}"
         hidden
         data-action="color-changed->color-picker#colorChanged focus->color-picker#show blur->color-picker#hide"
         data-color-picker-target="picker"
-    ></hex-color-picker>
+    ></hex-alpha-color-picker>
 </div>

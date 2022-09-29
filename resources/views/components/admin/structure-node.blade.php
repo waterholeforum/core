@@ -2,14 +2,12 @@
     class="card__row admin-structure__node"
     data-id="{{ $node->id }}"
     data-content-type="{{ $node->content->getMorphClass() }}"
-    draggable="true"
+    aria-labelledby="label_{{ $node->id }}"
 >
     <div class="admin-structure__content row gap-xs">
-        <x-waterhole::icon
-            icon="tabler-menu-2"
-            class="color-muted drag-handle js-only"
-            data-handle
-        />
+        <button type="button" class="drag-handle" data-handle>
+            <x-waterhole::icon icon="tabler-menu-2"/>
+        </button>
 
         @if ($node->content instanceof Waterhole\Models\Channel)
             <x-waterhole::channel-label
@@ -17,6 +15,7 @@
                 class="admin-structure__label"
                 link
                 target="_blank"
+                id="label_{{ $node->id }}"
             />
             <span class="with-icon text-xs color-muted hide-xs">
                 <x-waterhole::icon icon="tabler-message-circle-2"/>
@@ -28,6 +27,7 @@
                 href="{{ $node->content->url }}"
                 class="admin-structure__label with-icon color-text"
                 target="_blank"
+                id="label_{{ $node->id }}"
             >
                 <x-waterhole::icon :icon="$node->content->icon ?? null"/>
                 <span>{{ $node->content->name ?? 'Page' }}</span>
@@ -38,7 +38,7 @@
             </span>
 
         @elseif ($node->content instanceof Waterhole\Models\StructureHeading)
-            <span class="admin-structure__label color-muted">
+            <span class="admin-structure__label color-muted" id="label_{{ $node->id }}">
                 {{ $node->content->name ?? 'Heading' }}
             </span>
 
@@ -47,6 +47,7 @@
                 href="{{ $node->content->href }}"
                 class="admin-structure__label with-icon color-text"
                 target="_blank"
+                id="label_{{ $node->id }}"
             >
                 <x-waterhole::icon :icon="$node->content->icon ?? null"/>
                 <span>{{ $node->content->name ?? 'Link' }}</span>

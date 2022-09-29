@@ -174,9 +174,10 @@
 
                                 <ul
                                     data-reveal-target="then"
-                                    class="card text-xs"
-                                    data-controller="dragon-nest"
-                                    data-dragon-nest-target="list"
+                                    class="card sortable"
+                                    role="list"
+                                    data-controller="sortable"
+                                    data-sortable-target="container"
                                 >
                                     @php
                                         $filters = old('filters', $channel->filters ?? config('waterhole.forum.post_filters', []));
@@ -187,14 +188,12 @@
 
                                     @foreach ($availableFilters as $filter)
                                         <li
-                                            class="card__row row gap-md"
-                                            draggable="true"
+                                            class="card__row row gap-md text-xs"
+                                            aria-label="{{ $filter->label() }}"
                                         >
-                                            <x-waterhole::icon
-                                                icon="tabler-menu"
-                                                class="drag-handle"
-                                                data-handle
-                                            />
+                                            <button type="button" class="drag-handle" data-handle>
+                                                <x-waterhole::icon icon="tabler-menu-2"/>
+                                            </button>
 
                                             <label class="choice">
                                                 <input

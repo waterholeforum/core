@@ -38,13 +38,30 @@
 }
 
 .drag-handle {
+  display: flex;
   color: var(--color-muted);
-  opacity: 0.5;
   cursor: move;
+
+  > * {
+    opacity: 0.5;
+  }
 
   .no-js & {
     display: none;
   }
+}
+
+.drag-overlay {
+  transition: all 0.3s;
+  border: 0;
+  cursor: move;
+  z-index: var(--z-index-overlay);
+}
+
+.drag-overlay-active {
+  background: var(--color-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
 }
 
 .admin-structure__label {

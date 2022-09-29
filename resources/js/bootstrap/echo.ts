@@ -11,11 +11,8 @@ declare global {
 window.Pusher = Pusher;
 
 window.Echo = new Echo({
-    broadcaster: 'pusher',
-    key: '2d80bcb99dd1f29f0399', // TODO: replace with config vars
-    cluster: 'ap4',
-    forceTLS: true,
     namespace: 'Waterhole.Events',
+    ...window.Waterhole.echoConfig,
 });
 
 window.Echo.registerTurboRequestInterceptor();

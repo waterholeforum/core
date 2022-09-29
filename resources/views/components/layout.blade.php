@@ -28,9 +28,7 @@
     @endforeach
 
     <script>
-        window.Waterhole = @json([
-        'userId' => Auth::id(),
-      ]);
+        window.Waterhole = @json($payload);
     </script>
 
     @components(Waterhole\Extend\DocumentHead::build(), compact('title', 'assets'))

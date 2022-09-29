@@ -31,7 +31,7 @@
         "@github/time-elements": "^3.1.4",
         "@hotwired/stimulus": "^3.1.0",
         "@hotwired/stimulus-webpack-helpers": "^1.0.1",
-        "@hotwired/turbo": "^7.2.0-rc.2",
+        "@hotwired/turbo": "^7.2.0",
         "animated-scroll-to": "^2.3.0",
         "clipboard-copy": "^4.0.1",
         "idiomorph": "^0.0.7",

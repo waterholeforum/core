@@ -10,8 +10,6 @@ import './bootstrap/echo';
 import './bootstrap/hotkeys';
 import './bootstrap/turbo';
 
-import './elements/turbo-echo-stream-tag';
-
 declare global {
     const Waterhole: Waterhole;
 
@@ -26,6 +24,7 @@ export interface Waterhole {
     alerts: AlertsElement;
     fetchError: (response: Response) => void;
     documentTitle: DocumentTitle;
+    echoConfig: any;
 }
 
 window.Stimulus = Application.start();

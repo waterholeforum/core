@@ -13,6 +13,7 @@ export default class extends Controller {
     disconnect() {
         this.element.removeEventListener('turbo:before-fetch-response', this.lockScrollPosition);
         this.element.removeEventListener('turbo:frame-render', this.unlockScrollPosition);
+        this.unlockScrollPosition();
     }
 
     private lockScrollPosition = (e: Event) => {
@@ -36,8 +37,8 @@ export default class extends Controller {
         }
     }
 
-    private unlockScrollPosition = (e: Event) => {
-        if (e.target !== e.currentTarget) return;
+    private unlockScrollPosition = (e?: Event) => {
+        if (e && e.target !== e.currentTarget) return;
 
         setTimeout(() => {
             this.observer?.disconnect();

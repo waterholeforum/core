@@ -40,7 +40,7 @@
                             @endif
 
 
-                            <turbo-frame id="@domid($comment)" data-controller="scroll-into-view">
+                            <turbo-frame id="@domid($comment)">
                                 <x-waterhole::comment-full
                                     :comment="$comment"
                                     :data-index="$comments->firstItem() - 1 + $i"

@@ -2051,143 +2051,6 @@ Controller.values = {};
 
 /***/ }),
 
-/***/ "../../../packages/dragon-nest/dist/index.es.js":
-/*!******************************************************!*\
-  !*** ../../../packages/dragon-nest/dist/index.es.js ***!
-  \******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _default)
-/* harmony export */ });
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e3) { throw _e3; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e4) { didErr = true; err = _e4; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-var _default = /*#__PURE__*/function () {
-  function _default(t) {
-    var _this = this;
-
-    var e = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-    _classCallCheck(this, _default);
-
-    this.lists = [], this.dragstart = function (t) {
-      if (t.defaultPrevented) return;
-      t.stopPropagation(), _this.dragging = t.target;
-
-      var e = _this.dragging.getBoundingClientRect();
-
-      _this.offsetX = t.clientX - e.x, _this.offsetY = t.clientY - e.y, document.addEventListener("dragover", _this.dragover);
-    }, this.dragend = function () {
-      delete _this.dragging, document.removeEventListener("dragover", _this.dragover);
-    }, this.dragover = function (t) {
-      t.preventDefault();
-
-      var e = _this.lists.flatMap(function (t) {
-        return Array.from(t.children);
-      }).filter(function (t) {
-        return t !== _this.dragging;
-      }),
-          i = _this.dragging.getBoundingClientRect(),
-          n = t.clientY - (_this.offsetY || 0),
-          s = t.clientY - (_this.offsetY || 0) + i.height;
-
-      var _iterator = _createForOfIteratorHelper(e),
-          _step;
-
-      try {
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var _t3 = _step.value;
-
-          var _e = _t3.getBoundingClientRect();
-
-          if (n > _e.top && n < _e.top + _e.height / 2) {
-            _this.canMove(_t3.parentElement) && _t3.parentElement.insertBefore(_this.dragging, _t3);
-            break;
-          }
-
-          if (s < _e.bottom && s > _e.bottom - _e.height / 2) {
-            var _e2 = _t3.querySelector(':scope > ul, :scope > ol, :scope > [role="list"]');
-
-            _e2 && _this.canMove(_e2) ? _e2.prepend(_this.dragging) : _this.canMove(_t3.parentElement) && _t3.parentElement.insertBefore(_this.dragging, _t3.nextElementSibling);
-            break;
-          }
-        }
-      } catch (err) {
-        _iterator.e(err);
-      } finally {
-        _iterator.f();
-      }
-
-      var r = t.clientX - (_this.offsetX || 0);
-
-      if (_this.dragging.previousElementSibling && r > i.left + _this.options.indent) {
-        var _t = _this.dragging.previousElementSibling.querySelector(':scope > ul, :scope > ol, :scope > [role="list"]');
-
-        _t && _this.canMove(_t) && _t.appendChild(_this.dragging);
-      } else if (!_this.dragging.nextElementSibling && r < i.left && _this.dragging.parentNode !== _this.list) {
-        var _t2 = _this.dragging.parentElement.parentElement.parentElement;
-        _this.canMove(_t2) && _t2.insertBefore(_this.dragging, _this.dragging.parentElement.parentElement.nextElementSibling);
-      }
-    }, this.options = Object.assign({
-      indent: 40
-    }, e), Array.isArray(t) ? t.forEach(function (t) {
-      return _this.addList(t);
-    }) : t && this.addList(t);
-  }
-
-  _createClass(_default, [{
-    key: "destroy",
-    value: function destroy() {
-      var _this2 = this;
-
-      this.lists.forEach(function (t) {
-        return _this2.removeList(t);
-      });
-    }
-  }, {
-    key: "addList",
-    value: function addList(t) {
-      this.lists.includes(t) || (this.lists.push(t), t.addEventListener("dragstart", this.dragstart), t.addEventListener("dragend", this.dragend));
-    }
-  }, {
-    key: "removeList",
-    value: function removeList(t) {
-      var e = this.lists.indexOf(t);
-      -1 !== e && (this.lists.splice(e, 1), t.removeEventListener("dragstart", this.dragstart), t.removeEventListener("dragend", this.dragend));
-    }
-  }, {
-    key: "canMove",
-    value: function canMove(t) {
-      var e = new CustomEvent("dragon-nest:move", {
-        bubbles: !0,
-        cancelable: !0,
-        detail: {
-          parent: t
-        }
-      });
-      return this.dragging.dispatchEvent(e), !e.defaultPrevented;
-    }
-  }]);
-
-  return _default;
-}();
-
-
-
-/***/ }),
-
 /***/ "./resources/js/admin/controllers/color-picker-controller.ts":
 /*!*******************************************************************!*\
   !*** ./resources/js/admin/controllers/color-picker-controller.ts ***!
@@ -2267,138 +2130,6 @@ var default_1 = /*#__PURE__*/function (_Controller) {
 
 
 default_1.targets = ['input', 'picker', 'swatch'];
-
-/***/ }),
-
-/***/ "./resources/js/admin/controllers/dragon-nest-controller.ts":
-/*!******************************************************************!*\
-  !*** ./resources/js/admin/controllers/dragon-nest-controller.ts ***!
-  \******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ default_1)
-/* harmony export */ });
-/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
-/* harmony import */ var dragon_nest__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! dragon-nest */ "../../../packages/dragon-nest/dist/index.es.js");
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-
-
-/**
- * A controller to hook up a dragon-nest instance.
- *
- *
- */
-
-var default_1 = /*#__PURE__*/function (_Controller) {
-  _inherits(default_1, _Controller);
-
-  var _super = _createSuper(default_1);
-
-  function default_1() {
-    var _this;
-
-    _classCallCheck(this, default_1);
-
-    _this = _super.apply(this, arguments);
-
-    _this.mousedown = function (e) {
-      _this.dragTarget = e.target;
-    };
-
-    _this.start = function (e) {
-      var _a;
-
-      if ((_a = _this.dragTarget) === null || _a === void 0 ? void 0 : _a.closest('[data-handle]')) {
-        e.target.classList.add('is-dragging');
-      } else {
-        e.preventDefault();
-      }
-    };
-
-    _this.end = function (e) {
-      e.target.classList.remove('is-dragging');
-
-      var result = _this.listTargets.flatMap(function (list, i) {
-        return Array.from(list.querySelectorAll('[data-id]')).map(function (el) {
-          return {
-            id: el.dataset.id,
-            listIndex: i
-          };
-        });
-      });
-
-      if (result) {
-        _this.orderInputTarget.value = JSON.stringify(result);
-      }
-    };
-
-    return _this;
-  }
-
-  _createClass(default_1, [{
-    key: "initialize",
-    value: function initialize() {
-      this.dragonNest = new dragon_nest__WEBPACK_IMPORTED_MODULE_1__["default"]();
-    }
-  }, {
-    key: "connect",
-    value: function connect() {
-      document.addEventListener('mousedown', this.mousedown);
-    }
-  }, {
-    key: "disconnect",
-    value: function disconnect() {
-      document.removeEventListener('mousedown', this.mousedown);
-    }
-  }, {
-    key: "listTargetConnected",
-    value: function listTargetConnected(el) {
-      var _a;
-
-      (_a = this.dragonNest) === null || _a === void 0 ? void 0 : _a.addList(el);
-      el.addEventListener('dragstart', this.start);
-      el.addEventListener('dragend', this.end);
-    }
-  }, {
-    key: "listTargetDisconnected",
-    value: function listTargetDisconnected(el) {
-      var _a;
-
-      (_a = this.dragonNest) === null || _a === void 0 ? void 0 : _a.removeList(el);
-      el.removeEventListener('dragstart', this.start);
-      el.removeEventListener('dragend', this.end);
-    }
-  }]);
-
-  return default_1;
-}(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
-
-
-default_1.targets = ['list', 'orderInput'];
 
 /***/ }),
 
@@ -3198,6 +2929,133 @@ default_1.targets = ['slug', 'mirror'];
 
 /***/ }),
 
+/***/ "./resources/js/admin/controllers/sortable-controller.ts":
+/*!***************************************************************!*\
+  !*** ./resources/js/admin/controllers/sortable-controller.ts ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ default_1)
+/* harmony export */ });
+/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
+/* harmony import */ var inclusive_sort__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! inclusive-sort */ "../../../packages/inclusive-sort/dist/inclusive-sort.js");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+/**
+ * A controller to hook up an inclusive-sort instance.
+ *
+ *
+ */
+
+var default_1 = /*#__PURE__*/function (_Controller) {
+  _inherits(default_1, _Controller);
+
+  var _super = _createSuper(default_1);
+
+  function default_1() {
+    var _this;
+
+    _classCallCheck(this, default_1);
+
+    _this = _super.apply(this, arguments);
+
+    _this.start = function (e) {
+      e.detail.activeItem.style.opacity = '0';
+      e.detail.overlay.classList.add('drag-overlay', 'drag-overlay-active');
+    };
+
+    _this.beforeEnd = function (e) {
+      e.detail.overlay.classList.remove('drag-overlay-active');
+    };
+
+    _this.end = function (e) {
+      e.detail.activeItem.style.opacity = '';
+
+      var result = _this.containerTargets.flatMap(function (list, i) {
+        return Array.from(list.querySelectorAll('[data-id]')).map(function (el) {
+          return {
+            id: el.dataset.id,
+            listIndex: i
+          };
+        });
+      });
+
+      if (result) {
+        _this.orderInputTarget.value = JSON.stringify(result);
+
+        _this.dispatch('update');
+      }
+    };
+
+    return _this;
+  }
+
+  _createClass(default_1, [{
+    key: "initialize",
+    value: function initialize() {
+      this.sortable = new inclusive_sort__WEBPACK_IMPORTED_MODULE_1__.Sortable({
+        filter: function filter(item) {
+          return !!item.querySelector('[data-handle]');
+        },
+        activator: function activator(item) {
+          return item.querySelector('[data-handle]');
+        },
+        strategy: inclusive_sort__WEBPACK_IMPORTED_MODULE_1__.verticalListSorting
+      });
+      this.sortable.addEventListener('dragstart', this.start);
+      this.sortable.addEventListener('drop', this.beforeEnd);
+      this.sortable.addEventListener('dragcancel', this.beforeEnd);
+      this.sortable.addEventListener('dragend', this.end);
+    }
+  }, {
+    key: "containerTargetConnected",
+    value: function containerTargetConnected(el) {
+      var _a;
+
+      (_a = this.sortable) === null || _a === void 0 ? void 0 : _a.addContainer(el);
+    }
+  }, {
+    key: "containerTargetDisconnected",
+    value: function containerTargetDisconnected(el) {
+      var _a;
+
+      (_a = this.sortable) === null || _a === void 0 ? void 0 : _a.removeContainer(el);
+    }
+  }]);
+
+  return default_1;
+}(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
+
+
+default_1.targets = ['container', 'orderInput'];
+
+/***/ }),
+
 /***/ "./resources/js/utils.ts":
 /*!*******************************!*\
   !*** ./resources/js/utils.ts ***!
@@ -3274,7 +3132,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".uplot, .uplot *, .uplot *::before, .uplot *::after {box-sizing: border-box;}.uplot {font-family: system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\";line-height: 1.5;width: -webkit-min-content;width: -moz-min-content;width: min-content;}.u-title {text-align: center;font-size: 18px;font-weight: bold;}.u-wrap {position: relative;-webkit-user-select: none;-moz-user-select: none;user-select: none;}.u-over, .u-under {position: absolute;}.u-under {overflow: hidden;}.uplot canvas {display: block;position: relative;width: 100%;height: 100%;}.u-axis {position: absolute;}.u-legend {font-size: 14px;margin: auto;text-align: center;}.u-inline {display: block;}.u-inline * {display: inline-block;}.u-inline tr {margin-right: 16px;}.u-legend th {font-weight: 600;}.u-legend th > * {vertical-align: middle;display: inline-block;}.u-legend .u-marker {width: 1em;height: 1em;margin-right: 4px;background-clip: padding-box !important;}.u-inline.u-live th::after {content: \":\";vertical-align: middle;}.u-inline:not(.u-live) .u-value {display: none;}.u-series > * {padding: 4px;}.u-series th {cursor: pointer;}.u-legend .u-off > * {opacity: 0.3;}.u-select {background: rgba(0,0,0,0.07);position: absolute;pointer-events: none;}.u-cursor-x, .u-cursor-y {position: absolute;left: 0;top: 0;pointer-events: none;will-change: transform;z-index: 100;}.u-hz .u-cursor-x, .u-vt .u-cursor-y {height: 100%;border-right: 1px dashed #607D8B;}.u-hz .u-cursor-y, .u-vt .u-cursor-x {width: 100%;border-bottom: 1px dashed #607D8B;}.u-cursor-pt {position: absolute;top: 0;left: 0;border-radius: 50%;border: 0 solid;pointer-events: none;will-change: transform;z-index: 100;/*this has to be !important since we set inline \"background\" shorthand */background-clip: padding-box !important;}.u-axis.u-off, .u-select.u-off, .u-cursor-x.u-off, .u-cursor-y.u-off, .u-cursor-pt.u-off {display: none;}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".uplot, .uplot *, .uplot *::before, .uplot *::after {box-sizing: border-box;}.uplot {font-family: system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\";line-height: 1.5;width: -moz-min-content;width: min-content;}.u-title {text-align: center;font-size: 18px;font-weight: bold;}.u-wrap {position: relative;-webkit-user-select: none;-moz-user-select: none;user-select: none;}.u-over, .u-under {position: absolute;}.u-under {overflow: hidden;}.uplot canvas {display: block;position: relative;width: 100%;height: 100%;}.u-axis {position: absolute;}.u-legend {font-size: 14px;margin: auto;text-align: center;}.u-inline {display: block;}.u-inline * {display: inline-block;}.u-inline tr {margin-right: 16px;}.u-legend th {font-weight: 600;}.u-legend th > * {vertical-align: middle;display: inline-block;}.u-legend .u-marker {width: 1em;height: 1em;margin-right: 4px;background-clip: padding-box !important;}.u-inline.u-live th::after {content: \":\";vertical-align: middle;}.u-inline:not(.u-live) .u-value {display: none;}.u-series > * {padding: 4px;}.u-series th {cursor: pointer;}.u-legend .u-off > * {opacity: 0.3;}.u-select {background: rgba(0,0,0,0.07);position: absolute;pointer-events: none;}.u-cursor-x, .u-cursor-y {position: absolute;left: 0;top: 0;pointer-events: none;will-change: transform;z-index: 100;}.u-hz .u-cursor-x, .u-vt .u-cursor-y {height: 100%;border-right: 1px dashed #607D8B;}.u-hz .u-cursor-y, .u-vt .u-cursor-x {width: 100%;border-bottom: 1px dashed #607D8B;}.u-cursor-pt {position: absolute;top: 0;left: 0;border-radius: 50%;border: 0 solid;pointer-events: none;will-change: transform;z-index: 100;/*this has to be !important since we set inline \"background\" shorthand */background-clip: padding-box !important;}.u-axis.u-off, .u-select.u-off, .u-cursor-x.u-off, .u-cursor-y.u-off, .u-cursor-pt.u-off {display: none;}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -9069,14 +8927,14 @@ uPlot.pxRatio = pxRatio;
 
 var map = {
 	"./color-picker-controller.ts": "./resources/js/admin/controllers/color-picker-controller.ts",
-	"./dragon-nest-controller.ts": "./resources/js/admin/controllers/dragon-nest-controller.ts",
 	"./filter-input-controller.ts": "./resources/js/admin/controllers/filter-input-controller.ts",
 	"./form-controller.ts": "./resources/js/admin/controllers/form-controller.ts",
 	"./icon-picker-controller.ts": "./resources/js/admin/controllers/icon-picker-controller.ts",
 	"./incremental-search-controller.ts": "./resources/js/admin/controllers/incremental-search-controller.ts",
 	"./line-chart-controller.ts": "./resources/js/admin/controllers/line-chart-controller.ts",
 	"./permission-grid-controller.ts": "./resources/js/admin/controllers/permission-grid-controller.ts",
-	"./slugger-controller.ts": "./resources/js/admin/controllers/slugger-controller.ts"
+	"./slugger-controller.ts": "./resources/js/admin/controllers/slugger-controller.ts",
+	"./sortable-controller.ts": "./resources/js/admin/controllers/sortable-controller.ts"
 };
 
 
@@ -9298,6 +9156,2575 @@ function inViewport(container, element) {
     return top >= scrollTop && bottom <= containerBottom;
 }
 
+
+/***/ }),
+
+/***/ "../../../packages/inclusive-sort/dist/inclusive-sort.js":
+/*!***************************************************************!*\
+  !*** ../../../packages/inclusive-sort/dist/inclusive-sort.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "KeyboardSensor": () => (/* binding */ U),
+/* harmony export */   "PointerSensor": () => (/* binding */ k),
+/* harmony export */   "Sortable": () => (/* binding */ Z),
+/* harmony export */   "closestCenter": () => (/* binding */ $),
+/* harmony export */   "rectSorting": () => (/* binding */ G),
+/* harmony export */   "verticalListSorting": () => (/* binding */ Q)
+/* harmony export */ });
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e3) { throw _e3; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e4) { didErr = true; err = _e4; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+var P = Object.defineProperty;
+
+var B = function B(s, t, e) {
+  return t in s ? P(s, t, {
+    enumerable: !0,
+    configurable: !0,
+    writable: !0,
+    value: e
+  }) : s[t] = e;
+};
+
+var a = function a(s, t, e) {
+  return B(s, _typeof(t) != "symbol" ? t + "" : t, e), e;
+};
+
+function D(s, t) {
+  return Math.sqrt(Math.pow(s.x - t.x, 2) + Math.pow(s.y - t.y, 2));
+}
+
+function x(s) {
+  return new DOMPoint(s.left + s.width / 2, s.top + s.height / 2);
+}
+
+var $ = function $(s, t) {
+  var i;
+  var e = Array.from(t.entries()),
+      n = x(s);
+  return e.sort(function (_ref, _ref2) {
+    var _ref3 = _slicedToArray(_ref, 2),
+        o = _ref3[1];
+
+    var _ref4 = _slicedToArray(_ref2, 2),
+        r = _ref4[1];
+
+    return D(n, x(o)) - D(n, x(r));
+  }), (i = e[0]) == null ? void 0 : i[0];
+};
+
+var I = /*#__PURE__*/function () {
+  function I(t) {
+    var _this = this;
+
+    _classCallCheck(this, I);
+
+    a(this, "listeners", []);
+    a(this, "removeAll", function () {
+      _this.listeners.forEach(function (t) {
+        var _e2;
+
+        var e;
+        return (e = _this.target) == null ? void 0 : (_e2 = e).removeEventListener.apply(_e2, _toConsumableArray(t));
+      });
+    });
+    this.target = t;
+  }
+
+  _createClass(I, [{
+    key: "add",
+    value: function add(t, e, n) {
+      var i;
+      (i = this.target) == null || i.addEventListener(t, e, n), this.listeners.push([t, e, n]);
+    }
+  }]);
+
+  return I;
+}();
+
+function M(s) {
+  return /auto|scroll/.test(getComputedStyle(s).overflow) || s === document.scrollingElement;
+}
+
+function T(s) {
+  var t = s;
+  var e = [];
+
+  for (; t = t.parentElement;) {
+    !M(t) || e.push(t);
+  }
+
+  return e;
+}
+
+function R(s) {
+  return s === document.documentElement ? new DOMRect(0, 0, window.innerWidth, window.innerHeight) : s.getBoundingClientRect();
+}
+
+var L = 0.2,
+    C = 20;
+
+var k = /*#__PURE__*/function () {
+  function k() {
+    var _this2 = this;
+
+    _classCallCheck(this, k);
+
+    a(this, "scrollInterval");
+    a(this, "scrollAmounts", /* @__PURE__ */new Map());
+    a(this, "documentListeners", new I(document));
+    a(this, "onPointerMove", function (t, e) {
+      e.preventDefault(), t.onMove(new DOMPoint(e.clientX, e.clientY), !0), _this2.scrollAmounts.clear(), document.elementsFromPoint(e.clientX, e.clientY).forEach(function (n) {
+        if (!M(n)) return;
+        var i = R(n),
+            o = L * i.width,
+            r = L * i.height;
+        var c = 0,
+            l = 0;
+        e.clientX > i.right - o ? c = (e.clientX - i.right + o) / o * C : e.clientX < i.left + o && (c = (e.clientX - o) / o * C), e.clientY > i.bottom - r ? l = (e.clientY - i.bottom + r) / r * C : e.clientY < i.top + r && (l = (e.clientY - r) / r * C), (c !== 0 || l !== 0) && _this2.scrollAmounts.set(n, [c, l]);
+      }), _this2.scrollAmounts.size ? _this2.scrollInterval || (_this2.scrollInterval = window.setInterval(function () {
+        _this2.scrollAmounts.forEach(function (_ref5, o) {
+          var _ref6 = _slicedToArray(_ref5, 2),
+              n = _ref6[0],
+              i = _ref6[1];
+
+          return o.scrollBy(n, i);
+        });
+      }, 1e3 / 60)) : _this2.clearScrollInterval();
+    });
+    a(this, "onPointerUp", function (t, e) {
+      e.preventDefault(), t.onDrop();
+    });
+  }
+
+  _createClass(k, [{
+    key: "attach",
+    value: function attach(t, e) {
+      var _this3 = this;
+
+      var n = function n(i) {
+        if (i.button !== 0) return;
+        var o = e(new DOMPoint(i.clientX, i.clientY));
+        !o || (i.preventDefault(), _this3.documentListeners.add("pointermove", _this3.onPointerMove.bind(_this3, o)), _this3.documentListeners.add("pointerup", _this3.onPointerUp.bind(_this3, o)));
+      };
+
+      return t.addEventListener("pointerdown", n), t.style.touchAction = "none", function () {
+        t.removeEventListener("pointerdown", n), t.style.touchAction = "";
+      };
+    }
+  }, {
+    key: "deactivate",
+    value: function deactivate() {
+      this.clearScrollInterval(), this.documentListeners.removeAll();
+    }
+  }, {
+    key: "destroy",
+    value: function destroy() {}
+  }, {
+    key: "clearScrollInterval",
+    value: function clearScrollInterval() {
+      clearInterval(this.scrollInterval), this.scrollInterval = void 0;
+    }
+  }]);
+
+  return k;
+}();
+
+var X = /*#__PURE__*/function () {
+  function X(t) {
+    _classCallCheck(this, X);
+
+    a(this, "originalAttributes", /* @__PURE__ */new Map());
+    this.target = t;
+  }
+
+  _createClass(X, [{
+    key: "set",
+    value: function set(t, e) {
+      this.saveOriginal(t), this.target.setAttribute(t, e);
+    }
+  }, {
+    key: "add",
+    value: function add(t, e) {
+      this.target.hasAttribute(t) || this.set(t, e);
+    }
+  }, {
+    key: "remove",
+    value: function remove(t) {
+      this.saveOriginal(t), this.target.removeAttribute(t);
+    }
+  }, {
+    key: "saveOriginal",
+    value: function saveOriginal(t) {
+      this.originalAttributes.has(t) || this.originalAttributes.set(t, this.target.getAttribute(t));
+    }
+  }, {
+    key: "revertAll",
+    value: function revertAll() {
+      var _iterator = _createForOfIteratorHelper(this.originalAttributes),
+          _step;
+
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var _step$value = _slicedToArray(_step.value, 2),
+              t = _step$value[0],
+              e = _step$value[1];
+
+          e === null ? this.target.removeAttribute(t) : this.target.setAttribute(t, e);
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+
+      this.originalAttributes.clear();
+    }
+  }]);
+
+  return X;
+}();
+
+var Y = {
+  instructions: "To pick up a sortable item, press space or enter. While dragging, use the arrow keys to move the item. Press space or enter again to drop the item in its new position, or press escape to cancel."
+};
+var W = 0;
+
+var U = /*#__PURE__*/function () {
+  function U() {
+    var t = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    _classCallCheck(this, U);
+
+    a(this, "options");
+    a(this, "instructionsElement");
+    a(this, "documentListeners", new I(document));
+    this.options = Object.assign({}, Y, t), this.instructionsElement = this.createInstructionsElement();
+  }
+
+  _createClass(U, [{
+    key: "attach",
+    value: function attach(t, e) {
+      var _this4 = this;
+
+      var n = function n(o) {
+        if (!["Enter", "Space"].includes(o.code)) return;
+        var r = e();
+        !r || (o.preventDefault(), setTimeout(function () {
+          return _this4.documentListeners.add("keydown", _this4.onKeyDown.bind(_this4, r));
+        }));
+      },
+          i = new X(t);
+
+      return i.add("tabindex", "0"), i.add("role", "button"), i.add("aria-roledescription", "sortable"), this.instructionsElement && i.add("aria-describedby", this.instructionsElement.id), t.addEventListener("keydown", n), function () {
+        i.revertAll(), t.removeEventListener("keydown", n);
+      };
+    }
+  }, {
+    key: "deactivate",
+    value: function deactivate() {
+      this.documentListeners.removeAll();
+    }
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      var t;
+      (t = this.instructionsElement) == null || t.remove();
+    }
+  }, {
+    key: "onKeyDown",
+    value: function onKeyDown(t, e) {
+      if (["Enter", "Space"].includes(e.code)) {
+        e.preventDefault(), t.onDrop(), t.activator.focus();
+        return;
+      }
+
+      if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.code)) {
+        var _ret = function () {
+          e.preventDefault();
+          var _t$options = t.options,
+              n = _t$options.collisionDetection,
+              i = _t$options.strategy,
+              o = t.rects,
+              r = t.itemsByContainer,
+              c = t.pointer,
+              l = t.position,
+              h = t.activeItem,
+              w = t.onMove,
+              m = t.container,
+              E = /* @__PURE__ */new Map();
+
+          var _iterator2 = _createForOfIteratorHelper(r),
+              _step2;
+
+          try {
+            for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+              var _step2$value = _slicedToArray(_step2.value, 2),
+                  d = _step2$value[0],
+                  f = _step2$value[1];
+
+              var _iterator5 = _createForOfIteratorHelper(f.size ? f : [d]),
+                  _step5;
+
+              try {
+                for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
+                  var p = _step5.value;
+                  var u = o.get(p);
+                  (e.key === "ArrowUp" && u.bottom < c.y || e.key === "ArrowDown" && u.top > c.y || e.key === "ArrowLeft" && u.right < c.x || e.key === "ArrowRight" && u.left > c.x) && E.set(p, u);
+                }
+              } catch (err) {
+                _iterator5.e(err);
+              } finally {
+                _iterator5.f();
+              }
+            }
+          } catch (err) {
+            _iterator2.e(err);
+          } finally {
+            _iterator2.f();
+          }
+
+          var y = n(l, E);
+          if (!y) return {
+            v: void 0
+          };
+          w(x(o.get(y)));
+          var v = x(o.get(h));
+
+          var _iterator3 = _createForOfIteratorHelper(r),
+              _step3;
+
+          try {
+            for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+              var _step3$value = _slicedToArray(_step3.value, 2),
+                  _d2 = _step3$value[1];
+
+              if (!_d2.has(h)) continue;
+
+              var _f = Array.from(_d2),
+                  _p = _f.indexOf(h);
+
+              var _u = _f.indexOf(y);
+
+              e.key === "ArrowUp" && m !== t.container && _u++;
+              var b = i({
+                rects: _f.map(function (S) {
+                  return o.get(S);
+                }),
+                activeIndex: _p,
+                overIndex: _u === -1 ? _p : _u,
+                index: _p
+              });
+              v.x += (b == null ? void 0 : b.x) || 0, v.y += (b == null ? void 0 : b.y) || 0;
+            }
+          } catch (err) {
+            _iterator3.e(err);
+          } finally {
+            _iterator3.f();
+          }
+
+          var A = 0,
+              O = 0;
+
+          var _iterator4 = _createForOfIteratorHelper(T(h)),
+              _step4;
+
+          try {
+            for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+              var _d3 = _step4.value;
+
+              var _f2 = R(_d3),
+                  _p2 = Math.min(_d3.scrollWidth - _d3.clientWidth - _d3.scrollLeft, Math.max(-_d3.scrollLeft, v.x - _f2.x - _f2.width / 2)),
+                  _u2 = Math.min(_d3.scrollHeight - _d3.clientHeight - _d3.scrollTop, Math.max(-_d3.scrollTop, v.y - _f2.y - _f2.height / 2));
+
+              _d3.scrollBy({
+                left: _p2,
+                top: _u2,
+                behavior: "smooth"
+              }), A += _p2, O += _u2;
+            }
+          } catch (err) {
+            _iterator4.e(err);
+          } finally {
+            _iterator4.f();
+          }
+
+          w(new DOMPoint(v.x - A, v.y - O));
+        }();
+
+        if (_typeof(_ret) === "object") return _ret.v;
+      }
+    }
+  }, {
+    key: "createInstructionsElement",
+    value: function createInstructionsElement() {
+      if (!this.options.instructions) return;
+      var t = document.createElement("div");
+      return t.id = "SortableInstructions-" + W++, t.style.display = "none", t.textContent = this.options.instructions, document.body.appendChild(t), t;
+    }
+  }]);
+
+  return U;
+}();
+
+function j(s) {
+  var t = s.getBoundingClientRect();
+
+  var _window$getComputedSt = window.getComputedStyle(s),
+      e = _window$getComputedSt.transform,
+      n = _window$getComputedSt.transformOrigin;
+
+  return e && (t = F(t, e, n)), t;
+}
+
+function F(s, t, e) {
+  var n = H(t);
+  if (!n) return s;
+  var i = n.scaleX,
+      o = n.scaleY,
+      r = n.x,
+      c = n.y,
+      l = s.left - r - (1 - i) * parseFloat(e),
+      h = s.top - c - (1 - o) * parseFloat(e.slice(e.indexOf(" ") + 1)),
+      w = i ? s.width / i : s.width,
+      m = o ? s.height / o : s.height;
+  return new DOMRect(l, h, w, m);
+}
+
+function H(s) {
+  if (s.startsWith("matrix3d(")) {
+    var t = s.slice(9, -1).split(/, /);
+    return {
+      x: +t[12],
+      y: +t[13],
+      scaleX: +t[0],
+      scaleY: +t[5]
+    };
+  } else if (s.startsWith("matrix(")) {
+    var _t = s.slice(7, -1).split(/, /);
+
+    return {
+      x: +_t[4],
+      y: +_t[5],
+      scaleX: +_t[0],
+      scaleY: +_t[3]
+    };
+  }
+
+  return null;
+}
+
+var K = /*#__PURE__*/function () {
+  function K(t, e, n, i, o, r) {
+    var _this5 = this;
+
+    _classCallCheck(this, K);
+
+    a(this, "overItem");
+    a(this, "overlay");
+    a(this, "pointer", new DOMPoint(0, 0));
+    a(this, "pointerOffset", new DOMPoint(0, 0));
+    a(this, "position");
+    a(this, "itemsByContainer");
+    a(this, "rects", /* @__PURE__ */new Map());
+    a(this, "originalContainer");
+    a(this, "originalIndex", -1);
+    a(this, "documentListeners", new I(document));
+    a(this, "windowListeners", new I(window));
+    a(this, "onMove", function (t, e) {
+      _this5.pointer = t, _this5.position.x = t.x + _this5.pointerOffset.x, _this5.position.y = t.y + _this5.pointerOffset.y;
+      var n = new CustomEvent("dragmove", {
+        detail: _this5
+      });
+      _this5.instance.dispatchEvent(n), _this5.updateOverlay(e);
+      var i = /* @__PURE__ */new Map();
+      _this5.itemsByContainer.forEach(function (r, c) {
+        var l = _this5.rects.get(c);
+
+        t.x > l.left && t.x < l.right && t.y > l.top && t.y < l.bottom && (r.size ? r.forEach(function (h) {
+          return i.set(h, _this5.rects.get(h));
+        }) : i.set(c, _this5.rects.get(c)));
+      }), i.size || (i = _this5.rects);
+
+      var o = _this5.options.collisionDetection(_this5.position, i);
+
+      if (o !== _this5.overItem) {
+        var _r = new CustomEvent("dragover", {
+          cancelable: !0,
+          detail: _objectSpread(_objectSpread({}, _this5), {}, {
+            overItem: o
+          })
+        });
+
+        if (_this5.instance.dispatchEvent(_r), _r.defaultPrevented) return;
+        _this5.overItem = o;
+      }
+
+      _this5.itemsByContainer.forEach(function (r, c) {
+        r.has(_this5.activeItem) && !c.contains(o) ? r["delete"](_this5.activeItem) : c.contains(o) && !r.has(_this5.activeItem) && (r.add(_this5.activeItem), c.appendChild(_this5.activeItem), _this5.updateRects());
+      }), _this5.instance.announce(_this5.instance.options.announcements.onDragOver(_this5)), _this5.itemsByContainer.forEach(function (r) {
+        var c = Array.from(r),
+            l = c.indexOf(_this5.activeItem),
+            h = c.indexOf(o),
+            w = c.map(function (m) {
+          return _this5.rects.get(m);
+        });
+        c.forEach(function (m, E) {
+          if (m.style.transform = "none", h === -1) return;
+
+          var y = _this5.options.strategy({
+            rects: w,
+            activeIndex: l,
+            overIndex: h,
+            index: E
+          });
+
+          if (!y) return;
+          var v = Math.round(y.x),
+              A = Math.round(y.y);
+          m.style.transform = "translate(".concat(v, "px, ").concat(A, "px)");
+        });
+      });
+    });
+    a(this, "onDrop", function () {
+      var t = _this5.activeItem,
+          e = _this5.overItem;
+
+      if (t && e) {
+        var _n2 = new CustomEvent("drop", {
+          cancelable: !0,
+          detail: _this5
+        });
+
+        _this5.instance.dispatchEvent(_n2), _n2.defaultPrevented || (_this5.instance.containers.has(e) ? e.appendChild(t) : t.compareDocumentPosition(e) === Node.DOCUMENT_POSITION_PRECEDING ? e.before(t) : e.after(t), _this5.instance.announce(_this5.instance.options.announcements.onDrop(_this5)));
+      }
+
+      _this5.destroy();
+    });
+    a(this, "onCancel", function () {
+      _this5.activeItem && _this5.originalContainer && _this5.originalIndex !== -1 && _this5.originalContainer.insertBefore(_this5.activeItem, _this5.originalContainer.children[_this5.originalIndex]);
+      var t = new CustomEvent("dragcancel", {
+        cancelable: !1,
+        detail: _this5
+      });
+      _this5.instance.dispatchEvent(t), _this5.instance.announce(_this5.instance.options.announcements.onDragCancel(_this5)), _this5.activator.focus(), setTimeout(function () {
+        return _this5.destroy();
+      });
+    });
+    a(this, "onScroll", function () {
+      _this5.updateRects(), _this5.onMove(_this5.pointer);
+    });
+    a(this, "onKeyDown", function (t) {
+      t.key === "Escape" && (t.preventDefault(), _this5.onCancel());
+    });
+    this.instance = t, this.sensor = e, this.activeItem = n, this.activator = i, this.onFinished = o, this.itemsByContainer = /* @__PURE__ */new Map();
+
+    var _iterator6 = _createForOfIteratorHelper(t.containers),
+        _step6;
+
+    try {
+      for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
+        var c = _step6.value;
+        var l = Array.from(c.children).filter(this.instance.options.filter),
+            h = l.indexOf(n);
+        h !== -1 && (this.originalContainer = c, this.originalIndex = h), this.itemsByContainer.set(c, new Set(l));
+      }
+    } catch (err) {
+      _iterator6.e(err);
+    } finally {
+      _iterator6.f();
+    }
+
+    this.updateRects(), this.position = DOMRect.fromRect(this.rects.get(this.activeItem)), this.pointer = r || x(this.position), this.pointerOffset = new DOMPoint(this.position.x - this.pointer.x, this.position.y - this.pointer.y), this.overlay = this.createOverlay(n), this.updateOverlay(), document.body.appendChild(this.overlay), this.windowListeners.add("scroll", this.onScroll, {
+      capture: !0,
+      passive: !0
+    }), this.documentListeners.add("keydown", this.onKeyDown), this.instance.announce(this.instance.options.announcements.onDragStart(this));
+  }
+
+  _createClass(K, [{
+    key: "options",
+    get: function get() {
+      return this.instance.options;
+    }
+  }, {
+    key: "container",
+    get: function get() {
+      var _iterator7 = _createForOfIteratorHelper(this.itemsByContainer),
+          _step7;
+
+      try {
+        for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {
+          var _step7$value = _slicedToArray(_step7.value, 2),
+              t = _step7$value[0],
+              e = _step7$value[1];
+
+          if (e.has(this.activeItem)) return t;
+        }
+      } catch (err) {
+        _iterator7.e(err);
+      } finally {
+        _iterator7.f();
+      }
+
+      return Array.from(this.itemsByContainer.keys())[0];
+    }
+  }, {
+    key: "activeIndex",
+    get: function get() {
+      var _iterator8 = _createForOfIteratorHelper(this.itemsByContainer),
+          _step8;
+
+      try {
+        for (_iterator8.s(); !(_step8 = _iterator8.n()).done;) {
+          var _step8$value = _slicedToArray(_step8.value, 2),
+              t = _step8$value[1];
+
+          if (!!t.has(this.activeItem)) return Array.from(t).indexOf(this.activeItem);
+        }
+      } catch (err) {
+        _iterator8.e(err);
+      } finally {
+        _iterator8.f();
+      }
+
+      return -1;
+    }
+  }, {
+    key: "overIndex",
+    get: function get() {
+      if (this.overItem) {
+        var _iterator9 = _createForOfIteratorHelper(this.itemsByContainer),
+            _step9;
+
+        try {
+          for (_iterator9.s(); !(_step9 = _iterator9.n()).done;) {
+            var _step9$value = _slicedToArray(_step9.value, 2),
+                t = _step9$value[1];
+
+            if (!!t.has(this.overItem)) return Array.from(t).indexOf(this.overItem);
+          }
+        } catch (err) {
+          _iterator9.e(err);
+        } finally {
+          _iterator9.f();
+        }
+      }
+
+      return -1;
+    }
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      var _this6 = this;
+
+      this.sensor.deactivate(), this.itemsByContainer.forEach(function (n) {
+        n.forEach(function (i) {
+          i.style.transition = "none", i.style.transform = "none", i.offsetWidth, i.style.transition = "";
+        });
+      });
+      var t = this.activeItem,
+          e = this.overlay;
+
+      if (t && e) {
+        var n = t.getBoundingClientRect();
+        e.style.transform = "translate(".concat(n.x, "px, ").concat(n.y, "px)"), Promise.all(e.getAnimations().map(function (i) {
+          return i.finished;
+        })).then(function () {
+          e.remove();
+          var i = new CustomEvent("dragend", {
+            cancelable: !1,
+            detail: _this6
+          });
+
+          _this6.instance.dispatchEvent(i);
+        });
+      }
+
+      this.windowListeners.removeAll(), this.documentListeners.removeAll(), this.onFinished();
+    }
+  }, {
+    key: "updateRects",
+    value: function updateRects() {
+      var _this7 = this;
+
+      this.rects.clear(), this.itemsByContainer.forEach(function (t, e) {
+        [e].concat(_toConsumableArray(t)).forEach(function (n) {
+          _this7.rects.set(n, j(n));
+        });
+      });
+    }
+  }, {
+    key: "createOverlay",
+    value: function createOverlay(t) {
+      var e = t.cloneNode(!0);
+      return Object.assign(e.style, {
+        position: "fixed",
+        top: 0,
+        left: 0,
+        margin: 0
+      }), e;
+    }
+  }, {
+    key: "updateOverlay",
+    value: function updateOverlay(t) {
+      if (Object.assign(this.overlay.style, {
+        transform: "translate(".concat(this.position.x, "px, ").concat(this.position.y, "px)"),
+        width: this.position.width + "px",
+        height: this.position.height + "px"
+      }), t) {
+        var e = this.overlay.style.transition;
+        this.overlay.style.transition = "none", this.overlay.offsetWidth, this.overlay.style.transition = e;
+      }
+    }
+  }]);
+
+  return K;
+}();
+
+function z(s, t, e) {
+  var n = s.slice();
+  return n.splice(e < 0 ? n.length + e : e, 0, n.splice(t, 1)[0]), n;
+}
+
+var G = function G(_ref7) {
+  var s = _ref7.rects,
+      t = _ref7.index,
+      e = _ref7.overIndex,
+      n = _ref7.activeIndex;
+  var i = z(s, e, n),
+      o = s[t],
+      r = i[t];
+  return !r || !o ? null : {
+    x: r.left - o.left,
+    y: r.top - o.top
+  };
+},
+    Q = function Q(_ref8) {
+  var s = _ref8.rects,
+      t = _ref8.index,
+      e = _ref8.overIndex,
+      n = _ref8.activeIndex;
+  var i = s[n];
+
+  if (t === n) {
+    var r = s[e];
+    return {
+      x: 0,
+      y: n < e ? r.top + r.height - (i.top + i.height) : r.top - i.top
+    };
+  }
+
+  var o = N(s, t, n);
+  return t > n && t <= e ? {
+    x: 0,
+    y: -i.height - o
+  } : t < n && t >= e ? {
+    x: 0,
+    y: i.height + o
+  } : {
+    x: 0,
+    y: 0
+  };
+};
+
+function N(s, t, e) {
+  var n = s[t],
+      i = s[t - 1],
+      o = s[t + 1];
+  return n ? e < t ? i ? n.top - (i.top + i.height) : o ? o.top - (n.top + n.height) : 0 : o ? o.top - (n.top + n.height) : i ? n.top - (i.top + i.height) : 0 : 0;
+}
+
+function g(s) {
+  var e;
+  var t = s.getAttribute("aria-labelledby");
+  return t && ((e = document.getElementById(t)) == null ? void 0 : e.textContent) || s.getAttribute("aria-label");
+}
+
+var _ = {
+  filter: function filter() {
+    return !0;
+  },
+  activator: function activator(s) {
+    return s;
+  },
+  sensors: [new k(), new U()],
+  collisionDetection: $,
+  strategy: G,
+  announcements: {
+    onDragStart: function onDragStart(_ref9) {
+      var s = _ref9.activeItem,
+          t = _ref9.activeIndex,
+          e = _ref9.container;
+      var n = g(s) || "item ".concat(t + 1),
+          i = g(e);
+      return "Picked up ".concat(n) + (i ? " in ".concat(i) : "");
+    },
+    onDragOver: function onDragOver(_ref10) {
+      var s = _ref10.activeItem,
+          t = _ref10.activeIndex,
+          e = _ref10.container,
+          n = _ref10.overIndex;
+      var i = g(s) || "item ".concat(t + 1),
+          o = g(e);
+      return "".concat(i, " was moved to position ").concat(n + 1) + (o ? " in ".concat(o) : "");
+    },
+    onDrop: function onDrop(_ref11) {
+      var s = _ref11.activeItem,
+          t = _ref11.activeIndex,
+          e = _ref11.container,
+          n = _ref11.overIndex;
+      var i = g(s) || "item ".concat(t + 1),
+          o = g(e);
+      return "".concat(i, " was dropped in position ").concat(n + 1) + (o ? " in ".concat(o) : "");
+    },
+    onDragCancel: function onDragCancel(_ref12) {
+      var s = _ref12.activeItem,
+          t = _ref12.activeIndex;
+      return "Sorting was cancelled. ".concat(g(s) || "item ".concat(t + 1), " was dropped.");
+    }
+  }
+},
+    V = EventTarget;
+
+var Z = /*#__PURE__*/function (_V) {
+  _inherits(Z, _V);
+
+  var _super = _createSuper(Z);
+
+  function Z() {
+    var _this8;
+
+    var e = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    _classCallCheck(this, Z);
+
+    var n;
+    _this8 = _super.call(this);
+    a(_assertThisInitialized(_this8), "containers", /* @__PURE__ */new Set());
+    a(_assertThisInitialized(_this8), "options");
+    a(_assertThisInitialized(_this8), "context");
+    a(_assertThisInitialized(_this8), "containerObservers", /* @__PURE__ */new Map());
+    a(_assertThisInitialized(_this8), "itemDetachers", /* @__PURE__ */new Map());
+    a(_assertThisInitialized(_this8), "liveRegion");
+    _this8.options = Object.assign({}, _, e), _this8.liveRegion = _this8.createLiveRegion(), (n = e.containers) == null || n.forEach(function (i) {
+      return _this8.addContainer(i);
+    });
+    return _this8;
+  }
+
+  _createClass(Z, [{
+    key: "announce",
+    value: function announce(e) {
+      this.liveRegion.textContent = e;
+    }
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      var _this9 = this;
+
+      var e;
+      (e = this.context) == null || e.onCancel(), this.liveRegion.remove(), this.containers.forEach(function (n) {
+        return _this9.removeContainer(n);
+      }), this.options.sensors.forEach(function (n) {
+        return n.destroy();
+      });
+    }
+  }, {
+    key: "addContainer",
+    value: function addContainer(e) {
+      var _this10 = this;
+
+      if (this.containers.has(e)) return;
+      this.containers.add(e), Array.from(e.children).forEach(function (i) {
+        return _this10.attachItem(i);
+      });
+      var n = new MutationObserver(function (i) {
+        i.forEach(function (o) {
+          o.addedNodes.forEach(function (r) {
+            r instanceof HTMLElement && setTimeout(function () {
+              return _this10.attachItem(r);
+            });
+          }), o.removedNodes.forEach(function (r) {
+            r instanceof HTMLElement && _this10.detachItem(r);
+          });
+        });
+      });
+      n.observe(e, {
+        childList: !0
+      }), this.containerObservers.set(e, n);
+    }
+  }, {
+    key: "removeContainer",
+    value: function removeContainer(e) {
+      var _this11 = this;
+
+      var n;
+      !this.containers.has(e) || (this.containers["delete"](e), Array.from(e.children).forEach(function (i) {
+        return _this11.detachItem(i);
+      }), (n = this.containerObservers.get(e)) == null || n.disconnect(), this.containerObservers["delete"](e));
+    }
+  }, {
+    key: "attachItem",
+    value: function attachItem(e) {
+      var _this12 = this;
+
+      if (!this.options.filter(e)) return;
+      var n = [];
+
+      var _iterator10 = _createForOfIteratorHelper(this.options.sensors),
+          _step10;
+
+      try {
+        var _loop = function _loop() {
+          var i = _step10.value;
+
+          var o = _this12.options.activator(e);
+
+          if (!o) return "continue";
+          var r = i.attach(o, function (c) {
+            return _this12.start(i, e, o, c);
+          });
+          n.push(r);
+        };
+
+        for (_iterator10.s(); !(_step10 = _iterator10.n()).done;) {
+          var _ret2 = _loop();
+
+          if (_ret2 === "continue") continue;
+        }
+      } catch (err) {
+        _iterator10.e(err);
+      } finally {
+        _iterator10.f();
+      }
+
+      this.itemDetachers.set(e, n);
+    }
+  }, {
+    key: "detachItem",
+    value: function detachItem(e) {
+      var n;
+      (n = this.itemDetachers.get(e)) == null || n.forEach(function (i) {
+        return i();
+      }), this.itemDetachers["delete"](e);
+    }
+  }, {
+    key: "start",
+    value: function start(e, n, i, o) {
+      var _this13 = this;
+
+      if (this.context) return;
+      var r = new K(this, e, n, i, function () {
+        return _this13.context = void 0;
+      }, o),
+          c = new CustomEvent("dragstart", {
+        cancelable: !0,
+        detail: r
+      });
+      if (this.dispatchEvent(c), !c.defaultPrevented) return this.context = r;
+    }
+  }, {
+    key: "createLiveRegion",
+    value: function createLiveRegion() {
+      var e = document.createElement("div");
+      return Object.assign(e.style, {
+        clip: "rect(0 0 0 0)",
+        clipPath: "inset(50%)",
+        height: "1px",
+        overflow: "hidden",
+        position: "absolute",
+        whiteSpace: "nowrap",
+        width: "1px"
+      }), e.setAttribute("role", "status"), e.setAttribute("aria-live", "assertive"), e.setAttribute("aria-atomic", ""), document.body.appendChild(e), e;
+    }
+  }]);
+
+  return Z;
+}(V);
+
+
+
+/***/ }),
+
+/***/ "../../../packages/vanilla-colorful/hex-alpha-color-picker.js":
+/*!********************************************************************!*\
+  !*** ../../../packages/vanilla-colorful/hex-alpha-color-picker.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "HexAlphaColorPicker": () => (/* binding */ HexAlphaColorPicker)
+/* harmony export */ });
+/* harmony import */ var _lib_entrypoints_hex_alpha_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lib/entrypoints/hex-alpha.js */ "../../../packages/vanilla-colorful/lib/entrypoints/hex-alpha.js");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+/**
+ * A color picker custom element that uses HEX format with alpha.
+ *
+ * @element hex-alpha-color-picker
+ *
+ * @prop {string} color - Selected color in HEX format.
+ * @attr {string} color - Selected color in HEX format.
+ *
+ * @fires color-changed - Event fired when color property changes.
+ *
+ * @csspart hue - A hue selector container.
+ * @csspart saturation - A saturation selector container
+ * @csspart hue-pointer - A hue pointer element.
+ * @csspart saturation-pointer - A saturation pointer element.
+ */
+
+var HexAlphaColorPicker = /*#__PURE__*/function (_HexAlphaBase) {
+  _inherits(HexAlphaColorPicker, _HexAlphaBase);
+
+  var _super = _createSuper(HexAlphaColorPicker);
+
+  function HexAlphaColorPicker() {
+    _classCallCheck(this, HexAlphaColorPicker);
+
+    return _super.apply(this, arguments);
+  }
+
+  return _createClass(HexAlphaColorPicker);
+}(_lib_entrypoints_hex_alpha_js__WEBPACK_IMPORTED_MODULE_0__.HexAlphaBase);
+customElements.define('hex-alpha-color-picker', HexAlphaColorPicker);
+
+/***/ }),
+
+/***/ "../../../packages/vanilla-colorful/hex-input.js":
+/*!*******************************************************!*\
+  !*** ../../../packages/vanilla-colorful/hex-input.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "HexInput": () => (/* binding */ HexInput)
+/* harmony export */ });
+/* harmony import */ var _lib_entrypoints_hex_input_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lib/entrypoints/hex-input.js */ "../../../packages/vanilla-colorful/lib/entrypoints/hex-input.js");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+/**
+ * A custom element for entering color in HEX format.
+ *
+ * @element hex-input
+ *
+ * @prop {string} color - Color in HEX format.
+ * @attr {string} color - Selected color in HEX format.
+ * @attr {boolean} alpha - Allows `#rgba` and `#rrggbbaa` color formats.
+ *
+ * @fires color-changed - Event fired when color is changed.
+ *
+ * @csspart input - A native input element.
+ */
+
+var HexInput = /*#__PURE__*/function (_HexInputBase) {
+  _inherits(HexInput, _HexInputBase);
+
+  var _super = _createSuper(HexInput);
+
+  function HexInput() {
+    _classCallCheck(this, HexInput);
+
+    return _super.apply(this, arguments);
+  }
+
+  return _createClass(HexInput);
+}(_lib_entrypoints_hex_input_js__WEBPACK_IMPORTED_MODULE_0__.HexInputBase);
+customElements.define('hex-input', HexInput);
+
+/***/ }),
+
+/***/ "../../../packages/vanilla-colorful/lib/components/alpha-color-picker.js":
+/*!*******************************************************************************!*\
+  !*** ../../../packages/vanilla-colorful/lib/components/alpha-color-picker.js ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "AlphaColorPicker": () => (/* binding */ AlphaColorPicker)
+/* harmony export */ });
+/* harmony import */ var _color_picker_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./color-picker.js */ "../../../packages/vanilla-colorful/lib/components/color-picker.js");
+/* harmony import */ var _alpha_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./alpha.js */ "../../../packages/vanilla-colorful/lib/components/alpha.js");
+/* harmony import */ var _styles_alpha_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styles/alpha.js */ "../../../packages/vanilla-colorful/lib/styles/alpha.js");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _get() { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get.bind(); } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return _get.apply(this, arguments); }
+
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+
+var AlphaColorPicker = /*#__PURE__*/function (_ColorPicker) {
+  _inherits(AlphaColorPicker, _ColorPicker);
+
+  var _super = _createSuper(AlphaColorPicker);
+
+  function AlphaColorPicker() {
+    _classCallCheck(this, AlphaColorPicker);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(AlphaColorPicker, [{
+    key: _color_picker_js__WEBPACK_IMPORTED_MODULE_0__.$css,
+    get: function get() {
+      return [].concat(_toConsumableArray(_get(_getPrototypeOf(AlphaColorPicker.prototype), _color_picker_js__WEBPACK_IMPORTED_MODULE_0__.$css, this)), [_styles_alpha_js__WEBPACK_IMPORTED_MODULE_1__["default"]]);
+    }
+  }, {
+    key: _color_picker_js__WEBPACK_IMPORTED_MODULE_0__.$sliders,
+    get: function get() {
+      return [].concat(_toConsumableArray(_get(_getPrototypeOf(AlphaColorPicker.prototype), _color_picker_js__WEBPACK_IMPORTED_MODULE_0__.$sliders, this)), [_alpha_js__WEBPACK_IMPORTED_MODULE_2__.Alpha]);
+    }
+  }]);
+
+  return AlphaColorPicker;
+}(_color_picker_js__WEBPACK_IMPORTED_MODULE_0__.ColorPicker);
+
+/***/ }),
+
+/***/ "../../../packages/vanilla-colorful/lib/components/alpha.js":
+/*!******************************************************************!*\
+  !*** ../../../packages/vanilla-colorful/lib/components/alpha.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Alpha": () => (/* binding */ Alpha)
+/* harmony export */ });
+/* harmony import */ var _slider_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./slider.js */ "../../../packages/vanilla-colorful/lib/components/slider.js");
+/* harmony import */ var _utils_convert_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/convert.js */ "../../../packages/vanilla-colorful/lib/utils/convert.js");
+/* harmony import */ var _utils_math_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/math.js */ "../../../packages/vanilla-colorful/lib/utils/math.js");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+
+var Alpha = /*#__PURE__*/function (_Slider) {
+  _inherits(Alpha, _Slider);
+
+  var _super = _createSuper(Alpha);
+
+  function Alpha(root) {
+    _classCallCheck(this, Alpha);
+
+    return _super.call(this, root, 'alpha', 'aria-label="Alpha" aria-valuemin="0" aria-valuemax="1"', false);
+  }
+
+  _createClass(Alpha, [{
+    key: "update",
+    value: function update(hsva) {
+      this.hsva = hsva;
+      var colorFrom = (0,_utils_convert_js__WEBPACK_IMPORTED_MODULE_0__.hsvaToHslaString)(_objectSpread(_objectSpread({}, hsva), {}, {
+        a: 0
+      }));
+      var colorTo = (0,_utils_convert_js__WEBPACK_IMPORTED_MODULE_0__.hsvaToHslaString)(_objectSpread(_objectSpread({}, hsva), {}, {
+        a: 1
+      }));
+      var value = hsva.a * 100;
+      this.style([{
+        left: "".concat(value, "%"),
+        color: (0,_utils_convert_js__WEBPACK_IMPORTED_MODULE_0__.hsvaToHslaString)(hsva)
+      }, {
+        '--gradient': "linear-gradient(90deg, ".concat(colorFrom, ", ").concat(colorTo)
+      }]);
+      var v = (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_1__.round)(value);
+      this.el.setAttribute('aria-valuenow', "".concat(v));
+      this.el.setAttribute('aria-valuetext', "".concat(v, "%"));
+    }
+  }, {
+    key: "getMove",
+    value: function getMove(offset, key) {
+      // Alpha always fit into [0, 1] range
+      return {
+        a: key ? (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_1__.clamp)(this.hsva.a + offset.x) : offset.x
+      };
+    }
+  }]);
+
+  return Alpha;
+}(_slider_js__WEBPACK_IMPORTED_MODULE_2__.Slider);
+
+/***/ }),
+
+/***/ "../../../packages/vanilla-colorful/lib/components/color-picker.js":
+/*!*************************************************************************!*\
+  !*** ../../../packages/vanilla-colorful/lib/components/color-picker.js ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "$css": () => (/* binding */ $css),
+/* harmony export */   "$sliders": () => (/* binding */ $sliders),
+/* harmony export */   "ColorPicker": () => (/* binding */ ColorPicker)
+/* harmony export */ });
+/* harmony import */ var _utils_compare_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/compare.js */ "../../../packages/vanilla-colorful/lib/utils/compare.js");
+/* harmony import */ var _utils_dom_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/dom.js */ "../../../packages/vanilla-colorful/lib/utils/dom.js");
+/* harmony import */ var _hue_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./hue.js */ "../../../packages/vanilla-colorful/lib/components/hue.js");
+/* harmony import */ var _saturation_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./saturation.js */ "../../../packages/vanilla-colorful/lib/components/saturation.js");
+/* harmony import */ var _styles_color_picker_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styles/color-picker.js */ "../../../packages/vanilla-colorful/lib/styles/color-picker.js");
+/* harmony import */ var _styles_hue_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../styles/hue.js */ "../../../packages/vanilla-colorful/lib/styles/hue.js");
+/* harmony import */ var _styles_saturation_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../styles/saturation.js */ "../../../packages/vanilla-colorful/lib/styles/saturation.js");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
+
+function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct.bind(); } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+
+
+
+
+
+var $isSame = Symbol('same');
+var $color = Symbol('color');
+var $hsva = Symbol('hsva');
+var $update = Symbol('update');
+var $parts = Symbol('parts');
+var $css = Symbol('css');
+var $sliders = Symbol('sliders');
+var ColorPicker = /*#__PURE__*/function (_HTMLElement) {
+  _inherits(ColorPicker, _HTMLElement);
+
+  var _super = _createSuper(ColorPicker);
+
+  function ColorPicker() {
+    var _this;
+
+    _classCallCheck(this, ColorPicker);
+
+    _this = _super.call(this);
+    var template = (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_0__.tpl)("<style>".concat(_this[$css].join(''), "</style>"));
+
+    var root = _this.attachShadow({
+      mode: 'open'
+    });
+
+    root.appendChild(template.content.cloneNode(true));
+    root.addEventListener('move', _assertThisInitialized(_this));
+    _this[$parts] = _this[$sliders].map(function (slider) {
+      return new slider(root);
+    });
+    return _this;
+  }
+
+  _createClass(ColorPicker, [{
+    key: $css,
+    get: function get() {
+      return [_styles_color_picker_js__WEBPACK_IMPORTED_MODULE_1__["default"], _styles_hue_js__WEBPACK_IMPORTED_MODULE_2__["default"], _styles_saturation_js__WEBPACK_IMPORTED_MODULE_3__["default"]];
+    }
+  }, {
+    key: $sliders,
+    get: function get() {
+      return [_saturation_js__WEBPACK_IMPORTED_MODULE_4__.Saturation, _hue_js__WEBPACK_IMPORTED_MODULE_5__.Hue];
+    }
+  }, {
+    key: "color",
+    get: function get() {
+      return this[$color];
+    }
+  }, {
+    key: "color",
+    set: function set(newColor) {
+      if (!this[$isSame](newColor)) {
+        var newHsva = this.colorModel.toHsva(newColor);
+        this[$update](newHsva);
+        this[$color] = newColor;
+      }
+    }
+  }, {
+    key: "connectedCallback",
+    value: function connectedCallback() {
+      // A user may set a property on an _instance_ of an element,
+      // before its prototype has been connected to this class.
+      // If so, we need to run it through the proper class setter.
+      if (this.hasOwnProperty('color')) {
+        var value = this.color;
+        delete this['color'];
+        this.color = value;
+      } else if (!this.color) {
+        this.color = this.colorModel.defaultColor;
+      }
+    }
+  }, {
+    key: "attributeChangedCallback",
+    value: function attributeChangedCallback(_attr, _oldVal, newVal) {
+      var color = this.colorModel.fromAttr(newVal);
+
+      if (!this[$isSame](color)) {
+        this.color = color;
+      }
+    }
+  }, {
+    key: "handleEvent",
+    value: function handleEvent(event) {
+      // Merge the current HSV color object with updated params.
+      var oldHsva = this[$hsva];
+
+      var newHsva = _objectSpread(_objectSpread({}, oldHsva), event.detail);
+
+      this[$update](newHsva);
+      var newColor;
+
+      if (!(0,_utils_compare_js__WEBPACK_IMPORTED_MODULE_6__.equalColorObjects)(newHsva, oldHsva) && !this[$isSame](newColor = this.colorModel.fromHsva(newHsva))) {
+        this[$color] = newColor;
+        (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_0__.fire)(this, 'color-changed', {
+          value: newColor
+        });
+      }
+    }
+  }, {
+    key: $isSame,
+    value: function value(color) {
+      return this.color && this.colorModel.equal(color, this.color);
+    }
+  }, {
+    key: $update,
+    value: function value(hsva) {
+      this[$hsva] = hsva;
+      this[$parts].forEach(function (part) {
+        return part.update(hsva);
+      });
+    }
+  }], [{
+    key: "observedAttributes",
+    get: function get() {
+      return ['color'];
+    }
+  }]);
+
+  return ColorPicker;
+}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
+
+/***/ }),
+
+/***/ "../../../packages/vanilla-colorful/lib/components/hue.js":
+/*!****************************************************************!*\
+  !*** ../../../packages/vanilla-colorful/lib/components/hue.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Hue": () => (/* binding */ Hue)
+/* harmony export */ });
+/* harmony import */ var _slider_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./slider.js */ "../../../packages/vanilla-colorful/lib/components/slider.js");
+/* harmony import */ var _utils_convert_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/convert.js */ "../../../packages/vanilla-colorful/lib/utils/convert.js");
+/* harmony import */ var _utils_math_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/math.js */ "../../../packages/vanilla-colorful/lib/utils/math.js");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+
+var Hue = /*#__PURE__*/function (_Slider) {
+  _inherits(Hue, _Slider);
+
+  var _super = _createSuper(Hue);
+
+  function Hue(root) {
+    _classCallCheck(this, Hue);
+
+    return _super.call(this, root, 'hue', 'aria-label="Hue" aria-valuemin="0" aria-valuemax="360"', false);
+  }
+
+  _createClass(Hue, [{
+    key: "update",
+    value: function update(_ref) {
+      var h = _ref.h;
+      this.h = h;
+      this.style([{
+        left: "".concat(h / 360 * 100, "%"),
+        color: (0,_utils_convert_js__WEBPACK_IMPORTED_MODULE_0__.hsvaToHslString)({
+          h: h,
+          s: 100,
+          v: 100,
+          a: 1
+        })
+      }]);
+      this.el.setAttribute('aria-valuenow', "".concat((0,_utils_math_js__WEBPACK_IMPORTED_MODULE_1__.round)(h)));
+    }
+  }, {
+    key: "getMove",
+    value: function getMove(offset, key) {
+      // Hue measured in degrees of the color circle ranging from 0 to 360
+      return {
+        h: key ? (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_1__.clamp)(this.h + offset.x * 360, 0, 360) : 360 * offset.x
+      };
+    }
+  }]);
+
+  return Hue;
+}(_slider_js__WEBPACK_IMPORTED_MODULE_2__.Slider);
+
+/***/ }),
+
+/***/ "../../../packages/vanilla-colorful/lib/components/saturation.js":
+/*!***********************************************************************!*\
+  !*** ../../../packages/vanilla-colorful/lib/components/saturation.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Saturation": () => (/* binding */ Saturation)
+/* harmony export */ });
+/* harmony import */ var _slider_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./slider.js */ "../../../packages/vanilla-colorful/lib/components/slider.js");
+/* harmony import */ var _utils_convert_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/convert.js */ "../../../packages/vanilla-colorful/lib/utils/convert.js");
+/* harmony import */ var _utils_math_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/math.js */ "../../../packages/vanilla-colorful/lib/utils/math.js");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+
+var Saturation = /*#__PURE__*/function (_Slider) {
+  _inherits(Saturation, _Slider);
+
+  var _super = _createSuper(Saturation);
+
+  function Saturation(root) {
+    _classCallCheck(this, Saturation);
+
+    return _super.call(this, root, 'saturation', 'aria-label="Color"', true);
+  }
+
+  _createClass(Saturation, [{
+    key: "update",
+    value: function update(hsva) {
+      this.hsva = hsva;
+      this.style([{
+        top: "".concat(100 - hsva.v, "%"),
+        left: "".concat(hsva.s, "%"),
+        color: (0,_utils_convert_js__WEBPACK_IMPORTED_MODULE_0__.hsvaToHslString)(hsva)
+      }, {
+        'background-color': (0,_utils_convert_js__WEBPACK_IMPORTED_MODULE_0__.hsvaToHslString)({
+          h: hsva.h,
+          s: 100,
+          v: 100,
+          a: 1
+        })
+      }]);
+      this.el.setAttribute('aria-valuetext', "Saturation ".concat((0,_utils_math_js__WEBPACK_IMPORTED_MODULE_1__.round)(hsva.s), "%, Brightness ").concat((0,_utils_math_js__WEBPACK_IMPORTED_MODULE_1__.round)(hsva.v), "%"));
+    }
+  }, {
+    key: "getMove",
+    value: function getMove(offset, key) {
+      // Saturation and brightness always fit into [0, 100] range
+      return {
+        s: key ? (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_1__.clamp)(this.hsva.s + offset.x * 100, 0, 100) : offset.x * 100,
+        v: key ? (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_1__.clamp)(this.hsva.v - offset.y * 100, 0, 100) : Math.round(100 - offset.y * 100)
+      };
+    }
+  }]);
+
+  return Saturation;
+}(_slider_js__WEBPACK_IMPORTED_MODULE_2__.Slider);
+
+/***/ }),
+
+/***/ "../../../packages/vanilla-colorful/lib/components/slider.js":
+/*!*******************************************************************!*\
+  !*** ../../../packages/vanilla-colorful/lib/components/slider.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Slider": () => (/* binding */ Slider)
+/* harmony export */ });
+/* harmony import */ var _utils_dom_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/dom.js */ "../../../packages/vanilla-colorful/lib/utils/dom.js");
+/* harmony import */ var _utils_math_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/math.js */ "../../../packages/vanilla-colorful/lib/utils/math.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+
+
+var hasTouched = false; // Check if an event was triggered by touch
+
+var isTouch = function isTouch(e) {
+  return 'touches' in e;
+}; // Prevent mobile browsers from handling mouse events (conflicting with touch ones).
+// If we detected a touch interaction before, we prefer reacting to touch events only.
+
+
+var isValid = function isValid(event) {
+  if (hasTouched && !isTouch(event)) return false;
+  if (!hasTouched) hasTouched = isTouch(event);
+  return true;
+};
+
+var pointerMove = function pointerMove(target, event) {
+  var pointer = isTouch(event) ? event.touches[0] : event;
+  var rect = target.el.getBoundingClientRect();
+  (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_0__.fire)(target.el, 'move', target.getMove({
+    x: (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_1__.clamp)((pointer.pageX - (rect.left + window.pageXOffset)) / rect.width),
+    y: (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_1__.clamp)((pointer.pageY - (rect.top + window.pageYOffset)) / rect.height)
+  }));
+};
+
+var keyMove = function keyMove(target, event) {
+  // We use `keyCode` instead of `key` to reduce the size of the library.
+  var keyCode = event.keyCode; // Ignore all keys except arrow ones, Page Up, Page Down, Home and End.
+
+  if (keyCode > 40 || target.xy && keyCode < 37 || keyCode < 33) return; // Do not scroll page by keys when color picker element has focus.
+
+  event.preventDefault(); // Send relative offset to the parent component.
+
+  (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_0__.fire)(target.el, 'move', target.getMove({
+    x: keyCode === 39 // Arrow Right
+    ? 0.01 : keyCode === 37 // Arrow Left
+    ? -0.01 : keyCode === 34 // Page Down
+    ? 0.05 : keyCode === 33 // Page Up
+    ? -0.05 : keyCode === 35 // End
+    ? 1 : keyCode === 36 // Home
+    ? -1 : 0,
+    y: keyCode === 40 // Arrow down
+    ? 0.01 : keyCode === 38 // Arrow Up
+    ? -0.01 : 0
+  }, true));
+};
+
+var Slider = /*#__PURE__*/function () {
+  function Slider(root, part, aria, xy) {
+    _classCallCheck(this, Slider);
+
+    var template = (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_0__.tpl)("<div role=\"slider\" tabindex=\"0\" part=\"".concat(part, "\" ").concat(aria, "><div part=\"").concat(part, "-pointer\"></div></div>"));
+    root.appendChild(template.content.cloneNode(true));
+    var el = root.querySelector("[part=".concat(part, "]"));
+    el.addEventListener('mousedown', this);
+    el.addEventListener('touchstart', this);
+    el.addEventListener('keydown', this);
+    this.el = el;
+    this.xy = xy;
+    this.nodes = [el.firstChild, el];
+  }
+
+  _createClass(Slider, [{
+    key: "dragging",
+    set: function set(state) {
+      var toggleEvent = state ? document.addEventListener : document.removeEventListener;
+      toggleEvent(hasTouched ? 'touchmove' : 'mousemove', this);
+      toggleEvent(hasTouched ? 'touchend' : 'mouseup', this);
+    }
+  }, {
+    key: "handleEvent",
+    value: function handleEvent(event) {
+      switch (event.type) {
+        case 'mousedown':
+        case 'touchstart':
+          event.preventDefault(); // event.button is 0 in mousedown for left button activation
+
+          if (!isValid(event) || !hasTouched && event.button != 0) return;
+          this.el.focus();
+          pointerMove(this, event);
+          this.dragging = true;
+          break;
+
+        case 'mousemove':
+        case 'touchmove':
+          event.preventDefault();
+          pointerMove(this, event);
+          break;
+
+        case 'mouseup':
+        case 'touchend':
+          this.dragging = false;
+          break;
+
+        case 'keydown':
+          keyMove(this, event);
+          break;
+      }
+    }
+  }, {
+    key: "style",
+    value: function style(styles) {
+      var _this = this;
+
+      styles.forEach(function (style, i) {
+        for (var p in style) {
+          _this.nodes[i].style.setProperty(p, style[p]);
+        }
+      });
+    }
+  }]);
+
+  return Slider;
+}();
+
+/***/ }),
+
+/***/ "../../../packages/vanilla-colorful/lib/entrypoints/hex-alpha.js":
+/*!***********************************************************************!*\
+  !*** ../../../packages/vanilla-colorful/lib/entrypoints/hex-alpha.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "HexAlphaBase": () => (/* binding */ HexAlphaBase)
+/* harmony export */ });
+/* harmony import */ var _components_alpha_color_picker_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/alpha-color-picker.js */ "../../../packages/vanilla-colorful/lib/components/alpha-color-picker.js");
+/* harmony import */ var _utils_convert_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/convert.js */ "../../../packages/vanilla-colorful/lib/utils/convert.js");
+/* harmony import */ var _utils_compare_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/compare.js */ "../../../packages/vanilla-colorful/lib/utils/compare.js");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+
+var colorModel = {
+  defaultColor: '#0001',
+  toHsva: _utils_convert_js__WEBPACK_IMPORTED_MODULE_0__.hexToHsva,
+  fromHsva: _utils_convert_js__WEBPACK_IMPORTED_MODULE_0__.hsvaToHex,
+  equal: _utils_compare_js__WEBPACK_IMPORTED_MODULE_1__.equalHex,
+  fromAttr: function fromAttr(color) {
+    return color;
+  }
+};
+var HexAlphaBase = /*#__PURE__*/function (_AlphaColorPicker) {
+  _inherits(HexAlphaBase, _AlphaColorPicker);
+
+  var _super = _createSuper(HexAlphaBase);
+
+  function HexAlphaBase() {
+    _classCallCheck(this, HexAlphaBase);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(HexAlphaBase, [{
+    key: "colorModel",
+    get: function get() {
+      return colorModel;
+    }
+  }]);
+
+  return HexAlphaBase;
+}(_components_alpha_color_picker_js__WEBPACK_IMPORTED_MODULE_2__.AlphaColorPicker);
+
+/***/ }),
+
+/***/ "../../../packages/vanilla-colorful/lib/entrypoints/hex-input.js":
+/*!***********************************************************************!*\
+  !*** ../../../packages/vanilla-colorful/lib/entrypoints/hex-input.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "HexInputBase": () => (/* binding */ HexInputBase)
+/* harmony export */ });
+/* harmony import */ var _utils_validate_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/validate.js */ "../../../packages/vanilla-colorful/lib/utils/validate.js");
+/* harmony import */ var _utils_dom_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/dom.js */ "../../../packages/vanilla-colorful/lib/utils/dom.js");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
+
+function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct.bind(); } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+var template = (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_0__.tpl)('<slot><input part="input" spellcheck="false"></slot>'); // Escapes all non-hexadecimal characters including "#"
+
+var escape = function escape(hex, alpha) {
+  return hex.replace(/([^0-9A-F]+)/gi, '').substr(0, alpha ? 8 : 6);
+};
+
+var $color = Symbol('color');
+var $saved = Symbol('saved');
+var $input = Symbol('saved');
+var $update = Symbol('update');
+var HexInputBase = /*#__PURE__*/function (_HTMLElement) {
+  _inherits(HexInputBase, _HTMLElement);
+
+  var _super = _createSuper(HexInputBase);
+
+  function HexInputBase() {
+    _classCallCheck(this, HexInputBase);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(HexInputBase, [{
+    key: "color",
+    get: function get() {
+      return this[$color];
+    },
+    set: function set(hex) {
+      this[$color] = hex;
+      this[$update](hex);
+    }
+  }, {
+    key: "alpha",
+    get: function get() {
+      return this.hasAttribute('alpha');
+    },
+    set: function set(alpha) {
+      if (alpha) {
+        this.setAttribute('alpha', '');
+      } else {
+        this.removeAttribute('alpha');
+      }
+    }
+  }, {
+    key: "connectedCallback",
+    value: function connectedCallback() {
+      var _this = this;
+
+      var root = this.attachShadow({
+        mode: 'open'
+      });
+      root.appendChild(template.content.cloneNode(true));
+      var slot = root.firstElementChild;
+
+      var setInput = function setInput() {
+        var input = _this.querySelector('input');
+
+        if (!input) {
+          // remove all child node if no input found
+          var c;
+
+          while (c = _this.firstChild) {
+            c.remove();
+          }
+
+          input = slot.firstChild;
+        }
+
+        input.addEventListener('input', _this);
+        input.addEventListener('blur', _this);
+        _this[$input] = input;
+      };
+
+      slot.addEventListener('slotchange', setInput);
+      setInput(); // A user may set a property on an _instance_ of an element,
+      // before its prototype has been connected to this class.
+      // If so, we need to run it through the proper class setter.
+
+      if (this.hasOwnProperty('color')) {
+        var value = this.color;
+        delete this['color'];
+        this.color = value;
+      } else if (this.color == null) {
+        this.color = this.getAttribute('color') || '';
+      } else if (this[$color]) {
+        this[$update](this[$color]);
+      }
+    }
+  }, {
+    key: "handleEvent",
+    value: function handleEvent(event) {
+      var target = event.target;
+      var value = target.value;
+
+      switch (event.type) {
+        case 'input':
+          var hex = escape(value, this.alpha);
+          this[$saved] = this.color;
+
+          if ((0,_utils_validate_js__WEBPACK_IMPORTED_MODULE_1__.validHex)(hex, this.alpha) || value === '') {
+            this.color = hex;
+            this.dispatchEvent(new CustomEvent('color-changed', {
+              bubbles: true,
+              detail: {
+                value: hex ? '#' + hex : ''
+              }
+            }));
+          }
+
+          break;
+
+        case 'blur':
+          if (value && !(0,_utils_validate_js__WEBPACK_IMPORTED_MODULE_1__.validHex)(value, this.alpha)) {
+            this.color = this[$saved];
+          }
+
+      }
+    }
+  }, {
+    key: "attributeChangedCallback",
+    value: function attributeChangedCallback(_attr, _oldVal, newVal) {
+      if (this.color !== newVal) {
+        this.color = newVal;
+      }
+    }
+  }, {
+    key: $update,
+    value: function value(hex) {
+      if (this[$input]) {
+        this[$input].value = hex == null || hex == '' ? '' : escape(hex, this.alpha);
+      }
+    }
+  }], [{
+    key: "observedAttributes",
+    get: function get() {
+      return ['color'];
+    }
+  }]);
+
+  return HexInputBase;
+}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
+
+/***/ }),
+
+/***/ "../../../packages/vanilla-colorful/lib/styles/alpha.js":
+/*!**************************************************************!*\
+  !*** ../../../packages/vanilla-colorful/lib/styles/alpha.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("[part=alpha]{flex:0 0 24px}[part=alpha]::after{display:block;content:\"\";position:absolute;top:0;left:0;right:0;bottom:0;border-radius:inherit;background-image:var(--gradient);box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)}[part^=alpha]{background-color:#fff;background-image:url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill-opacity=\".05\"><rect x=\"8\" width=\"8\" height=\"8\"/><rect y=\"8\" width=\"8\" height=\"8\"/></svg>')}[part=alpha-pointer]{top:50%}");
+
+/***/ }),
+
+/***/ "../../../packages/vanilla-colorful/lib/styles/color-picker.js":
+/*!*********************************************************************!*\
+  !*** ../../../packages/vanilla-colorful/lib/styles/color-picker.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (":host{display:flex;flex-direction:column;position:relative;width:200px;height:200px;user-select:none;-webkit-user-select:none;cursor:default}:host([hidden]){display:none!important}[role=slider]{position:relative;touch-action:none;user-select:none;-webkit-user-select:none;outline:0}[role=slider]:last-child{border-radius:0 0 8px 8px}[part$=pointer]{position:absolute;z-index:1;box-sizing:border-box;width:28px;height:28px;display:flex;place-content:center center;transform:translate(-50%,-50%);background-color:#fff;border:2px solid #fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.2)}[part$=pointer]::after{content:\"\";width:100%;height:100%;border-radius:inherit;background-color:currentColor}[role=slider]:focus [part$=pointer]{transform:translate(-50%,-50%) scale(1.1)}");
+
+/***/ }),
+
+/***/ "../../../packages/vanilla-colorful/lib/styles/hue.js":
+/*!************************************************************!*\
+  !*** ../../../packages/vanilla-colorful/lib/styles/hue.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("[part=hue]{flex:0 0 24px;background:linear-gradient(to right,red 0,#ff0 17%,#0f0 33%,#0ff 50%,#00f 67%,#f0f 83%,red 100%)}[part=hue-pointer]{top:50%;z-index:2}");
+
+/***/ }),
+
+/***/ "../../../packages/vanilla-colorful/lib/styles/saturation.js":
+/*!*******************************************************************!*\
+  !*** ../../../packages/vanilla-colorful/lib/styles/saturation.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("[part=saturation]{flex-grow:1;border-color:transparent;border-bottom:12px solid #000;border-radius:8px 8px 0 0;background-image:linear-gradient(to top,#000,transparent),linear-gradient(to right,#fff,rgba(255,255,255,0));box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)}[part=saturation-pointer]{z-index:3}");
+
+/***/ }),
+
+/***/ "../../../packages/vanilla-colorful/lib/utils/compare.js":
+/*!***************************************************************!*\
+  !*** ../../../packages/vanilla-colorful/lib/utils/compare.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "equalColorObjects": () => (/* binding */ equalColorObjects),
+/* harmony export */   "equalColorString": () => (/* binding */ equalColorString),
+/* harmony export */   "equalHex": () => (/* binding */ equalHex)
+/* harmony export */ });
+/* harmony import */ var _convert_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./convert.js */ "../../../packages/vanilla-colorful/lib/utils/convert.js");
+
+var equalColorObjects = function equalColorObjects(first, second) {
+  if (first === second) return true;
+
+  for (var prop in first) {
+    // The following allows for a type-safe calling of this function (first & second have to be HSL, HSV, or RGB)
+    // with type-unsafe iterating over object keys. TS does not allow this without an index (`[key: string]: number`)
+    // on an object to define how iteration is normally done. To ensure extra keys are not allowed on our types,
+    // we must cast our object to unknown (as RGB demands `r` be a key, while `Record<string, x>` does not care if
+    // there is or not), and then as a type TS can iterate over.
+    if (first[prop] !== second[prop]) return false;
+  }
+
+  return true;
+};
+var equalColorString = function equalColorString(first, second) {
+  return first.replace(/\s/g, '') === second.replace(/\s/g, '');
+};
+var equalHex = function equalHex(first, second) {
+  if (first.toLowerCase() === second.toLowerCase()) return true; // To compare colors like `#FFF` and `ffffff` we convert them into RGB objects
+
+  return equalColorObjects((0,_convert_js__WEBPACK_IMPORTED_MODULE_0__.hexToRgba)(first), (0,_convert_js__WEBPACK_IMPORTED_MODULE_0__.hexToRgba)(second));
+};
+
+/***/ }),
+
+/***/ "../../../packages/vanilla-colorful/lib/utils/convert.js":
+/*!***************************************************************!*\
+  !*** ../../../packages/vanilla-colorful/lib/utils/convert.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "hexToHsva": () => (/* binding */ hexToHsva),
+/* harmony export */   "hexToRgba": () => (/* binding */ hexToRgba),
+/* harmony export */   "hslStringToHsva": () => (/* binding */ hslStringToHsva),
+/* harmony export */   "hslaStringToHsva": () => (/* binding */ hslaStringToHsva),
+/* harmony export */   "hslaToHsl": () => (/* binding */ hslaToHsl),
+/* harmony export */   "hslaToHsva": () => (/* binding */ hslaToHsva),
+/* harmony export */   "hsvStringToHsva": () => (/* binding */ hsvStringToHsva),
+/* harmony export */   "hsvaStringToHsva": () => (/* binding */ hsvaStringToHsva),
+/* harmony export */   "hsvaToHex": () => (/* binding */ hsvaToHex),
+/* harmony export */   "hsvaToHslString": () => (/* binding */ hsvaToHslString),
+/* harmony export */   "hsvaToHsla": () => (/* binding */ hsvaToHsla),
+/* harmony export */   "hsvaToHslaString": () => (/* binding */ hsvaToHslaString),
+/* harmony export */   "hsvaToHsv": () => (/* binding */ hsvaToHsv),
+/* harmony export */   "hsvaToHsvString": () => (/* binding */ hsvaToHsvString),
+/* harmony export */   "hsvaToHsvaString": () => (/* binding */ hsvaToHsvaString),
+/* harmony export */   "hsvaToRgbString": () => (/* binding */ hsvaToRgbString),
+/* harmony export */   "hsvaToRgba": () => (/* binding */ hsvaToRgba),
+/* harmony export */   "hsvaToRgbaString": () => (/* binding */ hsvaToRgbaString),
+/* harmony export */   "parseHue": () => (/* binding */ parseHue),
+/* harmony export */   "rgbStringToHsva": () => (/* binding */ rgbStringToHsva),
+/* harmony export */   "rgbaStringToHsva": () => (/* binding */ rgbaStringToHsva),
+/* harmony export */   "rgbaToHex": () => (/* binding */ rgbaToHex),
+/* harmony export */   "rgbaToHsva": () => (/* binding */ rgbaToHsva),
+/* harmony export */   "rgbaToRgb": () => (/* binding */ rgbaToRgb),
+/* harmony export */   "roundHsva": () => (/* binding */ roundHsva)
+/* harmony export */ });
+/* harmony import */ var _math_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./math.js */ "../../../packages/vanilla-colorful/lib/utils/math.js");
+
+/**
+ * Valid CSS <angle> units.
+ * https://developer.mozilla.org/en-US/docs/Web/CSS/angle
+ */
+
+var angleUnits = {
+  grad: 360 / 400,
+  turn: 360,
+  rad: 360 / (Math.PI * 2)
+};
+var hexToHsva = function hexToHsva(hex) {
+  return rgbaToHsva(hexToRgba(hex));
+};
+var hexToRgba = function hexToRgba(hex) {
+  if (hex[0] === '#') hex = hex.substr(1);
+
+  if (hex.length < 6) {
+    return {
+      r: parseInt(hex[0] + hex[0], 16),
+      g: parseInt(hex[1] + hex[1], 16),
+      b: parseInt(hex[2] + hex[2], 16),
+      a: hex.length === 4 ? (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(parseInt(hex[3] + hex[3], 16) / 255, 2) : 1
+    };
+  }
+
+  return {
+    r: parseInt(hex.substr(0, 2), 16),
+    g: parseInt(hex.substr(2, 2), 16),
+    b: parseInt(hex.substr(4, 2), 16),
+    a: hex.length === 8 ? (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(parseInt(hex.substring(6, 8), 16) / 255, 2) : 1
+  };
+};
+var parseHue = function parseHue(value) {
+  var unit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'deg';
+  return Number(value) * (angleUnits[unit] || 1);
+};
+var hslaStringToHsva = function hslaStringToHsva(hslString) {
+  var matcher = /hsla?\(?\s*(-?\d*\.?\d+)(deg|rad|grad|turn)?[,\s]+(-?\d*\.?\d+)%?[,\s]+(-?\d*\.?\d+)%?,?\s*[/\s]*(-?\d*\.?\d+)?(%)?\s*\)?/i;
+  var match = matcher.exec(hslString);
+  if (!match) return {
+    h: 0,
+    s: 0,
+    v: 0,
+    a: 1
+  };
+  return hslaToHsva({
+    h: parseHue(match[1], match[2]),
+    s: Number(match[3]),
+    l: Number(match[4]),
+    a: match[5] === undefined ? 1 : Number(match[5]) / (match[6] ? 100 : 1)
+  });
+};
+var hslStringToHsva = hslaStringToHsva;
+var hslaToHsva = function hslaToHsva(_ref) {
+  var h = _ref.h,
+      s = _ref.s,
+      l = _ref.l,
+      a = _ref.a;
+  s *= (l < 50 ? l : 100 - l) / 100;
+  return {
+    h: h,
+    s: s > 0 ? 2 * s / (l + s) * 100 : 0,
+    v: l + s,
+    a: a
+  };
+};
+var hsvaToHex = function hsvaToHex(hsva) {
+  return rgbaToHex(hsvaToRgba(hsva));
+};
+var hsvaToHsla = function hsvaToHsla(_ref2) {
+  var h = _ref2.h,
+      s = _ref2.s,
+      v = _ref2.v,
+      a = _ref2.a;
+  var hh = (200 - s) * v / 100;
+  return {
+    h: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(h),
+    s: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hh > 0 && hh < 200 ? s * v / 100 / (hh <= 100 ? hh : 200 - hh) * 100 : 0),
+    l: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hh / 2),
+    a: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(a, 2)
+  };
+};
+var hsvaToHsvString = function hsvaToHsvString(hsva) {
+  var _roundHsva = roundHsva(hsva),
+      h = _roundHsva.h,
+      s = _roundHsva.s,
+      v = _roundHsva.v;
+
+  return "hsv(".concat(h, ", ").concat(s, "%, ").concat(v, "%)");
+};
+var hsvaToHsvaString = function hsvaToHsvaString(hsva) {
+  var _roundHsva2 = roundHsva(hsva),
+      h = _roundHsva2.h,
+      s = _roundHsva2.s,
+      v = _roundHsva2.v,
+      a = _roundHsva2.a;
+
+  return "hsva(".concat(h, ", ").concat(s, "%, ").concat(v, "%, ").concat(a, ")");
+};
+var hsvaToHslString = function hsvaToHslString(hsva) {
+  var _hsvaToHsla = hsvaToHsla(hsva),
+      h = _hsvaToHsla.h,
+      s = _hsvaToHsla.s,
+      l = _hsvaToHsla.l;
+
+  return "hsl(".concat(h, ", ").concat(s, "%, ").concat(l, "%)");
+};
+var hsvaToHslaString = function hsvaToHslaString(hsva) {
+  var _hsvaToHsla2 = hsvaToHsla(hsva),
+      h = _hsvaToHsla2.h,
+      s = _hsvaToHsla2.s,
+      l = _hsvaToHsla2.l,
+      a = _hsvaToHsla2.a;
+
+  return "hsla(".concat(h, ", ").concat(s, "%, ").concat(l, "%, ").concat(a, ")");
+};
+var hsvaToRgba = function hsvaToRgba(_ref3) {
+  var h = _ref3.h,
+      s = _ref3.s,
+      v = _ref3.v,
+      a = _ref3.a;
+  h = h / 360 * 6;
+  s = s / 100;
+  v = v / 100;
+  var hh = Math.floor(h),
+      b = v * (1 - s),
+      c = v * (1 - (h - hh) * s),
+      d = v * (1 - (1 - h + hh) * s),
+      module = hh % 6;
+  return {
+    r: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)([v, c, b, b, d, v][module] * 255),
+    g: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)([d, v, v, c, b, b][module] * 255),
+    b: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)([b, b, d, v, v, c][module] * 255),
+    a: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(a, 2)
+  };
+};
+var hsvaToRgbString = function hsvaToRgbString(hsva) {
+  var _hsvaToRgba = hsvaToRgba(hsva),
+      r = _hsvaToRgba.r,
+      g = _hsvaToRgba.g,
+      b = _hsvaToRgba.b;
+
+  return "rgb(".concat(r, ", ").concat(g, ", ").concat(b, ")");
+};
+var hsvaToRgbaString = function hsvaToRgbaString(hsva) {
+  var _hsvaToRgba2 = hsvaToRgba(hsva),
+      r = _hsvaToRgba2.r,
+      g = _hsvaToRgba2.g,
+      b = _hsvaToRgba2.b,
+      a = _hsvaToRgba2.a;
+
+  return "rgba(".concat(r, ", ").concat(g, ", ").concat(b, ", ").concat(a, ")");
+};
+var hsvaStringToHsva = function hsvaStringToHsva(hsvString) {
+  var matcher = /hsva?\(?\s*(-?\d*\.?\d+)(deg|rad|grad|turn)?[,\s]+(-?\d*\.?\d+)%?[,\s]+(-?\d*\.?\d+)%?,?\s*[/\s]*(-?\d*\.?\d+)?(%)?\s*\)?/i;
+  var match = matcher.exec(hsvString);
+  if (!match) return {
+    h: 0,
+    s: 0,
+    v: 0,
+    a: 1
+  };
+  return roundHsva({
+    h: parseHue(match[1], match[2]),
+    s: Number(match[3]),
+    v: Number(match[4]),
+    a: match[5] === undefined ? 1 : Number(match[5]) / (match[6] ? 100 : 1)
+  });
+};
+var hsvStringToHsva = hsvaStringToHsva;
+var rgbaStringToHsva = function rgbaStringToHsva(rgbaString) {
+  var matcher = /rgba?\(?\s*(-?\d*\.?\d+)(%)?[,\s]+(-?\d*\.?\d+)(%)?[,\s]+(-?\d*\.?\d+)(%)?,?\s*[/\s]*(-?\d*\.?\d+)?(%)?\s*\)?/i;
+  var match = matcher.exec(rgbaString);
+  if (!match) return {
+    h: 0,
+    s: 0,
+    v: 0,
+    a: 1
+  };
+  return rgbaToHsva({
+    r: Number(match[1]) / (match[2] ? 100 / 255 : 1),
+    g: Number(match[3]) / (match[4] ? 100 / 255 : 1),
+    b: Number(match[5]) / (match[6] ? 100 / 255 : 1),
+    a: match[7] === undefined ? 1 : Number(match[7]) / (match[8] ? 100 : 1)
+  });
+};
+var rgbStringToHsva = rgbaStringToHsva;
+
+var format = function format(number) {
+  var hex = number.toString(16);
+  return hex.length < 2 ? '0' + hex : hex;
+};
+
+var rgbaToHex = function rgbaToHex(_ref4) {
+  var r = _ref4.r,
+      g = _ref4.g,
+      b = _ref4.b,
+      a = _ref4.a;
+  var alphaHex = a < 1 ? format((0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(a * 255)) : '';
+  return '#' + format(r) + format(g) + format(b) + alphaHex;
+};
+var rgbaToHsva = function rgbaToHsva(_ref5) {
+  var r = _ref5.r,
+      g = _ref5.g,
+      b = _ref5.b,
+      a = _ref5.a;
+  var max = Math.max(r, g, b);
+  var delta = max - Math.min(r, g, b); // prettier-ignore
+
+  var hh = delta ? max === r ? (g - b) / delta : max === g ? 2 + (b - r) / delta : 4 + (r - g) / delta : 0;
+  return {
+    h: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(60 * (hh < 0 ? hh + 6 : hh)),
+    s: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(max ? delta / max * 100 : 0),
+    v: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(max / 255 * 100),
+    a: a
+  };
+};
+var roundHsva = function roundHsva(hsva) {
+  return {
+    h: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hsva.h),
+    s: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hsva.s),
+    v: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hsva.v),
+    a: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hsva.a, 2)
+  };
+};
+var rgbaToRgb = function rgbaToRgb(_ref6) {
+  var r = _ref6.r,
+      g = _ref6.g,
+      b = _ref6.b;
+  return {
+    r: r,
+    g: g,
+    b: b
+  };
+};
+var hslaToHsl = function hslaToHsl(_ref7) {
+  var h = _ref7.h,
+      s = _ref7.s,
+      l = _ref7.l;
+  return {
+    h: h,
+    s: s,
+    l: l
+  };
+};
+var hsvaToHsv = function hsvaToHsv(hsva) {
+  var _roundHsva3 = roundHsva(hsva),
+      h = _roundHsva3.h,
+      s = _roundHsva3.s,
+      v = _roundHsva3.v;
+
+  return {
+    h: h,
+    s: s,
+    v: v
+  };
+};
+
+/***/ }),
+
+/***/ "../../../packages/vanilla-colorful/lib/utils/dom.js":
+/*!***********************************************************!*\
+  !*** ../../../packages/vanilla-colorful/lib/utils/dom.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "fire": () => (/* binding */ fire),
+/* harmony export */   "tpl": () => (/* binding */ tpl)
+/* harmony export */ });
+var cache = {};
+var tpl = function tpl(html) {
+  var template = cache[html];
+
+  if (!template) {
+    template = document.createElement('template');
+    template.innerHTML = html;
+    cache[html] = template;
+  }
+
+  return template;
+};
+var fire = function fire(target, type, detail) {
+  target.dispatchEvent(new CustomEvent(type, {
+    bubbles: true,
+    detail: detail
+  }));
+};
+
+/***/ }),
+
+/***/ "../../../packages/vanilla-colorful/lib/utils/math.js":
+/*!************************************************************!*\
+  !*** ../../../packages/vanilla-colorful/lib/utils/math.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "clamp": () => (/* binding */ clamp),
+/* harmony export */   "round": () => (/* binding */ round)
+/* harmony export */ });
+// Clamps a value between an upper and lower bound.
+// We use ternary operators because it makes the minified code
+// 2 times shorter then `Math.min(Math.max(a,b),c)`
+var clamp = function clamp(number) {
+  var min = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+  var max = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+  return number > max ? max : number < min ? min : number;
+};
+var round = function round(number) {
+  var digits = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+  var base = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : Math.pow(10, digits);
+  return Math.round(base * number) / base;
+};
+
+/***/ }),
+
+/***/ "../../../packages/vanilla-colorful/lib/utils/validate.js":
+/*!****************************************************************!*\
+  !*** ../../../packages/vanilla-colorful/lib/utils/validate.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "validHex": () => (/* binding */ validHex)
+/* harmony export */ });
+var matcher = /^#?([0-9A-F]{3,8})$/i;
+var validHex = function validHex(value, alpha) {
+  var match = matcher.exec(value);
+  var length = match ? match[1].length : 0;
+  return length === 3 || // '#rgb' format
+  length === 6 || // '#rrggbb' format
+  !!alpha && length === 4 || // '#rgba' format
+  !!alpha && length === 8 // '#rrggbbaa' format
+  ;
+};
 
 /***/ }),
 
@@ -10136,891 +12563,6 @@ function replace(field, searchValue, replacer) {
 }
 
 
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/hex-color-picker.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/vanilla-colorful/hex-color-picker.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "HexColorPicker": () => (/* binding */ HexColorPicker)
-/* harmony export */ });
-/* harmony import */ var _lib_entrypoints_hex_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lib/entrypoints/hex.js */ "./node_modules/vanilla-colorful/lib/entrypoints/hex.js");
-
-/**
- * A color picker custom element that uses HEX format.
- *
- * @element hex-color-picker
- *
- * @prop {string} color - Selected color in HEX format.
- * @attr {string} color - Selected color in HEX format.
- *
- * @fires color-changed - Event fired when color property changes.
- *
- * @csspart hue - A hue selector container.
- * @csspart saturation - A saturation selector container
- * @csspart hue-pointer - A hue pointer element.
- * @csspart saturation-pointer - A saturation pointer element.
- */
-class HexColorPicker extends _lib_entrypoints_hex_js__WEBPACK_IMPORTED_MODULE_0__.HexBase {
-}
-customElements.define('hex-color-picker', HexColorPicker);
-//# sourceMappingURL=hex-color-picker.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/hex-input.js":
-/*!****************************************************!*\
-  !*** ./node_modules/vanilla-colorful/hex-input.js ***!
-  \****************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "HexInput": () => (/* binding */ HexInput)
-/* harmony export */ });
-/* harmony import */ var _lib_entrypoints_hex_input_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lib/entrypoints/hex-input.js */ "./node_modules/vanilla-colorful/lib/entrypoints/hex-input.js");
-
-/**
- * A custom element for entering color in HEX format.
- *
- * @element hex-input
- *
- * @prop {string} color - Color in HEX format.
- * @attr {string} color - Selected color in HEX format.
- *
- * @fires color-changed - Event fired when color is changed.
- *
- * @csspart input - A native input element.
- */
-class HexInput extends _lib_entrypoints_hex_input_js__WEBPACK_IMPORTED_MODULE_0__.HexInputBase {
-}
-customElements.define('hex-input', HexInput);
-//# sourceMappingURL=hex-input.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/components/color-picker.js":
-/*!**********************************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/components/color-picker.js ***!
-  \**********************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "$css": () => (/* binding */ $css),
-/* harmony export */   "$sliders": () => (/* binding */ $sliders),
-/* harmony export */   "ColorPicker": () => (/* binding */ ColorPicker)
-/* harmony export */ });
-/* harmony import */ var _utils_compare_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/compare.js */ "./node_modules/vanilla-colorful/lib/utils/compare.js");
-/* harmony import */ var _utils_dom_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/dom.js */ "./node_modules/vanilla-colorful/lib/utils/dom.js");
-/* harmony import */ var _hue_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./hue.js */ "./node_modules/vanilla-colorful/lib/components/hue.js");
-/* harmony import */ var _saturation_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./saturation.js */ "./node_modules/vanilla-colorful/lib/components/saturation.js");
-/* harmony import */ var _styles_color_picker_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../styles/color-picker.js */ "./node_modules/vanilla-colorful/lib/styles/color-picker.js");
-/* harmony import */ var _styles_hue_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styles/hue.js */ "./node_modules/vanilla-colorful/lib/styles/hue.js");
-/* harmony import */ var _styles_saturation_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../styles/saturation.js */ "./node_modules/vanilla-colorful/lib/styles/saturation.js");
-
-
-
-
-
-
-
-const $isSame = Symbol('same');
-const $color = Symbol('color');
-const $hsva = Symbol('hsva');
-const $update = Symbol('update');
-const $parts = Symbol('parts');
-const $css = Symbol('css');
-const $sliders = Symbol('sliders');
-class ColorPicker extends HTMLElement {
-    static get observedAttributes() {
-        return ['color'];
-    }
-    get [$css]() {
-        return [_styles_color_picker_js__WEBPACK_IMPORTED_MODULE_0__["default"], _styles_hue_js__WEBPACK_IMPORTED_MODULE_1__["default"], _styles_saturation_js__WEBPACK_IMPORTED_MODULE_2__["default"]];
-    }
-    get [$sliders]() {
-        return [_saturation_js__WEBPACK_IMPORTED_MODULE_3__.Saturation, _hue_js__WEBPACK_IMPORTED_MODULE_4__.Hue];
-    }
-    get color() {
-        return this[$color];
-    }
-    set color(newColor) {
-        if (!this[$isSame](newColor)) {
-            const newHsva = this.colorModel.toHsva(newColor);
-            this[$update](newHsva);
-            this[$color] = newColor;
-        }
-    }
-    constructor() {
-        super();
-        const template = (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_5__.tpl)(`<style>${this[$css].join('')}</style>`);
-        const root = this.attachShadow({ mode: 'open' });
-        root.appendChild(template.content.cloneNode(true));
-        root.addEventListener('move', this);
-        this[$parts] = this[$sliders].map((slider) => new slider(root));
-    }
-    connectedCallback() {
-        // A user may set a property on an _instance_ of an element,
-        // before its prototype has been connected to this class.
-        // If so, we need to run it through the proper class setter.
-        if (this.hasOwnProperty('color')) {
-            const value = this.color;
-            delete this['color'];
-            this.color = value;
-        }
-        else if (!this.color) {
-            this.color = this.colorModel.defaultColor;
-        }
-    }
-    attributeChangedCallback(_attr, _oldVal, newVal) {
-        const color = this.colorModel.fromAttr(newVal);
-        if (!this[$isSame](color)) {
-            this.color = color;
-        }
-    }
-    handleEvent(event) {
-        // Merge the current HSV color object with updated params.
-        const oldHsva = this[$hsva];
-        const newHsva = { ...oldHsva, ...event.detail };
-        this[$update](newHsva);
-        let newColor;
-        if (!(0,_utils_compare_js__WEBPACK_IMPORTED_MODULE_6__.equalColorObjects)(newHsva, oldHsva) &&
-            !this[$isSame]((newColor = this.colorModel.fromHsva(newHsva)))) {
-            this[$color] = newColor;
-            (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_5__.fire)(this, 'color-changed', { value: newColor });
-        }
-    }
-    [$isSame](color) {
-        return this.color && this.colorModel.equal(color, this.color);
-    }
-    [$update](hsva) {
-        this[$hsva] = hsva;
-        this[$parts].forEach((part) => part.update(hsva));
-    }
-}
-//# sourceMappingURL=color-picker.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/components/hue.js":
-/*!*************************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/components/hue.js ***!
-  \*************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Hue": () => (/* binding */ Hue)
-/* harmony export */ });
-/* harmony import */ var _slider_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./slider.js */ "./node_modules/vanilla-colorful/lib/components/slider.js");
-/* harmony import */ var _utils_convert_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/convert.js */ "./node_modules/vanilla-colorful/lib/utils/convert.js");
-/* harmony import */ var _utils_math_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/math.js */ "./node_modules/vanilla-colorful/lib/utils/math.js");
-
-
-
-class Hue extends _slider_js__WEBPACK_IMPORTED_MODULE_0__.Slider {
-    constructor(root) {
-        super(root, 'hue', 'aria-label="Hue" aria-valuemin="0" aria-valuemax="360"', false);
-    }
-    update({ h }) {
-        this.h = h;
-        this.style([
-            {
-                left: `${(h / 360) * 100}%`,
-                color: (0,_utils_convert_js__WEBPACK_IMPORTED_MODULE_1__.hsvaToHslString)({ h, s: 100, v: 100, a: 1 })
-            }
-        ]);
-        this.el.setAttribute('aria-valuenow', `${(0,_utils_math_js__WEBPACK_IMPORTED_MODULE_2__.round)(h)}`);
-    }
-    getMove(offset, key) {
-        // Hue measured in degrees of the color circle ranging from 0 to 360
-        return { h: key ? (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_2__.clamp)(this.h + offset.x * 360, 0, 360) : 360 * offset.x };
-    }
-}
-//# sourceMappingURL=hue.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/components/saturation.js":
-/*!********************************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/components/saturation.js ***!
-  \********************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Saturation": () => (/* binding */ Saturation)
-/* harmony export */ });
-/* harmony import */ var _slider_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./slider.js */ "./node_modules/vanilla-colorful/lib/components/slider.js");
-/* harmony import */ var _utils_convert_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/convert.js */ "./node_modules/vanilla-colorful/lib/utils/convert.js");
-/* harmony import */ var _utils_math_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/math.js */ "./node_modules/vanilla-colorful/lib/utils/math.js");
-
-
-
-class Saturation extends _slider_js__WEBPACK_IMPORTED_MODULE_0__.Slider {
-    constructor(root) {
-        super(root, 'saturation', 'aria-label="Color"', true);
-    }
-    update(hsva) {
-        this.hsva = hsva;
-        this.style([
-            {
-                top: `${100 - hsva.v}%`,
-                left: `${hsva.s}%`,
-                color: (0,_utils_convert_js__WEBPACK_IMPORTED_MODULE_1__.hsvaToHslString)(hsva)
-            },
-            {
-                'background-color': (0,_utils_convert_js__WEBPACK_IMPORTED_MODULE_1__.hsvaToHslString)({ h: hsva.h, s: 100, v: 100, a: 1 })
-            }
-        ]);
-        this.el.setAttribute('aria-valuetext', `Saturation ${(0,_utils_math_js__WEBPACK_IMPORTED_MODULE_2__.round)(hsva.s)}%, Brightness ${(0,_utils_math_js__WEBPACK_IMPORTED_MODULE_2__.round)(hsva.v)}%`);
-    }
-    getMove(offset, key) {
-        // Saturation and brightness always fit into [0, 100] range
-        return {
-            s: key ? (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_2__.clamp)(this.hsva.s + offset.x * 100, 0, 100) : offset.x * 100,
-            v: key ? (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_2__.clamp)(this.hsva.v - offset.y * 100, 0, 100) : Math.round(100 - offset.y * 100)
-        };
-    }
-}
-//# sourceMappingURL=saturation.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/components/slider.js":
-/*!****************************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/components/slider.js ***!
-  \****************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Slider": () => (/* binding */ Slider)
-/* harmony export */ });
-/* harmony import */ var _utils_dom_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/dom.js */ "./node_modules/vanilla-colorful/lib/utils/dom.js");
-/* harmony import */ var _utils_math_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/math.js */ "./node_modules/vanilla-colorful/lib/utils/math.js");
-
-
-let hasTouched = false;
-// Check if an event was triggered by touch
-const isTouch = (e) => 'touches' in e;
-// Prevent mobile browsers from handling mouse events (conflicting with touch ones).
-// If we detected a touch interaction before, we prefer reacting to touch events only.
-const isValid = (event) => {
-    if (hasTouched && !isTouch(event))
-        return false;
-    if (!hasTouched)
-        hasTouched = isTouch(event);
-    return true;
-};
-const pointerMove = (target, event) => {
-    const pointer = isTouch(event) ? event.touches[0] : event;
-    const rect = target.el.getBoundingClientRect();
-    (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_0__.fire)(target.el, 'move', target.getMove({
-        x: (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_1__.clamp)((pointer.pageX - (rect.left + window.pageXOffset)) / rect.width),
-        y: (0,_utils_math_js__WEBPACK_IMPORTED_MODULE_1__.clamp)((pointer.pageY - (rect.top + window.pageYOffset)) / rect.height)
-    }));
-};
-const keyMove = (target, event) => {
-    // We use `keyCode` instead of `key` to reduce the size of the library.
-    const keyCode = event.keyCode;
-    // Ignore all keys except arrow ones, Page Up, Page Down, Home and End.
-    if (keyCode > 40 || (target.xy && keyCode < 37) || keyCode < 33)
-        return;
-    // Do not scroll page by keys when color picker element has focus.
-    event.preventDefault();
-    // Send relative offset to the parent component.
-    (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_0__.fire)(target.el, 'move', target.getMove({
-        x: keyCode === 39 // Arrow Right
-            ? 0.01
-            : keyCode === 37 // Arrow Left
-                ? -0.01
-                : keyCode === 34 // Page Down
-                    ? 0.05
-                    : keyCode === 33 // Page Up
-                        ? -0.05
-                        : keyCode === 35 // End
-                            ? 1
-                            : keyCode === 36 // Home
-                                ? -1
-                                : 0,
-        y: keyCode === 40 // Arrow down
-            ? 0.01
-            : keyCode === 38 // Arrow Up
-                ? -0.01
-                : 0
-    }, true));
-};
-class Slider {
-    constructor(root, part, aria, xy) {
-        const template = (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_0__.tpl)(`<div role="slider" tabindex="0" part="${part}" ${aria}><div part="${part}-pointer"></div></div>`);
-        root.appendChild(template.content.cloneNode(true));
-        const el = root.querySelector(`[part=${part}]`);
-        el.addEventListener('mousedown', this);
-        el.addEventListener('touchstart', this);
-        el.addEventListener('keydown', this);
-        this.el = el;
-        this.xy = xy;
-        this.nodes = [el.firstChild, el];
-    }
-    set dragging(state) {
-        const toggleEvent = state ? document.addEventListener : document.removeEventListener;
-        toggleEvent(hasTouched ? 'touchmove' : 'mousemove', this);
-        toggleEvent(hasTouched ? 'touchend' : 'mouseup', this);
-    }
-    handleEvent(event) {
-        switch (event.type) {
-            case 'mousedown':
-            case 'touchstart':
-                event.preventDefault();
-                // event.button is 0 in mousedown for left button activation
-                if (!isValid(event) || (!hasTouched && event.button != 0))
-                    return;
-                this.el.focus();
-                pointerMove(this, event);
-                this.dragging = true;
-                break;
-            case 'mousemove':
-            case 'touchmove':
-                event.preventDefault();
-                pointerMove(this, event);
-                break;
-            case 'mouseup':
-            case 'touchend':
-                this.dragging = false;
-                break;
-            case 'keydown':
-                keyMove(this, event);
-                break;
-        }
-    }
-    style(styles) {
-        styles.forEach((style, i) => {
-            for (const p in style) {
-                this.nodes[i].style.setProperty(p, style[p]);
-            }
-        });
-    }
-}
-//# sourceMappingURL=slider.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/entrypoints/hex-input.js":
-/*!********************************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/entrypoints/hex-input.js ***!
-  \********************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "HexInputBase": () => (/* binding */ HexInputBase)
-/* harmony export */ });
-/* harmony import */ var _utils_validate_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/validate.js */ "./node_modules/vanilla-colorful/lib/utils/validate.js");
-/* harmony import */ var _utils_dom_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/dom.js */ "./node_modules/vanilla-colorful/lib/utils/dom.js");
-
-
-const template = (0,_utils_dom_js__WEBPACK_IMPORTED_MODULE_0__.tpl)('<slot><input part="input" spellcheck="false"></slot>');
-// Escapes all non-hexadecimal characters including "#"
-const escape = (hex) => hex.replace(/([^0-9A-F]+)/gi, '').substr(0, 6);
-const $color = Symbol('color');
-const $saved = Symbol('saved');
-const $input = Symbol('saved');
-const $update = Symbol('update');
-class HexInputBase extends HTMLElement {
-    static get observedAttributes() {
-        return ['color'];
-    }
-    get color() {
-        return this[$color];
-    }
-    set color(hex) {
-        this[$color] = hex;
-        this[$update](hex);
-    }
-    connectedCallback() {
-        const root = this.attachShadow({ mode: 'open' });
-        root.appendChild(template.content.cloneNode(true));
-        const slot = root.firstElementChild;
-        const setInput = () => {
-            let input = this.querySelector('input');
-            if (!input) {
-                // remove all child node if no input found
-                let c;
-                while ((c = this.firstChild)) {
-                    c.remove();
-                }
-                input = slot.firstChild;
-            }
-            input.addEventListener('input', this);
-            input.addEventListener('blur', this);
-            this[$input] = input;
-        };
-        slot.addEventListener('slotchange', setInput);
-        setInput();
-        // A user may set a property on an _instance_ of an element,
-        // before its prototype has been connected to this class.
-        // If so, we need to run it through the proper class setter.
-        if (this.hasOwnProperty('color')) {
-            const value = this.color;
-            delete this['color'];
-            this.color = value;
-        }
-        else if (this.color == null) {
-            this.color = this.getAttribute('color') || '';
-        }
-        else if (this[$color]) {
-            this[$update](this[$color]);
-        }
-    }
-    handleEvent(event) {
-        const target = event.target;
-        const { value } = target;
-        switch (event.type) {
-            case 'input':
-                const hex = escape(value);
-                this[$saved] = this.color;
-                if ((0,_utils_validate_js__WEBPACK_IMPORTED_MODULE_1__.validHex)(hex) || value === '') {
-                    this.color = hex;
-                    this.dispatchEvent(new CustomEvent('color-changed', {
-                        bubbles: true,
-                        detail: { value: hex ? '#' + hex : '' }
-                    }));
-                }
-                break;
-            case 'blur':
-                if (value && !(0,_utils_validate_js__WEBPACK_IMPORTED_MODULE_1__.validHex)(value)) {
-                    this.color = this[$saved];
-                }
-        }
-    }
-    attributeChangedCallback(_attr, _oldVal, newVal) {
-        if (this.color !== newVal) {
-            this.color = newVal;
-        }
-    }
-    [$update](hex) {
-        if (this[$input]) {
-            this[$input].value = hex == null || hex == '' ? '' : escape(hex);
-        }
-    }
-}
-//# sourceMappingURL=hex-input.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/entrypoints/hex.js":
-/*!**************************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/entrypoints/hex.js ***!
-  \**************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "HexBase": () => (/* binding */ HexBase)
-/* harmony export */ });
-/* harmony import */ var _components_color_picker_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/color-picker.js */ "./node_modules/vanilla-colorful/lib/components/color-picker.js");
-/* harmony import */ var _utils_convert_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/convert.js */ "./node_modules/vanilla-colorful/lib/utils/convert.js");
-/* harmony import */ var _utils_compare_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/compare.js */ "./node_modules/vanilla-colorful/lib/utils/compare.js");
-
-
-
-const colorModel = {
-    defaultColor: '#000',
-    toHsva: _utils_convert_js__WEBPACK_IMPORTED_MODULE_0__.hexToHsva,
-    fromHsva: _utils_convert_js__WEBPACK_IMPORTED_MODULE_0__.hsvaToHex,
-    equal: _utils_compare_js__WEBPACK_IMPORTED_MODULE_1__.equalHex,
-    fromAttr: (color) => color
-};
-class HexBase extends _components_color_picker_js__WEBPACK_IMPORTED_MODULE_2__.ColorPicker {
-    get colorModel() {
-        return colorModel;
-    }
-}
-//# sourceMappingURL=hex.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/styles/color-picker.js":
-/*!******************************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/styles/color-picker.js ***!
-  \******************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (`:host{display:flex;flex-direction:column;position:relative;width:200px;height:200px;user-select:none;-webkit-user-select:none;cursor:default}:host([hidden]){display:none!important}[role=slider]{position:relative;touch-action:none;user-select:none;-webkit-user-select:none;outline:0}[role=slider]:last-child{border-radius:0 0 8px 8px}[part$=pointer]{position:absolute;z-index:1;box-sizing:border-box;width:28px;height:28px;display:flex;place-content:center center;transform:translate(-50%,-50%);background-color:#fff;border:2px solid #fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.2)}[part$=pointer]::after{content:"";width:100%;height:100%;border-radius:inherit;background-color:currentColor}[role=slider]:focus [part$=pointer]{transform:translate(-50%,-50%) scale(1.1)}`);
-//# sourceMappingURL=color-picker.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/styles/hue.js":
-/*!*********************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/styles/hue.js ***!
-  \*********************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (`[part=hue]{flex:0 0 24px;background:linear-gradient(to right,red 0,#ff0 17%,#0f0 33%,#0ff 50%,#00f 67%,#f0f 83%,red 100%)}[part=hue-pointer]{top:50%;z-index:2}`);
-//# sourceMappingURL=hue.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/styles/saturation.js":
-/*!****************************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/styles/saturation.js ***!
-  \****************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (`[part=saturation]{flex-grow:1;border-color:transparent;border-bottom:12px solid #000;border-radius:8px 8px 0 0;background-image:linear-gradient(to top,#000,transparent),linear-gradient(to right,#fff,rgba(255,255,255,0));box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)}[part=saturation-pointer]{z-index:3}`);
-//# sourceMappingURL=saturation.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/utils/compare.js":
-/*!************************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/utils/compare.js ***!
-  \************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "equalColorObjects": () => (/* binding */ equalColorObjects),
-/* harmony export */   "equalColorString": () => (/* binding */ equalColorString),
-/* harmony export */   "equalHex": () => (/* binding */ equalHex)
-/* harmony export */ });
-/* harmony import */ var _convert_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./convert.js */ "./node_modules/vanilla-colorful/lib/utils/convert.js");
-
-const equalColorObjects = (first, second) => {
-    if (first === second)
-        return true;
-    for (const prop in first) {
-        // The following allows for a type-safe calling of this function (first & second have to be HSL, HSV, or RGB)
-        // with type-unsafe iterating over object keys. TS does not allow this without an index (`[key: string]: number`)
-        // on an object to define how iteration is normally done. To ensure extra keys are not allowed on our types,
-        // we must cast our object to unknown (as RGB demands `r` be a key, while `Record<string, x>` does not care if
-        // there is or not), and then as a type TS can iterate over.
-        if (first[prop] !==
-            second[prop])
-            return false;
-    }
-    return true;
-};
-const equalColorString = (first, second) => {
-    return first.replace(/\s/g, '') === second.replace(/\s/g, '');
-};
-const equalHex = (first, second) => {
-    if (first.toLowerCase() === second.toLowerCase())
-        return true;
-    // To compare colors like `#FFF` and `ffffff` we convert them into RGB objects
-    return equalColorObjects((0,_convert_js__WEBPACK_IMPORTED_MODULE_0__.hexToRgba)(first), (0,_convert_js__WEBPACK_IMPORTED_MODULE_0__.hexToRgba)(second));
-};
-//# sourceMappingURL=compare.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/utils/convert.js":
-/*!************************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/utils/convert.js ***!
-  \************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "hexToHsva": () => (/* binding */ hexToHsva),
-/* harmony export */   "hexToRgba": () => (/* binding */ hexToRgba),
-/* harmony export */   "hslStringToHsva": () => (/* binding */ hslStringToHsva),
-/* harmony export */   "hslaStringToHsva": () => (/* binding */ hslaStringToHsva),
-/* harmony export */   "hslaToHsl": () => (/* binding */ hslaToHsl),
-/* harmony export */   "hslaToHsva": () => (/* binding */ hslaToHsva),
-/* harmony export */   "hsvStringToHsva": () => (/* binding */ hsvStringToHsva),
-/* harmony export */   "hsvaStringToHsva": () => (/* binding */ hsvaStringToHsva),
-/* harmony export */   "hsvaToHex": () => (/* binding */ hsvaToHex),
-/* harmony export */   "hsvaToHslString": () => (/* binding */ hsvaToHslString),
-/* harmony export */   "hsvaToHsla": () => (/* binding */ hsvaToHsla),
-/* harmony export */   "hsvaToHslaString": () => (/* binding */ hsvaToHslaString),
-/* harmony export */   "hsvaToHsv": () => (/* binding */ hsvaToHsv),
-/* harmony export */   "hsvaToHsvString": () => (/* binding */ hsvaToHsvString),
-/* harmony export */   "hsvaToHsvaString": () => (/* binding */ hsvaToHsvaString),
-/* harmony export */   "hsvaToRgbString": () => (/* binding */ hsvaToRgbString),
-/* harmony export */   "hsvaToRgba": () => (/* binding */ hsvaToRgba),
-/* harmony export */   "hsvaToRgbaString": () => (/* binding */ hsvaToRgbaString),
-/* harmony export */   "parseHue": () => (/* binding */ parseHue),
-/* harmony export */   "rgbStringToHsva": () => (/* binding */ rgbStringToHsva),
-/* harmony export */   "rgbaStringToHsva": () => (/* binding */ rgbaStringToHsva),
-/* harmony export */   "rgbaToHex": () => (/* binding */ rgbaToHex),
-/* harmony export */   "rgbaToHsva": () => (/* binding */ rgbaToHsva),
-/* harmony export */   "rgbaToRgb": () => (/* binding */ rgbaToRgb),
-/* harmony export */   "roundHsva": () => (/* binding */ roundHsva)
-/* harmony export */ });
-/* harmony import */ var _math_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./math.js */ "./node_modules/vanilla-colorful/lib/utils/math.js");
-
-/**
- * Valid CSS <angle> units.
- * https://developer.mozilla.org/en-US/docs/Web/CSS/angle
- */
-const angleUnits = {
-    grad: 360 / 400,
-    turn: 360,
-    rad: 360 / (Math.PI * 2)
-};
-const hexToHsva = (hex) => rgbaToHsva(hexToRgba(hex));
-const hexToRgba = (hex) => {
-    if (hex[0] === '#')
-        hex = hex.substr(1);
-    if (hex.length < 6) {
-        return {
-            r: parseInt(hex[0] + hex[0], 16),
-            g: parseInt(hex[1] + hex[1], 16),
-            b: parseInt(hex[2] + hex[2], 16),
-            a: 1
-        };
-    }
-    return {
-        r: parseInt(hex.substr(0, 2), 16),
-        g: parseInt(hex.substr(2, 2), 16),
-        b: parseInt(hex.substr(4, 2), 16),
-        a: 1
-    };
-};
-const parseHue = (value, unit = 'deg') => {
-    return Number(value) * (angleUnits[unit] || 1);
-};
-const hslaStringToHsva = (hslString) => {
-    const matcher = /hsla?\(?\s*(-?\d*\.?\d+)(deg|rad|grad|turn)?[,\s]+(-?\d*\.?\d+)%?[,\s]+(-?\d*\.?\d+)%?,?\s*[/\s]*(-?\d*\.?\d+)?(%)?\s*\)?/i;
-    const match = matcher.exec(hslString);
-    if (!match)
-        return { h: 0, s: 0, v: 0, a: 1 };
-    return hslaToHsva({
-        h: parseHue(match[1], match[2]),
-        s: Number(match[3]),
-        l: Number(match[4]),
-        a: match[5] === undefined ? 1 : Number(match[5]) / (match[6] ? 100 : 1)
-    });
-};
-const hslStringToHsva = hslaStringToHsva;
-const hslaToHsva = ({ h, s, l, a }) => {
-    s *= (l < 50 ? l : 100 - l) / 100;
-    return {
-        h: h,
-        s: s > 0 ? ((2 * s) / (l + s)) * 100 : 0,
-        v: l + s,
-        a
-    };
-};
-const hsvaToHex = (hsva) => rgbaToHex(hsvaToRgba(hsva));
-const hsvaToHsla = ({ h, s, v, a }) => {
-    const hh = ((200 - s) * v) / 100;
-    return {
-        h: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(h),
-        s: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hh > 0 && hh < 200 ? ((s * v) / 100 / (hh <= 100 ? hh : 200 - hh)) * 100 : 0),
-        l: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hh / 2),
-        a: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(a, 2)
-    };
-};
-const hsvaToHsvString = (hsva) => {
-    const { h, s, v } = roundHsva(hsva);
-    return `hsv(${h}, ${s}%, ${v}%)`;
-};
-const hsvaToHsvaString = (hsva) => {
-    const { h, s, v, a } = roundHsva(hsva);
-    return `hsva(${h}, ${s}%, ${v}%, ${a})`;
-};
-const hsvaToHslString = (hsva) => {
-    const { h, s, l } = hsvaToHsla(hsva);
-    return `hsl(${h}, ${s}%, ${l}%)`;
-};
-const hsvaToHslaString = (hsva) => {
-    const { h, s, l, a } = hsvaToHsla(hsva);
-    return `hsla(${h}, ${s}%, ${l}%, ${a})`;
-};
-const hsvaToRgba = ({ h, s, v, a }) => {
-    h = (h / 360) * 6;
-    s = s / 100;
-    v = v / 100;
-    const hh = Math.floor(h), b = v * (1 - s), c = v * (1 - (h - hh) * s), d = v * (1 - (1 - h + hh) * s), module = hh % 6;
-    return {
-        r: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)([v, c, b, b, d, v][module] * 255),
-        g: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)([d, v, v, c, b, b][module] * 255),
-        b: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)([b, b, d, v, v, c][module] * 255),
-        a: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(a, 2)
-    };
-};
-const hsvaToRgbString = (hsva) => {
-    const { r, g, b } = hsvaToRgba(hsva);
-    return `rgb(${r}, ${g}, ${b})`;
-};
-const hsvaToRgbaString = (hsva) => {
-    const { r, g, b, a } = hsvaToRgba(hsva);
-    return `rgba(${r}, ${g}, ${b}, ${a})`;
-};
-const hsvaStringToHsva = (hsvString) => {
-    const matcher = /hsva?\(?\s*(-?\d*\.?\d+)(deg|rad|grad|turn)?[,\s]+(-?\d*\.?\d+)%?[,\s]+(-?\d*\.?\d+)%?,?\s*[/\s]*(-?\d*\.?\d+)?(%)?\s*\)?/i;
-    const match = matcher.exec(hsvString);
-    if (!match)
-        return { h: 0, s: 0, v: 0, a: 1 };
-    return roundHsva({
-        h: parseHue(match[1], match[2]),
-        s: Number(match[3]),
-        v: Number(match[4]),
-        a: match[5] === undefined ? 1 : Number(match[5]) / (match[6] ? 100 : 1)
-    });
-};
-const hsvStringToHsva = hsvaStringToHsva;
-const rgbaStringToHsva = (rgbaString) => {
-    const matcher = /rgba?\(?\s*(-?\d*\.?\d+)(%)?[,\s]+(-?\d*\.?\d+)(%)?[,\s]+(-?\d*\.?\d+)(%)?,?\s*[/\s]*(-?\d*\.?\d+)?(%)?\s*\)?/i;
-    const match = matcher.exec(rgbaString);
-    if (!match)
-        return { h: 0, s: 0, v: 0, a: 1 };
-    return rgbaToHsva({
-        r: Number(match[1]) / (match[2] ? 100 / 255 : 1),
-        g: Number(match[3]) / (match[4] ? 100 / 255 : 1),
-        b: Number(match[5]) / (match[6] ? 100 / 255 : 1),
-        a: match[7] === undefined ? 1 : Number(match[7]) / (match[8] ? 100 : 1)
-    });
-};
-const rgbStringToHsva = rgbaStringToHsva;
-const format = (number) => {
-    const hex = number.toString(16);
-    return hex.length < 2 ? '0' + hex : hex;
-};
-const rgbaToHex = ({ r, g, b }) => {
-    return '#' + format(r) + format(g) + format(b);
-};
-const rgbaToHsva = ({ r, g, b, a }) => {
-    const max = Math.max(r, g, b);
-    const delta = max - Math.min(r, g, b);
-    // prettier-ignore
-    const hh = delta
-        ? max === r
-            ? (g - b) / delta
-            : max === g
-                ? 2 + (b - r) / delta
-                : 4 + (r - g) / delta
-        : 0;
-    return {
-        h: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(60 * (hh < 0 ? hh + 6 : hh)),
-        s: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(max ? (delta / max) * 100 : 0),
-        v: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)((max / 255) * 100),
-        a
-    };
-};
-const roundHsva = (hsva) => ({
-    h: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hsva.h),
-    s: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hsva.s),
-    v: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hsva.v),
-    a: (0,_math_js__WEBPACK_IMPORTED_MODULE_0__.round)(hsva.a, 2)
-});
-const rgbaToRgb = ({ r, g, b }) => ({ r, g, b });
-const hslaToHsl = ({ h, s, l }) => ({ h, s, l });
-const hsvaToHsv = (hsva) => {
-    const { h, s, v } = roundHsva(hsva);
-    return { h, s, v };
-};
-//# sourceMappingURL=convert.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/utils/dom.js":
-/*!********************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/utils/dom.js ***!
-  \********************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "fire": () => (/* binding */ fire),
-/* harmony export */   "tpl": () => (/* binding */ tpl)
-/* harmony export */ });
-const cache = {};
-const tpl = (html) => {
-    let template = cache[html];
-    if (!template) {
-        template = document.createElement('template');
-        template.innerHTML = html;
-        cache[html] = template;
-    }
-    return template;
-};
-const fire = (target, type, detail) => {
-    target.dispatchEvent(new CustomEvent(type, {
-        bubbles: true,
-        detail
-    }));
-};
-//# sourceMappingURL=dom.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/utils/math.js":
-/*!*********************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/utils/math.js ***!
-  \*********************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "clamp": () => (/* binding */ clamp),
-/* harmony export */   "round": () => (/* binding */ round)
-/* harmony export */ });
-// Clamps a value between an upper and lower bound.
-// We use ternary operators because it makes the minified code
-// 2 times shorter then `Math.min(Math.max(a,b),c)`
-const clamp = (number, min = 0, max = 1) => {
-    return number > max ? max : number < min ? min : number;
-};
-const round = (number, digits = 0, base = Math.pow(10, digits)) => {
-    return Math.round(base * number) / base;
-};
-//# sourceMappingURL=math.js.map
-
-/***/ }),
-
-/***/ "./node_modules/vanilla-colorful/lib/utils/validate.js":
-/*!*************************************************************!*\
-  !*** ./node_modules/vanilla-colorful/lib/utils/validate.js ***!
-  \*************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "validHex": () => (/* binding */ validHex)
-/* harmony export */ });
-const hex3 = /^#?[0-9A-F]{3}$/i;
-const hex6 = /^#?[0-9A-F]{6}$/i;
-const validHex = (color) => hex6.test(color) || hex3.test(color);
-//# sourceMappingURL=validate.js.map
-
 /***/ })
 
 /******/ 	});
@@ -11105,8 +12647,8 @@ var __webpack_exports__ = {};
   \*************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _hotwired_stimulus_webpack_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus-webpack-helpers */ "./node_modules/@hotwired/stimulus-webpack-helpers/dist/stimulus-webpack-helpers.js");
-/* harmony import */ var vanilla_colorful__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vanilla-colorful */ "./node_modules/vanilla-colorful/hex-color-picker.js");
-/* harmony import */ var vanilla_colorful_hex_input_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vanilla-colorful/hex-input.js */ "./node_modules/vanilla-colorful/hex-input.js");
+/* harmony import */ var vanilla_colorful_hex_alpha_color_picker_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vanilla-colorful/hex-alpha-color-picker.js */ "../../../packages/vanilla-colorful/hex-alpha-color-picker.js");
+/* harmony import */ var vanilla_colorful_hex_input_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vanilla-colorful/hex-input.js */ "../../../packages/vanilla-colorful/hex-input.js");
 
 
 

@@ -52,4 +52,19 @@ return [
 
     'php_memory_limit' => '-1',
     'php_max_execution_time' => '-1',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Laravel Echo Configuration
+    |--------------------------------------------------------------------------
+    |
+    |
+    |
+    */
+
+    'echo_config' => [
+        'broadcaster' => 'pusher',
+        'key' => env('PUSHER_APP_KEY'),
+        'cluster' => env('PUSHER_APP_CLUSTER', 'mt1'),
+    ],
 ];
