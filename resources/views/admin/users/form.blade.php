@@ -88,6 +88,7 @@
                             </div>
                             <div class="stack gap-sm">
                                 <input type="hidden" name="groups" value="">
+
                                 @foreach ($groups as $group)
                                     <label class="choice">
                                         <input
@@ -95,9 +96,12 @@
                                             name="groups[]"
                                             value="{{ $group->id }}"
                                             @checked(in_array($group->id, (array) old('groups', isset($user) ? $user->groups->pluck('id')->all() : [])))
-                                            @if ($group->isAdmin() && ($user->id ?? null) === 1) disabled @endif
+                                            @disabled($enforce = $group->isAdmin() && $user?->isRootAdmin())
                                         >
                                         <x-waterhole::group-label :group="$group"/>
+                                        @if ($enforce)
+                                            <input type="hidden" name="groups[]" value="{{ $group->id }}">
+                                        @endif
                                     </label>
                                 @endforeach
                             </div>

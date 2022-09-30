@@ -44,10 +44,5 @@
         "textarea-editor": "^2.1.1",
         "uplot": "^1.6.17",
         "vanilla-colorful": "^0.7.1"
-    },
-    "prettier": {
-        "singleQuote": true,
-        "printWidth": 100,
-        "phpVersion": "8.0"
     }
 }

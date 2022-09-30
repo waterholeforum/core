@@ -16,6 +16,7 @@ use Waterhole\Models\Concerns\Followable;
 use Waterhole\Models\Concerns\HasBody;
 use Waterhole\Models\Concerns\HasLikes;
 use Waterhole\Models\Concerns\HasUserState;
+use Waterhole\Models\Concerns\NotificationContent;
 use Waterhole\Models\Concerns\ValidatesData;
 use Waterhole\Notifications\Mention;
 use Waterhole\Scopes\CommentIndexScope;
@@ -52,6 +53,7 @@ class Post extends Model
     use HasLikes;
     use HasUserState;
     use ValidatesData;
+    use NotificationContent;
 
     public const UPDATED_AT = null;
 
@@ -290,7 +292,7 @@ class Post extends Model
             default => '#bottom',
         };
 
-        return $this->url($this->comment_count - $this->unread_comments_count) . $fragment;
+        return $this->url($this->comment_count - $this->unread_comments_count - 1) . $fragment;
     }
 
     public function setTitleAttribute($value)

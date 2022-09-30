@@ -58,6 +58,8 @@ structure-page-label = Page
 structure-link-label = Link
 structure-heading-label = Heading
 
+structure-listed-description = Move items here to show them in the navigation menu.
+
 structure-unlisted-title = Unlisted
 structure-unlisted-description = Move items here to hide them from the navigation menu.
 

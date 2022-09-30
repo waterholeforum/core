@@ -34,6 +34,10 @@ class PermittedScope implements Scope
 
     public function apply(Builder $builder, Model $model)
     {
+        if (app()->runningInConsole()) {
+            return;
+        }
+
         /** @var User $user */
         $user = Auth::user();
         $model = $this->model ?: $model;

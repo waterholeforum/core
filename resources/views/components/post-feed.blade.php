@@ -19,11 +19,10 @@
         data-turbo-frame="feed"
         hidden
     >
-        <input type="hidden" name="update_previously_seen_at" value="1">
         <div>
             <button
                 type="submit"
-                class="btn btn--small"
+                class="btn"
                 data-action="post-feed#scrollToTop"
             >
                 <x-waterhole::icon icon="tabler-refresh"/>
@@ -39,7 +38,7 @@
                     @if ($showLastVisit && $post->last_activity_at < session('previously_seen_at'))
                         @once
                             @if (!$loop->first)
-                                <div class="divider feed__last-visit-divider">
+                                <div class="divider color-accent feed__last-visit-divider">
                                     {{ __('waterhole::forum.feed-new-activity-heading') }}
                                 </div>
                             @endif

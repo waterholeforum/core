@@ -8142,13 +8142,6 @@ document.addEventListener('turbo:before-stream-render', function (e) {
     });
   }
 });
-document.addEventListener('turbo:before-frame-render', function (e) {
-  e.detail.render = function (a, b) {
-    return (0,idiomorph__WEBPACK_IMPORTED_MODULE_1__.morph)(a, b.children, {
-      morphStyle: 'innerHTML'
-    });
-  };
-});
 document.addEventListener('turbo:visit', function () {
   return __awaiter(void 0, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
     return _regeneratorRuntime().wrap(function _callee$(_context) {

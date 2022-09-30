@@ -28,7 +28,7 @@
                         {{ __('waterhole::admin.group-details-title') }}
                     </summary>
 
-                    <div class="card__body form">
+                    <div class="card__body form-groups">
                         <x-waterhole::field
                             name="name"
                             :label="__('waterhole::admin.group-name-label')"
@@ -143,7 +143,7 @@
                                                                     If members are allowed, then this group *must* be allowed too,
                                                                     so disable the checkbox.
                                                                 --}}
-                                                                @if (Waterhole::permissions()->member()->allows($ability, $node->content)) disabled @endif
+                                                                @disabled(Waterhole::permissions()->member()->allows($ability, $node->content))
                                                                 {{--
                                                                     Check this box if it was checked before, or if the ability is
                                                                     allowed for this group, or for members in general.

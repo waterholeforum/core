@@ -1,5 +1,4 @@
 import * as Turbo from '@hotwired/turbo';
-import { TurboBeforeFrameRenderEvent } from '@hotwired/turbo';
 import { StreamElement } from '@hotwired/turbo/dist/types/elements';
 // @ts-ignore
 import { morph } from 'idiomorph';
@@ -22,11 +21,6 @@ document.addEventListener('turbo:before-stream-render', (e) => {
             morph(el, stream.templateContent.firstElementChild!);
         });
     }
-});
-
-document.addEventListener('turbo:before-frame-render', (e) => {
-    (e as TurboBeforeFrameRenderEvent).detail.render = (a, b) =>
-        morph(a, b.children, { morphStyle: 'innerHTML' });
 });
 
 document.addEventListener('turbo:visit', async () => {

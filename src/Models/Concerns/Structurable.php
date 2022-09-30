@@ -23,7 +23,7 @@ trait Structurable
         // its corresponding "node" within the structure table.
         static::created(function (Model $model) {
             $model->structure()->create([
-                'position' => Structure::max('position') ?: 0,
+                'position' => ($pos = Structure::max('position')) ? $pos + 1 : 0,
             ]);
         });
 

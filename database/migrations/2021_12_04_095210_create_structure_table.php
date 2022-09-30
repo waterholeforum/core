@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->id();
             $table->unsignedInteger('position')->default(0);
             $table->morphs('content');
+            $table->boolean('is_listed')->default(0);
         });
     }
 

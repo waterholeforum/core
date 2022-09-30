@@ -9171,7 +9171,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "KeyboardSensor": () => (/* binding */ U),
 /* harmony export */   "PointerSensor": () => (/* binding */ k),
 /* harmony export */   "Sortable": () => (/* binding */ Z),
+/* harmony export */   "arrayMove": () => (/* binding */ z),
 /* harmony export */   "closestCenter": () => (/* binding */ $),
+/* harmony export */   "getAccessibleLabel": () => (/* binding */ g),
 /* harmony export */   "rectSorting": () => (/* binding */ G),
 /* harmony export */   "verticalListSorting": () => (/* binding */ Q)
 /* harmony export */ });

@@ -15,11 +15,7 @@ class ActorSeen
     {
         $actor = $request->user();
 
-        if (
-            $actor &&
-            (!$request->session()->has('previously_seen_at') ||
-                $request->has('update_previously_seen_at'))
-        ) {
+        if ($actor) {
             $request->session()->put('previously_seen_at', $actor->last_seen_at);
         }
 

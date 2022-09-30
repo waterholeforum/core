@@ -11,6 +11,7 @@ use Tonysm\TurboLaravel\Models\Broadcasts;
 use Waterhole\Events\NewComment;
 use Waterhole\Models\Concerns\HasBody;
 use Waterhole\Models\Concerns\HasLikes;
+use Waterhole\Models\Concerns\NotificationContent;
 use Waterhole\Models\Concerns\ValidatesData;
 use Waterhole\Notifications\Mention;
 use Waterhole\Scopes\CommentIndexScope;
@@ -44,6 +45,7 @@ class Comment extends Model
     use HasRecursiveRelationships;
     use ValidatesData;
     use Broadcasts;
+    use NotificationContent;
 
     public const UPDATED_AT = null;
 
@@ -57,6 +59,10 @@ class Comment extends Model
 
     protected static function booted(): void
     {
+        static::addGlobalScope(function ($query) {
+            $query->whereHas('post');
+        });
+
         // Whenever a comment is created or deleted, we will update the metadata
         // (number of replies) of the post and any parent comment that this one
         // was made in reply to.

@@ -24,10 +24,7 @@ return new class extends Migration {
                 ->string('title')
                 ->nullable()
                 ->fulltext();
-            $table
-                ->string('slug')
-                ->nullable()
-                ->unique();
+            $table->string('slug')->nullable();
             $table->mediumText('body')->fulltext();
             $table
                 ->timestamp('created_at')

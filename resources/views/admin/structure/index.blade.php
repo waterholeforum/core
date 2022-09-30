@@ -65,6 +65,10 @@
                 @foreach ($structure->where('is_listed', true) as $node)
                     <x-waterhole::admin.structure-node :node="$node"/>
                 @endforeach
+
+                <li class="placeholder hide-if-not-only-child">
+                    {{ __('waterhole::admin.structure-listed-description') }}
+                </li>
             </ul>
 
             <div class="stack gap-md" style="margin-top: var(--space-xl)">
