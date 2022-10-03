@@ -8,7 +8,7 @@
         >
             {{--
                 Opt-out of Turbo so that any fragment that may be present in the
-                redirect URL will be followed.
+                redirect URL will be followed. Also, redirect URL may be external.
             --}}
             <form
                 action="{{ route('waterhole.login') }}"
@@ -59,7 +59,7 @@
                         <div class="grow"></div>
 
                         <div>
-                            <a href="{{ route('waterhole.forgot-password') }}">
+                            <a href="{{ route('waterhole.forgot-password') }}" data-turbo="true">
                                 {{ __('waterhole::auth.forgot-password-link') }}
                             </a>
                         </div>
@@ -71,7 +71,9 @@
 
                     <p class="text-center">
                         {{ __('waterhole::auth.login-register-prompt') }}
-                        <a href="{{ route('waterhole.register') }}">{{ __('waterhole::auth.login-register-link') }}</a>
+                        <a href="{{ route('waterhole.register') }}" data-turbo="true">
+                            {{ __('waterhole::auth.login-register-link') }}
+                        </a>
                     </p>
                 </div>
             </form>

@@ -18,28 +18,28 @@ export default class extends Controller {
         'axis',
     ];
 
-    tableTarget?: HTMLTableElement;
-    chartTarget?: HTMLElement;
-    summaryTarget?: HTMLElement;
-    legendTarget?: HTMLElement;
-    legendAmountTarget?: HTMLElement;
-    legendPeriodTarget?: HTMLElement;
-    axisTarget?: HTMLElement;
+    declare readonly tableTarget: HTMLTableElement;
+    declare readonly chartTarget: HTMLElement;
+    declare readonly summaryTarget: HTMLElement;
+    declare readonly legendTarget: HTMLElement;
+    declare readonly legendAmountTarget: HTMLElement;
+    declare readonly legendPeriodTarget: HTMLElement;
+    declare readonly axisTarget: HTMLElement;
 
     observer?: ResizeObserver;
     uplot?: uPlot;
 
     private getSize() {
         return {
-            width: this.chartTarget!.offsetWidth,
-            height: this.chartTarget!.offsetHeight,
+            width: this.chartTarget.offsetWidth,
+            height: this.chartTarget.offsetHeight,
         };
     }
 
     connect() {
-        this.tableTarget!.hidden = true;
-        this.chartTarget!.hidden = false;
-        this.axisTarget!.hidden = false;
+        this.tableTarget.hidden = true;
+        this.chartTarget.hidden = false;
+        this.axisTarget.hidden = false;
 
         this.observer = new ResizeObserver(() => {
             this.uplot?.setSize(this.getSize());
@@ -88,34 +88,32 @@ export default class extends Controller {
                 init: [
                     (u) => {
                         u.over.addEventListener('mouseenter', () => {
-                            this.summaryTarget!.hidden = true;
-                            this.legendTarget!.hidden = false;
+                            this.summaryTarget.hidden = true;
+                            this.legendTarget.hidden = false;
                         });
                         u.over.addEventListener('mouseleave', () => {
-                            this.summaryTarget!.hidden = false;
-                            this.legendTarget!.hidden = true;
+                            this.summaryTarget.hidden = false;
+                            this.legendTarget.hidden = true;
                         });
                     },
                 ],
                 setCursor: [
                     (u) => {
                         const { idx } = u.cursor;
-                        this.legendAmountTarget!.textContent =
+                        this.legendAmountTarget.textContent =
                             typeof idx === 'number' ? uPlot.fmtNum(u.data[2][idx] || 0) : '';
-                        this.legendPeriodTarget!.textContent =
+                        this.legendPeriodTarget.textContent =
                             typeof idx === 'number' ? ths[idx].textContent : '';
                     },
                 ],
             },
         };
 
-        const ths = Array.from(this.tableTarget!.querySelectorAll<HTMLElement>('thead th')).slice(
-            1
-        );
+        const ths = Array.from(this.tableTarget.querySelectorAll<HTMLElement>('thead th')).slice(1);
 
         const data: uPlot.AlignedData = [
             ths.map((th) => Number(th.dataset.timestamp)),
-            ...Array.from(this.tableTarget!.querySelectorAll('tbody tr'))
+            ...Array.from(this.tableTarget.querySelectorAll('tbody tr'))
                 .reverse()
                 .map((tr) =>
                     Array.from(tr.querySelectorAll('td')).map((td) => Number(td.textContent))

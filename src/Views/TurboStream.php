@@ -32,11 +32,8 @@ abstract class TurboStream
             return null;
         }
 
-        // TODO: remove <template> after turbo bug is fixed
         return <<<html
-            <turbo-stream action="remove" target="$id">
-                <template></template>
-            </turbo-stream>
+            <turbo-stream action="remove" target="$id"></turbo-stream>
         html;
     }
 

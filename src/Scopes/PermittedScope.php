@@ -21,15 +21,12 @@ use Waterhole\Models\User;
  */
 class PermittedScope implements Scope
 {
-    private ?string $model;
-    private string $key;
-    private string $ability;
-
-    public function __construct(string $model = null, string $key = 'id', string $ability = 'view')
-    {
-        $this->model = $model;
-        $this->key = $key;
-        $this->ability = $ability;
+    public function __construct(
+        private ?string $model = null,
+        private string $key = 'id',
+        private string $ability = 'view',
+        private ?User $user = null,
+    ) {
     }
 
     public function apply(Builder $builder, Model $model)
@@ -38,8 +35,7 @@ class PermittedScope implements Scope
             return;
         }
 
-        /** @var User $user */
-        $user = Auth::user();
+        $user = $this->user ?: Auth::user();
         $model = $this->model ?: $model;
 
         // If the list of IDs is null, then the user must be an administrator,

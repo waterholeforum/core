@@ -6,10 +6,11 @@ import TextareaEditor from 'textarea-editor';
 export default class extends Controller {
     static targets = ['input', 'preview', 'previewButton', 'expander', 'hotkeyLabel'];
 
-    inputTarget?: HTMLTextAreaElement;
-    previewTarget?: HTMLDivElement;
-    previewButtonTarget?: HTMLButtonElement;
-    expanderTarget?: TextExpanderElement;
+    declare readonly inputTarget: HTMLTextAreaElement;
+    declare readonly previewTarget: HTMLDivElement;
+    declare readonly previewButtonTarget: HTMLButtonElement;
+    declare readonly expanderTarget: TextExpanderElement;
+
     editor?: TextareaEditor;
 
     connect() {

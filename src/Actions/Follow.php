@@ -23,7 +23,7 @@ class Follow extends Action
 
     public function label(Collection $models): string
     {
-        return 'Follow';
+        return __('waterhole::forum.follow-button');
     }
 
     public function icon(Collection $models): string

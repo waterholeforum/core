@@ -9,6 +9,7 @@ use Waterhole\Models\Channel;
 use Waterhole\Models\Group;
 use Waterhole\Models\Page;
 use Waterhole\Models\Permission;
+use Waterhole\Models\Structure;
 
 /**
  * A seeder that creates default groups, pages, channels, and permissions
@@ -35,7 +36,7 @@ class DefaultSeeder extends Seeder
         ]);
 
         $mod = Group::create([
-            'name' => __('waterhole::seeder.group-mod'),
+            'name' => __('waterhole::seeder.group-moderator'),
             'is_public' => true,
         ]);
 
@@ -101,5 +102,7 @@ class DefaultSeeder extends Seeder
                     (new Permission(['ability' => 'moderate']))->recipient()->associate($mod),
                 ]);
         }
+
+        Structure::query()->update(['is_listed' => true]);
     }
 }

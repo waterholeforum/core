@@ -25,7 +25,7 @@ class DeleteComment extends Action
 
     public function label(Collection $models): string
     {
-        return 'Delete...';
+        return __('waterhole::system.delete-button') . '...';
     }
 
     public function icon(Collection $models): string
@@ -35,19 +35,17 @@ class DeleteComment extends Action
 
     public function confirm(Collection $models): string
     {
-        return 'Are you sure you want to delete this comment?';
+        return __('waterhole::forum.delete-comment-confirm-message');
     }
 
     public function confirmButton(Collection $models): string
     {
-        return 'Delete';
+        return __('waterhole::system.delete-confirm-button');
     }
 
     public function run(Collection $models)
     {
         $models->each->delete();
-
-        session()->flash('success', 'Comment deleted.');
 
         // If the action was initiated from the comment's page, we can't send
         // the user back there. Send them to the comment's post instead.

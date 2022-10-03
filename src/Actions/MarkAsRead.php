@@ -15,7 +15,7 @@ class MarkAsRead extends Action
 
     public function label(Collection $models): string
     {
-        return 'Mark as Read';
+        return __('waterhole::forum.mark-as-read-button');
     }
 
     public function icon(Collection $models): ?string

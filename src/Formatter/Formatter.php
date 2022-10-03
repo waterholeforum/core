@@ -20,15 +20,10 @@ use s9e\TextFormatter\Unparser;
 class Formatter
 {
     protected string $cacheDir;
-
     protected Repository $cache;
-
     protected string $cacheKey;
-
     protected array $configurationCallbacks = [];
-
     protected array $parsingCallbacks = [];
-
     protected array $renderingCallbacks = [];
 
     public function __construct(string $cacheDir, Repository $cache, string $cacheKey)

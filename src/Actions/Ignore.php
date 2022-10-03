@@ -23,7 +23,7 @@ class Ignore extends Action
 
     public function label(Collection $models): string
     {
-        return 'Ignore';
+        return __('waterhole::forum.ignore-button');
     }
 
     public function icon(Collection $models): string

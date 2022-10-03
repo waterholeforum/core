@@ -7,13 +7,13 @@ import { shouldOpenInNewTab } from '../utils';
  *
  * @internal
  */
-export default class extends Controller {
+export default class extends Controller<HTMLElement> {
     static targets = ['handle'];
 
     connect() {
         const height = Number(localStorage.getItem('composer_height'));
         if (height) {
-            (this.element as HTMLElement).style.height = height + 'px';
+            this.element.style.height = height + 'px';
         }
 
         if (window.location.hash.substring(1) === this.element.id) {

@@ -10,13 +10,13 @@ import { Controller } from '@hotwired/stimulus';
 export default class extends Controller {
     static targets = ['form'];
 
-    formTarget?: HTMLFormElement;
+    declare readonly formTarget: HTMLFormElement;
 
     submit() {
         // Request submission of the form after a tick so that other event
         // listeners have a chance to run first.
         setTimeout(() => {
-            this.formTarget!.requestSubmit();
+            this.formTarget.requestSubmit();
         });
     }
 }

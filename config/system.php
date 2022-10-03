@@ -3,15 +3,15 @@
 return [
     /*
     |--------------------------------------------------------------------------
-    | License Key
+    | Site Key
     |--------------------------------------------------------------------------
     |
-    | The license key for the corresponding domain from your Waterhole account.
+    | The site key for the corresponding domain from your Waterhole account.
     | Without a key entered, your forum is considered to be in Trial Mode.
     |
     */
 
-    'license_key' => env('WATERHOLE_LICENSE_KEY'),
+    'site_key' => env('WATERHOLE_SITE_KEY'),
 
     /*
     |--------------------------------------------------------------------------

@@ -2195,13 +2195,17 @@ var default_1 = /*#__PURE__*/function (_Controller) {
   }, {
     key: "focus",
     value: function focus() {
-      this.combobox.start();
+      var _a;
+
+      (_a = this.combobox) === null || _a === void 0 ? void 0 : _a.start();
       this.update();
     }
   }, {
     key: "blur",
     value: function blur() {
-      this.combobox.stop();
+      var _a;
+
+      (_a = this.combobox) === null || _a === void 0 ? void 0 : _a.stop();
       this.listTarget.hidden = true;
     }
   }, {
@@ -2778,18 +2782,16 @@ var _default = /*#__PURE__*/function (_Controller) {
     value: function connect() {
       this.disabled = Array.from(this.element.querySelectorAll('input:disabled'));
       this.update();
-      var el = this.element;
-      el.addEventListener('click', this.click);
-      el.addEventListener('mouseover', this.mouseover);
-      el.addEventListener('mouseout', this.reset);
+      this.element.addEventListener('click', this.click);
+      this.element.addEventListener('mouseover', this.mouseover);
+      this.element.addEventListener('mouseout', this.reset);
     }
   }, {
     key: "disconnect",
     value: function disconnect() {
-      var el = this.element;
-      el.removeEventListener('click', this.click);
-      el.removeEventListener('mouseover', this.mouseover);
-      el.removeEventListener('mouseout', this.reset);
+      this.element.removeEventListener('click', this.click);
+      this.element.removeEventListener('mouseover', this.mouseover);
+      this.element.removeEventListener('mouseout', this.reset);
     }
   }, {
     key: "update",
@@ -2913,9 +2915,7 @@ var default_1 = /*#__PURE__*/function (_Controller) {
     value: function mirror() {
       var _this2 = this;
 
-      var _a;
-
-      (_a = this.mirrorTargets) === null || _a === void 0 ? void 0 : _a.forEach(function (el) {
+      this.mirrorTargets.forEach(function (el) {
         el.textContent = _this2.slugTarget.value;
       });
     }
@@ -2966,11 +2966,21 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
+function translate(message, _ref) {
+  var activeItem = _ref.activeItem,
+      overIndex = _ref.overIndex,
+      container = _ref.container;
+  var activeLabel = (0,inclusive_sort__WEBPACK_IMPORTED_MODULE_1__.getAccessibleLabel)(activeItem) || '';
+  var containerLabel = (0,inclusive_sort__WEBPACK_IMPORTED_MODULE_1__.getAccessibleLabel)(container) || '';
+  return message.replace('{$activeLabel}', activeLabel).replace('{$overPosition}', String(overIndex + 1)).replace('{$containerLabel}', containerLabel);
+}
 /**
  * A controller to hook up an inclusive-sort instance.
  *
  *
  */
+
 
 var default_1 = /*#__PURE__*/function (_Controller) {
   _inherits(default_1, _Controller);
@@ -3025,7 +3035,16 @@ var default_1 = /*#__PURE__*/function (_Controller) {
         activator: function activator(item) {
           return item.querySelector('[data-handle]');
         },
-        strategy: inclusive_sort__WEBPACK_IMPORTED_MODULE_1__.verticalListSorting
+        strategy: inclusive_sort__WEBPACK_IMPORTED_MODULE_1__.verticalListSorting,
+        sensors: [new inclusive_sort__WEBPACK_IMPORTED_MODULE_1__.PointerSensor(), new inclusive_sort__WEBPACK_IMPORTED_MODULE_1__.KeyboardSensor({
+          instructions: this.instructionsValue
+        })],
+        announcements: {
+          onDragStart: translate.bind(undefined, this.dragStartAnnouncementValue),
+          onDragOver: translate.bind(undefined, this.dragOverAnnouncementValue),
+          onDrop: translate.bind(undefined, this.dropAnnouncementValue),
+          onDragCancel: translate.bind(undefined, this.dragCancelAnnouncementValue)
+        }
       });
       this.sortable.addEventListener('dragstart', this.start);
       this.sortable.addEventListener('drop', this.beforeEnd);
@@ -3053,6 +3072,13 @@ var default_1 = /*#__PURE__*/function (_Controller) {
 
 
 default_1.targets = ['container', 'orderInput'];
+default_1.values = {
+  instructions: String,
+  dragStartAnnouncement: String,
+  dragOverAnnouncement: String,
+  dropAnnouncement: String,
+  dragCancelAnnouncement: String
+};
 
 /***/ }),
 
@@ -9171,6 +9197,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "KeyboardSensor": () => (/* binding */ U),
 /* harmony export */   "PointerSensor": () => (/* binding */ k),
 /* harmony export */   "Sortable": () => (/* binding */ Z),
+/* harmony export */   "SortableContext": () => (/* binding */ K),
 /* harmony export */   "arrayMove": () => (/* binding */ z),
 /* harmony export */   "closestCenter": () => (/* binding */ $),
 /* harmony export */   "getAccessibleLabel": () => (/* binding */ g),

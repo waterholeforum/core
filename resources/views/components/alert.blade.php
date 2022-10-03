@@ -8,7 +8,7 @@
     @endif
 
     <div class="alert__message content">
-        {{ $slot }}
+        {{ $message ?? $slot }}
     </div>
 
     @if (!empty($action) || $dismissible)
@@ -17,7 +17,7 @@
 
             @if ($dismissible)
                 <button
-                    class="btn btn--transparent btn--icon"
+                    class="btn btn--transparent btn--icon btn--edge"
                     data-action="alerts#dismiss"
                     type="button"
                 >

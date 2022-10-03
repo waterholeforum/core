@@ -46,6 +46,9 @@ group-color-label = Color
 group-icon-label = Icon
 group-permissions-title = Permissions
 
+delete-group-confirm-message = Are you sure you want to delete this group?
+delete-structure-confirm-message = Are you sure you want to delete this node?
+
 ability-view = View
 ability-comment = Comment
 ability-post = Post
@@ -58,10 +61,13 @@ structure-page-label = Page
 structure-link-label = Link
 structure-heading-label = Heading
 
-structure-listed-description = Move items here to show them in the navigation menu.
+structure-navigation-title = Navigation
+structure-navigation-description = Move items here to show them in the navigation menu.
 
 structure-unlisted-title = Unlisted
 structure-unlisted-description = Move items here to hide them from the navigation menu.
+
+structure-visibility-public-label = Public
 
 edit-heading-title = Edit Heading
 create-heading-title = Create a Heading
@@ -122,6 +128,7 @@ delete-user-title = Delete { $count ->
 }
 keep-user-content-label = Keep content and mark as anonymous
 delete-user-content-label = Delete content permanently
+delete-user-success-message = User deleted.
 
 users-title = Users
 users-filter-placeholder = Filter users
@@ -144,3 +151,13 @@ user-password-label = Password
 user-set-password-label = Set new password
 user-groups-label = Groups
 user-profile-title = Profile
+
+license-error-message = Error communicating with waterhole.dev.
+license-invalid-message = Please purchase or enter a valid license key for this site to comply with the License Agreement.
+
+trial-badge = Trial
+licensed-badge = Licensed
+unlicensed-badge = Unlicensed
+
+configure-mail-message = You need to configure a mail driver in order for Waterhole to be able to send out verification emails.
+debug-mode-on-message = Debug mode is ON. Sensitive configuration values may be exposed.

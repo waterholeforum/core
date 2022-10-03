@@ -6,7 +6,7 @@ import { debounce } from 'lodash-es';
  *
  *
  */
-export default class extends Controller {
+export default class extends Controller<HTMLInputElement> {
     input(e: InputEvent) {
         if ((e.target as HTMLInputElement).value) {
             this.debouncedSubmit();
@@ -16,7 +16,7 @@ export default class extends Controller {
     }
 
     submit() {
-        (this.element as HTMLInputElement).form?.requestSubmit();
+        this.element.form?.requestSubmit();
     }
 
     debouncedSubmit = debounce(this.submit, 250);

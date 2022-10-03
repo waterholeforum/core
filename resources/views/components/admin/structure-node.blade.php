@@ -19,7 +19,7 @@
             />
             <span class="with-icon text-xs color-muted hide-xs">
                 <x-waterhole::icon icon="tabler-message-circle-2"/>
-                <span>Channel</span>
+                <span>{{ __('waterhole::admin.structure-channel-label') }}</span>
             </span>
 
         @elseif ($node->content instanceof Waterhole\Models\Page)
@@ -34,12 +34,12 @@
             </a>
             <span class="with-icon text-xs color-muted hide-xs">
                 <x-waterhole::icon icon="tabler-file-text"/>
-                <span>Page</span>
+                <span>{{ __('waterhole::admin.structure-page-label') }}</span>
             </span>
 
         @elseif ($node->content instanceof Waterhole\Models\StructureHeading)
             <span class="admin-structure__label color-muted" id="label_{{ $node->id }}">
-                {{ $node->content->name ?? 'Heading' }}
+                {{ $node->content->name ?? __('waterhole::admin.structure-heading-label') }}
             </span>
 
         @elseif ($node->content instanceof Waterhole\Models\StructureLink)
@@ -54,7 +54,7 @@
             </a>
             <span class="with-icon text-xs color-muted hide-xs">
                 <x-waterhole::icon icon="tabler-link"/>
-                <span>Link</span>
+                <span>{{ __('waterhole::admin.structure-link-label') }}</span>
             </span>
         @endif
 
@@ -67,19 +67,19 @@
             @if ($permissions->guest()->allows('view'))
                 <span class="with-icon text-xs color-muted">
                     <x-waterhole::icon icon="tabler-world"/>
-                    Public
+                    {{ __('waterhole::admin.structure-visibility-public-label') }}
                 </span>
             @elseif ($permissions->member()->allows('view'))
                 <span class="with-icon text-xs color-muted">
                     <x-waterhole::icon icon="tabler-user"/>
-                    Member
+                    {{ Waterhole\Models\Group::member()->name }}
                 </span>
             @else
                 <span>
                     @forelse ($permissions->ability('view')->groups()->map->recipient as $group)
                         <x-waterhole::group-label :group="$group"/>
                     @empty
-                        <span class="badge">Admin</span>
+                        <x-waterhole::group-label :group="Waterhole\Models\Group::admin()"/>
                     @endforelse
                 </span>
             @endif

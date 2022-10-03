@@ -141,7 +141,7 @@
                                             name="default_layout"
                                             id="default_layout_{{ $key }}"
                                             value="{{ $key }}"
-                                            @checked(old('default_layout', $channel->default_layout ?? config('waterhole.forum.default_layout')) === $key)
+                                            @checked(old('default_layout', $channel->default_layout ?? config('waterhole.forum.default_post_layout')) === $key)
                                         >
                                         <span class="with-icon">
                                             <x-waterhole::icon :icon="$icon"/>
@@ -172,41 +172,42 @@
                                     </span>
                                 </label>
 
-                                <ul
-                                    data-reveal-target="then"
-                                    class="card sortable"
-                                    role="list"
-                                    data-controller="sortable"
-                                    data-sortable-target="container"
-                                >
-                                    @php
-                                        $filters = old('filters', $channel->filters ?? config('waterhole.forum.post_filters', []));
+                                <x-waterhole::admin.sortable-context data-reveal-target="then">
+                                    <ul
+                                        class="card sortable"
+                                        role="list"
+                                        data-sortable-target="container"
+                                        aria-label="{{ __('waterhole::admin.channel-filter-options-label') }}"
+                                    >
+                                        @php
+                                            $filters = old('filters', $channel->filters ?? config('waterhole.forum.post_filters', []));
 
-                                        $availableFilters = collect(Waterhole\resolve_all(Waterhole\Extend\PostFilters::values()))
-                                            ->sortBy(fn($filter, $key) => ($k = array_search($key, $filters)) === false ? INF : $k);
-                                    @endphp
+                                            $availableFilters = collect(Waterhole\resolve_all(Waterhole\Extend\PostFilters::values()))
+                                                ->sortBy(fn($filter, $key) => ($k = array_search($key, $filters)) === false ? INF : $k);
+                                        @endphp
 
-                                    @foreach ($availableFilters as $filter)
-                                        <li
-                                            class="card__row row gap-md text-xs"
-                                            aria-label="{{ $filter->label() }}"
-                                        >
-                                            <button type="button" class="drag-handle" data-handle>
-                                                <x-waterhole::icon icon="tabler-menu-2"/>
-                                            </button>
+                                        @foreach ($availableFilters as $filter)
+                                            <li
+                                                class="card__row row gap-md text-xs"
+                                                aria-label="{{ $filter->label() }}"
+                                            >
+                                                <button type="button" class="drag-handle" data-handle>
+                                                    <x-waterhole::icon icon="tabler-menu-2"/>
+                                                </button>
 
-                                            <label class="choice">
-                                                <input
-                                                    type="checkbox"
-                                                    name="filters[]"
-                                                    value="{{ $filter::class }}"
-                                                    @checked(in_array($filter::class, $filters))
-                                                >
-                                                {{ $filter->label() }}
-                                            </label>
-                                        </li>
-                                    @endforeach
-                                </ul>
+                                                <label class="choice">
+                                                    <input
+                                                        type="checkbox"
+                                                        name="filters[]"
+                                                        value="{{ $filter::class }}"
+                                                        @checked(in_array($filter::class, $filters))
+                                                    >
+                                                    {{ $filter->label() }}
+                                                </label>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </x-waterhole::admin.sortable-context>
                             </div>
                         </div>
                     </div>

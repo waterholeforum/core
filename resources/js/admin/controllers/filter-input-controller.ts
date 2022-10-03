@@ -8,30 +8,30 @@ import { set } from 'text-field-edit';
 export default class extends Controller {
     static targets = ['input', 'list'];
 
-    inputTarget?: HTMLInputElement;
-    listTarget?: HTMLElement;
+    declare readonly inputTarget: HTMLInputElement;
+    declare readonly listTarget: HTMLElement;
 
     combobox?: Combobox;
 
     connect() {
-        this.combobox = new Combobox(this.inputTarget!, this.listTarget!);
+        this.combobox = new Combobox(this.inputTarget, this.listTarget);
     }
 
     focus() {
-        this.combobox!.start();
+        this.combobox?.start();
         this.update();
     }
 
     blur() {
-        this.combobox!.stop();
+        this.combobox?.stop();
         this.listTarget!.hidden = true;
     }
 
     currentToken() {
-        const start = this.inputTarget!.selectionStart || 0;
-        const matches = this.inputTarget!.value.slice(0, start).matchAll(
-            /([^\s"]*)"([^"]*)(?:"|$)|[^\s"]+/gi
-        );
+        const start = this.inputTarget.selectionStart || 0;
+        const matches = this.inputTarget.value
+            .slice(0, start)
+            .matchAll(/([^\s"]*)"([^"]*)(?:"|$)|[^\s"]+/gi);
         return Array.from(matches)
             .reverse()
             .find(
@@ -46,7 +46,7 @@ export default class extends Controller {
         const token = this.currentToken();
         const query = token && token[0].toLowerCase();
 
-        const children = Array.from(this.listTarget!.children) as HTMLElement[];
+        const children = Array.from(this.listTarget.children) as HTMLElement[];
 
         children.forEach((el) => {
             const text = (el.dataset.value || el.textContent)?.trim().toLowerCase() || '';
@@ -56,7 +56,7 @@ export default class extends Controller {
             (el as HTMLElement).hidden = !relevant;
         });
 
-        this.listTarget!.hidden = !children.some((el) => !el.hidden);
+        this.listTarget.hidden = !children.some((el) => !el.hidden);
     }
 
     commit(e: CustomEvent) {
@@ -65,8 +65,8 @@ export default class extends Controller {
         const replacement = (el.dataset.value || el.textContent)?.trim() || '';
 
         set(
-            this.inputTarget!,
-            this.inputTarget!.value.slice(0, token?.index) +
+            this.inputTarget,
+            this.inputTarget.value.slice(0, token?.index) +
                 replacement +
                 (replacement.endsWith(':') ? '' : ' ')
         );

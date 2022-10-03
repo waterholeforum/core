@@ -9,12 +9,17 @@ class Layout extends Component
 {
     public array $payload;
 
-    public function __construct(public ?string $title = null, public array $assets = [])
-    {
+    public function __construct(
+        public ?string $title = null,
+        public array $assets = [],
+        public ?string $turboRoot = null,
+    ) {
         $this->payload = [
             'userId' => Auth::id(),
             'echoConfig' => config('waterhole.system.echo_config'),
         ];
+
+        $this->turboRoot ??= '/' . config('waterhole.forum.path');
     }
 
     public function render()

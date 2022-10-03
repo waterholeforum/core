@@ -22,7 +22,3 @@ document.addEventListener('turbo:before-stream-render', (e) => {
         });
     }
 });
-
-document.addEventListener('turbo:visit', async () => {
-    window.Waterhole.alerts.clear();
-});

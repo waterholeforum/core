@@ -15,9 +15,13 @@ class Stylesheet
 {
     use AssetList;
 
+    const CACHE_KEY = 'waterhole.stylesheet';
+
     private static function compile(array $assets, string $bundle): array
     {
         $files = array_combine($assets, array_fill(0, count($assets), url('/')));
+
+        Less_Cache::CleanCache();
 
         $compiled = Less_Cache::Get($files, [
             'cache_dir' => storage_path('app/public/css'),

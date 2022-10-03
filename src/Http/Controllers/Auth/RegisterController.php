@@ -6,6 +6,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Waterhole\Extend\NotificationTypes;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\User;
 
@@ -20,8 +21,8 @@ class RegisterController extends Controller
     {
         // Copy any URL passed in the `return` query parameter into the session
         // so that after the registration is complete we can redirect back to it.
-        if (!session()->has('url.intended')) {
-            session()->put('url.intended', $request->query('return', url()->previous()));
+        if (!redirect()->getIntendedUrl()) {
+            redirect()->setIntendedUrl($request->query('return', url()->previous()));
         }
 
         return view('waterhole::auth.register');
@@ -32,6 +33,12 @@ class RegisterController extends Controller
         $data = $request->validate(User::rules());
 
         $data['password'] = Hash::make($data['password']);
+
+        $data['notification_channels'] = collect(NotificationTypes::build())->mapWithKeys(
+            fn($type) => [$type => ['database', 'mail']],
+        );
+
+        $data['follow_on_comment'] = true;
 
         $user = User::create($data);
 

@@ -132,7 +132,7 @@ abstract class Action
      * Confirmation message or view to prompt the user with before the action
      * is run.
      */
-    public function confirm(Collection $models): null|string|HtmlString|View
+    public function confirm(Collection $models): null|string|array|HtmlString|View
     {
         return null;
     }

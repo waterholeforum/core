@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ config('app.locale') }}" {{ $attributes->class('no-js') }}>
+<html lang="{{ config('app.locale') }}" class="no-js">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
@@ -7,6 +7,7 @@
         name="theme-color"
         content="{{ config('waterhole.design.accent_color') }}"
     >
+    <meta name="turbo-root" content="{{ $turboRoot }}">
 
     <title>{{ $title ? $title.' - ' : '' }}{{ config('waterhole.forum.name') }}</title>
 
@@ -34,7 +35,9 @@
     @components(Waterhole\Extend\DocumentHead::build(), compact('title', 'assets'))
 </head>
 
-<body class="{{ Auth::check() ? 'logged-in' : 'not-logged-in' }}">
+<body {{ $attributes
+    ->class([Auth::check() ? 'logged-in' : 'not-logged-in'])
+    ->merge(['data-route' => request()->route()->getName()]) }}>
 
 <div id="waterhole" data-controller="page">
     <a

@@ -11,10 +11,10 @@ export default class extends Controller {
         publicChannels: Array,
     };
 
-    newActivityTarget?: HTMLElement;
-    filterValue?: string;
-    channelsValue?: number[];
-    publicChannelsValue?: number[];
+    declare readonly newActivityTarget: HTMLElement;
+    declare readonly filterValue: string;
+    declare readonly channelsValue: number[];
+    declare readonly publicChannelsValue: number[];
 
     connect() {
         this.channelsValue?.forEach((id) => {

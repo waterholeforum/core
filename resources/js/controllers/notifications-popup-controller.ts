@@ -6,25 +6,31 @@ import { htmlToElement } from '../utils';
 export default class extends Controller {
     static targets = ['badge', 'frame'];
 
-    hasBadgeTarget?: boolean;
-    badgeTarget?: HTMLElement;
+    declare readonly hasBadgeTarget: boolean;
+    declare readonly badgeTarget: HTMLElement;
 
-    hasFrameTarget?: boolean;
-    frameTarget?: FrameElement;
+    declare readonly hasFrameTarget: boolean;
+    declare readonly frameTarget: FrameElement;
+
+    declare readonly xsTarget: HTMLElement;
+
+    get channel() {
+        return 'Waterhole.Models.User.' + Waterhole.userId;
+    }
 
     connect() {
-        this.frameTarget!.removeAttribute('disabled');
+        this.frameTarget.removeAttribute('disabled');
 
-        window.Echo.private('Waterhole.Models.User.' + Waterhole.userId).listen(
+        window.Echo.private(this.channel).listen(
             'NotificationReceived',
             ({ unreadCount, html }: any) => {
                 if (this.hasBadgeTarget) {
-                    this.badgeTarget!.hidden = !unreadCount;
-                    this.badgeTarget!.innerText = unreadCount;
+                    this.badgeTarget.hidden = !unreadCount;
+                    this.badgeTarget.innerText = unreadCount;
                 }
 
                 if (this.hasFrameTarget) {
-                    this.frameTarget!.reload();
+                    this.frameTarget.reload();
                 }
 
                 const alert = htmlToElement(html) as HTMLElement;
@@ -38,18 +44,17 @@ export default class extends Controller {
     }
 
     disconnect() {
-        window.Echo.leave('Waterhole.Models.User.' + Waterhole.userId);
+        window.Echo.leave(this.channel);
     }
 
     open(e: MouseEvent) {
         if (this.hasBadgeTarget) {
-            this.badgeTarget!.hidden = true;
+            this.badgeTarget.hidden = true;
         }
 
         Waterhole.alerts.dismiss('notification');
 
-        // breakpoint-xs
-        if (window.innerWidth < 576) {
+        if (getComputedStyle(this.xsTarget).display === 'none') {
             window.Turbo.visit((e.currentTarget as HTMLAnchorElement).href);
             (this.element as PopupElement).open = false;
         }

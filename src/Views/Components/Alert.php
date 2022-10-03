@@ -12,15 +12,12 @@ class Alert extends Component
         'danger' => 'tabler-alert-circle',
     ];
 
-    public string|HtmlString $slot;
-
     public function __construct(
         public ?string $type = null,
-        public string|HtmlString $message = '',
+        public null|string|HtmlString $message = null,
         public ?string $icon = null,
         public bool $dismissible = false,
     ) {
-        $this->slot = $message;
         $this->icon = $icon ?? (static::ICONS[$type] ?? null);
     }
 

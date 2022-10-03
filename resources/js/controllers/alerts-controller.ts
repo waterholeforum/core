@@ -10,11 +10,7 @@ import { AlertsElement } from 'inclusive-elements';
  *
  * @internal
  */
-export default class extends Controller {
-    get alertsElement() {
-        return this.element as AlertsElement;
-    }
-
+export default class extends Controller<AlertsElement> {
     connect() {
         document.addEventListener('turbo:before-stream-render', this.streamAlert);
     }
@@ -29,7 +25,7 @@ export default class extends Controller {
         // alerts container.
         const alert = (e.currentTarget as HTMLElement).closest<HTMLElement>('.alert');
         if (alert) {
-            this.alertsElement.dismiss(alert);
+            this.element.dismiss(alert);
         }
     }
 
@@ -41,7 +37,7 @@ export default class extends Controller {
         if (stream.targetElements.includes(this.element) && stream.action === 'append') {
             const alert = stream.templateContent.firstElementChild as HTMLElement;
             if (alert) {
-                this.alertsElement.show(alert);
+                this.element.show(alert);
                 e.preventDefault();
             }
         }

@@ -7,18 +7,13 @@ use Waterhole\Models\Post;
 
 class Hit
 {
-    public int $postId;
-
-    public HtmlString $title;
-
-    public HtmlString $body;
-
+    // TODO: maybe remove this and use SplObjectStorage in SearchController
     public ?Post $post;
 
-    public function __construct(int $postId, HtmlString $title, HtmlString $body)
-    {
-        $this->postId = $postId;
-        $this->title = $title;
-        $this->body = $body;
+    public function __construct(
+        public int $postId,
+        public HtmlString $title,
+        public HtmlString $body,
+    ) {
     }
 }

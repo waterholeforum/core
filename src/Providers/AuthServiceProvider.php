@@ -27,6 +27,7 @@ class AuthServiceProvider extends ServiceProvider
             // Treat users who haven't verified their email like guests.
             if ($user->exists && !$user->hasVerifiedEmail()) {
                 return Gate::forUser(null)->allows($ability, ...$arguments) ?:
+                    // TODO: translate
                     Response::deny('You must verify your email address.');
             }
         });

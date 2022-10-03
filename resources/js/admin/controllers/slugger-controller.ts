@@ -9,8 +9,8 @@ import { slug } from '../../utils';
 export default class extends Controller {
     static targets = ['slug', 'mirror'];
 
-    slugTarget?: HTMLInputElement;
-    mirrorTargets?: HTMLElement[];
+    declare readonly slugTarget: HTMLInputElement;
+    declare readonly mirrorTargets: HTMLElement[];
 
     locked: boolean = false;
 
@@ -18,7 +18,7 @@ export default class extends Controller {
         const input = e.target as HTMLInputElement;
 
         if (!this.locked) {
-            this.slugTarget!.value = slug(input.value);
+            this.slugTarget.value = slug(input.value);
             this.mirror();
         }
     }
@@ -32,8 +32,8 @@ export default class extends Controller {
     }
 
     mirror() {
-        this.mirrorTargets?.forEach((el) => {
-            el.textContent = this.slugTarget!.value;
+        this.mirrorTargets.forEach((el) => {
+            el.textContent = this.slugTarget.value;
         });
     }
 }

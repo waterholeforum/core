@@ -9,8 +9,8 @@ export default class extends Controller {
         id: Number,
     };
 
-    postTarget?: HTMLElement;
-    idValue?: number;
+    declare readonly postTarget: HTMLElement;
+    declare readonly idValue: number;
 
     connect() {
         document.addEventListener('turbo:before-stream-render', this.beforeStreamRender);
@@ -24,7 +24,7 @@ export default class extends Controller {
 
     private showPostOnFirstPage = () => {
         if (document.querySelector('[data-index="0"]')) {
-            this.postTarget!.hidden = false;
+            this.postTarget.hidden = false;
         }
     };
 

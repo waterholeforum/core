@@ -103,9 +103,10 @@ class UserController extends Controller
 
     private function form()
     {
+        $user = null;
         $groups = Group::selectable()->get();
 
-        return view('waterhole::admin.users.form', compact('groups'));
+        return view('waterhole::admin.users.form', compact('user', 'groups'));
     }
 
     private function save(User $user, Request $request): void

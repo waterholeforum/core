@@ -52,6 +52,10 @@ function appendAlertsFromDocument(document: Document) {
     const append = document.getElementById('alerts-append');
     if (!append) return;
     Array.from(append.children).forEach((el) => {
-        window.Waterhole.alerts.show(el as HTMLElement);
+        const duration = el.getAttribute('data-duration');
+        window.Waterhole.alerts.show(el as HTMLElement, {
+            key: el.getAttribute('data-key') || undefined,
+            duration: duration ? Number(duration) : undefined,
+        });
     });
 }

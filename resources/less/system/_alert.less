@@ -5,6 +5,9 @@
   background: var(--color-fill);
   display: flex;
   align-items: flex-start;
+
+  --color-text: var(--color-emphasis-contrast);
+  --color-accent: var(--color-text);
 }
 
 .alert__icon {
@@ -24,15 +27,20 @@
 
 .alert__actions {
   display: flex;
-  margin: ~'calc(-1 * var(--space-xxs))' ~'calc(-1 * var(--space-xs))';
+  align-items: center;
   margin-left: var(--space-md);
   font-size: var(--text-xs);
+  gap: var(--space-sm);
 }
 
 // Sizes
 
 .alert--lg {
-  padding: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+
+  .alert__icon {
+    margin-right: var(--space-sm);
+  }
 }
 
 .alert--xl {

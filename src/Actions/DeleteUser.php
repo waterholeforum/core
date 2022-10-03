@@ -25,7 +25,7 @@ class DeleteUser extends Action
 
     public function label(Collection $models): string
     {
-        return 'Delete...';
+        return __('waterhole::system.delete-button') . '...';
     }
 
     public function icon(Collection $models): string
@@ -42,7 +42,7 @@ class DeleteUser extends Action
 
     public function confirmButton(Collection $models): string
     {
-        return 'Delete';
+        return __('waterhole::system.delete-confirm-button');
     }
 
     public function run(Collection $models)
@@ -58,7 +58,7 @@ class DeleteUser extends Action
             $models->each->delete();
         });
 
-        session()->flash('success', 'User deleted.');
+        session()->flash('success', __('waterhole::admin.delete-user-success-message'));
 
         // If the action was initiated from the user's page, we can't send the
         // user back there. Instead, send them to the forum index.

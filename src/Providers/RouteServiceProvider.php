@@ -29,7 +29,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::middlewareGroup('waterhole.admin', [
             'can:administrate',
             'password.confirm:waterhole.confirm-password',
-            // \Waterhole\Http\Middleware\Admin\ContactOutpost::class,
+            \Waterhole\Http\Middleware\Admin\ContactOutpost::class,
         ]);
 
         $this->configureRateLimiting();

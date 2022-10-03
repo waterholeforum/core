@@ -7,16 +7,13 @@ use Waterhole\Licensing\Outpost;
 
 class ContactOutpost
 {
-    protected Outpost $outpost;
-
-    public function __construct(Outpost $outpost)
+    public function __construct(private Outpost $outpost)
     {
-        $this->outpost = $outpost;
     }
 
     public function handle($request, Closure $next)
     {
-        $this->outpost->radio();
+        $this->outpost->contact();
 
         return $next($request);
     }

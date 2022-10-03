@@ -23,7 +23,7 @@ class Lock extends Action
 
     public function label(Collection $models): string
     {
-        return 'Lock Comments';
+        return __('waterhole::forum.lock-comments-button');
     }
 
     public function icon(Collection $models): string

@@ -3,6 +3,7 @@
 namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\OrderedList;
+use Waterhole\Views\Components\Admin\Version;
 use Waterhole\Views\Components\NavLink;
 
 /**
@@ -52,4 +53,4 @@ AdminNav::add(
     ),
 );
 
-AdminNav::add('version', 'waterhole::admin.nav.version');
+AdminNav::add('version', Version::class);

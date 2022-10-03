@@ -3,25 +3,25 @@ group-member = Member
 group-admin = Admin
 group-moderator = Mod
 
+# TODO: descriptions
+
 announcements-name = Announcements
-announcements-description =
+announcements-description = .
 
 introductions-name = Introductions
-introductions-description =
+introductions-description = .
 
 support-name = Support
-support-description =
+support-description = .
 
 ideas-name = Ideas
-ideas-description =
+ideas-description = .
 
 staff-name = Staff Only
-staff-description =
+staff-description = .
 
 guide-title = Community Guide
 guide-body =
-  # Community Guide
-
   Welcome to the community, and thanks for joining us! We want everyone to get the most out of of
   this community, so we ask that you please read and follow these guidelines.
 

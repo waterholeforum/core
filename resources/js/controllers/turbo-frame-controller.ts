@@ -1,22 +1,22 @@
 import { Controller } from '@hotwired/stimulus';
 import { FrameElement } from '@hotwired/turbo/dist/types/elements';
 
-export default class extends Controller {
+export default class extends Controller<FrameElement> {
     connect() {
         if (!this.element.id) {
-            this.element.id = (this.element as HTMLElement).dataset.id || '';
+            this.element.id = this.element.dataset.id || '';
         }
     }
 
     reload() {
-        (this.element as FrameElement).reload();
+        this.element.reload();
     }
 
     disable() {
-        (this.element as FrameElement).disabled = true;
+        this.element.disabled = true;
     }
 
     removeSrc() {
-        (this.element as FrameElement).removeAttribute('src');
+        this.element.removeAttribute('src');
     }
 }

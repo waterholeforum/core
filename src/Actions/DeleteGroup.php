@@ -25,7 +25,7 @@ class DeleteGroup extends Action
 
     public function label(Collection $models): string
     {
-        return 'Delete...';
+        return __('waterhole::system.delete-button') . '...';
     }
 
     public function icon(Collection $models): string
@@ -35,7 +35,12 @@ class DeleteGroup extends Action
 
     public function confirm(Collection $models): string
     {
-        return 'Are you sure you want to delete this group?';
+        return __('waterhole::admin.delete-group-confirm-message');
+    }
+
+    public function confirmButton(Collection $models): string
+    {
+        return __('waterhole::system.delete-confirm-button');
     }
 
     public function run(Collection $models)

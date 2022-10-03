@@ -21,7 +21,7 @@ search-sort-latest = Sort by Latest
 search-sort-top = Sort by Top
 
 search-empty-message = No Results Found
-search-keywords-too-short-message = Your keywords are too short – try something longer!
+search-keywords-too-short-message = Your keywords are too short – try something longer.
 
 post-activity-replied = replied
 post-activity-posted = posted
@@ -60,11 +60,17 @@ move-post-title = Move { $count ->
     *[other] { $count } Posts
 }
 
+move-channel-button = Move to Channel
+move-channel-confirm-button = Move
+
+mark-as-read-button = Mark as Read
+
 create-post-button = Create a Post
 create-post-title = New Post
 post-channel-label = Channel
 post-submit-button = Post
 edit-post-title = Edit Post
+edit-post-link = Edit Post
 post-title-label = Title
 post-body-label = Body
 
@@ -78,6 +84,9 @@ comment-show-replies-button = Show { $count } { $count ->
 comment-reply-button = Reply
 
 comments-locked-message = Comments are locked.
+
+lock-comments-button = Lock Comments
+unlock-comments-button = Unlock Comments
 
 composer-placeholder = Write a comment...
 composer-reply-to-placeholder = Reply to { $userName }...
@@ -104,6 +113,10 @@ filter-top-day = Day
 follow-button = Follow
 follow-button-following = Following
 follow-button-ignored = Ignored
+
+ignore-button = Ignore
+unfollow-button = Unfollow
+unignore-button = Unignore
 
 channel-default-notifications-title = Default
 channel-default-notifications-description = Receive notifications when you're mentioned.
@@ -135,3 +148,6 @@ feed-controls-layout-heading = Display as
 post-locked-badge = Locked
 
 reaction-like = Like
+
+delete-comment-confirm-message = Are you sure you want to delete this comment?
+delete-post-confirm-message = Are you sure you want to delete this post?

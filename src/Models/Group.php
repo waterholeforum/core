@@ -28,6 +28,8 @@ class Group extends Model
 
     public $timestamps = false;
 
+    private array $instances = [];
+
     /**
      * Relationship with the group's users.
      */
@@ -73,7 +75,7 @@ class Group extends Model
      */
     public static function guest(): static
     {
-        return (new static())->newInstance(['id' => static::GUEST_ID], true);
+        return $instances[static::GUEST_ID] ??= static::findOrFail(static::GUEST_ID);
     }
 
     /**
@@ -81,7 +83,7 @@ class Group extends Model
      */
     public static function member(): static
     {
-        return (new static())->newInstance(['id' => static::MEMBER_ID], true);
+        return $instances[static::MEMBER_ID] ??= static::findOrFail(static::MEMBER_ID);
     }
 
     /**
@@ -89,7 +91,7 @@ class Group extends Model
      */
     public static function admin(): static
     {
-        return (new static())->newInstance(['id' => static::ADMIN_ID], true);
+        return $instances[static::ADMIN_ID] ??= static::findOrFail(static::ADMIN_ID);
     }
 
     /**
@@ -127,6 +129,7 @@ class Group extends Model
             [
                 'name' => ['required', 'string', 'max:255'],
                 'is_public' => ['boolean'],
+                // TODO: extract into a "hex" rule
                 'color' => ['nullable', 'string', 'regex:/^[a-f0-9]{3}|[a-f0-9]{6}$/i'],
                 'permissions' => ['array'],
             ],

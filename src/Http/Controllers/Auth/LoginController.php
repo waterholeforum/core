@@ -21,8 +21,8 @@ class LoginController extends Controller
     {
         // Copy any URL passed in the `return` query parameter into the session
         // so that after the login is complete we can redirect back to it.
-        if (!session()->has('url.intended')) {
-            session()->put('url.intended', $request->query('return', url()->previous()));
+        if (!redirect()->getIntendedUrl()) {
+            redirect()->setIntendedUrl($request->query('return', url()->previous()));
         }
 
         return view('waterhole::auth.login');

@@ -21,7 +21,7 @@ class EditPost extends Link
 
     public function label(Collection $models): string
     {
-        return 'Edit Post';
+        return __('waterhole::forum.edit-post-link');
     }
 
     public function icon(Collection $models): string

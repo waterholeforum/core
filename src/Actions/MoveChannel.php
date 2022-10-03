@@ -3,8 +3,10 @@
 namespace Waterhole\Actions;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
+use Waterhole\Models\Channel;
 use Waterhole\Models\Model;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
@@ -25,7 +27,7 @@ class MoveChannel extends Action
 
     public function label(Collection $models): string
     {
-        return 'Move to Channel...';
+        return __('waterhole::forum.move-channel-button') . '...';
     }
 
     public function icon(Collection $models): string
@@ -40,7 +42,7 @@ class MoveChannel extends Action
 
     public function confirmButton(Collection $models): string
     {
-        return 'Move';
+        return __('waterhole::forum.move-channel-confirm-button');
     }
 
     public function run(Collection $models)
@@ -49,7 +51,7 @@ class MoveChannel extends Action
             'channel_id' => ['required', Rule::exists('channels', 'id')],
         ]);
 
-        // TODO: check permission to post in this channel
+        Gate::authorize('channel.post', Channel::findOrFail($data['channel_id']));
 
         $models->each->update($data);
     }

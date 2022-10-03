@@ -1,12 +1,13 @@
-<div class="email-verification-notice bg-attention-light">
+<div class="email-verification-banner banner bg-attention-light">
     <div class="container row gap-xs">
         <div>
-            We've sent a confirmation email to <strong>{{ auth()->user()->email }}</strong>.
-            If it doesn't arrive soon, check your spam folder.
+            {!! __('waterhole::auth.email-verification-message', ['email' => '<strong>' . Auth::user()->email . '</strong>']) !!}
         </div>
         <form action="{{ route('waterhole.verify-email.resend') }}" method="POST">
             @csrf
-            <button type="submit" class="btn btn--transparent color-accent">Resend</button>
+            <button type="submit" class="link weight-bold color-accent">
+                {{ __('waterhole::auth.email-verification-resend-button') }}
+            </button>
         </form>
     </div>
 </div>

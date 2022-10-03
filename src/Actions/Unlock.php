@@ -23,7 +23,7 @@ class Unlock extends Action
 
     public function label(Collection $models): string
     {
-        return 'Unlock Comments';
+        return __('waterhole::forum.unlock-comments-button');
     }
 
     public function icon(Collection $models): string

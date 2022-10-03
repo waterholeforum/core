@@ -3,7 +3,7 @@ import { Controller } from '@hotwired/stimulus';
 export default class extends Controller {
     static targets = ['if', 'then'];
 
-    thenTargets?: HTMLElement[];
+    declare readonly thenTargets: HTMLElement[];
 
     ifTargetConnected(el: HTMLElement) {
         el.addEventListener('change', this.toggle);
@@ -26,7 +26,7 @@ export default class extends Controller {
             value = '';
         }
 
-        this.thenTargets?.forEach((el) => {
+        this.thenTargets.forEach((el) => {
             el.hidden = el.dataset.revealValue ? value != el.dataset.revealValue : !value;
         });
     };

@@ -22,7 +22,7 @@ class Unignore extends Action
 
     public function label(Collection $models): string
     {
-        return 'Unignore';
+        return __('waterhole::forum.unignore-button');
     }
 
     public function icon(Collection $models): string

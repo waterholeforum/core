@@ -37,6 +37,8 @@ class NewComment implements ShouldBroadcast, TransactionalEvent
 
     public function broadcastWith(): array
     {
+        // TODO: we probably can't broadcast the HTML because it won't be translated
+        // instead broadcast a URL and load it in a turbo frame?
         return [
             'streams' => implode([
                 TurboStream::before(new CommentFrame($this->comment, lazy: true), 'bottom'),

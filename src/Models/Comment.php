@@ -175,7 +175,7 @@ class Comment extends Model
     public function streamRemoved(): array
     {
         return [
-            // TODO: replace with a generic CSS class target
+            // TODO: replace with a generic CSS class target?
             TurboStream::remove(new Components\CommentFull($this)),
         ];
     }
@@ -204,13 +204,6 @@ class Comment extends Model
         return [
             'parent_id' => ['nullable', Rule::exists('comments', 'id')],
             'body' => ['required', 'string'],
-        ];
-    }
-
-    public static function messages(): array
-    {
-        return [
-            'body.required' => "Don't forget to write something!",
         ];
     }
 }

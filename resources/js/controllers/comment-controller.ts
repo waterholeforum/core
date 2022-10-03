@@ -10,7 +10,7 @@ import { isElementInViewport } from '../utils';
 export default class extends Controller {
     static targets = ['parentTooltip'];
 
-    parentTooltipTarget?: TooltipElement;
+    declare readonly parentTooltipTarget?: TooltipElement;
 
     get commentId(): string {
         return this.element.getAttribute('data-comment-id') || '';

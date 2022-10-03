@@ -33,7 +33,7 @@ class CopyLink extends Link
 
     public function label(Collection $models): string
     {
-        return 'Copy Link';
+        return __('waterhole::system.copy-link-button');
     }
 
     public function icon(Collection $models): string

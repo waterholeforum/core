@@ -17,7 +17,7 @@
         />
     </div>
 
-    <div class="row wrap gap-md">
+    <div class="row wrap gap-md align-start">
         <x-waterhole::icon :icon="$channel->icon" class="channel-card__icon"/>
 
         <div class="channel-card__info">

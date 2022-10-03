@@ -30,3 +30,6 @@ register-login-link = Log In
 confirm-password-title = Confirm Your Password
 confirm-password-introduction = Please confirm your password before continuing.
 confirm-password-submit = Confirm
+
+email-verification-message = We've sent a confirmation email to { $email }. If it doesn't arrive soon, check your spam folder.
+email-verification-resend-button = Resend

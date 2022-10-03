@@ -2,6 +2,8 @@
 
 namespace Waterhole\Extend\Concerns;
 
+use Illuminate\Support\Facades\Cache;
+
 /**
  * Manage a list of assets grouped into bundles.
  *
@@ -33,11 +35,19 @@ trait AssetList
         $urls = [];
 
         foreach ($bundles as $bundle) {
-            if (empty(static::$assets[$bundle])) {
-                continue;
+            $key = static::CACHE_KEY . '.' . $bundle;
+
+            if (config('app.debug')) {
+                Cache::forget($key);
             }
 
-            $urls = array_merge($urls, self::compile(static::$assets[$bundle] ?? [], $bundle));
+            $urls = array_merge(
+                $urls,
+                Cache::rememberForever($key, function () use ($bundle) {
+                    $assets = static::$assets[$bundle] ?? [];
+                    return $assets ? static::compile($assets, $bundle) : [];
+                }),
+            );
         }
 
         return $urls;

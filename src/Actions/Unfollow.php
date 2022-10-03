@@ -22,7 +22,7 @@ class Unfollow extends Action
 
     public function label(Collection $models): string
     {
-        return 'Unfollow';
+        return __('waterhole::forum.unfollow-button');
     }
 
     public function icon(Collection $models): string

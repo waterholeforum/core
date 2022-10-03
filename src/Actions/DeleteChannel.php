@@ -33,7 +33,7 @@ class DeleteChannel extends Action
 
     public function label(Collection $models): string
     {
-        return 'Delete...';
+        return __('waterhole::system.delete-button') . '...';
     }
 
     public function icon(Collection $models): string
@@ -51,7 +51,7 @@ class DeleteChannel extends Action
 
     public function confirmButton(Collection $models): string
     {
-        return 'Delete';
+        return __('waterhole::system.delete-confirm-button');
     }
 
     public function run(Collection $models)

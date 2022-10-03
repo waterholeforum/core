@@ -2,6 +2,7 @@
 
 namespace Waterhole\Search;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use s9e\TextFormatter\Utils;
 use Waterhole\Models\Channel;
@@ -21,11 +22,11 @@ class MySqlEngine
         // basis of both the search results, and the channel hit breakdown.
         $query = Post::query()
             ->leftJoin('comments', 'comments.post_id', '=', 'posts.id')
-            ->where(function ($query) use ($q) {
+            ->where(function (Builder $query) use ($q) {
                 $query
-                    ->whereRaw('MATCH (posts.title) AGAINST (? IN BOOLEAN MODE)', [$q])
-                    ->orWhereRaw('MATCH (posts.body) AGAINST (? IN BOOLEAN MODE)', [$q])
-                    ->orWhereRaw('MATCH (comments.body) AGAINST (? IN BOOLEAN MODE)', [$q]);
+                    ->orWhereFullText('posts.title', $q, ['mode' => 'boolean'])
+                    ->orWhereFullText('posts.body', $q, ['mode' => 'boolean'])
+                    ->orWhereFullText('comments.body', $q, ['mode' => 'boolean']);
             });
 
         // Get a breakdown of each channel and how many hits were found within

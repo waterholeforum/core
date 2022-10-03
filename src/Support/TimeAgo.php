@@ -16,15 +16,10 @@ use DateTime;
 class TimeAgo
 {
     public const MINUTE = 60;
-
     public const HOUR = self::MINUTE * 60;
-
     public const DAY = self::HOUR * 24;
-
     public const WEEK = self::DAY * 7;
-
     public const MONTH = self::DAY * 30;
-
     public const YEAR = self::DAY * 365;
 
     public static function calculate($then): array

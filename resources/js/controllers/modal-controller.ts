@@ -7,17 +7,17 @@ import { ModalElement } from 'inclusive-elements';
  *
  *
  */
-export default class extends Controller {
+export default class extends Controller<ModalElement> {
     static targets = ['frame'];
 
-    frameTarget?: FrameElement;
+    declare readonly frameTarget: FrameElement;
 
     connect() {
         this.element.addEventListener('close', () => {
-            this.frameTarget!.src = null;
+            this.frameTarget.src = null;
         });
 
-        this.frameTarget!.removeAttribute('disabled');
+        this.frameTarget.removeAttribute('disabled');
     }
 
     loading(e: any) {
@@ -25,7 +25,7 @@ export default class extends Controller {
     }
 
     loaded() {
-        if (this.frameTarget?.children.length) {
+        if (this.frameTarget.children.length) {
             this.show();
         } else {
             this.hide();
@@ -33,8 +33,8 @@ export default class extends Controller {
     }
 
     show() {
-        if (!(this.element as ModalElement).open) {
-            (this.element as ModalElement).open = true;
+        if (!this.element.open) {
+            this.element.open = true;
         }
     }
 
@@ -43,8 +43,8 @@ export default class extends Controller {
             e.preventDefault();
         }
 
-        if ((this.element as ModalElement).open) {
-            (this.element as ModalElement).open = false;
+        if (this.element.open) {
+            this.element.open = false;
         }
     }
 }

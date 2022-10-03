@@ -2,12 +2,12 @@
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
-  margin: ~'calc(-1 * var(--space-sm))';
+  margin: ~'calc(-1 * var(--space-lg) / 2)';
 
   > * {
     width: var(--admin-dashboard-widget-width, 100%);
     height: var(--admin-dashboard-widget-height, auto);
-    padding: var(--space-sm);
+    padding: ~'calc(var(--space-lg) / 2)';
     min-width: 30ch;
     flex-grow: 1;
   }

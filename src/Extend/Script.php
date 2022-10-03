@@ -17,10 +17,10 @@ class Script
 {
     use AssetList;
 
+    const CACHE_KEY = 'waterhole.script';
+
     private static function compile(array $assets, string $bundle): array
     {
-        // TODO: caching
-
         $content = '';
 
         foreach ($assets as $source) {

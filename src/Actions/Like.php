@@ -31,7 +31,7 @@ class Like extends Action
 
     public function label(Collection $models): string
     {
-        return 'Like';
+        return __('waterhole::forum.reaction-like');
     }
 
     public function icon(Collection $models): string

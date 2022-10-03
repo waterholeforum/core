@@ -25,7 +25,7 @@ class EditStructure extends Link
 
     public function label(Collection $models): string
     {
-        return 'Edit';
+        return __('waterhole::system.edit-link');
     }
 
     public function icon(Collection $models): string

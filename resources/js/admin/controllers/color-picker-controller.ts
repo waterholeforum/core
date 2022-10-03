@@ -11,21 +11,21 @@ import { Controller } from '@hotwired/stimulus';
 export default class extends Controller {
     static targets = ['input', 'picker', 'swatch'];
 
-    inputTarget?: any;
-    pickerTarget?: any;
-    swatchTarget?: any;
+    declare readonly inputTarget: any;
+    declare readonly pickerTarget: any;
+    declare readonly swatchTarget: any;
 
     show() {
-        this.pickerTarget!.hidden = false;
+        this.pickerTarget.hidden = false;
     }
 
     hide() {
-        this.pickerTarget!.hidden = true;
+        this.pickerTarget.hidden = true;
     }
 
     colorChanged(e: CustomEvent) {
-        this.inputTarget!.color = e.detail.value;
-        this.pickerTarget!.color = e.detail.value;
-        this.swatchTarget!.style.backgroundColor = e.detail.value;
+        this.inputTarget.color = e.detail.value;
+        this.pickerTarget.color = e.detail.value;
+        this.swatchTarget.style.backgroundColor = e.detail.value;
     }
 }

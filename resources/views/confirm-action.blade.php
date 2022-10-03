@@ -31,8 +31,10 @@
                     <div class="form">
                         <x-waterhole::validation-errors/>
 
-                        @if ($isSimpleContent = is_string($content = $action->confirm($models)))
-                            <p class="h4">{{ $content }}</p>
+                        @if ($isSimpleContent = (is_string($content = $action->confirm($models)) || is_array($content)))
+                            @foreach (Arr::wrap($content) as $paragraph)
+                                <p @if ($loop->first) class="h4" @endif>{{ $content }}</p>
+                            @endforeach
                         @else
                             <div>{{ $content }}</div>
                         @endif

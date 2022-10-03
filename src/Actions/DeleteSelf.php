@@ -3,7 +3,6 @@
 namespace Waterhole\Actions;
 
 use Illuminate\Support\Collection;
-use Illuminate\Support\HtmlString;
 use Waterhole\Models\Model;
 use Waterhole\Models\User;
 
@@ -29,25 +28,20 @@ class DeleteSelf extends Action
 
     public function label(Collection $models): string
     {
-        return 'Delete Your Account';
+        return __('waterhole::user.delete-account-button');
     }
 
-    public function confirm(Collection $models): HtmlString
+    public function confirm(Collection $models): array
     {
-        return new HtmlString(
-            <<<'html'
-                <div class="content">
-                    <p class="h4">Are you sure you want to delete your account?</p>
-                    <p>Your account data will be removed. Your contributions will be retained but marked as anonymous. This cannot be undone.</p>
-                </div>
-            html
-            ,
-        );
+        return [
+            __('waterhole::user.delete-account-confirmation-title'),
+            __('waterhole::user.delete-account-confirmation-description'),
+        ];
     }
 
     public function confirmButton(Collection $models): string
     {
-        return 'Delete Your Account';
+        return __('waterhole::user.delete-account-button');
     }
 
     public function run(Collection $models)
@@ -56,7 +50,7 @@ class DeleteSelf extends Action
 
         auth()->logout();
 
-        session()->flash('success', 'Your account has been deleted.');
+        session()->flash('success', __('waterhole::user.delete-account-success-message'));
 
         return redirect('/');
     }

@@ -5,24 +5,22 @@ import { Controller } from '@hotwired/stimulus';
  *
  * @internal
  */
-export default class extends Controller {
+export default class extends Controller<HTMLElement> {
     private disabled?: HTMLInputElement[];
 
     connect() {
         this.disabled = Array.from(this.element.querySelectorAll('input:disabled'));
         this.update();
 
-        const el = this.element as HTMLElement;
-        el.addEventListener('click', this.click);
-        el.addEventListener('mouseover', this.mouseover);
-        el.addEventListener('mouseout', this.reset);
+        this.element.addEventListener('click', this.click);
+        this.element.addEventListener('mouseover', this.mouseover);
+        this.element.addEventListener('mouseout', this.reset);
     }
 
     disconnect() {
-        const el = this.element as HTMLElement;
-        el.removeEventListener('click', this.click);
-        el.removeEventListener('mouseover', this.mouseover);
-        el.removeEventListener('mouseout', this.reset);
+        this.element.removeEventListener('click', this.click);
+        this.element.removeEventListener('mouseover', this.mouseover);
+        this.element.removeEventListener('mouseout', this.reset);
     }
 
     private mouseover = (e: MouseEvent) => {
@@ -31,12 +29,12 @@ export default class extends Controller {
         if (target.closest('thead th')) {
             const index = Array.from(target.parentElement!.children).indexOf(target);
             this.element.querySelector('colgroup')!.children[index].classList.add('is-highlighted');
-            (this.element as HTMLElement).style.cursor = 'pointer';
+            this.element.style.cursor = 'pointer';
         }
 
         if (target.closest('tbody th')) {
             target.closest('tr')!.classList.add('is-highlighted');
-            (this.element as HTMLElement).style.cursor = 'pointer';
+            this.element.style.cursor = 'pointer';
         }
     };
 
@@ -44,7 +42,7 @@ export default class extends Controller {
         this.element
             .querySelectorAll('col, tr')
             .forEach((el) => el.classList.remove('is-highlighted'));
-        (this.element as HTMLElement).style.cursor = '';
+        this.element.style.cursor = '';
     };
 
     private click = (e: MouseEvent) => {

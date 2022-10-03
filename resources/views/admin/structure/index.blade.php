@@ -1,8 +1,8 @@
 <x-waterhole::admin :title="__('waterhole::admin.structure-title')">
     <turbo-frame id="structure">
-        <div
+        <x-waterhole::admin.sortable-context
             class="stack gap-md"
-            data-controller="form sortable"
+            data-controller="form"
             data-action="sortable:update->form#submit"
         >
             <div class="row gap-xs">
@@ -59,7 +59,7 @@
             <ul
                 class="card sortable"
                 role="list"
-                aria-label="navigation items"
+                aria-label="{{ __('waterhole::admin.structure-navigation-title') }}"
                 data-sortable-target="container"
             >
                 @foreach ($structure->where('is_listed', true) as $node)
@@ -67,7 +67,7 @@
                 @endforeach
 
                 <li class="placeholder hide-if-not-only-child">
-                    {{ __('waterhole::admin.structure-listed-description') }}
+                    {{ __('waterhole::admin.structure-navigation-description') }}
                 </li>
             </ul>
 
@@ -77,7 +77,7 @@
                 <ul
                     class="card sortable"
                     role="list"
-                    aria-label="unlisted items"
+                    aria-label="{{ __('waterhole::admin.structure-unlisted-title') }}"
                     data-sortable-target="container"
                 >
                     @foreach ($structure->where('is_listed', false) as $node)
@@ -103,6 +103,6 @@
                     data-sortable-target="orderInput"
                 >
             </form>
-        </div>
+        </x-waterhole::admin.sortable-context>
     </turbo-frame>
 </x-waterhole::admin>

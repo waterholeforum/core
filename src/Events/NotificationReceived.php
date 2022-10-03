@@ -24,6 +24,8 @@ class NotificationReceived implements ShouldBroadcast, TransactionalEvent
 
     public function broadcastWith()
     {
+        // TODO: we probably can't broadcast the HTML because it won't be translated
+        // instead broadcast a URL and load it in a turbo frame?
         return [
             'html' => Blade::renderComponent(
                 new Alert(

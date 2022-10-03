@@ -15,7 +15,7 @@
         <div class="row align-start gap-col-xl gap-row-md wrap">
             <x-waterhole::avatar :user="$user" style="width: 12ch"/>
 
-            <div class="grow stack gap-xs" style="flex-basis: 40ch">
+            <div class="grow stack gap-xs" style="flex-basis: 60ch">
                 <h1 class="h1" data-page-target="title">
                     {{ $user->name }}
                 </h1>

@@ -9,12 +9,19 @@ create-button = Create
 cancel-button = Cancel
 change-button = Change
 
-pro-badge = Pro
-
 layout-list = List
 layout-cards = Cards
 
 confirm-action-title = Confirm Action
+
+copy-link-button = Copy Link
+
+delete-button = Delete
+delete-confirm-button = Delete
+
+edit-link = Edit
+
+learn-more-link = Learn More
 
 pagination-first-link = First
 pagination-previous-link = Previous
@@ -62,3 +69,13 @@ ability-view = View
 ability-comment = Comment
 ability-post = Post
 ability-moderate = Moderate
+
+sortable-instructions =
+    To pick up a sortable item, press space or enter.
+    While dragging, use the arrow keys to move the item.
+    Press space or enter again to drop the item in its new position, or press escape to cancel.
+
+sortable-drag-start-announcement = Picked up { $activeLabel } in { $containerLabel }
+sortable-drag-over-announcement = { $activeLabel } was moved to position { $overPosition } in { $containerLabel }
+sortable-drop-announcement = { $activeLabel } was dropped in position { $overPosition } in { $containerLabel }
+sortable-drag-cancel-announcement = Sorting was cancelled. { $activeLabel } was dropped.

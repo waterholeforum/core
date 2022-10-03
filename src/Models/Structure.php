@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property int $position
  * @property string $content_type
  * @property int $content_id
+ * @property bool $is_listed
  * @property-read Model $content
  */
 class Structure extends Model
@@ -16,6 +17,10 @@ class Structure extends Model
     protected $table = 'structure';
 
     public $timestamps = false;
+
+    protected $casts = [
+        'is_listed' => 'bool',
+    ];
 
     public function content(): MorphTo
     {

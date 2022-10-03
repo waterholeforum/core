@@ -1,6 +1,9 @@
 account-settings-title = Account Settings
 
-delete-account-button = Delete Account
+delete-account-button = Delete Your Account
+delete-account-confirmation-title = Are you sure you want to delete your account?
+delete-account-confirmation-description = Your account data will be removed. Your contributions will be retained but marked as anonymous. This cannot be undone.
+delete-account-success-message = Your account has been deleted.
 
 notification-preferences-title = Notification Preferences
 notifications-label = Notifications
