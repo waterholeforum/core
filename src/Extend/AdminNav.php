@@ -21,6 +21,7 @@ AdminNav::add(
         icon: 'tabler-report-analytics',
         route: 'waterhole.admin.dashboard',
     ),
+    -40,
 );
 
 AdminNav::add(
@@ -31,6 +32,7 @@ AdminNav::add(
         route: 'waterhole.admin.structure',
         active: fn() => request()->routeIs('waterhole.admin.structure*'),
     ),
+    -30,
 );
 
 AdminNav::add(
@@ -41,6 +43,7 @@ AdminNav::add(
         route: 'waterhole.admin.users.index',
         active: fn() => request()->routeIs('waterhole.admin.users*'),
     ),
+    -20,
 );
 
 AdminNav::add(
@@ -51,6 +54,7 @@ AdminNav::add(
         route: 'waterhole.admin.groups.index',
         active: fn() => request()->routeIs('waterhole.admin.groups*'),
     ),
+    -10,
 );
 
-AdminNav::add('version', Version::class);
+AdminNav::add('version', Version::class, 10);

@@ -8,6 +8,7 @@ use s9e\TextFormatter\Renderer;
 use Waterhole\Formatter\Context;
 use Waterhole\Formatter\Formatter;
 use Waterhole\Formatter\Mentions;
+use Waterhole\Models\Channel;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Page;
 use Waterhole\Models\Post;
@@ -54,8 +55,9 @@ class FormatterServiceProvider extends ServiceProvider
     {
         $formatter = $this->app->make('waterhole.formatter');
 
-        Comment::setFormatter($formatter);
-        Page::setFormatter($formatter);
-        Post::setFormatter($formatter);
+        Comment::setFormatter('body', $formatter);
+        Page::setFormatter('body', $formatter);
+        Post::setFormatter('body', $formatter);
+        Channel::setFormatter('instructions', $formatter);
     }
 }

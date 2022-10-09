@@ -5,6 +5,7 @@ namespace Waterhole\Views;
 use Exception;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\View\Component;
+use Illuminate\View\ComponentAttributeBag;
 
 /**
  * Helper class for making <turbo-stream> elements.
@@ -16,11 +17,11 @@ abstract class TurboStream
      */
     public static function replace(Component $component): ?string
     {
-        if (!($id = static::getId($component))) {
+        if (!($class = static::getClassName($component))) {
             return null;
         }
 
-        return static::stream($component, 'replace', $id);
+        return static::stream($component, 'replace', ['targets' => ".$class"]);
     }
 
     /**
@@ -28,12 +29,12 @@ abstract class TurboStream
      */
     public static function remove(Component $component): ?string
     {
-        if (!($id = static::getId($component))) {
+        if (!($class = static::getClassName($component))) {
             return null;
         }
 
         return <<<html
-            <turbo-stream action="remove" target="$id"></turbo-stream>
+            <turbo-stream action="remove" targets=".$class"></turbo-stream>
         html;
     }
 
@@ -42,7 +43,7 @@ abstract class TurboStream
      */
     public static function append(Component $component, string $target): string
     {
-        return static::stream($component, 'append', $target);
+        return static::stream($component, 'append', compact('target'));
     }
 
     /**
@@ -50,7 +51,7 @@ abstract class TurboStream
      */
     public static function prepend(Component $component, string $target): string
     {
-        return static::stream($component, 'prepend', $target);
+        return static::stream($component, 'prepend', compact('target'));
     }
 
     /**
@@ -58,7 +59,7 @@ abstract class TurboStream
      */
     public static function before(Component $component, string $target): string
     {
-        return static::stream($component, 'before', $target);
+        return static::stream($component, 'before', compact('target'));
     }
 
     /**
@@ -66,15 +67,16 @@ abstract class TurboStream
      */
     public static function after(Component $component, string $target): string
     {
-        return static::stream($component, 'after', $target);
+        return static::stream($component, 'after', compact('target'));
     }
 
-    private static function stream(Component $component, string $action, string $target): string
+    private static function stream(Component $component, string $action, array $attributes): string
     {
+        $attributes = new ComponentAttributeBag($attributes);
         $content = Blade::renderComponent($component);
 
         return <<<html
-            <turbo-stream action="$action" target="$target">
+            <turbo-stream action="$action" $attributes>
                 <template>
                     $content
                 </template>
@@ -82,12 +84,12 @@ abstract class TurboStream
         html;
     }
 
-    private static function getId(Component $component)
+    private static function getClassName(Component $component)
     {
-        if (!method_exists($component, 'id')) {
+        if (!method_exists($component, 'streamableClassName')) {
             throw new Exception(get_class($component) . ' is not streamable');
         }
 
-        return $component->id();
+        return $component->streamableClassName();
     }
 }

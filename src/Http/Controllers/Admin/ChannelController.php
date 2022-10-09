@@ -3,8 +3,7 @@
 namespace Waterhole\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
+use Waterhole\Forms\ChannelForm;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Channel;
 
@@ -17,41 +16,34 @@ class ChannelController extends Controller
 {
     public function create()
     {
-        return view('waterhole::admin.structure.channel');
+        $form = $this->form(new Channel());
+
+        return view('waterhole::admin.structure.channel', compact('form'));
     }
 
     public function store(Request $request)
     {
-        return $this->save(new Channel(), $request);
+        $this->form(new Channel())->submit($request);
+
+        return redirect()->route('waterhole.admin.structure');
     }
 
     public function edit(Channel $channel)
     {
-        return view('waterhole::admin.structure.channel', compact('channel'));
+        $form = $this->form($channel);
+
+        return view('waterhole::admin.structure.channel', compact('form', 'channel'));
     }
 
     public function update(Channel $channel, Request $request)
     {
-        return $this->save($channel, $request);
-    }
-
-    private function save(Channel $channel, Request $request)
-    {
-        $data = $request->validate(Channel::rules($channel));
-
-        if (!$request->input('custom_filters')) {
-            $data['filters'] = null;
-        }
-
-        $icon = Arr::pull($data, 'icon');
-        $permissions = Arr::pull($data, 'permissions');
-
-        DB::transaction(function () use ($channel, $data, $permissions, $icon) {
-            $channel->fill($data)->save();
-            $channel->saveIcon($icon);
-            $channel->savePermissions($permissions);
-        });
+        $this->form($channel)->submit($request);
 
         return redirect()->route('waterhole.admin.structure');
+    }
+
+    private function form(Channel $channel)
+    {
+        return new ChannelForm($channel);
     }
 }

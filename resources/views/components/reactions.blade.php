@@ -1,3 +1,4 @@
+@php use Illuminate\View\ComponentAttributeBag; @endphp
 <div {{ $attributes }} @unless ($model->score) hidden @endunless>
     @if ($model->score)
         <x-waterhole::action-form
@@ -5,7 +6,7 @@
             :action="Waterhole\Actions\Like::class"
             :return="$model->url"
         >
-            <{{ $component->isAuthorized ? 'button type="submit"' : 'span' }} {{ $attributes->class([
+            <{{ $component->isAuthorized ? 'button type="submit"' : 'span' }} {{ (new ComponentAttributeBag())->class([
                 'btn btn--small btn--outline',
                 'is-active' => $model->likedBy->contains(Auth::id()),
                 'is-inert' => !$component->isAuthorized,

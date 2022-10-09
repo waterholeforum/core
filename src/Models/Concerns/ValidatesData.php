@@ -19,7 +19,9 @@ trait ValidatesData
             static::customAttributes($instance),
         );
 
-        // TODO: extension point
+        // foreach (Validation::values() as $callback) {
+        //     $callback(static::class, $validator, $instance);
+        // }
 
         return $validator->validate();
     }

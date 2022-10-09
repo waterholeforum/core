@@ -25,4 +25,8 @@ export default class extends Controller {
     titleTargetDisconnected() {
         this.observer.disconnect();
     }
+
+    incrementDocumentTitle() {
+        Waterhole.documentTitle.increment();
+    }
 }

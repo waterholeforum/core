@@ -6,7 +6,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Waterhole\Extend\NotificationTypes;
+use Waterhole\Forms\UserRegisterForm;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\User;
 
@@ -28,19 +28,13 @@ class RegisterController extends Controller
         return view('waterhole::auth.register');
     }
 
-    public function register(Request $request)
+    public function register(UserRegisterForm $form)
     {
-        $data = $request->validate(User::rules());
+        $data = $form->safe(['name', 'email', 'password']);
 
         $data['password'] = Hash::make($data['password']);
 
-        $data['notification_channels'] = collect(NotificationTypes::build())->mapWithKeys(
-            fn($type) => [$type => ['database', 'mail']],
-        );
-
-        $data['follow_on_comment'] = true;
-
-        $user = User::create($data);
+        $form->save($user = new User($data));
 
         event(new Registered($user));
 

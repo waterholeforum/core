@@ -3,13 +3,12 @@
 namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Validation\Rule;
-use Waterhole\Extend\PostFilters;
 use Waterhole\Models\Concerns\Followable;
 use Waterhole\Models\Concerns\HasIcon;
 use Waterhole\Models\Concerns\HasPermissions;
 use Waterhole\Models\Concerns\HasUserState;
 use Waterhole\Models\Concerns\Structurable;
+use Waterhole\Models\Concerns\UsesFormatter;
 use Waterhole\Models\Concerns\ValidatesData;
 
 /**
@@ -36,6 +35,7 @@ class Channel extends Model
     use HasUserState;
     use Structurable;
     use ValidatesData;
+    use UsesFormatter;
 
     public $timestamps = false;
 
@@ -79,6 +79,11 @@ class Channel extends Model
         return ['view', 'comment', 'post', 'moderate'];
     }
 
+    public function defaultAbilities(): array
+    {
+        return ['view', 'comment', 'post'];
+    }
+
     public function getUrlAttribute(): string
     {
         return route('waterhole.channels.show', ['channel' => $this]);
@@ -87,28 +92,5 @@ class Channel extends Model
     public function getEditUrlAttribute(): string
     {
         return route('waterhole.admin.structure.channels.edit', ['channel' => $this]);
-    }
-
-    public static function rules(Channel $instance = null): array
-    {
-        return array_merge(
-            [
-                'name' => ['required', 'string', 'max:255'],
-                'slug' => [
-                    'required',
-                    'string',
-                    'max:255',
-                    Rule::unique('channels')->ignore($instance),
-                ],
-                'description' => ['nullable', 'string'],
-                'instructions' => ['nullable', 'string'],
-                'sandbox' => ['nullable', 'boolean'],
-                'default_layout' => ['in:list,cards'],
-                'filters' => ['required_with:custom_filters', 'array'],
-                'filters.*' => ['string', 'distinct', Rule::in(PostFilters::values())],
-                'permissions' => ['array'],
-            ],
-            static::iconRules(),
-        );
     }
 }

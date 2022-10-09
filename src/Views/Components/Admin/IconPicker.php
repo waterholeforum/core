@@ -26,4 +26,13 @@ class IconPicker extends Component
     {
         return view('waterhole::components.admin.icon-picker');
     }
+
+    public static function validationRules(): array
+    {
+        return [
+            'icon' => ['array:type,emoji,svg,file'],
+            'icon.type' => ['nullable', 'in:emoji,svg,file'],
+            'icon.file' => ['nullable', 'image'],
+        ];
+    }
 }

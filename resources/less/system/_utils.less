@@ -490,9 +490,26 @@
   column-gap: var(--space-xxxl);
 }
 
+// TODO: turn into LESS loop
+
+.p-md {
+  padding: var(--space-md);
+}
+.p-lg {
+  padding: var(--space-lg);
+}
+
 .stack {
   display: flex;
   flex-direction: column;
+}
+
+.dividers {
+  > * + * {
+    border-top: 1px solid var(--color-stroke);
+    margin-top: var(--space-lg);
+    padding-top: var(--space-lg);
+  }
 }
 
 .justify-between {

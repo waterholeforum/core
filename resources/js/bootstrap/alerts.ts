@@ -1,6 +1,6 @@
-import { AlertsElement } from 'inclusive-elements';
-
-window.Waterhole.alerts = document.getElementById('alerts') as AlertsElement;
+Object.defineProperty(window.Waterhole, 'alerts', {
+    get: () => document.getElementById('alerts'),
+});
 
 window.Waterhole.fetchError = function (response: Response): void {
     let templateId;
@@ -36,26 +36,4 @@ document.addEventListener('turbo:before-fetch-response', async (e) => {
     }
 
     window.Waterhole.alerts.dismiss('fetchError');
-
-    requestAnimationFrame(async () => {
-        appendAlertsFromDocument(
-            new DOMParser().parseFromString(await response.responseHTML, 'text/html')
-        );
-    });
 });
-
-document.addEventListener('DOMContentLoaded', () => {
-    appendAlertsFromDocument(document);
-});
-
-function appendAlertsFromDocument(document: Document) {
-    const append = document.getElementById('alerts-append');
-    if (!append) return;
-    Array.from(append.children).forEach((el) => {
-        const duration = el.getAttribute('data-duration');
-        window.Waterhole.alerts.show(el as HTMLElement, {
-            key: el.getAttribute('data-key') || undefined,
-            duration: duration ? Number(duration) : undefined,
-        });
-    });
-}

@@ -79,3 +79,5 @@ sortable-drag-start-announcement = Picked up { $activeLabel } in { $containerLab
 sortable-drag-over-announcement = { $activeLabel } was moved to position { $overPosition } in { $containerLabel }
 sortable-drop-announcement = { $activeLabel } was dropped in position { $overPosition } in { $containerLabel }
 sortable-drag-cancel-announcement = Sorting was cancelled. { $activeLabel } was dropped.
+
+formatter-error = This content could not be rendered.

@@ -4,12 +4,11 @@ namespace Waterhole\Events;
 
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\HtmlString;
 use Neves\Events\Contracts\TransactionalEvent;
 use Waterhole\Models\Notification;
-use Waterhole\Views\Components\Alert;
-use Waterhole\Views\Components\Notification as NotificationComponent;
+use Waterhole\Views\Components\NotificationAlert;
+use Waterhole\Views\Components\NotificationsBadge;
+use Waterhole\Views\TurboStream;
 
 class NotificationReceived implements ShouldBroadcast, TransactionalEvent
 {
@@ -24,19 +23,11 @@ class NotificationReceived implements ShouldBroadcast, TransactionalEvent
 
     public function broadcastWith()
     {
-        // TODO: we probably can't broadcast the HTML because it won't be translated
-        // instead broadcast a URL and load it in a turbo frame?
         return [
-            'html' => Blade::renderComponent(
-                new Alert(
-                    type: 'notification',
-                    message: new HtmlString(
-                        Blade::renderComponent(new NotificationComponent($this->notification)),
-                    ),
-                    dismissible: true,
-                ),
-            ),
-            'unreadCount' => $this->notification->notifiable->unread_notification_count,
+            'streams' => implode([
+                TurboStream::append(new NotificationAlert($this->notification), 'alerts'),
+                TurboStream::replace(new NotificationsBadge($this->notification->notifiable)),
+            ]),
         ];
     }
 }

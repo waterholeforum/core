@@ -4,6 +4,7 @@ import { Controller } from '@hotwired/stimulus';
 export default class extends Controller {
     static targets = ['button'];
 
+    declare readonly hasButtonTarget: boolean;
     declare readonly buttonTarget: HTMLButtonElement;
 
     private handleSelectionChange = () => {
@@ -19,7 +20,7 @@ export default class extends Controller {
     }
 
     async updateQuoteButton() {
-        if (!this.buttonTarget) return;
+        if (!this.hasButtonTarget) return;
         this.buttonTarget.hidden = true;
 
         const selection = window.getSelection();

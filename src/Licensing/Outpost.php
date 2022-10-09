@@ -35,7 +35,10 @@ class Outpost
         }
 
         try {
-            $response = Http::timeout(static::TIMEOUT)->post(static::ENDPOINT, $payload);
+            $response = Http::timeout(static::TIMEOUT)
+                ->connectTimeout(static::TIMEOUT)
+                ->post(static::ENDPOINT, $payload);
+
             $expiry = now()->addHour();
 
             switch ($response->status()) {

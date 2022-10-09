@@ -88,25 +88,14 @@
 </ui-modal>
 
 {{--
-    The main alerts element, which persists between pages. This element is
-    accessible in JavaScript via window.Waterhole.alerts. For API information:
+    The main alerts element. This element is accessible in JavaScript via
+    window.Waterhole.alerts. For API information:
     https://github.com/tobyzerner/inclusive-elements/tree/master/src/alerts
 --}}
 <ui-alerts
     id="alerts"
     class="alerts"
-    data-turbo-permanent
     data-controller="alerts"
-></ui-alerts>
-
-{{--
-    Here we render session "flash" alerts into a separate alerts container.
-    If JavaScript is enabled, this container is hidden, and our JS will append
-    its children to the main alerts element.
---}}
-<div
-    id="alerts-append"
-    class="alerts no-js-only"
 >
     @foreach (['success', 'attention', 'danger'] as $type)
         @if (session($type))
@@ -115,29 +104,19 @@
             </x-waterhole::alert>
         @endif
     @endforeach
-</div>
+</ui-alerts>
 
 {{--
     Templates for fetch error alert messages. These is cloned into the
     alerts element whenever there is a fetch request error in JavaScript.
 --}}
-<template id="forbidden-alert">
-    <x-waterhole::alert type="danger">
-        {{ __('waterhole::system.forbidden-message') }}
-    </x-waterhole::alert>
-</template>
-
-<template id="too-many-requests-alert">
-    <x-waterhole::alert type="danger">
-        {{ __('waterhole::system.too-many-requests-message') }}
-    </x-waterhole::alert>
-</template>
-
-<template id="fatal-error-alert">
-    <x-waterhole::alert type="danger">
-        {{ __('waterhole::system.fatal-error-message') }}
-    </x-waterhole::alert>
-</template>
+@foreach (['forbidden', 'too-many-requests', 'fatal-error'] as $key)
+    <template id="{{ $key }}-alert">
+        <x-waterhole::alert type="danger">
+            {{ __("waterhole::system.$key-message") }}
+        </x-waterhole::alert>
+    </template>
+@endforeach
 
 </body>
 </html>

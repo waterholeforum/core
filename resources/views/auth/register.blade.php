@@ -1,5 +1,3 @@
-{{-- TODO: make extensible --}}
-
 <x-waterhole::layout :title="__('waterhole::auth.register-title')">
     <div class="container section">
         <x-waterhole::dialog
@@ -20,58 +18,70 @@
                 <div class="form">
                     <x-waterhole::validation-errors/>
 
-                    <x-waterhole::field
-                        name="name"
-                        :label="__('waterhole::auth.name-label')"
-                    >
-                        <input
-                            class="input"
-                            type="text"
-                            id="{{ $component->id }}"
+                    @section('username')
+                        <x-waterhole::field
                             name="name"
-                            value="{{ old('name') }}"
-                            required
-                            autofocus
-                            autocomplete="name"
+                            :label="__('waterhole::auth.name-label')"
                         >
-                    </x-waterhole::field>
+                            <input
+                                class="input"
+                                type="text"
+                                id="{{ $component->id }}"
+                                name="name"
+                                value="{{ old('name') }}"
+                                required
+                                autofocus
+                                autocomplete="name"
+                            >
+                        </x-waterhole::field>
+                    @endsection
 
-                    <x-waterhole::field
-                        name="email"
-                        :label="__('waterhole::auth.email-label')"
-                    >
-                        <input
-                            class="input"
-                            type="email"
-                            id="{{ $component->id }}"
+                    @section('email')
+                        <x-waterhole::field
                             name="email"
-                            value="{{ old('email') }}"
-                            required
+                            :label="__('waterhole::auth.email-label')"
                         >
-                    </x-waterhole::field>
+                            <input
+                                class="input"
+                                type="email"
+                                id="{{ $component->id }}"
+                                name="email"
+                                value="{{ old('email') }}"
+                                required
+                            >
+                        </x-waterhole::field>
+                    @endsection
 
-                    <x-waterhole::field
-                        name="password"
-                        :label="__('waterhole::auth.password-label')"
-                    >
-                        <input
-                            class="input"
-                            type="password"
-                            id="{{ $component->id }}"
+                    @section('password')
+                        <x-waterhole::field
                             name="password"
-                            required
-                            autocomplete="new-password"
+                            :label="__('waterhole::auth.password-label')"
                         >
-                    </x-waterhole::field>
+                            <input
+                                class="input"
+                                type="password"
+                                id="{{ $component->id }}"
+                                name="password"
+                                required
+                                autocomplete="new-password"
+                            >
+                        </x-waterhole::field>
+                    @endsection
 
-                    <button type="submit" class="btn bg-accent full-width">
-                        {{ __('waterhole::auth.register-submit') }}
-                    </button>
+                    @section('submit')
+                        <button type="submit" class="btn bg-accent full-width">
+                            {{ __('waterhole::auth.register-submit') }}
+                        </button>
+                    @endsection
 
-                    <p class="text-center">
-                        {{ __('waterhole::auth.register-login-prompt') }}
-                        <a href="{{ route('waterhole.login') }}">{{ __('waterhole::auth.register-login-link') }}</a>
-                    </p>
+                    @section('log-in-link')
+                        <p class="text-center">
+                            {{ __('waterhole::auth.register-login-prompt') }}
+                            <a href="{{ route('waterhole.login') }}">{{ __('waterhole::auth.register-login-link') }}</a>
+                        </p>
+                    @endsection
+
+                    @components(Waterhole\Forms\UserRegisterForm::fields())
                 </div>
             </form>
         </x-waterhole::dialog>

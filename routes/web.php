@@ -79,6 +79,9 @@ Route::get('notifications/unsubscribe', [NotificationController::class, 'unsubsc
 Route::post('notifications/read', [NotificationController::class, 'read'])->name(
     'notifications.read',
 );
+Route::get('notifications/{notification}/go', [NotificationController::class, 'go'])->name(
+    'notifications.go',
+);
 Route::resource('notifications', NotificationController::class)->only(['index', 'show']);
 
 // Search

@@ -20,7 +20,7 @@ use Waterhole\Models\Concerns\NotificationContent;
 use Waterhole\Models\Concerns\ValidatesData;
 use Waterhole\Notifications\Mention;
 use Waterhole\Scopes\CommentIndexScope;
-use Waterhole\Scopes\PermittedScope;
+use Waterhole\Scopes\PostVisibleScope;
 use Waterhole\Views\Components;
 use Waterhole\Views\TurboStream;
 
@@ -65,7 +65,7 @@ class Post extends Model
 
     public static function booted()
     {
-        static::addGlobalScope(new PermittedScope(Channel::class, 'channel_id'));
+        static::addGlobalScope('visible', new PostVisibleScope(fn() => Auth::user()));
 
         static::creating(function (Post $post) {
             $post->last_activity_at ??= now();
@@ -84,7 +84,15 @@ class Post extends Model
                 return;
             }
 
-            $post->usersWereMentioned($users = $post->mentions->except($post->user_id));
+            $users = $post->mentions
+                ->except($post->user_id)
+                ->filter(function (User $user) use ($post) {
+                    return Post::withGlobalScope('visible', new PostVisibleScope($user))
+                        ->whereKey($post->id)
+                        ->exists();
+                });
+
+            $post->usersWereMentioned($users);
 
             Notification::send($users, new Mention($post));
         });
@@ -95,11 +103,6 @@ class Post extends Model
      */
     public function usersWereMentioned(Collection $users): void
     {
-        // TODO: filter out users who aren't allowed to see the post
-        // $users = $users->filter(function (User $user) {
-        //     return Post::visibleTo($user)->whereKey($this->id)->exists();
-        // });
-
         $postUserRows = $users
             ->map(
                 fn(User $user) => [
@@ -253,7 +256,6 @@ class Post extends Model
     public function streamRemoved(): array
     {
         return [
-            // TODO: replace with a generic CSS class target
             TurboStream::remove(new Components\PostListItem($this)),
             TurboStream::remove(new Components\PostCardsItem($this)),
         ];

@@ -16,9 +16,8 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Password;
 use Intervention\Image\Image;
+use Waterhole\Extend\NotificationTypes;
 use Waterhole\Models\Concerns\HasImageAttributes;
 use Waterhole\Models\Concerns\ReceivesPermissions;
 use Waterhole\Models\Concerns\ValidatesData;
@@ -80,6 +79,16 @@ class User extends Model implements
         'notifications_read_at' => 'datetime',
         'follow_on_comment' => 'boolean',
     ];
+
+    protected static function booted()
+    {
+        static::creating(function (User $user) {
+            $user->follow_on_comment ??= true;
+            $user->notification_channels ??= collect(NotificationTypes::build())->mapWithKeys(
+                fn($type) => [$type => ['database', 'mail']],
+            );
+        });
+    }
 
     /**
      * Relationship with the user's posts.
@@ -222,20 +231,5 @@ class User extends Model implements
                 new Expression('COALESCE(group_type, id)'),
                 new Expression('COALESCE(group_id, id)'),
             ]);
-    }
-
-    public static function rules(User $instance = null): array
-    {
-        return [
-            'name' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($instance)],
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                Rule::unique('users')->ignore($instance),
-            ],
-            'password' => [$instance ? 'nullable' : 'required', Password::defaults()],
-        ];
     }
 }

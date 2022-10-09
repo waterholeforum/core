@@ -6,7 +6,6 @@ use Cake\Utility\Text;
 use Closure;
 use Illuminate\Support\HtmlString;
 use Illuminate\View\AnonymousComponent;
-use Illuminate\View\Component;
 use Major\Fluent\Formatters\Number\NumberFormatter;
 use Major\Fluent\Formatters\Number\Options;
 use Waterhole\Extend\Emoji;
@@ -156,7 +155,7 @@ function build_components(array $components, array $data = []): array
         if ($component instanceof Closure) {
             $component = app()->call($component, $data);
         }
-        if ($component instanceof Component) {
+        if (is_object($component)) {
             return $component;
         } elseif (class_exists($component)) {
             return resolve($component, $data);

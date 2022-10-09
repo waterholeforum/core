@@ -94,4 +94,9 @@ class Notification extends DatabaseNotification
 
         return $this->template;
     }
+
+    public function getUrlAttribute(): string
+    {
+        return route('waterhole.notifications.show', ['notification' => $this]);
+    }
 }

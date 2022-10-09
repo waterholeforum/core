@@ -15,6 +15,7 @@ window.Turbo = Turbo;
 
 document.addEventListener('turbo:before-stream-render', (e) => {
     const stream = e.target as StreamElement;
+
     if (stream.action === 'replace') {
         e.preventDefault();
         stream.targetElements.forEach((el) => {

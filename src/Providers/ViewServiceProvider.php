@@ -56,7 +56,7 @@ class ViewServiceProvider extends ServiceProvider
                 e($components) .
                 '\')</script>',
                 '<?php endif; ?>',
-                '<?php if (isset($instance) && $instance->shouldRender()): ?>',
+                '<?php if ($instance instanceof Illuminate\View\Component && $instance->shouldRender()): ?>',
                 '<?php $__env->startComponent($instance->resolveView(), $instance->data()); ?>',
                 '<?php echo $__env->renderComponent(); ?>',
                 '<?php endif; ?>',

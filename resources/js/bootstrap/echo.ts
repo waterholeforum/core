@@ -1,5 +1,6 @@
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
+import { TurboEchoStreamSourceElement } from '../elements/turbo-echo-stream-tag';
 
 declare global {
     interface Window {
@@ -16,3 +17,5 @@ window.Echo = new Echo({
 });
 
 window.Echo.registerTurboRequestInterceptor();
+
+customElements.define('turbo-echo-stream-source', TurboEchoStreamSourceElement);

@@ -3,10 +3,7 @@
 namespace Waterhole\Models\Concerns;
 
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
-use Waterhole\Formatter\Context;
-use Waterhole\Formatter\Formatter;
 use Waterhole\Formatter\Mentions;
 use Waterhole\Models\Model;
 use Waterhole\Models\User;
@@ -31,9 +28,7 @@ use Waterhole\Models\User;
  */
 trait HasBody
 {
-    protected static Formatter $formatter;
-
-    private array $renderCache = [];
+    use UsesFormatter;
 
     public static function bootHasBody(): void
     {
@@ -50,64 +45,5 @@ trait HasBody
     public function mentions(): MorphToMany
     {
         return $this->morphToMany(User::class, 'content', 'mentions');
-    }
-
-    /**
-     * Render the body as HTML for the given user.
-     */
-    public function render(User $user = null): HtmlString
-    {
-        $key = $user->id ?? 0;
-
-        if (!isset($this->renderCache[$key])) {
-            $context = new Context($this, $user);
-
-            $this->renderCache[$key] = static::$formatter->render($this->parsed_body, $context);
-        }
-
-        return new HtmlString($this->renderCache[$key]);
-    }
-
-    public function getBodyAttribute(string $value): string
-    {
-        return static::$formatter->unparse($value);
-    }
-
-    public function setBodyAttribute(string $value)
-    {
-        $context = new Context($this);
-
-        $this->attributes['body'] = $value ? static::$formatter->parse($value, $context) : null;
-    }
-
-    public function getBodyHtmlAttribute(): HtmlString
-    {
-        return $this->render(Auth::user());
-    }
-
-    public function getParsedBodyAttribute(): string
-    {
-        return $this->attributes['body'];
-    }
-
-    public function setParsedBodyAttribute(string $value)
-    {
-        $this->attributes['body'] = $value;
-    }
-
-    /**
-     * Set the formatter instance for this model.
-     */
-    public static function getFormatter(): Formatter
-    {
-        return static::$formatter;
-    }
-
-    /**
-     * Set the formatter instance for this model.
-     */
-    public static function setFormatter(Formatter $formatter)
-    {
-        static::$formatter = $formatter;
     }
 }

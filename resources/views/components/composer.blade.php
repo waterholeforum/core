@@ -1,4 +1,5 @@
 <turbo-frame
+    id="composer"
     {{ $attributes->class('composer') }}
     data-controller="composer watch-sticky"
     data-action="

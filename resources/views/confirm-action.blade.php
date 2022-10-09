@@ -1,8 +1,8 @@
-<x-waterhole::layout :title="__('waterhole::system.confirm-action')">
+<x-waterhole::layout :title="__('waterhole::system.confirm-action-title')">
     <div class="container section">
         <turbo-frame id="modal">
             <x-waterhole::dialog
-                :aria-label="__('waterhole::system.confirm-action')"
+                :aria-label="__('waterhole::system.confirm-action-title')"
                 class="dialog--sm confirm-action"
             >
                 <form action="{{ route('waterhole.action.store') }}" method="POST">

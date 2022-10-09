@@ -129,7 +129,6 @@ class Group extends Model
             [
                 'name' => ['required', 'string', 'max:255'],
                 'is_public' => ['boolean'],
-                // TODO: extract into a "hex" rule
                 'color' => ['nullable', 'string', 'regex:/^[a-f0-9]{3}|[a-f0-9]{6}$/i'],
                 'permissions' => ['array'],
             ],

@@ -166,7 +166,7 @@ class Comment extends Model
      */
     public function streamUpdated(): array
     {
-        return [TurboStream::replace(new Components\CommentFull($this))];
+        return [TurboStream::replace(new Components\CommentFrame($this))];
     }
 
     /**
@@ -174,10 +174,7 @@ class Comment extends Model
      */
     public function streamRemoved(): array
     {
-        return [
-            // TODO: replace with a generic CSS class target?
-            TurboStream::remove(new Components\CommentFull($this)),
-        ];
+        return [TurboStream::remove(new Components\CommentFrame($this))];
     }
 
     public function getUrlAttribute(): string

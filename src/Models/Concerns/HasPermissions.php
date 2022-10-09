@@ -47,6 +47,14 @@ trait HasPermissions
     }
 
     /**
+     * A list of abilities to check by default when creating a model.
+     */
+    public function defaultAbilities(): array
+    {
+        return ['view'];
+    }
+
+    /**
      * Save the permissions to the database.
      */
     public function savePermissions(?array $grid): void
@@ -73,6 +81,16 @@ trait HasPermissions
                     ->values();
             }),
         );
+    }
+
+    public function isPublic(string $ability = 'view'): bool
+    {
+        return Waterhole::permissions()
+            ->guest()
+            ->ability($ability)
+            ->scope(static::class)
+            ->ids()
+            ->contains($this->id);
     }
 
     /**

@@ -120,21 +120,50 @@ ui-popup > :nth-child(2) {
   margin-left: 6px;
 }
 
-// TODO these classes suck
-@media (max-width: (@breakpoint-xs - 1)) {
+@media (max-width: @breakpoint-xs) {
   .hide-xs {
     display: none !important;
   }
 }
 
-@media (min-width: @breakpoint-sm) and (max-width: (@breakpoint-md - 1)) {
-  .hide-md {
+@media (min-width: (@breakpoint-xs + 1)) {
+  .hide-sm-up {
     display: none !important;
   }
 }
 
-@media (min-width: @breakpoint-md) and (max-width: (@breakpoint-lg - 1)) {
-  .hide-lg {
+@media (max-width: @breakpoint-sm) {
+  .hide-sm-down {
+    display: none !important;
+  }
+}
+
+@media (min-width: (@breakpoint-sm + 1)) {
+  .hide-md-up {
+    display: none !important;
+  }
+}
+
+@media (max-width: @breakpoint-md) {
+  .hide-md-down {
+    display: none !important;
+  }
+}
+
+@media (min-width: (@breakpoint-md + 1)) {
+  .hide-lg-up {
+    display: none !important;
+  }
+}
+
+@media (max-width: @breakpoint-lg) {
+  .hide-lg-down {
+    display: none !important;
+  }
+}
+
+@media (min-width: (@breakpoint-lg + 1)) {
+  .hide-xl {
     display: none !important;
   }
 }

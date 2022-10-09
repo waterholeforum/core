@@ -25,21 +25,6 @@ trait HasIcon
     use HasImageAttributes;
 
     /**
-     * Get the `icon` field validation rules.
-     *
-     * Assuming a model uses the `ValidatesData` trait, these rules can be
-     * merged into the `rules` method.
-     */
-    private static function iconRules(): array
-    {
-        return [
-            'icon' => ['array:type,emoji,svg,file'],
-            'icon.type' => ['nullable', 'in:emoji,svg,file'],
-            'icon.file' => ['nullable', 'image'],
-        ];
-    }
-
-    /**
      * Save the icon using input from an <x-waterhole::icon-picker> component.
      */
     public function saveIcon(array $icon): void

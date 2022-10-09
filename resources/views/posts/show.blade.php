@@ -7,7 +7,7 @@
         <div class="stack gap-xxxl">
             <div
                 @if (!$comments->onFirstPage()) hidden @endif
-            data-post-page-target="post"
+                data-post-page-target="post"
             >
                 <x-waterhole::post-full :post="$post"/>
             </div>
@@ -20,7 +20,7 @@
                         id="comments"
                         style="padding-top: var(--space-lg); margin-top: calc(-1 * var(--space-lg))"
                     >
-                        <x-waterhole::post-comments-heading :post="$post"/>
+                        {{ __('waterhole::forum.post-comments-heading', ['count' => $post->comment_count]) }}
                     </h2>
 
                     <x-waterhole::infinite-scroll
@@ -126,6 +126,6 @@
 
     <x-turbo-stream-from
         :source="$post"
-        :type="in_array($post->channel->id, Waterhole\Models\Channel::allPermitted(null)) ? 'channel' : 'private'"
+        :type="$post->channel->isPublic() ? 'channel' : 'private'"
     />
 </x-waterhole::layout>

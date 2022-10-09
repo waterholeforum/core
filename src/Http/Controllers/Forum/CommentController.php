@@ -13,7 +13,6 @@ use Waterhole\Views\Components\CommentFrame;
 use Waterhole\Views\Components\CommentFull;
 use Waterhole\Views\Components\Composer;
 use Waterhole\Views\Components\FollowButton;
-use Waterhole\Views\Components\PostCommentsHeading;
 use Waterhole\Views\TurboStream;
 
 use function Tonysm\TurboLaravel\dom_id;
@@ -121,7 +120,6 @@ class CommentController extends Controller
             $streams = [
                 TurboStream::before(new CommentFrame($comment), 'bottom'),
                 TurboStream::replace(new Composer($post)),
-                TurboStream::replace(new PostCommentsHeading($post->refresh())),
             ];
 
             if (isset($parent)) {

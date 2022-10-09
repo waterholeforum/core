@@ -3,22 +3,20 @@ group-member = Member
 group-admin = Admin
 group-moderator = Mod
 
-# TODO: descriptions
-
 announcements-name = Announcements
-announcements-description = .
+announcements-description = News and other updates from the team.
 
 introductions-name = Introductions
-introductions-description = .
+introductions-description = New to the community? Introduce yourself!
 
 support-name = Support
-support-description = .
+support-description = Get help setting up, using, and customising our product.
 
 ideas-name = Ideas
-ideas-description = .
+ideas-description = Have an idea? We want to hear it!
 
 staff-name = Staff Only
-staff-description = .
+staff-description = A private channel for staff discussion.
 
 guide-title = Community Guide
 guide-body =

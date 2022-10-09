@@ -8,12 +8,12 @@ use function Tonysm\TurboLaravel\dom_id;
 
 trait Streamable
 {
-    public function id(): ?string
+    public function streamableClassName(): ?string
     {
         $name = (new ReflectionClass($this))->getShortName();
         $properties = $this->extractPublicProperties();
 
-        if ($model = reset($properties)) {
+        if ($model = collect($properties)->first(fn($value) => is_object($value))) {
             return dom_id($model, $name);
         }
 
@@ -21,33 +21,33 @@ trait Streamable
     }
 
     /**
-     * Automatically set the ID attribute on the attribute bag.
+     * Automatically set the class attribute on the attribute bag.
      */
     public function data(): array
     {
-        $this->setIdAttribute();
+        $this->setClassAttribute();
 
         return parent::data();
     }
 
     /**
-     * Automatically set the ID attribute on the attribute bag.
+     * Automatically set the class attribute on the attribute bag.
      */
     public function withAttributes(array $attributes): static
     {
         parent::withAttributes($attributes);
 
-        $this->setIdAttribute();
+        $this->setClassAttribute();
 
         return $this;
     }
 
-    private function setIdAttribute(): void
+    private function setClassAttribute(): void
     {
         $this->attributes = $this->attributes ?: $this->newAttributeBag();
 
-        if ($id = $this->id()) {
-            $this->attributes['id'] = $id;
+        if ($class = $this->streamableClassName()) {
+            $this->attributes['class'] .= " $class";
         }
     }
 }
