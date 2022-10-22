@@ -1,0 +1,43 @@
+<?php
+
+namespace Waterhole\Forms\Fields;
+
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
+use Waterhole\Forms\Field;
+use Waterhole\Models\StructureLink;
+
+class StructureLinkName extends Field
+{
+    public function __construct(public ?StructureLink $link)
+    {
+    }
+
+    public function render(): string
+    {
+        return <<<'blade'
+            <x-waterhole::field
+                name="name"
+                :label="__('waterhole::admin.link-name-label')"
+            >
+                <input
+                    id="{{ $component->id }}"
+                    name="name"
+                    type="text"
+                    value="{{ old('name', $link->name ?? '') }}"
+                    class="input"
+                >
+            </x-waterhole::field>
+        blade;
+    }
+
+    public function validating(Validator $validator): void
+    {
+        $validator->addRules(['name' => ['required', 'string', 'max:255']]);
+    }
+
+    public function saving(FormRequest $request): void
+    {
+        $this->link->name = $request->validated('name');
+    }
+}

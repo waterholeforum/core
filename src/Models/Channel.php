@@ -9,7 +9,6 @@ use Waterhole\Models\Concerns\HasPermissions;
 use Waterhole\Models\Concerns\HasUserState;
 use Waterhole\Models\Concerns\Structurable;
 use Waterhole\Models\Concerns\UsesFormatter;
-use Waterhole\Models\Concerns\ValidatesData;
 
 /**
  * @property int $id
@@ -34,7 +33,6 @@ class Channel extends Model
     use HasPermissions;
     use HasUserState;
     use Structurable;
-    use ValidatesData;
     use UsesFormatter;
 
     public $timestamps = false;

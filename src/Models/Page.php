@@ -2,12 +2,10 @@
 
 namespace Waterhole\Models;
 
-use Illuminate\Validation\Rule;
 use Waterhole\Models\Concerns\HasBody;
 use Waterhole\Models\Concerns\HasIcon;
 use Waterhole\Models\Concerns\HasPermissions;
 use Waterhole\Models\Concerns\Structurable;
-use Waterhole\Models\Concerns\ValidatesData;
 
 /**
  * @property int $id
@@ -22,7 +20,6 @@ class Page extends Model
     use HasIcon;
     use HasPermissions;
     use Structurable;
-    use ValidatesData;
 
     public $timestamps = false;
 
@@ -34,23 +31,5 @@ class Page extends Model
     public function getEditUrlAttribute(): string
     {
         return route('waterhole.admin.structure.pages.edit', ['page' => $this]);
-    }
-
-    public static function rules(Page $instance = null): array
-    {
-        return array_merge(
-            [
-                'name' => ['required', 'string', 'max:255'],
-                'slug' => [
-                    'required',
-                    'string',
-                    'max:255',
-                    Rule::unique('pages')->ignore($instance),
-                ],
-                'body' => ['required', 'string'],
-                'permissions' => ['array'],
-            ],
-            static::iconRules(),
-        );
     }
 }

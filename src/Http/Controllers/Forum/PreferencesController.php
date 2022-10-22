@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Waterhole\Extend\NotificationTypes;
+use Waterhole\Forms\UserProfileForm;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Views\Components\UserProfileFields;
 
@@ -66,14 +67,16 @@ class PreferencesController extends Controller
             ->with('success', 'Your password has been changed.');
     }
 
-    public function profile()
+    public function profile(Request $request)
     {
-        return view('waterhole::preferences.profile');
+        $form = new UserProfileForm($request->user());
+
+        return view('waterhole::preferences.profile', compact('form'));
     }
 
     public function saveProfile(Request $request)
     {
-        (new UserProfileFields($request->user()))->save($request);
+        (new UserProfileForm($request->user()))->submit($request);
 
         return redirect()
             ->route('waterhole.preferences.profile')

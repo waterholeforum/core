@@ -26,9 +26,7 @@ class Permissions extends Field
 
     public function validating(Validator $validator): void
     {
-        $validator->addRules([
-            'permissions' => ['array'],
-        ]);
+        $validator->addRules(['permissions' => ['array']]);
     }
 
     public function saving(FormRequest $request): void

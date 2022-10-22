@@ -3,8 +3,7 @@
 namespace Waterhole\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
+use Waterhole\Forms\StructureLinkForm;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\StructureLink;
 
@@ -17,37 +16,34 @@ class StructureLinkController extends Controller
 {
     public function create()
     {
-        return view('waterhole::admin.structure.link');
+        $form = $this->form(new StructureLink());
+
+        return view('waterhole::admin.structure.link', compact('form'));
     }
 
     public function store(Request $request)
     {
-        return $this->save(new StructureLink(), $request);
+        $this->form(new StructureLink())->submit($request);
+
+        return redirect()->route('waterhole.admin.structure');
     }
 
     public function edit(StructureLink $link)
     {
-        return view('waterhole::admin.structure.link', compact('link'));
+        $form = $this->form($link);
+
+        return view('waterhole::admin.structure.link', compact('form', 'link'));
     }
 
     public function update(StructureLink $link, Request $request)
     {
-        return $this->save($link, $request);
-    }
-
-    private function save(StructureLink $link, Request $request)
-    {
-        $data = $request->validate(StructureLink::rules($link));
-
-        $icon = Arr::pull($data, 'icon');
-        $permissions = Arr::pull($data, 'permissions');
-
-        DB::transaction(function () use ($link, $data, $permissions, $icon) {
-            $link->fill($data)->save();
-            $link->saveIcon($icon);
-            $link->savePermissions($permissions);
-        });
+        $this->form($link)->submit($request);
 
         return redirect()->route('waterhole.admin.structure');
+    }
+
+    private function form(StructureLink $link)
+    {
+        return new StructureLinkForm($link);
     }
 }

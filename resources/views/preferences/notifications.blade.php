@@ -8,7 +8,7 @@
         <div class="stack gap-md">
             <x-waterhole::validation-errors/>
 
-            <div class="card card__body form-groups">
+            <div class="card card__body stack dividers">
                 <div class="field">
                     <h4 class="field__label">
                         {{ __('waterhole::user.notifications-label') }}

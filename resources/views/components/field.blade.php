@@ -7,7 +7,7 @@
         <p class="field__description">{{ $description }}</p>
     @endif
 
-    <div class="stack gap-xs">
+    <div class="stack gap-xs grow">
         {{ $slot }}
 
         @error($name)

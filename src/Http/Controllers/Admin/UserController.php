@@ -3,11 +3,8 @@
 namespace Waterhole\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
+use Waterhole\Forms\UserForm;
 use Waterhole\Http\Controllers\Controller;
-use Waterhole\Models\Group;
 use Waterhole\Models\User;
 use Waterhole\Views\Components\UserProfileFields;
 
@@ -74,12 +71,14 @@ class UserController extends Controller
 
     public function create()
     {
-        return $this->form();
+        $form = $this->form(new User());
+
+        return view('waterhole::admin.users.form', compact('form'));
     }
 
     public function store(Request $request)
     {
-        $this->save(new User(), $request);
+        $this->form(new User())->submit($request);
 
         return redirect()
             ->route('waterhole.admin.users.index', ['sort' => 'created_at'])
@@ -88,12 +87,14 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        return $this->form()->with(compact('user'));
+        $form = $this->form($user);
+
+        return view('waterhole::admin.users.form', compact('form'));
     }
 
     public function update(User $user, Request $request)
     {
-        $this->save($user, $request);
+        $this->form($user)->submit($request);
 
         return redirect($request->input('return', route('waterhole.admin.users.index')))->with(
             'success',
@@ -101,56 +102,8 @@ class UserController extends Controller
         );
     }
 
-    private function form()
+    private function form(User $user)
     {
-        $user = null;
-        $groups = Group::selectable()->get();
-
-        return view('waterhole::admin.users.form', compact('user', 'groups'));
-    }
-
-    private function save(User $user, Request $request): void
-    {
-        $data = User::validate($request->all(), $user);
-
-        if (!empty($data['password'])) {
-            $data['password'] = Hash::make($data['password']);
-        } else {
-            unset($data['password']);
-        }
-
-        DB::transaction(function () use ($request, $user, $data) {
-            $user->fill($data)->save();
-
-            $this->saveGroups($user, $request);
-
-            (new UserProfileFields($user))->save($request);
-        });
-    }
-
-    private function saveGroups(User $user, Request $request): void
-    {
-        $data = $request->validate([
-            'groups' => [
-                'nullable',
-                'array',
-                function ($attribute, $value, $fail) use ($user) {
-                    if ($user->isRootAdmin() && !in_array(Group::ADMIN_ID, $value)) {
-                        $fail('Cannot revoke the admin status of a root admin.');
-                    }
-                },
-            ],
-            'groups.*' => [
-                'integer',
-                Rule::exists(Group::class, 'id')->whereNotIn('id', [
-                    Group::GUEST_ID,
-                    Group::MEMBER_ID,
-                ]),
-            ],
-        ]);
-
-        if (array_key_exists('groups', $data)) {
-            $user->groups()->sync($data['groups'] ?: []);
-        }
+        return new UserForm($user);
     }
 }

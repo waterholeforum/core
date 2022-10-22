@@ -9,8 +9,8 @@
     >
         @csrf
 
-        <div class="card card__body form-groups">
-            <x-waterhole::user-profile-fields :user="Auth::user()"/>
+        <div class="card card__body stack dividers">
+            @components($form->fields())
 
             <div>
                 <button type="submit" class="btn bg-accent btn--wide">

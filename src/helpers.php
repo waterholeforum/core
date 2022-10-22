@@ -151,16 +151,18 @@ function user_variables(?User $user): array
 
 function build_components(array $components, array $data = []): array
 {
-    return array_map(function ($component) use ($data) {
-        if ($component instanceof Closure) {
-            $component = app()->call($component, $data);
-        }
-        if (is_object($component)) {
-            return $component;
-        } elseif (class_exists($component)) {
-            return resolve($component, $data);
-        } elseif (view()->exists($component)) {
-            return resolve(AnonymousComponent::class, ['view' => $component, 'data' => $data]);
-        }
-    }, $components);
+    return array_filter(
+        array_map(function ($component) use ($data) {
+            if ($component instanceof Closure) {
+                $component = app()->call($component, $data);
+            }
+            if (is_object($component)) {
+                return $component;
+            } elseif (class_exists($component)) {
+                return resolve($component, $data);
+            } elseif (view()->exists($component)) {
+                return resolve(AnonymousComponent::class, ['view' => $component, 'data' => $data]);
+            }
+        }, $components),
+    );
 }

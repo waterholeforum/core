@@ -19,7 +19,7 @@
         @csrf
         @if (isset($heading)) @method('PATCH') @endif
 
-        <div class="stack gap-lg">
+        <div class="stack dividers">
             <x-waterhole::validation-errors/>
 
             <x-waterhole::field name="name" :label="__('waterhole::admin.heading-name-label')">
@@ -33,20 +33,18 @@
                 >
             </x-waterhole::field>
 
-            <div>
-                <div class="row gap-xs wrap">
-                    <button
-                        type="submit"
-                        class="btn bg-accent btn--wide"
-                    >
-                        {{ isset($heading) ? __('waterhole::system.save-changes-button') : __('waterhole::system.create-button') }}
-                    </button>
+            <div class="row gap-xs wrap">
+                <button
+                    type="submit"
+                    class="btn bg-accent btn--wide"
+                >
+                    {{ isset($heading) ? __('waterhole::system.save-changes-button') : __('waterhole::system.create-button') }}
+                </button>
 
-                    <a
-                        href="{{ route('waterhole.admin.structure') }}"
-                        class="btn"
-                    >{{ __('waterhole::system.cancel-button') }}</a>
-                </div>
+                <a
+                    href="{{ route('waterhole.admin.structure') }}"
+                    class="btn"
+                >{{ __('waterhole::system.cancel-button') }}</a>
             </div>
         </div>
     </form>

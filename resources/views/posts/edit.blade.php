@@ -13,10 +13,10 @@
                 @method('PATCH')
                 @return($post->url)
 
-                <div class="form">
+                <div class="form stacked-fields">
                     <x-waterhole::validation-errors/>
 
-                    @include('waterhole::posts.fields')
+                    @components($form->fields())
 
                     <div class="row gap-xs wrap">
                         <button type="submit" class="btn bg-accent">

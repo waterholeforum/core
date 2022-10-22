@@ -7,7 +7,7 @@ use Waterhole\Extend\Concerns\OrderedList;
 use Waterhole\Forms\Fields\Permissions;
 use Waterhole\Forms\FormSection;
 
-class ChannelForm
+abstract class ChannelForm
 {
     use OrderedList, OfComponents;
 }

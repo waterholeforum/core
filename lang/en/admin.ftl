@@ -2,6 +2,8 @@ admin-title = Admin
 
 dashboard-title = Dashboard
 
+icon-label = Icon
+
 getting-started-title = Get Started With Waterhole
 getting-started-strategy-title = Develop Your Strategy
 getting-started-strategy-description = Learn how to build a successful community with Waterhole.
@@ -77,7 +79,6 @@ edit-link-title = Edit Link
 create-link-title = Create a Link
 link-details-title = Details
 link-name-label = Name
-link-icon-label = Icon
 link-url-label = URL
 link-permissions-title = Permissions
 
@@ -87,7 +88,6 @@ page-details-title = Details
 page-name-label = Name
 page-slug-label = Slug
 page-slug-url-label = This page will be accessible at:
-page-icon-label = Icon
 page-body-label = Body
 page-permissions-title = Permissions
 
@@ -97,7 +97,6 @@ channel-details-title = Details
 channel-name-label = Name
 channel-slug-label = Slug
 channel-slug-url-label = This channel will be accessible at:
-channel-icon-label = Icon
 channel-description-label = Description
 channel-description-description = Describe what this channel is for.
 channel-instructions-label = Posting Instructions

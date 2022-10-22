@@ -2,7 +2,7 @@
     :user="Auth::user()"
     :title="__('waterhole::user.account-settings-title')"
 >
-    <div class="card card__body form-groups">
+    <div class="card card__body stack dividers">
         <div class="field">
             <h4 class="field__label">
                 {{ __('waterhole::auth.name-label') }}

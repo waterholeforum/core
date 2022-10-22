@@ -4,8 +4,8 @@ namespace Waterhole\Http\Controllers\Forum;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
+use Waterhole\Forms\PostForm;
 use Waterhole\Http\Controllers\Controller;
-use Waterhole\Models\Channel;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
 use Waterhole\Notifications\NewPost;
@@ -64,17 +64,13 @@ class PostController extends Controller
         return view('waterhole::posts.show', compact('post', 'comments', 'lastReadAt'));
     }
 
-    public function create(Request $request)
+    public function create()
     {
         $this->authorize('post.create');
 
-        if ($channelId = $request->query('channel')) {
-            $channel = Channel::findOrFail($channelId);
-        } else {
-            $channel = null;
-        }
+        $form = new PostForm(new Post());
 
-        return view('waterhole::posts.create', compact('channel'));
+        return view('waterhole::posts.create', compact('form'));
     }
 
     public function store(Request $request)
@@ -90,12 +86,9 @@ class PostController extends Controller
 
         $this->authorize('post.create');
 
-        $data = Post::validate($request->all());
-        $data['user_id'] = $request->user()->id;
+        $post = new Post(['user_id' => $request->user()->id]);
 
-        $this->authorize('channel.post', Channel::findOrFail($data['channel_id']));
-
-        $post = Post::create($data);
+        (new PostForm($post))->submit($request);
 
         // Send out a "new post" notification to all followers of this post's
         // channel, except for the user who created the post.
@@ -111,17 +104,18 @@ class PostController extends Controller
     {
         $this->authorize('post.edit', $post);
 
-        return view('waterhole::posts.edit', compact('post'));
+        $form = new PostForm($post);
+
+        return view('waterhole::posts.edit', compact('post', 'form'));
     }
 
     public function update(Post $post, Request $request)
     {
         $this->authorize('post.edit', $post);
 
-        $post
-            ->fill(Post::validate($request->all(), $post))
-            ->markAsEdited()
-            ->save();
+        $post->markAsEdited();
+
+        (new PostForm($post))->submit($request);
 
         return redirect($request->input('return', $post->url));
     }

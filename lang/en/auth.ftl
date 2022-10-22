@@ -33,3 +33,5 @@ confirm-password-submit = Confirm
 
 email-verification-message = We've sent a confirmation email to { $email }. If it doesn't arrive soon, check your spam folder.
 email-verification-resend-button = Resend
+
+email-verification-required-message = You must verify your email address.

@@ -3,8 +3,7 @@
 namespace Waterhole\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
+use Waterhole\Forms\PageForm;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Page;
 
@@ -17,37 +16,34 @@ class PageController extends Controller
 {
     public function create()
     {
-        return view('waterhole::admin.structure.page');
+        $form = $this->form(new Page());
+
+        return view('waterhole::admin.structure.page', compact('form'));
     }
 
     public function store(Request $request)
     {
-        return $this->save(new Page(), $request);
+        $this->form(new Page())->submit($request);
+
+        return redirect()->route('waterhole.admin.structure');
     }
 
     public function edit(Page $page)
     {
-        return view('waterhole::admin.structure.page', compact('page'));
+        $form = $this->form($page);
+
+        return view('waterhole::admin.structure.page', compact('form', 'page'));
     }
 
     public function update(Page $page, Request $request)
     {
-        return $this->save($page, $request);
-    }
-
-    private function save(Page $page, Request $request)
-    {
-        $data = $request->validate(Page::rules($page));
-
-        $icon = Arr::pull($data, 'icon');
-        $permissions = Arr::pull($data, 'permissions');
-
-        DB::transaction(function () use ($page, $data, $permissions, $icon) {
-            $page->fill($data)->save();
-            $page->saveIcon($icon);
-            $page->savePermissions($permissions);
-        });
+        $this->form($page)->submit($request);
 
         return redirect()->route('waterhole.admin.structure');
+    }
+
+    private function form(Page $page)
+    {
+        return new PageForm($page);
     }
 }

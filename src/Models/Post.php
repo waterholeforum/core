@@ -10,14 +10,12 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 use Waterhole\Events\NewPost;
 use Waterhole\Models\Concerns\Followable;
 use Waterhole\Models\Concerns\HasBody;
 use Waterhole\Models\Concerns\HasLikes;
 use Waterhole\Models\Concerns\HasUserState;
 use Waterhole\Models\Concerns\NotificationContent;
-use Waterhole\Models\Concerns\ValidatesData;
 use Waterhole\Notifications\Mention;
 use Waterhole\Scopes\CommentIndexScope;
 use Waterhole\Scopes\PostVisibleScope;
@@ -52,7 +50,6 @@ class Post extends Model
     use HasBody;
     use HasLikes;
     use HasUserState;
-    use ValidatesData;
     use NotificationContent;
 
     public const UPDATED_AT = null;
@@ -301,19 +298,5 @@ class Post extends Model
     {
         $this->attributes['title'] = $value;
         $this->attributes['slug'] = Str::slug($value);
-    }
-
-    public static function rules(Post $instance = null): array
-    {
-        $rules = [
-            'title' => ['required', 'string', 'max:255'],
-            'body' => ['required', 'string'],
-        ];
-
-        if (!$instance) {
-            $rules['channel_id'] = ['required', Rule::exists(Channel::class, 'id')];
-        }
-
-        return $rules;
     }
 }

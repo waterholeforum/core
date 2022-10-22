@@ -8,7 +8,7 @@ use Waterhole\Forms\Fields\ChannelDefaultLayout;
 use Waterhole\Forms\Fields\ChannelFilters;
 use Waterhole\Forms\Fields\ChannelSandbox;
 
-class ChannelFormOptions
+abstract class ChannelFormOptions
 {
     use OrderedList, OfComponents;
 }

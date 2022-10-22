@@ -5,12 +5,11 @@ namespace Waterhole\Forms\Fields;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 use Waterhole\Forms\Field;
-use Waterhole\Models\Channel;
 use Waterhole\Views\Components\Admin\IconPicker;
 
-class ChannelIcon extends Field
+class Icon extends Field
 {
-    public function __construct(public ?Channel $channel)
+    public function __construct(public $model = null)
     {
     }
 
@@ -19,11 +18,11 @@ class ChannelIcon extends Field
         return <<<'blade'
             <x-waterhole::field
                 name="icon"
-                :label="__('waterhole::admin.channel-icon-label')"
+                :label="__('waterhole::admin.icon-label')"
             >
                 <x-waterhole::admin.icon-picker
                     name="icon"
-                    :value="old('icon', $channel->icon ?? null)"
+                    :value="old('icon', $model->icon ?? null)"
                 />
             </x-waterhole::field>
         blade;
@@ -36,6 +35,6 @@ class ChannelIcon extends Field
 
     public function saved(FormRequest $request): void
     {
-        $this->channel->saveIcon($request->validated('icon'));
+        $this->model->saveIcon($request->validated('icon'));
     }
 }

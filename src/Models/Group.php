@@ -122,17 +122,4 @@ class Group extends Model
                 'group:' . (str_contains($this->name, ' ') ? '"' . $this->name . '"' : $this->name),
         ]);
     }
-
-    public static function rules(Group $instance = null): array
-    {
-        return array_merge(
-            [
-                'name' => ['required', 'string', 'max:255'],
-                'is_public' => ['boolean'],
-                'color' => ['nullable', 'string', 'regex:/^[a-f0-9]{3}|[a-f0-9]{6}$/i'],
-                'permissions' => ['array'],
-            ],
-            static::iconRules(),
-        );
-    }
 }

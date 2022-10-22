@@ -14,31 +14,30 @@
     <form
         method="POST"
         action="{{ isset($channel) ? route('waterhole.admin.structure.channels.update', compact('channel')) : route('waterhole.admin.structure.channels.store') }}"
+        enctype="multipart/form-data"
     >
         @csrf
         @if (isset($channel)) @method('PATCH') @endif
 
-        <div class="stack gap-lg">
+        <div class="stack gap-lg" data-controller="slugger">
             <x-waterhole::validation-errors/>
 
             <div class="stack gap-md">
                 @components($form->fields())
             </div>
 
-            <div>
-                <div class="row gap-xs wrap">
-                    <button
-                        type="submit"
-                        class="btn bg-accent btn--wide"
-                    >
-                        {{ isset($channel) ? __('waterhole::system.save-changes-button') : __('waterhole::system.create-button') }}
-                    </button>
+            <div class="row gap-xs wrap">
+                <button
+                    type="submit"
+                    class="btn bg-accent btn--wide"
+                >
+                    {{ isset($channel) ? __('waterhole::system.save-changes-button') : __('waterhole::system.create-button') }}
+                </button>
 
-                    <a
-                        href="{{ route('waterhole.admin.structure') }}"
-                        class="btn"
-                    >{{ __('waterhole::system.cancel-button') }}</a>
-                </div>
+                <a
+                    href="{{ route('waterhole.admin.structure') }}"
+                    class="btn"
+                >{{ __('waterhole::system.cancel-button') }}</a>
             </div>
         </div>
     </form>

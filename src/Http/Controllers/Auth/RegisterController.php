@@ -5,8 +5,7 @@ namespace Waterhole\Http\Controllers\Auth;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Waterhole\Forms\UserRegisterForm;
+use Waterhole\Forms\RegistrationForm;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\User;
 
@@ -25,16 +24,16 @@ class RegisterController extends Controller
             redirect()->setIntendedUrl($request->query('return', url()->previous()));
         }
 
-        return view('waterhole::auth.register');
+        $form = new RegistrationForm(new User());
+
+        return view('waterhole::auth.register', compact('form'));
     }
 
-    public function register(UserRegisterForm $form)
+    public function register(Request $request)
     {
-        $data = $form->safe(['name', 'email', 'password']);
+        $user = new User();
 
-        $data['password'] = Hash::make($data['password']);
-
-        $form->save($user = new User($data));
+        (new RegistrationForm($user))->submit($request);
 
         event(new Registered($user));
 
