@@ -14,7 +14,7 @@ class UserGroups extends Field
 {
     public Collection $groups;
 
-    public function __construct(public ?User $user)
+    public function __construct(public ?User $model)
     {
         $this->groups = Group::selectable()->get();
     }
@@ -35,10 +35,10 @@ class UserGroups extends Field
                                 type="checkbox"
                                 name="groups[]"
                                 value="{{ $group->id }}"
-                                @checked(in_array($group->id, (array) old('groups', isset($user) ? $user->groups->pluck('id')->all() : [])))
-                                @disabled($enforce = $group->isAdmin() && $user?->isRootAdmin())
+                                @checked(in_array($group->id, (array) old('groups', isset($model) ? $model->groups->pluck('id')->all() : [])))
+                                @disabled($enforce = $group->isAdmin() && $model?->isRootAdmin())
                             >
-                            <x-waterhole::group-label :group="$group"/>
+                            <x-waterhole::group-badge :group="$group"/>
                             @if ($enforce)
                                 <input type="hidden" name="groups[]" value="{{ $group->id }}">
                             @endif
@@ -56,7 +56,7 @@ class UserGroups extends Field
                 'nullable',
                 'array',
                 function ($attribute, $value, $fail) {
-                    if ($this->user->isRootAdmin() && !in_array(Group::ADMIN_ID, $value)) {
+                    if ($this->model->isRootAdmin() && !in_array(Group::ADMIN_ID, $value)) {
                         $fail('Cannot revoke the admin status of a root admin.');
                     }
                 },
@@ -74,7 +74,7 @@ class UserGroups extends Field
     public function saved(FormRequest $request): void
     {
         if ($request->has('groups')) {
-            $this->user->groups()->sync($request->validated('groups'));
+            $this->model->groups()->sync($request->validated('groups'));
         }
     }
 }

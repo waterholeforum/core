@@ -8,7 +8,7 @@
 
             <x-waterhole::selector
                 placement="bottom-end"
-                button-class="btn btn--small btn--transparent btn--edge"
+                button-class="btn btn--sm btn--transparent btn--edge"
                 :value="$selectedPeriod"
                 :options="array_keys($periods)"
                 :label="fn($period) => __('waterhole::admin.period-'.str_replace('_', '-', $period))"

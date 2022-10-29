@@ -14,6 +14,6 @@ class StructureLinkForm extends Form
 
     public function fields(): array
     {
-        return Extend\StructureLinkForm::components(['link' => $this->model]);
+        return Extend\StructureLinkForm::components(['model' => $this->model]);
     }
 }

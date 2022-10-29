@@ -29,7 +29,7 @@
                                 </li>
                             </ol>
                             <div class="card__body">
-                                <x-waterhole::comment-full :comment="$comment"/>
+                                <x-waterhole::comment-full :comment="$comment" truncate/>
                             </div>
                         </li>
                     @endforeach
@@ -39,7 +39,7 @@
             <div class="placeholder">
                 <x-waterhole::icon
                     icon="tabler-messages"
-                    class="placeholder__visual"
+                    class="placeholder__icon"
                 />
                 <p class="h4">
                     {{ __('waterhole::user.comments-empty-message') }}

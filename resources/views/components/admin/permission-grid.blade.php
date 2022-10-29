@@ -22,7 +22,7 @@
                 <tr data-group-id="{{ $group->getKey() }}">
                     <th>
                         @if ($group->isCustom())
-                            <x-waterhole::group-label :group="$group"/>
+                            <x-waterhole::group-badge :group="$group"/>
                         @else
                             {{ $group->name }}
                         @endif

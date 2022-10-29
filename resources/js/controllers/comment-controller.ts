@@ -3,7 +3,7 @@ import { TooltipElement } from 'inclusive-elements';
 import { isElementInViewport } from '../utils';
 
 /**
- * Controller for the comment component.
+ * Controller for the <x-waterhole::comment-full> component.
  *
  * @internal
  */

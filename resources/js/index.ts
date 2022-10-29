@@ -3,7 +3,6 @@ import { Application } from '@hotwired/stimulus';
 import { definitionsFromContext } from '@hotwired/stimulus-webpack-helpers';
 import { AlertsElement } from 'inclusive-elements';
 
-import './bootstrap/alerts';
 import './bootstrap/custom-elements';
 import './bootstrap/document-title';
 import './bootstrap/echo';
@@ -26,6 +25,10 @@ export interface Waterhole {
     documentTitle: DocumentTitle;
     echoConfig: any;
 }
+
+Object.defineProperty(Waterhole, 'alerts', {
+    get: () => document.getElementById('alerts'),
+});
 
 window.Stimulus = Application.start();
 window.Stimulus.load(definitionsFromContext(require.context('./controllers', true, /\.ts$/)));

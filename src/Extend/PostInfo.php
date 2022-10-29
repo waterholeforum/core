@@ -3,11 +3,11 @@
 namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\OrderedList;
-use Waterhole\Views\Components\PostActivity;
-use Waterhole\Views\Components\PostChannel;
-use Waterhole\Views\Components\PostLocked;
-use Waterhole\Views\Components\PostNotifications;
-use Waterhole\Views\Components\PostUnread;
+use Waterhole\View\Components\PostActivity;
+use Waterhole\View\Components\PostChannel;
+use Waterhole\View\Components\PostLocked;
+use Waterhole\View\Components\PostNotifications;
+use Waterhole\View\Components\PostUnread;
 
 /**
  * A list of components to render under each post's title.

@@ -6,8 +6,8 @@ use Illuminate\Support\Collection;
 use Waterhole\Models\Model;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
-use Waterhole\Views\Components\CommentsLocked;
-use Waterhole\Views\TurboStream;
+use Waterhole\View\Components\CommentsLocked;
+use Waterhole\View\TurboStream;
 
 class Lock extends Action
 {

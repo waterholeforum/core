@@ -1,7 +1,7 @@
 import { Controller } from '@hotwired/stimulus';
 
 /**
- * Controller for the color-picker component.
+ * Controller for the <x-waterhole::color-picker> component.
  *
  * Provides actions to show and hide the color picker on input focus/blur.
  * Also keeps the input, picker, and swatch in sync when the color is changed.

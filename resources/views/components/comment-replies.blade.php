@@ -1,10 +1,9 @@
 @if ($comment->reply_count)
     <a
         href="{{ $comment->url }}"
-        class="btn btn--small btn--outline"
+        class="btn btn--sm btn--outline"
         data-controller="comment-replies"
         aria-expanded="{{ $withReplies ? 'true' : 'false' }}"
-        aria-controls="@domid($comment, 'replies')"
         data-action="comment-replies#focusAfterLoad"
     >
         <x-waterhole::icon icon="tabler-message-circle-2"/>

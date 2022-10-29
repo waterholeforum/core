@@ -8,15 +8,13 @@
     </header>
 
     <div class="post-card__content content content--compact text-sm">
-        {!! $excerpt !!}
-
-        @if ($truncated)
+        <x-waterhole::truncate :html="$post->body_html">
             <p>
                 <a href="{{ $post->url }}" class="weight-bold">
                     {{ __('waterhole::forum.post-read-more-link') }}
                 </a>
             </p>
-        @endif
+        </x-waterhole::truncate>
     </div>
 
     <div class="row gap-xs wrap">

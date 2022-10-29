@@ -7,7 +7,7 @@
             :return="$model->url"
         >
             <{{ $component->isAuthorized ? 'button type="submit"' : 'span' }} {{ (new ComponentAttributeBag())->class([
-                'btn btn--small btn--outline',
+                'btn btn--sm btn--outline',
                 'is-active' => $model->likedBy->contains(Auth::id()),
                 'is-inert' => !$component->isAuthorized,
             ]) }}>

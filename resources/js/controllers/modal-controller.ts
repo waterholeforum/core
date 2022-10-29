@@ -4,8 +4,6 @@ import { ModalElement } from 'inclusive-elements';
 
 /**
  * Controller for the modal element.
- *
- *
  */
 export default class extends Controller<ModalElement> {
     static targets = ['frame'];

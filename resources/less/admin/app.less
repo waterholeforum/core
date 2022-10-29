@@ -1,28 +1,19 @@
-@import '../system/_color-picker';
-
-@import '_structure';
 @import '_dashboard';
 @import '_permission-grid';
-//@import '../forum/_composer';
-
-//@import '../system/_utils';
+@import '_structure';
 
 .container {
   max-width: none;
-}
-
-.admin-header {
-  margin-bottom: var(--space-lg);
 }
 
 .admin__content {
   max-width: 110ch;
 }
 
-.sortable {
-  overflow: hidden;
+.admin-title {
+  margin-bottom: var(--space-lg);
+}
 
-  > * {
-    transition: transform 0.3s;
-  }
+.sortable > * {
+  transition: transform 0.3s;
 }

@@ -19,8 +19,8 @@ use Waterhole\Models\Concerns\NotificationContent;
 use Waterhole\Notifications\Mention;
 use Waterhole\Scopes\CommentIndexScope;
 use Waterhole\Scopes\PostVisibleScope;
-use Waterhole\Views\Components;
-use Waterhole\Views\TurboStream;
+use Waterhole\View\Components;
+use Waterhole\View\TurboStream;
 
 /**
  * @property int $id

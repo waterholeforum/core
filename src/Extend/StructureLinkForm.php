@@ -14,18 +14,18 @@ abstract class StructureLinkForm
 
 StructureLinkForm::add(
     'details',
-    fn($link) => new FormSection(
+    fn($model) => new FormSection(
         __('waterhole::admin.link-details-title'),
-        StructureLinkFormDetails::components(compact('link')),
+        StructureLinkFormDetails::components(compact('model')),
     ),
     position: -20,
 );
 
 StructureLinkForm::add(
     'permissions',
-    fn($link) => new FormSection(
+    fn($model) => new FormSection(
         __('waterhole::admin.link-permissions-title'),
-        [new Permissions($link)],
+        [new Permissions($model)],
         open: false,
     ),
     position: -10,

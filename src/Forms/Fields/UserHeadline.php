@@ -9,7 +9,7 @@ use Waterhole\Models\User;
 
 class UserHeadline extends Field
 {
-    public function __construct(public ?User $user)
+    public function __construct(public ?User $model)
     {
     }
 
@@ -25,7 +25,7 @@ class UserHeadline extends Field
                         id="{{ $component->id }}"
                         type="text"
                         name="headline"
-                        value="{{ old('headline', $user?->headline) }}"
+                        value="{{ old('headline', $model?->headline) }}"
                         class="input block"
                         maxlength="30"
                     >
@@ -44,6 +44,6 @@ class UserHeadline extends Field
 
     public function saving(FormRequest $request): void
     {
-        $this->user->headline = $request->validated('headline');
+        $this->model->headline = $request->validated('headline');
     }
 }

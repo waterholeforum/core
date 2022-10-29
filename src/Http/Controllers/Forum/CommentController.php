@@ -9,11 +9,11 @@ use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
 use Waterhole\Notifications\NewComment;
-use Waterhole\Views\Components\CommentFrame;
-use Waterhole\Views\Components\CommentFull;
-use Waterhole\Views\Components\Composer;
-use Waterhole\Views\Components\FollowButton;
-use Waterhole\Views\TurboStream;
+use Waterhole\View\Components\CommentFrame;
+use Waterhole\View\Components\CommentFull;
+use Waterhole\View\Components\Composer;
+use Waterhole\View\Components\FollowButton;
+use Waterhole\View\TurboStream;
 
 use function Tonysm\TurboLaravel\dom_id;
 
@@ -154,6 +154,7 @@ class CommentController extends Controller
     {
         $this->authorize('comment.edit', $comment);
 
+        asdf;
         $comment
             ->fill(Comment::validate($request->all(), $comment))
             ->markAsEdited()

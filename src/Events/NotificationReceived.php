@@ -6,9 +6,9 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Neves\Events\Contracts\TransactionalEvent;
 use Waterhole\Models\Notification;
-use Waterhole\Views\Components\NotificationAlert;
-use Waterhole\Views\Components\NotificationsBadge;
-use Waterhole\Views\TurboStream;
+use Waterhole\View\Components\NotificationAlert;
+use Waterhole\View\Components\NotificationsBadge;
+use Waterhole\View\TurboStream;
 
 class NotificationReceived implements ShouldBroadcast, TransactionalEvent
 {

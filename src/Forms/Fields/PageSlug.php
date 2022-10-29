@@ -10,7 +10,7 @@ use Waterhole\Models\Page;
 
 class PageSlug extends Field
 {
-    public function __construct(public ?Page $page)
+    public function __construct(public ?Page $model)
     {
     }
 
@@ -26,13 +26,13 @@ class PageSlug extends Field
                     name="slug"
                     id="{{ $component->id }}"
                     class="input"
-                    value="{{ old('slug', $page->slug ?? null) }}"
+                    value="{{ old('slug', $model->slug ?? null) }}"
                     data-action="slugger#updateSlug"
                     data-slugger-target="slug"
                 >
                 <p class="field__description">
                     {{ __('waterhole::admin.page-slug-url-label') }}
-                    {!! preg_replace('~^https?://~', '', str_replace('*', '<span data-slugger-target="mirror">'.old('slug', $page->slug ?? '').'</span>', route('waterhole.page', ['page' => '*']))) !!}
+                    {!! preg_replace('~^https?://~', '', str_replace('*', '<span data-slugger-target="mirror">'.old('slug', $model->slug ?? '').'</span>', route('waterhole.page', ['page' => '*']))) !!}
                 </p>
             </x-waterhole::field>
         blade;
@@ -45,13 +45,13 @@ class PageSlug extends Field
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('pages')->ignore($this->page),
+                Rule::unique('pages')->ignore($this->model),
             ],
         ]);
     }
 
     public function saving(FormRequest $request): void
     {
-        $this->page->slug = $request->validated('slug');
+        $this->model->slug = $request->validated('slug');
     }
 }

@@ -20,7 +20,6 @@
 
 .nav-link {
   display: flex;
-  //width: 100%;
   align-items: center;
   gap: var(--space-xs);
   min-height: var(--control-height);
@@ -62,6 +61,10 @@
   }
 }
 
-//.nav-text {
-//  padding: var(--space-xs);
-//}
+@media (min-width: @breakpoint-sm) {
+  .responsive-nav {
+    > :last-child {
+      display: contents !important;
+    }
+  }
+}

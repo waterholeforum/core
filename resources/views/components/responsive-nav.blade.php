@@ -1,10 +1,10 @@
-<ui-popup placement="bottom-start" class="index-nav-structure drawer">
+<ui-popup placement="bottom-start" class="responsive-nav drawer shrink stack">
     <button class="btn text-md sidebar__collapsed">
         @isset ($button)
             {{ $button }}
         @elseif ($activeComponent)
             <x-waterhole::icon :icon="$activeComponent->icon"/>
-            <span>{{ $activeComponent->label }}</span>
+            <span class="overflow-ellipsis">{{ $activeComponent->label }}</span>
             <x-waterhole::icon icon="tabler-selector"/>
         @elseif (isset($empty))
             {{ $empty }}

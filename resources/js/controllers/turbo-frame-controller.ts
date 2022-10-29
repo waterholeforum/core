@@ -1,6 +1,9 @@
 import { Controller } from '@hotwired/stimulus';
 import { FrameElement } from '@hotwired/turbo/dist/types/elements';
 
+/**
+ * Controller for some useful <turbo-frame> actions.
+ */
 export default class extends Controller<FrameElement> {
     connect() {
         if (!this.element.id) {

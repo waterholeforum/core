@@ -1,6 +1,12 @@
 import { computePosition, flip, offset, Placement, shift } from '@floating-ui/dom';
 import { Controller } from '@hotwired/stimulus';
 
+/**
+ * Controller for a quotable text body (eg. post body or comment body).
+ *
+ * When text is selected, the button target will be shown and positioned
+ * adjacent to the selection.
+ */
 export default class extends Controller {
     static targets = ['button'];
 

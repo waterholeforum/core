@@ -14,7 +14,7 @@ class PostChannel extends Field
 {
     public ?Channel $channel;
 
-    public function __construct(public Post $post)
+    public function __construct(public Post $model)
     {
         if ($channelId = request('channel')) {
             $this->channel = Channel::findOrFail($channelId);
@@ -47,8 +47,8 @@ class PostChannel extends Field
 
     public function saving(FormRequest $request): void
     {
-        $this->post->channel_id = $request->validated('channel_id');
+        $this->model->channel_id = $request->validated('channel_id');
 
-        Gate::authorize('channel.post', Channel::findOrFail($this->post->channel_id));
+        Gate::authorize('channel.post', Channel::findOrFail($this->model->channel_id));
     }
 }

@@ -11,7 +11,7 @@
             <form method="POST" action="{{ route('waterhole.confirm-password') }}">
                 @csrf
 
-                <div class="form">
+                <div class="stack gap-xl">
                     <p class="content">
                         {{ __('waterhole::auth.confirm-password-introduction') }}
                     </p>

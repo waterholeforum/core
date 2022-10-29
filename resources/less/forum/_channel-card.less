@@ -1,35 +1,17 @@
-.channel-card {
-  //display: flex;
-  //flex-wrap: wrap;
-  //gap: 1rem;
-}
-
 .channel-card__icon {
   font-size: 2rem;
   flex-shrink: 0;
 }
 
 .channel-card__info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  flex-basis: 40ch;
+  flex-basis: 50ch;
   flex-grow: 1;
-  line-height: 1.5;
   align-self: center;
-
-  > * {
-    max-width: 50ch;
-  }
 }
 
 .channel-card__controls {
-  //display: flex;
-  //align-self: flex-start;
-  //align-items: center;
-  //gap: 0.5rem;
+  float: right;
+  margin-bottom: -50%;
+  margin-top: ~'calc(-1 * var(--space-xxs))';
+  position: relative;
 }
-
-//.channel-card__follow .icon {
-//  display: none;
-//}

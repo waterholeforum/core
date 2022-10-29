@@ -9,7 +9,7 @@ use Waterhole\Models\Channel;
 
 class ChannelName extends Field
 {
-    public function __construct(public ?Channel $channel)
+    public function __construct(public ?Channel $model)
     {
     }
 
@@ -24,7 +24,7 @@ class ChannelName extends Field
                     id="{{ $component->id }}"
                     name="name"
                     type="text"
-                    value="{{ old('name', $channel->name ?? '') }}"
+                    value="{{ old('name', $model->name ?? '') }}"
                     class="input"
                     data-action="slugger#updateName"
                 >
@@ -39,6 +39,6 @@ class ChannelName extends Field
 
     public function saving(FormRequest $request): void
     {
-        $this->channel->name = $request->validated('name');
+        $this->model->name = $request->validated('name');
     }
 }

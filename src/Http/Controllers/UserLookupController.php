@@ -5,7 +5,7 @@ namespace Waterhole\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
 use Waterhole\Models\User;
-use Waterhole\Views\Components\UserLabel;
+use Waterhole\View\Components\UserLabel;
 
 /**
  * Controller to look up users by name.

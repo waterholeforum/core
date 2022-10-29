@@ -8,7 +8,7 @@ use Illuminate\Validation\Rules\Password;
 use Waterhole\Extend\NotificationTypes;
 use Waterhole\Forms\UserProfileForm;
 use Waterhole\Http\Controllers\Controller;
-use Waterhole\Views\Components\UserProfileFields;
+use Waterhole\View\Components\UserProfileFields;
 
 /**
  * Controller for user preferences views.

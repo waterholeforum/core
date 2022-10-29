@@ -13,7 +13,7 @@ class ViewServiceProvider extends ServiceProvider
     {
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'waterhole');
 
-        Blade::componentNamespace('Waterhole\\Views\\Components', 'waterhole');
+        Blade::componentNamespace('Waterhole\\View\\Components', 'waterhole');
 
         $this->registerComponentsDirective();
 

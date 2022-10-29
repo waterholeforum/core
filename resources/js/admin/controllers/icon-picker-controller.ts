@@ -1,7 +1,7 @@
 import { Controller } from '@hotwired/stimulus';
 
 /**
- * Controller for the icon-picker component.
+ * Controller for the <x-waterhole::icon-picker> component.
  *
  * @internal
  */

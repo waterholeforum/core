@@ -3,11 +3,11 @@
 namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\OrderedList;
-use Waterhole\Views\Components\CommentReactButton;
-use Waterhole\Views\Components\CommentReactions;
-use Waterhole\Views\Components\CommentReplies;
-use Waterhole\Views\Components\CommentReplyButton;
-use Waterhole\Views\Components\Spacer;
+use Waterhole\View\Components\CommentReactButton;
+use Waterhole\View\Components\CommentReactions;
+use Waterhole\View\Components\CommentReplies;
+use Waterhole\View\Components\CommentReplyButton;
+use Waterhole\View\Components\Spacer;
 
 /**
  * A list of components to render in each comment's footer.

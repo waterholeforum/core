@@ -7814,119 +7814,6 @@ function s(t) {
 
 /***/ }),
 
-/***/ "./resources/js/bootstrap/alerts.ts":
-/*!******************************************!*\
-  !*** ./resources/js/bootstrap/alerts.ts ***!
-  \******************************************/
-/***/ (function() {
-
-"use strict";
-
-
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-
-function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) { if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; } return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) { keys.push(key); } return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) { "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); } }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
-
-var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
-  function adopt(value) {
-    return value instanceof P ? value : new P(function (resolve) {
-      resolve(value);
-    });
-  }
-
-  return new (P || (P = Promise))(function (resolve, reject) {
-    function fulfilled(value) {
-      try {
-        step(generator.next(value));
-      } catch (e) {
-        reject(e);
-      }
-    }
-
-    function rejected(value) {
-      try {
-        step(generator["throw"](value));
-      } catch (e) {
-        reject(e);
-      }
-    }
-
-    function step(result) {
-      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-    }
-
-    step((generator = generator.apply(thisArg, _arguments || [])).next());
-  });
-};
-
-Object.defineProperty(window.Waterhole, 'alerts', {
-  get: function get() {
-    return document.getElementById('alerts');
-  }
-});
-
-window.Waterhole.fetchError = function (response) {
-  var _a, _b;
-
-  var templateId;
-
-  switch (response.status) {
-    case 401:
-    case 403:
-      templateId = 'forbidden-alert';
-      break;
-
-    case 429:
-      templateId = 'too-many-requests-alert';
-      break;
-
-    default:
-      templateId = 'fatal-error-alert';
-  }
-
-  var template = document.getElementById(templateId);
-  var alert = (_b = (_a = template === null || template === void 0 ? void 0 : template.content) === null || _a === void 0 ? void 0 : _a.firstElementChild) === null || _b === void 0 ? void 0 : _b.cloneNode(true);
-
-  if (alert) {
-    this.alerts.show(alert, {
-      key: 'fetchError',
-      duration: -1
-    });
-  }
-};
-
-document.addEventListener('turbo:before-fetch-response', function (e) {
-  return __awaiter(void 0, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-    var response;
-    return _regeneratorRuntime().wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            response = e.detail.fetchResponse;
-
-            if (!(response.statusCode >= 400 && response.statusCode !== 422 && response.statusCode <= 599)) {
-              _context.next = 5;
-              break;
-            }
-
-            window.Waterhole.fetchError(response.response);
-            e.preventDefault();
-            return _context.abrupt("return");
-
-          case 5:
-            window.Waterhole.alerts.dismiss('fetchError');
-
-          case 6:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee);
-  }));
-});
-
-/***/ }),
-
 /***/ "./resources/js/bootstrap/custom-elements.ts":
 /*!***************************************************!*\
   !*** ./resources/js/bootstrap/custom-elements.ts ***!
@@ -7956,6 +7843,9 @@ window.customElements.define('ui-tooltip', inclusive_elements__WEBPACK_IMPORTED_
 
 "use strict";
 
+/**
+ * Methods to manage a numeric prefix on the document title.
+ */
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8001,10 +7891,10 @@ var DocumentTitle = /*#__PURE__*/function () {
 
 Waterhole.documentTitle = new DocumentTitle();
 document.addEventListener('turbo:load', function () {
-  Waterhole.documentTitle.initialize();
+  return Waterhole.documentTitle.initialize();
 });
 window.addEventListener('focus', function () {
-  Waterhole.documentTitle.reset();
+  return Waterhole.documentTitle.reset();
 });
 
 /***/ }),
@@ -8062,11 +7952,52 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _hotwired_turbo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/turbo */ "./node_modules/@hotwired/turbo/dist/turbo.es2017-esm.js");
 /* harmony import */ var idiomorph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! idiomorph */ "./node_modules/idiomorph/dist/idiomorph.js");
 /* harmony import */ var idiomorph__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(idiomorph__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "./resources/js/utils.ts");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) { if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; } return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) { keys.push(key); } return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) { "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); } }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
+
+var __awaiter = undefined && undefined.__awaiter || function (thisArg, _arguments, P, generator) {
+  function adopt(value) {
+    return value instanceof P ? value : new P(function (resolve) {
+      resolve(value);
+    });
+  }
+
+  return new (P || (P = Promise))(function (resolve, reject) {
+    function fulfilled(value) {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function rejected(value) {
+      try {
+        step(generator["throw"](value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function step(result) {
+      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+    }
+
+    step((generator = generator.apply(thisArg, _arguments || [])).next());
+  });
+};
+
+
  // @ts-ignore
 
 
+
 _hotwired_turbo__WEBPACK_IMPORTED_MODULE_0__.start();
-window.Turbo = _hotwired_turbo__WEBPACK_IMPORTED_MODULE_0__;
+window.Turbo = _hotwired_turbo__WEBPACK_IMPORTED_MODULE_0__; // Use idiomorph for "replace" Turbo Streams for more fine-grained DOM patching,
+// which will hopefully preserve keyboard focus.
+
 document.addEventListener('turbo:before-stream-render', function (e) {
   var stream = e.target;
 
@@ -8077,13 +8008,80 @@ document.addEventListener('turbo:before-stream-render', function (e) {
     });
   }
 });
+document.addEventListener('turbo:before-fetch-response', function (e) {
+  return __awaiter(void 0, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+    var _a, response, target, el;
+
+    return _regeneratorRuntime().wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            response = e.detail.fetchResponse.response;
+
+            if (!response.ok) {
+              _context.next = 3;
+              break;
+            }
+
+            return _context.abrupt("return");
+
+          case 3:
+            e.preventDefault();
+            target = e.target;
+
+            if (target instanceof _hotwired_turbo__WEBPACK_IMPORTED_MODULE_0__.FrameElement) {
+              el = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.cloneFromTemplate)('frame-error');
+              (_a = el.querySelector('button')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', function () {
+                target.reload();
+                target.replaceChildren((0,_utils__WEBPACK_IMPORTED_MODULE_2__.cloneFromTemplate)('loading'));
+              });
+              target.replaceChildren(el);
+            } else {
+              Waterhole.fetchError(response);
+            }
+
+          case 6:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+});
+
+Waterhole.fetchError = function (response) {
+  var templateId;
+
+  switch (response.status) {
+    case 401:
+    case 403:
+      templateId = 'forbidden-alert';
+      break;
+
+    case 429:
+      templateId = 'too-many-requests-alert';
+      break;
+
+    default:
+      templateId = 'fatal-error-alert';
+  }
+
+  var alert = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.cloneFromTemplate)(templateId);
+
+  if (alert) {
+    this.alerts.show(alert, {
+      key: 'fetchError',
+      duration: -1
+    });
+  }
+};
 
 /***/ }),
 
-/***/ "./resources/js/controllers/alerts-controller.ts":
-/*!*******************************************************!*\
-  !*** ./resources/js/controllers/alerts-controller.ts ***!
-  \*******************************************************/
+/***/ "./resources/js/controllers/alert-controller.ts":
+/*!******************************************************!*\
+  !*** ./resources/js/controllers/alert-controller.ts ***!
+  \******************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -8116,10 +8114,9 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 /**
- * Controller for the main alerts element.
+ * Controller for an alert.
  *
- * Listens in on Turbo Streams to make sure any alerts are properly appended
- * to the container. Also provides an action for alerts to dismiss themselves.
+ * Provides an action for alerts to dismiss themselves.
  *
  * @internal
  */
@@ -8130,52 +8127,24 @@ var _default = /*#__PURE__*/function (_Controller) {
   var _super = _createSuper(_default);
 
   function _default() {
-    var _this;
-
     _classCallCheck(this, _default);
 
-    _this = _super.apply(this, arguments);
-
-    _this.streamAlert = function (e) {
-      // When a Turbo Stream comes in, we will check to see if it is
-      // appending to the alerts container. If it is, we will append it via
-      // the AlertsElement's show method, rather than just a plain DOM append.
-      var stream = e.target;
-
-      if (stream.targetElements.includes(_this.element) && stream.action === 'append') {
-        var alert = stream.templateContent.firstElementChild;
-
-        if (alert) {
-          _this.element.show(alert);
-
-          e.preventDefault();
-        }
-      }
-    };
-
-    return _this;
+    return _super.apply(this, arguments);
   }
 
   _createClass(_default, [{
-    key: "connect",
-    value: function connect() {
-      document.addEventListener('turbo:before-stream-render', this.streamAlert);
-    }
-  }, {
-    key: "disconnect",
-    value: function disconnect() {
-      document.removeEventListener('turbo:before-stream-render', this.streamAlert);
-    }
-  }, {
     key: "dismiss",
     value: function dismiss(e) {
-      // This action will be triggered by a "close" button within an alert,
-      // so we will find the closest alert parent and dismiss it from the
-      // alerts container.
-      var alert = e.currentTarget.closest('.alert');
+      // If this alert is contained inside a <ui-alerts> element, then we
+      // will dismiss it via that element. Otherwise, we can just straight up
+      // remove it from the DOM.
+      var alert = e.currentTarget;
+      var container = alert.closest('ui-alerts');
 
-      if (alert) {
-        this.element.dismiss(alert);
+      if (container) {
+        container.dismiss(alert);
+      } else {
+        alert.remove();
       }
     }
   }]);
@@ -8225,7 +8194,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 /**
- * Controller for the comment component.
+ * Controller for the <x-waterhole::comment-full> component.
  *
  * @internal
  */
@@ -8322,7 +8291,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 /**
- * Controller for a comment replies button.
+ * Controller for the <x-waterhole::comment-replies> component.
  *
  * @internal
  */
@@ -8365,9 +8334,16 @@ var _default = /*#__PURE__*/function (_Controller) {
     key: "focusAfterLoad",
     value: function focusAfterLoad() {
       addEventListener('turbo:frame-render', function (e) {
-        var _a;
+        var _a; // Safari will try to scroll down when we focus on the replies
+        // element (if it is tall), but we don't want that, so revert
+        // it afterwards.
 
+
+        var top = window.scrollY;
         (_a = e.target.querySelector('.comment__replies')) === null || _a === void 0 ? void 0 : _a.focus();
+        window.scroll({
+          top: top
+        });
       }, {
         once: true
       });
@@ -8421,7 +8397,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 /**
- * Controller for the composer component.
+ * Controller for the <x-waterhole::composer> component.
  *
  * @internal
  */
@@ -8451,11 +8427,6 @@ var default_1 = /*#__PURE__*/function (_Controller) {
       }
     }
   }, {
-    key: "handleTargetConnected",
-    value: function handleTargetConnected(element) {
-      element.hidden = false;
-    }
-  }, {
     key: "placeholderClick",
     value: function placeholderClick(e) {
       if ((0,_utils__WEBPACK_IMPORTED_MODULE_2__.shouldOpenInNewTab)(e)) return;
@@ -8483,11 +8454,7 @@ var default_1 = /*#__PURE__*/function (_Controller) {
     key: "submitEnd",
     value: function submitEnd(e) {
       if (e.detail.fetchResponse.contentType.startsWith('text/vnd.turbo-stream.html')) {
-        this.close(); // const comments = document.querySelectorAll('.comment');
-        // const comment = comments[comments.length - 1];
-        // if (comment) {
-        //     animateScrollTo(comment);
-        // }
+        this.close();
       }
     }
   }, {
@@ -8563,6 +8530,9 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+/**
+ * Controller to power a "copy link" button.
+ */
 
 var _default = /*#__PURE__*/function (_Controller) {
   _inherits(_default, _Controller);
@@ -8584,81 +8554,6 @@ var _default = /*#__PURE__*/function (_Controller) {
         clipboard_copy__WEBPACK_IMPORTED_MODULE_1___default()(_this.element.getAttribute('href') || '');
         e.preventDefault();
       });
-    }
-  }]);
-
-  return _default;
-}(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
-
-
-
-/***/ }),
-
-/***/ "./resources/js/controllers/header-controller.ts":
-/*!*******************************************************!*\
-  !*** ./resources/js/controllers/header-controller.ts ***!
-  \*******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _default)
-/* harmony export */ });
-/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-
-
-var _default = /*#__PURE__*/function (_Controller) {
-  _inherits(_default, _Controller);
-
-  var _super = _createSuper(_default);
-
-  function _default() {
-    var _this;
-
-    _classCallCheck(this, _default);
-
-    _this = _super.apply(this, arguments);
-
-    _this.handleScroll = function () {
-      _this.element.classList.toggle('is-sticky', window.scrollY > 0);
-    };
-
-    return _this;
-  }
-
-  _createClass(_default, [{
-    key: "connect",
-    value: function connect() {
-      window.addEventListener('scroll', this.handleScroll);
-      this.handleScroll();
-    }
-  }, {
-    key: "disconnect",
-    value: function disconnect() {
-      window.removeEventListener('scroll', this.handleScroll);
     }
   }]);
 
@@ -8704,6 +8599,10 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
+/**
+ * Controller that will anchor the scroll position to the bottom of an element
+ * during a Turbo Frame load.
+ */
 
 var _default = /*#__PURE__*/function (_Controller) {
   _inherits(_default, _Controller);
@@ -8818,6 +8717,14 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
+/**
+ * Controller for the login page.
+ *
+ * Carries over the value of the email input when you navigate away (eg. to the
+ * register or forgot password page).
+ *
+ * @internal
+ */
 
 var _default = /*#__PURE__*/function (_Controller) {
   _inherits(_default, _Controller);
@@ -8892,8 +8799,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 /**
  * Controller for the modal element.
- *
- *
  */
 
 var default_1 = /*#__PURE__*/function (_Controller) {
@@ -8994,6 +8899,11 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
+/**
+ * Controller for the notifications popup.
+ *
+ * @internal
+ */
 
 var default_1 = /*#__PURE__*/function (_Controller) {
   _inherits(default_1, _Controller);
@@ -9014,7 +8924,8 @@ var default_1 = /*#__PURE__*/function (_Controller) {
         this.frameTarget.reload();
       }
 
-      Waterhole.alerts.dismiss('notification');
+      Waterhole.alerts.dismiss('notification'); // If we're on a small display, close the popup and navigate to the
+      // link's original target (the notifications page).
 
       if (getComputedStyle(this.xsTarget).display === 'none') {
         window.Turbo.visit(e.currentTarget.href);
@@ -9043,6 +8954,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ default_1)
 /* harmony export */ });
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ "./resources/js/utils.ts");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -9067,6 +8979,10 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+/**
+ * Controller for the page.
+ */
+
 var default_1 = /*#__PURE__*/function (_Controller) {
   _inherits(default_1, _Controller);
 
@@ -9083,12 +8999,10 @@ var default_1 = /*#__PURE__*/function (_Controller) {
     value: function initialize() {
       var _this = this;
 
-      var _a;
-
       this.observer = new IntersectionObserver(function (entries) {
         _this.breadcrumbTarget.hidden = entries[0].isIntersecting;
       }, {
-        rootMargin: "-".concat(((_a = this.headerTarget) === null || _a === void 0 ? void 0 : _a.offsetHeight) || 0, "px")
+        rootMargin: "-".concat((0,_utils__WEBPACK_IMPORTED_MODULE_1__.getHeaderHeight)(), "px")
       });
     }
   }, {
@@ -9113,7 +9027,7 @@ var default_1 = /*#__PURE__*/function (_Controller) {
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
 
 
-default_1.targets = ['header', 'breadcrumb', 'title'];
+default_1.targets = ['breadcrumb', 'title'];
 
 /***/ }),
 
@@ -9152,6 +9066,11 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
+/**
+ * Controller for a post summary.
+ *
+ * @internal
+ */
 
 var _default = /*#__PURE__*/function (_Controller) {
   _inherits(_default, _Controller);
@@ -9220,6 +9139,11 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+/**
+ * Controller for the post feed.
+ *
+ * @internal
+ */
 
 var default_1 = /*#__PURE__*/function (_Controller) {
   _inherits(default_1, _Controller);
@@ -9334,6 +9258,11 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+/**
+ * Controller for the post page.
+ *
+ * @internal
+ */
 
 var default_1 = /*#__PURE__*/function (_Controller) {
   _inherits(default_1, _Controller);
@@ -9351,7 +9280,10 @@ var default_1 = /*#__PURE__*/function (_Controller) {
       if (document.querySelector('[data-index="0"]')) {
         _this.postTarget.hidden = false;
       }
-    };
+    }; // If the post is deleted via an action, the returned Turbo Stream will try
+    // to remove it from the page. We will navigate back to the post feed before
+    // the stream is executed.
+
 
     _this.beforeStreamRender = function (e) {
       var _a;
@@ -9471,6 +9403,12 @@ var __awaiter = undefined && undefined.__awaiter || function (thisArg, _argument
 
 
 
+/**
+ * Controller for a quotable text body (eg. post body or comment body).
+ *
+ * When text is selected, the button target will be shown and positioned
+ * adjacent to the selection.
+ */
 
 var default_1 = /*#__PURE__*/function (_Controller) {
   _inherits(default_1, _Controller);
@@ -9656,6 +9594,15 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
+/**
+ * Controller to allow an element to show/hide based on the value of an input.
+ *
+ * The `if` target should point to the input or select element. `then` targets
+ * point to the element(s) to be revealed. Optionally, a `data-reveal-value`
+ * attribute can be added to each `then` target to only reveal it if the input
+ * equals that value. Otherwise, the target will be revealed if the input has
+ * a truthy value or is checked.
+ */
 
 var default_1 = /*#__PURE__*/function (_Controller) {
   _inherits(default_1, _Controller);
@@ -9741,6 +9688,9 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
+/**
+ * Controller to apply "active" nav link styles based on the scroll position.
+ */
 
 var default_1 = /*#__PURE__*/function (_Controller) {
   _inherits(default_1, _Controller);
@@ -9897,6 +9847,11 @@ var __awaiter = undefined && undefined.__awaiter || function (thisArg, _argument
 
 
 
+/**
+ * Controller for the <x-waterhole::text-editor> component.
+ *
+ * @internal
+ */
 
 var default_1 = /*#__PURE__*/function (_Controller) {
   _inherits(default_1, _Controller);
@@ -9997,7 +9952,7 @@ var default_1 = /*#__PURE__*/function (_Controller) {
       var previewing = !this.inputTarget.hidden;
       this.inputTarget.hidden = previewing;
       this.previewTarget.hidden = !previewing;
-      this.previewTarget.innerHTML = '<div class="loading"></div>';
+      this.previewTarget.innerHTML = '<div class="spinner spinner--block"></div>';
       (_a = this.previewButtonTarget) === null || _a === void 0 ? void 0 : _a.setAttribute('aria-pressed', String(previewing));
       this.element.classList.toggle('is-previewing', previewing);
 
@@ -10093,6 +10048,11 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 var STORAGE_KEY = 'theme';
+/**
+ * Controller for the <x-waterhole::theme-selector> component.
+ *
+ * @internal
+ */
 
 var _default = /*#__PURE__*/function (_Controller) {
   _inherits(_default, _Controller);
@@ -10189,6 +10149,9 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
+/**
+ * Controller for some useful <turbo-frame> actions.
+ */
 
 var _default = /*#__PURE__*/function (_Controller) {
   _inherits(_default, _Controller);
@@ -10269,6 +10232,9 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+/**
+ * Controller to set up a StickyObserver.
+ */
 
 var _default = /*#__PURE__*/function (_Controller) {
   _inherits(_default, _Controller);
@@ -10468,8 +10434,8 @@ var TurboEchoStreamSourceElement = /*#__PURE__*/function (_HTMLElement) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "cloneFromTemplate": () => (/* binding */ cloneFromTemplate),
 /* harmony export */   "getHeaderHeight": () => (/* binding */ getHeaderHeight),
-/* harmony export */   "htmlToElement": () => (/* binding */ htmlToElement),
 /* harmony export */   "isElementInViewport": () => (/* binding */ isElementInViewport),
 /* harmony export */   "shouldOpenInNewTab": () => (/* binding */ shouldOpenInNewTab),
 /* harmony export */   "slug": () => (/* binding */ slug)
@@ -10499,21 +10465,22 @@ function getHeaderHeight() {
   return ((_a = document.getElementById('#header')) === null || _a === void 0 ? void 0 : _a.offsetHeight) || 0;
 }
 /**
- * Convert an HTML string into a DOM element.
- */
-
-function htmlToElement(html) {
-  var template = document.createElement('template');
-  template.innerHTML = html;
-  return template.content.firstElementChild;
-}
-/**
  * Create a slug out of the given string. Non-alphanumeric characters are
  * converted to hyphens.
  */
 
 function slug(string) {
   return string.toLowerCase().replace(/[^a-z0-9]/gi, '-').replace(/-+/g, '-').replace(/-$|^-/g, '');
+}
+/**
+ * Clone a <template> element's content.
+ */
+
+function cloneFromTemplate(id) {
+  var _a, _b;
+
+  var template = document.getElementById(id);
+  return (_b = (_a = template === null || template === void 0 ? void 0 : template.content) === null || _a === void 0 ? void 0 : _a.firstElementChild) === null || _b === void 0 ? void 0 : _b.cloneNode(true);
 }
 
 /***/ }),
@@ -18539,12 +18506,11 @@ exports["default"] = Formats;
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var map = {
-	"./alerts-controller.ts": "./resources/js/controllers/alerts-controller.ts",
+	"./alert-controller.ts": "./resources/js/controllers/alert-controller.ts",
 	"./comment-controller.ts": "./resources/js/controllers/comment-controller.ts",
 	"./comment-replies-controller.ts": "./resources/js/controllers/comment-replies-controller.ts",
 	"./composer-controller.ts": "./resources/js/controllers/composer-controller.ts",
 	"./copy-link-controller.ts": "./resources/js/controllers/copy-link-controller.ts",
-	"./header-controller.ts": "./resources/js/controllers/header-controller.ts",
 	"./load-backwards-controller.ts": "./resources/js/controllers/load-backwards-controller.ts",
 	"./login-controller.ts": "./resources/js/controllers/login-controller.ts",
 	"./modal-controller.ts": "./resources/js/controllers/modal-controller.ts",
@@ -24787,14 +24753,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _github_time_elements__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @github/time-elements */ "./node_modules/@github/time-elements/dist/index.js");
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
 /* harmony import */ var _hotwired_stimulus_webpack_helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @hotwired/stimulus-webpack-helpers */ "./node_modules/@hotwired/stimulus-webpack-helpers/dist/stimulus-webpack-helpers.js");
-/* harmony import */ var _bootstrap_alerts__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./bootstrap/alerts */ "./resources/js/bootstrap/alerts.ts");
-/* harmony import */ var _bootstrap_alerts__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_bootstrap_alerts__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _bootstrap_custom_elements__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./bootstrap/custom-elements */ "./resources/js/bootstrap/custom-elements.ts");
-/* harmony import */ var _bootstrap_document_title__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./bootstrap/document-title */ "./resources/js/bootstrap/document-title.ts");
-/* harmony import */ var _bootstrap_document_title__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_bootstrap_document_title__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _bootstrap_echo__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./bootstrap/echo */ "./resources/js/bootstrap/echo.ts");
-/* harmony import */ var _bootstrap_hotkeys__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./bootstrap/hotkeys */ "./resources/js/bootstrap/hotkeys.ts");
-/* harmony import */ var _bootstrap_turbo__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./bootstrap/turbo */ "./resources/js/bootstrap/turbo.ts");
+/* harmony import */ var _bootstrap_custom_elements__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./bootstrap/custom-elements */ "./resources/js/bootstrap/custom-elements.ts");
+/* harmony import */ var _bootstrap_document_title__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./bootstrap/document-title */ "./resources/js/bootstrap/document-title.ts");
+/* harmony import */ var _bootstrap_document_title__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_bootstrap_document_title__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _bootstrap_echo__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./bootstrap/echo */ "./resources/js/bootstrap/echo.ts");
+/* harmony import */ var _bootstrap_hotkeys__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./bootstrap/hotkeys */ "./resources/js/bootstrap/hotkeys.ts");
+/* harmony import */ var _bootstrap_turbo__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./bootstrap/turbo */ "./resources/js/bootstrap/turbo.ts");
 
 
 
@@ -24803,7 +24767,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
+Object.defineProperty(Waterhole, 'alerts', {
+  get: function get() {
+    return document.getElementById('alerts');
+  }
+});
 window.Stimulus = _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_1__.Application.start();
 window.Stimulus.load((0,_hotwired_stimulus_webpack_helpers__WEBPACK_IMPORTED_MODULE_2__.definitionsFromContext)(__webpack_require__("./resources/js/controllers sync recursive \\.ts$")));
 })();

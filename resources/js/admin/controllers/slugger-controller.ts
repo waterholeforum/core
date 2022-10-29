@@ -2,9 +2,13 @@ import { Controller } from '@hotwired/stimulus';
 import { slug } from '../../utils';
 
 /**
- * Controller to automatically populate a slug field as you type.
+ * Controller to automatically populate a slug field as you type in a name.
  *
+ * Call the `updateName` action on the name input, and the `updateSlug` action
+ * on the slug input. Target the slug input as `slug`, and any elements that
+ * should mirror the slug value (eg. a URL preview) as `mirror`.
  *
+ * For an example usage, see the `ChannelName` and `ChannelSlug` form fields.
  */
 export default class extends Controller {
     static targets = ['slug', 'mirror'];

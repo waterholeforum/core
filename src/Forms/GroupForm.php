@@ -14,6 +14,6 @@ class GroupForm extends Form
 
     public function fields(): array
     {
-        return Extend\GroupForm::components(['group' => $this->model]);
+        return Extend\GroupForm::components(['model' => $this->model]);
     }
 }

@@ -1,4 +1,4 @@
-<div class="email-verification-banner banner bg-attention-light">
+<div class="email-verification-banner bg-attention-light">
     <div class="container row gap-xs">
         <div>
             {!! __('waterhole::auth.email-verification-message', ['email' => '<strong>' . Auth::user()->email . '</strong>']) !!}

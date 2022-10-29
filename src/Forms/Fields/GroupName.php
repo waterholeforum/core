@@ -9,7 +9,7 @@ use Waterhole\Models\Group;
 
 class GroupName extends Field
 {
-    public function __construct(public ?Group $group)
+    public function __construct(public ?Group $model)
     {
     }
 
@@ -25,7 +25,7 @@ class GroupName extends Field
                     name="name"
                     id="{{ $component->id }}"
                     class="input"
-                    value="{{ old('name', $group->name ?? null) }}"
+                    value="{{ old('name', $model->name ?? null) }}"
                     autofocus
                 >
             </x-waterhole::field>
@@ -39,6 +39,6 @@ class GroupName extends Field
 
     public function saving(FormRequest $request): void
     {
-        $this->group->name = $request->validated('name');
+        $this->model->name = $request->validated('name');
     }
 }

@@ -14,7 +14,7 @@ class GroupPermissions extends Field
     public Collection $structure;
     public Collection $abilities;
 
-    public function __construct(public ?Group $group)
+    public function __construct(public ?Group $model)
     {
         $this->structure = Structure::with('content')
             ->orderBy('position')
@@ -88,7 +88,7 @@ class GroupPermissions extends Field
                                                         Check this box if it was checked before, or if the ability is
                                                         allowed for this group, or for members in general.
                                                     --}}
-                                                    @checked(old("permissions.$key.$ability", Waterhole::permissions()->group($group ?? Waterhole\Models\Group::member())->allows($ability, $node->content)))
+                                                    @checked(old("permissions.$key.$ability", Waterhole::permissions()->group($model ?? Waterhole\Models\Group::member())->allows($ability, $node->content)))
                                                     {{--
                                                         Non-"view" abilities depend on the "view" ability being allowed.
                                                     --}}
@@ -115,6 +115,6 @@ class GroupPermissions extends Field
 
     public function saved(FormRequest $request): void
     {
-        $this->group->savePermissions($request->validated('permissions'));
+        $this->model->savePermissions($request->validated('permissions'));
     }
 }

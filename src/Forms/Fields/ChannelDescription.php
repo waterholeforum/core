@@ -9,7 +9,7 @@ use Waterhole\Models\Channel;
 
 class ChannelDescription extends Field
 {
-    public function __construct(public ?Channel $channel)
+    public function __construct(public ?Channel $model)
     {
     }
 
@@ -24,7 +24,7 @@ class ChannelDescription extends Field
                     id="{{ $component->id }}"
                     name="description"
                     class="input"
-                >{{ old('description', $channel->description ?? '') }}</textarea>
+                >{{ old('description', $model->description ?? '') }}</textarea>
                 <p class="field__description">
                     {{ __('waterhole::admin.channel-description-description') }}
                 </p>
@@ -39,6 +39,6 @@ class ChannelDescription extends Field
 
     public function saving(FormRequest $request): void
     {
-        $this->channel->description = $request->validated('description');
+        $this->model->description = $request->validated('description');
     }
 }

@@ -1,9 +1,12 @@
 import { Controller } from '@hotwired/stimulus';
+import { getHeaderHeight } from '../utils';
 
+/**
+ * Controller for the page.
+ */
 export default class extends Controller {
-    static targets = ['header', 'breadcrumb', 'title'];
+    static targets = ['breadcrumb', 'title'];
 
-    declare readonly headerTarget: HTMLElement;
     declare readonly breadcrumbTarget: HTMLElement;
 
     declare observer: IntersectionObserver;
@@ -13,7 +16,7 @@ export default class extends Controller {
             (entries) => {
                 this.breadcrumbTarget.hidden = entries[0].isIntersecting;
             },
-            { rootMargin: `-${this.headerTarget?.offsetHeight || 0}px` }
+            { rootMargin: `-${getHeaderHeight()}px` }
         );
     }
 

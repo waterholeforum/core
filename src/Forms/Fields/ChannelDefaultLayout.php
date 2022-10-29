@@ -9,7 +9,7 @@ use Waterhole\Models\Channel;
 
 class ChannelDefaultLayout extends Field
 {
-    public function __construct(public ?Channel $channel)
+    public function __construct(public ?Channel $model)
     {
     }
 
@@ -28,7 +28,7 @@ class ChannelDefaultLayout extends Field
                                 name="default_layout"
                                 id="default_layout_{{ $key }}"
                                 value="{{ $key }}"
-                                @checked(old('default_layout', $channel->default_layout ?? config('waterhole.forum.default_post_layout')) === $key)
+                                @checked(old('default_layout', $model->default_layout ?? config('waterhole.forum.default_post_layout')) === $key)
                             >
                             <span class="with-icon">
                                 <x-waterhole::icon :icon="$icon"/>
@@ -48,6 +48,6 @@ class ChannelDefaultLayout extends Field
 
     public function saving(FormRequest $request): void
     {
-        $this->channel->default_layout = $request->validated('default_layout');
+        $this->model->default_layout = $request->validated('default_layout');
     }
 }

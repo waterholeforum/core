@@ -138,8 +138,8 @@ post-ignored-badge = Ignored
 menu-button = Menu
 navigation-title = Forum Navigation
 
-feed-new-activity-button = New Activity
-feed-new-activity-heading = New Activity
+post-feed-new-activity-button = New Activity
+post-feed-new-activity-heading = New Activity
 
 feed-empty-message = No Posts
 

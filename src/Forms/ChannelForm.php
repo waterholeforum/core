@@ -14,6 +14,6 @@ class ChannelForm extends Form
 
     public function fields(): array
     {
-        return Extend\ChannelForm::components(['channel' => $this->model]);
+        return Extend\ChannelForm::components(['model' => $this->model]);
     }
 }

@@ -31,16 +31,6 @@ export function getHeaderHeight(): number {
 }
 
 /**
- * Convert an HTML string into a DOM element.
- */
-export function htmlToElement(html: string): Element | null {
-    const template = document.createElement('template');
-    template.innerHTML = html;
-
-    return template.content.firstElementChild;
-}
-
-/**
  * Create a slug out of the given string. Non-alphanumeric characters are
  * converted to hyphens.
  */
@@ -50,4 +40,12 @@ export function slug(string: string): string {
         .replace(/[^a-z0-9]/gi, '-')
         .replace(/-+/g, '-')
         .replace(/-$|^-/g, '');
+}
+
+/**
+ * Clone a <template> element's content.
+ */
+export function cloneFromTemplate(id: string): HTMLElement {
+    const template = document.getElementById(id) as HTMLTemplateElement;
+    return template?.content?.firstElementChild?.cloneNode(true) as HTMLElement;
 }

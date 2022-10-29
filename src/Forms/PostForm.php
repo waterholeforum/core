@@ -14,6 +14,6 @@ class PostForm extends Form
 
     public function fields(): array
     {
-        return Extend\PostForm::components(['post' => $this->model]);
+        return Extend\PostForm::components(['model' => $this->model]);
     }
 }

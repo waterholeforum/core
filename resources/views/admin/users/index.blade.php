@@ -9,7 +9,7 @@
             <div class="grow"></div>
 
             <form
-                class="combobox order-end-xs"
+                class="combobox break-xs"
                 data-controller="filter-input"
                 data-turbo-action="replace"
                 data-turbo-frame="users_frame"
@@ -22,10 +22,10 @@
                     <input
                         class="input"
                         data-action="
-                            input->incremental-search#input
+                            incremental-search#input
                             focus->filter-input#focus
                             blur->filter-input#blur
-                            input->filter-input#update
+                            filter-input#update
                         "
                         data-controller="incremental-search"
                         data-filter-input-target="input"
@@ -129,7 +129,7 @@
                                     <td>
                                         <div class="row wrap gap-xxs">
                                             @foreach ($user->groups as $group)
-                                                <x-waterhole::group-label :group="$group"/>
+                                                <x-waterhole::group-badge :group="$group"/>
                                             @endforeach
                                         </div>
                                     </td>
@@ -158,10 +158,10 @@
             @else
                 <div class="placeholder card">
                     <x-waterhole::icon
-                        class="placeholder__visual"
+                        class="placeholder__icon"
                         icon="tabler-search"
                     />
-                    <h3>{{ __('waterhole::admin.users-empty-message') }}</h3>
+                    <h4>{{ __('waterhole::admin.users-empty-message') }}</h4>
                 </div>
             @endif
         </turbo-frame>

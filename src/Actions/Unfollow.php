@@ -4,8 +4,8 @@ namespace Waterhole\Actions;
 
 use Illuminate\Support\Collection;
 use Waterhole\Models\Model;
-use Waterhole\Views\Components\FollowButton;
-use Waterhole\Views\TurboStream;
+use Waterhole\View\Components\FollowButton;
+use Waterhole\View\TurboStream;
 use Waterhole\Waterhole;
 
 class Unfollow extends Action

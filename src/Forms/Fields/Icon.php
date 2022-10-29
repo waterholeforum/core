@@ -5,7 +5,7 @@ namespace Waterhole\Forms\Fields;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 use Waterhole\Forms\Field;
-use Waterhole\Views\Components\Admin\IconPicker;
+use Waterhole\View\Components\Admin\IconPicker;
 
 class Icon extends Field
 {

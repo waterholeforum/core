@@ -10,7 +10,7 @@ use Waterhole\Models\User;
 
 class UserEmail extends Field
 {
-    public function __construct(public ?User $user)
+    public function __construct(public ?User $model)
     {
     }
 
@@ -26,7 +26,7 @@ class UserEmail extends Field
                     name="email"
                     id="{{ $component->id }}"
                     class="input"
-                    value="{{ old('email', $user->email ?? null) }}"
+                    value="{{ old('email', $model->email ?? null) }}"
                 >
             </x-waterhole::field>
         blade;
@@ -47,6 +47,6 @@ class UserEmail extends Field
 
     public function saving(FormRequest $request): void
     {
-        $this->user->email = $request->validated('email');
+        $this->model->email = $request->validated('email');
     }
 }

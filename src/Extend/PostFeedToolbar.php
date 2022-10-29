@@ -3,10 +3,10 @@
 namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\OrderedList;
-use Waterhole\Views\Components\FeedFilters;
-use Waterhole\Views\Components\FeedTopPeriod;
-use Waterhole\Views\Components\PostFeedControls;
-use Waterhole\Views\Components\Spacer;
+use Waterhole\View\Components\FeedFilters;
+use Waterhole\View\Components\FeedTopPeriod;
+use Waterhole\View\Components\PostFeedControls;
+use Waterhole\View\Components\Spacer;
 
 /**
  * A list of components to render in the post feed toolbar.

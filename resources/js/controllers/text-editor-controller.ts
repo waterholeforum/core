@@ -3,6 +3,11 @@ import TextExpanderElement from '@github/text-expander-element';
 import { ActionEvent, Controller } from '@hotwired/stimulus';
 import TextareaEditor from 'textarea-editor';
 
+/**
+ * Controller for the <x-waterhole::text-editor> component.
+ *
+ * @internal
+ */
 export default class extends Controller {
     static targets = ['input', 'preview', 'previewButton', 'expander', 'hotkeyLabel'];
 
@@ -104,7 +109,7 @@ export default class extends Controller {
 
         this.inputTarget.hidden = previewing;
         this.previewTarget.hidden = !previewing;
-        this.previewTarget.innerHTML = '<div class="loading"></div>';
+        this.previewTarget.innerHTML = '<div class="spinner spinner--block"></div>';
         this.previewButtonTarget?.setAttribute('aria-pressed', String(previewing));
         this.element.classList.toggle('is-previewing', previewing);
 

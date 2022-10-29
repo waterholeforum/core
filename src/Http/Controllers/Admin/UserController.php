@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Waterhole\Forms\UserForm;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\User;
-use Waterhole\Views\Components\UserProfileFields;
+use Waterhole\View\Components\UserProfileFields;
 
 /**
  * Controller for admin user management.

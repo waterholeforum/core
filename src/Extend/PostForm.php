@@ -13,6 +13,6 @@ abstract class PostForm
     use OrderedList, OfComponents;
 }
 
-PostForm::add('channel', fn($post) => !$post->exists ? PostChannel::class : null, position: -30);
+PostForm::add('channel', fn($model) => !$model->exists ? PostChannel::class : null, position: -30);
 PostForm::add('title', PostTitle::class, position: -20);
 PostForm::add('body', PostBody::class, position: -10);

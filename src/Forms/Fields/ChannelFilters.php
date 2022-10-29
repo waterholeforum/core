@@ -11,7 +11,7 @@ use Waterhole\Models\Channel;
 
 class ChannelFilters extends Field
 {
-    public function __construct(public ?Channel $channel)
+    public function __construct(public ?Channel $model)
     {
     }
 
@@ -30,7 +30,7 @@ class ChannelFilters extends Field
                             name="custom_filters"
                             value="1"
                             data-reveal-target="if"
-                            @checked(old('custom_filters', $channel->filters ?? false))
+                            @checked(old('custom_filters', $model->filters ?? false))
                         >
                         <span class="stack gap-xxs">
                             <span>{{ __('waterhole::admin.channel-custom-filters-label') }}</span>
@@ -46,7 +46,7 @@ class ChannelFilters extends Field
                             aria-label="{{ __('waterhole::admin.channel-filter-options-label') }}"
                         >
                             @php
-                                $filters = old('filters', $channel->filters ?? config('waterhole.forum.post_filters', []));
+                                $filters = old('filters', $model->filters ?? config('waterhole.forum.post_filters', []));
 
                                 $availableFilters = collect(Waterhole\resolve_all(Waterhole\Extend\PostFilters::values()))
                                     ->sortBy(fn($filter, $key) => ($k = array_search($key, $filters)) === false ? INF : $k);
@@ -89,7 +89,7 @@ class ChannelFilters extends Field
 
     public function saving(FormRequest $request): void
     {
-        $this->channel->filters = $request->input('custom_filters')
+        $this->model->filters = $request->input('custom_filters')
             ? $request->validated('filters')
             : null;
     }

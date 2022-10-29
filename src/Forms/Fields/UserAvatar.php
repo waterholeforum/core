@@ -10,7 +10,7 @@ use Waterhole\Models\User;
 
 class UserAvatar extends Field
 {
-    public function __construct(public ?User $user)
+    public function __construct(public User $model)
     {
     }
 
@@ -20,7 +20,7 @@ class UserAvatar extends Field
             <div class="field" role="group">
                 <div class="field__label">{{ __('waterhole::user.avatar-label') }}</div>
                 <div class="row gap-md">
-                    <x-waterhole::avatar :user="$user" style="width: 10ch"/>
+                    <x-waterhole::avatar :user="$model" style="width: 10ch"/>
                     <div class="stack gap-md">
                         <input
                             type="file"
@@ -29,7 +29,7 @@ class UserAvatar extends Field
                             accept="image/*,.jpg,.png,.gif,.bmp"
                             capture="user"
                         >
-                        @if ($user?->avatar)
+                        @if ($model->avatar)
                             <label class="choice">
                                 <input type="checkbox" name="remove_avatar" value="1">
                                 {{ __('waterhole::user.remove-avatar-label') }}
@@ -49,11 +49,11 @@ class UserAvatar extends Field
     public function saved(FormRequest $request): void
     {
         if ($request->input('remove_avatar')) {
-            $this->user->removeAvatar();
+            $this->model->removeAvatar();
         }
 
         if ($file = $request->file('avatar')) {
-            $this->user->uploadAvatar(Image::make($file));
+            $this->model->uploadAvatar(Image::make($file));
         }
     }
 }

@@ -23,7 +23,7 @@
             loading="lazy"
             data-notifications-popup-target="frame"
         >
-            <div class="loading"></div>
+            <x-waterhole::spinner class="spinner--block"/>
         </turbo-frame>
     </ui-menu>
 

@@ -1,16 +1,12 @@
 .choice {
   cursor: pointer;
   display: flex;
-  align-items: baseline;
+  align-items: flex-start;
   gap: var(--space-xs);
 
-  > :first-child {
-    align-self: flex-start;
+  > :disabled + * {
+    color: var(--color-muted);
   }
-}
-
-:disabled + .choice__label {
-  color: var(--color-muted);
 }
 
 input[type='checkbox'],

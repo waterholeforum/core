@@ -1,7 +1,7 @@
 <x-waterhole::admin :title="__('waterhole::admin.dashboard-title')">
     <div class="stack gap-lg">
         @section('debug')
-            <x-waterhole::alert type="danger" class="alert--lg" icon="tabler-bug">
+            <x-waterhole::alert type="attention" class="alert--lg" icon="tabler-bug">
                 {{ __('waterhole::admin.debug-mode-on-message') }}
                 &nbsp;
                 <a
@@ -51,9 +51,7 @@
                             data-controller="turbo-frame"
                             data-action="turbo:frame-load->turbo-frame#removeSrc"
                         >
-                            <div class="card">
-                                <div class="loading"></div>
-                            </div>
+                            <x-waterhole::spinner class="spinner--block"/>
                         </turbo-frame>
                     @endif
                 </div>

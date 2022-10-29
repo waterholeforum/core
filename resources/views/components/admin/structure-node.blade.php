@@ -77,9 +77,9 @@
             @else
                 <span>
                     @forelse ($permissions->ability('view')->groups()->map->recipient as $group)
-                        <x-waterhole::group-label :group="$group"/>
+                        <x-waterhole::group-badge :group="$group"/>
                     @empty
-                        <x-waterhole::group-label :group="Waterhole\Models\Group::admin()"/>
+                        <x-waterhole::group-badge :group="Waterhole\Models\Group::admin()"/>
                     @endforelse
                 </span>
             @endif

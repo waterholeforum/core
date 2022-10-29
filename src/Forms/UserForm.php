@@ -14,6 +14,6 @@ class UserForm extends Form
 
     public function fields(): array
     {
-        return Extend\UserForm::components(['user' => $this->model]);
+        return Extend\UserForm::components(['model' => $this->model]);
     }
 }

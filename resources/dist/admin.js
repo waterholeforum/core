@@ -2087,7 +2087,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 /**
- * Controller for the color-picker component.
+ * Controller for the <x-waterhole::color-picker> component.
  *
  * Provides actions to show and hide the color picker on input focus/blur.
  * Also keeps the input, picker, and swatch in sync when the color is changed.
@@ -2172,8 +2172,15 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+var RE_TOKEN = /([^\s"]*)"([^"]*)(?:"|$)|[^\s"]+/gi;
 /**
  * Controller to hook up a filter input.
+ *
+ * A "filter input" is a combobox which allows entering a string of
+ * space-separated "tokens". These tokens are suggested in a list, and the list
+ * of suggestions is filtered according to the current token.
+ *
+ * For an example usage, see the admin users page.
  */
 
 var default_1 = /*#__PURE__*/function (_Controller) {
@@ -2209,26 +2216,49 @@ var default_1 = /*#__PURE__*/function (_Controller) {
       this.listTarget.hidden = true;
     }
   }, {
+    key: "tokens",
+    value: function tokens() {
+      var matches = this.inputTarget.value.matchAll(RE_TOKEN);
+      return Array.from(matches).reverse();
+    }
+  }, {
     key: "currentToken",
     value: function currentToken() {
       var start = this.inputTarget.selectionStart || 0;
-      var matches = this.inputTarget.value.slice(0, start).matchAll(/([^\s"]*)"([^"]*)(?:"|$)|[^\s"]+/gi);
-      return Array.from(matches).reverse().find(function (match) {
+      return this.tokens().find(function (match) {
         return match.index !== undefined && match.index < start && match.index + match[0].length >= start;
       });
     }
   }, {
     key: "update",
     value: function update() {
+      var tokens = this.tokens();
       var token = this.currentToken();
       var query = token && token[0].toLowerCase();
       var children = Array.from(this.listTarget.children);
+      var prefixes = []; // Loop through the suggested and show/hide them based on what's entered
+      // as the current token (the "query"). Hide tokens that are already
+      // present in the search string. If the query is blank, only show the
+      // first instance of a particular token prefix. Otherwise, only show
+      // tokens that start with the query.
+
       children.forEach(function (el) {
         var _a;
 
         var text = ((_a = el.dataset.value || el.textContent) === null || _a === void 0 ? void 0 : _a.trim().toLowerCase()) || '';
-        var relevant = !query && text.endsWith(':') || query && text.startsWith(query) && query.includes(':') !== text.endsWith(':');
-        el.hidden = !relevant;
+
+        if (tokens.some(function (token) {
+          return token[0].toLowerCase() === text;
+        })) {
+          el.hidden = true;
+        } else if (query) {
+          el.hidden = !text.startsWith(query) || query.includes(':') === text.endsWith(':');
+        } else {
+          el.hidden = prefixes.some(function (prefix) {
+            return text.startsWith(prefix);
+          });
+          prefixes.push(text);
+        }
       });
       this.listTarget.hidden = !children.some(function (el) {
         return !el.hidden;
@@ -2370,7 +2400,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 /**
- * Controller for the icon-picker component.
+ * Controller for the <x-waterhole::icon-picker> component.
  *
  * @internal
  */
@@ -2442,7 +2472,11 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 /**
  * Controller to power incremental search.
  *
+ * Apply this controller to an <input> element and call the `input` action to
+ * debounce a submission of the input's form. The only exception is when the
+ * input is empty, in which case the form will submit immediately.
  *
+ * For an example usage, see the admin users page.
  */
 
 var _default = /*#__PURE__*/function (_Controller) {
@@ -2693,7 +2727,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 /**
- * Controller for the permission-grid component.
+ * Controller for the <x-waterhole::permission-grid> component.
  *
  * @internal
  */
@@ -2873,9 +2907,13 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 /**
- * Controller to automatically populate a slug field as you type.
+ * Controller to automatically populate a slug field as you type in a name.
  *
+ * Call the `updateName` action on the name input, and the `updateSlug` action
+ * on the slug input. Target the slug input as `slug`, and any elements that
+ * should mirror the slug value (eg. a URL preview) as `mirror`.
  *
+ * For an example usage, see the `ChannelName` and `ChannelSlug` form fields.
  */
 
 var default_1 = /*#__PURE__*/function (_Controller) {
@@ -2977,8 +3015,6 @@ function translate(message, _ref) {
 }
 /**
  * A controller to hook up an inclusive-sort instance.
- *
- *
  */
 
 
@@ -3091,8 +3127,8 @@ default_1.values = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "cloneFromTemplate": () => (/* binding */ cloneFromTemplate),
 /* harmony export */   "getHeaderHeight": () => (/* binding */ getHeaderHeight),
-/* harmony export */   "htmlToElement": () => (/* binding */ htmlToElement),
 /* harmony export */   "isElementInViewport": () => (/* binding */ isElementInViewport),
 /* harmony export */   "shouldOpenInNewTab": () => (/* binding */ shouldOpenInNewTab),
 /* harmony export */   "slug": () => (/* binding */ slug)
@@ -3122,21 +3158,22 @@ function getHeaderHeight() {
   return ((_a = document.getElementById('#header')) === null || _a === void 0 ? void 0 : _a.offsetHeight) || 0;
 }
 /**
- * Convert an HTML string into a DOM element.
- */
-
-function htmlToElement(html) {
-  var template = document.createElement('template');
-  template.innerHTML = html;
-  return template.content.firstElementChild;
-}
-/**
  * Create a slug out of the given string. Non-alphanumeric characters are
  * converted to hyphens.
  */
 
 function slug(string) {
   return string.toLowerCase().replace(/[^a-z0-9]/gi, '-').replace(/-+/g, '-').replace(/-$|^-/g, '');
+}
+/**
+ * Clone a <template> element's content.
+ */
+
+function cloneFromTemplate(id) {
+  var _a, _b;
+
+  var template = document.getElementById(id);
+  return (_b = (_a = template === null || template === void 0 ? void 0 : template.content) === null || _a === void 0 ? void 0 : _a.firstElementChild) === null || _b === void 0 ? void 0 : _b.cloneNode(true);
 }
 
 /***/ }),

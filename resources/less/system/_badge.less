@@ -6,7 +6,7 @@
   margin: 0;
   font-size: var(--text-xxs);
   font-weight: var(--weight-medium);
-  line-height: 1;
+  line-height: 1.2;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -24,7 +24,12 @@
     margin-right: 0.2em;
   }
 
-  .icon path {
+  .icon {
     stroke-width: 2.5;
   }
+}
+
+.badge--group {
+  background: var(--group-color, var(--color-fill)) !important;
+  color: var(--group-color-constrast, var(--color-muted)) !important;
 }

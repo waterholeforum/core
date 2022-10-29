@@ -1,65 +1,133 @@
-.text-editor {
+.composer {
+  border-radius: var(--radius);
+  background: var(--color-bg);
+  transition: box-shadow 0.2s, border 0.2s, height var(--height-transition-duration), bottom 0.2s;
   display: flex;
   flex-direction: column;
-  padding: 0;
-  height: auto;
-  min-height: 300px;
-  position: relative;
-}
+  max-height: 90vh;
+  position: sticky;
+  --height-transition-duration: 0.2s;
 
-.text-editor__toolbar {
-  padding: var(--space-xxs);
-  padding-left: var(--space-xs);
-  font-size: 80%;
+  &.is-static {
+    position: static;
+    --height-transition-duration: 0s;
+    height: 70vh !important;
 
-  .is-previewing & {
-    //position: absolute;
-    //right: 0;
-    //z-index: 1;
-    justify-content: flex-end;
-    z-index: 1;
-
-    > :not(.text-editor__preview-button) {
-      display: none;
+    .composer__close {
+      visibility: hidden;
+      width: var(--space-xs);
     }
   }
-}
 
-.text-editor__content,
-.text-editor__expander {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-}
+  &:not(.is-open) .composer__form,
+  &.is-open .composer__placeholder {
+    display: none;
+  }
 
-.text-editor__expander {
-  position: relative;
-}
+  &:not(.is-open) {
+    height: 4.75em !important; // override user resizing
+    bottom: -4.75em;
+  }
 
-.text-editor__input {
-  width: 100%;
-  flex-grow: 1;
-  outline: none;
-  padding: var(--space-xs) var(--space-md);
-  resize: vertical;
-  border: 0;
-  background: transparent;
-  max-height: 70vh;
-  position: relative;
-  color: var(--color-text);
+  &.is-open {
+    --focus-shadow: 0 0 0 transparent;
+    border: 1px solid var(--color-stroke);
+    bottom: ~'calc(-1 * var(--radius))';
+    box-shadow: var(--focus-shadow);
+    height: 300px;
+    min-height: 200px;
 
-  &[hidden] {
-    display: initial !important;
-    visibility: hidden;
+    &:focus-within {
+      --focus-shadow: 0 0 0 2px var(--color-accent);
+      border-color: transparent;
+    }
+  }
+
+  &.is-resizing {
+    --height-transition-duration: 0s;
+  }
+
+  &.is-stuck {
+    border-color: transparent;
+    box-shadow: var(--focus-shadow), var(--shadow-md);
+    padding-bottom: var(--radius);
+    z-index: var(--z-index-overlay);
   }
 }
 
-.text-editor__preview {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  overflow: auto;
+.composer__placeholder {
+  display: flex;
+  align-items: center;
+  border: 2px dashed var(--color-stroke);
+  border-radius: var(--radius);
   padding: var(--space-md);
+  gap: var(--space-md);
+  cursor: text;
+  color: var(--color-muted);
+  transition: box-shadow 0.2s, border 0.2s, color 0.2s;
+  text-decoration: none !important;
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+    border-color: transparent;
+    color: inherit;
+  }
+
+  .avatar {
+    width: var(--control-height);
+  }
+}
+
+.composer__form {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .text-editor {
+    border: 0;
+    box-shadow: none;
+    min-height: 0;
+    flex-grow: 1;
+  }
+
+  .text-editor__input {
+    resize: none;
+  }
+}
+
+.composer__handle {
+  position: absolute;
+  left: 100px;
+  right: 100px;
+  top: -5px;
+  height: 20px;
+  cursor: ns-resize;
+}
+
+.composer__toolbar {
+  padding: var(--space-xxs);
+  border-bottom: 1px solid var(--color-stroke);
+}
+
+// The "replying to" bit
+.composer__parent {
+  background: var(--color-attention-light);
+  border-radius: 999px;
+  padding-left: var(--space-sm);
+  font-size: var(--text-xs);
+  margin-left: var(--space-xs);
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+
+  a {
+    color: inherit;
+  }
+}
+
+@media (min-width: (@breakpoint-sm + 1)) {
+  .post-page .composer,
+  .composer-area {
+    margin-right: ~'calc(20ch + var(--space-xxl))';
+  }
 }

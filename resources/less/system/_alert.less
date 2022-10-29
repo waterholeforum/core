@@ -15,10 +15,10 @@
 }
 
 .alert__message {
-  margin-right: auto;
   min-width: 0;
   font-size: var(--text-xs);
   align-self: center;
+  flex-grow: 1;
 }
 
 .alert__actions {
@@ -55,13 +55,11 @@
 // Notification Alerts
 
 .alert--notification {
-  max-width: 50ch;
   background: var(--color-bg);
   background-image: linear-gradient(var(--color-activity-light), var(--color-activity-light)),
     linear-gradient(var(--color-bg), var(--color-bg));
 
   .alert__message {
-    line-height: inherit;
     margin: 0 ~'calc(-1 * var(--space-xs))';
   }
 }

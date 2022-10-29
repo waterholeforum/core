@@ -14,7 +14,7 @@
 
         @foreach ($user->groups ?? [] as $group)
             @if ($group->is_public)
-                <x-waterhole::group-label :group="$group" class="attribution__group"/>
+                <x-waterhole::group-badge :group="$group" class="attribution__group"/>
             @endif
         @endforeach
     </span>

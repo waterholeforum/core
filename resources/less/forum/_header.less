@@ -1,21 +1,20 @@
 .header {
-  //padding: var(--space-md) 0;
   background: var(--color-bg);
   position: sticky;
-  top: 0;
+  top: -1px; // ensures that .is-stuck only applies when scrolled down
   z-index: var(--z-index-header);
   border-bottom: 1px solid var(--color-stroke);
+  transition: box-shadow 0.2s, border 0.2s;
 
   .container {
     height: var(--header-height);
     display: flex;
     align-items: center;
-    //gap: var(--space-xs);
   }
 
-  &.is-sticky {
+  &.is-stuck {
     box-shadow: var(--shadow-sm);
-    border-bottom: 0;
+    border-bottom-color: transparent;
   }
 }
 
@@ -70,4 +69,9 @@
   > a {
     color: inherit;
   }
+}
+
+.email-verification-banner {
+  padding-block: var(--space-md);
+  font-size: var(--text-xs);
 }

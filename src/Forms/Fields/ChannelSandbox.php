@@ -9,7 +9,7 @@ use Waterhole\Models\Channel;
 
 class ChannelSandbox extends Field
 {
-    public function __construct(public ?Channel $channel)
+    public function __construct(public ?Channel $model)
     {
     }
 
@@ -28,7 +28,7 @@ class ChannelSandbox extends Field
                             id="sandbox"
                             name="sandbox"
                             value="1"
-                            @checked(old('sandbox', $channel->sandbox ?? false))
+                            @checked(old('sandbox', $model->sandbox ?? false))
                         >
                         <span class="stack gap-xxs">
                             <span>{{ __('waterhole::admin.channel-sandbox-label') }}</span>
@@ -47,6 +47,6 @@ class ChannelSandbox extends Field
 
     public function saving(FormRequest $request): void
     {
-        $this->channel->sandbox = $request->validated('sandbox');
+        $this->model->sandbox = $request->validated('sandbox');
     }
 }

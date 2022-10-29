@@ -3,8 +3,8 @@
 namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\OrderedList;
-use Waterhole\Views\Components\IndexCreatePost;
-use Waterhole\Views\Components\IndexNav;
+use Waterhole\View\Components\IndexCreatePost;
+use Waterhole\View\Components\IndexNav;
 
 /**
  * A list of components to render in the index sidebar.

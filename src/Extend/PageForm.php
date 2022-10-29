@@ -14,18 +14,18 @@ abstract class PageForm
 
 PageForm::add(
     'details',
-    fn($page) => new FormSection(
+    fn($model) => new FormSection(
         __('waterhole::admin.page-details-title'),
-        PageFormDetails::components(compact('page')),
+        PageFormDetails::components(compact('model')),
     ),
     position: -20,
 );
 
 PageForm::add(
     'permissions',
-    fn($page) => new FormSection(
+    fn($model) => new FormSection(
         __('waterhole::admin.page-permissions-title'),
-        [new Permissions($page)],
+        [new Permissions($model)],
         open: false,
     ),
     position: -10,

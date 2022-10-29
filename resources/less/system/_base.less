@@ -4,14 +4,11 @@ html {
   font-family: var(--font-text);
   font-size: 100%;
   line-height: var(--line-height-default);
+  scroll-padding-top: var(--header-height);
 
   @media (max-width: @breakpoint-xs) {
     font-size: 90%;
   }
-}
-
-[id] {
-  scroll-margin-top: var(--header-height);
 }
 
 a,
@@ -31,6 +28,12 @@ hr {
   margin: var(--space-xl) 0;
 }
 
+mark {
+  background: transparent;
+  font-weight: var(--weight-bold);
+  color: var(--color-text);
+}
+
 :focus {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
@@ -44,14 +47,16 @@ hr {
   outline: none;
 }
 
-#main {
-  margin-bottom: var(--space-xxl);
+#waterhole {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-height: 100vh;
 }
 
-mark {
-  background: transparent;
-  font-weight: var(--weight-bold);
-  color: var(--color-text);
+#main {
+  flex-grow: 1;
+  margin-bottom: var(--space-xxl);
 }
 
 ui-popup > .enter-active,
@@ -108,76 +113,14 @@ ui-popup > :nth-child(2) {
 }
 
 [data-placement^='top'] {
-  margin-top: -6px;
+  margin-top: ~'calc(-1 * var(--space-xs))';
 }
 [data-placement^='bottom'] {
-  margin-top: 6px;
+  margin-top: var(--space-xs);
 }
 [data-placement^='left'] {
-  margin-left: -6px;
+  margin-left: ~'calc(-1 * var(--space-xs))';
 }
 [data-placement^='right'] {
-  margin-left: 6px;
-}
-
-@media (max-width: @breakpoint-xs) {
-  .hide-xs {
-    display: none !important;
-  }
-}
-
-@media (min-width: (@breakpoint-xs + 1)) {
-  .hide-sm-up {
-    display: none !important;
-  }
-}
-
-@media (max-width: @breakpoint-sm) {
-  .hide-sm-down {
-    display: none !important;
-  }
-}
-
-@media (min-width: (@breakpoint-sm + 1)) {
-  .hide-md-up {
-    display: none !important;
-  }
-}
-
-@media (max-width: @breakpoint-md) {
-  .hide-md-down {
-    display: none !important;
-  }
-}
-
-@media (min-width: (@breakpoint-md + 1)) {
-  .hide-lg-up {
-    display: none !important;
-  }
-}
-
-@media (max-width: @breakpoint-lg) {
-  .hide-lg-down {
-    display: none !important;
-  }
-}
-
-@media (min-width: (@breakpoint-lg + 1)) {
-  .hide-xl {
-    display: none !important;
-  }
-}
-
-[class*='icon-tabler-lock'] circle {
-  display: none;
-}
-
-.dot {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  margin: 0.3em 0.1em;
-  border-radius: 100%;
-  background: currentColor;
-  vertical-align: -5px;
+  margin-left: var(--space-xs);
 }

@@ -1,5 +1,14 @@
 import { Controller } from '@hotwired/stimulus';
 
+/**
+ * Controller to allow an element to show/hide based on the value of an input.
+ *
+ * The `if` target should point to the input or select element. `then` targets
+ * point to the element(s) to be revealed. Optionally, a `data-reveal-value`
+ * attribute can be added to each `then` target to only reveal it if the input
+ * equals that value. Otherwise, the target will be revealed if the input has
+ * a truthy value or is checked.
+ */
 export default class extends Controller {
     static targets = ['if', 'then'];
 

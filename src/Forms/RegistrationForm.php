@@ -14,6 +14,6 @@ class RegistrationForm extends Form
 
     public function fields(): array
     {
-        return Extend\RegistrationForm::components(['user' => $this->model]);
+        return Extend\RegistrationForm::components(['model' => $this->model]);
     }
 }

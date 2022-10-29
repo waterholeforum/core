@@ -9,7 +9,7 @@ use Waterhole\Models\Post;
 
 class PostBody extends Field
 {
-    public function __construct(public ?Post $post)
+    public function __construct(public ?Post $model)
     {
     }
 
@@ -23,7 +23,7 @@ class PostBody extends Field
                 <x-waterhole::text-editor
                     name="body"
                     :id="$component->id"
-                    :value="old('body', $post->body ?? '')"
+                    :value="old('body', $model->body ?? '')"
                     class="input"
                 />
             </x-waterhole::field>
@@ -37,6 +37,6 @@ class PostBody extends Field
 
     public function saving(FormRequest $request): void
     {
-        $this->post->body = $request->validated('body');
+        $this->model->body = $request->validated('body');
     }
 }

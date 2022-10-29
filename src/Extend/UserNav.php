@@ -5,8 +5,8 @@ namespace Waterhole\Extend;
 use Illuminate\Support\Facades\Auth;
 use Waterhole\Extend\Concerns\OrderedList;
 use Waterhole\Models\User;
-use Waterhole\Views\Components\NavHeading;
-use Waterhole\Views\Components\NavLink;
+use Waterhole\View\Components\NavHeading;
+use Waterhole\View\Components\NavLink;
 
 /**
  * A list of components to render in the user profile navigation menu.

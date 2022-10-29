@@ -4,7 +4,7 @@
 
 <x-waterhole::layout :title="$title">
     <div class="container section">
-        <x-waterhole::dialog :title="$title" class="post-editor">
+        <x-waterhole::dialog :title="$title" class="measure">
             <form
                 method="POST"
                 action="{{ route('waterhole.posts.update', ['post' => $post]) }}"
@@ -13,7 +13,7 @@
                 @method('PATCH')
                 @return($post->url)
 
-                <div class="form stacked-fields">
+                <div class="stack gap-xl stacked-fields">
                     <x-waterhole::validation-errors/>
 
                     @components($form->fields())

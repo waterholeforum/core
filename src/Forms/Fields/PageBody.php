@@ -9,7 +9,7 @@ use Waterhole\Models\Page;
 
 class PageBody extends Field
 {
-    public function __construct(public ?Page $page)
+    public function __construct(public ?Page $model)
     {
     }
 
@@ -23,7 +23,7 @@ class PageBody extends Field
                 <x-waterhole::text-editor
                     name="body"
                     id="{{ $component->id }}"
-                    :value="old('body', $page->body ?? null)"
+                    :value="old('body', $model->body ?? null)"
                     class="input"
                 />
             </x-waterhole::field>
@@ -37,6 +37,6 @@ class PageBody extends Field
 
     public function saving(FormRequest $request): void
     {
-        $this->page->body = $request->validated('body');
+        $this->model->body = $request->validated('body');
     }
 }

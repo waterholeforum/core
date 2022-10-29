@@ -63,7 +63,7 @@ Actions::add('unignore', Waterhole\Actions\Unignore::class);
 Actions::add('delete-self', Waterhole\Actions\DeleteSelf::class);
 
 // Divider
-Actions::add('divider', Waterhole\Views\Components\MenuDivider::class);
+Actions::add('divider', Waterhole\View\Components\MenuDivider::class);
 
 // Super actions
 Actions::add('edit-comment', Waterhole\Actions\EditComment::class);

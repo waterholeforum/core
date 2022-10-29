@@ -1,13 +1,15 @@
-.attribution {
-  --avatar-size: 2.5em;
+:root {
+  --attribution-avatar-size: 2.5em;
+}
 
-  padding-left: ~'calc(var(--avatar-size) + var(--space-md))';
+.attribution {
+  padding-left: ~'calc(var(--attribution-avatar-size) + var(--space-md))';
 
   .avatar {
     float: left;
-    margin-left: ~'calc(-1 * (var(--avatar-size) + var(--space-md)))';
-    width: var(--avatar-size);
-    height: var(--avatar-size);
+    margin-left: ~'calc(-1 * (var(--attribution-avatar-size) + var(--space-md)))';
+    width: var(--attribution-avatar-size);
+    height: var(--attribution-avatar-size);
   }
 }
 
@@ -20,10 +22,6 @@
   &:hover {
     text-decoration: underline;
   }
-}
-
-.attribution__group {
-  vertical-align: top !important;
 }
 
 .attribution__info {

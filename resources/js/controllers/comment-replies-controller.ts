@@ -2,7 +2,7 @@ import { Controller } from '@hotwired/stimulus';
 import { FrameElement } from '@hotwired/turbo/dist/types/elements';
 
 /**
- * Controller for a comment replies button.
+ * Controller for the <x-waterhole::comment-replies> component.
  *
  * @internal
  */
@@ -27,7 +27,12 @@ export default class extends Controller {
         addEventListener(
             'turbo:frame-render',
             (e) => {
+                // Safari will try to scroll down when we focus on the replies
+                // element (if it is tall), but we don't want that, so revert
+                // it afterwards.
+                const top = window.scrollY;
                 (e.target as FrameElement).querySelector<HTMLElement>('.comment__replies')?.focus();
+                window.scroll({ top });
             },
             { once: true }
         );

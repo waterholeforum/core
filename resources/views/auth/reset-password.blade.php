@@ -10,7 +10,7 @@
             >
                 @csrf
 
-                <div class="form">
+                <div class="stack gap-xl">
                     <x-waterhole::validation-errors/>
 
                     <x-waterhole::field

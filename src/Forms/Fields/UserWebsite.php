@@ -9,7 +9,7 @@ use Waterhole\Models\User;
 
 class UserWebsite extends Field
 {
-    public function __construct(public ?User $user)
+    public function __construct(public ?User $model)
     {
     }
 
@@ -21,7 +21,7 @@ class UserWebsite extends Field
                     id="{{ $component->id }}"
                     type="text"
                     name="website"
-                    value="{{ old('website', $user?->website) }}"
+                    value="{{ old('website', $model?->website) }}"
                     class="input block"
                     maxlength="100"
                 >
@@ -36,6 +36,6 @@ class UserWebsite extends Field
 
     public function saving(FormRequest $request): void
     {
-        $this->user->website = $request->validated('website');
+        $this->model->website = $request->validated('website');
     }
 }

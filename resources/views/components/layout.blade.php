@@ -80,11 +80,7 @@
             turbo:frame-render->modal#loaded"
         aria-labelledby="dialog-title"
         disabled
-    >
-        <div class="dialog dialog--sm">
-            <div class="loading"></div>
-        </div>
-    </turbo-frame>
+    ></turbo-frame>
 </ui-modal>
 
 {{--
@@ -92,11 +88,7 @@
     window.Waterhole.alerts. For API information:
     https://github.com/tobyzerner/inclusive-elements/tree/master/src/alerts
 --}}
-<ui-alerts
-    id="alerts"
-    class="alerts"
-    data-controller="alerts"
->
+<ui-alerts id="alerts" class="alerts">
     @foreach (['success', 'attention', 'danger'] as $type)
         @if (session($type))
             <x-waterhole::alert :type="$type">
@@ -107,8 +99,8 @@
 </ui-alerts>
 
 {{--
-    Templates for fetch error alert messages. These is cloned into the
-    alerts element whenever there is a fetch request error in JavaScript.
+    Templates for fetch error alert messages. These are cloned into the
+    alerts element whenever there is a Turbo frame error in JavaScript
 --}}
 @foreach (['forbidden', 'too-many-requests', 'fatal-error'] as $key)
     <template id="{{ $key }}-alert">
@@ -117,6 +109,20 @@
         </x-waterhole::alert>
     </template>
 @endforeach
+
+<template id="frame-error">
+    <div class="placeholder">
+        <x-waterhole::icon icon="tabler-alert-circle" class="placeholder__icon"/>
+        <p class="h4">{{ __('waterhole::system.fatal-error-heading') }}</p>
+        <button class="btn btn--transparent color-accent">
+            {{ __('waterhole::system.try-again-button') }}
+        </button>
+    </div>
+</template>
+
+<template id="loading">
+    <x-waterhole::spinner class="spinner--block"/>
+</template>
 
 </body>
 </html>

@@ -9,7 +9,7 @@ use Waterhole\Models\Page;
 
 class PageName extends Field
 {
-    public function __construct(public ?Page $page)
+    public function __construct(public ?Page $model)
     {
     }
 
@@ -25,7 +25,7 @@ class PageName extends Field
                     name="name"
                     id="{{ $component->id }}"
                     class="input"
-                    value="{{ old('name', $page->name ?? null) }}"
+                    value="{{ old('name', $model->name ?? null) }}"
                     autofocus
                     data-action="slugger#updateName"
                 >
@@ -40,6 +40,6 @@ class PageName extends Field
 
     public function saving(FormRequest $request): void
     {
-        $this->page->name = $request->validated('name');
+        $this->model->name = $request->validated('name');
     }
 }

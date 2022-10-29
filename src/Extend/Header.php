@@ -3,14 +3,14 @@
 namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\OrderedList;
-use Waterhole\Views\Components\HeaderBreadcrumb;
-use Waterhole\Views\Components\HeaderGuest;
-use Waterhole\Views\Components\HeaderNotifications;
-use Waterhole\Views\Components\HeaderSearch;
-use Waterhole\Views\Components\HeaderTitle;
-use Waterhole\Views\Components\HeaderUser;
-use Waterhole\Views\Components\IndexFooterTheme;
-use Waterhole\Views\Components\Spacer;
+use Waterhole\View\Components\HeaderBreadcrumb;
+use Waterhole\View\Components\HeaderGuest;
+use Waterhole\View\Components\HeaderNotifications;
+use Waterhole\View\Components\HeaderSearch;
+use Waterhole\View\Components\HeaderTitle;
+use Waterhole\View\Components\HeaderUser;
+use Waterhole\View\Components\Spacer;
+use Waterhole\View\Components\ThemeSelector;
 
 /**
  * A list of components to render in the page header.
@@ -30,4 +30,4 @@ Header::add('notifications', HeaderNotifications::class);
 Header::add('guest', HeaderGuest::class);
 Header::add('user', HeaderUser::class);
 
-Header::add('theme', IndexFooterTheme::class);
+Header::add('theme', ThemeSelector::class);

@@ -1,3 +1,6 @@
+/**
+ * Methods to manage a numeric prefix on the document title.
+ */
 class DocumentTitle {
     private title: string = '';
     private count: number = 0;
@@ -24,10 +27,6 @@ class DocumentTitle {
 
 Waterhole.documentTitle = new DocumentTitle();
 
-document.addEventListener('turbo:load', () => {
-    Waterhole.documentTitle.initialize();
-});
+document.addEventListener('turbo:load', () => Waterhole.documentTitle.initialize());
 
-window.addEventListener('focus', () => {
-    Waterhole.documentTitle.reset();
-});
+window.addEventListener('focus', () => Waterhole.documentTitle.reset());

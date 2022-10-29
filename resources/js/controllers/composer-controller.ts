@@ -3,7 +3,7 @@ import animateScrollTo from 'animated-scroll-to';
 import { shouldOpenInNewTab } from '../utils';
 
 /**
- * Controller for the composer component.
+ * Controller for the <x-waterhole::composer> component.
  *
  * @internal
  */
@@ -19,10 +19,6 @@ export default class extends Controller<HTMLElement> {
         if (window.location.hash.substring(1) === this.element.id) {
             this.open();
         }
-    }
-
-    handleTargetConnected(element: HTMLElement) {
-        element.hidden = false;
     }
 
     placeholderClick(e: MouseEvent) {
@@ -50,11 +46,6 @@ export default class extends Controller<HTMLElement> {
     submitEnd(e: CustomEvent) {
         if (e.detail.fetchResponse.contentType.startsWith('text/vnd.turbo-stream.html')) {
             this.close();
-            // const comments = document.querySelectorAll('.comment');
-            // const comment = comments[comments.length - 1];
-            // if (comment) {
-            //     animateScrollTo(comment);
-            // }
         }
     }
 

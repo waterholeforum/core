@@ -2,6 +2,11 @@ import { Controller } from '@hotwired/stimulus';
 
 const STORAGE_KEY = 'theme';
 
+/**
+ * Controller for the <x-waterhole::theme-selector> component.
+ *
+ * @internal
+ */
 export default class extends Controller {
     connect() {
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {

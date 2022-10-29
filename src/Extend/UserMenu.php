@@ -4,8 +4,8 @@ namespace Waterhole\Extend;
 
 use Auth;
 use Waterhole\Extend\Concerns\OrderedList;
-use Waterhole\Views\Components\MenuDivider;
-use Waterhole\Views\Components\MenuItem;
+use Waterhole\View\Components\MenuDivider;
+use Waterhole\View\Components\MenuItem;
 
 /**
  * A list of components to render in the user menu.

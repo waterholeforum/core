@@ -1,0 +1,47 @@
+.notifications-menu {
+  width: 55ch;
+  max-width: 100%;
+  max-height: 40em;
+
+  .menu-item {
+    margin-top: 2px;
+  }
+}
+
+.notification {
+  > .icon {
+    color: var(--color-muted);
+    font-size: 1.2em;
+  }
+
+  strong {
+    font-weight: var(--weight-medium);
+    color: var(--color-accent);
+  }
+
+  &.is-unread {
+    background-image: linear-gradient(var(--color-activity-light), var(--color-activity-light)),
+      linear-gradient(var(--color-bg), var(--color-bg));
+
+    > .icon,
+    time {
+      color: var(--color-activity);
+    }
+
+    strong {
+      color: var(--color-activity);
+    }
+  }
+
+  .menu-item__description {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.notification-grid {
+  .choice {
+    width: 8ch;
+  }
+}

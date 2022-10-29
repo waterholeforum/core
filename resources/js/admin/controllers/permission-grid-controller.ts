@@ -1,7 +1,7 @@
 import { Controller } from '@hotwired/stimulus';
 
 /**
- * Controller for the permission-grid component.
+ * Controller for the <x-waterhole::permission-grid> component.
  *
  * @internal
  */

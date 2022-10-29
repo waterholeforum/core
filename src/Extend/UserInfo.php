@@ -3,11 +3,11 @@
 namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\OrderedList;
-use Waterhole\Views\Components\UserGroups;
-use Waterhole\Views\Components\UserJoined;
-use Waterhole\Views\Components\UserLastSeen;
-use Waterhole\Views\Components\UserLocation;
-use Waterhole\Views\Components\UserWebsite;
+use Waterhole\View\Components\UserGroups;
+use Waterhole\View\Components\UserJoined;
+use Waterhole\View\Components\UserLastSeen;
+use Waterhole\View\Components\UserLocation;
+use Waterhole\View\Components\UserWebsite;
 
 /**
  * A list of components to render in the user profile.

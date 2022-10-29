@@ -1,5 +1,8 @@
 import { Controller } from '@hotwired/stimulus';
 
+/**
+ * Controller to apply "active" nav link styles based on the scroll position.
+ */
 export default class extends Controller {
     static targets = ['container'];
 

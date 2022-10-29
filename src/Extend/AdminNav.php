@@ -3,8 +3,8 @@
 namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\OrderedList;
-use Waterhole\Views\Components\Admin\Version;
-use Waterhole\Views\Components\NavLink;
+use Waterhole\View\Components\Admin\Version;
+use Waterhole\View\Components\NavLink;
 
 /**
  * A list of components to render in the admin panel navigation menu.

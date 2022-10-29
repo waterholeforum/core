@@ -36,7 +36,7 @@
                     <div class="sidebar sidebar--sticky">
                         <x-waterhole::responsive-nav
                             :components="$channels
-                                ->map(fn($channel) => new Waterhole\Views\Components\NavLink(
+                                ->map(fn($channel) => new Waterhole\View\Components\NavLink(
                                     label: $channel->name,
                                     icon: $channel->icon,
                                     badge: $results->channelHits[$channel->id] ?? null,
@@ -60,7 +60,7 @@
 
                             <x-waterhole::selector
                                 placement="bottom-end"
-                                button-class="btn btn--small btn--transparent color-accent"
+                                button-class="btn btn--sm btn--transparent color-accent"
                                 :value="$currentSort"
                                 :options="$sorts"
                                 :label='fn($sort) => __("waterhole::forum.search-sort-$sort")'
@@ -103,7 +103,7 @@
             @else
                 <div class="placeholder">
                     <x-waterhole::icon
-                        class="placeholder__visual"
+                        class="placeholder__icon"
                         icon="tabler-search"
                     />
 

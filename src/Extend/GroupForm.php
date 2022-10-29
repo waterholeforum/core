@@ -14,18 +14,18 @@ abstract class GroupForm
 
 GroupForm::add(
     'details',
-    fn($group) => new FormSection(
+    fn($model) => new FormSection(
         __('waterhole::admin.group-details-title'),
-        GroupFormDetails::components(compact('group')),
+        GroupFormDetails::components(compact('model')),
     ),
     position: -20,
 );
 
 GroupForm::add(
     'permissions',
-    fn($group) => new FormSection(
+    fn($model) => new FormSection(
         __('waterhole::admin.group-permissions-title'),
-        [new GroupPermissions($group)],
+        [new GroupPermissions($model)],
         open: false,
     ),
     position: -10,

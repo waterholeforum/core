@@ -1,6 +1,6 @@
 <a
     href="{{ $post->url }}#comments"
-    class="btn btn--small btn--outline @if (!$post->comment_count) is-disabled @endif"
+    class="btn btn--sm btn--outline @if (!$post->comment_count) is-disabled @endif"
     data-action="post#appearAsRead"
 >
     <x-waterhole::icon icon="tabler-message-circle-2"/>

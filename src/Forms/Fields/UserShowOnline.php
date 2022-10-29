@@ -9,7 +9,7 @@ use Waterhole\Models\User;
 
 class UserShowOnline extends Field
 {
-    public function __construct(public ?User $user)
+    public function __construct(public ?User $model)
     {
     }
 
@@ -26,7 +26,7 @@ class UserShowOnline extends Field
                             type="checkbox"
                             name="show_online"
                             value="1"
-                            @checked($user?->show_online)
+                            @checked($model?->show_online)
                         >
                         {{ __('waterhole::user.show-online-label') }}
                     </label>
@@ -42,6 +42,6 @@ class UserShowOnline extends Field
 
     public function saving(FormRequest $request): void
     {
-        $this->user->show_online = $request->validated('show_online');
+        $this->model->show_online = $request->validated('show_online');
     }
 }

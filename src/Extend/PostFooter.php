@@ -3,9 +3,9 @@
 namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\OrderedList;
-use Waterhole\Views\Components\PostReactButton;
-use Waterhole\Views\Components\PostReactions;
-use Waterhole\Views\Components\PostReplies;
+use Waterhole\View\Components\PostReactButton;
+use Waterhole\View\Components\PostReactions;
+use Waterhole\View\Components\PostReplies;
 
 /**
  * A list of components to render in each post's footer.

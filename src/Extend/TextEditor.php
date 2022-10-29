@@ -3,7 +3,7 @@
 namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\OrderedList;
-use Waterhole\Views\Components\TextEditorButton;
+use Waterhole\View\Components\TextEditorButton;
 
 class TextEditor
 {

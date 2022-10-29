@@ -2,6 +2,11 @@ import { Controller } from '@hotwired/stimulus';
 import { renderStreamMessage } from '@hotwired/turbo';
 import { StreamElement } from '@hotwired/turbo/dist/types/elements';
 
+/**
+ * Controller for the post page.
+ *
+ * @internal
+ */
 export default class extends Controller {
     static targets = ['post'];
 
@@ -28,6 +33,9 @@ export default class extends Controller {
         }
     };
 
+    // If the post is deleted via an action, the returned Turbo Stream will try
+    // to remove it from the page. We will navigate back to the post feed before
+    // the stream is executed.
     private beforeStreamRender = (e: Event) => {
         const stream = e.target as StreamElement;
         if (stream.action === 'remove' && stream.target?.endsWith('post_' + this.idValue)) {

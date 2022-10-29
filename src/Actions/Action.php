@@ -68,7 +68,7 @@ abstract class Action
     /**
      * The name of an icon to be displayed in the action button.
      *
-     * @see \Waterhole\Views\Components\Icon
+     * @see \Waterhole\View\Components\Icon
      */
     public function icon(Collection $models): ?string
     {
@@ -164,7 +164,7 @@ abstract class Action
      * gets streams from the model's `streamRemoved` method if the action is
      * destructive, and the `streamUpdated` method if it isn't.
      *
-     * @see \Waterhole\Views\TurboStream
+     * @see \Waterhole\View\TurboStream
      */
     public function stream(Model $model): array
     {

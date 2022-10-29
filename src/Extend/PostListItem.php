@@ -3,9 +3,9 @@
 namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\OrderedList;
-use Waterhole\Views\Components\PostReactionsCondensed;
-use Waterhole\Views\Components\PostReplies;
-use Waterhole\Views\Components\PostSummary;
+use Waterhole\View\Components\PostReactionsCondensed;
+use Waterhole\View\Components\PostReplies;
+use Waterhole\View\Components\PostSummary;
 
 /**
  * A list of components to render for each post in the "list" layout.

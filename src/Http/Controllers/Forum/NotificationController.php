@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Notification;
-use Waterhole\Views\Components\Notification as NotificationComponent;
+use Waterhole\View\Components\Notification as NotificationComponent;
 
 /**
  * Controller for notification management.

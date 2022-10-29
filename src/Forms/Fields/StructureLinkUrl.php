@@ -9,7 +9,7 @@ use Waterhole\Models\StructureLink;
 
 class StructureLinkUrl extends Field
 {
-    public function __construct(public ?StructureLink $link)
+    public function __construct(public ?StructureLink $model)
     {
     }
 
@@ -25,7 +25,7 @@ class StructureLinkUrl extends Field
                     name="url"
                     id="{{ $component->id }}"
                     class="input"
-                    value="{{ old('url', $link->href ?? null) }}"
+                    value="{{ old('url', $model->href ?? null) }}"
                 >
             </x-waterhole::field>
         blade;
@@ -38,6 +38,6 @@ class StructureLinkUrl extends Field
 
     public function saving(FormRequest $request): void
     {
-        $this->link->href = $request->validated('url');
+        $this->model->href = $request->validated('url');
     }
 }

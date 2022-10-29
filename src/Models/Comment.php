@@ -15,8 +15,8 @@ use Waterhole\Models\Concerns\NotificationContent;
 use Waterhole\Models\Concerns\ValidatesData;
 use Waterhole\Notifications\Mention;
 use Waterhole\Scopes\CommentIndexScope;
-use Waterhole\Views\Components;
-use Waterhole\Views\TurboStream;
+use Waterhole\View\Components;
+use Waterhole\View\TurboStream;
 
 use function Tonysm\TurboLaravel\dom_id;
 

@@ -10,7 +10,7 @@ use Waterhole\Models\Channel;
 
 class ChannelSlug extends Field
 {
-    public function __construct(public ?Channel $channel)
+    public function __construct(public ?Channel $model)
     {
     }
 
@@ -25,14 +25,14 @@ class ChannelSlug extends Field
                     id="{{ $component->id }}"
                     name="slug"
                     type="text"
-                    value="{{ old('slug', $channel->slug ?? '') }}"
+                    value="{{ old('slug', $model->slug ?? '') }}"
                     class="input"
                     data-action="slugger#updateSlug"
                     data-slugger-target="slug"
                 >
                 <p class="field__description">
                     {{ __('waterhole::admin.channel-slug-url-label') }}
-                    {!! preg_replace('~^https?://~', '', str_replace('*', '<span data-slugger-target="mirror">'.old('slug', $channel->slug ?? '').'</span>', route('waterhole.channels.show', ['channel' => '*']))) !!}
+                    {!! preg_replace('~^https?://~', '', str_replace('*', '<span data-slugger-target="mirror">'.old('slug', $model->slug ?? '').'</span>', route('waterhole.channels.show', ['channel' => '*']))) !!}
                 </p>
             </x-waterhole::field>
         blade;
@@ -45,13 +45,13 @@ class ChannelSlug extends Field
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('channels')->ignore($this->channel),
+                Rule::unique('channels')->ignore($this->model),
             ],
         ]);
     }
 
     public function saving(FormRequest $request): void
     {
-        $this->channel->slug = $request->validated('slug');
+        $this->model->slug = $request->validated('slug');
     }
 }

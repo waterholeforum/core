@@ -8,8 +8,8 @@ use Illuminate\Validation\ValidationException;
 use Tonysm\TurboLaravel\Http\TurboResponseFactory;
 use Waterhole\Actions\Action;
 use Waterhole\Extend;
-use Waterhole\Views\Components\Alert;
-use Waterhole\Views\TurboStream;
+use Waterhole\View\Components\Alert;
+use Waterhole\View\TurboStream;
 
 /**
  * Controller for endpoints related to the Actions system.

@@ -16,7 +16,7 @@
             >
                 @csrf
 
-                <div class="form">
+                <div class="stack gap-xl">
                     @section('email')
                         <x-waterhole::field
                             name="email"
@@ -49,21 +49,15 @@
                             >
                         </x-waterhole::field>
 
-                        <div class="row gap-sm wrap">
-                            <div>
-                                <label for="remember_me" class="choice">
-                                    <input id="remember_me" type="checkbox" name="remember">
-                                    {{ __('waterhole::auth.remember-me-label') }}
-                                </label>
-                            </div>
+                        <div class="row justify-between gap-sm wrap">
+                            <label for="remember_me" class="choice">
+                                <input id="remember_me" type="checkbox" name="remember">
+                                {{ __('waterhole::auth.remember-me-label') }}
+                            </label>
 
-                            <div class="grow"></div>
-
-                            <div>
-                                <a href="{{ route('waterhole.forgot-password') }}" data-turbo="true">
-                                    {{ __('waterhole::auth.forgot-password-link') }}
-                                </a>
-                            </div>
+                            <a href="{{ route('waterhole.forgot-password') }}" data-turbo="true">
+                                {{ __('waterhole::auth.forgot-password-link') }}
+                            </a>
                         </div>
                     @endsection
 
@@ -82,7 +76,7 @@
                         </p>
                     @endsection
 
-                    @components(Waterhole\Extend\LoginForm::build())
+                    @components(Waterhole\Extend\LoginForm::components())
                 </div>
             </form>
         </x-waterhole::dialog>

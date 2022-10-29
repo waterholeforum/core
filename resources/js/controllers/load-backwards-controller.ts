@@ -1,5 +1,9 @@
 import { Controller } from '@hotwired/stimulus';
 
+/**
+ * Controller that will anchor the scroll position to the bottom of an element
+ * during a Turbo Frame load.
+ */
 export default class extends Controller {
     anchor?: HTMLElement;
     top?: number;

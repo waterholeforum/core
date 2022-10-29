@@ -14,11 +14,13 @@
     border-bottom: 2px solid;
   }
 
-  &::before {
-    margin-right: 5px;
-  }
+  &:not(:empty) {
+    &::before {
+      margin-right: 5px;
+    }
 
-  &::after {
-    margin-left: 5px;
+    &::after {
+      margin-left: 5px;
+    }
   }
 }

@@ -9,7 +9,7 @@ use Waterhole\Models\User;
 
 class UserBio extends Field
 {
-    public function __construct(public ?User $user)
+    public function __construct(public ?User $model)
     {
     }
 
@@ -24,7 +24,7 @@ class UserBio extends Field
                         name="bio"
                         class="input block"
                         maxlength="255"
-                    >{{ old('bio', $user?->bio) }}</textarea>
+                    >{{ old('bio', $model?->bio) }}</textarea>
                     <p class="field__description">
                         {{ __('waterhole::user.bio-description') }}
                     </p>
@@ -40,6 +40,6 @@ class UserBio extends Field
 
     public function saving(FormRequest $request): void
     {
-        $this->user->bio = $request->validated('bio');
+        $this->model->bio = $request->validated('bio');
     }
 }

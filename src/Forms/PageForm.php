@@ -14,6 +14,6 @@ class PageForm extends Form
 
     public function fields(): array
     {
-        return Extend\PageForm::components(['page' => $this->model]);
+        return Extend\PageForm::components(['model' => $this->model]);
     }
 }

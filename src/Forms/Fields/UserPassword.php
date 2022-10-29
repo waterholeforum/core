@@ -11,7 +11,7 @@ use Waterhole\Models\User;
 
 class UserPassword extends Field
 {
-    public function __construct(public User $user)
+    public function __construct(public User $model)
     {
     }
 
@@ -22,7 +22,7 @@ class UserPassword extends Field
                 name="password"
                 :label="__('waterhole::admin.user-password-label')"
             >
-                @if ($user->exists)
+                @if ($model->exists)
                     <div data-controller="reveal" class="stack gap-sm">
                         <label class="choice">
                             <input type="checkbox" data-reveal-target="if">
@@ -36,7 +36,7 @@ class UserPassword extends Field
                             id="{{ $component->id }}"
                             class="input"
                         >
-                @if ($user->exists)
+                @if ($model->exists)
                     </div>
                 @endif
             </x-waterhole::field>
@@ -46,14 +46,14 @@ class UserPassword extends Field
     public function validating(Validator $validator): void
     {
         $validator->addRules([
-            'password' => [$this->user->exists ? 'nullable' : 'required', Password::defaults()],
+            'password' => [$this->model->exists ? 'nullable' : 'required', Password::defaults()],
         ]);
     }
 
     public function saving(FormRequest $request): void
     {
         if ($password = $request->validated('password')) {
-            $this->user->password = Hash::make($password);
+            $this->model->password = Hash::make($password);
         }
     }
 }

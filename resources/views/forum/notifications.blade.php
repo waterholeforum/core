@@ -32,7 +32,7 @@
                 </x-waterhole::infinite-scroll>
             @else
                 <div class="placeholder">
-                    <x-waterhole::icon icon="tabler-bell" class="placeholder__visual"/>
+                    <x-waterhole::icon icon="tabler-bell" class="placeholder__icon"/>
                     <p class="h4">{{ __('waterhole::notifications.empty-message') }}</p>
                 </div>
             @endif

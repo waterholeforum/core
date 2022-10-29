@@ -20,8 +20,6 @@ function translate(message: string, { activeItem, overIndex, container }: Sortab
 
 /**
  * A controller to hook up an inclusive-sort instance.
- *
- *
  */
 export default class extends Controller {
     static targets = ['container', 'orderInput'];

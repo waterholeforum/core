@@ -8,7 +8,7 @@
     data-controller="comment"
     tabindex="-1"
 >
-    <div class="comment__main has-controls">
+    <div class="comment__main">
         <header class="comment__header">
             <x-waterhole::attribution
                 :user="$comment->user"
@@ -45,7 +45,7 @@
 
                     <ui-tooltip
                         placement="top-start"
-                        tooltip-class="tooltip comment__parent-preview"
+                        tooltip-class="tooltip comment__parent-tooltip"
                         data-comment-target="parentTooltip"
                         hidden
                     >
@@ -65,10 +65,20 @@
         </header>
 
         <div
-            class="comment__body content"
+            class="comment__body content @if ($truncate) content--compact @endif"
             data-controller="quotable"
         >
-            {{ Waterhole\emojify($comment->body_html) }}
+            @if ($truncate)
+                <x-waterhole::truncate :html="$comment->body_html">
+                    <p>
+                        <a href="{{ $comment->post_url }}" class="weight-bold">
+                            {{ __('waterhole::forum.post-read-more-link') }}
+                        </a>
+                    </p>
+                </x-waterhole::truncate>
+            @else
+                {{ Waterhole\emojify($comment->body_html) }}
+            @endif
 
             @can('post.comment', $comment->post)
                 <a
@@ -76,7 +86,7 @@
                         'post' => $comment->post,
                         'parent' => $comment->id
                     ]) }}"
-                    class="quotable-button btn bg-emphasis"
+                    class="quotable-button btn bg-emphasis no-select"
                     data-turbo-frame="@domid($comment->post, 'comment_parent')"
                     data-quotable-target="button"
                     data-action="quotable#quoteSelectedText"
@@ -94,17 +104,17 @@
             <x-waterhole::action-menu
                 :for="$comment"
                 placement="bottom-end"
-                class="control"
             />
         </footer>
     </div>
 
     <turbo-frame
         id="@domid($comment, 'replies')"
-        @unless ($withReplies) hidden @endunless>
+        @unless ($withReplies) hidden @endunless
+    >
         @if ($withReplies)
             @if (count($comment->children))
-                <ol role="list" tabindex="-1" class="comment__replies">
+                <ol role="list" tabindex="-1" class="comment__replies comment-list">
                     @foreach ($comment->children as $child)
                         <li>
                             <x-waterhole::comment-frame :comment="$child"/>
@@ -113,7 +123,7 @@
                 </ol>
             @endif
         @else
-            <div class="loading"></div>
+            <x-waterhole::spinner class="spinner--block"/>
         @endif
     </turbo-frame>
 </article>

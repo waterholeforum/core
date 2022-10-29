@@ -1,11 +1,11 @@
 <article {{ $attributes->class('post-full with-sidebar') }}>
-    <div class="post-full__main">
-        <header class="post-header">
+    <div class="post-full__main section stack gap-xl">
+        <header class="post-header stack gap-xl">
             @components(Waterhole\Extend\PostHeader::build(), compact('post'))
         </header>
 
         <div
-            class="post-body content"
+            class="post-body content text-md"
             data-controller="quotable"
         >
             {{ Waterhole\emojify($post->body_html) }}
@@ -13,7 +13,7 @@
             @can('post.comment', $post)
                 <a
                     href="{{ route('waterhole.posts.comments.create', compact('post')) }}"
-                    class="quotable-button btn bg-emphasis"
+                    class="quotable-button btn bg-emphasis no-select"
                     data-turbo-frame="@domid($post, 'comment_parent')"
                     data-quotable-target="button"
                     data-action="quotable#quoteSelectedText"

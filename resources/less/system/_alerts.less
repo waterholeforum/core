@@ -41,13 +41,12 @@
   }
 
   @media (min-width: (@breakpoint-sm + 1)) {
+    > * {
+      max-width: 50ch;
+    }
+
     > .enter-from {
       transform: translateY(-100%);
     }
   }
-}
-
-.alerts--bottom {
-  top: auto;
-  bottom: 0;
 }

@@ -14,7 +14,7 @@
         <ul class="card" role="list">
             @foreach ($groups as $group)
                 <li class="card__row row gap-md">
-                    <x-waterhole::group-label
+                    <x-waterhole::group-badge
                         :group="$group"
                         class="text-xs"
                     />

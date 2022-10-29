@@ -4,13 +4,14 @@ namespace Waterhole\Providers;
 
 use Illuminate\Console\Application as Artisan;
 use Illuminate\Support\ServiceProvider;
-use Waterhole\Console\Commands;
+use Waterhole\Console;
 
 class ConsoleServiceProvider extends ServiceProvider
 {
     protected array $commands = [
-        Commands\FormatterClearCommand::class,
-        Commands\InstallCommand::class,
+        Console\FormatterClearCommand::class,
+        Console\InstallCommand::class,
+        Console\MakeExtensionCommand::class,
     ];
 
     public function boot()

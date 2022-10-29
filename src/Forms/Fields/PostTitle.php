@@ -9,7 +9,7 @@ use Waterhole\Models\Post;
 
 class PostTitle extends Field
 {
-    public function __construct(public ?Post $post)
+    public function __construct(public ?Post $model)
     {
     }
 
@@ -24,7 +24,7 @@ class PostTitle extends Field
                     id="{{ $component->id }}"
                     name="title"
                     type="text"
-                    value="{{ old('title', $post->title ?? '') }}"
+                    value="{{ old('title', $model->title ?? '') }}"
                     class="input"
                 >
             </x-waterhole::field>
@@ -38,6 +38,6 @@ class PostTitle extends Field
 
     public function saving(FormRequest $request): void
     {
-        $this->post->title = $request->validated('title');
+        $this->model->title = $request->validated('title');
     }
 }

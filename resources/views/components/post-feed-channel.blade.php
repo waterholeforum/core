@@ -1,8 +1,5 @@
 <div class="card card__body channel-card">
-    <div
-        class="channel-card__controls row gap-xs justify-end"
-        style="float: right; margin-bottom: -50%; position: relative"
-    >
+    <div class="channel-card__controls row gap-xs justify-end">
         <x-waterhole::follow-button :followable="$channel"/>
 
         <x-waterhole::action-menu
@@ -20,10 +17,11 @@
     <div class="row wrap gap-md align-start">
         <x-waterhole::icon :icon="$channel->icon" class="channel-card__icon"/>
 
-        <div class="channel-card__info">
+        <div class="channel-card__info stack gap-md">
             <h2 class="h3">{{ $channel->name }}</h2>
+
             @if ($channel->description)
-                <p>{{ $channel->description }}</p>
+                <p class="content">{{ $channel->description }}</p>
             @endif
         </div>
     </div>

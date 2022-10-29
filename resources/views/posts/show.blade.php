@@ -27,6 +27,7 @@
                         :paginator="$comments"
                         divider
                         endless
+                        class="comment-list"
                     >
                         @foreach ($comments as $i => $comment)
                             @if ($lastReadAt && $comment->created_at > $lastReadAt)
@@ -38,7 +39,6 @@
                                     >{{ __('waterhole::forum.comments-unread-heading') }}</div>
                                 @endonce
                             @endif
-
 
                             <turbo-frame id="@domid($comment)">
                                 <x-waterhole::comment-full

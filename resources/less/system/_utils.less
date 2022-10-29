@@ -8,21 +8,6 @@
   width: 1px;
 }
 
-.with-icon {
-  display: inline-flex;
-  align-items: baseline;
-
-  > .icon {
-    align-self: center;
-    margin-top: -1px;
-    margin-right: 0.2em;
-
-    &:not(:first-child) {
-      margin-left: 0.2em;
-    }
-  }
-}
-
 // Flexbox and Grid utilities
 
 .justify-center {
@@ -56,7 +41,7 @@
 }
 
 @media (max-width: (@breakpoint-xs - 1)) {
-  .order-end-xs {
+  .break-xs {
     order: 999;
     width: 100%;
     flex-grow: 1;
@@ -71,12 +56,6 @@
 
 .nowrap {
   white-space: nowrap;
-}
-
-.hide-icon {
-  .icon {
-    display: none;
-  }
 }
 
 .block {
@@ -258,6 +237,21 @@
   }
 }
 
+.animate-appear {
+  animation: appear 0.5s;
+}
+
+@keyframes appear {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+
 /*
 |--------------------------------------------------------------------------
 | Background Color
@@ -385,22 +379,6 @@
 
 .full-height {
   height: 100%;
-}
-
-.block-link {
-  display: block;
-  color: inherit;
-  text-decoration: none !important;
-  border-radius: var(--radius);
-  padding: var(--space-md);
-
-  &:hover {
-    background: var(--color-fill);
-  }
-
-  &:active {
-    filter: var(--filter-active);
-  }
 }
 
 .row {
@@ -571,4 +549,61 @@
 
 .weight-bold {
   font-weight: var(--weight-bold);
+}
+
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+@media (max-width: @breakpoint-xs) {
+  .hide-xs {
+    display: none !important;
+  }
+}
+
+@media (min-width: (@breakpoint-xs + 1)) {
+  .hide-sm-up {
+    display: none !important;
+  }
+}
+
+@media (max-width: @breakpoint-sm) {
+  .hide-sm-down {
+    display: none !important;
+  }
+}
+
+@media (min-width: (@breakpoint-sm + 1)) {
+  .hide-md-up {
+    display: none !important;
+  }
+}
+
+@media (max-width: @breakpoint-md) {
+  .hide-md-down {
+    display: none !important;
+  }
+}
+
+@media (min-width: (@breakpoint-md + 1)) {
+  .hide-lg-up {
+    display: none !important;
+  }
+}
+
+@media (max-width: @breakpoint-lg) {
+  .hide-lg-down {
+    display: none !important;
+  }
+}
+
+@media (min-width: (@breakpoint-lg + 1)) {
+  .hide-xl {
+    display: none !important;
+  }
+}
+
+.measure {
+  max-width: var(--measure);
 }

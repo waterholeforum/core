@@ -10,7 +10,7 @@ use Waterhole\Models\User;
 
 class UserName extends Field
 {
-    public function __construct(public ?User $user)
+    public function __construct(public ?User $model)
     {
     }
 
@@ -26,7 +26,7 @@ class UserName extends Field
                     name="name"
                     id="{{ $component->id }}"
                     class="input"
-                    value="{{ old('name', $user->name ?? null) }}"
+                    value="{{ old('name', $model->name ?? null) }}"
                     autofocus
                 >
             </x-waterhole::field>
@@ -42,6 +42,6 @@ class UserName extends Field
 
     public function saving(FormRequest $request): void
     {
-        $this->user->name = $request->validated('name');
+        $this->model->name = $request->validated('name');
     }
 }

@@ -9,7 +9,7 @@ use Waterhole\Models\Channel;
 
 class ChannelInstructions extends Field
 {
-    public function __construct(public ?Channel $channel)
+    public function __construct(public ?Channel $model)
     {
     }
 
@@ -23,7 +23,7 @@ class ChannelInstructions extends Field
                 <x-waterhole::text-editor
                     name="instructions"
                     :id="$component->id"
-                    :value="old('instructions', $channel->instructions ?? '')"
+                    :value="old('instructions', $model->instructions ?? '')"
                     class="input"
                 />
                 <p class="field__description">
@@ -40,6 +40,6 @@ class ChannelInstructions extends Field
 
     public function saving(FormRequest $request): void
     {
-        $this->channel->instructions = $request->validated('instructions');
+        $this->model->instructions = $request->validated('instructions');
     }
 }

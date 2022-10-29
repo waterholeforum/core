@@ -1,6 +1,6 @@
 <a
     href="{{ route('waterhole.search') }}"
-    class="btn btn--icon btn--transparent header-search__button"
+    class="btn btn--icon btn--transparent header-search__button hide-md-up"
 >
     <x-waterhole::icon icon="tabler-search"/>
     <ui-tooltip>{{ __('waterhole::forum.search-button') }}</ui-tooltip>
@@ -8,7 +8,7 @@
 
 <form
     action="{{ route('waterhole.search') }}"
-    class="input-container header-search__form"
+    class="input-container header-search__form hide-sm-down"
     style="margin-inline: var(--space-xs)"
 >
     <x-waterhole::icon
@@ -28,7 +28,7 @@
     <div class="hide-if-invalid">
         <button
             type="submit"
-            class="btn btn--icon btn--transparent btn--small color-accent"
+            class="btn btn--icon btn--transparent btn--sm color-accent"
             aria-label="{{ __('waterhole::forum.search-button') }}"
         >
             <x-waterhole::icon icon="tabler-arrow-right"/>

@@ -15,7 +15,7 @@
             target="_top"
             data-controller="load-backwards"
         >
-            <div class="loading"></div>
+            <x-waterhole::spinner class="spinner--block"/>
         </turbo-frame>
     @endif
 
@@ -39,7 +39,7 @@
             @endif
         >
             @if ($paginator->onFirstPage() || $endless)
-                <div class="loading"></div>
+                <x-waterhole::spinner class="spinner--block"/>
             @else
                 <div class="text-center" style="padding: var(--space-md)">
                     <a

@@ -9,8 +9,8 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Neves\Events\Contracts\TransactionalEvent;
 use Waterhole\Models\Comment;
-use Waterhole\Views\Components\CommentFrame;
-use Waterhole\Views\TurboStream;
+use Waterhole\View\Components\CommentFrame;
+use Waterhole\View\TurboStream;
 
 class NewComment implements ShouldBroadcast, TransactionalEvent
 {

@@ -3,9 +3,9 @@
 namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\OrderedList;
-use Waterhole\Views\Components\PostAttribution;
-use Waterhole\Views\Components\PostChannel;
-use Waterhole\Views\Components\PostTitle;
+use Waterhole\View\Components\PostAttribution;
+use Waterhole\View\Components\PostChannel;
+use Waterhole\View\Components\PostTitle;
 
 /**
  * A list of components to render in the post page header.

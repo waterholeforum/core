@@ -6,11 +6,11 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 use Waterhole\Forms\Field;
 use Waterhole\Models\Group;
-use Waterhole\Views\Components\Admin\IconPicker;
+use Waterhole\View\Components\Admin\IconPicker;
 
 class GroupAppearance extends Field
 {
-    public function __construct(public ?Group $group)
+    public function __construct(public ?Group $model)
     {
     }
 
@@ -29,7 +29,7 @@ class GroupAppearance extends Field
                                 type="checkbox"
                                 name="is_public"
                                 value="1"
-                                @checked(old('is_public', $group->is_public ?? null))
+                                @checked(old('is_public', $model->is_public ?? null))
                             >
                             {{ __('waterhole::admin.group-show-as-badge-label') }}
                         </label>
@@ -43,7 +43,7 @@ class GroupAppearance extends Field
                         <x-waterhole::admin.color-picker
                             name="color"
                             id="{{ $component->id }}"
-                            value="{{ old('color', $group->color ?? null) }}"
+                            value="{{ old('color', $model->color ?? null) }}"
                         />
                     </x-waterhole::field>
 
@@ -54,7 +54,7 @@ class GroupAppearance extends Field
                     >
                         <x-waterhole::admin.icon-picker
                             name="icon"
-                            :value="old('icon', $group->icon ?? null)"
+                            :value="old('icon', $model->icon ?? null)"
                         />
                     </x-waterhole::field>
                 </div>
@@ -74,11 +74,11 @@ class GroupAppearance extends Field
 
     public function saving(FormRequest $request): void
     {
-        $this->group->name = $request->validated('name');
+        $this->model->name = $request->validated('name');
     }
 
     public function saved(FormRequest $request): void
     {
-        $this->group->saveIcon($request->validated('icon'));
+        $this->model->saveIcon($request->validated('icon'));
     }
 }

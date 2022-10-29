@@ -31,10 +31,8 @@
         @csrf
 
         <div
-            class="composer__handle"
-            data-composer-target="handle"
+            class="composer__handle js-only"
             data-action="mousedown->composer#startResize"
-            hidden
         ></div>
 
         <div class="composer__toolbar row gap-xs">
@@ -63,7 +61,7 @@
                     </a>
 
                     <button
-                        class="btn btn--small btn--transparent btn--icon"
+                        class="btn btn--sm btn--transparent btn--icon"
                         name="parent_id"
                     >
                         <x-waterhole::icon icon="tabler-x"/>

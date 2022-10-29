@@ -8,8 +8,8 @@ use Waterhole\Models\Comment;
 use Waterhole\Models\Model;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
-use Waterhole\Views\Components\Reactions;
-use Waterhole\Views\TurboStream;
+use Waterhole\View\Components\Reactions;
+use Waterhole\View\TurboStream;
 
 class Like extends Action
 {
