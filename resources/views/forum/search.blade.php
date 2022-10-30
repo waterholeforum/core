@@ -72,25 +72,23 @@
                             <ul role="list" class="post-list search-results">
                                 @foreach ($hits as $hit)
                                     <li>
-                                        <div class="post-list-item">
-                                            <div class="post-summary">
-                                                <x-waterhole::avatar
-                                                    :user="$hit->post->user"
-                                                    class="post-summary__avatar"
-                                                />
+                                        <div class="post-summary row gap-md align-start">
+                                            <x-waterhole::avatar
+                                                :user="$hit->post->user"
+                                                class="post-summary__avatar no-shrink"
+                                            />
 
-                                                <div class="post-summary__content stack gap-xs">
-                                                    <h3 class="post-summary__title h4">
-                                                        <a href="{{ $hit->post->url }}">{{ $hit->title }}</a>
-                                                    </h3>
+                                            <div class="post-summary__content grow stack gap-xxs">
+                                                <h3 class="post-summary__title h4 weight-normal">
+                                                    <a href="{{ $hit->post->url }}">{{ $hit->title }}</a>
+                                                </h3>
 
-                                                    <div class="post-summary__info">
-                                                        @components(Waterhole\Extend\PostInfo::build(), ['post' => $hit->post])
-                                                    </div>
+                                                <div class="post-summary__info row wrap gap-row-xxs gap-col-sm text-xxs color-muted">
+                                                    @components(Waterhole\Extend\PostInfo::build(), ['post' => $hit->post])
+                                                </div>
 
-                                                    <div class="content color-muted text-xs">
-                                                        {{ $hit->body }}
-                                                    </div>
+                                                <div class="content text-xs">
+                                                    {{ $hit->body }}
                                                 </div>
                                             </div>
                                         </div>

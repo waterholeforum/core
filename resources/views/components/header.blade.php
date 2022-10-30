@@ -5,7 +5,7 @@
     data-controller="watch-sticky"
     data-page-target="header"
 >
-    <div class="container">
+    <div class="container row">
         @components(Waterhole\Extend\Header::build())
     </div>
 </header>

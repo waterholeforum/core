@@ -29,8 +29,7 @@
 
 // Transparent
 
-:not([open])
-  > .btn--transparent:not(:hover, .is-hovered, :focus, .is-focused, [selected='true'], [aria-pressed='true']),
+:not([open]) > .btn--transparent:not(:hover, .is-hovered, :focus, .is-focused),
 .btn--transparent:is(:disabled, .is-disabled),
 .btn--transparent:not(button, a, [role='button'], [role='link']) {
   background: transparent;
@@ -83,8 +82,11 @@
 
 // Active state
 
-.btn.is-active {
-  color: var(--color-accent) !important;
-  background: var(--color-accent-light) !important;
-  border-color: transparent;
+.btn {
+  &.is-active,
+  &[aria-pressed='true'] {
+    color: var(--color-accent) !important;
+    background: var(--color-accent-light) !important;
+    border-color: transparent;
+  }
 }

@@ -1,15 +1,13 @@
 <div
     data-controller="text-editor"
-    {{ $attributes->class('text-editor') }}
+    {{ $attributes->class('text-editor stack overlay-container') }}
 >
-    <ui-toolbar class="row scrollable text-editor__toolbar js-only">
+    <ui-toolbar class="row scrollable text-editor__toolbar js-only text-xxs">
         @components(Waterhole\Extend\TextEditor::build(), compact('id'))
-
-        <div class="grow"></div>
 
         <button
             type="button"
-            class="btn btn--transparent text-editor__preview-button"
+            class="btn btn--transparent text-editor__preview-button push-end"
             aria-pressed="false"
             data-action="text-editor#togglePreview"
             data-text-editor-target="previewButton"
@@ -18,23 +16,23 @@
         </button>
     </ui-toolbar>
 
-    <div class="text-editor__content">
+    <div class="text-editor__content grow stack">
         <text-expander
             keys="@"
             data-text-editor-target="expander"
-            class="text-editor__expander"
+            class="text-editor__expander grow stack"
         >
             <textarea
                 name="{{ $name }}"
                 id="{{ $id }}"
-                class="text-editor__input content js-session-resumable"
+                class="text-editor__input grow content"
                 data-text-editor-target="input"
                 placeholder="{{ $placeholder }}"
             >{{ $value }}</textarea>
         </text-expander>
 
         <div
-            class="text-editor__preview content"
+            class="text-editor__preview content overlay"
             data-text-editor-target="preview"
             hidden
         ></div>

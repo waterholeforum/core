@@ -19,16 +19,14 @@
   }
 }
 
-.comment__main {
-  > * + * {
-    margin-top: var(--space-md);
-  }
+// We can't use our usual stack/gap utils here because the attribution avatar
+// is floated to the left - the following flexbox item would clear the float.
+.comment__main > * + * {
+  margin-top: var(--space-md);
 }
 
-.comment__header {
-  > * + * {
-    margin-top: var(--space-xs);
-  }
+.comment__header > * + * {
+  margin-top: var(--space-xs);
 }
 
 // The "in reply to" bit in the comment header
@@ -49,19 +47,14 @@
   text-align: left;
   padding: var(--space-md);
 
-  .comment {
-    > * + * {
-      margin-top: var(--space-xs);
-    }
+  .comment > * + * {
+    margin-top: var(--space-xs);
   }
 }
 
 .comment__replies {
   margin-top: var(--space-md);
-  border: 1px solid var(--color-stroke);
   padding-inline: var(--space-md);
-  border-radius: var(--radius);
-  font-size: var(--text-xs);
 
   > :first-child > * > .comment {
     border-top: 0;

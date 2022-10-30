@@ -1,11 +1,12 @@
 <article
-    {{ $attributes->class(['post-list-item', Waterhole\Extend\PostClasses::build($post)]) }}
+    {{ $attributes->class(['post-list-item row gap-xs', Waterhole\Extend\PostClasses::build($post)]) }}
     data-controller="post"
 >
-    <div class="post-list-item__content row gap-sm">
+    <div class="post-list-item__content grow row gap-xs">
         @components(Waterhole\Extend\PostListItem::build(), compact('post'))
     </div>
-    <div class="post-list-item__controls">
+
+    <div class="post-list-item__controls hide-xs">
         <x-waterhole::post-actions :post="$post"/>
     </div>
 </article>

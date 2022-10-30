@@ -29,6 +29,12 @@
   color: var(--color-text);
   border-radius: var(--radius);
 
+  > * {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
   > .icon {
     font-size: 120%;
   }
@@ -58,6 +64,15 @@
       background: inherit;
       color: inherit;
     }
+  }
+}
+
+@media (max-width: (@breakpoint-sm - 1)) {
+  // Allow the responsive nav button to shrink down to 10ch before wrapping
+  .responsive-nav {
+    flex: 1 1 10ch;
+    min-width: 0;
+    max-width: fit-content;
   }
 }
 

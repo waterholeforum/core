@@ -1,5 +1,5 @@
 @auth
-    <ui-popup placement="bottom-end" style="margin-inline: var(--space-xs)">
+    <ui-popup placement="bottom-end" class="header-user">
         <a href="{{ Auth::user()->url }}" class="btn btn--icon">
             <x-waterhole::avatar :user="Auth::user()"/>
             <ui-tooltip>{{ Auth::user()->name }}</ui-tooltip>

@@ -11,6 +11,10 @@ html {
   }
 }
 
+* {
+  overflow-wrap: anywhere;
+}
+
 a,
 .link {
   color: var(--color-accent);
@@ -31,7 +35,7 @@ hr {
 mark {
   background: transparent;
   font-weight: var(--weight-bold);
-  color: var(--color-text);
+  color: inherit;
 }
 
 :focus {

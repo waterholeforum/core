@@ -1,5 +1,5 @@
-<div {{ $attributes->class('post-summary') }}>
-    <x-waterhole::user-link :user="$post->user" class="post-summary__avatar">
+<div {{ $attributes->class('post-summary row gap-md align-start') }}>
+    <x-waterhole::user-link :user="$post->user" class="post-summary__avatar no-shrink">
         <x-waterhole::avatar :user="$post->user"/>
         <ui-tooltip>
             {{ Waterhole\username($post->user) }}
@@ -8,14 +8,16 @@
         </ui-tooltip>
     </x-waterhole::user-link>
 
-    <div class="post-summary__content">
-        <h3 class="post-summary__title h4">
+    <div class="post-summary__content grow stack gap-xxs">
+        <h3 class="post-summary__title h4 weight-normal">
             <a
                 href="{{ $post->isUnread() ? $post->unread_url : $post->url }}"
                 data-action="post#appearAsRead"
+                class="color-inherit"
             >{{ Waterhole\emojify($post->title) }}</a>
         </h3>
-        <div class="post-summary__info">
+
+        <div class="post-summary__info row wrap gap-row-xxs gap-col-sm text-xxs color-muted">
             @components(Waterhole\Extend\PostInfo::build(), compact('post'))
         </div>
     </div>

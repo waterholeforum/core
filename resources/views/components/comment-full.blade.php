@@ -114,7 +114,7 @@
     >
         @if ($withReplies)
             @if (count($comment->children))
-                <ol role="list" tabindex="-1" class="comment__replies comment-list">
+                <ol role="list" tabindex="-1" class="comment__replies comment-list card text-xs">
                     @foreach ($comment->children as $child)
                         <li>
                             <x-waterhole::comment-frame :comment="$child"/>

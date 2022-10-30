@@ -8018,7 +8018,7 @@ document.addEventListener('turbo:before-fetch-response', function (e) {
           case 0:
             response = e.detail.fetchResponse.response;
 
-            if (!response.ok) {
+            if (!(response.ok || response.status === 422)) {
               _context.next = 3;
               break;
             }

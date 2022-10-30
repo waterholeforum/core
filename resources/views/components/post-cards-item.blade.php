@@ -1,8 +1,8 @@
 <article
-    {{ $attributes->class(['card card__body post-card', Waterhole\Extend\PostClasses::build($post)]) }}
+    {{ $attributes->class(['card card__body post-card stack gap-lg', Waterhole\Extend\PostClasses::build($post)]) }}
     data-controller="post"
 >
-    <header class="post-card__header">
+    <header class="post-card__header row justify-between align-start">
         <x-waterhole::post-summary :post="$post"/>
         <x-waterhole::post-actions :post="$post"/>
     </header>

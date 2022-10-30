@@ -1,32 +1,25 @@
 .text-editor {
-  display: flex;
-  flex-direction: column;
   padding: 0;
   height: auto;
   min-height: 300px;
-  position: relative;
 }
 
 .text-editor__toolbar {
   padding: var(--space-xxs);
   padding-left: var(--space-xs);
-  font-size: 80%;
 
   .is-previewing & {
-    justify-content: flex-end;
     z-index: 1;
+    pointer-events: none;
+
+    > * {
+      pointer-events: all;
+    }
 
     > :not(.text-editor__preview-button) {
       display: none;
     }
   }
-}
-
-.text-editor__content,
-.text-editor__expander {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
 }
 
 .text-editor__expander {
@@ -35,7 +28,6 @@
 
 .text-editor__input {
   width: 100%;
-  flex-grow: 1;
   outline: none;
   padding: var(--space-xs) var(--space-md);
   resize: vertical;
@@ -43,7 +35,6 @@
   background: transparent;
   max-height: 70vh;
   position: relative;
-  color: var(--color-text);
 
   &[hidden] {
     display: initial !important;
@@ -52,11 +43,6 @@
 }
 
 .text-editor__preview {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
   overflow: auto;
   padding: var(--space-md);
 }

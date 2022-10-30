@@ -15,11 +15,7 @@
             <section class="post-page__comments with-sidebar">
                 <div class="stack gap-lg">
 
-                    <h2
-                        class="h3"
-                        id="comments"
-                        style="padding-top: var(--space-lg); margin-top: calc(-1 * var(--space-lg))"
-                    >
+                    <h2 class="h3" id="comments">
                         {{ __('waterhole::forum.post-comments-heading', ['count' => $post->comment_count]) }}
                     </h2>
 
@@ -67,7 +63,7 @@
                     <x-waterhole::follow-button :followable="$post"/>
 
                     @if ($comments->total())
-                        <nav class="ruler tabs" data-controller="scrollspy">
+                        <nav class="comments-pagination tabs" data-controller="scrollspy">
                             <a
                                 class="tab with-icon"
                                 href="{{ $post->url }}#top"
@@ -80,8 +76,7 @@
                             </a>
 
                             <div
-                                class="scrollable stack ruler__pages"
-                                style="max-height: 20rem"
+                                class="scrollable stack comments-pagination__pages"
                                 data-scrollspy-target="container"
                             >
                                 @for ($page = 1; $page <= $comments->lastPage(); $page++)
@@ -90,13 +85,6 @@
                                         href="{{ $comments->fragment('page_'.$page)->url($page) }}"
                                         @if ($page == $comments->currentPage()) aria-current="page" @endif
                                     >{{ $page }}</a>
-
-                                    @if ($post->unread_count && $comments->total() - $post->unread_count < $page * $comments->perPage())
-                                        <a
-                                            class="divider color-activity"
-                                            href="{{ $comments->fragment('unread')->url($page) }}"
-                                        >{{ __('waterhole::forum.comments-unread-link') }}</a>
-                                    @endif
                                 @endfor
                             </div>
 

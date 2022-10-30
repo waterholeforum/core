@@ -15,9 +15,9 @@
     </div>
 
     <div class="row wrap gap-md align-start">
-        <x-waterhole::icon :icon="$channel->icon" class="channel-card__icon"/>
+        <x-waterhole::icon :icon="$channel->icon" class="channel-card__icon text-xl"/>
 
-        <div class="channel-card__info stack gap-md">
+        <div class="channel-card__info grow stack gap-md">
             <h2 class="h3">{{ $channel->name }}</h2>
 
             @if ($channel->description)

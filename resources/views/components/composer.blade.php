@@ -1,6 +1,6 @@
 <turbo-frame
     id="composer"
-    {{ $attributes->class('composer') }}
+    {{ $attributes->class('composer stack') }}
     data-controller="composer watch-sticky"
     data-action="
         turbo:before-fetch-request->composer#open
@@ -11,7 +11,7 @@
 >
     <a
         href="{{ route('waterhole.posts.comments.create', compact('post', 'parent')) }}"
-        class="composer__placeholder"
+        class="composer__placeholder row gap-md color-muted"
         data-action="composer#placeholderClick"
         data-hotkey="r"
     >
@@ -24,7 +24,7 @@
     </a>
 
     <form
-        class="composer__form"
+        class="composer__form stack full-height"
         action="{{ route('waterhole.posts.comments.store', ['post' => $post]) }}"
         method="POST"
     >
@@ -49,13 +49,13 @@
             <div class="h5 overflow-ellipsis">{{ __('waterhole::forum.create-comment-title') }}</div>
 
             <turbo-frame
-                class="composer__parent nowrap"
+                class="composer__parent nowrap row gap-xs text-xs rounded-full bg-attention-light"
                 id="@domid($post, 'comment_parent')"
             >
                 @if ($parent)
                     <input type="hidden" name="parent_id" value="{{ $parent->id }}">
 
-                    <a href="{{ $parent->post_url }}" data-turbo-frame="_top">
+                    <a href="{{ $parent->post_url }}" data-turbo-frame="_top" class="color-inherit">
                         {{ __('waterhole::forum.composer-replying-to-label') }}
                         <x-waterhole::user-label :user="$parent->user"/>
                     </a>
@@ -95,6 +95,7 @@
             placeholder="{{ __('waterhole::forum.composer-placeholder') }}"
             id="new-comment"
             data-action="quotable:quote-text@document->text-editor#insertQuote"
+            class="grow"
         />
     </form>
 </turbo-frame>

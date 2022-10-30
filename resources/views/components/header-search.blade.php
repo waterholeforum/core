@@ -9,7 +9,6 @@
 <form
     action="{{ route('waterhole.search') }}"
     class="input-container header-search__form hide-sm-down"
-    style="margin-inline: var(--space-xs)"
 >
     <x-waterhole::icon
         icon="tabler-search"
