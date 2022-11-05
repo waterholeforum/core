@@ -89,7 +89,7 @@
     https://github.com/tobyzerner/inclusive-elements/tree/master/src/alerts
 --}}
 <ui-alerts id="alerts" class="alerts">
-    @foreach (['success', 'attention', 'danger'] as $type)
+    @foreach (['success', 'warning', 'danger'] as $type)
         @if (session($type))
             <x-waterhole::alert :type="$type">
                 {!! session($type) !!}

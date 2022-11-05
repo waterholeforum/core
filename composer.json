@@ -23,8 +23,7 @@
         "s9e/text-formatter": "^2.11",
         "staudenmeir/laravel-adjacency-list": "^1.7",
         "staudenmeir/laravel-cte": "^1.0",
-        "tonysm/turbo-laravel": "^1.5",
-        "wikimedia/less.php": "^3.1"
+        "tonysm/turbo-laravel": "^1.5"
     },
     "autoload": {
         "psr-4": {

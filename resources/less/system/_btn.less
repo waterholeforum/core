@@ -9,7 +9,7 @@
   gap: var(--space-xxs);
   align-items: center;
   justify-content: center;
-  padding: 0 ~'calc(.4 * var(--control-height))';
+  padding: 0 calc(0.4 * var(--control-height));
   text-decoration: none !important;
   font-weight: var(--weight-medium);
   white-space: nowrap;
@@ -36,24 +36,20 @@
   color: var(--color-muted);
 }
 
-.btn--edge {
-  margin: ~'calc(-.1 * var(--control-height)) calc(-.25 * var(--control-height))';
-}
-
 // Sizes
 
 .btn--sm {
   --control-height: var(--control-height-small);
-  padding: 0 ~'calc(.25 * var(--control-height-small))';
+  padding: 0 calc(0.25 * var(--control-height-small));
   font-size: 90%;
 }
 
 .btn--narrow {
-  padding: 0 ~'calc(.3 * var(--control-height))';
+  padding: 0 calc(0.3 * var(--control-height));
 }
 
 .btn--wide {
-  padding: 0 ~'calc(.5 * var(--control-height))';
+  padding: 0 calc(0.5 * var(--control-height));
 }
 
 // Icon button
@@ -86,7 +82,7 @@
   &.is-active,
   &[aria-pressed='true'] {
     color: var(--color-accent) !important;
-    background: var(--color-accent-light) !important;
+    background: var(--color-accent-soft) !important;
     border-color: transparent;
   }
 }

@@ -8138,13 +8138,12 @@ var _default = /*#__PURE__*/function (_Controller) {
       // If this alert is contained inside a <ui-alerts> element, then we
       // will dismiss it via that element. Otherwise, we can just straight up
       // remove it from the DOM.
-      var alert = e.currentTarget;
-      var container = alert.closest('ui-alerts');
+      var container = this.element.closest('ui-alerts');
 
       if (container) {
-        container.dismiss(alert);
+        container.dismiss(this.element);
       } else {
-        alert.remove();
+        this.element.remove();
       }
     }
   }]);
@@ -10207,7 +10206,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ _default)
 /* harmony export */ });
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
-/* harmony import */ var sticky_observer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! sticky-observer */ "./node_modules/sticky-observer/dist/index.js");
+/* harmony import */ var sticky_observer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! sticky-observer */ "../../../packages/sticky-observer/dist/index.js");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -10422,6 +10421,41 @@ var TurboEchoStreamSourceElement = /*#__PURE__*/function (_HTMLElement) {
 
   return TurboEchoStreamSourceElement;
 }( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
+
+/***/ }),
+
+/***/ "./resources/js/index.ts":
+/*!*******************************!*\
+  !*** ./resources/js/index.ts ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _github_time_elements__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @github/time-elements */ "./node_modules/@github/time-elements/dist/index.js");
+/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
+/* harmony import */ var _hotwired_stimulus_webpack_helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @hotwired/stimulus-webpack-helpers */ "./node_modules/@hotwired/stimulus-webpack-helpers/dist/stimulus-webpack-helpers.js");
+/* harmony import */ var _bootstrap_custom_elements__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./bootstrap/custom-elements */ "./resources/js/bootstrap/custom-elements.ts");
+/* harmony import */ var _bootstrap_document_title__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./bootstrap/document-title */ "./resources/js/bootstrap/document-title.ts");
+/* harmony import */ var _bootstrap_document_title__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_bootstrap_document_title__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _bootstrap_echo__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./bootstrap/echo */ "./resources/js/bootstrap/echo.ts");
+/* harmony import */ var _bootstrap_hotkeys__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./bootstrap/hotkeys */ "./resources/js/bootstrap/hotkeys.ts");
+/* harmony import */ var _bootstrap_turbo__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./bootstrap/turbo */ "./resources/js/bootstrap/turbo.ts");
+
+
+
+
+
+
+
+
+Object.defineProperty(Waterhole, 'alerts', {
+  get: function get() {
+    return document.getElementById('alerts');
+  }
+});
+window.Stimulus = _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_1__.Application.start();
+window.Stimulus.load((0,_hotwired_stimulus_webpack_helpers__WEBPACK_IMPORTED_MODULE_2__.definitionsFromContext)(__webpack_require__("./resources/js/controllers sync recursive \\.ts$")));
 
 /***/ }),
 
@@ -12820,6 +12854,32 @@ var Echo = /*#__PURE__*/function () {
 }();
 
 
+
+
+/***/ }),
+
+/***/ "./resources/less/forum/app.less":
+/*!***************************************!*\
+  !*** ./resources/less/forum/app.less ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./resources/less/admin/app.less":
+/*!***************************************!*\
+  !*** ./resources/less/admin/app.less ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
 
 
 /***/ }),
@@ -24658,10 +24718,10 @@ s(h, "delay", 100), s(h, "placement", "top"), s(h, "tooltipClass", "tooltip");
 
 /***/ }),
 
-/***/ "./node_modules/sticky-observer/dist/index.js":
-/*!****************************************************!*\
-  !*** ./node_modules/sticky-observer/dist/index.js ***!
-  \****************************************************/
+/***/ "../../../packages/sticky-observer/dist/index.js":
+/*!*******************************************************!*\
+  !*** ../../../packages/sticky-observer/dist/index.js ***!
+  \*******************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -24669,7 +24729,63 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ t)
 /* harmony export */ });
-class t{el;callback;options;observer;constructor(t,s,o={}){this.el=t,this.callback=s,this.options=o,this.start()}start(){this.stop();const t=getComputedStyle(this.el),s=["top","right","bottom","left"].map((s=>"auto"===t[s]?"100%":-1*parseInt(t[s])-1+"px")).join(" ");this.observer=new IntersectionObserver((t=>{this.callback(!t[0].isIntersecting,this.el)}),{threshold:[1],rootMargin:s,root:this.options.root}),this.observer.observe(this.el)}stop(){this.observer?.disconnect()}}
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var t = /*#__PURE__*/function () {
+  function t(_t, s) {
+    var o = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+    _classCallCheck(this, t);
+
+    _defineProperty(this, "el", void 0);
+
+    _defineProperty(this, "callback", void 0);
+
+    _defineProperty(this, "options", void 0);
+
+    _defineProperty(this, "observer", void 0);
+
+    this.el = _t, this.callback = s, this.options = o, this.start();
+  }
+
+  _createClass(t, [{
+    key: "start",
+    value: function start() {
+      var _this = this;
+
+      this.stop();
+
+      var _t2 = getComputedStyle(this.el),
+          s = ["top", "right", "bottom", "left"].map(function (s) {
+        return "auto" === _t2[s] ? "100%" : -1 * parseInt(_t2[s]) - 1 + "px";
+      }).join(" ");
+
+      this.observer = new IntersectionObserver(function (_t3) {
+        _this.callback(!_t3[0].isIntersecting, _this.el);
+      }, {
+        threshold: [1],
+        rootMargin: s,
+        root: this.options.root
+      }), this.observer.observe(this.el);
+    }
+  }, {
+    key: "stop",
+    value: function stop() {
+      var _this$observer;
+
+      (_this$observer = this.observer) === null || _this$observer === void 0 ? void 0 : _this$observer.disconnect();
+    }
+  }]);
+
+  return t;
+}();
+
 
 
 /***/ })
@@ -24700,7 +24816,42 @@ class t{el;callback;options;observer;constructor(t,s,o={}){this.el=t,this.callba
 /******/ 		return module.exports;
 /******/ 	}
 /******/ 	
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = __webpack_modules__;
+/******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/chunk loaded */
+/******/ 	(() => {
+/******/ 		var deferred = [];
+/******/ 		__webpack_require__.O = (result, chunkIds, fn, priority) => {
+/******/ 			if(chunkIds) {
+/******/ 				priority = priority || 0;
+/******/ 				for(var i = deferred.length; i > 0 && deferred[i - 1][2] > priority; i--) deferred[i] = deferred[i - 1];
+/******/ 				deferred[i] = [chunkIds, fn, priority];
+/******/ 				return;
+/******/ 			}
+/******/ 			var notFulfilled = Infinity;
+/******/ 			for (var i = 0; i < deferred.length; i++) {
+/******/ 				var [chunkIds, fn, priority] = deferred[i];
+/******/ 				var fulfilled = true;
+/******/ 				for (var j = 0; j < chunkIds.length; j++) {
+/******/ 					if ((priority & 1 === 0 || notFulfilled >= priority) && Object.keys(__webpack_require__.O).every((key) => (__webpack_require__.O[key](chunkIds[j])))) {
+/******/ 						chunkIds.splice(j--, 1);
+/******/ 					} else {
+/******/ 						fulfilled = false;
+/******/ 						if(priority < notFulfilled) notFulfilled = priority;
+/******/ 					}
+/******/ 				}
+/******/ 				if(fulfilled) {
+/******/ 					deferred.splice(i--, 1)
+/******/ 					var r = fn();
+/******/ 					if (r !== undefined) result = r;
+/******/ 				}
+/******/ 			}
+/******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
 /******/ 		// getDefaultExport function for compatibility with non-harmony modules
@@ -24741,40 +24892,70 @@ class t{el;callback;options;observer;constructor(t,s,o={}){this.el=t,this.callba
 /******/ 		};
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/jsonp chunk loading */
+/******/ 	(() => {
+/******/ 		// no baseURI
+/******/ 		
+/******/ 		// object to store loaded and loading chunks
+/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
+/******/ 		var installedChunks = {
+/******/ 			"/resources/dist/index": 0,
+/******/ 			"resources/dist/admin": 0,
+/******/ 			"resources/dist/index": 0
+/******/ 		};
+/******/ 		
+/******/ 		// no chunk on demand loading
+/******/ 		
+/******/ 		// no prefetching
+/******/ 		
+/******/ 		// no preloaded
+/******/ 		
+/******/ 		// no HMR
+/******/ 		
+/******/ 		// no HMR manifest
+/******/ 		
+/******/ 		__webpack_require__.O.j = (chunkId) => (installedChunks[chunkId] === 0);
+/******/ 		
+/******/ 		// install a JSONP callback for chunk loading
+/******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
+/******/ 			var [chunkIds, moreModules, runtime] = data;
+/******/ 			// add "moreModules" to the modules object,
+/******/ 			// then flag all "chunkIds" as loaded and fire callback
+/******/ 			var moduleId, chunkId, i = 0;
+/******/ 			if(chunkIds.some((id) => (installedChunks[id] !== 0))) {
+/******/ 				for(moduleId in moreModules) {
+/******/ 					if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 						__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 					}
+/******/ 				}
+/******/ 				if(runtime) var result = runtime(__webpack_require__);
+/******/ 			}
+/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
+/******/ 			for(;i < chunkIds.length; i++) {
+/******/ 				chunkId = chunkIds[i];
+/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 					installedChunks[chunkId][0]();
+/******/ 				}
+/******/ 				installedChunks[chunkId] = 0;
+/******/ 			}
+/******/ 			return __webpack_require__.O(result);
+/******/ 		}
+/******/ 		
+/******/ 		var chunkLoadingGlobal = self["webpackChunk"] = self["webpackChunk"] || [];
+/******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
+/******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
+/******/ 	})();
+/******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
-(() => {
-"use strict";
-/*!*******************************!*\
-  !*** ./resources/js/index.ts ***!
-  \*******************************/
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _github_time_elements__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @github/time-elements */ "./node_modules/@github/time-elements/dist/index.js");
-/* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
-/* harmony import */ var _hotwired_stimulus_webpack_helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @hotwired/stimulus-webpack-helpers */ "./node_modules/@hotwired/stimulus-webpack-helpers/dist/stimulus-webpack-helpers.js");
-/* harmony import */ var _bootstrap_custom_elements__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./bootstrap/custom-elements */ "./resources/js/bootstrap/custom-elements.ts");
-/* harmony import */ var _bootstrap_document_title__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./bootstrap/document-title */ "./resources/js/bootstrap/document-title.ts");
-/* harmony import */ var _bootstrap_document_title__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_bootstrap_document_title__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _bootstrap_echo__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./bootstrap/echo */ "./resources/js/bootstrap/echo.ts");
-/* harmony import */ var _bootstrap_hotkeys__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./bootstrap/hotkeys */ "./resources/js/bootstrap/hotkeys.ts");
-/* harmony import */ var _bootstrap_turbo__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./bootstrap/turbo */ "./resources/js/bootstrap/turbo.ts");
-
-
-
-
-
-
-
-
-Object.defineProperty(Waterhole, 'alerts', {
-  get: function get() {
-    return document.getElementById('alerts');
-  }
-});
-window.Stimulus = _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_1__.Application.start();
-window.Stimulus.load((0,_hotwired_stimulus_webpack_helpers__WEBPACK_IMPORTED_MODULE_2__.definitionsFromContext)(__webpack_require__("./resources/js/controllers sync recursive \\.ts$")));
-})();
-
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
+/******/ 	__webpack_require__.O(undefined, ["resources/dist/admin","resources/dist/index"], () => (__webpack_require__("./resources/js/index.ts")))
+/******/ 	__webpack_require__.O(undefined, ["resources/dist/admin","resources/dist/index"], () => (__webpack_require__("./resources/less/forum/app.less")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["resources/dist/admin","resources/dist/index"], () => (__webpack_require__("./resources/less/admin/app.less")))
+/******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
+/******/ 	
 /******/ })()
 ;

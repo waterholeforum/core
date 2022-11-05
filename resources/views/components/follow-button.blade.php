@@ -1,5 +1,5 @@
 <ui-popup {{ $attributes->merge(['placement' => 'bottom-start']) }}>
-    <button type="button" class="{{ $buttonClass }} {{ $followable->isFollowed() ? 'bg-attention-light color-attention' : '' }}">
+    <button type="button" class="{{ $buttonClass }} {{ $followable->isFollowed() ? 'bg-warning-soft color-warning' : '' }}">
         @if ($followable->isFollowed())
             <x-waterhole::icon icon="tabler-bell"/>
             <span>{{ __('waterhole::forum.follow-button-following') }}</span>

@@ -12,7 +12,7 @@
 }
 
 .menu-item {
-  border-radius: ~'calc(var(--radius) * 2/3)';
+  border-radius: calc(var(--radius) * 2 / 3);
   border: 0;
   background: transparent;
   appearance: none;
@@ -43,7 +43,7 @@
   &[aria-current='page'],
   &[aria-checked='true'] {
     color: var(--color-accent);
-    background: var(--color-accent-light);
+    background: var(--color-accent-soft);
   }
 }
 
@@ -87,8 +87,8 @@
 
 .menu-sticky {
   position: sticky;
-  top: ~'calc(-1 * var(--space-sm))';
-  margin-top: ~'calc(-1 * var(--space-sm))';
+  top: calc(-1 * var(--space-sm));
+  margin-top: calc(-1 * var(--space-sm));
   padding-top: var(--space-xs);
   background: var(--color-bg);
   z-index: 1;
@@ -103,7 +103,7 @@
     max-height: none !important;
     margin: 0;
     height: 100vh;
-    width: ~'min(70vw, 30ch)';
+    width: min(70vw, 30ch);
     box-shadow: var(--shadow-md);
     padding: var(--space-lg);
     z-index: var(--z-index-overlay);

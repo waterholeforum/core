@@ -22,7 +22,7 @@
         <div class="color-muted">.color-muted</div>
         <div class="color-accent">.color-accent</div>
         <div class="color-success">.color-success</div>
-        <div class="color-attention">.color-attention</div>
+        <div class="color-warning">.color-warning</div>
         <div class="color-danger">.color-danger</div>
         <div class="color-activity">.color-activity</div>
 
@@ -30,15 +30,15 @@
             <div class="bg-fill">.bg-fill</div>
             <div class="bg-emphasis">.bg-emphasis</div>
             <div class="bg-accent">.bg-accent</div>
-            <div class="bg-accent-light">.bg-accent-light</div>
+            <div class="bg-accent-soft">.bg-accent-soft</div>
             <div class="bg-success">.bg-success</div>
-            <div class="bg-success-light">.bg-success-light</div>
-            <div class="bg-attention">.bg-attention</div>
-            <div class="bg-attention-light">.bg-attention-light</div>
+            <div class="bg-success-soft">.bg-success-soft</div>
+            <div class="bg-warning">.bg-warning</div>
+            <div class="bg-warning-soft">.bg-warning-soft</div>
             <div class="bg-danger">.bg-danger</div>
-            <div class="bg-danger-light">.bg-danger-light</div>
+            <div class="bg-danger-soft">.bg-danger-soft</div>
             <div class="bg-activity">.bg-activity</div>
-            <div class="bg-activity-light">.bg-activity-light</div>
+            <div class="bg-activity-soft">.bg-activity-soft</div>
         </div>
     </div>
 </x-waterhole::layout>

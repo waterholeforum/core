@@ -3,6 +3,7 @@
 namespace Waterhole\Extend\Concerns;
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Manage a list of assets grouped into bundles.
@@ -53,5 +54,20 @@ trait AssetList
         return $urls;
     }
 
-    abstract private static function compile(array $assets, string $bundle): array;
+    private static function compile(array $assets, string $bundle): array
+    {
+        $content = '';
+
+        foreach ($assets as $source) {
+            if (is_callable($source)) {
+                $content .= $source() . "\n";
+            } else {
+                $content .= file_get_contents($source) . "\n";
+            }
+        }
+
+        Storage::disk('public')->put($compiled = static::FILE_EXTENSION."/$bundle.".static::FILE_EXTENSION, $content);
+
+        return [asset(Storage::disk('public')->url($compiled))];
+    }
 }

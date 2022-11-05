@@ -36,7 +36,7 @@
     </ui-popup>
 
     @if ($instructions = $selectedChannel?->instructions_html)
-        <div class="rounded p-lg bg-attention-light content">
+        <div class="rounded p-lg bg-warning-soft content">
             {{ Waterhole\emojify($instructions) }}
         </div>
     @endif

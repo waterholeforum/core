@@ -1,53 +1,23 @@
 .alert {
   border-radius: var(--radius);
-  padding: var(--space-xs) var(--space-md);
-  min-height: var(--control-height);
+  padding: var(--space-sm) var(--space-md);
   background: var(--color-fill);
   display: flex;
   align-items: flex-start;
+  font-size: var(--text-xs);
+  gap: var(--space-sm);
 }
 
 .alert__icon {
+  display: flex;
   font-size: var(--text-md);
-  margin-right: var(--space-xs);
-  line-height: 1;
-  margin-top: 2px;
-}
-
-.alert__message {
-  min-width: 0;
-  font-size: var(--text-xs);
-  align-self: center;
-  flex-grow: 1;
 }
 
 .alert__actions {
   display: flex;
   align-items: center;
-  margin-left: var(--space-md);
-  font-size: var(--text-xs);
+  margin-block: calc(-1 * var(--space-xs));
+  margin-right: calc(-1 * var(--space-sm));
+  margin-left: auto;
   gap: var(--space-sm);
-}
-
-// Sizes
-
-.alert--lg {
-  padding: var(--space-md) var(--space-lg);
-
-  .alert__icon {
-    margin-right: var(--space-sm);
-  }
-}
-
-.alert--xl {
-  padding: var(--space-lg);
-
-  .alert__icon {
-    font-size: var(--text-xl);
-    margin-right: var(--space-lg);
-
-    path {
-      stroke-width: 1.5px;
-    }
-  }
 }

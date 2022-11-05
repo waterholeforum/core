@@ -146,10 +146,10 @@
   .gap-@{value} {
     gap: ~'var(--space-@{value})';
   }
-  .gap-row-@{value} {
+  .gap-y-@{value} {
     row-gap: ~'var(--space-@{value})';
   }
-  .gap-col-@{value} {
+  .gap-x-@{value} {
     column-gap: ~'var(--space-@{value})';
   }
   .p-@{value} {
@@ -224,23 +224,23 @@
 }
 
 .color-accent {
-  color: var(--color-accent) !important;
+  color: var(--color-accent-text);
 }
 
 .color-success {
-  color: var(--color-success);
+  color: var(--color-success-text);
 }
 
-.color-attention {
-  color: var(--color-attention);
+.color-warning {
+  color: var(--color-warning-text);
 }
 
 .color-danger {
-  color: var(--color-danger);
+  color: var(--color-danger-text);
 }
 
 .color-activity {
-  color: var(--color-activity);
+  color: var(--color-activity-text);
 }
 
 .color-inherit {
@@ -324,18 +324,17 @@
 // Background Color
 
 .bg-accent,
-.bg-accent-light,
+.bg-accent-soft,
 .bg-success,
-.bg-success-light,
-.bg-attention,
-.bg-attention-light,
+.bg-success-soft,
+.bg-warning,
+.bg-warning-soft,
 .bg-danger,
-.bg-danger-light,
+.bg-danger-soft,
 .bg-activity,
-.bg-activity-light {
-  --color-fill: var(--color-fill-neutral);
-  --color-stroke: var(--color-stroke-neutral);
-  --color-muted: var(--color-muted-neutral);
+.bg-activity-soft {
+  --color-fill: rgba(255 255 255 / 0.1);
+  --color-stroke: rgba(255 255 255 / 0.25);
 }
 
 .bg-fill {
@@ -345,55 +344,76 @@
 .bg-emphasis {
   background: var(--color-emphasis);
   color: var(--color-emphasis-contrast);
-
-  --color-fill: var(--color-fill-neutral);
-  --color-stroke: var(--color-stroke-neutral);
-  --color-muted: rgba(255, 255, 255, 0.5);
 }
 
 .bg-accent {
+  --color-text: var(--color-accent-contrast);
+  --color-muted: var(--color-accent-contrast);
   background-color: var(--color-accent);
-  color: var(--color-accent-contrast);
+  color: var(--color-text);
 }
 
-.bg-accent-light {
-  background-color: var(--color-accent-light);
+.bg-accent-soft {
+  --color-text: var(--color-accent-text);
+  --color-muted: var(--color-accent-text);
+  background-color: var(--color-accent-soft);
+  color: var(--color-text);
 }
 
 .bg-success {
+  --color-text: var(--color-success-contrast);
+  --color-muted: var(--color-success-contrast);
   background-color: var(--color-success);
-  color: var(--color-success-contrast);
+  color: var(--color-text);
 }
 
-.bg-success-light {
-  background-color: var(--color-success-light);
+.bg-success-soft {
+  --color-text: var(--color-success-text);
+  --color-muted: var(--color-success-text);
+  background-color: var(--color-success-soft);
+  color: var(--color-text);
 }
 
-.bg-attention {
-  background-color: var(--color-attention);
-  color: var(--color-attention-contrast);
+.bg-warning {
+  --color-text: var(--color-warning-contrast);
+  --color-muted: var(--color-warning-contrast);
+  background-color: var(--color-warning);
+  color: var(--color-text);
 }
 
-.bg-attention-light {
-  background-color: var(--color-attention-light);
+.bg-warning-soft {
+  --color-text: var(--color-warning-text);
+  --color-muted: var(--color-warning-text);
+  background-color: var(--color-warning-soft);
+  color: var(--color-text);
 }
 
 .bg-danger {
+  --color-text: var(--color-danger-contrast);
+  --color-muted: var(--color-danger-contrast);
   background-color: var(--color-danger);
-  color: var(--color-danger-contrast);
+  color: var(--color-text);
 }
 
-.bg-danger-light {
-  background-color: var(--color-danger-light);
+.bg-danger-soft {
+  --color-text: var(--color-danger-text);
+  --color-muted: var(--color-danger-text);
+  background-color: var(--color-danger-soft);
+  color: var(--color-text);
 }
 
 .bg-activity {
+  --color-text: var(--color-activity-contrast);
+  --color-muted: var(--color-activity-contrast);
   background-color: var(--color-activity);
-  color: var(--color-activity-contrast);
+  color: var(--color-text);
 }
 
-.bg-activity-light {
-  background-color: var(--color-activity-light);
+.bg-activity-soft {
+  --color-text: var(--color-activity-text);
+  --color-muted: var(--color-activity-text);
+  background-color: var(--color-activity-soft);
+  color: var(--color-text);
 }
 
 // Interactions
@@ -540,4 +560,11 @@
   .hide-xl {
     display: none !important;
   }
+}
+
+// Dark mode
+
+:root[data-theme='dark'] .light-only,
+:root:not([data-theme='dark']) .dark-only {
+  display: none;
 }

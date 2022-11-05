@@ -8,17 +8,16 @@ import { AlertsElement } from 'inclusive-elements';
  *
  * @internal
  */
-export default class extends Controller {
+export default class extends Controller<HTMLElement> {
     dismiss(e: MouseEvent) {
         // If this alert is contained inside a <ui-alerts> element, then we
         // will dismiss it via that element. Otherwise, we can just straight up
         // remove it from the DOM.
-        const alert = e.currentTarget as HTMLElement;
-        const container = alert.closest<AlertsElement>('ui-alerts');
+        const container = this.element.closest<AlertsElement>('ui-alerts');
         if (container) {
-            container.dismiss(alert);
+            container.dismiss(this.element);
         } else {
-            alert.remove();
+            this.element.remove();
         }
     }
 }

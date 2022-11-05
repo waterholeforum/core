@@ -40,7 +40,7 @@
             </x-slot>
         </x-waterhole::action-menu>
 
-        <div class="row gap-row-md gap-col-xs wrap">
+        <div class="row gap-y-md gap-x-xs wrap">
             @components(Waterhole\Extend\PostFooter::build(), compact('post'))
         </div>
     </div>

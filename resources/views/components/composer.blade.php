@@ -49,7 +49,7 @@
             <div class="h5 overflow-ellipsis">{{ __('waterhole::forum.create-comment-title') }}</div>
 
             <turbo-frame
-                class="composer__parent nowrap row gap-xs text-xs rounded-full bg-attention-light"
+                class="composer__parent nowrap row gap-xs text-xs rounded-full bg-warning-soft"
                 id="@domid($post, 'comment_parent')"
             >
                 @if ($parent)

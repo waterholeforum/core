@@ -1,5 +1,5 @@
 .comment {
-  padding-left: ~'calc(var(--attribution-avatar-size) + var(--space-md))';
+  padding-left: calc(var(--attribution-avatar-size) + var(--space-md));
   position: relative;
   transition: background 0.2s;
 
@@ -15,7 +15,7 @@
   &.is-highlighted,
   :focus > &,
   :target > & {
-    background: var(--color-attention-light);
+    background: var(--color-warning-soft);
   }
 }
 

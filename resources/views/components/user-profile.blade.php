@@ -12,7 +12,7 @@
             </x-waterhole::action-menu>
         </div>
 
-        <div class="row align-start gap-col-xl gap-row-md wrap user-profile__inner">
+        <div class="row align-start gap-x-xl gap-y-md wrap user-profile__inner">
             <x-waterhole::avatar :user="$user"/>
 
             <div class="grow stack gap-xs user-profile__content">

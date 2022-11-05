@@ -1,7 +1,7 @@
 <x-waterhole::admin :title="__('waterhole::admin.dashboard-title')">
     <div class="stack gap-lg">
         @section('debug')
-            <x-waterhole::alert type="attention" class="alert--lg" icon="tabler-bug">
+            <x-waterhole::alert type="warning" icon="tabler-bug">
                 {{ __('waterhole::admin.debug-mode-on-message') }}
                 &nbsp;
                 <a
@@ -15,7 +15,7 @@
         @endsection
 
         @section('mail')
-            <x-waterhole::alert type="attention" class="alert--lg" icon="tabler-mail">
+            <x-waterhole::alert type="warning" icon="tabler-mail">
                 {{ __('waterhole::admin.configure-mail-message') }}
                 &nbsp;
                 <a

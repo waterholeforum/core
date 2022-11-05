@@ -83,7 +83,7 @@
                                                     <a href="{{ $hit->post->url }}">{{ $hit->title }}</a>
                                                 </h3>
 
-                                                <div class="post-summary__info row wrap gap-row-xxs gap-col-sm text-xxs color-muted">
+                                                <div class="post-summary__info row wrap gap-y-xxs gap-x-sm text-xxs color-muted">
                                                     @components(Waterhole\Extend\PostInfo::build(), ['post' => $hit->post])
                                                 </div>
 

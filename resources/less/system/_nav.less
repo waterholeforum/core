@@ -10,7 +10,7 @@
   font-weight: var(--weight-medium);
   text-transform: uppercase;
   margin-bottom: var(--space-xs);
-  padding: 0 var(--space-xs);
+  padding: 0 var(--space-sm);
   width: 100%;
 
   * + & {
@@ -23,7 +23,7 @@
   align-items: center;
   gap: var(--space-xs);
   min-height: var(--control-height);
-  padding: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
   font-weight: var(--weight-medium);
   text-decoration: none !important;
   color: var(--color-text);
@@ -58,7 +58,7 @@
   &.is-active,
   &[aria-current='page'] {
     color: var(--color-accent);
-    background: var(--color-accent-light);
+    background: var(--color-accent-soft);
 
     .badge {
       background: inherit;

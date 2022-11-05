@@ -16,7 +16,7 @@
         </a>
 
     @elseif ($license->test())
-        <a href="https://waterhole.dev/docs/licensing" target="_blank" class="badge bg-attention">
+        <a href="https://waterhole.dev/docs/licensing" target="_blank" class="badge bg-warning">
             {{ __('waterhole::admin.trial-badge') }}
         </a>
 

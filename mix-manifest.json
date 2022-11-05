@@ -1,4 +1,6 @@
 {
     "/resources/dist/index.js": "/resources/dist/index.js",
-    "/resources/dist/admin.js": "/resources/dist/admin.js"
+    "/resources/dist/admin.js": "/resources/dist/admin.js",
+    "/resources/dist/admin.css": "/resources/dist/admin.css",
+    "/resources/dist/index.css": "/resources/dist/index.css"
 }

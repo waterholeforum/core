@@ -2,35 +2,23 @@
 
 namespace Waterhole\Extend;
 
-use Less_Cache;
 use Waterhole\Extend\Concerns\AssetList;
 
 /**
  * Manage stylesheet asset bundles.
  *
- * Waterhole bundles CSS files together using a [Less CSS](https://lesscss.org)
- * compiler, so you can add both Less and CSS stylesheets.
+ * In addition to files, you can also add callbacks which return CSS code.
+ *
+ * Waterhole will simply concatenate the stylesheets together into bundles. You
+ * are responsible for doing any transpiling prior.
  */
 class Stylesheet
 {
     use AssetList;
 
     const CACHE_KEY = 'waterhole.stylesheet';
-
-    private static function compile(array $assets, string $bundle): array
-    {
-        $files = array_combine($assets, array_fill(0, count($assets), url('/')));
-
-        Less_Cache::CleanCache();
-
-        $compiled = Less_Cache::Get($files, [
-            'cache_dir' => storage_path('app/public/css'),
-            'prefix' => "$bundle-",
-        ]);
-
-        return [asset('storage/css/' . $compiled)];
-    }
+    const FILE_EXTENSION = 'css';
 }
 
-Stylesheet::add(__DIR__ . '/../../resources/less/forum/app.less');
-Stylesheet::add(__DIR__ . '/../../resources/less/admin/app.less', bundle: 'admin');
+Stylesheet::add(__DIR__ . '/../../resources/dist/index.css');
+Stylesheet::add(__DIR__ . '/../../resources/dist/admin.css', bundle: 'admin');
