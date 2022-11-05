@@ -21,4 +21,5 @@ class Script
 }
 
 Script::add(__DIR__ . '/../../resources/dist/index.js');
+Script::add(__DIR__ . '/../../resources/dist/highlight.js', bundle: 'async');
 Script::add(__DIR__ . '/../../resources/dist/admin.js', bundle: 'admin');

@@ -154,7 +154,6 @@ class CommentController extends Controller
     {
         $this->authorize('comment.edit', $comment);
 
-        asdf;
         $comment
             ->fill(Comment::validate($request->all(), $comment))
             ->markAsEdited()

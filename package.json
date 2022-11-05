@@ -34,6 +34,7 @@
         "@hotwired/turbo": "^7.2.0",
         "animated-scroll-to": "^2.3.0",
         "clipboard-copy": "^4.0.1",
+        "highlight.js": "^11.6.0",
         "idiomorph": "^0.0.7",
         "inclusive-elements": "^0.2.1",
         "laravel-echo": "^1.11.3",

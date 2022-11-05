@@ -19,7 +19,7 @@
 
                     <x-waterhole::text-editor
                         name="body"
-                        value="{{ old('body', $comment->body) }}"
+                        :value="old('body', $comment->body)"
                         class="input"
                     />
 

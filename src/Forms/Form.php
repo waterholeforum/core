@@ -67,6 +67,6 @@ abstract class Form
 
     private function getFields(): array
     {
-        return $this->fields ??= $this->fields();
+        return $this->fields ??= array_filter($this->fields());
     }
 }
