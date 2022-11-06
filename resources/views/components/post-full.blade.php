@@ -1,5 +1,5 @@
 <article {{ $attributes->class('post-full with-sidebar') }}>
-    <div class="post-full__main section stack gap-xl">
+    <div class="post-full__main stack gap-xl">
         <header class="post-header stack gap-xl">
             @components(Waterhole\Extend\PostHeader::build(), compact('post'))
         </header>

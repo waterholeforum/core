@@ -9,6 +9,7 @@ class Alert extends Component
 {
     public const ICONS = [
         'success' => 'tabler-check',
+        'warning' => 'tabler-alert-triangle',
         'danger' => 'tabler-alert-circle',
     ];
 

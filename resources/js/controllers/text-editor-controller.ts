@@ -2,6 +2,7 @@ import { subscribe } from '@github/paste-markdown';
 import TextExpanderElement from '@github/text-expander-element';
 import { ActionEvent, Controller } from '@hotwired/stimulus';
 import TextareaEditor from 'textarea-editor';
+import { cloneFromTemplate } from '../utils';
 
 /**
  * Controller for the <x-waterhole::text-editor> component.
@@ -11,10 +12,18 @@ import TextareaEditor from 'textarea-editor';
 export default class extends Controller {
     static targets = ['input', 'preview', 'previewButton', 'expander', 'hotkeyLabel'];
 
+    static values = {
+        formatUrl: String,
+        userLookupUrl: String,
+    };
+
     declare readonly inputTarget: HTMLTextAreaElement;
     declare readonly previewTarget: HTMLDivElement;
     declare readonly previewButtonTarget: HTMLButtonElement;
     declare readonly expanderTarget: TextExpanderElement;
+
+    declare readonly formatUrlValue: string;
+    declare readonly userLookupUrlValue: string;
 
     editor?: TextareaEditor;
 
@@ -33,7 +42,7 @@ export default class extends Controller {
                 if (text.length < 2) return;
 
                 provide(
-                    fetch(`/user-lookup?q=${encodeURIComponent(text)}`)
+                    fetch(this.userLookupUrlValue + `?q=${encodeURIComponent(text)}`)
                         .then((response) => response.json())
                         .then((json) => {
                             const listbox = document.createElement('ul');
@@ -109,12 +118,12 @@ export default class extends Controller {
 
         this.inputTarget.hidden = previewing;
         this.previewTarget.hidden = !previewing;
-        this.previewTarget.innerHTML = '<div class="spinner spinner--block"></div>';
+        this.previewTarget.append(cloneFromTemplate('loading'));
         this.previewButtonTarget?.setAttribute('aria-pressed', String(previewing));
         this.element.classList.toggle('is-previewing', previewing);
 
         if (previewing) {
-            fetch('/format', {
+            fetch(this.formatUrlValue, {
                 method: 'POST',
                 body: this.inputTarget.value,
             }).then(async (response) => {

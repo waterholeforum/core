@@ -1,4 +1,4 @@
-<ui-popup placement="bottom-start" class="responsive-nav drawer stack">
+<ui-popup {{ $attributes->merge(['placement' => 'bottom-start', 'class' => 'responsive-nav drawer stack']) }}>
     <button class="btn text-md sidebar__collapsed">
         @isset ($button)
             {{ $button }}

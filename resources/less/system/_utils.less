@@ -216,31 +216,42 @@
 // Text Color
 
 .color-text {
-  color: var(--color-text) !important;
+  color: var(--color-text);
 }
 
 .color-muted {
-  color: var(--color-muted) !important;
+  --color-text: var(--color-muted);
+  color: var(--color-text);
 }
 
 .color-accent {
-  color: var(--color-accent-text) !important;
+  --color-text: var(--color-accent-text);
+  --color-muted: var(--color-accent-text);
+  color: var(--color-text);
 }
 
 .color-success {
-  color: var(--color-success-text) !important;
+  --color-text: var(--color-success-text);
+  --color-muted: var(--color-success-text);
+  color: var(--color-text);
 }
 
 .color-warning {
-  color: var(--color-warning-text) !important;
+  --color-text: var(--color-warning-text);
+  --color-muted: var(--color-warning-text);
+  color: var(--color-text);
 }
 
 .color-danger {
-  color: var(--color-danger-text) !important;
+  --color-text: var(--color-danger-text);
+  --color-muted: var(--color-danger-text);
+  color: var(--color-text);
 }
 
 .color-activity {
-  color: var(--color-activity-text) !important;
+  --color-text: var(--color-activity-text);
+  --color-muted: var(--color-activity-text);
+  color: var(--color-text);
 }
 
 .color-inherit {

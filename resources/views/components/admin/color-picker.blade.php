@@ -1,7 +1,7 @@
 <div data-controller="color-picker" class="color-picker">
     <hex-input
         alpha
-        color="#{{ $value }}"
+        color="{{ $value }}"
         class="input-container"
         data-action="color-changed->color-picker#colorChanged"
         data-color-picker-target="input"
@@ -10,7 +10,7 @@
         <span class="no-pointer">
             <span
                 class="color-picker__swatch"
-                style="background-color: #{{ $value }}"
+                style="background-color: {{ $value }}"
                 data-color-picker-target="swatch"
             ></span>
         </span>
@@ -29,7 +29,7 @@
 
     <hex-alpha-color-picker
         class="color-picker__picker"
-        color="#{{ $value }}"
+        color="{{ $value }}"
         hidden
         data-action="color-changed->color-picker#colorChanged focus->color-picker#show blur->color-picker#hide"
         data-color-picker-target="picker"

@@ -5,10 +5,7 @@
 }
 
 .nav-heading {
-  color: var(--color-muted);
-  font-size: 0.8rem;
-  font-weight: var(--weight-medium);
-  text-transform: uppercase;
+  &:extend(.subtitle);
   margin-bottom: var(--space-xs);
   padding: 0 var(--space-sm);
   width: 100%;
@@ -57,7 +54,7 @@
 
   &.is-active,
   &[aria-current='page'] {
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     background: var(--color-accent-soft);
 
     .badge {

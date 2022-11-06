@@ -1,6 +1,6 @@
 <x-waterhole::layout :title="$post->title">
     <div
-        class="post-page container stack gap-lg"
+        class="post-page section container stack gap-lg"
         data-controller="post-page"
         data-post-page-id-value="{{ $post->id }}"
     >

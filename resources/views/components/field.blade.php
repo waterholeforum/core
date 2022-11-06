@@ -3,12 +3,12 @@
         <label for="{{ $name }}" class="field__label">{{ $label }}</label>
     @endif
 
-    @if ($description)
-        <p class="field__description">{{ $description }}</p>
-    @endif
-
-    <div class="stack gap-xs grow">
+    <div class="grow">
         {{ $slot }}
+
+        @if ($description)
+            <p class="field__description">{{ $description }}</p>
+        @endif
 
         @error($name)
             <div class="field__status color-danger">{{ $message }}</div>

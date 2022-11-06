@@ -68,11 +68,11 @@
   .sidebar--sticky {
     position: sticky;
     top: var(--header-height);
-    margin-top: calc(-1 * var(--space-gutter));
+    margin-block: calc(-1 * var(--space-gutter));
     padding-top: var(--space-gutter);
     padding-bottom: var(--space-gutter);
     overflow: auto;
-    max-height: calc(100vh - var(--header-height));
+    max-height: calc(100vh - var(--header-height) - 2 * var(--space-gutter));
     margin-left: calc(-1 * var(--space-gutter));
     padding-left: var(--space-gutter);
     box-sizing: content-box;

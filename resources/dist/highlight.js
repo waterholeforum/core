@@ -15210,6 +15210,7 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var highlight_js_lib_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! highlight.js/lib/common */ "./node_modules/highlight.js/es/common.js");
 
+window.hljs = highlight_js_lib_common__WEBPACK_IMPORTED_MODULE_0__["default"];
 document.addEventListener('turbo:load', function () {
   return highlight_js_lib_common__WEBPACK_IMPORTED_MODULE_0__["default"].highlightAll();
 });

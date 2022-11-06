@@ -1,4 +1,5 @@
 .menu {
+  display: block;
   background: var(--color-bg);
   box-shadow: var(--shadow-md);
   padding: var(--space-xs);
@@ -42,7 +43,7 @@
   &.is-active,
   &[aria-current='page'],
   &[aria-checked='true'] {
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     background: var(--color-accent-soft);
   }
 }
@@ -78,10 +79,7 @@
 }
 
 .menu-heading {
-  text-transform: uppercase;
-  font-size: var(--text-xxs);
-  font-weight: var(--weight-bold);
-  color: var(--color-muted);
+  &:extend(.subtitle);
   padding: var(--space-xs);
 }
 

@@ -11,6 +11,7 @@ class ColorPicker extends Component
         public ?string $id = null,
         public ?string $value = null,
     ) {
+        $this->value = '#' . ltrim($value, '#');
     }
 
     public function render()

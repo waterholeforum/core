@@ -1,5 +1,7 @@
 <div
     data-controller="text-editor"
+    data-text-editor-format-url-value="{{ route('waterhole.format') }}"
+    data-text-editor-user-lookup-url-value="{{ route('waterhole.user-lookup') }}"
     {{ $attributes->class('text-editor stack overlay-container') }}
 >
     <ui-toolbar class="row scrollable text-editor__toolbar js-only text-xxs">

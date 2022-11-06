@@ -27,7 +27,7 @@ export function isElementInViewport(el: HTMLElement, proportion: number = 1): bo
  * Get the height of the page header.
  */
 export function getHeaderHeight(): number {
-    return document.getElementById('#header')?.offsetHeight || 0;
+    return document.getElementById('header')?.offsetHeight || 0;
 }
 
 /**

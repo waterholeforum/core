@@ -18,6 +18,7 @@ use Waterhole\Http\Controllers\Forum\PreferencesController;
 use Waterhole\Http\Controllers\Forum\SearchController;
 use Waterhole\Http\Controllers\Forum\UserController;
 use Waterhole\Http\Controllers\UserLookupController;
+use Waterhole\Http\Middleware\VerifyCsrfToken;
 
 // Feed
 Route::get('/', [IndexController::class, 'home'])->name('home');
@@ -122,7 +123,9 @@ Route::post('logout', [LogoutController::class, 'logout'])->name('logout');
 
 // Utils
 Route::get('user-lookup', UserLookupController::class)->name('user-lookup');
-Route::post('format', FormatController::class)->name('format');
+Route::post('format', FormatController::class)
+    ->name('format')
+    ->withoutMiddleware(VerifyCsrfToken::class);
 
 if (config('app.debug')) {
     Route::view('kitchen-sink', 'waterhole::kitchen-sink')->name('kitchen-sink');

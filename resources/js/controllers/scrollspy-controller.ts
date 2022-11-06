@@ -1,4 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
+import { getHeaderHeight } from '../utils';
 
 /**
  * Controller to apply "active" nav link styles based on the scroll position.
@@ -6,6 +7,7 @@ import { Controller } from '@hotwired/stimulus';
 export default class extends Controller {
     static targets = ['container'];
 
+    declare readonly hasContainerTarget: boolean;
     declare readonly containerTarget: HTMLElement;
 
     current?: HTMLElement;
@@ -22,6 +24,7 @@ export default class extends Controller {
 
     private onScroll = () => {
         const links = Array.from(this.links());
+        const headerHeight = getHeaderHeight();
 
         links.forEach((a) => a.removeAttribute('aria-current'));
 
@@ -29,11 +32,11 @@ export default class extends Controller {
             const id = a.hash.substring(1);
             if (!id) return;
             const el = document.getElementById(id);
-            if (el && el.getBoundingClientRect().top < window.innerHeight / 2) {
+            if (el && el.getBoundingClientRect().top <= headerHeight + 50) {
                 a.setAttribute('aria-current', 'page');
 
-                if (this.current !== a) {
-                    this.containerTarget?.scroll({
+                if (this.current !== a && this.hasContainerTarget) {
+                    this.containerTarget.scroll({
                         top:
                             a.offsetTop +
                             a.offsetHeight / 2 -
