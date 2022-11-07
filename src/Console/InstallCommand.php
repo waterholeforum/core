@@ -4,6 +4,7 @@ namespace Waterhole\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 use Waterhole\Console\Concerns\ValidatesInput;
 use Waterhole\Database\Seeders\DefaultSeeder;
 use Waterhole\Models\Group;
@@ -45,13 +46,21 @@ class InstallCommand extends Command
 
     private function createAdmin(): void
     {
-        $rules = User::rules();
-
         $data = [
-            'name' => $this->askValid('Admin username', 'name', $rules['name']),
-            'email' => $this->askValid('Admin email', 'email', $rules['email']),
+            'name' => $this->askValid('Admin username', 'name', ['required', 'string', 'max:255']),
+            'email' => $this->askValid('Admin email', 'email', [
+                'required',
+                'string',
+                'email',
+                'max:255',
+            ]),
             'password' => Hash::make(
-                $this->askValid('Admin password', 'password', $rules['password'], secret: true),
+                $this->askValid(
+                    'Admin password',
+                    'password',
+                    ['required', Password::defaults()],
+                    secret: true,
+                ),
             ),
             'email_verified_at' => now(),
         ];

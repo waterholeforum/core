@@ -4,15 +4,25 @@ html {
   font-family: var(--font-text);
   font-size: 100%;
   line-height: var(--line-height-default);
-  scroll-padding-top: var(--header-height);
 
   @media (max-width: @breakpoint-xs) {
     font-size: 90%;
   }
 }
 
+input,
+textarea,
+select {
+  color: var(--color-text);
+}
+
 * {
   overflow-wrap: anywhere;
+
+  // Putting scroll-padding-top on the html element breaks inputs inside the
+  // sticky header - so we do a global scroll-margin-top instead.
+  // See https://stackoverflow.com/questions/65929206/sticky-header-input-scrolls-on-input
+  scroll-margin-top: var(--header-height);
 }
 
 a,

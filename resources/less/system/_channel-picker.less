@@ -1,8 +1,10 @@
-.channel-picker__menu {
+.menu.channel-picker__menu {
   max-width: 50ch;
 
-  --space-xxs: 0.3rem;
-  --space-xs: 0.6rem;
+  .menu-item {
+    padding: var(--space-sm);
+    gap: var(--space-sm);
+  }
 
   .icon:first-child {
     font-size: var(--text-lg);
