@@ -9,7 +9,6 @@ use Waterhole\Models\Channel;
 use Waterhole\Models\Group;
 use Waterhole\Models\Page;
 use Waterhole\Models\Permission;
-use Waterhole\Models\Structure;
 
 /**
  * A seeder that creates default groups, pages, channels, and permissions
@@ -20,37 +19,41 @@ class DefaultSeeder extends Seeder
     public function run()
     {
         // Groups
-        $guest = Group::create([
+        $guest = Group::firstOrCreate([
             'id' => Group::GUEST_ID,
             'name' => __('waterhole::seeder.group-guest'),
         ]);
 
-        $member = Group::create([
+        $member = Group::firstOrCreate([
             'id' => Group::MEMBER_ID,
             'name' => __('waterhole::seeder.group-member'),
         ]);
 
-        $admin = Group::create([
+        $admin = Group::firstOrCreate([
             'id' => Group::ADMIN_ID,
             'name' => __('waterhole::seeder.group-admin'),
         ]);
 
-        $mod = Group::create([
+        $mod = Group::firstOrCreate([
             'name' => __('waterhole::seeder.group-moderator'),
             'is_public' => true,
         ]);
 
         // Community Guide
-        $guide = Page::create([
+        $guide = Page::firstOrCreate([
             'name' => __('waterhole::seeder.guide-title'),
             'slug' => Str::slug(__('waterhole::seeder.guide-title')),
             'icon' => 'emoji:📖',
             'body' => __('waterhole::seeder.guide-body'),
         ]);
 
-        $guide
-            ->permissions()
-            ->save((new Permission(['ability' => 'view']))->recipient()->associate($guest));
+        if ($guide->wasRecentlyCreated) {
+            $guide
+                ->permissions()
+                ->save((new Permission(['ability' => 'view']))->recipient()->associate($guest));
+
+            $guide->structure->update(['is_listed' => true]);
+        }
 
         // Channels
         $channels = [
@@ -85,24 +88,26 @@ class DefaultSeeder extends Seeder
         foreach ($channels as $data) {
             $data['slug'] = Str::slug($data['name']);
 
-            $channel = Channel::create(Arr::except($data, 'group'));
+            $channel = Channel::firstOrCreate(Arr::except($data, 'group'));
 
-            $channel
-                ->permissions()
-                ->saveMany([
-                    (new Permission(['ability' => 'view']))
-                        ->recipient()
-                        ->associate($data['group'] ?? $guest),
-                    (new Permission(['ability' => 'post']))
-                        ->recipient()
-                        ->associate($data['group'] ?? $member),
-                    (new Permission(['ability' => 'comment']))
-                        ->recipient()
-                        ->associate($data['group'] ?? $member),
-                    (new Permission(['ability' => 'moderate']))->recipient()->associate($mod),
-                ]);
+            if ($channel->wasRecentlyCreated) {
+                $channel
+                    ->permissions()
+                    ->saveMany([
+                        (new Permission(['ability' => 'view']))
+                            ->recipient()
+                            ->associate($data['group'] ?? $guest),
+                        (new Permission(['ability' => 'post']))
+                            ->recipient()
+                            ->associate($data['group'] ?? $member),
+                        (new Permission(['ability' => 'comment']))
+                            ->recipient()
+                            ->associate($data['group'] ?? $member),
+                        (new Permission(['ability' => 'moderate']))->recipient()->associate($mod),
+                    ]);
+
+                $channel->structure->update(['is_listed' => true]);
+            }
         }
-
-        Structure::query()->update(['is_listed' => true]);
     }
 }
