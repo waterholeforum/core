@@ -40,12 +40,14 @@ class DefaultSeeder extends Seeder
         ]);
 
         // Community Guide
-        $guide = Page::firstOrCreate([
-            'name' => __('waterhole::seeder.guide-title'),
-            'slug' => Str::slug(__('waterhole::seeder.guide-title')),
-            'icon' => 'emoji:📖',
-            'body' => __('waterhole::seeder.guide-body'),
-        ]);
+        $guide = Page::firstOrCreate(
+            ['slug' => Str::slug(__('waterhole::seeder.guide-title'))],
+            [
+                'icon' => 'emoji:📖',
+                'name' => __('waterhole::seeder.guide-title'),
+                'body' => __('waterhole::seeder.guide-body'),
+            ],
+        );
 
         if ($guide->wasRecentlyCreated) {
             $guide
@@ -88,7 +90,10 @@ class DefaultSeeder extends Seeder
         foreach ($channels as $data) {
             $data['slug'] = Str::slug($data['name']);
 
-            $channel = Channel::firstOrCreate(Arr::except($data, 'group'));
+            $channel = Channel::firstOrCreate(
+                Arr::only($data, 'slug'),
+                Arr::except($data, ['slug', 'group']),
+            );
 
             if ($channel->wasRecentlyCreated) {
                 $channel
