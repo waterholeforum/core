@@ -10,7 +10,7 @@ use Waterhole\Waterhole;
 
 class Outpost
 {
-    const ENDPOINT = 'http://api.waterhole.dev.test/v1/outpost';
+    const ENDPOINT = 'https://api.waterhole.dev/v1/outpost';
     const TIMEOUT = 5;
     const CACHE_KEY = 'waterhole.outpost';
 
