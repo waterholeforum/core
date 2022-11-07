@@ -2,7 +2,6 @@
 
 namespace Waterhole;
 
-use Cake\Utility\Text;
 use Closure;
 use Illuminate\Support\HtmlString;
 use Illuminate\View\AnonymousComponent;
@@ -10,6 +9,7 @@ use Major\Fluent\Formatters\Number\NumberFormatter;
 use Major\Fluent\Formatters\Number\Options;
 use Waterhole\Extend\Emoji;
 use Waterhole\Models\User;
+use Waterhole\Support\Text;
 use Waterhole\Support\TimeAgo;
 
 /**
