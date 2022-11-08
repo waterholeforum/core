@@ -9595,7 +9595,7 @@ var default_1 = /*#__PURE__*/function (_Controller) {
       var previewing = !this.inputTarget.hidden;
       this.inputTarget.hidden = previewing;
       this.previewTarget.hidden = !previewing;
-      this.previewTarget.append((0,_utils__WEBPACK_IMPORTED_MODULE_3__.cloneFromTemplate)('loading'));
+      this.previewTarget.replaceChildren((0,_utils__WEBPACK_IMPORTED_MODULE_3__.cloneFromTemplate)('loading'));
       (_a = this.previewButtonTarget) === null || _a === void 0 ? void 0 : _a.setAttribute('aria-pressed', String(previewing));
       this.element.classList.toggle('is-previewing', previewing);
       if (previewing) {
