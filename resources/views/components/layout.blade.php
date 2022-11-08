@@ -2,11 +2,7 @@
 <html lang="{{ config('app.locale') }}" class="no-js">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <meta
-        name="theme-color"
-        content="{{ config('waterhole.design.accent_color') }}"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="turbo-root" content="{{ $turboRoot }}">
 
     <title>{{ $title ? $title.' - ' : '' }}{{ config('waterhole.forum.name') }}</title>

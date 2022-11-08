@@ -68,12 +68,14 @@
                     @endsection
 
                     @section('sign-up-link')
-                        <p class="text-center">
-                            {{ __('waterhole::auth.login-register-prompt') }}
-                            <a href="{{ route('waterhole.register') }}" data-turbo="true">
-                                {{ __('waterhole::auth.login-register-link') }}
-                            </a>
-                        </p>
+                        @if (Route::has('waterhole.register'))
+                            <p class="text-center">
+                                {{ __('waterhole::auth.login-register-prompt') }}
+                                <a href="{{ route('waterhole.register') }}" data-turbo="true">
+                                    {{ __('waterhole::auth.login-register-link') }}
+                                </a>
+                            </p>
+                        @endif
                     @endsection
 
                     @components(Waterhole\Extend\LoginForm::components())

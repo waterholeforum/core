@@ -22,6 +22,7 @@ abstract class Header
 
 Header::add('title', HeaderTitle::class);
 Header::add('breadcrumb', HeaderBreadcrumb::class);
+
 Header::add('spacer', Spacer::class);
 
 Header::add('search', HeaderSearch::class);

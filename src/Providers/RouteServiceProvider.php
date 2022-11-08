@@ -21,6 +21,7 @@ class RouteServiceProvider extends ServiceProvider
             \Tonysm\TurboLaravel\Http\Middleware\TurboMiddleware::class,
             \Waterhole\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \Waterhole\Http\Middleware\MaybeRequireLogin::class,
             \Waterhole\Http\Middleware\ActorSeen::class,
             \Waterhole\Http\Middleware\Localize::class,
             \Waterhole\Http\Middleware\PoweredByHeader::class,

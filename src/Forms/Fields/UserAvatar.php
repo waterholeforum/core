@@ -27,7 +27,6 @@ class UserAvatar extends Field
                             class="input"
                             name="avatar"
                             accept="image/*,.jpg,.png,.gif,.bmp"
-                            capture="user"
                         >
                         @if ($model->avatar)
                             <label class="choice">

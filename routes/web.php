@@ -18,6 +18,7 @@ use Waterhole\Http\Controllers\Forum\PreferencesController;
 use Waterhole\Http\Controllers\Forum\SearchController;
 use Waterhole\Http\Controllers\Forum\UserController;
 use Waterhole\Http\Controllers\UserLookupController;
+use Waterhole\Http\Middleware\MaybeRequireLogin;
 use Waterhole\Http\Middleware\VerifyCsrfToken;
 
 // Feed
@@ -88,25 +89,31 @@ Route::resource('notifications', NotificationController::class)->only(['index', 
 // Search
 Route::get('search', SearchController::class)->name('search');
 
-// Register
-Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('register', [RegisterController::class, 'register']);
+Route::withoutMiddleware(MaybeRequireLogin::class)->group(function () {
+    // Register
+    if (config('waterhole.users.allow_registration', true)) {
+        Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name(
+            'register',
+        );
+        Route::post('register', [RegisterController::class, 'register']);
+    }
 
-// Login
-Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('login', [LoginController::class, 'login']);
+    // Login
+    Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [LoginController::class, 'login']);
 
-// Forgot Password
-Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name(
-    'forgot-password',
-);
-Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail']);
+    // Forgot Password
+    Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name(
+        'forgot-password',
+    );
+    Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail']);
 
-// Reset Password
-Route::get('reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name(
-    'reset-password',
-);
-Route::post('reset-password/{token}', [ResetPasswordController::class, 'reset']);
+    // Reset Password
+    Route::get('reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name(
+        'reset-password',
+    );
+    Route::post('reset-password/{token}', [ResetPasswordController::class, 'reset']);
+});
 
 // Verify Email
 Route::get('verify-email/{id}', [VerifyEmailController::class, 'verify'])->name('verify-email');
@@ -126,7 +133,3 @@ Route::get('user-lookup', UserLookupController::class)->name('user-lookup');
 Route::post('format', FormatController::class)
     ->name('format')
     ->withoutMiddleware(VerifyCsrfToken::class);
-
-if (config('app.debug')) {
-    Route::view('kitchen-sink', 'waterhole::kitchen-sink')->name('kitchen-sink');
-}

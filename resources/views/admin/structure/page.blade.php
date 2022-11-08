@@ -31,7 +31,7 @@
                     type="submit"
                     class="btn bg-accent btn--wide"
                 >
-                    {{ isset($heading) ? __('waterhole::system.save-changes-button') : __('waterhole::system.create-button') }}
+                    {{ isset($page) ? __('waterhole::system.save-changes-button') : __('waterhole::system.create-button') }}
                 </button>
 
                 <a

@@ -118,7 +118,7 @@ export default class extends Controller {
 
         this.inputTarget.hidden = previewing;
         this.previewTarget.hidden = !previewing;
-        this.previewTarget.append(cloneFromTemplate('loading'));
+        this.previewTarget.replaceChildren(cloneFromTemplate('loading'));
         this.previewButtonTarget?.setAttribute('aria-pressed', String(previewing));
         this.element.classList.toggle('is-previewing', previewing);
 
