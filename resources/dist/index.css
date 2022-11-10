@@ -1153,6 +1153,8 @@ input[type='radio']:checked::before {
   width: 1.2em;
   vertical-align: -0.2em;
   flex-shrink: 0;
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 .icon--thin {
   stroke-width: 1.5;
