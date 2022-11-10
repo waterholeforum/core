@@ -22,7 +22,7 @@
             id="{{ $id }}"
             class="input color-picker__input"
             maxlength="6"
-            pattern="[0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8}"
+            pattern="[0-9A-Fa-f]{3}|[0-9A-Fa-f]{4}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8}"
             data-action="focus->color-picker#show blur->color-picker#hide"
         >
     </hex-input>

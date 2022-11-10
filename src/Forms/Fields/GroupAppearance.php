@@ -66,7 +66,11 @@ class GroupAppearance extends Field
     {
         $validator->addRules([
             'is_public' => ['boolean'],
-            'color' => ['nullable', 'string', 'regex:/^[a-f0-9]{3}|[a-f0-9]{6}$/i'],
+            'color' => [
+                'nullable',
+                'string',
+                'regex:/^[a-f0-9]{3}|[a-f0-9]{4}|[a-f0-9]{6}|[a-f0-9]{8}$/i',
+            ],
         ]);
 
         $validator->addRules(IconPicker::validationRules());
@@ -74,7 +78,8 @@ class GroupAppearance extends Field
 
     public function saving(FormRequest $request): void
     {
-        $this->model->name = $request->validated('name');
+        $this->model->is_public = $request->validated('is_public');
+        $this->model->color = $request->validated('color');
     }
 
     public function saved(FormRequest $request): void

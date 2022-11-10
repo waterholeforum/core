@@ -39,10 +39,16 @@ trait HasIcon
 
         if ($icon['type'] === 'file') {
             if ($icon['file'] ?? null instanceof UploadedFile) {
+                // TODO: support SVG
                 $this->uploadImage(Image::make($icon['file']), 'icon_file', 'icons', function (
                     ImageObject $image,
                 ) {
-                    return $image->fit(50)->encode('png');
+                    return $image
+                        ->resize(50, 50, function ($constraint) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        })
+                        ->encode('png');
                 });
             }
         } else {
