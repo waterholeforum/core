@@ -36,7 +36,12 @@ class UserName extends Field
     public function validating(Validator $validator): void
     {
         $validator->addRules([
-            'name' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($this->user)],
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('users')->ignore($this->model),
+            ],
         ]);
     }
 
