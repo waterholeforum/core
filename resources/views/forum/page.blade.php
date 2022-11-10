@@ -1,6 +1,6 @@
 <x-waterhole::layout :title="$page->name">
     <div class="section container">
-        <div class="stack gap-xl measure-regular">
+        <div class="stack gap-xl measure">
             <header class="stack gap-xs">
                 <ol class="breadcrumb">
                     <li>
