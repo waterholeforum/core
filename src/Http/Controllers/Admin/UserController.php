@@ -89,7 +89,7 @@ class UserController extends Controller
     {
         $form = $this->form($user);
 
-        return view('waterhole::admin.users.form', compact('form'));
+        return view('waterhole::admin.users.form', compact('form', 'user'));
     }
 
     public function update(User $user, Request $request)
