@@ -174,6 +174,9 @@ hr {
   border-top: 1px solid var(--color-stroke);
   margin: var(--space-xl) 0;
 }
+strong {
+  font-weight: var(--weight-bold);
+}
 mark {
   background: transparent;
   font-weight: var(--weight-bold);
@@ -198,6 +201,8 @@ mark {
 }
 #main {
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 ui-popup > .enter-active,
 ui-popup > .leave-active {
@@ -273,8 +278,6 @@ h4,
 h5,
 h6 {
   font-family: var(--font-display);
-  -webkit-hyphens: auto;
-          hyphens: auto;
 }
 .h1,
 h1 {
@@ -1246,28 +1249,30 @@ select.input,
   visibility: hidden;
 }
 .input-container {
-  --input-container-padding: 2.6em;
+  --input-container-padding-start: 2.6em;
+  --input-container-padding-end: 2.6em;
   display: flex;
   align-items: center;
 }
 .input-container > :not(.input, script) {
-  width: var(--input-container-padding);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
 }
 .input-container > :not(.input, script):first-child {
-  margin-right: calc(-1 * var(--input-container-padding));
+  width: var(--input-container-padding-start);
+  margin-right: calc(-1 * var(--input-container-padding-start));
 }
 .input-container > :not(.input, script):last-child {
-  margin-left: calc(-1 * var(--input-container-padding));
+  width: var(--input-container-padding-end);
+  margin-left: calc(-1 * var(--input-container-padding-end));
 }
 .input-container > .input:nth-child(2) {
-  padding-left: var(--input-container-padding);
+  padding-left: var(--input-container-padding-start);
 }
 .input-container > .input:nth-last-child(2) {
-  padding-right: var(--input-container-padding);
+  padding-right: var(--input-container-padding-end);
 }
 .mention {
   color: inherit;
@@ -2522,7 +2527,6 @@ ui-tooltip {
   background: var(--color-bg);
   transition: box-shadow 0.2s, border 0.2s, height var(--height-transition-duration), bottom 0.2s;
   max-height: 90vh;
-  position: sticky;
 }
 .composer.is-static {
   --height-transition-duration: 0s;
@@ -2563,6 +2567,11 @@ ui-tooltip {
   box-shadow: var(--focus-shadow), var(--shadow-md);
   padding-bottom: var(--radius);
   z-index: var(--z-index-overlay);
+}
+@media (min-width: 851px) {
+  .composer {
+    position: sticky;
+  }
 }
 .composer__placeholder {
   border: 2px dashed var(--color-stroke);
@@ -2614,7 +2623,7 @@ ui-tooltip {
 }
 .header.is-stuck {
   box-shadow: var(--shadow-sm);
-  border-bottom-color: transparent;
+  border-bottom: 0;
 }
 .header-breadcrumb {
   color: var(--color-muted);
@@ -2649,6 +2658,9 @@ ui-tooltip {
     order: 1;
     margin-left: auto;
   }
+}
+.index-footer {
+  margin-top: var(--space-md);
 }
 .notifications-menu {
   width: 55ch;

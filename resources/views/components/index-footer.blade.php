@@ -1,3 +1,3 @@
-<div class="row align-baseline wrap color-muted">
+<div class="index-footer row gap-sm align-center wrap color-muted">
     @components(Waterhole\Extend\IndexFooter::build())
 </div>

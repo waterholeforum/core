@@ -66,34 +66,36 @@ select.input,
 }
 
 .input-container {
-  --input-container-padding: 2.6em;
+  --input-container-padding-start: 2.6em;
+  --input-container-padding-end: 2.6em;
 
   display: flex;
   align-items: center;
 
   > :not(.input, script) {
-    width: var(--input-container-padding);
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
 
     &:first-child {
-      margin-right: calc(-1 * var(--input-container-padding));
+      width: var(--input-container-padding-start);
+      margin-right: calc(-1 * var(--input-container-padding-start));
     }
 
     &:last-child {
-      margin-left: calc(-1 * var(--input-container-padding));
+      width: var(--input-container-padding-end);
+      margin-left: calc(-1 * var(--input-container-padding-end));
     }
   }
 
   > .input {
     &:nth-child(2) {
-      padding-left: var(--input-container-padding);
+      padding-left: var(--input-container-padding-start);
     }
 
     &:nth-last-child(2) {
-      padding-right: var(--input-container-padding);
+      padding-right: var(--input-container-padding-end);
     }
   }
 }

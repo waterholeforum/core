@@ -78,6 +78,8 @@ class IndexNav extends Component
 
             return true;
         });
+
+        $this->nav->push(new IndexFooter());
     }
 
     public function render()
