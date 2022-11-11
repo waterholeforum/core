@@ -5,6 +5,8 @@ namespace Waterhole\Http\Controllers;
 use Illuminate\Http\Request;
 use Waterhole\Formatter\Formatter;
 
+use function Waterhole\emojify;
+
 /**
  * Controller to render plain-text content as HTML.
  *
@@ -20,6 +22,6 @@ class FormatController extends Controller
     {
         $xml = $this->formatter->parse((string) $request->getContent());
 
-        return $this->formatter->render($xml);
+        return emojify($this->formatter->render($xml));
     }
 }

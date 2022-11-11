@@ -2662,7 +2662,7 @@ ui-tooltip {
   }
 }
 .index-footer {
-  margin-top: var(--space-md);
+  margin-top: var(--space-lg);
 }
 .notifications-menu {
   width: 55ch;

@@ -63,6 +63,7 @@ class DefaultSeeder extends Seeder
                 'name' => __('waterhole::seeder.announcements-name'),
                 'description' => __('waterhole::seeder.announcements-description'),
                 'icon' => 'emoji:📣',
+                'default_layout' => 'cards',
             ],
             [
                 'name' => __('waterhole::seeder.introductions-name'),

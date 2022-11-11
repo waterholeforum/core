@@ -1,6 +1,6 @@
 home = Home
 
-search-placeholder = Search or ask a question
+search-placeholder = Search all discussions
 search-results-title = Search Results for "{ $query }"
 search-button = Search
 
