@@ -1,6 +1,5 @@
 <button
     type="button"
-    class="btn btn--transparent btn--icon"
     @if ($format)
         data-action="text-editor#format"
         data-text-editor-format-param="{{ is_array($format) ? json_encode($format) : $format }}"
@@ -9,6 +8,7 @@
         data-hotkey-scope="{{ $id }}"
         data-hotkey="{{ $hotkey }}"
     @endif
+    {{ $attributes->class('btn btn--transparent btn--icon') }}
 >
     <x-waterhole::icon :icon="$icon"/>
     <ui-tooltip>

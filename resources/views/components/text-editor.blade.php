@@ -4,7 +4,7 @@
     data-text-editor-user-lookup-url-value="{{ route('waterhole.user-lookup') }}"
     {{ $attributes->class('text-editor stack overlay-container') }}
 >
-    <ui-toolbar class="row scrollable text-editor__toolbar js-only text-xxs">
+    <ui-toolbar class="row wrap text-editor__toolbar js-only text-xxs">
         @components(Waterhole\Extend\TextEditor::build(), compact('id'))
 
         <button

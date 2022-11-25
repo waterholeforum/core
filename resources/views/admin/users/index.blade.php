@@ -142,7 +142,6 @@
                                     <td class="text-sm">
                                         <x-waterhole::action-menu
                                             :for="$user"
-                                            context="admin"
                                             placement="bottom-end"
                                         />
                                     </td>

@@ -38,6 +38,7 @@
             class="stack gap-xs full-width"
             data-reveal-target="then"
             data-reveal-value="emoji"
+            data-icon-picker-target="emoji"
         >
             <input
                 type="text"
@@ -46,13 +47,15 @@
                 @if ($type === 'emoji') value="{{ $content }}" @endif
                 style="width: 5ch"
             >
-            <div class="field__description">
-                {{ __('waterhole::system.icon-picker-emoji-description') }}
-                <a href="https://emojipedia.org" target="_blank" rel="noopener" class="with-icon">
-                    <span>Emojipedia</span>
-                    <x-waterhole::icon icon="tabler-external-link"/>
-                </a>
-            </div>
+
+            <ui-popup data-controller="emoji-picker" hidden>
+                <button type="button" class="btn btn--icon">
+                    <x-waterhole::icon :icon="($type === 'emoji' ? 'emoji:'.$content : null) ?: 'tabler-mood-smile'"/>
+                </button>
+                <div class="menu emoji-picker" hidden>
+                    <emoji-picker></emoji-picker>
+                </div>
+            </ui-popup>
         </div>
 
         <div

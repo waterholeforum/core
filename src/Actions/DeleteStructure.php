@@ -39,7 +39,7 @@ class DeleteStructure extends Action
 
     public function confirm(Collection $models): null|string
     {
-        return __('waterhole::admin.delete-structure-button');
+        return __('waterhole::admin.delete-structure-confirm-message');
     }
 
     public function confirmButton(Collection $models): string

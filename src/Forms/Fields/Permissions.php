@@ -29,7 +29,7 @@ class Permissions extends Field
         $validator->addRules(['permissions' => ['array']]);
     }
 
-    public function saving(FormRequest $request): void
+    public function saved(FormRequest $request): void
     {
         $this->model->savePermissions($request->validated('permissions'));
     }

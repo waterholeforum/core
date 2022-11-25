@@ -4,6 +4,7 @@ namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\OrderedList;
 use Waterhole\View\Components\TextEditorButton;
+use Waterhole\View\Components\TextEditorEmojiButton;
 
 class TextEditor
 {
@@ -106,3 +107,5 @@ TextEditor::add(
         format: '{"prefix":"@"}',
     ),
 );
+
+TextEditor::add('emoji', fn() => new TextEditorEmojiButton());

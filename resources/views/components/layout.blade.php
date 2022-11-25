@@ -24,8 +24,8 @@
         <script src="{{ $url }}" defer data-turbo-track="reload"></script>
     @endforeach
 
-    @foreach (Waterhole\Extend\Script::urls(['async']) as $url)
-        <script src="{{ $url }}" async fetchpriority="low" data-turbo-track="reload"></script>
+    @foreach (Waterhole\Extend\Script::urls(['defer']) as $url)
+        <script src="{{ $url }}" defer data-turbo-track="reload"></script>
     @endforeach
 
     <script>

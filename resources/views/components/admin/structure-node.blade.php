@@ -87,7 +87,6 @@
 
         <x-waterhole::action-menu
             :for="$node->content"
-            context="admin"
             placement="bottom-end"
         />
     </div>

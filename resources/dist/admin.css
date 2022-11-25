@@ -19,7 +19,7 @@
   min-height: 14em;
 }
 .getting-started__grid {
-  --grid-min: 30ch;
+  --grid-min: 35ch;
 }
 .permission-grid thead th {
   width: 10ch;

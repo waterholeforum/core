@@ -9640,11 +9640,21 @@ var default_1 = /*#__PURE__*/function (_Controller) {
       var text = (this.inputTarget.selectionStart > 0 ? '\n\n' : '') + '> ';
       this.editor.insert(text + e.detail.text.replace(/\n/g, '\n> ') + '\n\n');
     }
+  }, {
+    key: "emojiPickerTargetConnected",
+    value: function emojiPickerTargetConnected(el) {
+      var _this3 = this;
+      el.addEventListener('emoji-click', function (e) {
+        var _a;
+        (_a = _this3.editor) === null || _a === void 0 ? void 0 : _a.insert(e.detail.unicode || '');
+        el.closest('ui-popup').open = false;
+      });
+    }
   }]);
   return default_1;
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_1__.Controller);
 
-default_1.targets = ['input', 'preview', 'previewButton', 'expander', 'hotkeyLabel'];
+default_1.targets = ['input', 'preview', 'previewButton', 'expander', 'hotkeyLabel', 'emojiPicker'];
 default_1.values = {
   formatUrl: String,
   userLookupUrl: String
@@ -9712,6 +9722,11 @@ var _default = /*#__PURE__*/function (_Controller) {
         this.apply(name);
       }
       this.updateMenuItems();
+      this.dispatch('change', {
+        detail: {
+          name: name
+        }
+      });
     }
   }, {
     key: "apply",
@@ -24234,7 +24249,7 @@ var $ = /*#__PURE__*/function (_HTMLElement4) {
       t.key === "Escape" && _this10.open && (t.preventDefault(), t.stopPropagation(), _this10.open = !1, _this10.button.focus());
     });
     s(_assertThisInitialized(_this10), "onFocusOut", function (t) {
-      (!(t.relatedTarget instanceof Node) || !_this10.contains(t.relatedTarget)) && (_this10.open = !1);
+      !_this10.hasAttribute("persist") && (!(t.relatedTarget instanceof Node) || !_this10.contains(t.relatedTarget)) && (_this10.open = !1);
     });
     s(_assertThisInitialized(_this10), "onContentClick", function (t) {
       t.target instanceof Element && t.target.closest("[role=menuitem], [role=menuitemradio]") && (_this10.open = !1, _this10.button.focus());

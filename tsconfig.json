@@ -7,10 +7,7 @@
         "sourceMap": true,
         "resolveJsonModule": true,
         "esModuleInterop": true,
-        "lib": ["esnext", "dom"]
+        "lib": ["esnext", "DOM", "DOM.Iterable"]
     },
-    "include": [
-      "resources/js/**/*.ts",
-      "resources/js/**/*.d.ts"
-    ]
+    "include": ["resources/js/**/*.ts", "resources/js/**/*.d.ts"]
 }

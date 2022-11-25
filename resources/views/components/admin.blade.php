@@ -1,7 +1,6 @@
 <x-waterhole::layout
     :title="$title"
     :assets="['admin']"
-    :turbo-root="'/' . config('waterhole.admin.path')"
     {{ $attributes->class('admin') }}
 >
     <div hidden data-page-target="title">{{ __('waterhole::admin.admin-title') }}</div>

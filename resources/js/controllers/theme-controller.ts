@@ -28,6 +28,7 @@ export default class extends Controller {
         }
 
         this.updateMenuItems();
+        this.dispatch('change', { detail: { name } });
     }
 
     apply(name: 'dark' | 'light') {

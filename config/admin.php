@@ -26,14 +26,14 @@ return [
     'widgets' => [
         [
             'component' => Waterhole\Widgets\GettingStarted::class,
-            'width' => 50,
+            'width' => 100,
         ],
-        [
-            'component' => Waterhole\Widgets\Feed::class,
-            'width' => 50,
-            'url' => 'https://www.nasa.gov/rss/dyn/lg_image_of_the_day.rss',
-            'limit' => 4,
-        ],
+        // [
+        //     'component' => Waterhole\Widgets\Feed::class,
+        //     'width' => 50,
+        //     'url' => 'https://www.nasa.gov/rss/dyn/lg_image_of_the_day.rss',
+        //     'limit' => 4,
+        // ],
         [
             'component' => Waterhole\Widgets\LineChart::class,
             'width' => 100 / 3,
