@@ -1,7 +1,7 @@
-@breakpoint-xs: 576px;
-@breakpoint-sm: 850px;
-@breakpoint-md: 1100px;
-@breakpoint-lg: 1200px;
+@breakpoint-xs: 36rem;
+@breakpoint-sm: 53rem;
+@breakpoint-md: 69rem;
+@breakpoint-lg: 75rem;
 
 :root {
   // Background color
@@ -83,8 +83,9 @@
   --color-overlay: rgba(0, 0, 0, 0.5);
 
   // Font
-  --font-text: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif,
+  --font-system: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  --font-text: var(--font-system);
   --font-display: var(--font-text);
   --font-mono: SFMono-Regular, Menlo, Monaco, Consolas, 'Courier New', monospace;
 

@@ -24,6 +24,8 @@ class InstallCommand extends Command
         $this->migrate();
         $this->seed();
         $this->createAdmin();
+
+        $this->info('Waterhole successfully installed.');
     }
 
     private function publish(): void

@@ -9,7 +9,7 @@ use Illuminate\Support\HtmlString;
  *
  * By default, no modification is performed, and emoji remain in their Unicode
  * form. But consumers could, for example, register a callback that converts
- * Unicode emoji into <img> tags for a set like Twemoji.
+ * Unicode emoji into `<img>` tags for a set like Twemoji.
  */
 abstract class Emoji
 {
@@ -18,7 +18,7 @@ abstract class Emoji
     /**
      * Provide a callback to perform emojification of plain-text strings.
      */
-    public static function provide(callable $callback)
+    public static function provide(?callable $callback)
     {
         static::$emojify = $callback;
     }
