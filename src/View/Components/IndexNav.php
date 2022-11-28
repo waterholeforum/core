@@ -52,10 +52,14 @@ class IndexNav extends Component
                             href: $node->content->url,
                         );
                     } elseif ($node->content instanceof StructureLink) {
-                        return new NavLink(
+                        return (new NavLink(
                             label: $node->content->name,
                             icon: $node->content->icon,
                             href: $node->content->href,
+                        ))->withAttributes(
+                            preg_match('~https?://~i', $node->content->href)
+                                ? ['target' => '_blank']
+                                : [],
                         );
                     } elseif ($node->content instanceof Page) {
                         return new NavLink(
