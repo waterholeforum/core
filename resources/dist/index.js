@@ -9053,7 +9053,7 @@ var default_1 = /*#__PURE__*/function (_Controller) {
     _this.beforeStreamRender = function (e) {
       var _a;
       var stream = e.target;
-      if (stream.action === 'remove' && ((_a = stream.target) === null || _a === void 0 ? void 0 : _a.endsWith('post_' + _this.idValue))) {
+      if (stream.action === 'remove' && ((_a = stream.targets) === null || _a === void 0 ? void 0 : _a.endsWith('post_' + _this.idValue))) {
         window.history.back();
         window.addEventListener('popstate', function () {
           window.requestAnimationFrame(function () {
@@ -23956,7 +23956,7 @@ var v = /*#__PURE__*/function (_HTMLElement) {
     new MutationObserver(function (e) {
       e.forEach(function (i) {
         i.addedNodes.forEach(function (n) {
-          return _this.show(n);
+          n instanceof HTMLElement && _this.show(n);
         });
       });
     }).observe(_assertThisInitialized(_this), {

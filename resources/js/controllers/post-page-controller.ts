@@ -38,7 +38,7 @@ export default class extends Controller {
     // the stream is executed.
     private beforeStreamRender = (e: Event) => {
         const stream = e.target as StreamElement;
-        if (stream.action === 'remove' && stream.target?.endsWith('post_' + this.idValue)) {
+        if (stream.action === 'remove' && stream.targets?.endsWith('post_' + this.idValue)) {
             window.history.back();
             window.addEventListener(
                 'popstate',

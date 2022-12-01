@@ -9219,7 +9219,7 @@ var k = /*#__PURE__*/function () {
           r = L * i.height;
         var c = 0,
           l = 0;
-        e.clientX > i.right - o ? c = (e.clientX - i.right + o) / o * C : e.clientX < i.left + o && (c = (e.clientX - o) / o * C), e.clientY > i.bottom - r ? l = (e.clientY - i.bottom + r) / r * C : e.clientY < i.top + r && (l = (e.clientY - r) / r * C), (c !== 0 || l !== 0) && _this2.scrollAmounts.set(n, [c, l]);
+        e.clientX > i.right - o ? c = (e.clientX - i.right + o) / o * C : e.clientX < i.left + o && (c = (e.clientX - i.left - o) / o * C), e.clientY > i.bottom - r ? l = (e.clientY - i.bottom + r) / r * C : e.clientY < i.top + r && (l = (e.clientY - i.top - r) / r * C), (c !== 0 || l !== 0) && _this2.scrollAmounts.set(n, [c, l]);
       }), _this2.scrollAmounts.size ? _this2.scrollInterval || (_this2.scrollInterval = window.setInterval(function () {
         _this2.scrollAmounts.forEach(function (_ref5, o) {
           var _ref6 = _slicedToArray(_ref5, 2),
@@ -9967,6 +9967,7 @@ var Z = /*#__PURE__*/function (_V) {
         height: "1px",
         overflow: "hidden",
         position: "absolute",
+        top: 0,
         whiteSpace: "nowrap",
         width: "1px"
       }), e.setAttribute("role", "status"), e.setAttribute("aria-live", "assertive"), e.setAttribute("aria-atomic", ""), document.body.appendChild(e), e;
