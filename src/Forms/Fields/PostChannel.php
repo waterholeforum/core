@@ -41,7 +41,8 @@ class PostChannel extends Field
     public function saving(FormRequest $request): void
     {
         $this->model->channel_id = $request->validated('channel_id');
+        $this->model->setRelation('channel', Channel::findOrFail($this->model->channel_id));
 
-        Gate::authorize('channel.post', Channel::findOrFail($this->model->channel_id));
+        Gate::authorize('channel.post', $this->model->channel);
     }
 }
