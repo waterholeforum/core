@@ -12,15 +12,8 @@ use Waterhole\Models\Post;
 
 class PostChannel extends Field
 {
-    public ?Channel $channel;
-
-    public function __construct(public Post $model)
+    public function __construct(public ?Post $model)
     {
-        if ($channelId = request('channel')) {
-            $this->channel = Channel::findOrFail($channelId);
-        } else {
-            $this->channel = null;
-        }
     }
 
     public function render(): string
@@ -33,7 +26,7 @@ class PostChannel extends Field
                 <x-waterhole::channel-picker
                     id="channel_id"
                     name="channel_id"
-                    :value="old('channel_id', $channel?->id)"
+                    :value="old('channel_id', $model->channel?->id)"
                     allow-null
                 />
             </x-waterhole::field>
