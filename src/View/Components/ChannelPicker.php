@@ -7,10 +7,11 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\View\Component;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Structure;
+use Waterhole\Models\StructureHeading;
 
 class ChannelPicker extends Component
 {
-    public Collection $channels;
+    public Collection $items;
     public ?Channel $selectedChannel;
 
     public function __construct(
@@ -19,18 +20,29 @@ class ChannelPicker extends Component
         array $exclude = [],
         public bool $allowNull = false,
     ) {
-        $this->channels = new Collection(
+        $this->items = new Collection(
             Structure::with('content')
                 ->whereMorphedTo('content', Channel::class)
+                ->orWhereMorphedTo('content', StructureHeading::class)
                 ->orderBy('position')
                 ->get()
                 ->except($exclude)
                 ->map->content->filter(
-                    fn($channel) => $channel && Gate::allows('channel.post', $channel),
+                    fn($item) => $item instanceof StructureHeading ||
+                        ($item instanceof Channel && Gate::allows('channel.post', $item)),
                 ),
         );
 
-        $this->selectedChannel = $this->channels->find($value);
+        // Filter out headings with no items after them
+        $this->items = $this->items->filter(function ($item, $i) {
+            if ($item instanceof StructureHeading) {
+                return isset($this->items[$i + 1]) &&
+                    !($this->items[$i + 1] instanceof StructureHeading);
+            }
+            return true;
+        });
+
+        $this->selectedChannel = $this->items->find($value);
     }
 
     public function render()

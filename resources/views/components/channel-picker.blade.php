@@ -14,23 +14,21 @@
         </button>
 
         <ui-menu class="menu channel-picker__menu" hidden>
-            @foreach ($channels as $channel)
-                <button
-                    type="submit"
-                    name="{{ $name }}"
-                    value="{{ $channel->id }}"
-                    class="menu-item @if ($channel->id == $value) is-active @endif"
-                    role="menuitemradio"
-                >
-                    <x-waterhole::icon :icon="$channel->icon"/>
-                    <span>
-                        <span class="menu-item__title">{{ $channel->name }}</span>
-                        <span class="menu-item__description">{{ $channel->description }}</span>
-                    </span>
-                    @if ($channel->id == $value)
-                        <x-waterhole::icon icon="tabler-check" class="menu-item__check"/>
-                    @endif
-                </button>
+            @foreach ($items as $item)
+                @if ($item instanceof Waterhole\Models\StructureHeading)
+                    <h4 class="menu-heading">{{ $item->name }}</h4>
+                @elseif ($item instanceof Waterhole\Models\Channel)
+                    <x-waterhole::menu-item
+                        type="submit"
+                        :name="$name"
+                        :value="$item->id"
+                        :active="$item->id == $value"
+                        role="menuitemradio"
+                        :label="$item->name"
+                        :description="$item->description"
+                        :icon="$item->icon"
+                    />
+                @endif
             @endforeach
         </ui-menu>
     </ui-popup>
