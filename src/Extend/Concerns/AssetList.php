@@ -33,41 +33,75 @@ trait AssetList
      */
     public static function urls(array $bundles): array
     {
-        $urls = [];
+        $files = [];
 
         foreach ($bundles as $bundle) {
-            $key = static::CACHE_KEY . '.' . $bundle;
-
             if (config('app.debug')) {
-                Cache::forget($key);
+                static::flushBundle($bundle);
             }
 
-            $urls = array_merge(
-                $urls,
+            $key = static::cacheKey($bundle);
+
+            $files = array_merge(
+                $files,
                 Cache::rememberForever($key, function () use ($bundle) {
                     $assets = static::$assets[$bundle] ?? [];
-                    return $assets ? static::compile($assets, $bundle) : [];
+                    return $assets ? [static::compile($assets, $bundle)] : [];
                 }),
             );
         }
 
-        return $urls;
+        return array_map(fn($file) => asset(Storage::disk('public')->url($file)), $files);
     }
 
-    private static function compile(array $assets, string $bundle): array
+    /**
+     * Flush all bundles so they are regenerated on the next request.
+     */
+    public static function flush(): void
+    {
+        foreach (static::$assets as $bundle => $files) {
+            static::flushBundle($bundle);
+        }
+    }
+
+    /**
+     * Flush a specific bundle so that is it regenerated on the next request.
+     */
+    public static function flushBundle(string $bundle): void
+    {
+        $key = static::cacheKey($bundle);
+
+        if ($files = Cache::get($key)) {
+            Storage::disk('public')->delete($files);
+        }
+
+        Cache::forget($key);
+    }
+
+    private static function cacheKey(string $bundle): string
+    {
+        return static::CACHE_KEY . '.' . $bundle;
+    }
+
+    private static function compile(array $assets, string $bundle): string
     {
         $content = '';
 
         foreach ($assets as $source) {
-            if (is_callable($source)) {
-                $content .= $source() . "\n";
+            if (is_callable($source) && ($output = $source())) {
+                $content .= "$output\n";
             } else {
                 $content .= file_get_contents($source) . "\n";
             }
         }
 
-        Storage::disk('public')->put($compiled = static::FILE_EXTENSION."/$bundle.".static::FILE_EXTENSION, $content);
+        $hash = substr(sha1($content), 0, 8);
 
-        return [asset(Storage::disk('public')->url($compiled))];
+        Storage::disk('public')->put(
+            $compiled = static::FILE_EXTENSION . "/$bundle-$hash." . static::FILE_EXTENSION,
+            $content,
+        );
+
+        return $compiled;
     }
 }

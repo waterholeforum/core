@@ -9,7 +9,7 @@ use Waterhole\Console;
 class ConsoleServiceProvider extends ServiceProvider
 {
     protected array $commands = [
-        Console\FormatterClearCommand::class,
+        Console\CacheClearCommand::class,
         Console\InstallCommand::class,
         Console\MakeExtensionCommand::class,
     ];

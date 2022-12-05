@@ -3,16 +3,14 @@
 namespace Waterhole\Console;
 
 use Illuminate\Console\Command;
-use Waterhole\Console\Concerns\ValidatesInput;
+use Waterhole\Extend;
 use Waterhole\Formatter\Formatter;
 
-class FormatterClearCommand extends Command
+class CacheClearCommand extends Command
 {
-    use ValidatesInput;
+    protected $signature = 'waterhole:cache:clear';
 
-    protected $signature = 'waterhole:formatter:clear';
-
-    protected $description = 'Clear the Waterhole formatter cache';
+    protected $description = 'Clear Waterhole caches';
 
     public function __construct(protected Formatter $formatter)
     {
@@ -23,6 +21,9 @@ class FormatterClearCommand extends Command
     {
         $this->formatter->flush();
 
-        $this->info('Formatter cache cleared!');
+        Extend\Script::flush();
+        Extend\Stylesheet::flush();
+
+        $this->info('Waterhole caches cleared!');
     }
 }

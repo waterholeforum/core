@@ -20,6 +20,11 @@ class InstallCommand extends Command
 
     public function handle()
     {
+        if (User::find(1)) {
+            $this->error('Waterhole has already been installed.');
+            return;
+        }
+
         $this->publish();
         $this->migrate();
         $this->seed();
@@ -30,7 +35,7 @@ class InstallCommand extends Command
 
     private function publish(): void
     {
-        $this->call('vendor:publish', ['--tag' => 'waterhole']);
+        $this->call('vendor:publish', ['--tag' => 'waterhole-config']);
     }
 
     private function migrate(): void

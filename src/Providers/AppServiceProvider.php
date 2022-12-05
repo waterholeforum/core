@@ -37,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
         collect($this->configFiles)->each(function ($config) {
             $this->publishes(
                 [__DIR__ . "/../../config/$config.php" => config_path("waterhole/$config.php")],
-                'waterhole',
+                'waterhole-config',
             );
         });
 
