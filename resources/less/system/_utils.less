@@ -104,7 +104,7 @@
   margin-inline-start: auto;
 }
 
-@media (max-width: (@breakpoint-xs - 1)) {
+@media (max-width: calc(@breakpoint-xs - 1px)) {
   .break-xs {
     order: 999;
     width: 100%;
@@ -137,6 +137,7 @@
 }
 
 .nowrap {
+  flex-wrap: nowrap;
   white-space: nowrap;
 }
 
@@ -531,7 +532,7 @@
   }
 }
 
-@media (min-width: (@breakpoint-xs + 1)) {
+@media (min-width: calc(@breakpoint-xs + 1px)) {
   .hide-sm-up {
     display: none !important;
   }
@@ -543,7 +544,7 @@
   }
 }
 
-@media (min-width: (@breakpoint-sm + 1)) {
+@media (min-width: calc(@breakpoint-sm + 1px)) {
   .hide-md-up {
     display: none !important;
   }
@@ -555,7 +556,7 @@
   }
 }
 
-@media (min-width: (@breakpoint-md + 1)) {
+@media (min-width: calc(@breakpoint-md + 1px)) {
   .hide-lg-up {
     display: none !important;
   }
@@ -567,7 +568,7 @@
   }
 }
 
-@media (min-width: (@breakpoint-lg + 1)) {
+@media (min-width: calc(@breakpoint-lg + 1px)) {
   .hide-xl {
     display: none !important;
   }

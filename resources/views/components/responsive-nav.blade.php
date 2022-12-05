@@ -1,5 +1,5 @@
-<ui-popup {{ $attributes->merge(['placement' => 'bottom-start', 'class' => 'responsive-nav drawer stack']) }}>
-    <button class="btn text-md sidebar__collapsed">
+<ui-popup {{ $attributes->merge(['class' => 'responsive-nav stack']) }}>
+    <button class="btn text-md">
         @isset ($button)
             {{ $button }}
         @elseif ($activeComponent)
@@ -14,7 +14,7 @@
         @endisset
     </button>
 
-    <div hidden>
+    <div hidden class="drawer">
         <nav class="nav">
             @components($components)
         </nav>

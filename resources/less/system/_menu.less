@@ -92,29 +92,37 @@
   z-index: 1;
 }
 
+ui-popup:has(> .drawer)::part(backdrop) {
+  background: rgba(0, 0, 0, 0.5);
+}
+
 .drawer {
-  > :nth-child(2) {
-    background: var(--color-bg);
-    position: fixed !important;
-    left: 0 !important;
-    top: 0 !important;
-    max-height: none !important;
-    margin: 0;
-    height: 100vh;
-    width: min(70vw, 30ch);
-    box-shadow: var(--shadow-md);
-    padding: var(--space-lg);
-    z-index: var(--z-index-overlay);
-    overflow: auto;
+  background: var(--color-bg);
+  position: fixed !important;
+  left: 0 !important;
+  top: 0 !important;
+  max-height: none !important;
+  margin: 0;
+  height: 100vh;
+  width: min(70vw, 30ch);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-lg);
+  z-index: var(--z-index-overlay);
+  overflow: auto;
 
-    &.enter-from,
-    &.leave-to {
-      transform: translateX(-100%);
-      opacity: initial;
-    }
+  &.enter-from,
+  &.leave-to {
+    transform: translateX(-100%);
+    opacity: initial;
   }
+}
 
-  &::part(backdrop) {
-    background: rgba(0, 0, 0, 0.5);
+.drawer--right {
+  left: auto !important;
+  right: 0 !important;
+
+  &.enter-from,
+  &.leave-to {
+    transform: translateX(100%);
   }
 }
