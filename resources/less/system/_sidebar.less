@@ -13,7 +13,7 @@
   display: flex;
 }
 
-@media (max-width: calc(@breakpoint-sm - 1px)) {
+@media (max-width: @breakpoint-sm) {
   .with-sidebar {
     flex-direction: column;
     gap: var(--space-md);
@@ -54,7 +54,7 @@
   }
 }
 
-@media (min-width: @breakpoint-sm) {
+@media (min-width: calc(@breakpoint-sm + 1px)) {
   .with-sidebar {
     gap: var(--space-xxl);
   }

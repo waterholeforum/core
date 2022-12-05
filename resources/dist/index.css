@@ -1536,7 +1536,7 @@ ui-modal.leave-to::part(content) {
   background: inherit;
   color: inherit;
 }
-@media (max-width: calc(53rem - 1px)) {
+@media (max-width: 53rem) {
   .responsive-nav {
     flex: 1 1 10ch;
     min-width: 0;
@@ -1544,7 +1544,7 @@ ui-modal.leave-to::part(content) {
     max-width: fit-content;
   }
 }
-@media (min-width: 53rem) {
+@media (min-width: calc(53rem + 1px)) {
   .responsive-nav > :first-child {
     display: none;
   }
@@ -1581,7 +1581,7 @@ ui-modal.leave-to::part(content) {
 .sidebar {
   display: flex;
 }
-@media (max-width: calc(53rem - 1px)) {
+@media (max-width: 53rem) {
   .with-sidebar {
     flex-direction: column;
     gap: var(--space-md);
@@ -1614,7 +1614,7 @@ ui-modal.leave-to::part(content) {
     z-index: 1;
   }
 }
-@media (min-width: 53rem) {
+@media (min-width: calc(53rem + 1px)) {
   .with-sidebar {
     gap: var(--space-xxl);
   }
@@ -1999,7 +1999,7 @@ ui-tooltip {
   -webkit-margin-start: auto;
           margin-inline-start: auto;
 }
-@media (max-width: calc(36rem - 1px)) {
+@media (max-width: 36rem) {
   .break-xs {
     order: 999;
     width: 100%;
@@ -2755,7 +2755,7 @@ ui-tooltip {
     gap: 1px;
   }
 }
-@media (min-width: 53rem) {
+@media (min-width: calc(53rem + 1px)) {
   .post-page {
     --sidebar-width: 20ch;
   }
@@ -2769,7 +2769,7 @@ ui-tooltip {
 #comments {
   scroll-margin-top: calc(var(--space-lg) + var(--header-height));
 }
-@media (max-width: calc(53rem - 1px)) {
+@media (max-width: 53rem) {
   .comments-pagination {
     flex-wrap: nowrap;
     min-width: 0;
@@ -2778,7 +2778,7 @@ ui-tooltip {
     flex-direction: row;
   }
 }
-@media (min-width: 53rem) {
+@media (min-width: calc(53rem + 1px)) {
   .comments-pagination {
     width: 100%;
     margin: 0 0 0 calc(-1 * var(--space-md));

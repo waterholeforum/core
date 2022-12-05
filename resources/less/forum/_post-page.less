@@ -1,4 +1,4 @@
-@media (min-width: @breakpoint-sm) {
+@media (min-width: calc(@breakpoint-sm + 1px)) {
   .post-page {
     --sidebar-width: 20ch;
 
@@ -16,7 +16,7 @@
   scroll-margin-top: calc(var(--space-lg) + var(--header-height));
 }
 
-@media (max-width: calc(@breakpoint-sm - 1px)) {
+@media (max-width: @breakpoint-sm) {
   .comments-pagination {
     flex-wrap: nowrap;
     min-width: 0;
@@ -27,7 +27,7 @@
   }
 }
 
-@media (min-width: @breakpoint-sm) {
+@media (min-width: calc(@breakpoint-sm + 1px)) {
   .comments-pagination {
     width: 100%;
     margin: 0 0 0 calc(-1 * var(--space-md));
