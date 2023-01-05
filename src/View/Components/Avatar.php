@@ -31,7 +31,7 @@ class Avatar extends Component
                 $hue += ord($this->user->name[$i]);
             }
 
-            static::$colorCache[$this->user->name] = 'hsla(' . $hue % 360 . ', 50%, 50%, 0.5)';
+            static::$colorCache[$this->user->name] = 'hsl(' . $hue % 360 . ' 50% 50% / 0.5)';
         }
 
         return static::$colorCache[$this->user->name];

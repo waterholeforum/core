@@ -19,7 +19,7 @@ class Layout extends Component
             'echoConfig' => config('waterhole.system.echo_config'),
         ];
 
-        $this->turboRoot ??= '/' . config('waterhole.forum.path');
+        // $this->turboRoot ??= '/' . config('waterhole.forum.path');
     }
 
     public function render()

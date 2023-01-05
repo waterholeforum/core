@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="turbo-root" content="{{ $turboRoot }}">
+{{--    <meta name="turbo-root" content="{{ $turboRoot }}">--}}
 
     <title>{{ $title ? $title.' - ' : '' }}{{ config('waterhole.forum.name') }}</title>
 
@@ -21,10 +21,6 @@
     @endforeach
 
     @foreach (Waterhole\Extend\Script::urls(['default', 'default-'.App::getLocale(), ...$assets]) as $url)
-        <script src="{{ $url }}" defer data-turbo-track="reload"></script>
-    @endforeach
-
-    @foreach (Waterhole\Extend\Script::urls(['defer']) as $url)
         <script src="{{ $url }}" defer data-turbo-track="reload"></script>
     @endforeach
 

@@ -76,7 +76,7 @@
 
         <turbo-frame id="users_frame" target="_top" class="stack gap-md">
             @if ($users->isNotEmpty())
-                <div class="table-container full-width">
+                <div class="table-container full-width" tabindex="0">
                     <table class="table">
                         <thead>
                             <tr>

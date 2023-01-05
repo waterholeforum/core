@@ -141,6 +141,14 @@
   white-space: nowrap;
 }
 
+.dividers {
+  > * + * {
+    border-top: 1px solid var(--color-stroke);
+    margin-top: var(--space-lg);
+    padding-top: var(--space-lg);
+  }
+}
+
 @sizes: px, xxs, xs, sm, md, lg, xl, xxl, xxxl;
 .loop(@i: length(@sizes)) when (@i > 0) {
   @value: extract(@sizes, @i);
@@ -345,8 +353,8 @@
 .bg-danger-soft,
 .bg-activity,
 .bg-activity-soft {
-  --color-fill: rgba(255 255 255 / 0.1);
-  --color-stroke: rgba(255 255 255 / 0.25);
+  --color-fill: rgb(255 255 255 / 0.1);
+  --color-stroke: rgb(255 255 255 / 0.25);
 }
 
 .bg-fill {
@@ -481,14 +489,6 @@
 
 .rounded-full {
   border-radius: 999px;
-}
-
-.dividers {
-  > * + * {
-    border-top: 1px solid var(--color-stroke);
-    margin-top: var(--space-lg);
-    padding-top: var(--space-lg);
-  }
 }
 
 // Overlay

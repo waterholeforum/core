@@ -32,7 +32,7 @@
         </div>
     </div>
 
-    <div class="table-container" data-line-chart-target="table">
+    <div class="table-container" tabindex="0" data-line-chart-target="table">
         <table class="table">
             <thead>
                 <tr>
