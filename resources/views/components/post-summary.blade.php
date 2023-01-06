@@ -1,5 +1,5 @@
-<div {{ $attributes->class('post-summary row gap-md align-start') }}>
-    <x-waterhole::user-link :user="$post->user" class="post-summary__avatar no-shrink">
+<div {{ $attributes->class('post-summary') }}>
+    <x-waterhole::user-link :user="$post->user" class="post-summary__avatar">
         <x-waterhole::avatar :user="$post->user"/>
         <ui-tooltip>
             {{ Waterhole\username($post->user) }}

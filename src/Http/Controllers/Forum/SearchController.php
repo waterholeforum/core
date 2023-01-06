@@ -58,9 +58,11 @@ class SearchController extends Controller
         $postsById = Post::with([
             'user',
             'channel.userState',
+            'channel.postsReactionSet',
             'lastComment.user',
             'userState',
-            'likedBy',
+            'reactions.reactionType',
+            'reactions.user',
         ])
             ->whereIn('id', collect($results->hits)->map->postId)
             ->get()
@@ -68,6 +70,7 @@ class SearchController extends Controller
 
         foreach ($results->hits as $hit) {
             $hit->post = $postsById[$hit->postId] ?? null;
+            $hit->post->title = $hit->title;
         }
 
         // Depending on if we have an accurate idea of how many results there
