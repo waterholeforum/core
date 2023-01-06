@@ -2,22 +2,24 @@
 
 namespace Waterhole\View\Components;
 
-use Illuminate\View\Component;
 use Waterhole\Models\Model;
 
-class ReactionsCondensed extends Component
+class ReactionsCondensed extends Reactions
 {
-    public function __construct(public Model $model)
+    public function __construct(Model $model)
     {
+        parent::__construct($model);
     }
 
-    public function shouldRender()
+    public function shouldRender(): bool
     {
-        return (bool) $this->model->score;
+        return (bool) count($this->reactionTypes);
     }
 
     public function render()
     {
-        return view('waterhole::components.reactions-condensed');
+        return count($this->reactionSet->reactionTypes) > 1
+            ? view('waterhole::components.reactions-condensed')
+            : '<x-waterhole::reactions :model="$model"/>';
     }
 }

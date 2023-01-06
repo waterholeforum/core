@@ -2,6 +2,7 @@
 
 namespace Waterhole\Extend;
 
+use Exception;
 use Waterhole\Extend\Concerns\UnorderedList;
 use Waterhole\Models;
 
@@ -29,7 +30,7 @@ abstract class Actionables
             }
         }
 
-        return null;
+        throw new Exception(get_class($model) . ' is not actionable');
     }
 }
 
@@ -38,6 +39,8 @@ Actionables::add('comment', Models\Comment::class);
 Actionables::add('group', Models\Group::class);
 Actionables::add('page', Models\Page::class);
 Actionables::add('post', Models\Post::class);
+Actionables::add('reactionSet', Models\ReactionSet::class);
+Actionables::add('reactionType', Models\ReactionType::class);
 Actionables::add('structureHeading', Models\StructureHeading::class);
 Actionables::add('structureLink', Models\StructureLink::class);
 Actionables::add('user', Models\User::class);

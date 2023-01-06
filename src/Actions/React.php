@@ -11,7 +11,7 @@ use Waterhole\Models\User;
 use Waterhole\View\Components\Reactions;
 use Waterhole\View\TurboStream;
 
-class Like extends Action
+class React extends Action
 {
     public function appliesTo(Model $model): bool
     {
@@ -21,7 +21,10 @@ class Like extends Action
     public function authorize(?User $user, Model $model): bool
     {
         return $user &&
-            $user->can(strtolower((new ReflectionClass($model))->getShortName()) . '.like', $model);
+            $user->can(
+                strtolower((new ReflectionClass($model))->getShortName()) . '.react',
+                $model,
+            );
     }
 
     public function shouldRender(Collection $models): bool
@@ -31,19 +34,29 @@ class Like extends Action
 
     public function label(Collection $models): string
     {
-        return __('waterhole::forum.reaction-like');
+        return 'React';
     }
 
     public function icon(Collection $models): string
     {
-        return 'tabler-thumb-up';
+        return 'tabler-mood-smile';
     }
 
     public function run(Collection $models)
     {
-        $models->each(function ($item) {
-            $item->likedBy()->toggle([request()->user()->id]);
-            $item->refreshLikeMetadata()->save();
+        $models->each(function (Post|Comment $item) {
+            $reaction = $item->reactions()->firstOrNew([
+                'user_id' => request()->user()->id,
+                'reaction_type_id' => request('reaction_type_id'),
+            ]);
+
+            if ($reaction->exists) {
+                $reaction->delete();
+            } else {
+                $reaction->save();
+            }
+
+            $item->recalculateScore()->save();
         });
     }
 

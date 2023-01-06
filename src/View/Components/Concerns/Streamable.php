@@ -2,6 +2,7 @@
 
 namespace Waterhole\View\Components\Concerns;
 
+use Illuminate\Database\Eloquent\Model;
 use ReflectionClass;
 
 use function Tonysm\TurboLaravel\dom_id;
@@ -13,7 +14,7 @@ trait Streamable
         $name = (new ReflectionClass($this))->getShortName();
         $properties = $this->extractPublicProperties();
 
-        if ($model = collect($properties)->first(fn($value) => is_object($value))) {
+        if ($model = collect($properties)->first(fn($value) => $value instanceof Model)) {
             return dom_id($model, $name);
         }
 

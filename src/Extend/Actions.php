@@ -79,10 +79,14 @@ Actions::add('edit-channel', Waterhole\Actions\EditChannel::class);
 Actions::add('edit-structure', Waterhole\Actions\EditStructure::class);
 Actions::add('edit-group', Waterhole\Actions\EditGroup::class);
 Actions::add('edit-user', Waterhole\Actions\EditUser::class);
+Actions::add('edit-reaction-set', Waterhole\Actions\EditReactionSet::class);
+Actions::add('edit-reaction-type', Waterhole\Actions\EditReactionType::class);
 Actions::add('delete-channel', Waterhole\Actions\DeleteChannel::class);
 Actions::add('delete-structure', Waterhole\Actions\DeleteStructure::class);
 Actions::add('delete-group', Waterhole\Actions\DeleteGroup::class);
 Actions::add('delete-user', Waterhole\Actions\DeleteUser::class);
+Actions::add('delete-reaction-set', Waterhole\Actions\DeleteReactionSet::class);
+Actions::add('delete-reaction-type', Waterhole\Actions\DeleteReactionType::class);
 
 // Hidden actions
-Actions::add('like', Waterhole\Actions\Like::class);
+Actions::add('like', Waterhole\Actions\React::class);

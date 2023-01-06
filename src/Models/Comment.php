@@ -10,8 +10,8 @@ use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 use Tonysm\TurboLaravel\Models\Broadcasts;
 use Waterhole\Events\NewComment;
 use Waterhole\Models\Concerns\HasBody;
-use Waterhole\Models\Concerns\HasLikes;
 use Waterhole\Models\Concerns\NotificationContent;
+use Waterhole\Models\Concerns\Reactable;
 use Waterhole\Models\Concerns\ValidatesData;
 use Waterhole\Notifications\Mention;
 use Waterhole\Scopes\CommentIndexScope;
@@ -41,7 +41,7 @@ use function Tonysm\TurboLaravel\dom_id;
 class Comment extends Model
 {
     use HasBody;
-    use HasLikes;
+    use Reactable;
     use HasRecursiveRelationships;
     use ValidatesData;
     use Broadcasts;
@@ -202,5 +202,10 @@ class Comment extends Model
             'parent_id' => ['nullable', Rule::exists('comments', 'id')],
             'body' => ['required', 'string'],
         ];
+    }
+
+    public function reactionSet(): ?ReactionSet
+    {
+        return $this->post->channel->commentsReactionSet;
     }
 }

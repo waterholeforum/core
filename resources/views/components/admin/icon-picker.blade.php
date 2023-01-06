@@ -1,5 +1,5 @@
 <div data-controller="icon-picker" class="icon-picker">
-    @if (is_string($value) && $value)
+    @if (is_string($value) && $content)
         <div class="row gap-sm" data-icon-picker-target="preview">
             <x-waterhole::icon icon="{{ $value }}" class="text-md"/>
             <button type="button" class="btn" data-action="icon-picker#change">
@@ -12,7 +12,7 @@
         class="row gap-sm align-start"
         data-icon-picker-target="form"
         data-controller="reveal"
-        @if (is_string($value) && $value) hidden @endif
+        @if (is_string($value) && $content) hidden @endif
     >
         <select
             class="input"
@@ -50,7 +50,7 @@
 
             <ui-popup data-controller="emoji-picker" hidden>
                 <button type="button" class="btn btn--icon">
-                    <x-waterhole::icon :icon="($type === 'emoji' ? 'emoji:'.$content : null) ?: 'tabler-mood-smile'"/>
+                    <x-waterhole::icon :icon="($type === 'emoji' && $content ? 'emoji:'.$content : null) ?: 'tabler-mood-smile'"/>
                 </button>
                 <div class="menu emoji-picker" hidden>
                     <emoji-picker></emoji-picker>

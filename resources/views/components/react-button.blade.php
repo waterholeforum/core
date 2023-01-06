@@ -1,10 +1,26 @@
-<x-waterhole::action-button
+<x-waterhole::action-form
     :for="$model"
-    :action="Waterhole\Actions\Like::class"
+    :action="Waterhole\Actions\React::class"
     :return="$model->url"
-    {{ $attributes->class('btn btn--sm btn--transparent') }}
-/>
+>
+    <ui-popup placement="top">
+        <button class="btn btn--sm btn--transparent control">
+            <x-waterhole::icon icon="tabler-mood-smile"/>
+            React
+        </button>
 
-{{--<button class="btn btn--sm btn--transparent btn--icon control">--}}
-{{--    <x-waterhole::icon icon="tabler-emoji-happy"/>--}}
-{{--</button>--}}
+        <ui-menu class="menu reactions-menu" hidden>
+            @foreach ($reactionSet->reactionTypes as $reactionType)
+                <button
+                    class="text-xl reaction-type-{{ $reactionType->id }}"
+                    name="reaction_type_id"
+                    value="{{ $reactionType->id }}"
+                    role="menuitemradio"
+                >
+                    <x-waterhole::icon :icon="$reactionType->icon"/>
+                    <ui-tooltip>{{ $reactionType->name }}</ui-tooltip>
+                </button>
+            @endforeach
+        </ui-menu>
+    </ui-popup>
+</x-waterhole::action-form>

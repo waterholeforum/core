@@ -43,7 +43,7 @@ return new class extends Migration {
                 ->default(0)
                 ->index();
             $table
-                ->unsignedInteger('score')
+                ->integer('score')
                 ->default(0)
                 ->index();
             $table->boolean('is_locked')->default(0);

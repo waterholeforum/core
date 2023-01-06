@@ -36,7 +36,10 @@ return new class extends Migration {
                 ->nullable()
                 ->index();
             $table->unsignedInteger('reply_count')->default(0);
-            $table->unsignedInteger('score')->default(0);
+            $table
+                ->integer('score')
+                ->default(0)
+                ->index();
         });
     }
 

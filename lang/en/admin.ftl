@@ -110,6 +110,8 @@ channel-filter-options-label = Filter Options
 channel-custom-filters-label = Use custom filter options
 channel-custom-filters-description = Override the global filter options for this channel.
 channel-permissions-title = Permissions
+channel-post-reactions-label = Post Reactions
+channel-comment-reactions-label = Comment Reactions
 
 delete-channel-title = Delete Channel:
 delete-channel-posts-label = Delete { $count } { $count ->
@@ -160,3 +162,19 @@ unlicensed-badge = Unlicensed
 
 configure-mail-message = You need to configure a mail driver in order for Waterhole to be able to send out verification emails.
 debug-mode-on-message = Debug mode is ON. Sensitive configuration values may be exposed.
+
+reactions-title = Reactions
+reaction-sets-title = Reaction Sets
+create-reaction-set-button = Create Reaction Set
+edit-reaction-set-title = Edit Reaction Set
+create-reaction-set-title = Create a Reaction Set
+reaction-set-name-label = Name
+reaction-set-reactions-label = Reactions
+delete-reaction-set-confirm-message = Are you sure you want to delete this reaction set?
+
+edit-reaction-type-title = Edit Reaction Type
+create-reaction-type-title = Create a Reaction Type
+reaction-type-name-label = Name
+reaction-type-score-label = Score
+reaction-type-score-description = The number of points that this reaction is worth.
+delete-reaction-type-confirm-message = Are you sure you want to delete this reaction type?

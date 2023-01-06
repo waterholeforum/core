@@ -52,3 +52,17 @@ Route::resource('users', Admin\UserController::class)->only(
     'edit',
     'update',
 );
+
+Route::resource('reaction-sets', Admin\ReactionSetController::class)
+    ->only('index', 'create', 'store', 'edit', 'update')
+    ->parameters(['reaction-sets' => 'reactionSet']);
+
+Route::resource('reaction-sets.reaction-types', Admin\ReactionTypeController::class)
+    ->only('create', 'store', 'edit', 'update')
+    ->parameters(['reaction-sets' => 'reactionSet', 'reaction-types' => 'reactionType'])
+    ->scoped();
+
+Route::post('reaction-sets/{reactionSet}/reaction-types/reorder', [
+    Admin\ReactionTypeController::class,
+    'reorder',
+])->name('reaction-sets.reaction-types.reorder');

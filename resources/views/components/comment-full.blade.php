@@ -1,8 +1,5 @@
 <article
-    {{ $attributes->class([
-        'comment',
-        Waterhole\Extend\CommentClasses::build($comment),
-    ]) }}
+    {{ $attributes->class('comment')->merge(Waterhole\Extend\CommentAttributes::build($comment)) }}
     data-comment-id="{{ $comment->id }}"
     data-parent-id="{{ $comment->parent?->id }}"
     data-controller="comment"
@@ -101,10 +98,14 @@
         <footer class="comment__footer row gap-xs wrap">
             @components(Waterhole\Extend\CommentFooter::build(), compact('comment', 'withReplies'))
 
-            <x-waterhole::action-menu
-                :for="$comment"
-                placement="bottom-end"
-            />
+            <div class="row gap-xs wrap push-end">
+                @components(Waterhole\Extend\CommentActions::build(), compact('comment', 'withReplies'))
+
+                <x-waterhole::action-menu
+                    :for="$comment"
+                    placement="bottom-end"
+                />
+            </div>
         </footer>
     </div>
 
@@ -114,7 +115,11 @@
     >
         @if ($withReplies)
             @if (count($comment->children))
-                <ol role="list" tabindex="-1" class="comment__replies comment-list card text-xs">
+                <ol
+                    role="list"
+                    tabindex="-1"
+                    class="comment__replies comment-list card text-xs"
+                >
                     @foreach ($comment->children as $child)
                         <li>
                             <x-waterhole::comment-frame :comment="$child"/>

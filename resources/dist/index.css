@@ -5,8 +5,8 @@
   --color-text: hsl(var(--text-hsl));
   --muted-hsl: 250 10% 50%;
   --color-muted: hsl(var(--muted-hsl));
-  --color-fill: hsla(var(--muted-hsl) / 0.1);
-  --color-stroke: hsla(var(--muted-hsl) / 0.25);
+  --color-fill: hsl(var(--muted-hsl) / 0.1);
+  --color-stroke: hsl(var(--muted-hsl) / 0.25);
   --color-emphasis: hsl(217, 16%, 22%);
   --color-emphasis-contrast: #fff;
   --accent-h: 255;
@@ -14,40 +14,40 @@
   --accent-l: 65%;
   --color-accent: hsl(var(--accent-h) var(--accent-s) var(--accent-l));
   --color-accent-contrast: #fff;
-  --color-accent-soft: hsla(var(--accent-h) var(--accent-s) var(--accent-l) / 0.2);
+  --color-accent-soft: hsl(var(--accent-h) var(--accent-s) var(--accent-l) / 0.2);
   --color-accent-text: hsl(var(--accent-h) var(--accent-s) 50%);
   --danger-h: 0;
   --danger-s: 100%;
   --danger-l: 38%;
   --color-danger: hsl(var(--danger-h) var(--danger-s) var(--danger-l));
   --color-danger-contrast: #fff;
-  --color-danger-soft: hsla(var(--danger-h) var(--danger-s) var(--danger-l) / 0.2);
+  --color-danger-soft: hsl(var(--danger-h) var(--danger-s) var(--danger-l) / 0.2);
   --color-danger-text: hsl(var(--danger-h) var(--danger-s) 30%);
   --warning-h: 60;
   --warning-s: 100%;
   --warning-l: 45%;
   --color-warning: hsl(var(--warning-h) var(--warning-s) var(--warning-l));
   --color-warning-contrast: hsl(var(--warning-h) var(--warning-s) calc(var(--warning-l) - 30%));
-  --color-warning-soft: hsla(var(--warning-h) var(--warning-s) var(--warning-l) / 0.2);
+  --color-warning-soft: hsl(var(--warning-h) var(--warning-s) var(--warning-l) / 0.2);
   --color-warning-text: hsl(var(--warning-h) var(--warning-s) 20%);
   --success-h: 127;
   --success-s: 100%;
   --success-l: 27%;
   --color-success: hsl(var(--success-h) var(--success-s) var(--success-l));
   --color-success-contrast: #fff;
-  --color-success-soft: hsla(var(--success-h) var(--success-s) var(--success-l) / 0.2);
+  --color-success-soft: hsl(var(--success-h) var(--success-s) var(--success-l) / 0.2);
   --color-success-text: hsl(var(--success-h) var(--success-s) 20%);
   --activity-h: 23;
   --activity-s: 100%;
   --activity-l: 45%;
   --color-activity: hsl(var(--activity-h) var(--activity-s) var(--activity-l));
   --color-activity-contrast: #fff;
-  --color-activity-soft: hsla(var(--activity-h) var(--activity-s) var(--activity-l) / 0.2);
+  --color-activity-soft: hsl(var(--activity-h) var(--activity-s) var(--activity-l) / 0.2);
   --color-activity-text: hsl(var(--activity-h) var(--activity-s) 40%);
   --radius: 10px;
-  --shadow-ring: 0 0 0 1px rgba(0 0 0 / 0.05);
-  --shadow-sm: var(--shadow-ring), 0 1px 4px rgba(0 0 0 / 0.1);
-  --shadow-md: var(--shadow-ring), 0 5px 15px rgba(0 0 0 / 0.2);
+  --shadow-ring: 0 0 0 1px rgba(0, 0, 0, 0.05);
+  --shadow-sm: var(--shadow-ring), 0 1px 4px rgb(0 0 0 / 0.1);
+  --shadow-md: var(--shadow-ring), 0 5px 15px rgb(0 0 0 / 0.2);
   --filter-hover: brightness(0.95);
   --filter-active: brightness(0.9);
   --color-overlay: rgba(0, 0, 0, 0.5);
@@ -85,7 +85,7 @@
   --space-xxxl: calc(var(--space-xxl) * var(--ratio));
   --space-gutter: min(2rem, 5vw);
   --control-height: 2.5em;
-  --control-height-small: 2em;
+  --control-height-small: 2.1em;
   --header-height: 4rem;
 }
 :root[data-theme='dark'] {
@@ -97,7 +97,7 @@
   --color-success-text: hsl(var(--success-h) var(--success-s) 35%);
   --color-warning-text: hsl(var(--warning-h) var(--warning-s) 40%);
   --color-activity-text: hsl(var(--activity-h) var(--activity-s) 60%);
-  --shadow-ring: 0 0 0 1px rgba(255 255 255 / 0.1);
+  --shadow-ring: 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 *,
 *::before,
@@ -616,7 +616,7 @@ h6 {
 .btn--sm {
   --control-height: var(--control-height-small);
   padding: 0 calc(0.25 * var(--control-height-small));
-  font-size: 90%;
+  font-size: var(--text-xs);
 }
 .btn--narrow {
   padding: 0 calc(0.3 * var(--control-height));
@@ -819,7 +819,7 @@ input[type='radio']:checked::before {
   width: 1.5em;
   height: 1.5em;
   border-radius: 4px;
-  border: 1px solid hsla(var(--text-hsl) / 0.1);
+  border: 1px solid hsl(var(--text-hsl) / 0.1);
 }
 .combobox {
   position: relative;
@@ -1390,7 +1390,7 @@ select.input,
   z-index: 1;
 }
 ui-popup:has(> .drawer)::part(backdrop) {
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--color-overlay);
 }
 .drawer {
   background: var(--color-bg);
@@ -1945,9 +1945,15 @@ ui-tooltip {
   display: flex;
   flex-direction: column;
 }
+.stack.reverse {
+  flex-direction: column-reverse;
+}
 .row {
   display: flex;
   align-items: center;
+}
+.row.reverse {
+  flex-direction: row-reverse;
 }
 .grid {
   display: grid;
@@ -2027,6 +2033,11 @@ ui-tooltip {
 .nowrap {
   flex-wrap: nowrap;
   white-space: nowrap;
+}
+.dividers > * + * {
+  border-top: 1px solid var(--color-stroke);
+  margin-top: var(--space-lg);
+  padding-top: var(--space-lg);
 }
 .gap-xxxl {
   gap: var(--space-xxxl);
@@ -2308,8 +2319,8 @@ ui-tooltip {
 .bg-danger-soft,
 .bg-activity,
 .bg-activity-soft {
-  --color-fill: rgba(255 255 255 / 0.1);
-  --color-stroke: rgba(255 255 255 / 0.25);
+  --color-fill: rgba(255, 255, 255, 0.1);
+  --color-stroke: rgba(255, 255, 255, 0.25);
 }
 .bg-fill {
   background-color: var(--color-fill);
@@ -2414,11 +2425,6 @@ ui-tooltip {
 }
 .rounded-full {
   border-radius: 999px;
-}
-.dividers > * + * {
-  border-top: 1px solid var(--color-stroke);
-  margin-top: var(--space-lg);
-  padding-top: var(--space-lg);
 }
 .overlay-container {
   position: relative;
@@ -2850,6 +2856,34 @@ ui-tooltip {
 }
 .is-read .post-summary__unread {
   display: none;
+}
+.reactions-menu {
+  border-radius: 999px;
+  overflow: visible;
+  min-width: 0;
+  max-width: none;
+  display: flex;
+  flex-direction: row;
+}
+.reactions-menu button {
+  transition: transform 0.2s;
+  transform-origin: bottom;
+  padding: 2px;
+}
+.reactions-menu button:hover {
+  transform: scale(1.2);
+}
+.reactions-condensed .icon {
+  position: relative;
+  margin-left: -4px;
+  filter: drop-shadow(1px 0 0 var(--color-bg));
+}
+.reactions-condensed[data-count='0'] {
+  display: none;
+}
+.reaction[data-count='0'] .icon {
+  filter: grayscale(0.9);
+  opacity: 0.3;
 }
 .search-results .post-summary__title a:visited,
 .search-results .post-summary__title a:visited mark {

@@ -1,4 +1,5 @@
 skip-to-main-content-link = Skip to main content
+skip-to-main-content-link = Skip to main content
 
 fatal-error-heading = Something Went Wrong
 try-again-button = Try Again
@@ -11,6 +12,7 @@ save-changes-button = Save Changes
 create-button = Create
 cancel-button = Cancel
 change-button = Change
+continue-button = Continue
 
 layout-list = List
 layout-cards = Cards

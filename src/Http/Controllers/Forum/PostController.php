@@ -41,11 +41,17 @@ class PostController extends Controller
             return redirect($comment->post_url);
         }
 
-        $post->load('likedBy');
+        $post->load(['reactions.reactionType', 'reactions.user']);
 
         $comments = $post
             ->comments()
-            ->with(['user.groups', 'parent.user.groups', 'likedBy', 'mentions'])
+            ->with([
+                'user.groups',
+                'parent.user.groups',
+                'reactions.reactionType',
+                'reactions.user',
+                'mentions',
+            ])
             ->oldest()
             ->paginate();
 

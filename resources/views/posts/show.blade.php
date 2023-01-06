@@ -1,13 +1,15 @@
+@php use Illuminate\View\ComponentAttributeBag;use Waterhole\Extend\PostAttributes; @endphp
 <x-waterhole::layout :title="$post->title">
     <div
         class="post-page section container stack gap-lg"
         data-controller="post-page"
         data-post-page-id-value="{{ $post->id }}"
+        {{ new ComponentAttributeBag(PostAttributes::build($post)) }}
     >
         <div class="stack gap-xxxl">
             <div
                 @if (!$comments->onFirstPage()) hidden @endif
-                data-post-page-target="post"
+            data-post-page-target="post"
             >
                 <x-waterhole::post-full :post="$post"/>
             </div>
@@ -63,7 +65,10 @@
                     <x-waterhole::follow-button :followable="$post"/>
 
                     @if ($comments->total())
-                        <nav class="comments-pagination tabs" data-controller="scrollspy">
+                        <nav
+                            class="comments-pagination tabs"
+                            data-controller="scrollspy"
+                        >
                             <a
                                 class="tab with-icon"
                                 href="{{ $post->url }}#top"

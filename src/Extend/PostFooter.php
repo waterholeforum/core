@@ -3,7 +3,6 @@
 namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\OrderedList;
-use Waterhole\View\Components\PostReactButton;
 use Waterhole\View\Components\PostReactions;
 use Waterhole\View\Components\PostReplies;
 
@@ -17,4 +16,4 @@ abstract class PostFooter
 
 PostFooter::add('reactions', PostReactions::class);
 PostFooter::add('replies', PostReplies::class);
-PostFooter::add('react-button', PostReactButton::class);
+// PostFooter::add('react-button', PostReactButton::class);

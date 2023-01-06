@@ -2,6 +2,7 @@
 
 namespace Waterhole\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Waterhole\Models\Concerns\Followable;
 use Waterhole\Models\Concerns\HasIcon;
@@ -70,6 +71,20 @@ class Channel extends Model
         return $this->posts()
             ->following()
             ->unread();
+    }
+
+    public function postsReactionSet(): BelongsTo
+    {
+        return $this->belongsTo(ReactionSet::class, 'posts_reaction_set_id')->withDefault(
+            fn() => ReactionSet::defaultPosts(),
+        );
+    }
+
+    public function commentsReactionSet(): BelongsTo
+    {
+        return $this->belongsTo(ReactionSet::class, 'comments_reaction_set_id')->withDefault(
+            fn() => ReactionSet::defaultComments(),
+        );
     }
 
     public function abilities(): array

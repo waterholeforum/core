@@ -1,5 +1,7 @@
 <article
-    {{ $attributes->class(['post-list-item row gap-xs', Waterhole\Extend\PostClasses::build($post)]) }}
+    {{ $attributes
+        ->class('post-list-item row gap-xs')
+        ->merge(Waterhole\Extend\PostAttributes::build($post)) }}
     data-controller="post"
 >
     <div class="post-list-item__content grow row gap-xs">

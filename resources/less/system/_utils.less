@@ -34,11 +34,19 @@
 .stack {
   display: flex;
   flex-direction: column;
+
+  &.reverse {
+    flex-direction: column-reverse;
+  }
 }
 
 .row {
   display: flex;
   align-items: center;
+
+  &.reverse {
+    flex-direction: row-reverse;
+  }
 }
 
 .grid {

@@ -1,4 +1,11 @@
-<span {{ $attributes->class('btn btn--sm btn--transparent is-inert') }}>
-    <x-waterhole::icon icon="emoji:👍"/>
-    <span>{{ $model->score }}</span>
+<span {{ $attributes->merge([
+    'data-count' => $model->reactions->count(),
+    'class' => 'btn btn--sm btn--transparent is-inert reactions-condensed',
+]) }}>
+    <span class="row reverse">
+        @foreach ($reactionTypes->take(3)->reverse() as $reactionType)
+            <x-waterhole::icon :icon="$reactionType->icon"/>
+        @endforeach
+    </span>
+    {{ $model->reactions->count() }}
 </span>
