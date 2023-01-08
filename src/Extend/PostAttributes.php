@@ -27,6 +27,6 @@ PostAttributes::add(
             'has-replies' => $post->comment_count,
             'is-locked' => $post->is_locked,
         ]),
-        'data-channel' => $post->channel_id,
+        'data-channel' => $post->channel->slug,
     ],
 );
