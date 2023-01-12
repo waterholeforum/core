@@ -25,7 +25,6 @@ class ChannelName extends Field
                     name="name"
                     type="text"
                     value="{{ old('name', $model->name ?? '') }}"
-                    class="input"
                     data-action="slugger#updateName"
                 >
             </x-waterhole::field>

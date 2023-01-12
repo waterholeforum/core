@@ -24,7 +24,6 @@ class PageName extends Field
                     type="text"
                     name="name"
                     id="{{ $component->id }}"
-                    class="input"
                     value="{{ old('name', $model->name ?? null) }}"
                     autofocus
                     data-action="slugger#updateName"

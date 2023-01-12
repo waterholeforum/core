@@ -24,16 +24,22 @@ export default class extends Controller<PopupElement> {
         }`;
         pickerRoot.appendChild(style);
 
-        const observer = new MutationObserver(() => {
-            for (const emoji of pickerRoot.querySelectorAll<HTMLElement>('.emoji')) {
-                if (!emoji.querySelector('.twemoji')) {
-                    twemoji.parse(emoji, { className: 'twemoji' });
+        if (Waterhole.twemojiBase) {
+            const observer = new MutationObserver(() => {
+                for (const emoji of pickerRoot.querySelectorAll<HTMLElement>('.emoji')) {
+                    if (!emoji.querySelector('.twemoji')) {
+                        twemoji.parse(emoji, {
+                            base: Waterhole.twemojiBase!,
+                            className: 'twemoji',
+                        });
+                    }
                 }
-            }
-        });
-        observer.observe(pickerRoot, {
-            subtree: true,
-            childList: true,
-        });
+            });
+
+            observer.observe(pickerRoot, {
+                subtree: true,
+                childList: true,
+            });
+        }
     }
 }

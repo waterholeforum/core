@@ -1191,6 +1191,9 @@ input[type='radio']:checked::before {
   background: currentColor;
   vertical-align: -5px;
 }
+input:where([type='date'], [type='datetime-local'], [type='email'], [type='file'], [type='month'], [type='number'], [type='password'], [type='search'], [type='tel'], [type='text'], [type='time'], [type='url'], [type='week']),
+textarea,
+select,
 .input {
   display: block;
   width: 100%;
@@ -1203,22 +1206,31 @@ input[type='radio']:checked::before {
   padding: 0.55em 0.7em;
   -webkit-appearance: none;
 }
+input:where([type='date'], [type='datetime-local'], [type='email'], [type='file'], [type='month'], [type='number'], [type='password'], [type='search'], [type='tel'], [type='text'], [type='time'], [type='url'], [type='week']):focus,
+textarea:focus,
+select:focus,
 .input:focus,
+input:where([type='date'], [type='datetime-local'], [type='email'], [type='file'], [type='month'], [type='number'], [type='password'], [type='search'], [type='tel'], [type='text'], [type='time'], [type='url'], [type='week']):focus-within,
+textarea:focus-within,
+select:focus-within,
 .input:focus-within {
   outline: none;
   border-color: var(--color-accent);
   box-shadow: inset 0 0 0 1px var(--color-accent);
 }
+.has-error input:where([type='date'], [type='datetime-local'], [type='email'], [type='file'], [type='month'], [type='number'], [type='password'], [type='search'], [type='tel'], [type='text'], [type='time'], [type='url'], [type='week']),
+.has-error textarea,
+.has-error select,
 .has-error .input {
   border-color: var(--color-danger);
 }
-.input[type='file'] {
+input[type='file'] {
   overflow: hidden;
 }
-.input[type='file']:not(:disabled):not([readonly]) {
+input[type='file']:not(:disabled):not([readonly]) {
   cursor: pointer;
 }
-.input::file-selector-button {
+input[type='file']::file-selector-button {
   padding: 0 var(--space-md) 0 0;
   margin: 0;
   width: auto;
@@ -1234,13 +1246,13 @@ input[type='radio']:checked::before {
 *::placeholder {
   color: var(--color-muted);
 }
-textarea.input,
-.input--multiline {
+textarea,
+.textarea {
   height: auto;
   padding: 0.7rem;
 }
-select.input,
-.input--select {
+select,
+.select {
   cursor: default;
   background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="%23888"%3E%3Cpath fill-rule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" /%3E%3C/svg%3E');
   background-position: center right 0.5em;
@@ -1248,7 +1260,7 @@ select.input,
   background-repeat: no-repeat;
   padding-right: 2em;
 }
-.input:invalid + .hide-if-invalid {
+*:invalid + .hide-if-invalid {
   visibility: hidden;
 }
 .input-container {
@@ -1257,24 +1269,24 @@ select.input,
   display: flex;
   align-items: center;
 }
-.input-container > :not(.input, script) {
+.input-container > :not(input, .input, script) {
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
 }
-.input-container > :not(.input, script):first-child {
+.input-container > :not(input, .input, script):first-child {
   width: var(--input-container-padding-start);
   margin-right: calc(-1 * var(--input-container-padding-start));
 }
-.input-container > :not(.input, script):last-child {
+.input-container > :not(input, .input, script):last-child {
   width: var(--input-container-padding-end);
   margin-left: calc(-1 * var(--input-container-padding-end));
 }
-.input-container > .input:nth-child(2) {
+.input-container > :is(input, .input):nth-child(2) {
   padding-left: var(--input-container-padding-start);
 }
-.input-container > .input:nth-last-child(2) {
+.input-container > :is(input, .input):nth-last-child(2) {
   padding-right: var(--input-container-padding-end);
 }
 .mention {
@@ -2925,6 +2937,7 @@ ui-tooltip {
   background: transparent;
   max-height: 70vh;
   position: relative;
+  box-shadow: none !important;
 }
 .text-editor__input[hidden] {
   display: initial !important;

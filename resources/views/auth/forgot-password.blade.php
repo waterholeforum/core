@@ -23,7 +23,6 @@
                                 :label="__('waterhole::auth.email-label')"
                             >
                                 <input
-                                    class="input"
                                     type="email"
                                     id="{{ $component->id }}"
                                     name="email"

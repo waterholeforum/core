@@ -27,7 +27,6 @@
                     type="text"
                     name="name"
                     id="{{ $component->id }}"
-                    class="input"
                     value="{{ old('name', $heading->name ?? null) }}"
                     autofocus
                 >

@@ -25,7 +25,6 @@ class StructureLinkName extends Field
                     name="name"
                     type="text"
                     value="{{ old('name', $model->name ?? '') }}"
-                    class="input"
                 >
             </x-waterhole::field>
         blade;

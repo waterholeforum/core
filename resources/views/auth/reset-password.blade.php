@@ -18,7 +18,6 @@
                         :label="__('waterhole::auth.email-label')"
                     >
                         <input
-                            class="input"
                             type="email"
                             id="{{ $component->id }}"
                             name="email"
@@ -33,7 +32,6 @@
                         :label="__('waterhole::auth.new-password-label')"
                     >
                         <input
-                            class="input"
                             type="password"
                             id="{{ $component->id }}"
                             name="password"
@@ -47,7 +45,6 @@
                         :label="__('waterhole::auth.confirm-password-label')"
                     >
                         <input
-                            class="input"
                             type="password"
                             id="{{ $component->id }}"
                             name="password_confirmation"

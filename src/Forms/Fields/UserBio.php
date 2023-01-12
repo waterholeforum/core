@@ -22,7 +22,6 @@ class UserBio extends Field
                         id="{{ $component->id }}"
                         type="text"
                         name="bio"
-                        class="input block"
                         maxlength="255"
                     >{{ old('bio', $model?->bio) }}</textarea>
                     <p class="field__description">

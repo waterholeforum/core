@@ -20,7 +20,6 @@
                         class="no-pointer color-muted"
                     />
                     <input
-                        class="input"
                         data-action="
                             incremental-search#input
                             focus->filter-input#focus

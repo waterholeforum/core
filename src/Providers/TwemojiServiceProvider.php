@@ -10,16 +10,17 @@ class TwemojiServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        Extend\Emoji::provide([static::class, 'twemoji']);
+        if (config('waterhole.design.twemoji_base')) {
+            Extend\Emoji::provide([static::class, 'twemoji']);
+        }
     }
 
     public static function twemoji(string $text, array $attributes = []): string
     {
         $attributes['class'] = 'twemoji ' . ($attributes['class'] ?? '');
 
-        return Twemoji::text($text)->toHtml(
-            null,
-            array_merge(['width' => '', 'height' => ''], $attributes),
-        );
+        return Twemoji::text($text)
+            ->base(config('waterhole.design.twemoji_base'))
+            ->toHtml(null, array_merge(['width' => '', 'height' => ''], $attributes));
     }
 }

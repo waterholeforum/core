@@ -24,6 +24,7 @@ export interface Waterhole {
     fetchError: (response: Response) => void;
     documentTitle: DocumentTitle;
     echoConfig: any;
+    twemojiBase: string | null;
 }
 
 Object.defineProperty(Waterhole, 'alerts', {

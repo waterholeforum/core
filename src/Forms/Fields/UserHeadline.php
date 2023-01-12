@@ -26,7 +26,6 @@ class UserHeadline extends Field
                         type="text"
                         name="headline"
                         value="{{ old('headline', $model?->headline) }}"
-                        class="input block"
                         maxlength="30"
                     >
                     <p class="field__description">

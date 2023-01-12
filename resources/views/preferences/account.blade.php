@@ -25,7 +25,7 @@
                     <x-waterhole::field name="email">
                         <div class="row gap-xs">
                             <input
-                                class="input grow"
+                                class="grow"
                                 name="email"
                                 type="email"
                                 value="{{ old('email', Auth::user()->email) }}"
@@ -53,7 +53,7 @@
                         <div class="row gap-xs">
                             <input
                                 autocomplete="new-password"
-                                class="input grow"
+                                class="grow"
                                 name="password"
                                 placeholder="{{ __('waterhole::auth.new-password-label') }}"
                                 type="password"

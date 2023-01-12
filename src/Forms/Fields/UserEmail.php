@@ -25,7 +25,6 @@ class UserEmail extends Field
                     type="email"
                     name="email"
                     id="{{ $component->id }}"
-                    class="input"
                     value="{{ old('email', $model->email ?? null) }}"
                 >
             </x-waterhole::field>

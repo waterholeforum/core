@@ -24,7 +24,6 @@ class ChannelInstructions extends Field
                     name="instructions"
                     :id="$component->id"
                     :value="old('instructions', $model->instructions ?? '')"
-                    class="input"
                 />
                 <p class="field__description">
                     {{ __('waterhole::admin.channel-instructions-description') }}

@@ -25,7 +25,6 @@ class PageSlug extends Field
                     type="text"
                     name="slug"
                     id="{{ $component->id }}"
-                    class="input"
                     value="{{ old('slug', $model->slug ?? null) }}"
                     data-action="slugger#updateSlug"
                     data-slugger-target="slug"

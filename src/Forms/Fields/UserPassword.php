@@ -34,7 +34,7 @@ class UserPassword extends Field
                             type="password"
                             name="password"
                             id="{{ $component->id }}"
-                            class="input"
+
                         >
                 @if ($model->exists)
                     </div>

@@ -2113,28 +2113,31 @@ var _default = /*#__PURE__*/function (_Controller) {
       var style = document.createElement('style');
       style.textContent = ".twemoji {\n          width: var(--emoji-size);\n          height: var(--emoji-size);\n          pointer-events: none;\n        }";
       pickerRoot.appendChild(style);
-      var observer = new MutationObserver(function () {
-        var _iterator = _createForOfIteratorHelper(pickerRoot.querySelectorAll('.emoji')),
-          _step;
-        try {
-          for (_iterator.s(); !(_step = _iterator.n()).done;) {
-            var emoji = _step.value;
-            if (!emoji.querySelector('.twemoji')) {
-              twemoji__WEBPACK_IMPORTED_MODULE_1__["default"].parse(emoji, {
-                className: 'twemoji'
-              });
+      if (Waterhole.twemojiBase) {
+        var observer = new MutationObserver(function () {
+          var _iterator = _createForOfIteratorHelper(pickerRoot.querySelectorAll('.emoji')),
+            _step;
+          try {
+            for (_iterator.s(); !(_step = _iterator.n()).done;) {
+              var emoji = _step.value;
+              if (!emoji.querySelector('.twemoji')) {
+                twemoji__WEBPACK_IMPORTED_MODULE_1__["default"].parse(emoji, {
+                  base: Waterhole.twemojiBase,
+                  className: 'twemoji'
+                });
+              }
             }
+          } catch (err) {
+            _iterator.e(err);
+          } finally {
+            _iterator.f();
           }
-        } catch (err) {
-          _iterator.e(err);
-        } finally {
-          _iterator.f();
-        }
-      });
-      observer.observe(pickerRoot, {
-        subtree: true,
-        childList: true
-      });
+        });
+        observer.observe(pickerRoot, {
+          subtree: true,
+          childList: true
+        });
+      }
     }
   }]);
   return _default;

@@ -25,7 +25,6 @@ class UserLocation extends Field
                     type="text"
                     name="location"
                     value="{{ old('location', $model?->location) }}"
-                    class="input block"
                     maxlength="30"
                 >
             </x-waterhole::field>

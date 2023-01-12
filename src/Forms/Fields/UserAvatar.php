@@ -24,7 +24,6 @@ class UserAvatar extends Field
                     <div class="stack gap-md">
                         <input
                             type="file"
-                            class="input"
                             name="avatar"
                             accept="image/*,.jpg,.png,.gif,.bmp"
                         >

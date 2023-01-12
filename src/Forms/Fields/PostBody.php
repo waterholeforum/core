@@ -24,7 +24,6 @@ class PostBody extends Field
                     name="body"
                     :id="$component->id"
                     :value="old('body', $model->body ?? '')"
-                    class="input"
                 />
             </x-waterhole::field>
         blade;

@@ -24,7 +24,6 @@ class PageBody extends Field
                     name="body"
                     id="{{ $component->id }}"
                     :value="old('body', $model->body ?? null)"
-                    class="input"
                 />
             </x-waterhole::field>
         blade;

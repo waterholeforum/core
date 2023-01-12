@@ -24,7 +24,6 @@ class StructureLinkUrl extends Field
                     type="text"
                     name="url"
                     id="{{ $component->id }}"
-                    class="input"
                     value="{{ old('url', $model->href ?? null) }}"
                 >
             </x-waterhole::field>

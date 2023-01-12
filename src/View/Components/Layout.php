@@ -17,6 +17,7 @@ class Layout extends Component
         $this->payload = [
             'userId' => Auth::id(),
             'echoConfig' => config('waterhole.system.echo_config'),
+            'twemojiBase' => config('waterhole.design.twemoji_base'),
         ];
 
         // $this->turboRoot ??= '/' . config('waterhole.forum.path');

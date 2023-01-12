@@ -25,7 +25,6 @@ class UserName extends Field
                     type="text"
                     name="name"
                     id="{{ $component->id }}"
-                    class="input"
                     value="{{ old('name', $model->name ?? null) }}"
                     autofocus
                 >

@@ -1,4 +1,4 @@
-<select {{ $attributes->class('input') }}>
+<select {{ $attributes }}>
     <option value="" @selected($value == $default?->id)>
         {{ $default?->name ?? 'None' }} (default)
     </option>

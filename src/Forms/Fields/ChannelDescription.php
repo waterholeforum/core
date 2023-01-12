@@ -23,7 +23,6 @@ class ChannelDescription extends Field
                 <textarea
                     id="{{ $component->id }}"
                     name="description"
-                    class="input"
                 >{{ old('description', $model->description ?? '') }}</textarea>
                 <p class="field__description">
                     {{ __('waterhole::admin.channel-description-description') }}

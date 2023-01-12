@@ -22,7 +22,6 @@ class UserWebsite extends Field
                     type="text"
                     name="website"
                     value="{{ old('website', $model?->website) }}"
-                    class="input block"
                     maxlength="100"
                 >
             </x-waterhole::field>

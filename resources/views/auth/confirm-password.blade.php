@@ -21,7 +21,6 @@
                         :label="__('waterhole::auth.password-label')"
                     >
                         <input
-                            class="input"
                             type="password"
                             id="{{ $component->id }}"
                             name="password"

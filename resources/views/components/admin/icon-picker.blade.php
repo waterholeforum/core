@@ -15,7 +15,6 @@
         @if (is_string($value) && $content) hidden @endif
     >
         <select
-            class="input"
             style="width: auto"
             data-reveal-target="if"
             name="{{ $name }}[type]"
@@ -42,7 +41,6 @@
         >
             <input
                 type="text"
-                class="input"
                 name="{{ $name }}[emoji]"
                 @if ($type === 'emoji') value="{{ $content }}" @endif
                 style="width: 5ch"
@@ -65,7 +63,6 @@
         >
             <input
                 type="text"
-                class="input"
                 list="icons"
                 name="{{ $name }}[svg]"
                 @if ($type === 'svg') value="{{ $content }}" @endif
@@ -104,7 +101,7 @@
             data-reveal-target="then"
             data-reveal-value="file"
         >
-            <input type="file" class="input" name="{{ $name }}[file]">
+            <input type="file" name="{{ $name }}[file]">
         </div>
     </div>
 </div>

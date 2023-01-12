@@ -25,7 +25,6 @@ class ReactionTypeScore extends Field
                     type="number"
                     name="score"
                     id="{{ $component->id }}"
-                    class="input"
                     value="{{ old('score', $model->score ?? 1) }}"
                     style="width: 10ch"
                 >

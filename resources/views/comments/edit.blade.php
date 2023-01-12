@@ -20,7 +20,6 @@
                     <x-waterhole::text-editor
                         name="body"
                         :value="old('body', $comment->body)"
-                        class="input"
                     />
 
                     <div class="row gap-xs wrap justify-end">

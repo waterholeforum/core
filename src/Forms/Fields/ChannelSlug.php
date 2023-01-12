@@ -26,7 +26,6 @@ class ChannelSlug extends Field
                     name="slug"
                     type="text"
                     value="{{ old('slug', $model->slug ?? '') }}"
-                    class="input"
                     data-action="slugger#updateSlug"
                     data-slugger-target="slug"
                 >

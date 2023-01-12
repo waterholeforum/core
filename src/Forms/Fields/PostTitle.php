@@ -25,7 +25,6 @@ class PostTitle extends Field
                     name="title"
                     type="text"
                     value="{{ old('title', $model->title ?? '') }}"
-                    class="input"
                 >
             </x-waterhole::field>
         blade;

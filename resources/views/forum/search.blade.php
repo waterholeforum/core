@@ -17,7 +17,6 @@
                     class="no-pointer"
                 />
                 <input
-                    class="input"
                     type="search"
                     name="q"
                     value="{{ request('q') }}"

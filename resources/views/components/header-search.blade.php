@@ -16,7 +16,7 @@
     />
 
     <input
-        class="input rounded-full"
+        class="rounded-full"
         type="text"
         name="q"
         placeholder="{{ __('waterhole::forum.search-placeholder') }}"
