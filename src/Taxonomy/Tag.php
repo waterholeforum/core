@@ -4,6 +4,8 @@ namespace Waterhole\Taxonomy;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Waterhole\Models\Model;
+use Waterhole\View\Components\Admin\TagRow;
+use Waterhole\View\TurboStream;
 
 class Tag extends Model
 {
@@ -27,5 +29,13 @@ class Tag extends Model
             'taxonomy' => $this->taxonomy,
             'tag' => $this,
         ]);
+    }
+
+    /**
+     * Get the Turbo Streams that should be sent when this tag is removed.
+     */
+    public function streamRemoved(): array
+    {
+        return [TurboStream::remove(new TagRow($this))];
     }
 }

@@ -1,4 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
+import { ModalElement } from 'inclusive-elements';
 import { getHeaderHeight } from '../utils';
 
 /**
@@ -31,5 +32,9 @@ export default class extends Controller {
 
     incrementDocumentTitle() {
         Waterhole.documentTitle.increment();
+    }
+
+    closeModal() {
+        document.querySelector<ModalElement>('#modal-element')?.close();
     }
 }

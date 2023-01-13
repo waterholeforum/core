@@ -57,6 +57,7 @@
     does not contain modal frame content, the modal will be hidden.
 --}}
 <ui-modal
+    id="modal-element"
     class="modal"
     hidden
     data-controller="modal"

@@ -2415,9 +2415,10 @@ var default_1 = /*#__PURE__*/function (_Controller) {
       popup.hidden = false;
       picker.addEventListener('emoji-click', function (e) {
         input.value = e.detail.unicode || '';
-        button.innerHTML = twemoji__WEBPACK_IMPORTED_MODULE_1__["default"].parse(input.value, {
+        button.innerHTML = Waterhole.twemojiBase ? twemoji__WEBPACK_IMPORTED_MODULE_1__["default"].parse(input.value, {
+          base: Waterhole.twemojiBase,
           className: 'icon'
-        });
+        }) : input.value;
         popup.open = false;
       });
     }

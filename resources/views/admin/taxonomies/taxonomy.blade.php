@@ -49,23 +49,13 @@
         @isset($taxonomy)
             <details class="card" open>
                 <summary class="card__header h5">{{ __('waterhole::admin.taxonomy-tags-title') }}</summary>
-                <turbo-frame id="tags">
+                <turbo-frame id="tags" data-action="turbo:frame-load->page#closeModal">
                     <div class="card__body stack gap-md">
                         <ul class="card" role="list">
-                            @forelse ($taxonomy->tags->load('taxonomy') as $tag)
-                                <li class="card__row row gap-sm">
-                                    {{ Waterhole\emojify($tag->name) }}
-
-                                    <x-waterhole::action-buttons
-                                        :for="$tag"
-                                        :button-attributes="['class' => 'btn btn--icon btn--transparent']"
-                                        icons
-                                        class="push-end row -m-sm text-xs"
-                                    />
-                                </li>
-                            @empty
-                                <li class="placeholder">No Tags</li>
-                            @endforelse
+                            @foreach ($taxonomy->tags->load('taxonomy') as $tag)
+                                <x-waterhole::admin.tag-row :tag="$tag"/>
+                            @endforeach
+                            <li class="placeholder hide-if-not-only-child" id="tag-list-end">No Tags</li>
                         </ul>
 
                         <div>

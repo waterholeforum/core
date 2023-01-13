@@ -42,7 +42,7 @@ export default class extends Controller<ModalElement> {
         }
 
         if (this.element.open) {
-            this.element.open = false;
+            this.element.close();
         }
     }
 }

@@ -8715,7 +8715,7 @@ var default_1 = /*#__PURE__*/function (_Controller) {
         e.preventDefault();
       }
       if (this.element.open) {
-        this.element.open = false;
+        this.element.close();
       }
     }
   }]);
@@ -8846,6 +8846,12 @@ var default_1 = /*#__PURE__*/function (_Controller) {
     key: "incrementDocumentTitle",
     value: function incrementDocumentTitle() {
       Waterhole.documentTitle.increment();
+    }
+  }, {
+    key: "closeModal",
+    value: function closeModal() {
+      var _a;
+      (_a = document.querySelector('#modal-element')) === null || _a === void 0 ? void 0 : _a.close();
     }
   }]);
   return default_1;

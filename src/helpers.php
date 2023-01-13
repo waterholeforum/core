@@ -164,3 +164,8 @@ function build_components(array $components, array $data = []): array
         }
     }, $components);
 }
+
+function trans_optional(string $key, string $fallback, array $replace = [], string $locale = null)
+{
+    return trans(trans()->has($key) ? $key : $fallback, $replace, $locale);
+}

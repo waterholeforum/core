@@ -31,7 +31,12 @@ export default class extends Controller {
 
         picker.addEventListener('emoji-click', (e) => {
             input.value = e.detail.unicode || '';
-            button.innerHTML = twemoji.parse(input.value, { className: 'icon' });
+            button.innerHTML = Waterhole.twemojiBase
+                ? twemoji.parse(input.value, {
+                      base: Waterhole.twemojiBase,
+                      className: 'icon',
+                  })
+                : input.value;
             popup.open = false;
         });
     }

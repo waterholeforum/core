@@ -3,6 +3,9 @@
 namespace Waterhole\Taxonomy;
 
 use Illuminate\Http\Request;
+use Tonysm\TurboLaravel\Http\TurboResponseFactory;
+use Waterhole\View\Components\Admin\TagRow;
+use Waterhole\View\TurboStream;
 
 class TagController
 {
@@ -20,6 +23,12 @@ class TagController
 
         $this->form($tag)->submit($request);
 
+        if ($request->wantsTurboStream()) {
+            return TurboResponseFactory::makeStream(
+                TurboStream::before(new TagRow($tag), 'tag-list-end'),
+            );
+        }
+
         return redirect($taxonomy->edit_url);
     }
 
@@ -33,6 +42,10 @@ class TagController
     public function update(Taxonomy $taxonomy, Tag $tag, Request $request)
     {
         $this->form($tag)->submit($request);
+
+        if ($request->wantsTurboStream()) {
+            return TurboResponseFactory::makeStream(TurboStream::replace(new TagRow($tag)));
+        }
 
         return redirect($request->input('return', $taxonomy->edit_url))->with(
             'success',

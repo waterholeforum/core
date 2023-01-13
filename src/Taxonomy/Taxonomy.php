@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Waterhole\Models\Concerns\HasPermissions;
 use Waterhole\Models\Model;
 
+use function Waterhole\trans_optional;
+
 class Taxonomy extends Model
 {
     use HasPermissions;
@@ -28,6 +30,11 @@ class Taxonomy extends Model
     public function getEditUrlAttribute(): string
     {
         return route('waterhole.admin.taxonomies.edit', ['taxonomy' => $this]);
+    }
+
+    public function getTranslatedNameAttribute(): string
+    {
+        return trans_optional("waterhole.taxonomy-$this->id", $this->name);
     }
 
     public function abilities(): array

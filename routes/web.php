@@ -133,3 +133,7 @@ Route::get('user-lookup', UserLookupController::class)->name('user-lookup');
 Route::post('format', FormatController::class)
     ->name('format')
     ->withoutMiddleware(VerifyCsrfToken::class);
+
+foreach (Waterhole\Extend\ForumRoutes::values() as $callback) {
+    $callback();
+}

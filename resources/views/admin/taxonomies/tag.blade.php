@@ -13,6 +13,7 @@
                     ? route('waterhole.admin.taxonomies.tags.update', compact('taxonomy', 'tag'))
                     : route('waterhole.admin.taxonomies.tags.store', compact('taxonomy')) }}"
                 enctype="multipart/form-data"
+                data-turbo-frame="tags"
             >
                 @csrf
                 @if (isset($tag)) @method('PATCH') @endif
