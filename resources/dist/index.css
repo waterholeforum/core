@@ -2383,9 +2383,6 @@ ui-tooltip {
 .grow {
   flex-grow: 1;
 }
-.outgrow {
-  flex-grow: 999;
-}
 .shrink {
   min-width: 0;
 }

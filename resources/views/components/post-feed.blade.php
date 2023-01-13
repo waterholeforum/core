@@ -1,6 +1,6 @@
 <turbo-frame
     id="post-feed"
-    class="stack gap-md"
+    class="stack gap-lg"
     target="_top"
     data-controller="post-feed"
     data-post-feed-filter-value="{{ $feed->currentFilter()->handle() }}"
