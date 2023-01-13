@@ -2,7 +2,7 @@
     $filters = $feed->filters();
 @endphp
 
-<div class="tabs">
+<div {{ $attributes->class('tabs') }}>
     @foreach ($filters->slice(0, $limit) as $filter)
         <a
             href="{{ $url($filter) }}"

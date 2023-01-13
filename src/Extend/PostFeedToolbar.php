@@ -2,10 +2,9 @@
 
 namespace Waterhole\Extend;
 
+use Waterhole\Extend\Concerns\OfComponents;
 use Waterhole\Extend\Concerns\OrderedList;
 use Waterhole\View\Components\FeedFilters;
-use Waterhole\View\Components\FeedTopPeriod;
-use Waterhole\View\Components\PostFeedControls;
 use Waterhole\View\Components\Spacer;
 
 /**
@@ -13,11 +12,9 @@ use Waterhole\View\Components\Spacer;
  */
 abstract class PostFeedToolbar
 {
-    use OrderedList;
+    use OrderedList, OfComponents;
 }
 
 PostFeedToolbar::add('filters', FeedFilters::class, position: -100);
-PostFeedToolbar::add('top-period', FeedTopPeriod::class, position: -90);
+// PostFeedToolbar::add('top-period', FeedTopPeriod::class, position: -90);
 PostFeedToolbar::add('spacer', Spacer::class);
-PostFeedToolbar::add('controls', PostFeedControls::class, position: 100);
-// PostFeedToolbar::add('new-post', PostFeedCreate::class);

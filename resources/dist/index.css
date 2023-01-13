@@ -621,7 +621,7 @@ h6 {
 }
 .btn--sm {
   --control-height: var(--control-height-small);
-  padding: 0 calc(0.25 * var(--control-height-small));
+  padding: 0 calc(0.3 * var(--control-height-small));
   font-size: var(--text-xs);
 }
 .btn--narrow {
@@ -2347,6 +2347,21 @@ ui-tooltip {
 .align-stretch {
   align-items: stretch;
 }
+.align-self-center {
+  align-self: center;
+}
+.align-self-start {
+  align-self: flex-start;
+}
+.align-self-end {
+  align-self: flex-end;
+}
+.align-self-baseline {
+  align-self: baseline;
+}
+.align-self-stretch {
+  align-self: stretch;
+}
 .push-start {
   -webkit-margin-end: auto;
           margin-inline-end: auto;
@@ -2367,6 +2382,9 @@ ui-tooltip {
 }
 .grow {
   flex-grow: 1;
+}
+.outgrow {
+  flex-grow: 999;
 }
 .shrink {
   min-width: 0;

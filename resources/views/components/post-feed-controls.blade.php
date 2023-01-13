@@ -1,6 +1,6 @@
-<ui-popup placement="bottom-end">
+<ui-popup placement="bottom-end" {{ $attributes }}>
     <button
-        class="btn btn--icon btn--transparent"
+        class="btn btn--icon btn--transparent btn--sm"
         aria-label="{{ __('waterhole::system.controls-button') }}"
     >
         <x-waterhole::icon icon="tabler-settings"/>

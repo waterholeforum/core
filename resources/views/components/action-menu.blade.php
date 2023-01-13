@@ -12,7 +12,7 @@
             @else
                 <button
                     type="button"
-                    {{ (new Illuminate\View\ComponentAttributeBag($buttonAttributes))->class('btn btn--icon btn--transparent text-xs') }}
+                    {{ (new Illuminate\View\ComponentAttributeBag($buttonAttributes))->class('btn btn--icon btn--transparent btn--sm') }}
                 >
                     <x-waterhole::icon icon="tabler-dots"/>
                 </button>

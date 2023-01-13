@@ -14,5 +14,5 @@ abstract class PostFeedHeader
     use OrderedList;
 }
 
-PostFeedHeader::add('channel', PostFeedChannel::class);
-PostFeedHeader::add('toolbar', PostFeedToolbar::class);
+PostFeedHeader::add('channel', PostFeedChannel::class, position: -100);
+PostFeedHeader::add('toolbar', PostFeedToolbar::class, position: -90);

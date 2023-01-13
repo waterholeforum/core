@@ -24,7 +24,7 @@ class TagsFilter extends Component
     public function render(): string
     {
         return <<<'blade'
-            <div class="row gap-xxs">
+            <div class="row gap-xxs wrap">
                 @foreach ($channel->taxonomies->load('tags') as $taxonomy)
                     @if ($id = request("tags.$taxonomy->id"))
                         <a href="{{ $href($taxonomy, null) }}" class="btn btn--sm is-active">
@@ -33,7 +33,7 @@ class TagsFilter extends Component
                         </a>
                     @else
                         <x-waterhole::selector
-                            button-class="btn btn--sm btn--transparent"
+                            button-class="btn btn--sm"
                             placement="bottom-end"
                             :options="$taxonomy->tags->modelKeys()"
                             :placeholder="$taxonomy->translated_name"
