@@ -112,6 +112,7 @@ channel-custom-filters-description = Override the global filter options for this
 channel-permissions-title = Permissions
 channel-post-reactions-label = Post Reactions
 channel-comment-reactions-label = Comment Reactions
+channel-taxonomies-label = Taxonomies
 
 delete-channel-title = Delete Channel:
 delete-channel-posts-label = Delete { $count } { $count ->
@@ -178,3 +179,20 @@ reaction-type-name-label = Name
 reaction-type-score-label = Score
 reaction-type-score-description = The number of points that this reaction is worth.
 delete-reaction-type-confirm-message = Are you sure you want to delete this reaction type?
+
+taxonomies-title = Taxonomies
+create-taxonomy-button = Create Taxonomy
+create-taxonomy-title = Create a Taxonomy
+edit-taxonomy-title = Edit Taxonomy
+taxonomy-details-title = Details
+taxonomy-permissions-title = Permissions
+taxonomy-tags-title = Tags
+taxonomy-name-label = Name
+taxonomy-saved-message = Taxonomy saved.
+delete-taxonomy-confirm-message = Are you sure you want to delete this taxonomy?
+
+create-tag-title = Create a Tag
+edit-tag-title = Edit Tag
+tag-name-label = Name
+tag-saved-message = Tag saved.
+delete-tag-confirm-message = Are you sure you want to delete this tag?

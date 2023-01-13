@@ -16,6 +16,7 @@ class Layout extends Component
     ) {
         $this->payload = [
             'userId' => Auth::id(),
+            'debug' => config('app.debug'),
             'echoConfig' => config('waterhole.system.echo_config'),
             'twemojiBase' => config('waterhole.design.twemoji_base'),
         ];

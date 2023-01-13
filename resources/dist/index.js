@@ -8063,7 +8063,7 @@ document.addEventListener('turbo:before-fetch-response', function (e) {
         switch (_context.prev = _context.next) {
           case 0:
             response = e.detail.fetchResponse.response;
-            if (!(response.ok || response.status === 422)) {
+            if (!(response.ok || response.status === 422 || Waterhole.debug)) {
               _context.next = 3;
               break;
             }

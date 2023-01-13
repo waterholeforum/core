@@ -1,6 +1,6 @@
 @if ($response === true || $response->allowed())
     <a
-        href="{{ route('waterhole.posts.create', ['channel' => $channel?->id]) }}"
+        href="{{ route('waterhole.posts.create', ['channel_id' => $channel?->id]) }}"
         class="btn bg-accent text-md index-create-post"
     >
         {{ __('waterhole::forum.create-post-button') }}

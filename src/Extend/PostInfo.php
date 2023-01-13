@@ -17,8 +17,8 @@ abstract class PostInfo
     use OrderedList;
 }
 
-PostInfo::add('unread', PostUnread::class);
-PostInfo::add('channel', PostChannel::class);
-PostInfo::add('locked', PostLocked::class);
-PostInfo::add('notifications', PostNotifications::class);
-PostInfo::add('activity', PostActivity::class);
+PostInfo::add('unread', PostUnread::class, position: -100);
+PostInfo::add('channel', PostChannel::class, position: -90);
+PostInfo::add('locked', PostLocked::class, position: -80);
+PostInfo::add('notifications', PostNotifications::class, position: -70);
+PostInfo::add('activity', PostActivity::class, position: -60);

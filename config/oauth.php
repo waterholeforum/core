@@ -30,7 +30,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | OAuth Routes
+    | OAuth AdminRoutes
     |--------------------------------------------------------------------------
     |
     | These are the routes that Waterhole will register to handle OAuth login

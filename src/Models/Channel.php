@@ -3,6 +3,7 @@
 namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Waterhole\Models\Concerns\Followable;
 use Waterhole\Models\Concerns\HasIcon;
@@ -10,6 +11,7 @@ use Waterhole\Models\Concerns\HasPermissions;
 use Waterhole\Models\Concerns\HasUserState;
 use Waterhole\Models\Concerns\Structurable;
 use Waterhole\Models\Concerns\UsesFormatter;
+use Waterhole\Taxonomy\Taxonomy;
 
 /**
  * @property int $id
@@ -85,6 +87,11 @@ class Channel extends Model
         return $this->belongsTo(ReactionSet::class, 'comments_reaction_set_id')->withDefault(
             fn() => ReactionSet::defaultComments(),
         );
+    }
+
+    public function taxonomies(): BelongsToMany
+    {
+        return $this->belongsToMany(Taxonomy::class);
     }
 
     public function abilities(): array

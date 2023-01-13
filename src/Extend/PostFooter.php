@@ -14,6 +14,5 @@ abstract class PostFooter
     use OrderedList;
 }
 
-PostFooter::add('reactions', PostReactions::class);
-PostFooter::add('replies', PostReplies::class);
-// PostFooter::add('react-button', PostReactButton::class);
+PostFooter::add('reactions', PostReactions::class, position: -100);
+PostFooter::add('replies', PostReplies::class, position: -90);

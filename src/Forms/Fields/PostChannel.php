@@ -14,6 +14,7 @@ class PostChannel extends Field
 {
     public function __construct(public ?Post $model)
     {
+        $model->channel_id = request('channel_id') ?: old('channel_id');
     }
 
     public function render(): string

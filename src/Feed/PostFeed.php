@@ -8,6 +8,20 @@ use Waterhole\Models\Post;
 
 class PostFeed extends Feed
 {
+    // TODO: move this stuff to extenders
+    public static array $eagerLoad = [
+        'user',
+        'channel.userState',
+        'channel.postsReactionSet',
+        'channel.commentsReactionSet',
+        'lastComment.user',
+        'userState',
+        'reactions.reactionType',
+        'reactions.user',
+    ];
+
+    public static array $scopes = [];
+
     private ?string $defaultLayout;
 
     public function __construct(
@@ -17,19 +31,14 @@ class PostFeed extends Feed
         Closure $scope = null,
     ) {
         $query = Post::query()
-            ->with([
-                'user',
-                'channel.userState',
-                'channel.postsReactionSet',
-                'channel.commentsReactionSet',
-                'lastComment.user',
-                'userState',
-                'reactions.reactionType',
-                'reactions.user',
-            ])
+            ->with(static::$eagerLoad)
             ->withCount('unreadComments');
 
         if ($scope) {
+            $scope($query);
+        }
+
+        foreach (static::$scopes as $scope) {
             $scope($query);
         }
 

@@ -1,6 +1,6 @@
 <article {{ $attributes->class('post-full with-sidebar') }}>
     <div class="post-full__main stack gap-xl">
-        <header class="post-header stack gap-xl">
+        <header class="post-header row wrap gap-x-md gap-y-xl">
             @components(Waterhole\Extend\PostHeader::build(), compact('post'))
         </header>
 
@@ -41,7 +41,7 @@
         </x-waterhole::action-menu>
 
         <div class="row gap-y-md gap-x-xs wrap">
-            @components(Waterhole\Extend\PostFooter::build(), compact('post'))
+            @components(Waterhole\Extend\PostSidebar::build(), compact('post'))
         </div>
     </div>
 </article>

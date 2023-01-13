@@ -20,6 +20,7 @@ declare global {
 
 export interface Waterhole {
     userId: number;
+    debug: boolean;
     alerts: AlertsElement;
     fetchError: (response: Response) => void;
     documentTitle: DocumentTitle;

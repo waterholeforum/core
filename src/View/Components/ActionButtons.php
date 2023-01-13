@@ -18,6 +18,7 @@ class ActionButtons extends Component
         array $only = null,
         array $exclude = null,
         public array $buttonAttributes = [],
+        public bool $icons = false,
     ) {
         $this->actionable = Actionables::getActionableName($for);
 

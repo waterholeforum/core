@@ -75,6 +75,7 @@ ability-view = View
 ability-comment = Comment
 ability-post = Post
 ability-moderate = Moderate
+ability-assign-tags = Assign Tags
 
 sortable-instructions =
     To pick up a sortable item, press space or enter.

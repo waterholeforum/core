@@ -6,7 +6,7 @@
     {{ $before ?? '' }}
 
     @foreach ($actions as $action)
-        {{ $action->render(collect([$for]), $buttonAttributes) }}
+        {{ $action->render(collect([$for]), $buttonAttributes, $icons) }}
     @endforeach
 
     {{ $after ?? '' }}

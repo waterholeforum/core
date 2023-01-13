@@ -8,11 +8,12 @@ use Illuminate\View\Component;
 class Selector extends Component
 {
     public function __construct(
-        public string $buttonClass = '',
-        public $value,
         public array $options,
         public Closure $label,
         public Closure $href,
+        public $value = null,
+        public string $buttonClass = '',
+        public ?string $placeholder = null,
     ) {
     }
 

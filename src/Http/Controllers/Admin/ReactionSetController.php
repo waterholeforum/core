@@ -30,12 +30,6 @@ class ReactionSetController extends Controller
     {
         $this->form($reactionSet = new ReactionSet())->submit($request);
 
-        // $reactionSet->reactionTypes()->create([
-        //     'name' => 'Like',
-        //     'icon' => 'emoji:👍',
-        //     'score' => 1,
-        // ]);
-
         return redirect($reactionSet->edit_url);
     }
 

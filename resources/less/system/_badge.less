@@ -34,3 +34,10 @@
   background: var(--group-color, var(--color-fill)) !important;
   color: var(--group-color-constrast, var(--color-muted)) !important;
 }
+
+.tag {
+  &:extend(.badge);
+  border-radius: 4px;
+  font-weight: normal;
+  padding: 0 0.5em;
+}

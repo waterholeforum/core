@@ -3,7 +3,7 @@
         @isset($button)
             {{ $button }}
         @else
-            <span>{{ $label($value) }}</span>
+            <span>{{ $value ? $label($value) : ($placeholder ?? $label(null)) }}</span>
             <x-waterhole::icon icon="tabler-selector" class="icon--narrow"/>
         @endisset
     </button>

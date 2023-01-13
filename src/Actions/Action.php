@@ -86,7 +86,7 @@ abstract class Action
     /**
      * Render the action button.
      */
-    public function render(Collection $models, array $attributes): HtmlString
+    public function render(Collection $models, array $attributes, bool $icons = false): HtmlString
     {
         $attributes = (new ComponentAttributeBag($attributes))->merge($this->attributes($models));
 
@@ -105,11 +105,12 @@ abstract class Action
         }
 
         $class = e(static::class);
-        $content = $this->renderContent($models);
+        $label = e($this->label($models));
+        $content = $this->renderContent($models, $icons);
 
         return new HtmlString(
             <<<html
-                <button type="submit" name="action_class" value="$class" $attributes>$content</button>
+                <button type="submit" name="action_class" value="$class" title="$label" $attributes>$content</button>
             html
             ,
         );
@@ -118,14 +119,15 @@ abstract class Action
     /**
      * Render the content of the action button.
      */
-    protected function renderContent(Collection $models): HtmlString
+    protected function renderContent(Collection $models, bool $icons = false): HtmlString
     {
         $label = e($this->label($models));
         $icon = ($iconName = $this->icon($models))
             ? svg($iconName, 'icon icon-' . $iconName)->toHtml()
             : '';
+        $tag = $icons ? 'ui-tooltip' : 'span';
 
-        return new HtmlString("$icon <span>$label</span>");
+        return new HtmlString("$icon <$tag>$label</$tag>");
     }
 
     /**

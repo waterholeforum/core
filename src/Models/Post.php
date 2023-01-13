@@ -5,6 +5,7 @@ namespace Waterhole\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Auth;
@@ -19,6 +20,7 @@ use Waterhole\Models\Concerns\Reactable;
 use Waterhole\Notifications\Mention;
 use Waterhole\Scopes\CommentIndexScope;
 use Waterhole\Scopes\PostVisibleScope;
+use Waterhole\Taxonomy\Tag;
 use Waterhole\View\Components;
 use Waterhole\View\TurboStream;
 
@@ -38,6 +40,7 @@ use Waterhole\View\TurboStream;
  * @property-read ?User $user
  * @property-read \Illuminate\Database\Eloquent\Collection $comments
  * @property-read \Illuminate\Database\Eloquent\Collection $unreadComments
+ * @property-read \Illuminate\Database\Eloquent\Collection $tags
  * @property-read ?Comment $lastComment
  * @property-read ?PostUser $userState
  * @property-read string $url
@@ -169,6 +172,14 @@ class Post extends Model
     public function lastComment(): HasOne
     {
         return $this->hasOne(Comment::class)->latestOfMany();
+    }
+
+    /**
+     * Relationship with the post's tags.
+     */
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class);
     }
 
     /**

@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use Waterhole\Forms\PostForm;
 use Waterhole\Http\Controllers\Controller;
-use Waterhole\Models\Channel;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
 use Waterhole\Notifications\NewPost;
@@ -23,7 +22,7 @@ class PostController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->except('show');
-        $this->middleware('throttle:waterhole.create')->only('store');
+        // $this->middleware('throttle:waterhole.create')->only('store');
     }
 
     public function show(Post $post, Request $request)
@@ -75,15 +74,7 @@ class PostController extends Controller
     {
         $this->authorize('post.create');
 
-        $post = new Post();
-
-        // Set the channel relation on the post model so that fields are able
-        // to know which channel is currently selected.
-        if ($channelId = request('channel') ?: old('channel_id')) {
-            $post->setRelation('channel', Channel::findOrFail($channelId));
-        }
-
-        $form = new PostForm($post);
+        $form = new PostForm(new Post());
 
         return view('waterhole::posts.create', compact('form'));
     }
@@ -95,7 +86,7 @@ class PostController extends Controller
         // purposes, such as selecting a different channel.
         if (!$request->input('commit')) {
             return redirect()
-                ->route('waterhole.posts.create', ['channel' => $request->input('channel_id')])
+                ->route('waterhole.posts.create', ['channel_id' => $request->input('channel_id')])
                 ->withInput();
         }
 

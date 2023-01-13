@@ -10,6 +10,7 @@ use Waterhole\Models\Permission;
 use Waterhole\Models\PermissionCollection;
 use Waterhole\Models\User;
 use Waterhole\Policies;
+use Waterhole\Waterhole;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -28,6 +29,16 @@ class AuthServiceProvider extends ServiceProvider
             if ($user->exists && !$user->hasVerifiedEmail()) {
                 return Gate::forUser(null)->allows($ability, ...$arguments) ?:
                     Response::deny(__('waterhole::auth.email-verification-required-message'));
+            }
+        });
+
+        Gate::after(function (User $user, $ability, $result, $arguments) {
+            if ($result === null && strpos($ability, '.')) {
+                return Waterhole::permissions()->can(
+                    $user,
+                    explode('.', $ability)[1],
+                    $arguments[0],
+                );
             }
         });
 

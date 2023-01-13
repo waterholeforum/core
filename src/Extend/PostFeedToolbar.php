@@ -16,8 +16,8 @@ abstract class PostFeedToolbar
     use OrderedList;
 }
 
-PostFeedToolbar::add('sort', FeedFilters::class);
-PostFeedToolbar::add('top-period', FeedTopPeriod::class);
+PostFeedToolbar::add('filters', FeedFilters::class, position: -100);
+PostFeedToolbar::add('top-period', FeedTopPeriod::class, position: -90);
 PostFeedToolbar::add('spacer', Spacer::class);
-PostFeedToolbar::add('controls', PostFeedControls::class);
+PostFeedToolbar::add('controls', PostFeedControls::class, position: 100);
 // PostFeedToolbar::add('new-post', PostFeedCreate::class);

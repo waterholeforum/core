@@ -66,3 +66,7 @@ Route::post('reaction-sets/{reactionSet}/reaction-types/reorder', [
     Admin\ReactionTypeController::class,
     'reorder',
 ])->name('reaction-sets.reaction-types.reorder');
+
+foreach (Waterhole\Extend\AdminRoutes::values() as $callback) {
+    $callback();
+}

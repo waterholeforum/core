@@ -29,6 +29,55 @@
   padding-block: var(--space-gutter);
 }
 
+// Size
+
+@sizes: px, xxs, xs, sm, md, lg, xl, xxl, xxxl;
+.loop(@i: length(@sizes)) when (@i > 0) {
+  @value: extract(@sizes, @i);
+  .gap-@{value} {
+    gap: ~'var(--space-@{value})';
+  }
+  .gap-x-@{value} {
+    column-gap: ~'var(--space-@{value})';
+  }
+  .gap-y-@{value} {
+    row-gap: ~'var(--space-@{value})';
+  }
+
+  .p-@{value} {
+    padding: ~'var(--space-@{value})';
+  }
+  .px-@{value} {
+    padding-inline: ~'var(--space-@{value})';
+  }
+  .py-@{value} {
+    padding-block: ~'var(--space-@{value})';
+  }
+
+  .m-@{value} {
+    margin: ~'var(--space-@{value})';
+  }
+  .mx-@{value} {
+    margin-inline: ~'var(--space-@{value})';
+  }
+  .my-@{value} {
+    margin-block: ~'var(--space-@{value})';
+  }
+
+  .-m-@{value} {
+    margin: ~'calc(-1 * var(--space-@{value}))';
+  }
+  .-mx-@{value} {
+    margin-inline: ~'calc(-1 * var(--space-@{value}))';
+  }
+  .-my-@{value} {
+    margin-block: ~'calc(-1 * var(--space-@{value}))';
+  }
+
+  .loop((@i - 1));
+}
+.loop;
+
 // Flexbox and Grid
 
 .stack {
@@ -156,28 +205,6 @@
     padding-top: var(--space-lg);
   }
 }
-
-@sizes: px, xxs, xs, sm, md, lg, xl, xxl, xxxl;
-.loop(@i: length(@sizes)) when (@i > 0) {
-  @value: extract(@sizes, @i);
-  .gap-@{value} {
-    gap: ~'var(--space-@{value})';
-  }
-  .gap-y-@{value} {
-    row-gap: ~'var(--space-@{value})';
-  }
-  .gap-x-@{value} {
-    column-gap: ~'var(--space-@{value})';
-  }
-  .p-@{value} {
-    padding: ~'var(--space-@{value})';
-  }
-  .m-@{value} {
-    padding: ~'var(--space-@{value})';
-  }
-  .loop((@i - 1));
-}
-.loop;
 
 // Overflow
 
@@ -453,6 +480,10 @@
 .no-select {
   user-select: none;
   -webkit-user-select: none;
+}
+
+.cursor-default {
+  cursor: default;
 }
 
 .clickable {
