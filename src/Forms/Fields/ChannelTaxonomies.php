@@ -1,13 +1,13 @@
 <?php
 
-namespace Waterhole\Taxonomy\Fields;
+namespace Waterhole\Forms\Fields;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 use Waterhole\Forms\Field;
 use Waterhole\Models\Channel;
-use Waterhole\Taxonomy\Taxonomy;
+use Waterhole\Models\Taxonomy;
 
 class ChannelTaxonomies extends Field
 {

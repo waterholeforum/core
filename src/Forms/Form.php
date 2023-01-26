@@ -11,7 +11,7 @@ abstract class Form
 {
     private array $fields;
 
-    public function __construct(protected Model $model)
+    public function __construct(public Model $model)
     {
     }
 

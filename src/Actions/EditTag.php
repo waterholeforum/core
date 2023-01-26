@@ -1,12 +1,11 @@
 <?php
 
-namespace Waterhole\Taxonomy\Actions;
+namespace Waterhole\Actions;
 
 use Illuminate\Support\Collection;
-use Waterhole\Actions\Link;
 use Waterhole\Models\Model;
+use Waterhole\Models\Tag;
 use Waterhole\Models\User;
-use Waterhole\Taxonomy\Tag;
 
 class EditTag extends Link
 {

@@ -1,5 +1,5 @@
 <span
-    {{ $attributes->class('badge badge--group') }}
+    {{ $attributes->class(['badge group-badge', 'group-badge--hidden' => !$group->is_public]) }}
     @if ($group->is_public && $group->color) style="
         --group-color: #{{ $group->color }};
         --group-color-constrast: {{ Waterhole\get_contrast_color($group->color) }}

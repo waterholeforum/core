@@ -6,7 +6,7 @@
     {{ $attributes }}
 >
     <x-slot name="before">
-        <ui-popup placement="{{ $placement }}">
+        <ui-popup placement="{{ $placement }}" class="js-only">
             @if (isset($button))
                 {{ $button }}
             @else

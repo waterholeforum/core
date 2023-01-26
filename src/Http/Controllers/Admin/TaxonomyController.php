@@ -1,8 +1,10 @@
 <?php
 
-namespace Waterhole\Taxonomy;
+namespace Waterhole\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use Waterhole\Forms\TaxonomyForm;
+use Waterhole\Models\Taxonomy;
 
 class TaxonomyController
 {

@@ -1,26 +1,25 @@
 <?php
 
-namespace Waterhole\Taxonomy\Actions;
+namespace Waterhole\Actions;
 
 use Illuminate\Support\Collection;
-use Waterhole\Actions\Action;
 use Waterhole\Models\Model;
+use Waterhole\Models\Taxonomy;
 use Waterhole\Models\User;
-use Waterhole\Taxonomy\Tag;
 
-class DeleteTag extends Action
+class DeleteTaxonomy extends Action
 {
     public bool $confirm = true;
     public bool $destructive = true;
 
     public function appliesTo(Model $model): bool
     {
-        return $model instanceof Tag;
+        return $model instanceof Taxonomy;
     }
 
     public function authorize(?User $user, Model $model): bool
     {
-        return $user && $user->can('tag.delete', $model);
+        return $user && $user->can('taxonomy.delete', $model);
     }
 
     public function label(Collection $models): string
@@ -35,7 +34,7 @@ class DeleteTag extends Action
 
     public function confirm(Collection $models): string
     {
-        return __('waterhole::admin.delete-tag-confirm-message');
+        return __('waterhole::admin.delete-taxonomy-confirm-message');
     }
 
     public function confirmButton(Collection $models): string

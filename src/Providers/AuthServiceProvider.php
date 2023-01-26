@@ -5,10 +5,10 @@ namespace Waterhole\Providers;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
-use Waterhole\Models\Group;
 use Waterhole\Models\Permission;
 use Waterhole\Models\PermissionCollection;
 use Waterhole\Models\User;
+use Waterhole\OAuth\Providers;
 use Waterhole\Policies;
 use Waterhole\Waterhole;
 
@@ -16,12 +16,17 @@ class AuthServiceProvider extends ServiceProvider
 {
     public function boot()
     {
+        $this->app->singleton(
+            Providers::class,
+            fn() => new Providers(config('waterhole.auth.oauth_providers')),
+        );
+
         $this->app->singleton('waterhole.permissions', fn() => Permission::all());
         $this->app->alias('waterhole.permissions', PermissionCollection::class);
 
         Gate::before(function (User $user, $ability, $arguments) {
             // Allow administrators to perform all gated actions.
-            if ($user->groups->contains(Group::ADMIN_ID)) {
+            if ($user->isAdmin()) {
                 return true;
             }
 
@@ -51,14 +56,14 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('comment.create', [Policies\CommentPolicy::class, 'create']);
         Gate::define('comment.edit', [Policies\CommentPolicy::class, 'edit']);
         Gate::define('comment.delete', [Policies\CommentPolicy::class, 'delete']);
-        Gate::define('comment.like', [Policies\CommentPolicy::class, 'like']);
+        Gate::define('comment.react', [Policies\CommentPolicy::class, 'react']);
 
         Gate::define('post.create', [Policies\PostPolicy::class, 'create']);
         Gate::define('post.edit', [Policies\PostPolicy::class, 'edit']);
         Gate::define('post.delete', [Policies\PostPolicy::class, 'delete']);
         Gate::define('post.move', [Policies\PostPolicy::class, 'move']);
         Gate::define('post.comment', [Policies\PostPolicy::class, 'comment']);
-        Gate::define('post.like', [Policies\PostPolicy::class, 'like']);
+        Gate::define('post.react', [Policies\PostPolicy::class, 'react']);
         Gate::define('post.moderate', [Policies\PostPolicy::class, 'moderate']);
     }
 }

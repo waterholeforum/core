@@ -8,6 +8,8 @@ use s9e\TextFormatter\Renderer;
 use s9e\TextFormatter\Utils;
 use Waterhole\Models\User;
 
+use function Waterhole\username;
+
 /**
  * User mention parsing utilities.
  *
@@ -32,19 +34,30 @@ abstract class Mentions
             '_',
         );
 
-        $config->Preg->match('/\B@(?<name>[a-z0-9_-]+)/i', static::TAG_NAME);
+        $config->Preg->match('/\B@(?<name>[^\s]+)/i', static::TAG_NAME);
 
         $tag = $config->tags->add(static::TAG_NAME);
         $tag->attributes->add('name');
         $tag->attributes->add('id');
         $tag->filterChain->prepend([static::class, 'filterMention']);
 
-        $tag->template = implode([
-            '<a href="{$MENTION_URL}{@name}" data-user-id="{@id}" data-mention="" data-id="{@name}">',
-            '<xsl:attribute name="class">mention<xsl:if test="@id = $USER_ID"> mention--self</xsl:if></xsl:attribute>',
-            '@<xsl:value-of select="@name"/>',
-            '</a>',
-        ]);
+        $tag->template = <<<'xsl'
+            <xsl:choose>
+                <xsl:when test="@id">
+                    <a href="{$MENTION_URL}{@id}" data-user-id="{@id}">
+                        <xsl:attribute name="class">
+                            mention <xsl:if test="@id and @id = $USER_ID">mention--self</xsl:if>
+                        </xsl:attribute>
+                        @<xsl:value-of select="@name"/>
+                    </a>
+                </xsl:when>
+                <xsl:otherwise>
+                    <span class="mention">
+                        @<xsl:value-of select="@name"/>
+                    </span>
+                </xsl:otherwise>
+            </xsl:choose>
+        xsl;
     }
 
     /**
@@ -52,7 +65,9 @@ abstract class Mentions
      */
     public static function filterMention(Tag $tag): bool
     {
-        if ($user = User::where('name', 'like', $tag->getAttribute('name'))->first()) {
+        $name = str_replace("\xc2\xa0", ' ', $tag->getAttribute('name'));
+
+        if ($user = User::firstWhere('name', 'like', $name)) {
             $tag->setAttribute('id', $user->id);
 
             return true;
@@ -78,7 +93,13 @@ abstract class Mentions
 
         $xml = Utils::replaceAttributes($xml, 'MENTION', function ($attributes) use ($context) {
             if (isset($attributes['id'])) {
-                $attributes['name'] = $context->model->mentions->find($attributes['id'])?->name;
+                $attributes['name'] = username(
+                    $user = $context->model->mentions->find($attributes['id']),
+                );
+
+                if (!$user) {
+                    unset($attributes['id']);
+                }
             }
 
             return $attributes;

@@ -14,9 +14,12 @@ use Major\Fluent\Bundle\FluentBundle;
  * Translator decorator that adds support for Fluent translations.
  *
  * This class is adapted from the `laravel-fluent` package. This version of the
- * class adds support for loading namespaced translations from .ftl files, and
- * allowing them to be overridden by the consumer. It also adds support for
- * adding functions to FluentBundle instances.
+ * class adds support for:
+ *
+ * - Loading namespaced translations from .ftl files, and allowing them to be
+ *   overridden by the consumer.
+ * - Adding functions to FluentBundle instances.
+ * - Accept an array of keys and use the first one that exists.
  *
  * @link https://github.com/jrmajor/laravel-fluent/pull/2
  *
@@ -51,7 +54,7 @@ final class FluentTranslator implements TranslatorContract
     }
 
     /**
-     * @param  string  $key
+     * @param  string|array  $key
      * @param  array<string, mixed>  $replace
      * @param  ?string  $locale
      * @return string|array<string, mixed>
@@ -63,19 +66,30 @@ final class FluentTranslator implements TranslatorContract
         bool $fallback = true,
     ): string|array {
         $locale ??= $this->locale;
+        $keys = (array) $key;
 
-        [$namespace, $group, $item] = $this->parseKey($key);
+        foreach ($keys as $k) {
+            [$namespace, $group, $item] = $this->parseKey($k);
 
-        $message = $this->getBundle($namespace, $locale, $group)?->message($item, $replace);
+            $message = $this->getBundle($namespace, $locale, $group)?->message($item, $replace);
 
-        if ($fallback && $this->fallback !== $locale) {
-            $message ??= $this->getBundle($namespace, $this->fallback, $group)?->message(
-                $item,
-                $replace,
-            );
+            if ($fallback && $this->fallback !== $locale) {
+                $message ??= $this->getBundle($namespace, $this->fallback, $group)?->message(
+                    $item,
+                    $replace,
+                );
+            }
+
+            if ($message) {
+                return $message;
+            }
+
+            if ($this->baseTranslator->has($k, $locale, $fallback)) {
+                return $this->baseTranslator->get($k, $replace, $locale, $fallback);
+            }
         }
 
-        return $message ?? $this->baseTranslator->get(...func_get_args());
+        return last($keys);
     }
 
     private function getBundle(?string $namespace, string $locale, string $group): ?FluentBundle

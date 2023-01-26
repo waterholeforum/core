@@ -5,12 +5,14 @@ namespace Waterhole\Http\Controllers\Forum;
 use Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Waterhole\Feed\PostFeed;
 use Waterhole\Filters\Following;
 use Waterhole\Filters\Ignoring;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Page;
+use Waterhole\Models\Tag;
 
 use function Waterhole\resolve_all;
 
@@ -56,6 +58,12 @@ class IndexController extends Controller
             config('waterhole.forum.default_post_layout'),
             scope: function (Builder $query) use ($channel) {
                 $query->where('posts.channel_id', $channel->id);
+
+                $param = request('tags');
+                if ($param && ($ids = is_array($param) ? Arr::flatten($param) : [$param])) {
+                    Tag::findOrFail($ids);
+                    $query->whereRelation('tags', fn($query) => $query->whereKey($ids));
+                }
             },
         );
 

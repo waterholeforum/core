@@ -96,7 +96,7 @@ export default class extends Controller {
 
             this.expanderTarget?.addEventListener('text-expander-value', ((event: CustomEvent) => {
                 const { item } = event.detail;
-                event.detail.value = '@' + item.getAttribute('data-value');
+                event.detail.value = '@' + item.getAttribute('data-value').replace(/ /g, '\xa0');
             }) as EventListener);
         }
     }

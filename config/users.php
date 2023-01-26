@@ -3,30 +3,6 @@
 return [
     /*
     |--------------------------------------------------------------------------
-    | Authentication Guard
-    |--------------------------------------------------------------------------
-    |
-    | By default, Waterhole will use the `web` authentication guard to
-    | integrate nicely with your Laravel application. However, if you want
-    | Waterhole's authentication to work independently, you can configure that.
-    |
-    */
-
-    'guard' => 'web',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Allow Registration
-    |--------------------------------------------------------------------------
-    |
-    | Whether or not to allow visitors to register new user accounts.
-    |
-    */
-
-    'allow_registration' => true,
-
-    /*
-    |--------------------------------------------------------------------------
     | Post Filters
     |--------------------------------------------------------------------------
     |

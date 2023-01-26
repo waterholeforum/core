@@ -1,11 +1,10 @@
 <?php
 
-namespace Waterhole\Taxonomy;
+namespace Waterhole\Forms;
 
 use Waterhole\Extend;
 use Waterhole\Forms\Fields\Permissions;
-use Waterhole\Forms\Form;
-use Waterhole\Forms\FormSection;
+use Waterhole\Models\Taxonomy;
 
 class TaxonomyForm extends Form
 {

@@ -13,5 +13,4 @@ abstract class CommentActions
     use OrderedList;
 }
 
-// CommentActions::add('react-button', CommentReactButton::class);
 CommentActions::add('reply-button', CommentReplyButton::class);

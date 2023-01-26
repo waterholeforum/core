@@ -16,18 +16,17 @@ class UserBio extends Field
     public function render(): string
     {
         return <<<'blade'
-            <x-waterhole::field name="bio" :label="__('waterhole::user.bio-label')">
-                <div class="stack gap-xs">
-                    <textarea
-                        id="{{ $component->id }}"
-                        type="text"
-                        name="bio"
-                        maxlength="255"
-                    >{{ old('bio', $model?->bio) }}</textarea>
-                    <p class="field__description">
-                        {{ __('waterhole::user.bio-description') }}
-                    </p>
-                </div>
+            <x-waterhole::field
+                name="bio"
+                :label="__('waterhole::user.bio-label')"
+                :description="__('waterhole::user.bio-description')"
+            >
+                <textarea
+                    id="{{ $component->id }}"
+                    type="text"
+                    name="bio"
+                    maxlength="255"
+                >{{ old('bio', $model?->bio) }}</textarea>
             </x-waterhole::field>
         blade;
     }

@@ -32,7 +32,7 @@ class ChannelFilters extends Field
                             data-reveal-target="if"
                             @checked(old('custom_filters', $model->filters ?? false))
                         >
-                        <span class="stack">
+                        <span class="stack gap-xxs">
                             <span>{{ __('waterhole::admin.channel-custom-filters-label') }}</span>
                             <small class="field__description">{{ __('waterhole::admin.channel-custom-filters-description') }}</small>
                         </span>

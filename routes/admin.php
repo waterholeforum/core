@@ -37,6 +37,18 @@ Route::prefix('structure')
         );
     });
 
+Route::resource('taxonomies', Admin\TaxonomyController::class)->only(
+    'index',
+    'create',
+    'store',
+    'edit',
+    'update',
+);
+
+Route::resource('taxonomies.tags', Admin\TagController::class)
+    ->only('create', 'store', 'edit', 'update')
+    ->scoped();
+
 Route::resource('groups', Admin\GroupController::class)->only(
     'index',
     'create',

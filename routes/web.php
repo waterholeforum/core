@@ -6,6 +6,7 @@ use Waterhole\Http\Controllers\Auth\ConfirmPasswordController;
 use Waterhole\Http\Controllers\Auth\ForgotPasswordController;
 use Waterhole\Http\Controllers\Auth\LoginController;
 use Waterhole\Http\Controllers\Auth\LogoutController;
+use Waterhole\Http\Controllers\Auth\OAuthController;
 use Waterhole\Http\Controllers\Auth\RegisterController;
 use Waterhole\Http\Controllers\Auth\ResetPasswordController;
 use Waterhole\Http\Controllers\Auth\VerifyEmailController;
@@ -47,9 +48,7 @@ Route::resource('posts.comments', CommentController::class)
 // Users
 Route::get('users/{user}/posts', [UserController::class, 'posts'])->name('user.posts');
 Route::get('users/{user}/comments', [UserController::class, 'comments'])->name('user.comments');
-Route::resource('users', UserController::class)
-    ->only(['show'])
-    ->scoped(['user' => 'name']);
+Route::resource('users', UserController::class)->only(['show']);
 
 // Preferences
 Route::get('preferences', [PreferencesController::class, 'index'])->name('preferences');
@@ -91,7 +90,7 @@ Route::get('search', SearchController::class)->name('search');
 
 Route::withoutMiddleware(MaybeRequireLogin::class)->group(function () {
     // Register
-    if (config('waterhole.users.allow_registration', true)) {
+    if (config('waterhole.auth.allow_registration', true)) {
         Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name(
             'register',
         );
@@ -127,6 +126,12 @@ Route::post('confirm-password', [ConfirmPasswordController::class, 'confirm']);
 
 // Logout
 Route::post('logout', [LogoutController::class, 'logout'])->name('logout');
+
+// OAuth
+Route::get('oauth/{provider}', [OAuthController::class, 'login'])->name('oauth.login');
+Route::get('oauth/{provider}/callback', [OAuthController::class, 'callback'])->name(
+    'oauth.callback',
+);
 
 // Utils
 Route::get('user-lookup', UserLookupController::class)->name('user-lookup');

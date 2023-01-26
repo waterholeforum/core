@@ -121,6 +121,22 @@ class User extends Model implements
     }
 
     /**
+     * Relationship with the user's reactions.
+     */
+    public function reactions(): HasMany
+    {
+        return $this->hasMany(Reaction::class);
+    }
+
+    /**
+     * Relationship with the user's external authentication providers.
+     */
+    public function authProviders(): HasMany
+    {
+        return $this->hasMany(AuthProvider::class);
+    }
+
+    /**
      * Mark the user's notifications about a specific subject as read.
      */
     public function markNotificationsRead(Model $model): static

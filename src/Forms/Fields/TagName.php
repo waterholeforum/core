@@ -1,15 +1,15 @@
 <?php
 
-namespace Waterhole\Taxonomy\Fields;
+namespace Waterhole\Forms\Fields;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 use Waterhole\Forms\Field;
-use Waterhole\Taxonomy\Taxonomy;
+use Waterhole\Models\Tag;
 
-class TaxonomyName extends Field
+class TagName extends Field
 {
-    public function __construct(public ?Taxonomy $model)
+    public function __construct(public ?Tag $model)
     {
     }
 
@@ -18,7 +18,7 @@ class TaxonomyName extends Field
         return <<<'blade'
             <x-waterhole::field
                 name="name"
-                :label="__('waterhole::admin.taxonomy-name-label')"
+                :label="__('waterhole::admin.tag-name-label')"
             >
                 <input
                     type="text"

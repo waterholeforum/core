@@ -36,6 +36,17 @@ AdminNav::add(
 );
 
 AdminNav::add(
+    'taxonomies',
+    new NavLink(
+        label: __('waterhole::admin.taxonomies-title'),
+        icon: 'tabler-tags',
+        route: 'waterhole.admin.taxonomies.index',
+        active: fn() => request()->routeIs('waterhole.admin.taxonomies*'),
+    ),
+    -80,
+);
+
+AdminNav::add(
     'users',
     new NavLink(
         label: __('waterhole::admin.users-title'),

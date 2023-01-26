@@ -1,9 +1,8 @@
 <?php
 
-namespace Waterhole\Taxonomy;
+namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Waterhole\Models\Model;
 use Waterhole\View\Components\Admin\TagRow;
 use Waterhole\View\TurboStream;
 

@@ -110,9 +110,10 @@ function truncate_html(string $html, int $limit, string $end = '...'): string
  */
 function get_contrast_color(string $hex): string
 {
-    $r = hexdec(substr($hex, 1, 2));
-    $g = hexdec(substr($hex, 3, 2));
-    $b = hexdec(substr($hex, 5, 2));
+    $hex = ltrim($hex, '#');
+    $r = hexdec(substr($hex, 0, 2));
+    $g = hexdec(substr($hex, 2, 2));
+    $b = hexdec(substr($hex, 4, 2));
     $yiq = ($r * 299 + $g * 587 + $b * 114) / 1000;
 
     return $yiq >= 128 ? '#000' : '#fff';
@@ -163,9 +164,4 @@ function build_components(array $components, array $data = []): array
             return resolve(AnonymousComponent::class, ['view' => $component, 'data' => $data]);
         }
     }, $components);
-}
-
-function trans_optional(string $key, string $fallback, array $replace = [], string $locale = null)
-{
-    return trans(trans()->has($key) ? $key : $fallback, $replace, $locale);
 }

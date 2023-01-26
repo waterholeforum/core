@@ -38,12 +38,7 @@
                                 @endonce
                             @endif
 
-                            <turbo-frame id="@domid($comment)">
-                                <x-waterhole::comment-full
-                                    :comment="$comment"
-                                    :data-index="$comments->firstItem() - 1 + $i"
-                                />
-                            </turbo-frame>
+                            <x-waterhole::comment-frame :comment="$comment"/>
                         @endforeach
 
                         @if (!$comments->hasMorePages())

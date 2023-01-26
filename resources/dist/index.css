@@ -533,9 +533,13 @@ h6 {
 .badge .icon {
   stroke-width: 2.5;
 }
-.badge--group {
-  background: var(--group-color, var(--color-fill)) !important;
-  color: var(--group-color-constrast, var(--color-muted)) !important;
+.group-badge {
+  background-color: var(--group-color, var(--color-fill));
+  color: var(--group-color-constrast, var(--color-muted));
+}
+.group-badge--hidden {
+  border: 2px dotted var(--color-stroke);
+  background-color: transparent;
 }
 .tag {
   border-radius: 4px;
@@ -901,7 +905,7 @@ input[type='radio']:checked::before {
 .field {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-sm);
+  gap: var(--space-xs);
 }
 .field > :first-child:not(:only-child) {
   flex-basis: 25%;
@@ -927,13 +931,11 @@ input[type='radio']:checked::before {
   display: block;
   font-size: var(--text-xs);
   color: var(--color-muted);
-  margin-top: var(--space-xs);
 }
 .field__status {
   font-size: var(--text-xs);
   font-weight: var(--weight-medium);
   color: var(--color-muted);
-  margin-top: var(--space-xs);
 }
 .has-error .field__status {
   color: var(--color-danger-text);
@@ -2720,6 +2722,35 @@ ui-tooltip {
 :root:not([data-theme='dark']) .dark-only {
   display: none;
 }
+.oauth-button[data-provider='facebook'] {
+  background-color: #4267b2;
+  color: #fff;
+}
+.oauth-button[data-provider^='twitter'] {
+  background-color: #1da1f2;
+  color: #fff;
+}
+.oauth-button[data-provider='linkedin'] {
+  background-color: #0077b5;
+  color: #fff;
+}
+.oauth-button[data-provider='google'] {
+  background-color: #fff;
+  color: #555;
+  border: 1px solid var(--color-stroke);
+}
+.oauth-button[data-provider='github'] {
+  background-color: #333;
+  color: #fff;
+}
+.oauth-button[data-provider='gitlab'] {
+  background-color: #e24329;
+  color: #fff;
+}
+.oauth-button[data-provider='bitbucket'] {
+  background-color: #205081;
+  color: #fff;
+}
 .channel-card__info {
   flex-basis: 50ch;
 }
@@ -2858,6 +2889,8 @@ ui-tooltip {
 }
 .composer__form .text-editor {
   min-height: 0;
+  border: 0;
+  box-shadow: none;
 }
 .composer__form .text-editor__input {
   resize: none;

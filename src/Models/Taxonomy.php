@@ -1,13 +1,10 @@
 <?php
 
-namespace Waterhole\Taxonomy;
+namespace Waterhole\Models;
 
 use Auth;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Waterhole\Models\Concerns\HasPermissions;
-use Waterhole\Models\Model;
-
-use function Waterhole\trans_optional;
 
 class Taxonomy extends Model
 {
@@ -34,7 +31,7 @@ class Taxonomy extends Model
 
     public function getTranslatedNameAttribute(): string
     {
-        return trans_optional("waterhole.taxonomy-$this->id", $this->name);
+        return __(["waterhole.taxonomy-$this->id", $this->name]);
     }
 
     public function abilities(): array

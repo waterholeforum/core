@@ -1,6 +1,6 @@
 <?php
 
-namespace Waterhole\Taxonomy\Fields;
+namespace Waterhole\Forms\Fields;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Http\FormRequest;
@@ -9,8 +9,8 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 use Waterhole\Forms\Field;
 use Waterhole\Models\Post;
-use Waterhole\Taxonomy\Tag;
-use Waterhole\Taxonomy\Taxonomy;
+use Waterhole\Models\Tag;
+use Waterhole\Models\Taxonomy;
 
 class PostTags extends Field
 {

@@ -67,9 +67,9 @@ class PostPolicy
     }
 
     /**
-     * Any user can like a post.
+     * Any user can react to a post.
      */
-    public function like(): bool
+    public function react(): bool
     {
         return true;
     }

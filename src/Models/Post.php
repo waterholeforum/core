@@ -20,7 +20,6 @@ use Waterhole\Models\Concerns\Reactable;
 use Waterhole\Notifications\Mention;
 use Waterhole\Scopes\CommentIndexScope;
 use Waterhole\Scopes\PostVisibleScope;
-use Waterhole\Taxonomy\Tag;
 use Waterhole\View\Components;
 use Waterhole\View\TurboStream;
 

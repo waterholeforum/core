@@ -11,7 +11,6 @@ use Waterhole\Models\Concerns\HasPermissions;
 use Waterhole\Models\Concerns\HasUserState;
 use Waterhole\Models\Concerns\Structurable;
 use Waterhole\Models\Concerns\UsesFormatter;
-use Waterhole\Taxonomy\Taxonomy;
 
 /**
  * @property int $id

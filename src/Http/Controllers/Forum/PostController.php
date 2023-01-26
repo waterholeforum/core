@@ -3,6 +3,7 @@
 namespace Waterhole\Http\Controllers\Forum;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Notification;
 use Waterhole\Forms\PostForm;
 use Waterhole\Http\Controllers\Controller;
@@ -22,7 +23,7 @@ class PostController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->except('show');
-        // $this->middleware('throttle:waterhole.create')->only('store');
+        $this->middleware('throttle:waterhole.create')->only('store');
     }
 
     public function show(Post $post, Request $request)
@@ -66,6 +67,14 @@ class PostController extends Controller
         $post->userState?->read()->save();
 
         $request->user()?->markNotificationsRead($post);
+
+        // Only increase the view count once per day per user/IP.
+        Cache::remember(
+            "view:$post->id:" .
+                ($request->user() ? 'user:' . $request->user()->id : 'ip:' . $request->ip()),
+            60 * 60 * 24,
+            fn() => $post->increment('view_count'),
+        );
 
         return view('waterhole::posts.show', compact('post', 'comments', 'lastReadAt'));
     }

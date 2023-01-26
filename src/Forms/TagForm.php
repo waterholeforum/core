@@ -1,9 +1,9 @@
 <?php
 
-namespace Waterhole\Taxonomy;
+namespace Waterhole\Forms;
 
 use Waterhole\Extend;
-use Waterhole\Forms\Form;
+use Waterhole\Models\Tag;
 
 class TagForm extends Form
 {

@@ -9,7 +9,7 @@
 
 <{{ $tag }} {{ $attributes->class(['btn text-md index-create-post', $enabled ? 'bg-accent' : 'is-disabled']) }}>
     {{ $channel
-        ? Waterhole\trans_optional("waterhole.channel-$channel->slug-create-post-button", $defaultLabel)
+        ? __(["waterhole.channel-$channel->slug-create-post-button", $defaultLabel])
         : $defaultLabel }}
 
     @unless ($enabled)

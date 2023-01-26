@@ -34,9 +34,9 @@ class CommentPolicy
     }
 
     /**
-     * Any user can like a comment.
+     * Any user can react to a comment.
      */
-    public function like(): bool
+    public function react(): bool
     {
         return true;
     }

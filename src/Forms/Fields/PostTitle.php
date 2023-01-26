@@ -13,13 +13,27 @@ class PostTitle extends Field
     {
     }
 
+    public function shouldRender(): bool
+    {
+        return (bool) $this->model->channel;
+    }
+
     public function render(): string
     {
         return <<<'blade'
-            <x-waterhole::field
-                name="title"
-                :label="__('waterhole::forum.post-title-label')"
-            >
+            @php
+                $label = __([
+                    "waterhole.channel-{$model->channel->slug}-post-title-label",
+                    'waterhole::forum.post-title-label',
+                ]);
+
+                $description = __([
+                    "waterhole.channel-{$model->channel->slug}-post-title-description",
+                    '',
+                ]);
+            @endphp
+
+            <x-waterhole::field name="title" :$label :$description>
                 <input
                     id="{{ $component->id }}"
                     name="title"

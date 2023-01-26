@@ -7,11 +7,15 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 use Waterhole\Forms\Field;
 use Waterhole\Models\User;
+use Waterhole\OAuth\Payload;
 
 class UserName extends Field
 {
-    public function __construct(public ?User $model)
+    public function __construct(public ?User $model, public ?Payload $payload = null)
     {
+        if ($payload) {
+            $model->name = $payload->name;
+        }
     }
 
     public function render(): string
@@ -39,6 +43,7 @@ class UserName extends Field
                 'required',
                 'string',
                 'max:255',
+                'not_regex:/@|[^\S ]|\s{2,}/',
                 Rule::unique('users')->ignore($this->model),
             ],
         ]);

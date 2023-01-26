@@ -35,28 +35,28 @@ class GroupAppearance extends Field
                         </label>
                     </div>
 
-                    <x-waterhole::field
-                        name="color"
-                        :label="__('waterhole::admin.group-color-label')"
-                        data-reveal-target="then"
-                    >
-                        <x-waterhole::admin.color-picker
+                    <div class="card card__body stack gap-lg" data-reveal-target="then">
+                        <x-waterhole::field
                             name="color"
-                            id="{{ $component->id }}"
-                            value="{{ old('color', $model->color ?? null) }}"
-                        />
-                    </x-waterhole::field>
+                            :label="__('waterhole::admin.group-color-label')"
+                        >
+                            <x-waterhole::admin.color-picker
+                                name="color"
+                                id="{{ $component->id }}"
+                                value="{{ old('color', $model->color ?? null) }}"
+                            />
+                        </x-waterhole::field>
 
-                    <x-waterhole::field
-                        name="icon"
-                        :label="__('waterhole::admin.group-icon-label')"
-                        data-reveal-target="then"
-                    >
-                        <x-waterhole::admin.icon-picker
+                        <x-waterhole::field
                             name="icon"
-                            :value="old('icon', $model->icon ?? null)"
-                        />
-                    </x-waterhole::field>
+                            :label="__('waterhole::admin.group-icon-label')"
+                        >
+                            <x-waterhole::admin.icon-picker
+                                name="icon"
+                                :value="old('icon', $model->icon ?? null)"
+                            />
+                        </x-waterhole::field>
+                    </div>
                 </div>
             </div>
         blade;

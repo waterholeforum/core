@@ -12,6 +12,11 @@ class RouteServiceProvider extends ServiceProvider
 {
     public function boot()
     {
+        Route::aliasMiddleware(
+            'waterhole.confirm-password',
+            \Waterhole\Http\Middleware\MaybeRequirePassword::class,
+        );
+
         Route::middlewareGroup('waterhole.web', [
             \Illuminate\Cookie\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
@@ -30,7 +35,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::middlewareGroup('waterhole.admin', [
             'auth',
             'can:administrate',
-            'password.confirm:waterhole.confirm-password',
+            'waterhole.confirm-password',
             \Waterhole\Http\Middleware\Admin\ContactOutpost::class,
         ]);
 

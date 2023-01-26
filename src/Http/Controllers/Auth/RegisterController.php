@@ -5,9 +5,11 @@ namespace Waterhole\Http\Controllers\Auth;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Facades\Image;
 use Waterhole\Forms\RegistrationForm;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\User;
+use Waterhole\OAuth\Payload;
 
 class RegisterController extends Controller
 {
@@ -24,16 +26,30 @@ class RegisterController extends Controller
             redirect()->setIntendedUrl($request->query('return', url()->previous()));
         }
 
-        $form = new RegistrationForm(new User());
+        $form = $this->form(new User());
 
         return view('waterhole::auth.register', compact('form'));
     }
 
     public function register(Request $request)
     {
-        $user = new User();
+        $form = $this->form($user = new User());
 
-        (new RegistrationForm($user))->submit($request);
+        $form->submit($request);
+
+        if ($form->payload) {
+            $user->markEmailAsVerified();
+
+            if ($form->payload->avatar) {
+                $user->uploadAvatar(Image::make($form->payload->avatar));
+            }
+
+            $user->authProviders()->create([
+                'provider' => $form->payload->provider,
+                'identifier' => $form->payload->identifier,
+                'last_login_at' => now(),
+            ]);
+        }
 
         event(new Registered($user));
 
@@ -44,5 +60,10 @@ class RegisterController extends Controller
         return redirect()
             ->intended(route('waterhole.home'))
             ->withoutFragment();
+    }
+
+    private function form(User $user)
+    {
+        return new RegistrationForm($user, Payload::decrypt(request('oauth')));
     }
 }

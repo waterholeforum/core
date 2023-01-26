@@ -43,4 +43,6 @@ Actionables::add('reactionSet', Models\ReactionSet::class);
 Actionables::add('reactionType', Models\ReactionType::class);
 Actionables::add('structureHeading', Models\StructureHeading::class);
 Actionables::add('structureLink', Models\StructureLink::class);
+Actionables::add('tag', Models\Tag::class);
+Actionables::add('taxonomy', Models\Taxonomy::class);
 Actionables::add('user', Models\User::class);

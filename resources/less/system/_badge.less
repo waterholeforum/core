@@ -30,9 +30,14 @@
   }
 }
 
-.badge--group {
-  background: var(--group-color, var(--color-fill)) !important;
-  color: var(--group-color-constrast, var(--color-muted)) !important;
+.group-badge {
+  background-color: var(--group-color, var(--color-fill));
+  color: var(--group-color-constrast, var(--color-muted));
+}
+
+.group-badge--hidden {
+  border: 2px dotted var(--color-stroke);
+  background-color: transparent;
 }
 
 .tag {

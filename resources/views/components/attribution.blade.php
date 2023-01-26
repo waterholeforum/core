@@ -12,11 +12,7 @@
             <span>{{ Waterhole\username($user) }}</span>
         </x-waterhole::user-link>
 
-        @foreach ($user->groups ?? [] as $group)
-            @if ($group->is_public)
-                <x-waterhole::group-badge :group="$group" class="attribution__group"/>
-            @endif
-        @endforeach
+        <x-waterhole::user-groups :user="$user"/>
     </span>
 
     <span class="attribution__info">

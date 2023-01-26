@@ -1,6 +1,6 @@
 <?php
 
-namespace Waterhole\Taxonomy\Components;
+namespace Waterhole\View\Components;
 
 use Illuminate\Support\Collection;
 use Illuminate\View\Component;

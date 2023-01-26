@@ -1,11 +1,11 @@
 <?php
 
-namespace Waterhole\Taxonomy\Fields;
+namespace Waterhole\Forms\Fields;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 use Waterhole\Forms\Field;
-use Waterhole\Taxonomy\Taxonomy;
+use Waterhole\Models\Taxonomy;
 
 class TaxonomyOptions extends Field
 {

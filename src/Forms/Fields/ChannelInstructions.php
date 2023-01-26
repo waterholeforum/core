@@ -19,15 +19,13 @@ class ChannelInstructions extends Field
             <x-waterhole::field
                 name="instructions"
                 :label="__('waterhole::admin.channel-instructions-label')"
+                :description="__('waterhole::admin.channel-instructions-description')"
             >
                 <x-waterhole::text-editor
                     name="instructions"
                     :id="$component->id"
                     :value="old('instructions', $model->instructions ?? '')"
                 />
-                <p class="field__description">
-                    {{ __('waterhole::admin.channel-instructions-description') }}
-                </p>
             </x-waterhole::field>
         blade;
     }

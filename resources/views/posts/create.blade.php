@@ -13,14 +13,16 @@
 
                     @components($form->fields())
 
-                    <div>
-                        <button
-                            class="btn btn--wide bg-accent"
-                            name="commit"
-                            type="submit"
-                            value="1"
-                        >{{ __('waterhole::forum.post-submit-button') }}</button>
-                    </div>
+                    @if ($form->model->channel)
+                        <div>
+                            <button
+                                class="btn btn--wide bg-accent"
+                                name="commit"
+                                type="submit"
+                                value="1"
+                            >{{ __('waterhole::forum.post-submit-button') }}</button>
+                        </div>
+                    @endif
                 </div>
             </form>
         </x-waterhole::dialog>

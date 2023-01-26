@@ -30,7 +30,7 @@ class ChannelSandbox extends Field
                             value="1"
                             @checked(old('sandbox', $model->sandbox ?? false))
                         >
-                        <span class="stack">
+                        <span class="stack gap-xxs">
                             <span>{{ __('waterhole::admin.channel-sandbox-label') }}</span>
                             <small class="field__description">{{ __('waterhole::admin.channel-sandbox-description') }}</small>
                         </span>

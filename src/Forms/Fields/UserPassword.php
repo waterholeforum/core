@@ -8,11 +8,17 @@ use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\Validator;
 use Waterhole\Forms\Field;
 use Waterhole\Models\User;
+use Waterhole\OAuth\Payload;
 
 class UserPassword extends Field
 {
-    public function __construct(public User $model)
+    public function __construct(public User $model, public ?Payload $payload = null)
     {
+    }
+
+    public function shouldRender(): bool
+    {
+        return !$this->payload;
     }
 
     public function render(): string
@@ -45,6 +51,10 @@ class UserPassword extends Field
 
     public function validating(Validator $validator): void
     {
+        if ($this->payload) {
+            return;
+        }
+
         $validator->addRules([
             'password' => [$this->model->exists ? 'nullable' : 'required', Password::defaults()],
         ]);
@@ -52,6 +62,10 @@ class UserPassword extends Field
 
     public function saving(FormRequest $request): void
     {
+        if ($this->payload) {
+            return;
+        }
+
         if ($password = $request->validated('password')) {
             $this->model->password = Hash::make($password);
         }

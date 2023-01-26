@@ -3,7 +3,7 @@
 namespace Waterhole\View\Components\Admin;
 
 use Illuminate\View\Component;
-use Waterhole\Taxonomy\Tag;
+use Waterhole\Models\Tag;
 use Waterhole\View\Components\Concerns\Streamable;
 
 class TagRow extends Component

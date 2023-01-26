@@ -19,19 +19,15 @@ class UserHeadline extends Field
             <x-waterhole::field
                 name="headline"
                 :label="__('waterhole::user.headline-label')"
+                :description="__('waterhole::user.headline-description')"
             >
-                <div class="stack gap-xs">
-                    <input
-                        id="{{ $component->id }}"
-                        type="text"
-                        name="headline"
-                        value="{{ old('headline', $model?->headline) }}"
-                        maxlength="30"
-                    >
-                    <p class="field__description">
-                        {{ __('waterhole::user.headline-description') }}
-                    </p>
-                </div>
+                <input
+                    id="{{ $component->id }}"
+                    type="text"
+                    name="headline"
+                    value="{{ old('headline', $model?->headline) }}"
+                    maxlength="30"
+                >
             </x-waterhole::field>
         blade;
     }

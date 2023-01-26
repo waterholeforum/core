@@ -2,6 +2,7 @@
 
 namespace Waterhole\Providers;
 
+use BladeUI\Icons\Factory;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Notifications\ChannelManager;
 use Illuminate\Support\ServiceProvider;
@@ -10,12 +11,19 @@ use Waterhole\Notifications\DatabaseChannel;
 
 class AppServiceProvider extends ServiceProvider
 {
-    protected array $configFiles = ['admin', 'design', 'forum', 'oauth', 'system', 'users'];
+    protected array $configFiles = ['admin', 'auth', 'design', 'forum', 'system', 'users'];
 
     public function register()
     {
         collect($this->configFiles)->each(function ($config) {
             $this->mergeConfigFrom(__DIR__ . "/../../config/$config.php", "waterhole.$config");
+        });
+
+        $this->callAfterResolving(Factory::class, function (Factory $factory) {
+            $factory->add('waterhole', [
+                'path' => __DIR__ . '/../../resources/icons',
+                'prefix' => 'waterhole',
+            ]);
         });
     }
 
@@ -29,6 +37,7 @@ class AppServiceProvider extends ServiceProvider
             'post' => Models\Post::class,
             'structureHeading' => Models\StructureHeading::class,
             'structureLink' => Models\StructureLink::class,
+            'taxonomy' => Models\Taxonomy::class,
             'user' => Models\User::class,
         ]);
 

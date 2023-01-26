@@ -14,6 +14,9 @@
                 method="POST"
             >
                 @csrf
+                @if (request('oauth'))
+                    <input type="hidden" name="oauth" value="{{ request('oauth') }}">
+                @endif
 
                 <div class="stack gap-xl">
                     <x-waterhole::validation-errors/>

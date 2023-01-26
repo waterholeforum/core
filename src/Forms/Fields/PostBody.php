@@ -13,13 +13,27 @@ class PostBody extends Field
     {
     }
 
+    public function shouldRender(): bool
+    {
+        return (bool) $this->model->channel;
+    }
+
     public function render(): string
     {
         return <<<'blade'
-            <x-waterhole::field
-                name="body"
-                :label="__('waterhole::forum.post-body-label')"
-            >
+            @php
+                $label = __([
+                    "waterhole.channel-{$model->channel->slug}-post-body-label",
+                    'waterhole::forum.post-body-label',
+                ]);
+
+                $description = __([
+                    "waterhole.channel-{$model->channel->slug}-post-body-description",
+                    '',
+                ]);
+            @endphp
+
+            <x-waterhole::field name="body" :$label :$description>
                 <x-waterhole::text-editor
                     name="body"
                     :id="$component->id"

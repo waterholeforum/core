@@ -8063,7 +8063,7 @@ document.addEventListener('turbo:before-fetch-response', function (e) {
         switch (_context.prev = _context.next) {
           case 0:
             response = e.detail.fetchResponse.response;
-            if (!(response.ok || response.status === 422 || Waterhole.debug)) {
+            if (!(response.ok || response.status === 422 || Waterhole.debug && response.status >= 500)) {
               _context.next = 3;
               break;
             }
@@ -8681,20 +8681,22 @@ var default_1 = /*#__PURE__*/function (_Controller) {
   _createClass(default_1, [{
     key: "connect",
     value: function connect() {
-      var _this = this;
-      this.element.addEventListener('close', function () {
-        _this.frameTarget.src = null;
-      });
       this.frameTarget.removeAttribute('disabled');
     }
   }, {
     key: "loading",
-    value: function loading(e) {
+    value: function loading() {
+      if (!this.element.open) {
+        this.frameTarget.hidden = true;
+        this.loadingTarget.hidden = false;
+      }
       this.show();
     }
   }, {
     key: "loaded",
     value: function loaded() {
+      this.frameTarget.hidden = false;
+      this.loadingTarget.hidden = true;
       if (this.frameTarget.children.length) {
         this.show();
       } else {
@@ -8722,7 +8724,7 @@ var default_1 = /*#__PURE__*/function (_Controller) {
   return default_1;
 }(_hotwired_stimulus__WEBPACK_IMPORTED_MODULE_0__.Controller);
 
-default_1.targets = ['frame'];
+default_1.targets = ['frame', 'loading'];
 
 /***/ }),
 
@@ -9049,7 +9051,7 @@ var default_1 = /*#__PURE__*/function (_Controller) {
     _classCallCheck(this, default_1);
     _this = _super.apply(this, arguments);
     _this.showPostOnFirstPage = function () {
-      if (document.querySelector('[data-index="0"]')) {
+      if (document.getElementById('page_1')) {
         _this.postTarget.hidden = false;
       }
     };
@@ -9569,7 +9571,7 @@ var default_1 = /*#__PURE__*/function (_Controller) {
         });
         (_b = this.expanderTarget) === null || _b === void 0 ? void 0 : _b.addEventListener('text-expander-value', function (event) {
           var item = event.detail.item;
-          event.detail.value = '@' + item.getAttribute('data-value');
+          event.detail.value = '@' + item.getAttribute('data-value').replace(/ /g, '\xa0');
         });
       }
     }
@@ -23910,7 +23912,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "ModalElement": () => (/* binding */ m),
 /* harmony export */   "PopupElement": () => (/* binding */ $),
 /* harmony export */   "ToolbarElement": () => (/* binding */ P),
-/* harmony export */   "TooltipElement": () => (/* binding */ h)
+/* harmony export */   "TooltipElement": () => (/* binding */ d)
 /* harmony export */ });
 /* harmony import */ var hello_goodbye__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! hello-goodbye */ "../../../packages/hello-goodbye/dist/index.es.js");
 /* harmony import */ var tabbable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tabbable */ "../../../packages/inclusive-elements/node_modules/.pnpm/tabbable@5.3.3/node_modules/tabbable/dist/index.esm.js");
@@ -23995,9 +23997,9 @@ var v = /*#__PURE__*/function (_HTMLElement) {
       var _this2 = this;
       var e = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var i = e.key || t.dataset.key || String(this.index++);
-      t.dataset.key = i, this.contains(t) || (e.animate === !1 ? this.append(t) : (0,hello_goodbye__WEBPACK_IMPORTED_MODULE_0__.move)(this.children, function () {
+      t.dataset.key = i, this.contains(t) ? (0,hello_goodbye__WEBPACK_IMPORTED_MODULE_0__.hello)(t) : e.animate === !1 ? this.append(t) : (0,hello_goodbye__WEBPACK_IMPORTED_MODULE_0__.move)(this.children, function () {
         _this2.append(t), (0,hello_goodbye__WEBPACK_IMPORTED_MODULE_0__.hello)(t);
-      }));
+      });
       var n = Number(e.duration !== void 0 ? e.duration : t.dataset.duration || v.duration);
       return n > 0 && (this.startTimeout(t, n), t.addEventListener("mouseenter", this.clearTimeout.bind(this, t)), t.addEventListener("focusin", this.clearTimeout.bind(this, t)), t.addEventListener("mouseleave", this.startTimeout.bind(this, t, n)), t.addEventListener("focusout", this.startTimeout.bind(this, t, n))), i;
     }
@@ -24128,12 +24130,12 @@ var w = /*#__PURE__*/function (_HTMLElement2) {
 }( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
 var b = w;
 s(b, "searchDelay", 800);
-var d = /*#__PURE__*/function (_HTMLElement3) {
-  _inherits(d, _HTMLElement3);
-  var _super3 = _createSuper(d);
-  function d() {
+var c = /*#__PURE__*/function (_HTMLElement3) {
+  _inherits(c, _HTMLElement3);
+  var _super3 = _createSuper(c);
+  function c() {
     var _this7;
-    _classCallCheck(this, d);
+    _classCallCheck(this, c);
     _this7 = _super3.call(this);
     s(_assertThisInitialized(_this7), "focusTrap");
     s(_assertThisInitialized(_this7), "connected", !1);
@@ -24144,14 +24146,14 @@ var d = /*#__PURE__*/function (_HTMLElement3) {
     });
     e.appendChild(t.content.cloneNode(!0)), _this7.backdrop.addEventListener("click", function () {
       var i;
-      _this7.hasAttribute("static") ? (i = d.attention) == null || i.call(d, e.children[1]) : _this7.close();
+      _this7.hasAttribute("static") ? (i = c.attention) == null || i.call(c, e.children[1]) : _this7.close();
     }), _this7.focusTrap = (0,focus_trap__WEBPACK_IMPORTED_MODULE_2__.createFocusTrap)(_assertThisInitialized(_this7), {
       escapeDeactivates: !1,
       allowOutsideClick: !0
     });
     return _this7;
   }
-  _createClass(d, [{
+  _createClass(c, [{
     key: "connectedCallback",
     value: function connectedCallback() {
       var _this8 = this;
@@ -24221,9 +24223,9 @@ var d = /*#__PURE__*/function (_HTMLElement3) {
       return ["open"];
     }
   }]);
-  return d;
+  return c;
 }( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
-var m = d;
+var m = c;
 s(m, "attention", function (t) {
   return t.animate([{
     transform: "scale(1)"
@@ -24421,12 +24423,12 @@ var P = /*#__PURE__*/function (_HTMLElement5) {
   }]);
   return P;
 }( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
-var c = /*#__PURE__*/function (_HTMLElement6) {
-  _inherits(c, _HTMLElement6);
-  var _super6 = _createSuper(c);
-  function c() {
+var u = /*#__PURE__*/function (_HTMLElement6) {
+  _inherits(u, _HTMLElement6);
+  var _super6 = _createSuper(u);
+  function u() {
     var _this15;
-    _classCallCheck(this, c);
+    _classCallCheck(this, u);
     _this15 = _super6.apply(this, arguments);
     s(_assertThisInitialized(_this15), "parent");
     s(_assertThisInitialized(_this15), "tooltip");
@@ -24442,7 +24444,7 @@ var c = /*#__PURE__*/function (_HTMLElement6) {
     });
     return _this15;
   }
-  _createClass(c, [{
+  _createClass(u, [{
     key: "connectedCallback",
     value: function connectedCallback() {
       var _this16 = this;
@@ -24474,7 +24476,7 @@ var c = /*#__PURE__*/function (_HTMLElement6) {
       if (this.disabled) return;
       var t = this.createTooltip();
       clearTimeout(this.timeout), this.showing || (t.hidden = !1, (0,hello_goodbye__WEBPACK_IMPORTED_MODULE_0__.hello)(t), this.showing = !0), t.innerHTML !== this.innerHTML && (t.innerHTML = this.innerHTML), t.style.position = "absolute", (0,_floating_ui_dom__WEBPACK_IMPORTED_MODULE_3__.computePosition)(this.parent, t, {
-        placement: this.getAttribute("placement") || c.placement,
+        placement: this.getAttribute("placement") || u.placement,
         middleware: [(0,_floating_ui_dom__WEBPACK_IMPORTED_MODULE_4__.shift)(), (0,_floating_ui_dom__WEBPACK_IMPORTED_MODULE_4__.flip)()]
       }).then(function (_ref3) {
         var e = _ref3.x,
@@ -24501,18 +24503,18 @@ var c = /*#__PURE__*/function (_HTMLElement6) {
     value: function afterDelay(t) {
       clearTimeout(this.timeout);
       var e = parseInt(this.getAttribute("delay") || "");
-      this.timeout = window.setTimeout(t.bind(this), isNaN(e) ? c.delay : e);
+      this.timeout = window.setTimeout(t.bind(this), isNaN(e) ? u.delay : e);
     }
   }, {
     key: "createTooltip",
     value: function createTooltip() {
-      return this.tooltip || (this.tooltip = document.createElement("div"), this.tooltip.className = this.getAttribute("tooltip-class") || c.tooltipClass, this.tooltip.hidden = !0, this.tooltip.addEventListener("mouseenter", this.show.bind(this)), this.tooltip.addEventListener("mouseleave", this.afterDelay.bind(this, this.hide)), document.body.appendChild(this.tooltip)), this.tooltip;
+      return this.tooltip || (this.tooltip = document.createElement("div"), this.tooltip.className = this.getAttribute("tooltip-class") || u.tooltipClass, this.tooltip.hidden = !0, this.tooltip.addEventListener("mouseenter", this.show.bind(this)), this.tooltip.addEventListener("mouseleave", this.afterDelay.bind(this, this.hide)), document.body.appendChild(this.tooltip)), this.tooltip;
     }
   }]);
-  return c;
+  return u;
 }( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
-var h = c;
-s(h, "delay", 100), s(h, "placement", "top"), s(h, "tooltipClass", "tooltip");
+var d = u;
+s(d, "delay", 100), s(d, "placement", "top"), s(d, "tooltipClass", "tooltip");
 
 
 /***/ }),

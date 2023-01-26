@@ -6,6 +6,7 @@ login-title = Log in to Your Account
 login-submit = Log In
 login-register-prompt = Don't have an account?
 login-register-link = Sign Up
+continue-with-provider = Continue with { $provider }
 
 email-label = Email
 password-label = Password

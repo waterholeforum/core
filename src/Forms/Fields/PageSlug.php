@@ -29,10 +29,10 @@ class PageSlug extends Field
                     data-action="slugger#updateSlug"
                     data-slugger-target="slug"
                 >
-                <p class="field__description">
+                <x-slot:description>
                     {{ __('waterhole::admin.page-slug-url-label') }}
                     {!! preg_replace('~^https?://~', '', str_replace('*', '<span data-slugger-target="mirror">'.old('slug', $model->slug ?? '').'</span>', route('waterhole.page', ['page' => '*']))) !!}
-                </p>
+                </x-slot:description>
             </x-waterhole::field>
         blade;
     }

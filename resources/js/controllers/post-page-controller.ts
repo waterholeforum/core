@@ -28,7 +28,7 @@ export default class extends Controller {
     }
 
     private showPostOnFirstPage = () => {
-        if (document.querySelector('[data-index="0"]')) {
+        if (document.getElementById('page_1')) {
             this.postTarget.hidden = false;
         }
     };
