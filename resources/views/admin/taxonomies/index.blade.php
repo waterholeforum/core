@@ -19,10 +19,11 @@
                     <div class="grow"></div>
 
                     <x-waterhole::action-buttons
-                        :for="$taxonomy"
-                        icons
                         class="row text-xs"
+                        :for="$taxonomy"
                         :button-attributes="['class' => 'btn btn--icon btn--transparent']"
+                        tooltips
+                        :limit="2"
                         placement="bottom-end"
                     />
                 </li>

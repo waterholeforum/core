@@ -9,20 +9,20 @@ use Waterhole\Models\User;
 
 class UserGroups extends Component
 {
-    public Collection $groups;
+    public ?Collection $groups;
 
-    public function __construct(public User $user)
+    public function __construct(public ?User $user)
     {
-        $this->groups = $this->user->groups->where('is_public', true);
+        $this->groups = $this->user?->groups->where('is_public', true);
 
         if (Auth::user()->can('user.edit', $user)) {
-            $this->groups->push(...$this->user->groups->where('is_public', false));
+            $this->groups?->push(...$this->user->groups->where('is_public', false));
         }
     }
 
     public function shouldRender(): bool
     {
-        return $this->groups->isNotEmpty();
+        return (bool) $this->groups?->isNotEmpty();
     }
 
     public function render()

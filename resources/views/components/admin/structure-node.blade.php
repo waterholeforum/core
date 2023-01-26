@@ -85,8 +85,12 @@
             @endif
         @endif
 
-        <x-waterhole::action-menu
+        <x-waterhole::action-buttons
+            class="row text-xs"
             :for="$node->content"
+            :button-attributes="['class' => 'btn btn--icon btn--transparent']"
+            tooltips
+            :limit="2"
             placement="bottom-end"
         />
     </div>

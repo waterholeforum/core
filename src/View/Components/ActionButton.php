@@ -6,8 +6,12 @@ use Illuminate\View\Component;
 
 class ActionButton extends Component
 {
-    public function __construct(public $for, public string $action, public ?string $return = null)
-    {
+    public function __construct(
+        public $for,
+        public string $action,
+        public ?string $return = null,
+        public bool $icon = false,
+    ) {
     }
 
     public function render()

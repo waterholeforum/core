@@ -2,6 +2,7 @@
 
 namespace Waterhole\View\Components;
 
+use Illuminate\Support\Collection;
 use Illuminate\View\Component;
 use Waterhole\Actions\Action;
 use Waterhole\Extend\Actionables;
@@ -11,14 +12,16 @@ use Waterhole\Models\Model;
 class ActionButtons extends Component
 {
     public string $actionable;
-    public array $actions;
+    public Collection $actions;
 
     public function __construct(
         public Model $for,
         array $only = null,
         array $exclude = null,
         public array $buttonAttributes = [],
-        public bool $icons = false,
+        public bool $tooltips = false,
+        public ?int $limit = null,
+        public string $placement = 'bottom-start',
     ) {
         $this->actionable = Actionables::getActionableName($for);
 
@@ -37,8 +40,7 @@ class ActionButtons extends Component
                 fn($action) => !$action instanceof Action || $action->shouldRender(collect([$for])),
             )
             ->values()
-            ->reject(fn($action, $i) => $action instanceof MenuDivider && $i === 0)
-            ->all();
+            ->reject(fn($action, $i) => $action instanceof MenuDivider && $i === 0);
     }
 
     public function render()

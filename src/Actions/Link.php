@@ -24,13 +24,13 @@ abstract class Link extends Action
      */
     abstract public function url(Model $model): string;
 
-    public function render(Collection $models, array $attributes, bool $icons = false): HtmlString
+    public function render(Collection $models, array $attributes, bool $tooltip = false): HtmlString
     {
         $link = e($this->url($models[0]));
 
         $attributes = (new ComponentAttributeBag($attributes))->merge($this->attributes($models));
 
-        $content = $this->renderContent($models, $icons);
+        $content = $this->renderContent($models, $tooltip);
 
         return new HtmlString(
             <<<html

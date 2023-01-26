@@ -14,8 +14,8 @@
         <ul class="card" role="list">
             @forelse ($reactionSets as $reactionSet)
                 <li class="card__row row gap-xs">
-                    <div class="row gap-xxs text-md">
-                        @foreach ($reactionSet->reactionTypes as $reactionType)
+                    <div class="row reverse text-md reactions-condensed">
+                        @foreach ($reactionSet->reactionTypes->reverse() as $reactionType)
                             <x-waterhole::icon :icon="$reactionType->icon"/>
                         @endforeach
                     </div>
@@ -24,17 +24,13 @@
 
                     <div class="grow"></div>
 
-                    @if ($reactionSet->is_default_posts)
-                        <span class="badge">Posts</span>
-                    @endif
-
-                    @if ($reactionSet->is_default_comments)
-                        <span class="badge">Comments</span>
-                    @endif
-
-                    <x-waterhole::action-menu
+                    <x-waterhole::action-buttons
+                        class="row text-xs"
                         :for="$reactionSet"
                         placement="bottom-end"
+                        :button-attributes="['class' => 'btn btn--icon btn--transparent']"
+                        tooltips
+                        :limit="2"
                     />
                 </li>
             @empty

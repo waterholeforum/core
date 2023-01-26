@@ -17,7 +17,7 @@
             <input type="hidden" name="return" value="{{ $return }}">
         @endisset
 
-        {{ $action->render(collect([$for]), $attributes->getAttributes()) }}
+        {{ $action->render(collect([$for]), $attributes->getAttributes(), $icon) }}
     </form>
 
     {{ $after ?? '' }}

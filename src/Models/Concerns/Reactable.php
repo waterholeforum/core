@@ -25,7 +25,7 @@ trait Reactable
     abstract public function reactionSet(): ?ReactionSet;
 
     /**
-     * Recalculate the score from the reactions likes.
+     * Recalculate the score from the reactions.
      */
     public function recalculateScore(): static
     {

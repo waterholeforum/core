@@ -84,10 +84,13 @@
                                         {{ $reactionType->name }}
                                         <span class="color-muted text-xs">{{ $reactionType->score > 0 ? '+' : '' }}{{ $reactionType->score }}</span>
 
-                                        <x-waterhole::action-menu
+                                        <x-waterhole::action-buttons
+                                            class="row text-xs push-end -m-xxs"
                                             :for="$reactionType"
                                             placement="bottom-end"
-                                            class="push-end"
+                                            :button-attributes="['class' => 'btn btn--icon btn--transparent']"
+                                            tooltips
+                                            :limit="2"
                                         />
                                     </li>
                                 @empty

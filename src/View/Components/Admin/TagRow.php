@@ -21,10 +21,12 @@ class TagRow extends Component
                 {{ Waterhole\emojify($tag->name) }}
 
                 <x-waterhole::action-buttons
+                    class="push-end row -m-sm text-xs"
                     :for="$tag"
                     :button-attributes="['class' => 'btn btn--icon btn--transparent']"
-                    icons
-                    class="push-end row -m-sm text-xs"
+                    tooltips
+                    :limit="2"
+                    placement="bottom-end"
                 />
             </li>
         blade;

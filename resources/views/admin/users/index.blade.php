@@ -138,9 +138,13 @@
                                     <td>
                                         {{ Waterhole\time_ago($user->last_seen_at) }}
                                     </td>
-                                    <td class="text-sm">
-                                        <x-waterhole::action-menu
+                                    <td>
+                                        <x-waterhole::action-buttons
+                                            class="row text-xs"
                                             :for="$user"
+                                            :button-attributes="['class' => 'btn btn--transparent btn--icon']"
+                                            tooltips
+                                            :limit="2"
                                             placement="bottom-end"
                                         />
                                     </td>

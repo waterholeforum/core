@@ -147,7 +147,5 @@ feed-controls-layout-heading = Display as
 
 post-locked-badge = Locked
 
-reaction-like = Like
-
 delete-comment-confirm-message = Are you sure you want to delete this comment?
 delete-post-confirm-message = Are you sure you want to delete this post?
