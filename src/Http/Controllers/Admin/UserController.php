@@ -38,6 +38,8 @@ class UserController extends Controller
                             $query->whereIn('name', explode(',', $value));
                         });
                     }
+                } elseif ($token[0] === 'is:suspended') {
+                    $query->where('suspended_until', '>', now());
                 } elseif (filter_var($token[0], FILTER_VALIDATE_EMAIL)) {
                     $query->where('email', $token[0]);
                 } else {

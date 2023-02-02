@@ -9,7 +9,7 @@
         <div class="stack gap-xxxl">
             <div
                 @if (!$comments->onFirstPage()) hidden @endif
-                data-post-page-target="post"
+            data-post-page-target="post"
             >
                 <x-waterhole::post-full :post="$post"/>
             </div>
@@ -105,10 +105,7 @@
         </div>
 
         @can('post.comment', $post)
-            <x-waterhole::composer
-                :post="$post"
-                data-turbo-permanent
-            />
+            <x-waterhole::composer :post="$post" data-turbo-permanent/>
         @endcan
     </div>
 

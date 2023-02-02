@@ -42,7 +42,7 @@ class MoveToChannel extends Action
 
     public function confirmButton(Collection $models): string
     {
-        return __('waterhole::forum.move-to-channel-confirm-button');
+        return __('waterhole::system.save-changes-button');
     }
 
     public function run(Collection $models)

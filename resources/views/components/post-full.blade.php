@@ -17,7 +17,6 @@
                     data-turbo-frame="@domid($post, 'comment_parent')"
                     data-quotable-target="button"
                     data-action="quotable#quoteSelectedText"
-                    data-hotkey="q"
                     hidden
                 >
                     <x-waterhole::icon icon="tabler-quote"/>

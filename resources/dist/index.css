@@ -540,9 +540,13 @@ h6 {
   background-color: var(--group-color, var(--color-fill));
   color: var(--group-color-constrast, var(--color-muted));
 }
-.group-badge--hidden {
+.badge--hidden {
   border: 2px dotted var(--color-stroke);
   background-color: transparent;
+}
+.suspended-badge {
+  background: var(--color-muted);
+  color: var(--color-bg);
 }
 .tag {
   border-radius: 4px;
@@ -737,9 +741,14 @@ a.channel-label:hover > :last-child {
 }
 .choice {
   cursor: pointer;
+  padding-left: calc(1.2em + var(--space-xs));
   display: flex;
   align-items: flex-start;
   gap: var(--space-xs);
+}
+.choice > input[type='checkbox'],
+.choice > input[type='radio'] {
+  margin-left: calc(-1.2em - var(--space-xs));
 }
 .choice > :disabled + * {
   color: var(--color-muted);
@@ -1723,6 +1732,9 @@ ui-modal.leave-to::part(content) {
   width: fit-content;
   border: 1px solid var(--color-stroke);
   border-radius: var(--radius);
+}
+.table-container * {
+  overflow-wrap: normal;
 }
 .table-container table {
   width: 100%;

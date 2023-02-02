@@ -89,7 +89,10 @@ class Post extends Model
 
         // Delete comments one at a time to trigger event listeners.
         static::deleting(function (self $post) {
-            $post->comments->each->delete();
+            $post
+                ->comments()
+                ->lazy()
+                ->each->delete();
         });
 
         static::saving(function (self $post) {

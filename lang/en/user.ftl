@@ -15,11 +15,11 @@ follow-on-comment-label = Automatically follow posts I comment on
 edit-profile-title = Edit Profile
 
 user-top-comments-title = { $userName }'s Top Comments
-user-latest-comments-title = { $userName }'s Latest Comments
+user-newest-comments-title = { $userName }'s Newest Comments
 comments-empty-message = No Comments
 
 user-top-posts-title = { $userName }'s Top Posts
-user-latest-posts-title = { $userName }'s Latest Posts
+user-newest-posts-title = { $userName }'s Newest Posts
 posts-empty-message = No Posts
 
 profile-link = Profile
@@ -49,3 +49,12 @@ privacy-title = Privacy
 show-online-label = Show when I was last online
 
 online-label = Online
+
+suspend-button = Suspend
+edit-suspension-button = Edit Suspension
+suspend-user-title = Suspend
+not-suspended-label = Not suspended
+suspended-indefinitely-label = Suspended indefinitely
+suspended-until-label = Suspended until...
+suspended-badge = Suspended
+suspended-message = Your account has been suspended.

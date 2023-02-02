@@ -35,6 +35,12 @@ class AuthServiceProvider extends ServiceProvider
                 return Gate::forUser(null)->allows($ability, ...$arguments) ?:
                     Response::deny(__('waterhole::auth.email-verification-required-message'));
             }
+
+            // Treat suspended users like guests.
+            if ($user->isSuspended()) {
+                return Gate::forUser(null)->allows($ability, ...$arguments) ?:
+                    Response::deny(__('waterhole::user.suspended-message'));
+            }
         });
 
         Gate::after(function (User $user, $ability, $result, $arguments) {

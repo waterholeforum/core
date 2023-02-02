@@ -83,6 +83,9 @@ Actions::add(Waterhole\Actions\EditReactionSet::class, 0, 'edit-reaction-set');
 Actions::add(Waterhole\Actions\EditReactionType::class, 0, 'edit-reaction-type');
 Actions::add(Waterhole\Actions\EditTag::class, 0, 'edit-tag');
 Actions::add(Waterhole\Actions\EditTaxonomy::class, 0, 'edit-taxonomy');
+
+Actions::add(Waterhole\Actions\SuspendUser::class, 0, 'suspend-user');
+
 Actions::add(Waterhole\Actions\DeleteChannel::class, 0, 'delete-channel');
 Actions::add(Waterhole\Actions\DeleteStructure::class, 0, 'delete-structure');
 Actions::add(Waterhole\Actions\DeleteGroup::class, 0, 'delete-group');

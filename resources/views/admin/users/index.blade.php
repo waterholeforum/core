@@ -64,10 +64,21 @@
                             <span class="menu-item__title">group:{{ str_contains($group->name, ' ') ? '"'.$group->name.'"' : $group->name }}</span>
                         </li>
                     @endforeach
+                    <li
+                        role="option"
+                        class="menu-item"
+                        data-value="is:suspended"
+                    >
+                        <span class="menu-item__title">is:suspended</span>
+                    </li>
                 </ul>
             </form>
 
-            <a href="{{ route('waterhole.admin.users.create') }}" type="button" class="btn bg-accent">
+            <a
+                href="{{ route('waterhole.admin.users.create') }}"
+                type="button"
+                class="btn bg-accent"
+            >
                 <x-waterhole::icon icon="tabler-plus"/>
                 <span>{{ __('waterhole::admin.create-user-button') }}</span>
             </a>
@@ -79,11 +90,11 @@
                     <table class="table">
                         <thead>
                             <tr>
-{{--                                <td class="choice-cell">--}}
-{{--                                    <label>--}}
-{{--                                        <input type="checkbox">--}}
-{{--                                    </label>--}}
-{{--                                </td>--}}
+                                {{--                                <td class="choice-cell">--}}
+                                {{--                                    <label>--}}
+                                {{--                                        <input type="checkbox">--}}
+                                {{--                                    </label>--}}
+                                {{--                                </td>--}}
                                 @foreach (['name', 'email', 'groups', 'created_at', 'last_seen_at'] as $column)
                                     <th>
                                         @if (in_array($column, $sortable))
@@ -109,11 +120,11 @@
                         <tbody>
                             @foreach ($users as $user)
                                 <tr>
-{{--                                    <td class="choice-cell">--}}
-{{--                                        <label>--}}
-{{--                                            <input type="checkbox">--}}
-{{--                                        </label>--}}
-{{--                                    </td>--}}
+                                    {{--                                    <td class="choice-cell">--}}
+                                    {{--                                        <label>--}}
+                                    {{--                                            <input type="checkbox">--}}
+                                    {{--                                        </label>--}}
+                                    {{--                                    </td>--}}
                                     <td>
                                         <x-waterhole::user-label
                                             :user="$user"
@@ -126,11 +137,7 @@
                                         <a href="mailto:{{ $user->email }}">{{ Str::limit($user->email, 20) }}</a>
                                     </td>
                                     <td>
-                                        <div class="row wrap gap-xxs">
-                                            @foreach ($user->groups as $group)
-                                                <x-waterhole::group-badge :group="$group"/>
-                                            @endforeach
-                                        </div>
+                                        <x-waterhole::user-groups :user="$user"/>
                                     </td>
                                     <td>
                                         {{ Waterhole\time_ago($user->created_at) }}

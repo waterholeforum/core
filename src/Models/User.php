@@ -76,6 +76,7 @@ class User extends Model implements
         'notification_channels' => AsArrayObject::class,
         'notifications_read_at' => 'datetime',
         'follow_on_comment' => 'boolean',
+        'suspended_until' => 'datetime',
     ];
 
     protected static function booted()
@@ -221,6 +222,11 @@ class User extends Model implements
     public function isOnline(): bool
     {
         return $this->show_online && $this->last_seen_at?->isAfter(now()->subMinutes(5));
+    }
+
+    public function isSuspended(): bool
+    {
+        return (bool) $this->suspended_until?->isFuture();
     }
 
     public function getUrlAttribute(): string

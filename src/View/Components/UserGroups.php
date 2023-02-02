@@ -22,7 +22,7 @@ class UserGroups extends Component
 
     public function shouldRender(): bool
     {
-        return (bool) $this->groups?->isNotEmpty();
+        return $this->groups?->isNotEmpty() || $this->user?->isSuspended();
     }
 
     public function render()
@@ -32,6 +32,13 @@ class UserGroups extends Component
                 @foreach ($groups as $group)
                     <x-waterhole::group-badge :group="$group"/>
                 @endforeach
+
+                @if ($user?->isSuspended() && Gate::allows('user.suspend', $user))
+                    <span class="badge suspended-badge">
+                        <x-waterhole::icon icon="tabler-ban"/>
+                        {{ __('waterhole::user.suspended-badge') }}
+                    </span>
+                @endif
             </span>
         blade;
     }

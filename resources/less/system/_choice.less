@@ -1,8 +1,14 @@
 .choice {
   cursor: pointer;
+  padding-left: calc(1.2em + var(--space-xs));
   display: flex;
   align-items: flex-start;
   gap: var(--space-xs);
+
+  > input[type='checkbox'],
+  > input[type='radio'] {
+    margin-left: calc(-1.2em - var(--space-xs));
+  }
 
   > :disabled + * {
     color: var(--color-muted);
