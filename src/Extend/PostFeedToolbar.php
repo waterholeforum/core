@@ -16,7 +16,7 @@ abstract class PostFeedToolbar
     use OrderedList, OfComponents;
 }
 
-PostFeedToolbar::add('filters', FeedFilters::class, position: -100);
+PostFeedToolbar::add(FeedFilters::class, position: -100, key: 'filters');
 // PostFeedToolbar::add('top-period', FeedTopPeriod::class, position: -90);
-PostFeedToolbar::add('spacer', Spacer::class);
-PostFeedToolbar::add('tags', TagsFilter::class);
+PostFeedToolbar::add(Spacer::class, 0, 'spacer');
+PostFeedToolbar::add(TagsFilter::class, 0, 'tags');

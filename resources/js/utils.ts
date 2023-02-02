@@ -49,3 +49,11 @@ export function cloneFromTemplate(id: string): HTMLElement {
     const template = document.getElementById(id) as HTMLTemplateElement;
     return template?.content?.firstElementChild?.cloneNode(true) as HTMLElement;
 }
+
+/**
+ * Get a cookie by name.
+ */
+export function getCookie(name: string): string | null {
+    const match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
+    return match ? decodeURIComponent(match[3]) : null;
+}

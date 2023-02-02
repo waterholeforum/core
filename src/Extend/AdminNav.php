@@ -15,17 +15,16 @@ abstract class AdminNav
 }
 
 AdminNav::add(
-    'dashboard',
     new NavLink(
         label: __('waterhole::admin.dashboard-title'),
         icon: 'tabler-report-analytics',
         route: 'waterhole.admin.dashboard',
     ),
     -100,
+    'dashboard',
 );
 
 AdminNav::add(
-    'structure',
     new NavLink(
         label: __('waterhole::admin.structure-title'),
         icon: 'tabler-layout-list',
@@ -33,10 +32,10 @@ AdminNav::add(
         active: fn() => request()->routeIs('waterhole.admin.structure*'),
     ),
     -90,
+    'structure',
 );
 
 AdminNav::add(
-    'taxonomies',
     new NavLink(
         label: __('waterhole::admin.taxonomies-title'),
         icon: 'tabler-tags',
@@ -44,10 +43,10 @@ AdminNav::add(
         active: fn() => request()->routeIs('waterhole.admin.taxonomies*'),
     ),
     -80,
+    'taxonomies',
 );
 
 AdminNav::add(
-    'users',
     new NavLink(
         label: __('waterhole::admin.users-title'),
         icon: 'tabler-user',
@@ -55,10 +54,10 @@ AdminNav::add(
         active: fn() => request()->routeIs('waterhole.admin.users*'),
     ),
     -70,
+    'users',
 );
 
 AdminNav::add(
-    'groups',
     new NavLink(
         label: __('waterhole::admin.groups-title'),
         icon: 'tabler-users',
@@ -66,10 +65,10 @@ AdminNav::add(
         active: fn() => request()->routeIs('waterhole.admin.groups*'),
     ),
     -60,
+    'groups',
 );
 
 AdminNav::add(
-    'reactions',
     new NavLink(
         label: __('waterhole::admin.reactions-title'),
         icon: 'tabler-mood-smile',
@@ -77,6 +76,7 @@ AdminNav::add(
         active: fn() => request()->routeIs('waterhole.admin.reaction*'),
     ),
     -50,
+    'reactions',
 );
 
-AdminNav::add('version', Version::class, 10);
+AdminNav::add(Version::class, 10, 'version');

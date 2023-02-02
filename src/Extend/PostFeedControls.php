@@ -13,4 +13,4 @@ abstract class PostFeedControls
     use OrderedList;
 }
 
-PostFeedControls::add('layout', PostFeedControlsLayout::class);
+PostFeedControls::add(PostFeedControlsLayout::class, 0, 'layout');

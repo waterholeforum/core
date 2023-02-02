@@ -4,6 +4,7 @@ namespace Waterhole\Http\Controllers\Forum;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Notification;
 use Waterhole\Forms\PostForm;
 use Waterhole\Http\Controllers\Controller;
@@ -51,6 +52,7 @@ class PostController extends Controller
                 'reactions.reactionType',
                 'reactions.user',
                 'mentions',
+                'attachments',
             ])
             ->oldest()
             ->paginate();
@@ -83,7 +85,7 @@ class PostController extends Controller
     {
         $this->authorize('post.create');
 
-        $form = new PostForm(new Post());
+        $form = new PostForm(new Post(['channel_id' => old('channel_id', request('channel_id'))]));
 
         return view('waterhole::posts.create', compact('form'));
     }
@@ -101,7 +103,12 @@ class PostController extends Controller
 
         $this->authorize('post.create');
 
-        $post = new Post(['user_id' => $request->user()->id]);
+        $post = new Post([
+            'user_id' => $request->user()->id,
+            'channel_id' => request('channel_id'),
+        ]);
+
+        Gate::authorize('channel.post', $post->channel);
 
         (new PostForm($post))->submit($request);
 

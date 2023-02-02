@@ -15,7 +15,7 @@ use function Waterhole\username;
  *
  * These allow users to be mentioned by their name using the @ prefix.
  */
-abstract class Mentions
+abstract class FormatMentions
 {
     public const TAG_NAME = 'MENTION';
 
@@ -87,10 +87,6 @@ abstract class Mentions
      */
     public static function rendering(Renderer $renderer, string &$xml, ?Context $context): void
     {
-        if (!$context?->model?->relationLoaded('mentions')) {
-            return;
-        }
-
         $xml = Utils::replaceAttributes($xml, 'MENTION', function ($attributes) use ($context) {
             if (isset($attributes['id'])) {
                 $attributes['name'] = username(

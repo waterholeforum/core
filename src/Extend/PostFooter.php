@@ -14,5 +14,5 @@ abstract class PostFooter
     use OrderedList;
 }
 
-PostFooter::add('reactions', PostReactions::class, position: -100);
-PostFooter::add('replies', PostReplies::class, position: -90);
+PostFooter::add(PostReactions::class, position: -100, key: 'reactions');
+PostFooter::add(PostReplies::class, position: -90, key: 'replies');

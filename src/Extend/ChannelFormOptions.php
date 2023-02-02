@@ -15,8 +15,8 @@ abstract class ChannelFormOptions
     use OrderedList, OfComponents;
 }
 
-ChannelFormOptions::add('sandbox', ChannelSandbox::class);
-ChannelFormOptions::add('default-layout', ChannelDefaultLayout::class);
-ChannelFormOptions::add('filters', ChannelFilters::class);
-ChannelFormOptions::add('reactions', ChannelReactions::class);
-ChannelFormOptions::add('taxonomies', ChannelTaxonomies::class);
+ChannelFormOptions::add(ChannelSandbox::class, 0, 'sandbox');
+ChannelFormOptions::add(ChannelDefaultLayout::class, 0, 'default-layout');
+ChannelFormOptions::add(ChannelFilters::class, 0, 'filters');
+ChannelFormOptions::add(ChannelReactions::class, 0, 'reactions');
+ChannelFormOptions::add(ChannelTaxonomies::class, 0, 'taxonomies');

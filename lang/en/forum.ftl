@@ -60,8 +60,8 @@ move-post-title = Move { $count ->
     *[other] { $count } Posts
 }
 
-move-channel-button = Move to Channel
-move-channel-confirm-button = Move
+move-to-channel-button = Move to Channel
+move-to-channel-confirm-button = Move
 
 mark-as-read-button = Mark as Read
 

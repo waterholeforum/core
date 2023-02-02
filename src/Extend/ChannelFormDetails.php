@@ -15,8 +15,8 @@ abstract class ChannelFormDetails
     use OrderedList, OfComponents;
 }
 
-ChannelFormDetails::add('name', ChannelName::class);
-ChannelFormDetails::add('slug', ChannelSlug::class);
-ChannelFormDetails::add('icon', Icon::class);
-ChannelFormDetails::add('description', ChannelDescription::class);
-ChannelFormDetails::add('instructions', ChannelInstructions::class);
+ChannelFormDetails::add(ChannelName::class, 0, 'name');
+ChannelFormDetails::add(ChannelSlug::class, 0, 'slug');
+ChannelFormDetails::add(Icon::class, 0, 'icon');
+ChannelFormDetails::add(ChannelDescription::class, 0, 'description');
+ChannelFormDetails::add(ChannelInstructions::class, 0, 'instructions');

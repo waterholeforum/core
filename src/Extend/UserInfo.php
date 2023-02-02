@@ -17,8 +17,8 @@ abstract class UserInfo
     use OrderedList;
 }
 
-UserInfo::add('groups', UserGroups::class);
-UserInfo::add('location', UserLocation::class);
-UserInfo::add('website', UserWebsite::class);
-UserInfo::add('joined', UserJoined::class);
-UserInfo::add('lastSeen', UserLastSeen::class);
+UserInfo::add(UserGroups::class, 0, 'groups');
+UserInfo::add(UserLocation::class, 0, 'location');
+UserInfo::add(UserWebsite::class, 0, 'website');
+UserInfo::add(UserJoined::class, 0, 'joined');
+UserInfo::add(UserLastSeen::class, 0, 'lastSeen');

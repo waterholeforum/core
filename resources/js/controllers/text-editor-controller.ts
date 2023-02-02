@@ -24,6 +24,7 @@ export default class extends Controller {
     static values = {
         formatUrl: String,
         userLookupUrl: String,
+        uploadUrl: String,
     };
 
     declare readonly inputTarget: HTMLTextAreaElement;
@@ -33,6 +34,7 @@ export default class extends Controller {
 
     declare readonly formatUrlValue: string;
     declare readonly userLookupUrlValue: string;
+    declare readonly uploadUrlValue: string;
 
     editor?: TextareaEditor;
 
@@ -51,6 +53,7 @@ export default class extends Controller {
                 if (text.length < 2) return;
 
                 provide(
+                    // TODO: use ky
                     fetch(this.userLookupUrlValue + `?q=${encodeURIComponent(text)}`)
                         .then((response) => response.json())
                         .then((json) => {
@@ -98,7 +101,66 @@ export default class extends Controller {
                 const { item } = event.detail;
                 event.detail.value = '@' + item.getAttribute('data-value').replace(/ /g, '\xa0');
             }) as EventListener);
+
+            // File uploads
+            this.inputTarget.addEventListener('drop', (e) => {
+                if (e.dataTransfer?.files.length) {
+                    e.preventDefault();
+                    Array.from(e.dataTransfer.files).forEach((file) => this.uploadFile(file));
+                }
+            });
+
+            this.inputTarget.addEventListener('paste', (e) => {
+                if (e.clipboardData?.files.length) {
+                    e.preventDefault();
+                    Array.from(e.clipboardData.files).forEach((file) => this.uploadFile(file));
+                }
+            });
         }
+    }
+
+    chooseFiles() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.multiple = true;
+        input.hidden = true;
+        document.body.appendChild(input);
+        input.addEventListener('change', () => {
+            if (input.files) {
+                Array.from(input.files).forEach((file) => this.uploadFile(file));
+            }
+        });
+        input.click();
+        input.remove();
+    }
+
+    async uploadFile(file: File) {
+        const prefix = file.type.startsWith('image/') ? '!' : '';
+        const placeholder = `${prefix}[Uploading ${file.name}]()\n`;
+        let replacement = '';
+
+        this.editor?.insert(placeholder);
+
+        const body = new FormData();
+        body.append('file', file);
+
+        try {
+            const data = await Waterhole.fetch
+                .post(this.uploadUrlValue, { body })
+                .json<{ url: string }>();
+
+            replacement = `${prefix}[${file.name}](${data.url})\n`;
+        } catch (e) {}
+
+        const start = this.inputTarget.value.indexOf(placeholder);
+        if (start === -1 || !this.editor) return;
+
+        const delta = replacement.length - placeholder.length;
+        const range = this.editor.range();
+        this.editor
+            .range([start, start + placeholder.length])
+            .insert(replacement)
+            .range([range[0] + delta, range[1] + delta]);
     }
 
     hotkeyLabelTargetConnected(element: HTMLElement) {
@@ -120,7 +182,7 @@ export default class extends Controller {
         this.editor?.toggle(e.params.format);
     }
 
-    togglePreview() {
+    async togglePreview() {
         if (!this.inputTarget || !this.previewTarget) return;
 
         const previewing = !this.inputTarget.hidden;
@@ -131,20 +193,12 @@ export default class extends Controller {
         this.previewButtonTarget?.setAttribute('aria-pressed', String(previewing));
         this.element.classList.toggle('is-previewing', previewing);
 
-        if (previewing) {
-            fetch(this.formatUrlValue, {
-                method: 'POST',
-                body: this.inputTarget.value,
-            }).then(async (response) => {
-                if (!response.ok) {
-                    window.Waterhole.fetchError(response);
-                } else {
-                    const text = await response.text();
-                    this.previewTarget!.hidden = false;
-                    this.previewTarget!.innerHTML = text;
-                }
-            });
-        }
+        if (!previewing) return;
+
+        this.previewTarget!.innerHTML = await Waterhole.fetch
+            .post(this.formatUrlValue, { body: this.inputTarget.value })
+            .text();
+        this.previewTarget!.hidden = false;
     }
 
     insertQuote(e: CustomEvent) {

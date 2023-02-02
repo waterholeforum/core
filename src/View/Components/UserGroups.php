@@ -15,7 +15,7 @@ class UserGroups extends Component
     {
         $this->groups = $this->user?->groups->where('is_public', true);
 
-        if (Auth::user()->can('user.edit', $user)) {
+        if (Auth::user()?->can('user.edit', $user)) {
             $this->groups?->push(...$this->user->groups->where('is_public', false));
         }
     }

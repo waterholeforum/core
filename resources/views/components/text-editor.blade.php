@@ -2,6 +2,7 @@
     data-controller="text-editor"
     data-text-editor-format-url-value="{{ route('waterhole.format') }}"
     data-text-editor-user-lookup-url-value="{{ route('waterhole.user-lookup') }}"
+    data-text-editor-upload-url-value="{{ route('waterhole.upload') }}"
     {{ $attributes->class('input text-editor stack overlay-container') }}
 >
     <ui-toolbar class="row wrap text-editor__toolbar js-only text-xxs">

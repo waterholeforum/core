@@ -20,7 +20,7 @@ class CommentFrame extends Component
     public function render()
     {
         return <<<'blade'
-            <turbo-frame id="@domid($comment)" @if ($lazy) src="{{ $comment->url }}" @endif data-controller="load-backwards" {{ $attributes }}>
+            <turbo-frame id="@domid($comment)" @if ($lazy) src="{{ $comment->url }}" @endif {{ $attributes }}>
                 @unless ($lazy)
                     <x-waterhole::comment-full :comment="$comment" :with-replies="$withReplies"/>
                 @endunless

@@ -16,32 +16,35 @@ abstract class UserMenu
 }
 
 UserMenu::add(
-    'profile',
     new MenuItem(
         icon: 'tabler-user',
         label: __('waterhole::user.profile-link'),
         href: Auth::user()->url,
     ),
+    0,
+    'profile',
 );
 
 UserMenu::add(
-    'preferences',
     new MenuItem(
         icon: 'tabler-settings',
         label: __('waterhole::user.preferences-link'),
         href: route('waterhole.preferences'),
     ),
+    0,
+    'preferences',
 );
 
-UserMenu::add('divider', MenuDivider::class);
+UserMenu::add(MenuDivider::class, 0, 'divider');
 
 if (Auth::user()->can('administrate')) {
     UserMenu::add(
-        'administration',
         new MenuItem(
             icon: 'tabler-tool',
             label: __('waterhole::user.administration-link'),
             href: route('waterhole.admin.dashboard'),
         ),
+        0,
+        'administration',
     );
 }

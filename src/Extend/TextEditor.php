@@ -12,100 +12,118 @@ class TextEditor
 }
 
 TextEditor::add(
-    'heading',
     fn(string $id) => new TextEditorButton(
-        id: $id,
         icon: 'tabler-heading',
         label: __('waterhole::system.text-editor-heading'),
+        id: $id,
         format: 'header2',
     ),
+    0,
+    'heading',
 );
 
 TextEditor::add(
-    'bold',
     fn(string $id) => new TextEditorButton(
-        id: $id,
         icon: 'tabler-bold',
         label: __('waterhole::system.text-editor-bold'),
+        id: $id,
         format: 'bold',
         hotkey: 'Meta+b',
     ),
+    0,
+    'bold',
 );
 
 TextEditor::add(
-    'italic',
     fn(string $id) => new TextEditorButton(
-        id: $id,
         icon: 'tabler-italic',
         label: __('waterhole::system.text-editor-italic'),
+        id: $id,
         format: 'italic',
         hotkey: 'Meta+i',
     ),
+    0,
+    'italic',
 );
 
 TextEditor::add(
-    'quote',
     fn(string $id) => new TextEditorButton(
-        id: $id,
         icon: 'tabler-quote',
         label: __('waterhole::system.text-editor-quote'),
+        id: $id,
         format: 'blockquote',
         hotkey: 'Meta+Shift+.',
     ),
+    0,
+    'quote',
 );
 
 TextEditor::add(
-    'code',
     fn(string $id) => new TextEditorButton(
-        id: $id,
         icon: 'tabler-code',
         label: __('waterhole::system.text-editor-code'),
+        id: $id,
         format: 'code',
         hotkey: 'Meta+e',
     ),
+    0,
+    'code',
 );
 
 TextEditor::add(
-    'link',
     fn(string $id) => new TextEditorButton(
-        id: $id,
         icon: 'tabler-link',
         label: __('waterhole::system.text-editor-link'),
+        id: $id,
         format: 'link',
         hotkey: 'Meta+k',
     ),
+    0,
+    'link',
 );
 
 TextEditor::add(
-    'bulletedList',
     fn(string $id) => new TextEditorButton(
-        id: $id,
         icon: 'tabler-list',
         label: __('waterhole::system.text-editor-bulleted-list'),
+        id: $id,
         format: 'unorderedList',
         hotkey: 'Meta+Shift+8',
     ),
+    0,
+    'bulletedList',
 );
 
 TextEditor::add(
-    'numberedList',
     fn(string $id) => new TextEditorButton(
-        id: $id,
         icon: 'tabler-list-numbers',
         label: __('waterhole::system.text-editor-numbered-list'),
+        id: $id,
         format: 'orderedList',
         hotkey: 'Meta+Shift+7',
     ),
+    0,
+    'numberedList',
 );
 
 TextEditor::add(
-    'mention',
     fn(string $id) => new TextEditorButton(
-        id: $id,
         icon: 'tabler-at',
         label: __('waterhole::system.text-editor-mention'),
+        id: $id,
         format: '{"prefix":"@"}',
     ),
+    0,
+    'mention',
 );
 
-TextEditor::add('emoji', fn() => new TextEditorEmojiButton());
+TextEditor::add(fn() => new TextEditorEmojiButton(), 0, 'emoji');
+
+TextEditor::add(
+    fn(string $id) => (new TextEditorButton(
+        icon: 'tabler-paperclip',
+        label: __('waterhole::system.text-editor-attachment'),
+    ))->withAttributes(['data-action' => 'text-editor#chooseFiles']),
+    0,
+    'attachment',
+);

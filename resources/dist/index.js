@@ -7988,11 +7988,14 @@ customElements.define('turbo-echo-stream-source', _elements_turbo_echo_stream_ta
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _github_hotkey__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @github/hotkey */ "./node_modules/@github/hotkey/dist/index.js");
 
-document.addEventListener('turbo:load', function () {
-  document.querySelectorAll('[data-hotkey]').forEach(function (el) {
+function initHotkeys(e) {
+  e.target.querySelectorAll('[data-hotkey]').forEach(function (el) {
     (0,_github_hotkey__WEBPACK_IMPORTED_MODULE_0__.install)(el);
   });
-});
+}
+document.addEventListener('DOMContentLoaded', initHotkeys);
+document.addEventListener('turbo:render', initHotkeys);
+document.addEventListener('turbo:frame-render', initHotkeys);
 
 /***/ }),
 
@@ -8090,25 +8093,51 @@ document.addEventListener('turbo:before-fetch-response', function (e) {
   }));
 });
 Waterhole.fetchError = function (response) {
-  var templateId;
-  switch (response.status) {
-    case 401:
-    case 403:
-      templateId = 'forbidden-alert';
-      break;
-    case 429:
-      templateId = 'too-many-requests-alert';
-      break;
-    default:
-      templateId = 'fatal-error-alert';
-  }
-  var alert = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.cloneFromTemplate)(templateId);
-  if (alert) {
-    this.alerts.show(alert, {
-      key: 'fetchError',
-      duration: -1
-    });
-  }
+  return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+    var templateId, alert, _alert;
+    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.t0 = response === null || response === void 0 ? void 0 : response.status;
+            _context2.next = _context2.t0 === 401 ? 3 : _context2.t0 === 403 ? 3 : _context2.t0 === 422 ? 5 : _context2.t0 === 429 ? 11 : 13;
+            break;
+          case 3:
+            templateId = 'forbidden-alert';
+            return _context2.abrupt("break", 14);
+          case 5:
+            alert = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.cloneFromTemplate)('template-alert-danger');
+            _context2.next = 8;
+            return response.json();
+          case 8:
+            alert.querySelector('.alert__message').textContent = _context2.sent.message;
+            this.alerts.show(alert, {
+              key: 'fetchError',
+              duration: -1
+            });
+            return _context2.abrupt("break", 14);
+          case 11:
+            templateId = 'too-many-requests-alert';
+            return _context2.abrupt("break", 14);
+          case 13:
+            templateId = 'fatal-error-alert';
+          case 14:
+            if (templateId) {
+              _alert = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.cloneFromTemplate)(templateId);
+              if (_alert) {
+                this.alerts.show(_alert, {
+                  key: 'fetchError',
+                  duration: -1
+                });
+              }
+            }
+          case 15:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, this);
+  }));
 };
 
 /***/ }),
@@ -9216,6 +9245,7 @@ var default_1 = /*#__PURE__*/function (_Controller) {
               case 10:
                 this.buttonTarget.hidden = false;
                 this.buttonTarget.style.position = 'absolute';
+                this.buttonTarget.style.zIndex = 'var(--z-index-overlay)';
                 // Place the quote button according to where the focus of the
                 // selection is (ie. where the selection began).
                 position = selection.anchorNode.compareDocumentPosition(selection.focusNode);
@@ -9245,7 +9275,7 @@ var default_1 = /*#__PURE__*/function (_Controller) {
                     top: "".concat(y, "px")
                   });
                 });
-              case 17:
+              case 18:
               case "end":
                 return _context.stop();
             }
@@ -9534,7 +9564,9 @@ var default_1 = /*#__PURE__*/function (_Controller) {
             provide = _event$detail.provide,
             text = _event$detail.text;
           if (text.length < 2) return;
-          provide(fetch(_this.userLookupUrlValue + "?q=".concat(encodeURIComponent(text))).then(function (response) {
+          provide(
+          // TODO: use ky
+          fetch(_this.userLookupUrlValue + "?q=".concat(encodeURIComponent(text))).then(function (response) {
             return response.json();
           }).then(function (json) {
             var listbox = document.createElement('ul');
@@ -9573,7 +9605,93 @@ var default_1 = /*#__PURE__*/function (_Controller) {
           var item = event.detail.item;
           event.detail.value = '@' + item.getAttribute('data-value').replace(/ /g, '\xa0');
         });
+        // File uploads
+        this.inputTarget.addEventListener('drop', function (e) {
+          var _a;
+          if ((_a = e.dataTransfer) === null || _a === void 0 ? void 0 : _a.files.length) {
+            e.preventDefault();
+            Array.from(e.dataTransfer.files).forEach(function (file) {
+              return _this.uploadFile(file);
+            });
+          }
+        });
+        this.inputTarget.addEventListener('paste', function (e) {
+          var _a;
+          if ((_a = e.clipboardData) === null || _a === void 0 ? void 0 : _a.files.length) {
+            e.preventDefault();
+            Array.from(e.clipboardData.files).forEach(function (file) {
+              return _this.uploadFile(file);
+            });
+          }
+        });
       }
+    }
+  }, {
+    key: "chooseFiles",
+    value: function chooseFiles() {
+      var _this2 = this;
+      var input = document.createElement('input');
+      input.type = 'file';
+      input.multiple = true;
+      input.hidden = true;
+      document.body.appendChild(input);
+      input.addEventListener('change', function () {
+        if (input.files) {
+          Array.from(input.files).forEach(function (file) {
+            return _this2.uploadFile(file);
+          });
+        }
+      });
+      input.click();
+      input.remove();
+    }
+  }, {
+    key: "uploadFile",
+    value: function uploadFile(file) {
+      var _a;
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        var prefix, placeholder, replacement, body, data, start, delta, range;
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                prefix = file.type.startsWith('image/') ? '!' : '';
+                placeholder = "".concat(prefix, "[Uploading ").concat(file.name, "]()\n");
+                replacement = '';
+                (_a = this.editor) === null || _a === void 0 ? void 0 : _a.insert(placeholder);
+                body = new FormData();
+                body.append('file', file);
+                _context.prev = 6;
+                _context.next = 9;
+                return Waterhole.fetch.post(this.uploadUrlValue, {
+                  body: body
+                }).json();
+              case 9:
+                data = _context.sent;
+                replacement = "".concat(prefix, "[").concat(file.name, "](").concat(data.url, ")\n");
+                _context.next = 15;
+                break;
+              case 13:
+                _context.prev = 13;
+                _context.t0 = _context["catch"](6);
+              case 15:
+                start = this.inputTarget.value.indexOf(placeholder);
+                if (!(start === -1 || !this.editor)) {
+                  _context.next = 18;
+                  break;
+                }
+                return _context.abrupt("return");
+              case 18:
+                delta = replacement.length - placeholder.length;
+                range = this.editor.range();
+                this.editor.range([start, start + placeholder.length]).insert(replacement).range([range[0] + delta, range[1] + delta]);
+              case 21:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this, [[6, 13]]);
+      }));
     }
   }, {
     key: "hotkeyLabelTargetConnected",
@@ -9597,49 +9715,45 @@ var default_1 = /*#__PURE__*/function (_Controller) {
   }, {
     key: "togglePreview",
     value: function togglePreview() {
-      var _this2 = this;
       var _a;
-      if (!this.inputTarget || !this.previewTarget) return;
-      var previewing = !this.inputTarget.hidden;
-      this.inputTarget.hidden = previewing;
-      this.previewTarget.hidden = !previewing;
-      this.previewTarget.replaceChildren((0,_utils__WEBPACK_IMPORTED_MODULE_3__.cloneFromTemplate)('loading'));
-      (_a = this.previewButtonTarget) === null || _a === void 0 ? void 0 : _a.setAttribute('aria-pressed', String(previewing));
-      this.element.classList.toggle('is-previewing', previewing);
-      if (previewing) {
-        fetch(this.formatUrlValue, {
-          method: 'POST',
-          body: this.inputTarget.value
-        }).then(function (response) {
-          return __awaiter(_this2, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-            var text;
-            return _regeneratorRuntime().wrap(function _callee$(_context) {
-              while (1) {
-                switch (_context.prev = _context.next) {
-                  case 0:
-                    if (response.ok) {
-                      _context.next = 4;
-                      break;
-                    }
-                    window.Waterhole.fetchError(response);
-                    _context.next = 9;
-                    break;
-                  case 4:
-                    _context.next = 6;
-                    return response.text();
-                  case 6:
-                    text = _context.sent;
-                    this.previewTarget.hidden = false;
-                    this.previewTarget.innerHTML = text;
-                  case 9:
-                  case "end":
-                    return _context.stop();
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        var previewing;
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                if (!(!this.inputTarget || !this.previewTarget)) {
+                  _context2.next = 2;
+                  break;
                 }
-              }
-            }, _callee, this);
-          }));
-        });
-      }
+                return _context2.abrupt("return");
+              case 2:
+                previewing = !this.inputTarget.hidden;
+                this.inputTarget.hidden = previewing;
+                this.previewTarget.hidden = !previewing;
+                this.previewTarget.replaceChildren((0,_utils__WEBPACK_IMPORTED_MODULE_3__.cloneFromTemplate)('loading'));
+                (_a = this.previewButtonTarget) === null || _a === void 0 ? void 0 : _a.setAttribute('aria-pressed', String(previewing));
+                this.element.classList.toggle('is-previewing', previewing);
+                if (previewing) {
+                  _context2.next = 10;
+                  break;
+                }
+                return _context2.abrupt("return");
+              case 10:
+                _context2.next = 12;
+                return Waterhole.fetch.post(this.formatUrlValue, {
+                  body: this.inputTarget.value
+                }).text();
+              case 12:
+                this.previewTarget.innerHTML = _context2.sent;
+                this.previewTarget.hidden = false;
+              case 14:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
     }
   }, {
     key: "insertQuote",
@@ -9665,7 +9779,8 @@ var default_1 = /*#__PURE__*/function (_Controller) {
 default_1.targets = ['input', 'preview', 'previewButton', 'expander', 'hotkeyLabel', 'emojiPicker'];
 default_1.values = {
   formatUrl: String,
-  userLookupUrl: String
+  userLookupUrl: String,
+  uploadUrl: String
 };
 
 /***/ }),
@@ -10009,12 +10124,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _github_time_elements__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @github/time-elements */ "./node_modules/@github/time-elements/dist/index.js");
 /* harmony import */ var _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @hotwired/stimulus */ "./node_modules/@hotwired/stimulus/dist/stimulus.js");
 /* harmony import */ var _hotwired_stimulus_webpack_helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @hotwired/stimulus-webpack-helpers */ "./node_modules/@hotwired/stimulus-webpack-helpers/dist/stimulus-webpack-helpers.js");
+/* harmony import */ var ky__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ky */ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/index.js");
 /* harmony import */ var _bootstrap_custom_elements__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./bootstrap/custom-elements */ "./resources/js/bootstrap/custom-elements.ts");
 /* harmony import */ var _bootstrap_document_title__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./bootstrap/document-title */ "./resources/js/bootstrap/document-title.ts");
 /* harmony import */ var _bootstrap_document_title__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_bootstrap_document_title__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _bootstrap_echo__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./bootstrap/echo */ "./resources/js/bootstrap/echo.ts");
 /* harmony import */ var _bootstrap_hotkeys__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./bootstrap/hotkeys */ "./resources/js/bootstrap/hotkeys.ts");
 /* harmony import */ var _bootstrap_turbo__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./bootstrap/turbo */ "./resources/js/bootstrap/turbo.ts");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./utils */ "./resources/js/utils.ts");
+
+
 
 
 
@@ -10030,6 +10149,17 @@ Object.defineProperty(Waterhole, 'alerts', {
 });
 window.Stimulus = _hotwired_stimulus__WEBPACK_IMPORTED_MODULE_1__.Application.start();
 window.Stimulus.load((0,_hotwired_stimulus_webpack_helpers__WEBPACK_IMPORTED_MODULE_2__.definitionsFromContext)(__webpack_require__("./resources/js/controllers sync recursive \\.ts$")));
+Waterhole.fetch = ky__WEBPACK_IMPORTED_MODULE_9__["default"].create({
+  headers: {
+    'X-XSRF-TOKEN': (0,_utils__WEBPACK_IMPORTED_MODULE_8__.getCookie)('XSRF-TOKEN') || undefined
+  },
+  hooks: {
+    beforeError: [function (error) {
+      Waterhole.fetchError(error.response);
+      return error;
+    }]
+  }
+});
 
 /***/ }),
 
@@ -10043,6 +10173,7 @@ window.Stimulus.load((0,_hotwired_stimulus_webpack_helpers__WEBPACK_IMPORTED_MOD
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "cloneFromTemplate": () => (/* binding */ cloneFromTemplate),
+/* harmony export */   "getCookie": () => (/* binding */ getCookie),
 /* harmony export */   "getHeaderHeight": () => (/* binding */ getHeaderHeight),
 /* harmony export */   "isElementInViewport": () => (/* binding */ isElementInViewport),
 /* harmony export */   "shouldOpenInNewTab": () => (/* binding */ shouldOpenInNewTab),
@@ -10083,6 +10214,13 @@ function cloneFromTemplate(id) {
   var _a, _b;
   var template = document.getElementById(id);
   return (_b = (_a = template === null || template === void 0 ? void 0 : template.content) === null || _a === void 0 ? void 0 : _a.firstElementChild) === null || _b === void 0 ? void 0 : _b.cloneNode(true);
+}
+/**
+ * Get a cookie by name.
+ */
+function getCookie(name) {
+  var match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
+  return match ? decodeURIComponent(match[3]) : null;
 }
 
 /***/ }),
@@ -19950,6 +20088,734 @@ const computePosition = (reference, floating, options) => (0,_floating_ui_core__
 
 
 
+
+/***/ }),
+
+/***/ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/core/Ky.js":
+/*!**********************************************************************************!*\
+  !*** ../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/core/Ky.js ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Ky": () => (/* binding */ Ky)
+/* harmony export */ });
+/* harmony import */ var _errors_HTTPError_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../errors/HTTPError.js */ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/errors/HTTPError.js");
+/* harmony import */ var _errors_TimeoutError_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../errors/TimeoutError.js */ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/errors/TimeoutError.js");
+/* harmony import */ var _utils_merge_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/merge.js */ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/utils/merge.js");
+/* harmony import */ var _utils_normalize_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/normalize.js */ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/utils/normalize.js");
+/* harmony import */ var _utils_timeout_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/timeout.js */ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/utils/timeout.js");
+/* harmony import */ var _utils_delay_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/delay.js */ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/utils/delay.js");
+/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants.js */ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/core/constants.js");
+
+
+
+
+
+
+
+class Ky {
+    // eslint-disable-next-line @typescript-eslint/promise-function-async
+    static create(input, options) {
+        const ky = new Ky(input, options);
+        const fn = async () => {
+            if (ky._options.timeout > _constants_js__WEBPACK_IMPORTED_MODULE_0__.maxSafeTimeout) {
+                throw new RangeError(`The \`timeout\` option cannot be greater than ${_constants_js__WEBPACK_IMPORTED_MODULE_0__.maxSafeTimeout}`);
+            }
+            // Delay the fetch so that body method shortcuts can set the Accept header
+            await Promise.resolve();
+            let response = await ky._fetch();
+            for (const hook of ky._options.hooks.afterResponse) {
+                // eslint-disable-next-line no-await-in-loop
+                const modifiedResponse = await hook(ky.request, ky._options, ky._decorateResponse(response.clone()));
+                if (modifiedResponse instanceof globalThis.Response) {
+                    response = modifiedResponse;
+                }
+            }
+            ky._decorateResponse(response);
+            if (!response.ok && ky._options.throwHttpErrors) {
+                let error = new _errors_HTTPError_js__WEBPACK_IMPORTED_MODULE_1__.HTTPError(response, ky.request, ky._options);
+                for (const hook of ky._options.hooks.beforeError) {
+                    // eslint-disable-next-line no-await-in-loop
+                    error = await hook(error);
+                }
+                throw error;
+            }
+            // If `onDownloadProgress` is passed, it uses the stream API internally
+            /* istanbul ignore next */
+            if (ky._options.onDownloadProgress) {
+                if (typeof ky._options.onDownloadProgress !== 'function') {
+                    throw new TypeError('The `onDownloadProgress` option must be a function');
+                }
+                if (!_constants_js__WEBPACK_IMPORTED_MODULE_0__.supportsResponseStreams) {
+                    throw new Error('Streams are not supported in your environment. `ReadableStream` is missing.');
+                }
+                return ky._stream(response.clone(), ky._options.onDownloadProgress);
+            }
+            return response;
+        };
+        const isRetriableMethod = ky._options.retry.methods.includes(ky.request.method.toLowerCase());
+        const result = (isRetriableMethod ? ky._retry(fn) : fn());
+        for (const [type, mimeType] of Object.entries(_constants_js__WEBPACK_IMPORTED_MODULE_0__.responseTypes)) {
+            result[type] = async () => {
+                // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+                ky.request.headers.set('accept', ky.request.headers.get('accept') || mimeType);
+                const awaitedResult = await result;
+                const response = awaitedResult.clone();
+                if (type === 'json') {
+                    if (response.status === 204) {
+                        return '';
+                    }
+                    const arrayBuffer = await response.clone().arrayBuffer();
+                    const responseSize = arrayBuffer.byteLength;
+                    if (responseSize === 0) {
+                        return '';
+                    }
+                    if (options.parseJson) {
+                        return options.parseJson(await response.text());
+                    }
+                }
+                return response[type]();
+            };
+        }
+        return result;
+    }
+    // eslint-disable-next-line complexity
+    constructor(input, options = {}) {
+        Object.defineProperty(this, "request", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "abortController", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "_retryCount", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: 0
+        });
+        Object.defineProperty(this, "_input", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "_options", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        this._input = input;
+        this._options = {
+            // TODO: credentials can be removed when the spec change is implemented in all browsers. Context: https://www.chromestatus.com/feature/4539473312350208
+            credentials: this._input.credentials || 'same-origin',
+            ...options,
+            headers: (0,_utils_merge_js__WEBPACK_IMPORTED_MODULE_2__.mergeHeaders)(this._input.headers, options.headers),
+            hooks: (0,_utils_merge_js__WEBPACK_IMPORTED_MODULE_2__.deepMerge)({
+                beforeRequest: [],
+                beforeRetry: [],
+                beforeError: [],
+                afterResponse: [],
+            }, options.hooks),
+            method: (0,_utils_normalize_js__WEBPACK_IMPORTED_MODULE_3__.normalizeRequestMethod)(options.method ?? this._input.method),
+            // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+            prefixUrl: String(options.prefixUrl || ''),
+            retry: (0,_utils_normalize_js__WEBPACK_IMPORTED_MODULE_3__.normalizeRetryOptions)(options.retry),
+            throwHttpErrors: options.throwHttpErrors !== false,
+            timeout: typeof options.timeout === 'undefined' ? 10000 : options.timeout,
+            fetch: options.fetch ?? globalThis.fetch.bind(globalThis),
+        };
+        if (typeof this._input !== 'string' && !(this._input instanceof URL || this._input instanceof globalThis.Request)) {
+            throw new TypeError('`input` must be a string, URL, or Request');
+        }
+        if (this._options.prefixUrl && typeof this._input === 'string') {
+            if (this._input.startsWith('/')) {
+                throw new Error('`input` must not begin with a slash when using `prefixUrl`');
+            }
+            if (!this._options.prefixUrl.endsWith('/')) {
+                this._options.prefixUrl += '/';
+            }
+            this._input = this._options.prefixUrl + this._input;
+        }
+        if (_constants_js__WEBPACK_IMPORTED_MODULE_0__.supportsAbortController) {
+            this.abortController = new globalThis.AbortController();
+            if (this._options.signal) {
+                const originalSignal = this._options.signal;
+                this._options.signal.addEventListener('abort', () => {
+                    this.abortController.abort(originalSignal.reason);
+                });
+            }
+            this._options.signal = this.abortController.signal;
+        }
+        if (_constants_js__WEBPACK_IMPORTED_MODULE_0__.supportsRequestStreams) {
+            // @ts-expect-error - Types are outdated.
+            this._options.duplex = 'half';
+        }
+        this.request = new globalThis.Request(this._input, this._options);
+        if (this._options.searchParams) {
+            // eslint-disable-next-line unicorn/prevent-abbreviations
+            const textSearchParams = typeof this._options.searchParams === 'string'
+                ? this._options.searchParams.replace(/^\?/, '')
+                : new URLSearchParams(this._options.searchParams).toString();
+            // eslint-disable-next-line unicorn/prevent-abbreviations
+            const searchParams = '?' + textSearchParams;
+            const url = this.request.url.replace(/(?:\?.*?)?(?=#|$)/, searchParams);
+            // To provide correct form boundary, Content-Type header should be deleted each time when new Request instantiated from another one
+            if (((_constants_js__WEBPACK_IMPORTED_MODULE_0__.supportsFormData && this._options.body instanceof globalThis.FormData)
+                || this._options.body instanceof URLSearchParams) && !(this._options.headers && this._options.headers['content-type'])) {
+                this.request.headers.delete('content-type');
+            }
+            // The spread of `this.request` is required as otherwise it misses the `duplex` option for some reason and throws.
+            this.request = new globalThis.Request(new globalThis.Request(url, { ...this.request }), this._options);
+        }
+        if (this._options.json !== undefined) {
+            this._options.body = JSON.stringify(this._options.json);
+            this.request.headers.set('content-type', this._options.headers.get('content-type') ?? 'application/json');
+            this.request = new globalThis.Request(this.request, { body: this._options.body });
+        }
+    }
+    _calculateRetryDelay(error) {
+        this._retryCount++;
+        if (this._retryCount < this._options.retry.limit && !(error instanceof _errors_TimeoutError_js__WEBPACK_IMPORTED_MODULE_4__.TimeoutError)) {
+            if (error instanceof _errors_HTTPError_js__WEBPACK_IMPORTED_MODULE_1__.HTTPError) {
+                if (!this._options.retry.statusCodes.includes(error.response.status)) {
+                    return 0;
+                }
+                const retryAfter = error.response.headers.get('Retry-After');
+                if (retryAfter && this._options.retry.afterStatusCodes.includes(error.response.status)) {
+                    let after = Number(retryAfter);
+                    if (Number.isNaN(after)) {
+                        after = Date.parse(retryAfter) - Date.now();
+                    }
+                    else {
+                        after *= 1000;
+                    }
+                    if (typeof this._options.retry.maxRetryAfter !== 'undefined' && after > this._options.retry.maxRetryAfter) {
+                        return 0;
+                    }
+                    return after;
+                }
+                if (error.response.status === 413) {
+                    return 0;
+                }
+            }
+            const BACKOFF_FACTOR = 0.3;
+            return Math.min(this._options.retry.backoffLimit, BACKOFF_FACTOR * (2 ** (this._retryCount - 1)) * 1000);
+        }
+        return 0;
+    }
+    _decorateResponse(response) {
+        if (this._options.parseJson) {
+            response.json = async () => this._options.parseJson(await response.text());
+        }
+        return response;
+    }
+    async _retry(fn) {
+        try {
+            return await fn();
+            // eslint-disable-next-line @typescript-eslint/no-implicit-any-catch
+        }
+        catch (error) {
+            const ms = Math.min(this._calculateRetryDelay(error), _constants_js__WEBPACK_IMPORTED_MODULE_0__.maxSafeTimeout);
+            if (ms !== 0 && this._retryCount > 0) {
+                await (0,_utils_delay_js__WEBPACK_IMPORTED_MODULE_5__["default"])(ms, { signal: this._options.signal });
+                for (const hook of this._options.hooks.beforeRetry) {
+                    // eslint-disable-next-line no-await-in-loop
+                    const hookResult = await hook({
+                        request: this.request,
+                        options: this._options,
+                        error: error,
+                        retryCount: this._retryCount,
+                    });
+                    // If `stop` is returned from the hook, the retry process is stopped
+                    if (hookResult === _constants_js__WEBPACK_IMPORTED_MODULE_0__.stop) {
+                        return;
+                    }
+                }
+                return this._retry(fn);
+            }
+            throw error;
+        }
+    }
+    async _fetch() {
+        for (const hook of this._options.hooks.beforeRequest) {
+            // eslint-disable-next-line no-await-in-loop
+            const result = await hook(this.request, this._options);
+            if (result instanceof Request) {
+                this.request = result;
+                break;
+            }
+            if (result instanceof Response) {
+                return result;
+            }
+        }
+        if (this._options.timeout === false) {
+            return this._options.fetch(this.request.clone());
+        }
+        return (0,_utils_timeout_js__WEBPACK_IMPORTED_MODULE_6__["default"])(this.request.clone(), this.abortController, this._options);
+    }
+    /* istanbul ignore next */
+    _stream(response, onDownloadProgress) {
+        const totalBytes = Number(response.headers.get('content-length')) || 0;
+        let transferredBytes = 0;
+        if (response.status === 204) {
+            if (onDownloadProgress) {
+                onDownloadProgress({ percent: 1, totalBytes, transferredBytes }, new Uint8Array());
+            }
+            return new globalThis.Response(null, {
+                status: response.status,
+                statusText: response.statusText,
+                headers: response.headers,
+            });
+        }
+        return new globalThis.Response(new globalThis.ReadableStream({
+            async start(controller) {
+                const reader = response.body.getReader();
+                if (onDownloadProgress) {
+                    onDownloadProgress({ percent: 0, transferredBytes: 0, totalBytes }, new Uint8Array());
+                }
+                async function read() {
+                    const { done, value } = await reader.read();
+                    if (done) {
+                        controller.close();
+                        return;
+                    }
+                    if (onDownloadProgress) {
+                        transferredBytes += value.byteLength;
+                        const percent = totalBytes === 0 ? 0 : transferredBytes / totalBytes;
+                        onDownloadProgress({ percent, transferredBytes, totalBytes }, value);
+                    }
+                    controller.enqueue(value);
+                    await read();
+                }
+                await read();
+            },
+        }), {
+            status: response.status,
+            statusText: response.statusText,
+            headers: response.headers,
+        });
+    }
+}
+//# sourceMappingURL=Ky.js.map
+
+/***/ }),
+
+/***/ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/core/constants.js":
+/*!*****************************************************************************************!*\
+  !*** ../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/core/constants.js ***!
+  \*****************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "maxSafeTimeout": () => (/* binding */ maxSafeTimeout),
+/* harmony export */   "requestMethods": () => (/* binding */ requestMethods),
+/* harmony export */   "responseTypes": () => (/* binding */ responseTypes),
+/* harmony export */   "stop": () => (/* binding */ stop),
+/* harmony export */   "supportsAbortController": () => (/* binding */ supportsAbortController),
+/* harmony export */   "supportsFormData": () => (/* binding */ supportsFormData),
+/* harmony export */   "supportsRequestStreams": () => (/* binding */ supportsRequestStreams),
+/* harmony export */   "supportsResponseStreams": () => (/* binding */ supportsResponseStreams)
+/* harmony export */ });
+const supportsRequestStreams = (() => {
+    let duplexAccessed = false;
+    let hasContentType = false;
+    const supportsReadableStream = typeof globalThis.ReadableStream === 'function';
+    if (supportsReadableStream) {
+        hasContentType = new globalThis.Request('https://a.com', {
+            body: new globalThis.ReadableStream(),
+            method: 'POST',
+            // @ts-expect-error - Types are outdated.
+            get duplex() {
+                duplexAccessed = true;
+                return 'half';
+            },
+        }).headers.has('Content-Type');
+    }
+    return duplexAccessed && !hasContentType;
+})();
+const supportsAbortController = typeof globalThis.AbortController === 'function';
+const supportsResponseStreams = typeof globalThis.ReadableStream === 'function';
+const supportsFormData = typeof globalThis.FormData === 'function';
+const requestMethods = ['get', 'post', 'put', 'patch', 'head', 'delete'];
+const validate = () => undefined;
+validate();
+const responseTypes = {
+    json: 'application/json',
+    text: 'text/*',
+    formData: 'multipart/form-data',
+    arrayBuffer: '*/*',
+    blob: '*/*',
+};
+// The maximum value of a 32bit int (see issue #117)
+const maxSafeTimeout = 2147483647;
+const stop = Symbol('stop');
+//# sourceMappingURL=constants.js.map
+
+/***/ }),
+
+/***/ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/errors/DOMException.js":
+/*!**********************************************************************************************!*\
+  !*** ../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/errors/DOMException.js ***!
+  \**********************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "composeAbortError": () => (/* binding */ composeAbortError)
+/* harmony export */ });
+// DOMException is supported on most modern browsers and Node.js 18+.
+// @see https://developer.mozilla.org/en-US/docs/Web/API/DOMException#browser_compatibility
+const isDomExceptionSupported = Boolean(globalThis.DOMException);
+// TODO: When targeting Node.js 18, use `signal.throwIfAborted()` (https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal/throwIfAborted)
+function composeAbortError(signal) {
+    /*
+    NOTE: Use DomException with AbortError name as specified in MDN docs (https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort)
+    > When abort() is called, the fetch() promise rejects with an Error of type DOMException, with name AbortError.
+    */
+    if (isDomExceptionSupported) {
+        return new DOMException(signal?.reason ?? 'The operation was aborted.', 'AbortError');
+    }
+    // DOMException not supported. Fall back to use of error and override name.
+    const error = new Error(signal?.reason ?? 'The operation was aborted.');
+    error.name = 'AbortError';
+    return error;
+}
+//# sourceMappingURL=DOMException.js.map
+
+/***/ }),
+
+/***/ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/errors/HTTPError.js":
+/*!*******************************************************************************************!*\
+  !*** ../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/errors/HTTPError.js ***!
+  \*******************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "HTTPError": () => (/* binding */ HTTPError)
+/* harmony export */ });
+// eslint-lint-disable-next-line @typescript-eslint/naming-convention
+class HTTPError extends Error {
+    constructor(response, request, options) {
+        const code = (response.status || response.status === 0) ? response.status : '';
+        const title = response.statusText || '';
+        const status = `${code} ${title}`.trim();
+        const reason = status ? `status code ${status}` : 'an unknown error';
+        super(`Request failed with ${reason}`);
+        Object.defineProperty(this, "response", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "request", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "options", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        this.name = 'HTTPError';
+        this.response = response;
+        this.request = request;
+        this.options = options;
+    }
+}
+//# sourceMappingURL=HTTPError.js.map
+
+/***/ }),
+
+/***/ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/errors/TimeoutError.js":
+/*!**********************************************************************************************!*\
+  !*** ../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/errors/TimeoutError.js ***!
+  \**********************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TimeoutError": () => (/* binding */ TimeoutError)
+/* harmony export */ });
+class TimeoutError extends Error {
+    constructor(request) {
+        super('Request timed out');
+        Object.defineProperty(this, "request", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        this.name = 'TimeoutError';
+        this.request = request;
+    }
+}
+//# sourceMappingURL=TimeoutError.js.map
+
+/***/ }),
+
+/***/ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/index.js":
+/*!********************************************************************************!*\
+  !*** ../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/index.js ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "HTTPError": () => (/* reexport safe */ _errors_HTTPError_js__WEBPACK_IMPORTED_MODULE_3__.HTTPError),
+/* harmony export */   "TimeoutError": () => (/* reexport safe */ _errors_TimeoutError_js__WEBPACK_IMPORTED_MODULE_4__.TimeoutError),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _core_Ky_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./core/Ky.js */ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/core/Ky.js");
+/* harmony import */ var _core_constants_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./core/constants.js */ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/core/constants.js");
+/* harmony import */ var _utils_merge_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils/merge.js */ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/utils/merge.js");
+/* harmony import */ var _errors_HTTPError_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./errors/HTTPError.js */ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/errors/HTTPError.js");
+/* harmony import */ var _errors_TimeoutError_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./errors/TimeoutError.js */ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/errors/TimeoutError.js");
+/*! MIT License © Sindre Sorhus */
+
+
+
+const createInstance = (defaults) => {
+    // eslint-disable-next-line @typescript-eslint/promise-function-async
+    const ky = (input, options) => _core_Ky_js__WEBPACK_IMPORTED_MODULE_0__.Ky.create(input, (0,_utils_merge_js__WEBPACK_IMPORTED_MODULE_1__.validateAndMerge)(defaults, options));
+    for (const method of _core_constants_js__WEBPACK_IMPORTED_MODULE_2__.requestMethods) {
+        // eslint-disable-next-line @typescript-eslint/promise-function-async
+        ky[method] = (input, options) => _core_Ky_js__WEBPACK_IMPORTED_MODULE_0__.Ky.create(input, (0,_utils_merge_js__WEBPACK_IMPORTED_MODULE_1__.validateAndMerge)(defaults, options, { method }));
+    }
+    ky.create = (newDefaults) => createInstance((0,_utils_merge_js__WEBPACK_IMPORTED_MODULE_1__.validateAndMerge)(newDefaults));
+    ky.extend = (newDefaults) => createInstance((0,_utils_merge_js__WEBPACK_IMPORTED_MODULE_1__.validateAndMerge)(defaults, newDefaults));
+    ky.stop = _core_constants_js__WEBPACK_IMPORTED_MODULE_2__.stop;
+    return ky;
+};
+const ky = createInstance();
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ky);
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/utils/delay.js":
+/*!**************************************************************************************!*\
+  !*** ../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/utils/delay.js ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ delay)
+/* harmony export */ });
+/* harmony import */ var _errors_DOMException_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../errors/DOMException.js */ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/errors/DOMException.js");
+// https://github.com/sindresorhus/delay/tree/ab98ae8dfcb38e1593286c94d934e70d14a4e111
+
+async function delay(ms, { signal }) {
+    return new Promise((resolve, reject) => {
+        if (signal) {
+            if (signal.aborted) {
+                reject((0,_errors_DOMException_js__WEBPACK_IMPORTED_MODULE_0__.composeAbortError)(signal));
+                return;
+            }
+            signal.addEventListener('abort', handleAbort, { once: true });
+        }
+        function handleAbort() {
+            reject((0,_errors_DOMException_js__WEBPACK_IMPORTED_MODULE_0__.composeAbortError)(signal));
+            clearTimeout(timeoutId);
+        }
+        const timeoutId = setTimeout(() => {
+            signal?.removeEventListener('abort', handleAbort);
+            resolve();
+        }, ms);
+    });
+}
+//# sourceMappingURL=delay.js.map
+
+/***/ }),
+
+/***/ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/utils/is.js":
+/*!***********************************************************************************!*\
+  !*** ../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/utils/is.js ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "isObject": () => (/* binding */ isObject)
+/* harmony export */ });
+// eslint-disable-next-line @typescript-eslint/ban-types
+const isObject = (value) => value !== null && typeof value === 'object';
+//# sourceMappingURL=is.js.map
+
+/***/ }),
+
+/***/ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/utils/merge.js":
+/*!**************************************************************************************!*\
+  !*** ../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/utils/merge.js ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "deepMerge": () => (/* binding */ deepMerge),
+/* harmony export */   "mergeHeaders": () => (/* binding */ mergeHeaders),
+/* harmony export */   "validateAndMerge": () => (/* binding */ validateAndMerge)
+/* harmony export */ });
+/* harmony import */ var _is_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./is.js */ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/utils/is.js");
+
+const validateAndMerge = (...sources) => {
+    for (const source of sources) {
+        if ((!(0,_is_js__WEBPACK_IMPORTED_MODULE_0__.isObject)(source) || Array.isArray(source)) && typeof source !== 'undefined') {
+            throw new TypeError('The `options` argument must be an object');
+        }
+    }
+    return deepMerge({}, ...sources);
+};
+const mergeHeaders = (source1 = {}, source2 = {}) => {
+    const result = new globalThis.Headers(source1);
+    const isHeadersInstance = source2 instanceof globalThis.Headers;
+    const source = new globalThis.Headers(source2);
+    for (const [key, value] of source.entries()) {
+        if ((isHeadersInstance && value === 'undefined') || value === undefined) {
+            result.delete(key);
+        }
+        else {
+            result.set(key, value);
+        }
+    }
+    return result;
+};
+// TODO: Make this strongly-typed (no `any`).
+const deepMerge = (...sources) => {
+    let returnValue = {};
+    let headers = {};
+    for (const source of sources) {
+        if (Array.isArray(source)) {
+            if (!Array.isArray(returnValue)) {
+                returnValue = [];
+            }
+            returnValue = [...returnValue, ...source];
+        }
+        else if ((0,_is_js__WEBPACK_IMPORTED_MODULE_0__.isObject)(source)) {
+            for (let [key, value] of Object.entries(source)) {
+                if ((0,_is_js__WEBPACK_IMPORTED_MODULE_0__.isObject)(value) && key in returnValue) {
+                    value = deepMerge(returnValue[key], value);
+                }
+                returnValue = { ...returnValue, [key]: value };
+            }
+            if ((0,_is_js__WEBPACK_IMPORTED_MODULE_0__.isObject)(source.headers)) {
+                headers = mergeHeaders(headers, source.headers);
+                returnValue.headers = headers;
+            }
+        }
+    }
+    return returnValue;
+};
+//# sourceMappingURL=merge.js.map
+
+/***/ }),
+
+/***/ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/utils/normalize.js":
+/*!******************************************************************************************!*\
+  !*** ../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/utils/normalize.js ***!
+  \******************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "normalizeRequestMethod": () => (/* binding */ normalizeRequestMethod),
+/* harmony export */   "normalizeRetryOptions": () => (/* binding */ normalizeRetryOptions)
+/* harmony export */ });
+/* harmony import */ var _core_constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/constants.js */ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/core/constants.js");
+
+const normalizeRequestMethod = (input) => _core_constants_js__WEBPACK_IMPORTED_MODULE_0__.requestMethods.includes(input) ? input.toUpperCase() : input;
+const retryMethods = ['get', 'put', 'head', 'delete', 'options', 'trace'];
+const retryStatusCodes = [408, 413, 429, 500, 502, 503, 504];
+const retryAfterStatusCodes = [413, 429, 503];
+const defaultRetryOptions = {
+    limit: 2,
+    methods: retryMethods,
+    statusCodes: retryStatusCodes,
+    afterStatusCodes: retryAfterStatusCodes,
+    maxRetryAfter: Number.POSITIVE_INFINITY,
+    backoffLimit: Number.POSITIVE_INFINITY,
+};
+const normalizeRetryOptions = (retry = {}) => {
+    if (typeof retry === 'number') {
+        return {
+            ...defaultRetryOptions,
+            limit: retry,
+        };
+    }
+    if (retry.methods && !Array.isArray(retry.methods)) {
+        throw new Error('retry.methods must be an array');
+    }
+    if (retry.statusCodes && !Array.isArray(retry.statusCodes)) {
+        throw new Error('retry.statusCodes must be an array');
+    }
+    return {
+        ...defaultRetryOptions,
+        ...retry,
+        afterStatusCodes: retryAfterStatusCodes,
+    };
+};
+//# sourceMappingURL=normalize.js.map
+
+/***/ }),
+
+/***/ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/utils/timeout.js":
+/*!****************************************************************************************!*\
+  !*** ../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/utils/timeout.js ***!
+  \****************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ timeout)
+/* harmony export */ });
+/* harmony import */ var _errors_TimeoutError_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../errors/TimeoutError.js */ "../../node_modules/.pnpm/ky@0.33.2/node_modules/ky/distribution/errors/TimeoutError.js");
+
+// `Promise.race()` workaround (#91)
+async function timeout(request, abortController, options) {
+    return new Promise((resolve, reject) => {
+        const timeoutId = setTimeout(() => {
+            if (abortController) {
+                abortController.abort();
+            }
+            reject(new _errors_TimeoutError_js__WEBPACK_IMPORTED_MODULE_0__.TimeoutError(request));
+        }, options.timeout);
+        void options
+            .fetch(request)
+            .then(resolve)
+            .catch(reject)
+            .then(() => {
+            clearTimeout(timeoutId);
+        });
+    });
+}
+//# sourceMappingURL=timeout.js.map
 
 /***/ }),
 

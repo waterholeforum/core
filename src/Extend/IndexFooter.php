@@ -13,4 +13,4 @@ abstract class IndexFooter
     use OrderedList;
 }
 
-IndexFooter::add('language', IndexFooterLanguage::class);
+IndexFooter::add(IndexFooterLanguage::class, 0, 'language');

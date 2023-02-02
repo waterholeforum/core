@@ -2987,6 +2987,7 @@ default_1.values = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "cloneFromTemplate": () => (/* binding */ cloneFromTemplate),
+/* harmony export */   "getCookie": () => (/* binding */ getCookie),
 /* harmony export */   "getHeaderHeight": () => (/* binding */ getHeaderHeight),
 /* harmony export */   "isElementInViewport": () => (/* binding */ isElementInViewport),
 /* harmony export */   "shouldOpenInNewTab": () => (/* binding */ shouldOpenInNewTab),
@@ -3027,6 +3028,13 @@ function cloneFromTemplate(id) {
   var _a, _b;
   var template = document.getElementById(id);
   return (_b = (_a = template === null || template === void 0 ? void 0 : template.content) === null || _a === void 0 ? void 0 : _a.firstElementChild) === null || _b === void 0 ? void 0 : _b.cloneNode(true);
+}
+/**
+ * Get a cookie by name.
+ */
+function getCookie(name) {
+  var match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
+  return match ? decodeURIComponent(match[3]) : null;
 }
 
 /***/ }),

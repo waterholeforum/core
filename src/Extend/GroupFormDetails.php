@@ -12,5 +12,5 @@ abstract class GroupFormDetails
     use OrderedList, OfComponents;
 }
 
-GroupFormDetails::add('name', GroupName::class);
-GroupFormDetails::add('appearance', GroupAppearance::class);
+GroupFormDetails::add(GroupName::class, 0, 'name');
+GroupFormDetails::add(GroupAppearance::class, 0, 'appearance');

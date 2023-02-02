@@ -14,7 +14,7 @@ abstract class PageFormDetails
     use OrderedList, OfComponents;
 }
 
-PageFormDetails::add('name', PageName::class);
-PageFormDetails::add('slug', PageSlug::class);
-PageFormDetails::add('icon', Icon::class);
-PageFormDetails::add('body', PageBody::class);
+PageFormDetails::add(PageName::class, 0, 'name');
+PageFormDetails::add(PageSlug::class, 0, 'slug');
+PageFormDetails::add(Icon::class, 0, 'icon');
+PageFormDetails::add(PageBody::class, 0, 'body');

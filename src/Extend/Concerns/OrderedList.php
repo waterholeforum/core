@@ -9,7 +9,7 @@ trait OrderedList
     /**
      * Add an item to the list.
      */
-    public static function add(string $key, $content = null, int $position = 0): void
+    public static function add($content = null, int $position = 0, ?string $key = null): void
     {
         static::$items[$key] = compact('content', 'position');
     }

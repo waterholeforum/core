@@ -36,7 +36,7 @@
   --color-success: hsl(var(--success-h) var(--success-s) var(--success-l));
   --color-success-contrast: #fff;
   --color-success-soft: hsl(var(--success-h) var(--success-s) var(--success-l) / 0.2);
-  --color-success-text: hsl(var(--success-h) var(--success-s) 20%);
+  --color-success-text: hsl(var(--success-h) var(--success-s) 30%);
   --activity-h: 23;
   --activity-s: 100%;
   --activity-l: 45%;
@@ -89,10 +89,10 @@
   --header-height: 4rem;
 }
 :root[data-theme='dark'] {
-  --bg-hsl: 248 11% 14%;
+  --bg-hsl: 200 10% 14%;
   --text-hsl: 0 0% 93%;
-  --muted-hsl: 250 10% 65%;
-  --color-accent-text: hsl(var(--accent-h) var(--accent-s) 80%);
+  --muted-hsl: 250 10% 60%;
+  --color-accent-text: hsl(var(--accent-h) var(--accent-s) 70%);
   --color-danger-text: hsl(var(--danger-h) var(--danger-s) 70%);
   --color-success-text: hsl(var(--success-h) var(--success-s) 35%);
   --color-warning-text: hsl(var(--warning-h) var(--warning-s) 40%);
@@ -374,8 +374,11 @@ h6 {
   border-radius: var(--radius);
   padding: var(--space-md) !important;
 }
-.content img {
+.content img:not(.twemoji) {
   max-width: 100%;
+  max-height: 70vh;
+  width: auto;
+  height: auto;
 }
 .content hr {
   border: 0;
@@ -725,14 +728,11 @@ details.card:not([open]) .card__header {
 a.channel-label:hover > :last-child {
   text-decoration: underline;
 }
-.menu.channel-picker__menu {
-  max-width: 50ch;
-}
-.menu.channel-picker__menu .menu-item {
+.channel-picker .menu-item {
   padding: var(--space-sm);
   gap: var(--space-sm);
 }
-.menu.channel-picker__menu .icon:first-child {
+.channel-picker .icon:first-child {
   font-size: var(--text-lg);
 }
 .choice {
@@ -851,8 +851,8 @@ input[type='radio']:checked::before {
 }
 .dialog__header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: var(--space-md);
   padding: var(--space-xl);
   padding-bottom: 0;
 }
@@ -1382,7 +1382,7 @@ select:not([multiple]),
 .menu-item__description {
   display: block;
   color: var(--color-muted);
-  font-size: var(--text-xxs);
+  font-size: 90%;
   margin-top: var(--space-xxs);
 }
 .menu-item__check {
@@ -2935,8 +2935,7 @@ ui-tooltip {
   content: ' › ';
   margin: 0 var(--space-xs);
 }
-.header-breadcrumb[hidden],
-[data-turbo-preview] .header-breadcrumb {
+.header-breadcrumb[hidden] {
   display: block !important;
   visibility: hidden;
   transform: translateY(10px);
@@ -3160,7 +3159,7 @@ ui-tooltip {
 .text-editor {
   padding: 0;
   height: auto;
-  min-height: 300px;
+  min-height: 15em;
 }
 .text-editor__toolbar {
   padding: var(--space-xxs);

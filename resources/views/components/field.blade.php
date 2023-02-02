@@ -1,6 +1,6 @@
 <div {{ $attributes->class(['field', 'has-error' => $errors->has($name)]) }}>
     @if ($label)
-        <label for="{{ $name }}" class="field__label">{{ $label }}</label>
+        <label for="{{ $id }}" class="field__label">{{ $label }}</label>
     @endif
 
     <div class="grow stack gap-xs">

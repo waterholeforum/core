@@ -73,7 +73,7 @@ class Mention extends Notification
 
     public static function description(): string
     {
-        return 'Mentions';
+        return 'FormatMentions';
     }
 
     public static function load(Collection $notifications): void

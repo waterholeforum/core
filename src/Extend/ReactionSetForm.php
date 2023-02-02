@@ -12,5 +12,5 @@ abstract class ReactionSetForm
     use OrderedList, OfComponents;
 }
 
-ReactionSetForm::add('name', ReactionSetName::class);
-ReactionSetForm::add('defaults', ReactionSetDefaults::class);
+ReactionSetForm::add(ReactionSetName::class, 0, 'name');
+ReactionSetForm::add(ReactionSetDefaults::class, 0, 'defaults');

@@ -137,6 +137,14 @@ class User extends Model implements
     }
 
     /**
+     * Relationship with the user's file uploads.
+     */
+    public function uploads(): HasMany
+    {
+        return $this->hasMany(Upload::class);
+    }
+
+    /**
      * Mark the user's notifications about a specific subject as read.
      */
     public function markNotificationsRead(Model $model): static

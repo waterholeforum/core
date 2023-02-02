@@ -11,4 +11,4 @@ abstract class TagForm
     use OrderedList, OfComponents;
 }
 
-TagForm::add('name', TagName::class);
+TagForm::add(TagName::class, 0, 'name');

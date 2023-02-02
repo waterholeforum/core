@@ -3,20 +3,6 @@
 return [
     /*
     |--------------------------------------------------------------------------
-    | Accent Color
-    |--------------------------------------------------------------------------
-    |
-    | Here you may specify the accent color for your forum design in
-    | hexadecimal format. This is used as the value of the --color-accent CSS
-    | variable, in the <meta name="theme-color"> tag, and in your forum's email
-    | template design.
-    |
-    */
-
-    'accent_color' => '#5533ff',
-
-    /*
-    |--------------------------------------------------------------------------
     | Logo URL
     |--------------------------------------------------------------------------
     |

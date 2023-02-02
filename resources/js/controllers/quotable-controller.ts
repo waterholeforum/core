@@ -46,6 +46,7 @@ export default class extends Controller {
 
         this.buttonTarget.hidden = false;
         this.buttonTarget.style.position = 'absolute';
+        this.buttonTarget.style.zIndex = 'var(--z-index-overlay)';
 
         // Place the quote button according to where the focus of the
         // selection is (ie. where the selection began).

@@ -11,8 +11,8 @@ class LoginForm
     use OrderedList, OfComponents;
 }
 
-LoginForm::add('oauth', OAuthButtons::class, -30);
-LoginForm::add('email', null, -20);
-LoginForm::add('password', null, -10);
-LoginForm::add('submit', null, 10);
-LoginForm::add('sign-up-link', null, 20);
+LoginForm::add(OAuthButtons::class, -30, 'oauth');
+LoginForm::add(null, -20, 'email');
+LoginForm::add(null, -10, 'password');
+LoginForm::add(null, 10, 'submit');
+LoginForm::add(null, 20, 'sign-up-link');

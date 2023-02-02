@@ -11,7 +11,7 @@ use Waterhole\Models\Model;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
 
-class MoveChannel extends Action
+class MoveToChannel extends Action
 {
     public bool $confirm = true;
 
@@ -27,7 +27,7 @@ class MoveChannel extends Action
 
     public function label(Collection $models): string
     {
-        return __('waterhole::forum.move-channel-button') . '...';
+        return __('waterhole::forum.move-to-channel-button');
     }
 
     public function icon(Collection $models): string
@@ -37,12 +37,12 @@ class MoveChannel extends Action
 
     public function confirm(Collection $models): View
     {
-        return view('waterhole::posts.move-channel', ['posts' => $models]);
+        return view('waterhole::posts.move-to-channel', ['posts' => $models]);
     }
 
     public function confirmButton(Collection $models): string
     {
-        return __('waterhole::forum.move-channel-confirm-button');
+        return __('waterhole::forum.move-to-channel-confirm-button');
     }
 
     public function run(Collection $models)

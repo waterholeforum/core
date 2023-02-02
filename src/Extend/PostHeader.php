@@ -16,7 +16,7 @@ abstract class PostHeader
     use OrderedList;
 }
 
-PostHeader::add('channel', PostChannel::class, position: -100);
-PostHeader::add('tags', PostTagsSummary::class, position: -90);
-PostHeader::add('title', PostTitle::class, position: -80);
-PostHeader::add('attribution', PostAttribution::class, position: -70);
+PostHeader::add(PostChannel::class, position: -100, key: 'channel');
+PostHeader::add(PostTagsSummary::class, position: -90, key: 'tags');
+PostHeader::add(PostTitle::class, position: -80, key: 'title');
+PostHeader::add(PostAttribution::class, position: -70, key: 'attribution');

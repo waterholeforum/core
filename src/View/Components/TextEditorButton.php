@@ -8,9 +8,9 @@ use Illuminate\View\Component;
 class TextEditorButton extends Component
 {
     public function __construct(
-        public string $id,
         public string $icon,
         public string $label,
+        public ?string $id = null,
         public ?string $format = null,
         public ?string $hotkey = null,
     ) {

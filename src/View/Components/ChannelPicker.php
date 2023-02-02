@@ -18,7 +18,6 @@ class ChannelPicker extends Component
         public string $name,
         public ?string $value = null,
         array $exclude = [],
-        public bool $allowNull = false,
     ) {
         $this->items = new Collection(
             Structure::with('content')
@@ -26,8 +25,8 @@ class ChannelPicker extends Component
                 ->orWhereMorphedTo('content', StructureHeading::class)
                 ->orderBy('position')
                 ->get()
-                ->except($exclude)
-                ->map->content->filter(
+                ->map->content->except($exclude)
+                ->filter(
                     fn($item) => $item instanceof StructureHeading ||
                         ($item instanceof Channel && Gate::allows('channel.post', $item)),
                 ),

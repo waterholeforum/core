@@ -13,4 +13,4 @@ abstract class CommentsBottom
     use OrderedList;
 }
 
-CommentsBottom::add('locked', CommentsLocked::class);
+CommentsBottom::add(CommentsLocked::class, 0, 'locked');

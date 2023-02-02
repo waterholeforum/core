@@ -25,7 +25,7 @@ class DeleteReactionSet extends Action
 
     public function label(Collection $models): string
     {
-        return __('waterhole::system.delete-button') . '...';
+        return __('waterhole::system.delete-button');
     }
 
     public function icon(Collection $models): string

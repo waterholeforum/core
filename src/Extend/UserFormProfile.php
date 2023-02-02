@@ -19,9 +19,9 @@ abstract class UserFormProfile
     use OrderedList, OfComponents;
 }
 
-UserFormProfile::add('avatar', UserAvatar::class, -60);
-UserFormProfile::add('headline', UserHeadline::class, -50);
-UserFormProfile::add('bio', UserBio::class, -40);
-UserFormProfile::add('location', UserLocation::class, -30);
-UserFormProfile::add('website', UserWebsite::class, -20);
-UserFormProfile::add('showOnline', UserShowOnline::class, -10);
+UserFormProfile::add(UserAvatar::class, -60, 'avatar');
+UserFormProfile::add(UserHeadline::class, -50, 'headline');
+UserFormProfile::add(UserBio::class, -40, 'bio');
+UserFormProfile::add(UserLocation::class, -30, 'location');
+UserFormProfile::add(UserWebsite::class, -20, 'website');
+UserFormProfile::add(UserShowOnline::class, -10, 'showOnline');

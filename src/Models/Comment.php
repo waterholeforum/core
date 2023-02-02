@@ -76,17 +76,8 @@ class Comment extends Model
 
         static::created(function (self $comment) {
             broadcast(new NewComment($comment))->toOthers();
-        });
 
-        // When a new comment is created, send notifications to mentioned users.
-        // We have to use `saved` instead of `created` because the mentions are
-        // synced to the database in the `saved` event, and `created` is always
-        // run before `saved`.
-        static::saved(function (Comment $comment) {
-            if (!$comment->wasRecentlyCreated) {
-                return;
-            }
-
+            // When a new comment is created, send notifications to mentioned users.
             $comment->post->usersWereMentioned(
                 $users = $comment->mentions->except($comment->user_id),
             );

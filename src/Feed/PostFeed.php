@@ -19,6 +19,8 @@ class PostFeed extends Feed
         'reactions.reactionType',
         'reactions.user',
         'tags',
+        'mentions',
+        'attachments',
     ];
 
     public static array $scopes = [];

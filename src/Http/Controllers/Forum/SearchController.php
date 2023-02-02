@@ -5,6 +5,7 @@ namespace Waterhole\Http\Controllers\Forum;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
+use Waterhole\Feed\PostFeed;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Post;
@@ -55,15 +56,7 @@ class SearchController extends Controller
         // The engine has given us a Results object with an array of Hits,
         // each of which contain a post ID and highlighted title/body text. So
         // we still need to retrieve and set the Post model for each hit.
-        $postsById = Post::with([
-            'user',
-            'channel.userState',
-            'channel.postsReactionSet',
-            'lastComment.user',
-            'userState',
-            'reactions.reactionType',
-            'reactions.user',
-        ])
+        $postsById = Post::with(PostFeed::$eagerLoad)
             ->whereIn('id', collect($results->hits)->map->postId)
             ->get()
             ->keyBy('id');

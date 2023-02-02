@@ -14,7 +14,7 @@ abstract class UserFormAccount
     use OrderedList, OfComponents;
 }
 
-UserFormAccount::add('name', UserName::class);
-UserFormAccount::add('email', UserEmail::class);
-UserFormAccount::add('password', UserPassword::class);
-UserFormAccount::add('groups', UserGroups::class);
+UserFormAccount::add(UserName::class, 0, 'name');
+UserFormAccount::add(UserEmail::class, 0, 'email');
+UserFormAccount::add(UserPassword::class, 0, 'password');
+UserFormAccount::add(UserGroups::class, 0, 'groups');

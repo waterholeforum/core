@@ -4,7 +4,7 @@
             <x-waterhole::avatar :user="$user"/>
 
             @if ($user?->isOnline())
-                <span class="dot bg-success">
+                <span class="dot color-success">
                     <ui-tooltip>{{ __('waterhole::user.online-label') }}</ui-tooltip>
                 </span>
             @endif

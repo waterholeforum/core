@@ -24,7 +24,7 @@
                 @checked(request('move_posts'))
             data-reveal-target="if"
             >
-            {{ __('waterhole::admin.move-channel-posts-label', ['count' => $postCount]) }}
+            {{ __('waterhole::admin.move-to-channel-posts-label', ['count' => $postCount]) }}
         </label>
 
         <x-waterhole::channel-picker

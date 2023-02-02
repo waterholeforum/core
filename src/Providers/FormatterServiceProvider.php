@@ -6,8 +6,9 @@ use Illuminate\Support\ServiceProvider;
 use s9e\TextFormatter\Configurator;
 use s9e\TextFormatter\Renderer;
 use Waterhole\Formatter\Context;
+use Waterhole\Formatter\FormatMentions;
 use Waterhole\Formatter\Formatter;
-use Waterhole\Formatter\Mentions;
+use Waterhole\Formatter\FormatUploads;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Page;
@@ -27,20 +28,26 @@ class FormatterServiceProvider extends ServiceProvider
             $formatter->configure(function (Configurator $config) {
                 $config->rootRules->enableAutoLineBreaks();
                 $config->urlConfig->allowScheme('mailto');
+                $config->urlConfig->allowScheme('upload');
                 $config->Escaper;
                 $config->Autoemail;
                 $config->Autolink;
                 $config->Litedown;
                 $config->PipeTables;
                 $config->TaskLists;
+                $config->Autovideo;
+                $config->Autoimage;
             });
 
             $formatter->rendering(function (Renderer $renderer, string $xml, ?Context $context) {
                 $renderer->setParameter('USER_ID', $context->user->id ?? null);
             });
 
-            $formatter->configure([Mentions::class, 'configure']);
-            $formatter->rendering([Mentions::class, 'rendering']);
+            $formatter->configure([FormatMentions::class, 'configure']);
+            $formatter->rendering([FormatMentions::class, 'rendering']);
+
+            $formatter->configure([FormatUploads::class, 'configure']);
+            $formatter->rendering([FormatUploads::class, 'rendering']);
 
             return $formatter;
         });

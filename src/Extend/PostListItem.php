@@ -15,6 +15,6 @@ abstract class PostListItem
     use OrderedList;
 }
 
-PostListItem::add('summary', PostSummary::class);
-PostListItem::add('reactions', PostReactionsCondensed::class);
-PostListItem::add('replies', PostReplies::class);
+PostListItem::add(PostSummary::class, 0, 'summary');
+PostListItem::add(PostReactionsCondensed::class, 0, 'reactions');
+PostListItem::add(PostReplies::class, 0, 'replies');

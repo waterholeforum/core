@@ -33,11 +33,12 @@ class PostBody extends Field
                 ]);
             @endphp
 
-            <x-waterhole::field name="body" :$label :$description>
+            <x-waterhole::field id="post-body" name="body" :$label :$description>
                 <x-waterhole::text-editor
                     name="body"
                     :id="$component->id"
                     :value="old('body', $model->body ?? '')"
+                    style="min-height: 50vh"
                 />
             </x-waterhole::field>
         blade;

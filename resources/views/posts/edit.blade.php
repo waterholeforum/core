@@ -4,7 +4,7 @@
 
 <x-waterhole::layout :title="$title">
     <div class="container section">
-        <x-waterhole::dialog :title="$title" class="measure">
+        <x-waterhole::dialog :title="$title">
             <form
                 method="POST"
                 action="{{ route('waterhole.posts.update', ['post' => $post]) }}"
@@ -19,7 +19,12 @@
                     @components($form->fields())
 
                     <div class="row gap-xs wrap">
-                        <button type="submit" class="btn bg-accent">
+                        <button
+                            type="submit"
+                            class="btn bg-accent"
+                            data-hotkey="Meta+Enter,Ctrl+Enter"
+                            data-hotkey-scope="post-body"
+                        >
                             {{ __('waterhole::system.save-changes-button') }}
                         </button>
 

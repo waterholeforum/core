@@ -13,6 +13,6 @@ abstract class StructureLinkFormDetails
     use OrderedList, OfComponents;
 }
 
-StructureLinkFormDetails::add('name', StructureLinkName::class);
-StructureLinkFormDetails::add('icon', Icon::class);
-StructureLinkFormDetails::add('url', StructureLinkUrl::class);
+StructureLinkFormDetails::add(StructureLinkName::class, 0, 'name');
+StructureLinkFormDetails::add(Icon::class, 0, 'icon');
+StructureLinkFormDetails::add(StructureLinkUrl::class, 0, 'url');

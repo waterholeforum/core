@@ -12,5 +12,5 @@ abstract class TaxonomyForm
     use OrderedList, OfComponents;
 }
 
-TaxonomyForm::add('name', TaxonomyName::class);
-TaxonomyForm::add('options', TaxonomyOptions::class);
+TaxonomyForm::add(TaxonomyName::class, 0, 'name');
+TaxonomyForm::add(TaxonomyOptions::class, 0, 'options');

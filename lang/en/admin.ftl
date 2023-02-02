@@ -119,7 +119,7 @@ delete-channel-posts-label = Delete { $count } { $count ->
     [one] post
     *[other] posts
 }
-move-channel-posts-label = Move { $count } { $count ->
+move-to-channel-posts-label = Move { $count } { $count ->
     [one] post
     *[other] posts
 } to another channel

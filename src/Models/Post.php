@@ -72,17 +72,8 @@ class Post extends Model
 
         static::created(function (self $post) {
             broadcast(new NewPost($post))->toOthers();
-        });
 
-        // When a new post is created, send notifications to mentioned users.
-        // We have to use `saved` instead of `created` because the mentions are
-        // synced to the database in the `saved` event, and `created` is always
-        // run before `saved`.
-        static::saved(function (Post $post) {
-            if (!$post->wasRecentlyCreated) {
-                return;
-            }
-
+            // When a new post is created, send notifications to mentioned users.
             $users = $post->mentions
                 ->except($post->user_id)
                 ->filter(function (User $user) use ($post) {
@@ -94,6 +85,11 @@ class Post extends Model
             $post->usersWereMentioned($users);
 
             Notification::send($users, new Mention($post));
+        });
+
+        // Delete comments one at a time to trigger event listeners.
+        static::deleting(function (self $post) {
+            $post->comments->each->delete();
         });
     }
 

@@ -14,5 +14,5 @@ abstract class PostSidebar
     use OrderedList;
 }
 
-PostSidebar::add('reactions', PostReactions::class, position: -100);
-PostSidebar::add('replies', PostReplies::class, position: -90);
+PostSidebar::add(PostReactions::class, position: -100, key: 'reactions');
+PostSidebar::add(PostReplies::class, position: -90, key: 'replies');

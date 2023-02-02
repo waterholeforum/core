@@ -14,5 +14,5 @@ abstract class IndexSidebar
     use OrderedList;
 }
 
-IndexSidebar::add('createPost', IndexCreatePost::class);
-IndexSidebar::add('nav', IndexNav::class);
+IndexSidebar::add(IndexCreatePost::class, 0, 'createPost');
+IndexSidebar::add(IndexNav::class, 0, 'nav');

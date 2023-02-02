@@ -2,6 +2,7 @@
 
 namespace Waterhole\Extend;
 
+use Waterhole\Extend\Concerns\OfComponents;
 use Waterhole\Extend\Concerns\OrderedList;
 use Waterhole\View\Components\HeaderBreadcrumb;
 use Waterhole\View\Components\HeaderGuest;
@@ -17,18 +18,18 @@ use Waterhole\View\Components\ThemeSelector;
  */
 abstract class Header
 {
-    use OrderedList;
+    use OrderedList, OfComponents;
 }
 
-Header::add('title', HeaderTitle::class);
-Header::add('breadcrumb', HeaderBreadcrumb::class);
+Header::add(HeaderTitle::class, 0, 'title');
+Header::add(HeaderBreadcrumb::class, 0, 'breadcrumb');
 
-Header::add('spacer', Spacer::class);
+Header::add(Spacer::class, 0, 'spacer');
 
-Header::add('search', HeaderSearch::class);
+Header::add(HeaderSearch::class, 0, 'search');
 
-Header::add('notifications', HeaderNotifications::class);
-Header::add('guest', HeaderGuest::class);
-Header::add('user', HeaderUser::class);
+Header::add(HeaderNotifications::class, 0, 'notifications');
+Header::add(HeaderGuest::class, 0, 'guest');
+Header::add(HeaderUser::class, 0, 'user');
 
-Header::add('theme', ThemeSelector::class);
+Header::add(ThemeSelector::class, 0, 'theme');

@@ -25,16 +25,14 @@ class IndexController extends Controller
     {
         // Hide posts that the user has ignored, and posts that are in channels
         // that the user has ignored, to ensure the Home post feed is clean and
-        // relevant. Also hide posts from "sandboxed" channels.
+        // relevant.
         $scope = function (Builder $query) {
-            $query->withGlobalScope(Ignoring::EXCLUDE_IGNORED_SCOPE, function ($query) {
-                $query->whereNot->ignoring();
-            });
+            $query->withGlobalScope(
+                Ignoring::EXCLUDE_IGNORED_SCOPE,
+                fn($query) => $query->whereNot->ignoring(),
+            );
 
-            $query->whereHas('channel', function ($query) {
-                $query->where('sandbox', false);
-                $query->whereNot->ignoring();
-            });
+            $query->whereHas('channel', fn($query) => $query->whereNot->ignoring());
         };
 
         $feed = new PostFeed(

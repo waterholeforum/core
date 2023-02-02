@@ -46,12 +46,19 @@ document.addEventListener('turbo:before-fetch-response', async (e) => {
     }
 });
 
-Waterhole.fetchError = function (response: Response): void {
+Waterhole.fetchError = async function (response?: Response) {
+    // TODO: use messages instead of templates
     let templateId;
-    switch (response.status) {
+    switch (response?.status) {
         case 401:
         case 403:
             templateId = 'forbidden-alert';
+            break;
+
+        case 422:
+            const alert = cloneFromTemplate('template-alert-danger');
+            alert.querySelector('.alert__message')!.textContent = (await response.json()).message;
+            this.alerts.show(alert, { key: 'fetchError', duration: -1 });
             break;
 
         case 429:
@@ -62,9 +69,11 @@ Waterhole.fetchError = function (response: Response): void {
             templateId = 'fatal-error-alert';
     }
 
-    const alert = cloneFromTemplate(templateId);
+    if (templateId) {
+        const alert = cloneFromTemplate(templateId);
 
-    if (alert) {
-        this.alerts.show(alert, { key: 'fetchError', duration: -1 });
+        if (alert) {
+            this.alerts.show(alert, { key: 'fetchError', duration: -1 });
+        }
     }
 };

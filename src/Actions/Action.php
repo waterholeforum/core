@@ -126,8 +126,9 @@ abstract class Action
             ? svg($iconName, 'icon icon-' . $iconName)->toHtml()
             : '';
         $tag = $tooltip ? 'ui-tooltip' : 'span';
+        $ellipsis = !$tooltip && $this->confirm ? '...' : '';
 
-        return new HtmlString("$icon <$tag>$label</$tag>");
+        return new HtmlString("$icon <$tag>$label$ellipsis</$tag>");
     }
 
     /**

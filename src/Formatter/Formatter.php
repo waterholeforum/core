@@ -136,7 +136,7 @@ class Formatter
     protected function getRenderer(): Renderer
     {
         spl_autoload_register(function ($class) {
-            if (file_exists($file = $this->cacheDir . '/' . $class . '.php')) {
+            if (file_exists($file = "$this->cacheDir/$class.php")) {
                 include $file;
             }
         });

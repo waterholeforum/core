@@ -7,7 +7,7 @@
         </div>
     @endif
 
-    <div class="content">
+    <div class="alert__message content">
         {{ $message ?? $slot }}
     </div>
 

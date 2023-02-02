@@ -57,7 +57,8 @@ text-editor-link = Link
 text-editor-bulleted-list = Bulleted List
 text-editor-numbered-list = Numbered List
 text-editor-mention = Mention a User
-text-editor-emoji = Emoji
+text-editor-emoji = Insert Emoji
+text-editor-attachment = Attach Files
 text-editor-preview = Preview
 
 validation-errors-message = The following errors were found:

@@ -73,7 +73,7 @@ trait Followable
      */
     public function unfollow(): void
     {
-        $this->setNotifications(null);
+        $this->setNotifications('normal');
     }
 
     /**
@@ -89,7 +89,7 @@ trait Followable
      */
     public function unignore(): void
     {
-        $this->setNotifications(null);
+        $this->setNotifications('normal');
     }
 
     /**

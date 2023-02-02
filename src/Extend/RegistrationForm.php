@@ -14,7 +14,7 @@ abstract class RegistrationForm
     use OrderedList, OfComponents;
 }
 
-RegistrationForm::add('oauth', fn($payload) => $payload ? null : OAuthButtons::class, -40);
-RegistrationForm::add('name', UserName::class, position: -30);
-RegistrationForm::add('email', UserEmail::class, position: -20);
-RegistrationForm::add('password', UserPassword::class, position: -10);
+RegistrationForm::add(fn($payload) => $payload ? null : OAuthButtons::class, -40, 'oauth');
+RegistrationForm::add(UserName::class, position: -30, key: 'name');
+RegistrationForm::add(UserEmail::class, position: -20, key: 'email');
+RegistrationForm::add(UserPassword::class, position: -10, key: 'password');

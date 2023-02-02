@@ -54,43 +54,43 @@ abstract class Actions
 }
 
 // User actions
-Actions::add('copy-link', Waterhole\Actions\CopyLink::class);
-Actions::add('mark-as-read', Waterhole\Actions\MarkAsRead::class);
-Actions::add('follow', Waterhole\Actions\Follow::class);
-Actions::add('unfollow', Waterhole\Actions\Unfollow::class);
-Actions::add('ignore', Waterhole\Actions\Ignore::class);
-Actions::add('unignore', Waterhole\Actions\Unignore::class);
-Actions::add('delete-self', Waterhole\Actions\DeleteSelf::class);
+Actions::add(Waterhole\Actions\CopyLink::class, 0, 'copy-link');
+Actions::add(Waterhole\Actions\MarkAsRead::class, 0, 'mark-as-read');
+Actions::add(Waterhole\Actions\Follow::class, 0, 'follow');
+Actions::add(Waterhole\Actions\Unfollow::class, 0, 'unfollow');
+Actions::add(Waterhole\Actions\Ignore::class, 0, 'ignore');
+Actions::add(Waterhole\Actions\Unignore::class, 0, 'unignore');
+Actions::add(Waterhole\Actions\DeleteSelf::class, 0, 'delete-self');
 
 // Divider
-Actions::add('divider', Waterhole\View\Components\MenuDivider::class);
+Actions::add(Waterhole\View\Components\MenuDivider::class, 0, 'divider');
 
 // Super actions
-Actions::add('edit-comment', Waterhole\Actions\EditComment::class);
-Actions::add('edit-post', Waterhole\Actions\EditPost::class);
-Actions::add('lock', Waterhole\Actions\Lock::class);
-Actions::add('unlock', Waterhole\Actions\Unlock::class);
-Actions::add('move-channel', Waterhole\Actions\MoveChannel::class);
-Actions::add('delete-comment', Waterhole\Actions\DeleteComment::class);
-Actions::add('delete-post', Waterhole\Actions\DeletePost::class);
+Actions::add(Waterhole\Actions\EditComment::class, 0, 'edit-comment');
+Actions::add(Waterhole\Actions\EditPost::class, 0, 'edit-post');
+Actions::add(Waterhole\Actions\Lock::class, 0, 'lock');
+Actions::add(Waterhole\Actions\Unlock::class, 0, 'unlock');
+Actions::add(Waterhole\Actions\MoveToChannel::class, 0, 'move-to-channel');
+Actions::add(Waterhole\Actions\DeleteComment::class, 0, 'delete-comment');
+Actions::add(Waterhole\Actions\DeletePost::class, 0, 'delete-post');
 
 // Admin actions
-Actions::add('edit-channel', Waterhole\Actions\EditChannel::class);
-Actions::add('edit-structure', Waterhole\Actions\EditStructure::class);
-Actions::add('edit-group', Waterhole\Actions\EditGroup::class);
-Actions::add('edit-user', Waterhole\Actions\EditUser::class);
-Actions::add('edit-reaction-set', Waterhole\Actions\EditReactionSet::class);
-Actions::add('edit-reaction-type', Waterhole\Actions\EditReactionType::class);
-Actions::add('edit-tag', Waterhole\Actions\EditTag::class);
-Actions::add('edit-taxonomy', Waterhole\Actions\EditTaxonomy::class);
-Actions::add('delete-channel', Waterhole\Actions\DeleteChannel::class);
-Actions::add('delete-structure', Waterhole\Actions\DeleteStructure::class);
-Actions::add('delete-group', Waterhole\Actions\DeleteGroup::class);
-Actions::add('delete-user', Waterhole\Actions\DeleteUser::class);
-Actions::add('delete-reaction-set', Waterhole\Actions\DeleteReactionSet::class);
-Actions::add('delete-reaction-type', Waterhole\Actions\DeleteReactionType::class);
-Actions::add('delete-tag', Waterhole\Actions\DeleteTag::class);
-Actions::add('delete-taxonomy', Waterhole\Actions\DeleteTaxonomy::class);
+Actions::add(Waterhole\Actions\EditChannel::class, 0, 'edit-channel');
+Actions::add(Waterhole\Actions\EditStructure::class, 0, 'edit-structure');
+Actions::add(Waterhole\Actions\EditGroup::class, 0, 'edit-group');
+Actions::add(Waterhole\Actions\EditUser::class, 0, 'edit-user');
+Actions::add(Waterhole\Actions\EditReactionSet::class, 0, 'edit-reaction-set');
+Actions::add(Waterhole\Actions\EditReactionType::class, 0, 'edit-reaction-type');
+Actions::add(Waterhole\Actions\EditTag::class, 0, 'edit-tag');
+Actions::add(Waterhole\Actions\EditTaxonomy::class, 0, 'edit-taxonomy');
+Actions::add(Waterhole\Actions\DeleteChannel::class, 0, 'delete-channel');
+Actions::add(Waterhole\Actions\DeleteStructure::class, 0, 'delete-structure');
+Actions::add(Waterhole\Actions\DeleteGroup::class, 0, 'delete-group');
+Actions::add(Waterhole\Actions\DeleteUser::class, 0, 'delete-user');
+Actions::add(Waterhole\Actions\DeleteReactionSet::class, 0, 'delete-reaction-set');
+Actions::add(Waterhole\Actions\DeleteReactionType::class, 0, 'delete-reaction-type');
+Actions::add(Waterhole\Actions\DeleteTag::class, 0, 'delete-tag');
+Actions::add(Waterhole\Actions\DeleteTaxonomy::class, 0, 'delete-taxonomy');
 
 // Hidden actions
-Actions::add('react', Waterhole\Actions\React::class);
+Actions::add(Waterhole\Actions\React::class, 0, 'react');

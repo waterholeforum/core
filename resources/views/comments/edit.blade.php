@@ -18,8 +18,10 @@
                     <x-waterhole::validation-errors/>
 
                     <x-waterhole::text-editor
+                        id="comment-body"
                         name="body"
                         :value="old('body', $comment->body)"
+                        style="min-height: 40vh"
                     />
 
                     <div class="row gap-xs wrap justify-end">
@@ -31,6 +33,8 @@
                         <button
                             type="submit"
                             class="btn bg-accent"
+                            data-hotkey="Meta+Enter,Ctrl+Enter"
+                            data-hotkey-scope="comment-body"
                         >{{ __('waterhole::system.save-changes-button') }}</button>
                     </div>
                 </div>

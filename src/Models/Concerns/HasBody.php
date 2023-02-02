@@ -4,8 +4,10 @@ namespace Waterhole\Models\Concerns;
 
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\HtmlString;
-use Waterhole\Formatter\Mentions;
+use Waterhole\Formatter\FormatMentions;
+use Waterhole\Formatter\FormatUploads;
 use Waterhole\Models\Model;
+use Waterhole\Models\Upload;
 use Waterhole\Models\User;
 
 /**
@@ -32,10 +34,27 @@ trait HasBody
 
     public static function bootHasBody(): void
     {
-        // Whenever the model is saved, sync the users mentioned in the body
-        // into the `mentions` relationship.
-        static::saved(function (Model $model) {
-            $model->mentions()->sync(Mentions::getMentionedUsers($model->parsed_body));
+        // Whenever the model is saved, sync the users and uploads mentioned in
+        // the body into their respective relationships. We register `created`
+        // and `updated` handlers instead of using the `saved` event, because we
+        // want this to run as early as possible.
+
+        $sync = function (Model $model) {
+            $model->mentions()->sync(FormatMentions::getMentionedUsers($model->parsed_body));
+
+            $model->attachments()->sync(
+                Upload::query()
+                    ->whereIn('filename', FormatUploads::getAttachedUploads($model->parsed_body))
+                    ->pluck('id'),
+            );
+        };
+
+        static::created($sync);
+        static::updated($sync);
+
+        static::deleted(function (Model $model) {
+            $model->mentions()->detach();
+            $model->attachments()->detach();
         });
     }
 
@@ -45,5 +64,13 @@ trait HasBody
     public function mentions(): MorphToMany
     {
         return $this->morphToMany(User::class, 'content', 'mentions');
+    }
+
+    /**
+     * Relationship with the uploads that were attached in the body.
+     */
+    public function attachments(): MorphToMany
+    {
+        return $this->morphToMany(Upload::class, 'content', 'attachments');
     }
 }

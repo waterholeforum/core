@@ -2,6 +2,7 @@
 
 namespace Waterhole\Extend;
 
+use Waterhole\Extend\Concerns\OfComponents;
 use Waterhole\Extend\Concerns\OrderedList;
 
 /**
@@ -9,5 +10,5 @@ use Waterhole\Extend\Concerns\OrderedList;
  */
 abstract class LayoutAfter
 {
-    use OrderedList;
+    use OrderedList, OfComponents;
 }

@@ -2,6 +2,7 @@
 
 namespace Waterhole\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -111,5 +112,25 @@ class Channel extends Model
     public function getEditUrlAttribute(): string
     {
         return route('waterhole.admin.structure.channels.edit', ['channel' => $this]);
+    }
+
+    public function scopeIgnoring(Builder $query): void
+    {
+        $query
+            ->whereHas('userState', fn($query) => $query->where('notifications', 'ignore'))
+            ->orWhere(
+                fn($query) => $query
+                    ->where('sandbox', true)
+                    ->whereDoesntHave(
+                        'userState',
+                        fn($query) => $query->whereNotNull('notifications'),
+                    ),
+            );
+    }
+
+    public function isIgnored(): bool
+    {
+        return $this->userState?->notifications === 'ignore' ||
+            (!$this->userState?->notifications && $this->sandbox);
     }
 }

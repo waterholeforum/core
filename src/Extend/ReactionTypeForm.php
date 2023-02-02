@@ -13,6 +13,6 @@ abstract class ReactionTypeForm
     use OrderedList, OfComponents;
 }
 
-ReactionTypeForm::add('name', ReactionTypeName::class);
-ReactionTypeForm::add('icon', Icon::class);
-ReactionTypeForm::add('score', ReactionTypeScore::class);
+ReactionTypeForm::add(ReactionTypeName::class, 0, 'name');
+ReactionTypeForm::add(Icon::class, 0, 'icon');
+ReactionTypeForm::add(ReactionTypeScore::class, 0, 'score');

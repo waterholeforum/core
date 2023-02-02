@@ -17,7 +17,6 @@ abstract class UserNav
 }
 
 UserNav::add(
-    'posts',
     fn(User $user) => new NavLink(
         label: __('waterhole::user.posts-link'),
         icon: 'tabler-layout-list',
@@ -25,10 +24,11 @@ UserNav::add(
         href: route('waterhole.user.posts', compact('user')),
         active: request()->routeIs('waterhole.user.posts'),
     ),
+    0,
+    'posts',
 );
 
 UserNav::add(
-    'comments',
     fn(User $user) => new NavLink(
         label: __('waterhole::user.comments-link'),
         icon: 'tabler-messages',
@@ -36,17 +36,19 @@ UserNav::add(
         href: route('waterhole.user.comments', compact('user')),
         active: request()->routeIs('waterhole.user.comments'),
     ),
+    0,
+    'comments',
 );
 
 UserNav::add(
-    'preferences',
     fn(User $user) => $user->is(Auth::user())
         ? new NavHeading(__('waterhole::user.preferences-heading'))
         : null,
+    0,
+    'preferences',
 );
 
 UserNav::add(
-    'account',
     fn(User $user) => $user->is(Auth::user())
         ? new NavLink(
             label: __('waterhole::user.account-settings-link'),
@@ -54,10 +56,11 @@ UserNav::add(
             route: 'waterhole.preferences.account',
         )
         : null,
+    0,
+    'account',
 );
 
 UserNav::add(
-    'profile',
     fn(User $user) => $user->is(Auth::user())
         ? new NavLink(
             label: __('waterhole::user.edit-profile-link'),
@@ -65,10 +68,11 @@ UserNav::add(
             route: 'waterhole.preferences.profile',
         )
         : null,
+    0,
+    'profile',
 );
 
 UserNav::add(
-    'notifications',
     fn(User $user) => $user->is(Auth::user())
         ? new NavLink(
             label: __('waterhole::user.notification-preferences-link'),
@@ -76,4 +80,6 @@ UserNav::add(
             route: 'waterhole.preferences.notifications',
         )
         : null,
+    0,
+    'notifications',
 );

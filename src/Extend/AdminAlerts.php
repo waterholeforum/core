@@ -13,9 +13,9 @@ abstract class AdminAlerts
 }
 
 if (config('app.debug')) {
-    AdminAlerts::add('debug');
+    AdminAlerts::add(null, 0, 'debug');
 }
 
 if (!config('mail.from.address')) {
-    AdminAlerts::add('mail');
+    AdminAlerts::add(null, 0, 'mail');
 }

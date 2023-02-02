@@ -68,9 +68,9 @@
                         </div>
 
                         <x-waterhole::infinite-scroll :paginator="$hits" divider>
-                            <ul role="list" class="search-results stack gap-lg">
+                            <ul role="list" class="search-results post-list">
                                 @foreach ($hits as $hit)
-                                    <li class="stack gap-xs">
+                                    <li class="stack gap-xxs">
                                         <x-waterhole::post-list-item :post="$hit->post"/>
                                         <div class="post-summary">
                                             <div class="post-summary__avatar"></div>
@@ -78,25 +78,6 @@
                                                 {{ $hit->body }}
                                             </div>
                                         </div>
-
-{{--                                        <div class="post-summary row gap-md align-start">--}}
-{{--                                            <x-waterhole::avatar--}}
-{{--                                                :user="$hit->post->user"--}}
-{{--                                                class="post-summary__avatar no-shrink"--}}
-{{--                                            />--}}
-
-{{--                                            <div class="post-summary__content grow stack gap-xxs">--}}
-{{--                                                <h3 class="post-summary__title h4 weight-normal">--}}
-{{--                                                    <a href="{{ $hit->post->url }}">{{ $hit->title }}</a>--}}
-{{--                                                </h3>--}}
-
-{{--                                                <div class="post-summary__info row wrap gap-y-xxs gap-x-sm text-xxs color-muted">--}}
-{{--                                                    @components(Waterhole\Extend\PostInfo::build(), ['post' => $hit->post])--}}
-{{--                                                </div>--}}
-
-
-{{--                                            </div>--}}
-{{--                                        </div>--}}
                                     </li>
                                 @endforeach
                             </ul>
