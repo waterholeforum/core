@@ -38,7 +38,8 @@ return [
 
     'post_filters' => [
         \Waterhole\Filters\Latest::class,
-        \Waterhole\Filters\NewActivity::class,
+        \Waterhole\Filters\Newest::class,
+        \Waterhole\Filters\Trending::class,
         \Waterhole\Filters\Top::class,
         \Waterhole\Filters\Oldest::class,
     ],

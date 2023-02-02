@@ -10,7 +10,7 @@ use ReflectionClass;
  * Base class for a Filter.
  *
  * A filter is a set of filtering or sorting criteria that can be applied to a
- * feed query, like "Latest" or "Top".
+ * feed query, like "Newest" or "Top".
  *
  * Define a new filter by extending this class and implementing the methods.
  * Use the `PostFilters` and `CommentFilters` extenders to register a filter

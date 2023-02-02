@@ -4,7 +4,7 @@ namespace Waterhole\View\Components;
 
 use Illuminate\View\Component;
 use Waterhole\Filters\Latest;
-use Waterhole\Filters\NewActivity;
+use Waterhole\Filters\Newest;
 use Waterhole\Models\Channel;
 
 class PostFeed extends Component
@@ -18,7 +18,7 @@ class PostFeed extends Component
         $this->channel = $channel?->exists ? $channel : null;
 
         $filter = $feed->currentFilter();
-        $this->showLastVisit = $filter instanceof Latest || $filter instanceof NewActivity;
+        $this->showLastVisit = $filter instanceof Newest || $filter instanceof Latest;
     }
 
     public function render()

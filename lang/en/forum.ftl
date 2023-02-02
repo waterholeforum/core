@@ -99,8 +99,8 @@ quote-button = Quote
 filter-alphabetical = Alphabetical
 filter-following = Following
 filter-ignoring = Ignoring
+filter-newest = Newest
 filter-latest = Latest
-filter-new-activity = Activity
 filter-oldest = Oldest
 filter-top = Top
 filter-top-all-time = All Time
@@ -109,6 +109,7 @@ filter-top-quarter = Quarter
 filter-top-month = Month
 filter-top-week = Week
 filter-top-day = Day
+filter-trending = Trending
 
 follow-button = Follow
 follow-button-following = Following

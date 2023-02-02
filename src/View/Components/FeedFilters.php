@@ -9,7 +9,7 @@ use Waterhole\Filters\Filter;
 
 class FeedFilters extends Component
 {
-    public function __construct(public Feed $feed, public int $limit = 3)
+    public function __construct(public Feed $feed, public int $limit = 4)
     {
     }
 

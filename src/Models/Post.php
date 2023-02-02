@@ -91,6 +91,12 @@ class Post extends Model
         static::deleting(function (self $post) {
             $post->comments->each->delete();
         });
+
+        static::saving(function (self $post) {
+            $sign = $post->score <=> 0;
+            $seconds = $post->created_at->unix() - 1134028003;
+            $post->hotness = round($sign * log10(max(abs($post->score), 1)) + $seconds / 45000, 10);
+        });
     }
 
     /**

@@ -12,7 +12,7 @@ return [
     */
 
     'post_filters' => [
-        \Waterhole\Filters\Latest::class,
+        \Waterhole\Filters\Newest::class,
         \Waterhole\Filters\Top::class,
     ],
 
@@ -27,7 +27,7 @@ return [
     */
 
     'comment_filters' => [
-        \Waterhole\Filters\Latest::class,
+        \Waterhole\Filters\Newest::class,
         \Waterhole\Filters\Top::class,
     ],
 ];

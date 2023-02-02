@@ -5,7 +5,7 @@ namespace Waterhole\Extend;
 use Waterhole\Extend\Concerns\Set;
 use Waterhole\Filters\Alphabetical;
 use Waterhole\Filters\Latest;
-use Waterhole\Filters\NewActivity;
+use Waterhole\Filters\Newest;
 use Waterhole\Filters\Oldest;
 use Waterhole\Filters\Top;
 
@@ -18,8 +18,8 @@ abstract class PostFilters
     use Set;
 }
 
+PostFilters::add(Newest::class);
 PostFilters::add(Latest::class);
-PostFilters::add(NewActivity::class);
 PostFilters::add(Oldest::class);
 PostFilters::add(Top::class);
 PostFilters::add(Alphabetical::class);
