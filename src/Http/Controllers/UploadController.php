@@ -4,10 +4,9 @@ namespace Waterhole\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\File;
-use Intervention\Image\Facades\Image;
 use Waterhole\Formatter\FormatUploads;
+use Waterhole\Models\Upload;
 
 class UploadController extends Controller
 {
@@ -22,25 +21,12 @@ class UploadController extends Controller
             ],
         ]);
 
-        $file = $request->file('file');
+        $upload = Upload::fromFile($request->file('file'));
 
-        $attributes = [
-            'filename' => $file->hashName(),
-            'type' => $file->getMimeType(),
-        ];
-
-        if (str_starts_with($attributes['type'], 'image/')) {
-            $image = Image::make($file);
-            $attributes['width'] = $image->width();
-            $attributes['height'] = $image->height();
-        }
-
-        $upload = $request
+        $request
             ->user()
             ->uploads()
-            ->create($attributes);
-
-        Storage::disk('public')->putFile('uploads', $file);
+            ->save($upload);
 
         return ['url' => FormatUploads::PROTOCOL . $upload->filename];
     }
