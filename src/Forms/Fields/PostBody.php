@@ -13,11 +13,6 @@ class PostBody extends Field
     {
     }
 
-    public function shouldRender(): bool
-    {
-        return (bool) $this->model->channel;
-    }
-
     public function render(): string
     {
         return <<<'blade'
