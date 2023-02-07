@@ -28,15 +28,17 @@ class ChannelTaxonomies extends Field
 
                 <div class="card">
                     @foreach ($taxonomies as $taxonomy)
-                        <label class="card__row choice">
-                            <input
-                                type="checkbox"
-                                name="taxonomy_ids[]"
-                                value="{{ $taxonomy->id }}"
-                                @checked(in_array($taxonomy->id, old('taxonomy_ids', $model->taxonomies->modelKeys())))
-                            >
-                            <span>{{ $taxonomy->name }}</span>
-                        </label>
+                        <div class="card__row">
+                            <label class="choice">
+                                <input
+                                    type="checkbox"
+                                    name="taxonomy_ids[]"
+                                    value="{{ $taxonomy->id }}"
+                                    @checked(in_array($taxonomy->id, old('taxonomy_ids', $model->taxonomies->modelKeys())))
+                                >
+                                <span>{{ $taxonomy->name }}</span>
+                            </label>
+                        </div>
                     @endforeach
                 </div>
             </div>

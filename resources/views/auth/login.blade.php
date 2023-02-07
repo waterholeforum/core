@@ -49,11 +49,18 @@
 
                         <div class="row justify-between gap-sm wrap">
                             <label for="remember_me" class="choice">
-                                <input id="remember_me" type="checkbox" name="remember">
+                                <input
+                                    id="remember_me"
+                                    type="checkbox"
+                                    name="remember"
+                                >
                                 {{ __('waterhole::auth.remember-me-label') }}
                             </label>
 
-                            <a href="{{ route('waterhole.forgot-password') }}" data-turbo="true">
+                            <a
+                                href="{{ route('waterhole.forgot-password') }}"
+                                data-turbo="true"
+                            >
                                 {{ __('waterhole::auth.forgot-password-link') }}
                             </a>
                         </div>
@@ -69,14 +76,17 @@
                         @if (Route::has('waterhole.register'))
                             <p class="text-center">
                                 {{ __('waterhole::auth.login-register-prompt') }}
-                                <a href="{{ route('waterhole.register') }}" data-turbo="true">
+                                <a
+                                    href="{{ route('waterhole.register') }}"
+                                    data-turbo="true"
+                                >
                                     {{ __('waterhole::auth.login-register-link') }}
                                 </a>
                             </p>
                         @endif
                     @endsection
 
-                    @components(Waterhole\Extend\LoginForm::components())
+                    @components(Waterhole\Extend\LoginPage::components())
                 </div>
             </form>
         </x-waterhole::dialog>

@@ -21,16 +21,22 @@
                 <div class="stack gap-xl">
                     <x-waterhole::validation-errors/>
 
-                    @components($form->fields())
+                    @unless ($form->payload)
+                        <x-waterhole::o-auth-buttons/>
+                    @endunless
 
-                    <button type="submit" class="btn bg-accent full-width">
-                        {{ __('waterhole::auth.register-submit') }}
-                    </button>
+                    @if ($form->payload || config('waterhole.auth.password_enabled'))
+                        @components($form->fields())
 
-                    <p class="text-center">
-                        {{ __('waterhole::auth.register-login-prompt') }}
-                        <a href="{{ route('waterhole.login') }}">{{ __('waterhole::auth.register-login-link') }}</a>
-                    </p>
+                        <button type="submit" class="btn bg-accent full-width">
+                            {{ __('waterhole::auth.register-submit') }}
+                        </button>
+
+                        <p class="text-center">
+                            {{ __('waterhole::auth.register-login-prompt') }}
+                            <a href="{{ route('waterhole.login') }}">{{ __('waterhole::auth.register-login-link') }}</a>
+                        </p>
+                    @endif
                 </div>
             </form>
         </x-waterhole::dialog>
