@@ -49,6 +49,8 @@ class RegisterController extends Controller
                 'identifier' => $form->payload->identifier,
                 'last_login_at' => now(),
             ]);
+        } elseif (!config('waterhole.auth.password_enabled', true)) {
+            abort(400, 'Password registration is disabled');
         }
 
         event(new Registered($user));

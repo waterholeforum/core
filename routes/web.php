@@ -99,7 +99,10 @@ Route::withoutMiddleware(MaybeRequireLogin::class)->group(function () {
 
     // Login
     Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
-    Route::post('login', [LoginController::class, 'login']);
+
+    if (config('waterhole.auth.password_enabled', true)) {
+        Route::post('login', [LoginController::class, 'login']);
+    }
 
     // Forgot Password
     Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name(

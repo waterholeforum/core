@@ -5,6 +5,7 @@ namespace Waterhole\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
+use Route;
 use Waterhole\Models\AuthProvider;
 use Waterhole\Models\User;
 use Waterhole\OAuth\Payload;
@@ -39,6 +40,15 @@ class OAuthController
 
         if (User::firstWhere(compact('email'))) {
             session()->flash('danger', 'There is already an account with this email address.');
+
+            return redirect()->route('waterhole.login');
+        }
+
+        if (!Route::has('waterhole.register')) {
+            session()->flash(
+                'danger',
+                'No account exists with this email address, and registration is disabled.',
+            );
 
             return redirect()->route('waterhole.login');
         }
