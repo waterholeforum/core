@@ -4,6 +4,7 @@ namespace Waterhole\Models;
 
 use Auth;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 use Waterhole\Models\Concerns\HasPermissions;
 
 class Taxonomy extends Model
@@ -31,7 +32,7 @@ class Taxonomy extends Model
 
     public function getTranslatedNameAttribute(): string
     {
-        return __(["waterhole.taxonomy-$this->id", $this->name]);
+        return __(['waterhole.taxonomy-' . Str::kebab($this->name), $this->name]);
     }
 
     public function abilities(): array

@@ -38,6 +38,7 @@ class PostTags extends Field
                 <x-waterhole::field
                     name="tag_ids"
                     :label="$taxonomy->translated_name"
+                    :description="__(['waterhole.taxonomy-' . Str::kebab($taxonomy->name) . '-description', ''])"
                 >
                     <select
                         name="tag_ids[]"
