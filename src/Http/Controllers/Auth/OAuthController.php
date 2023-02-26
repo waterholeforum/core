@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Route;
 use Waterhole\Models\AuthProvider;
-use Waterhole\Models\User;
 use Waterhole\OAuth\Payload;
 use Waterhole\OAuth\Providers;
 
@@ -38,11 +37,11 @@ class OAuthController
             return redirect()->intended(route('waterhole.home'));
         }
 
-        if (User::firstWhere(compact('email'))) {
-            session()->flash('danger', 'There is already an account with this email address.');
-
-            return redirect()->route('waterhole.login');
-        }
+        // if (User::firstWhere(compact('email'))) {
+        //     session()->flash('danger', 'There is already an account with this email address.');
+        //
+        //     return redirect()->route('waterhole.login');
+        // }
 
         if (!Route::has('waterhole.register')) {
             session()->flash(
