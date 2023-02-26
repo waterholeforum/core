@@ -20,7 +20,6 @@ use Waterhole\Http\Controllers\Forum\SearchController;
 use Waterhole\Http\Controllers\Forum\UserController;
 use Waterhole\Http\Controllers\UploadController;
 use Waterhole\Http\Controllers\UserLookupController;
-use Waterhole\Http\Middleware\MaybeRequireLogin;
 
 // Feed
 Route::get('/', [IndexController::class, 'home'])->name('home');
@@ -88,34 +87,30 @@ Route::resource('notifications', NotificationController::class)->only(['index', 
 // Search
 Route::get('search', SearchController::class)->name('search');
 
-Route::withoutMiddleware(MaybeRequireLogin::class)->group(function () {
-    // Register
-    if (config('waterhole.auth.allow_registration', true)) {
-        Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name(
-            'register',
-        );
-        Route::post('register', [RegisterController::class, 'register']);
-    }
+// Register
+if (config('waterhole.auth.allow_registration', true)) {
+    Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+    Route::post('register', [RegisterController::class, 'register']);
+}
 
-    // Login
-    Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+// Login
+Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 
-    if (config('waterhole.auth.password_enabled', true)) {
-        Route::post('login', [LoginController::class, 'login']);
-    }
+if (config('waterhole.auth.password_enabled', true)) {
+    Route::post('login', [LoginController::class, 'login']);
+}
 
-    // Forgot Password
-    Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name(
-        'forgot-password',
-    );
-    Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail']);
+// Forgot Password
+Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name(
+    'forgot-password',
+);
+Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail']);
 
-    // Reset Password
-    Route::get('reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name(
-        'reset-password',
-    );
-    Route::post('reset-password/{token}', [ResetPasswordController::class, 'reset']);
-});
+// Reset Password
+Route::get('reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name(
+    'reset-password',
+);
+Route::post('reset-password/{token}', [ResetPasswordController::class, 'reset']);
 
 // Verify Email
 Route::get('verify-email/{id}', [VerifyEmailController::class, 'verify'])->name('verify-email');
