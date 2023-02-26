@@ -10,6 +10,7 @@ use Waterhole\Feed\PostFeed;
 use Waterhole\Filters\Following;
 use Waterhole\Filters\Ignoring;
 use Waterhole\Http\Controllers\Controller;
+use Waterhole\Http\Middleware\MaybeRequireLogin;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Page;
 use Waterhole\Models\Tag;
@@ -21,6 +22,11 @@ use function Waterhole\resolve_all;
  */
 class IndexController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(MaybeRequireLogin::class)->only('home');
+    }
+
     public function home(Request $request)
     {
         // Hide posts that the user has ignored, and posts that are in channels
