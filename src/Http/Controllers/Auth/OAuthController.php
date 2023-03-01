@@ -4,8 +4,8 @@ namespace Waterhole\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
-use Route;
 use Waterhole\Models\AuthProvider;
 use Waterhole\Models\User;
 use Waterhole\OAuth\Payload;
