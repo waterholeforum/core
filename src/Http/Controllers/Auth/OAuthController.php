@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Route;
 use Waterhole\Models\AuthProvider;
+use Waterhole\Models\User;
 use Waterhole\OAuth\Payload;
 use Waterhole\OAuth\Providers;
 
@@ -26,8 +27,6 @@ class OAuthController
         $externalUser = Socialite::driver($provider)->user();
         $identifier = $externalUser->getId();
         $email = $externalUser->getEmail();
-        $name = $externalUser->getNickname() ?: $externalUser->getName();
-        $avatar = $externalUser->getAvatar();
 
         if ($record = AuthProvider::firstWhere(compact('provider', 'identifier'))) {
             $record->touch('last_login_at');
@@ -37,11 +36,20 @@ class OAuthController
             return redirect()->intended(route('waterhole.home'));
         }
 
-        // if (User::firstWhere(compact('email'))) {
-        //     session()->flash('danger', 'There is already an account with this email address.');
-        //
-        //     return redirect()->route('waterhole.login');
-        // }
+        if ($user = User::firstWhere(compact('email'))) {
+            // TODO: ask the user to enter their password (if they have one)
+            // before associating this provider with their account
+
+            $user->authProviders()->create([
+                'provider' => $provider,
+                'identifier' => $identifier,
+                'last_login_at' => now(),
+            ]);
+
+            Auth::login($user);
+
+            return redirect()->intended(route('waterhole.home'));
+        }
 
         if (!Route::has('waterhole.register')) {
             session()->flash(
@@ -60,8 +68,8 @@ class OAuthController
             provider: $provider,
             identifier: $identifier,
             email: $email,
-            name: $name,
-            avatar: $avatar,
+            name: $externalUser->getNickname() ?: $externalUser->getName(),
+            avatar: $externalUser->getAvatar(),
         );
 
         return redirect()->route('waterhole.register', ['oauth' => $payload->encrypt()]);
