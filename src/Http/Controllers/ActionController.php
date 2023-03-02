@@ -102,7 +102,13 @@ final class ActionController extends Controller
             abort(400, "The actionable [$actionable] does not exist");
         }
 
-        return $model::findMany((array) $request->input('id'));
+        $models = $model::findMany((array) $request->input('id'));
+
+        if (!$models->count()) {
+            abort(400, 'No models found.');
+        }
+
+        return $models;
     }
 
     /**
