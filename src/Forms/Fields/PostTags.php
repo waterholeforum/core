@@ -36,12 +36,12 @@ class PostTags extends Field
         return <<<'blade'
             @foreach ($taxonomies as $taxonomy)
                 <x-waterhole::field
-                    name="tag_ids"
+                    name="tag_ids.{{ $taxonomy->id }}*"
                     :label="$taxonomy->translated_name"
                     :description="__(['waterhole.taxonomy-' . Str::kebab($taxonomy->name) . '-description', ''])"
                 >
                     <select
-                        name="tag_ids[]"
+                        name="tag_ids[{{ $taxonomy->id }}][]"
                         id="{{ $component->id }}"
                         @if ($taxonomy->allow_multiple) multiple @endif
                     >
@@ -49,7 +49,7 @@ class PostTags extends Field
                         @foreach ($taxonomy->tags as $tag)
                             <option
                                 value="{{ $tag->id }}"
-                                @selected(in_array($tag->id, old('tag_ids', $model->tags->modelKeys())))
+                                @selected(in_array($tag->id, old("tag_ids.$taxonomy->id", $model->tags->modelKeys()) ?? []))
                             >{{ $tag->name }}</option>
                         @endforeach
                     </select>
@@ -60,17 +60,18 @@ class PostTags extends Field
 
     public function validating(Validator $validator): void
     {
-        $validator->addRules([
-            'tag_ids' => ['array'],
-            'tag_ids.*' => [
-                'required',
-                'integer',
-                Rule::exists(Tag::class, 'id')->whereIn(
-                    'taxonomy_id',
-                    $this->taxonomies->modelKeys(),
-                ),
-            ],
-        ]);
+        foreach ($this->taxonomies as $taxonomy) {
+            $required = $taxonomy->is_required ? ['required'] : ['nullable'];
+
+            $validator->addRules([
+                "tag_ids.$taxonomy->id" => [...$required, 'array'],
+                "tag_ids.$taxonomy->id.*" => [
+                    ...$required,
+                    'integer',
+                    Rule::exists(Tag::class, 'id')->where('taxonomy_id', $taxonomy->id),
+                ],
+            ]);
+        }
     }
 
     public function saved(FormRequest $request): void
@@ -82,6 +83,11 @@ class PostTags extends Field
                     fn(Tag $tag) => $this->taxonomies->contains($tag->taxonomy_id),
                 ),
             );
-        $this->model->tags()->syncWithoutDetaching($request->validated('tag_ids'));
+
+        $this->model->tags()->attach(
+            collect($request->validated('tag_ids'))
+                ->flatten()
+                ->filter(),
+        );
     }
 }
