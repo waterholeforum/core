@@ -18,8 +18,8 @@
         "kirschbaum-development/eloquent-power-joins": "^2.6",
         "laravel/framework": "^9.0",
         "matthiasmullie/minify": "^1.3",
-        "ryangjchandler/blade-tabler-icons": "^2.0",
         "s9e/text-formatter": "^2.13",
+        "secondnetwork/blade-tabler-icons": "^2.6",
         "staudenmeir/laravel-adjacency-list": "^1.7",
         "staudenmeir/laravel-cte": "^1.0",
         "tonysm/turbo-laravel": "^1.5"
