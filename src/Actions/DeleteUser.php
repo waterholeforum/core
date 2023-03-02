@@ -62,7 +62,7 @@ class DeleteUser extends Action
 
         // If the action was initiated from the user's page, we can't send the
         // user back there. Instead, send them to the forum index.
-        if (request('return') === $models[0]->url) {
+        if (str_starts_with(request('return'), $models[0]->url)) {
             return redirect('/');
         }
     }
