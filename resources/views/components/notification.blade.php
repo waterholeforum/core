@@ -10,7 +10,10 @@
         role="menuitem"
         target="_top"
     >
-        <x-waterhole::icon :icon="$notification->template->icon()" class="color-muted text-sm"/>
+        <x-waterhole::icon
+            :icon="$notification->template->icon()"
+            class="color-muted text-sm"
+        />
 
         <span class="shrink">
             {{ Waterhole\emojify(Illuminate\Mail\Markdown::parse($notification->template->title())) }}
@@ -21,6 +24,10 @@
             </span>
         </span>
 
-        <x-waterhole::time-ago :datetime="$notification->created_at" format="micro" class="text-xxs push-end"/>
+        <x-waterhole::time-ago
+            :datetime="$notification->created_at"
+            format="micro"
+            class="text-xxs push-end nowrap"
+        />
     </a>
 </turbo-frame>
