@@ -20,7 +20,7 @@ class NewPost extends Notification
         return $this->post;
     }
 
-    public function sender(): User
+    public function sender(): ?User
     {
         return $this->post->user;
     }

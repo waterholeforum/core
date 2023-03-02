@@ -31,7 +31,7 @@ class Mention extends Notification
         return $this->content;
     }
 
-    public function sender(): User
+    public function sender(): ?User
     {
         return $this->content->user;
     }

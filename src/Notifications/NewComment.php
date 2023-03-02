@@ -22,7 +22,7 @@ class NewComment extends Notification
         return $this->comment;
     }
 
-    public function sender(): User
+    public function sender(): ?User
     {
         return $this->comment->user;
     }
