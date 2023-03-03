@@ -31,7 +31,7 @@ class OAuthController
         if ($record = AuthProvider::firstWhere(compact('provider', 'identifier'))) {
             $record->touch('last_login_at');
 
-            Auth::login($record->user);
+            Auth::login($record->user, true);
 
             return redirect()->intended(route('waterhole.home'));
         }
@@ -46,7 +46,7 @@ class OAuthController
                 'last_login_at' => now(),
             ]);
 
-            Auth::login($user);
+            Auth::login($user, true);
 
             return redirect()->intended(route('waterhole.home'));
         }
