@@ -62,6 +62,7 @@ class FormatterServiceProvider extends ServiceProvider
         Comment::setFormatter('body', $formatter);
         Page::setFormatter('body', $formatter);
         Post::setFormatter('body', $formatter);
+        Channel::setFormatter('description', $formatter);
         Channel::setFormatter('instructions', $formatter);
     }
 }
