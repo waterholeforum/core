@@ -38,7 +38,7 @@
     @if ($component->isAuthorized && $reactionSet->reactionTypes->count() > 1)
         <ui-popup placement="top" class="js-only">
             <button class="btn btn--sm btn--icon btn--transparent control">
-                <x-waterhole::icon icon="tabler-mood-smile"/>
+                <x-waterhole::icon icon="tabler-mood-plus"/>
             </button>
 
             <ui-menu class="menu reactions-menu" hidden>
