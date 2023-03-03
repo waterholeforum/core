@@ -110,7 +110,11 @@ class PostController extends Controller
 
         Gate::authorize('channel.post', $post->channel);
 
-        (new PostForm($post))->submit($request);
+        if (!(new PostForm($post))->submit($request)) {
+            return redirect()
+                ->back()
+                ->withInput();
+        }
 
         // Send out a "new post" notification to all followers of this post's
         // channel, except for the user who created the post.

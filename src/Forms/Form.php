@@ -20,11 +20,11 @@ abstract class Form
     /**
      * Validate the request and save the model.
      */
-    public function submit(Request $request): void
+    public function submit(Request $request): bool
     {
         $formRequest = $this->validate($request);
 
-        $this->save($formRequest);
+        return $this->save($formRequest);
     }
 
     /**
@@ -50,18 +50,22 @@ abstract class Form
     /**
      * Save the model.
      */
-    public function save(FormRequest $request): void
+    public function save(FormRequest $request): bool
     {
-        DB::transaction(function () use ($request) {
+        return DB::transaction(function () use ($request) {
             foreach ($this->getFields() as $field) {
                 $field->saving($request);
             }
 
-            $this->model->save();
+            if (!$this->model->save()) {
+                return false;
+            }
 
             foreach ($this->getFields() as $field) {
                 $field->saved($request);
             }
+
+            return true;
         });
     }
 
