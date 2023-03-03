@@ -20,8 +20,8 @@
         <div class="channel-card__info grow stack gap-md">
             <h2 class="h3">{{ $channel->name }}</h2>
 
-            @if ($channel->description)
-                <p class="content">{{ $channel->description }}</p>
+            @if ($description = $channel->description_html)
+                <div class="content">{{ Waterhole\emojify($description) }}</div>
             @endif
         </div>
     </div>
