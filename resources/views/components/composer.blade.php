@@ -5,7 +5,6 @@
     data-action="
         turbo:before-fetch-request->composer#open
         turbo:frame-render->composer#open
-        comment:quote-text@document->text-editor#insertQuote
         turbo:submit-end->composer#submitEnd
     "
 >
