@@ -34,7 +34,7 @@ abstract class FormatMentions
             '_',
         );
 
-        $config->Preg->match('/\B@(?<name>[^\s]+)/i', static::TAG_NAME);
+        $config->Preg->match('/\B@(?<name>[^\s]*[^\s\.,!?:;)"\'])/i', static::TAG_NAME);
 
         $tag = $config->tags->add(static::TAG_NAME);
         $tag->attributes->add('name');
