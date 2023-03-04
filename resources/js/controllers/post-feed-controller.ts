@@ -26,12 +26,12 @@ export default class extends Controller {
             const method = this.publicChannelsValue?.includes(id) ? 'channel' : 'private';
             window.Echo[method](`Waterhole.Models.Channel.${id}`)
                 .listen('NewComment', () => {
-                    if (this.filterValue === 'new-activity') {
+                    if (this.filterValue === 'latest') {
                         this.showNewActivity();
                     }
                 })
                 .listen('NewPost', () => {
-                    if (this.filterValue === 'latest' || this.filterValue === 'new-activity') {
+                    if (this.filterValue === 'newest' || this.filterValue === 'latest') {
                         this.showNewActivity();
                     }
                 });
