@@ -10,11 +10,8 @@ use Waterhole\Models\User;
 
 class NewComment extends Notification
 {
-    protected Comment $comment;
-
-    public function __construct(Comment $comment)
+    public function __construct(protected Comment $comment)
     {
-        $this->comment = $comment;
     }
 
     public function content(): Comment

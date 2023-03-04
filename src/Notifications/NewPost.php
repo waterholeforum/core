@@ -8,11 +8,8 @@ use Waterhole\Models\User;
 
 class NewPost extends Notification
 {
-    protected Post $post;
-
-    public function __construct(Post $post)
+    public function __construct(protected Post $post)
     {
-        $this->post = $post;
     }
 
     public function content(): Post

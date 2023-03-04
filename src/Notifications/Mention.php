@@ -10,13 +10,10 @@ use Waterhole\Models\User;
 
 class Mention extends Notification
 {
-    protected Post|Comment $content;
-
     protected Post $post;
 
-    public function __construct(Post|Comment $content)
+    public function __construct(protected Post|Comment $content)
     {
-        $this->content = $content;
         $this->post = $this->content instanceof Post ? $this->content : $this->content->post;
     }
 
