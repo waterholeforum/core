@@ -41,10 +41,12 @@ abstract class FormatMentions
         $tag->attributes->add('id');
         $tag->filterChain->prepend([static::class, 'filterMention']);
 
+        // data-hovercard-type="user" is necessary to make @github/paste-markdown
+        // prevent mentions being converted into Markdown links when pasted.
         $tag->template = <<<'xsl'
             <xsl:choose>
                 <xsl:when test="@id">
-                    <a href="{$MENTION_URL}{@id}" data-user-id="{@id}">
+                    <a href="{$MENTION_URL}{@id}" data-user-id="{@id}" data-hovercard-type="user">
                         <xsl:attribute name="class">
                             mention <xsl:if test="@id and @id = $USER_ID">mention--self</xsl:if>
                         </xsl:attribute>
