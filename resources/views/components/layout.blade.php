@@ -27,6 +27,8 @@
         window.Waterhole = @json($payload);
     </script>
 
+    {{ $head ?? '' }}
+
     @components(Waterhole\Extend\DocumentHead::build(), compact('title', 'assets'))
 </head>
 
