@@ -140,10 +140,10 @@
                                         <x-waterhole::user-groups :user="$user"/>
                                     </td>
                                     <td>
-                                        {{ Waterhole\time_ago($user->created_at) }}
+                                        <x-waterhole::time-ago :datetime="$user->created_at"/>
                                     </td>
                                     <td>
-                                        {{ Waterhole\time_ago($user->last_seen_at) }}
+                                        <x-waterhole::time-ago :datetime="$user->last_seen_at"/>
                                     </td>
                                     <td>
                                         <x-waterhole::action-buttons
