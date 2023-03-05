@@ -5,14 +5,14 @@ dashboard-title = Dashboard
 icon-label = Icon
 
 getting-started-title = Get Started With Waterhole
-getting-started-strategy-title = Develop Your Strategy
+getting-started-strategy-title = Read the Docs
 getting-started-strategy-description = Learn how to build a successful community with Waterhole.
 getting-started-structure-title = Set Up Your Structure
 getting-started-structure-description = Configure the channels and pages that make up the skeleton of your community.
 getting-started-groups-title = Define User Groups
 getting-started-groups-description = Set up groups for moderators, staff, and superusers.
-getting-started-design-title = Customize The Design
-getting-started-design-description = Learn how to integrate Waterhole with your brand and make it your own.
+getting-started-design-title = Join the Waterhole Community
+getting-started-design-description = Ask questions, share tips, and learn how to get the most out of your community.
 
 period-today = Today
 period-last-7-days = Last 7 days

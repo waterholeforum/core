@@ -26,7 +26,7 @@ return [
     'widgets' => [
         [
             'component' => Waterhole\Widgets\GettingStarted::class,
-            'width' => 100,
+            'width' => 50,
         ],
         [
             'component' => Waterhole\Widgets\Feed::class,

@@ -58,4 +58,11 @@
             @endforeach
         </div>
     </div>
+
+    <div class="admin-help">
+        <a href="https://waterhole.dev/docs/dashboard" target="_blank" class="color-muted with-icon">
+            <x-waterhole::icon icon="tabler-help"/>
+            Customize the Dashboard
+        </a>
+    </div>
 </x-waterhole::admin>
