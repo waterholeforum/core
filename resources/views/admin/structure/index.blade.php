@@ -1,5 +1,5 @@
 <x-waterhole::admin :title="__('waterhole::admin.structure-title')">
-    <turbo-frame id="structure">
+    <turbo-frame id="structure" target="_top">
         <x-waterhole::admin.sortable-context
             class="stack gap-md"
             data-controller="form"
@@ -93,6 +93,7 @@
             <form
                 action="{{ route('waterhole.admin.structure') }}"
                 method="post"
+                data-turbo-frame="structure"
                 data-form-target="form"
                 hidden
             >
