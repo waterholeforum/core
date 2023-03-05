@@ -21,11 +21,10 @@ class ChannelDescription extends Field
                 :label="__('waterhole::admin.channel-description-label')"
                 :description="__('waterhole::admin.channel-description-description')"
             >
-                <x-waterhole::text-editor
+                <textarea
+                    id="{{ $component->id }}"
                     name="description"
-                    :id="$component->id"
-                    :value="old('description', $model->description ?? '')"
-                />
+                >{{ old('description', $model->description ?? '') }}</textarea>
             </x-waterhole::field>
         blade;
     }
