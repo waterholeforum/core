@@ -10,7 +10,6 @@ use Major\Fluent\Formatters\Number\Options;
 use Waterhole\Extend\Emoji;
 use Waterhole\Models\User;
 use Waterhole\Support\Text;
-use Waterhole\Support\TimeAgo;
 
 /**
  * Format a number.
@@ -49,40 +48,6 @@ function compact_number(float $number): string
     }
 
     return (string) $number;
-}
-
-function time_ago($then): string
-{
-    $args = TimeAgo::calculate($then);
-
-    return __('waterhole::time.time-ago', $args);
-}
-
-function short_time_ago($then): string
-{
-    $args = TimeAgo::calculate($then);
-
-    return __('waterhole::time.short-time-ago', $args);
-}
-
-function relative_time($then): string
-{
-    $args = TimeAgo::calculate($then);
-
-    return __('waterhole::time.relative-time', $args);
-}
-
-function full_time($date): string
-{
-    if (!$date instanceof DateTime) {
-        $date = new DateTime($date);
-    }
-
-    return __('waterhole::time.full-time', [
-        'date' => new \Tobyz\Fluent\Types\DateTime(
-            $date /*, ['timeZone' => 'Australia/Adelaide']*/,
-        ),
-    ]);
 }
 
 /**
