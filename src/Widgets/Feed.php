@@ -2,21 +2,30 @@
 
 namespace Waterhole\Widgets;
 
-use Feed as FeedReader;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
 use Illuminate\View\Component;
+use Laminas\Feed\Reader\Feed\FeedInterface;
+use Laminas\Feed\Reader\Reader;
 
 class Feed extends Component
 {
     public static bool $lazy = true;
 
-    public FeedReader $feed;
+    public FeedInterface $feed;
 
     public function __construct(public string $url, public int $limit = 3)
     {
-        FeedReader::$cacheDir = storage_path('waterhole/feed');
-        FeedReader::$cacheExpire = '12 hours';
+        // TODO: be smarter about caching (ie. HTTP Conditional GET)
+        $content = Cache::remember(
+            'waterhole.feed.' . sha1($url),
+            60 * 60 * 6,
+            fn() => Http::throw()
+                ->get($url)
+                ->body(),
+        );
 
-        $this->feed = FeedReader::load($url);
+        $this->feed = Reader::importString($content);
     }
 
     public function render()
