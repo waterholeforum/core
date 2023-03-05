@@ -66,7 +66,7 @@ abstract class Notification extends BaseNotification implements ShouldQueue
             ->subject(strip_tags($html))
             ->markdown('waterhole::mail.notification', [
                 'html' => $html,
-                'avatar' => $this->sender()->avatar,
+                'avatar' => $this->sender()->avatar_url,
                 'name' => $this->sender()->name,
                 'excerpt' => $this->excerpt(),
                 'button' => $this->button(),

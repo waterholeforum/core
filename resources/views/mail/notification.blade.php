@@ -2,10 +2,13 @@
 {{ $html }}
 
 @component('mail::panel')
+<p>
 @isset($avatar)
-<img src="{{ $avatar }}" class="avatar">
+<img src="{{ $avatar }}" width="32" height="32" style="border-radius: 100%; vertical-align: middle">
 @endisset
-{{ $name }}:
+<strong>{{ $name }}:</strong>
+</p>
+
 {!! preg_replace('/<script.*?\/script>/s', '', $excerpt) !!}
 @endcomponent
 
