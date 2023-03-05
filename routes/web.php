@@ -11,6 +11,7 @@ use Waterhole\Http\Controllers\Auth\RegisterController;
 use Waterhole\Http\Controllers\Auth\ResetPasswordController;
 use Waterhole\Http\Controllers\Auth\VerifyEmailController;
 use Waterhole\Http\Controllers\FormatController;
+use Waterhole\Http\Controllers\Forum\AtomController;
 use Waterhole\Http\Controllers\Forum\CommentController;
 use Waterhole\Http\Controllers\Forum\IndexController;
 use Waterhole\Http\Controllers\Forum\NotificationController;
@@ -26,6 +27,12 @@ use Waterhole\Http\Controllers\UserLookupController;
 Route::get('/', [IndexController::class, 'home'])->name('home');
 Route::get('channels/{channel:slug}', [IndexController::class, 'channel'])->name('channels.show');
 Route::get('pages/{page:slug}', [IndexController::class, 'page'])->name('page');
+
+// Atom
+Route::get('posts.xml', [AtomController::class, 'posts'])->name('atom.posts');
+Route::get('channels/{channel:slug}/posts.xml', [AtomController::class, 'channel'])->name(
+    'atom.channel',
+);
 
 // Actions
 Route::get('confirm-action', [ActionController::class, 'confirm'])->name('action.create');

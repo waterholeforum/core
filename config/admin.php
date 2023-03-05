@@ -31,7 +31,7 @@ return [
         [
             'component' => Waterhole\Widgets\Feed::class,
             'width' => 50,
-            'url' => 'https://www.nasa.gov/rss/dyn/lg_image_of_the_day.rss',
+            'url' => 'http://waterhole.test/channels/announcements/posts.xml',
             'limit' => 4,
         ],
         [
