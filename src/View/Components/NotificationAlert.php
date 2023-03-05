@@ -15,7 +15,9 @@ class NotificationAlert extends Component
     {
         return <<<'blade'
             <x-waterhole::alert class="alert--notification" dismissible data-key="notification">
-                <turbo-frame id="@domid($notification)" src="{{ $notification->url }}"></turbo-frame>
+                <turbo-frame id="@domid($notification)" src="{{ $notification->url }}">
+                    <div class="spinner spinner--sm"></div>
+                </turbo-frame>
             </x-waterhole::alert>
         blade;
     }
