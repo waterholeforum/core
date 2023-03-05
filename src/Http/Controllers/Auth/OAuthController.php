@@ -52,10 +52,7 @@ class OAuthController
         }
 
         if (!Route::has('waterhole.register')) {
-            session()->flash(
-                'danger',
-                'No account exists with this email address, and registration is disabled.',
-            );
+            session()->flash('danger', __('waterhole::auth.failed'));
 
             return redirect()->route('waterhole.login');
         }

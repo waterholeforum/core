@@ -31,7 +31,9 @@ class NewComment extends Notification
 
     public function title(): string
     {
-        return "New comment in **{$this->comment->post->title}**";
+        return __('waterhole::notifications.new-comment-title', [
+            'post' => "**{$this->comment->post->title}**",
+        ]);
     }
 
     public function excerpt(): HtmlString
@@ -56,17 +58,17 @@ class NewComment extends Notification
 
     public function button(): string
     {
-        return 'View Comment';
+        return __('waterhole::notifications.view-comment-button');
     }
 
     public function reason(): string
     {
-        return 'You received this because you are following this post.';
+        return __('waterhole::notifications.new-comment-reason');
     }
 
     public function unsubscribeText(): string
     {
-        return 'Unfollow this post';
+        return __('waterhole::notifications.new-comment-unsubscribe');
     }
 
     public function unsubscribe(User $user): void
@@ -76,7 +78,7 @@ class NewComment extends Notification
 
     public static function description(): string
     {
-        return 'New comments on followed posts';
+        return __('waterhole::notifications.new-comment-description');
     }
 
     public static function load(Collection $notifications): void

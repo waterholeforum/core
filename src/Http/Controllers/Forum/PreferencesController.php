@@ -50,7 +50,7 @@ class PreferencesController extends Controller
             ->route('waterhole.preferences.account')
             ->with(
                 'success',
-                "We've sent a verification email to <strong>{$data['email']}</strong>.",
+                __('waterhole::auth.email-verification-sent-message', ['email' => $data['email']]),
             );
     }
 
@@ -64,7 +64,7 @@ class PreferencesController extends Controller
 
         return redirect()
             ->route('waterhole.preferences.account')
-            ->with('success', 'Your password has been changed.');
+            ->with('success', __('waterhole::passwords.reset'));
     }
 
     public function profile(Request $request)
@@ -80,7 +80,7 @@ class PreferencesController extends Controller
 
         return redirect()
             ->route('waterhole.preferences.profile')
-            ->with('success', 'Profile saved.');
+            ->with('success', __('waterhole::user.profile-saved-message'));
     }
 
     public function notifications()
@@ -101,6 +101,6 @@ class PreferencesController extends Controller
 
         return redirect()
             ->route('waterhole.preferences.notifications')
-            ->with('success', 'Notification preferences saved.');
+            ->with('success', __('waterhole::user.notification-preferences-saved-message'));
     }
 }

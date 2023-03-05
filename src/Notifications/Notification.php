@@ -176,7 +176,7 @@ abstract class Notification extends BaseNotification implements ShouldQueue
      */
     public function unsubscribeText(): ?string
     {
-        return 'Unsubscribe from these notifications';
+        return __('waterhole::notifications.unsubscribe-link');
     }
 
     /**

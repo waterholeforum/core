@@ -29,7 +29,7 @@ class VerifyEmailController extends Controller
 
         return redirect()
             ->intended(route('waterhole.home'))
-            ->with('success', 'Thanks for verifying your email!');
+            ->with('success', __('waterhole::auth.email-verification-success-message'));
     }
 
     public function resend(Request $request)
@@ -40,6 +40,6 @@ class VerifyEmailController extends Controller
 
         $request->user()->sendEmailVerificationNotification();
 
-        return back()->with('success', 'Verification email sent.');
+        return back()->with('success', __('waterhole::auth.email-verification-sent-message'));
     }
 }

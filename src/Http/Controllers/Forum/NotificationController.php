@@ -90,6 +90,6 @@ class NotificationController extends Controller
 
         return redirect()
             ->route('waterhole.home')
-            ->with('success', "You've been unsubscribed from these notifications.");
+            ->with('success', __('waterhole::notifications.unsubscribe-success-message'));
     }
 }

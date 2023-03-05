@@ -23,14 +23,13 @@ class VerifyEmail extends Notification
         $verificationUrl = $this->verificationUrl();
 
         return (new MailMessage())
-            ->subject('Verify Email Address')
-            ->line('Please click the button below to verify your email address.')
-            ->action('Verify Email Address', $verificationUrl)
+            ->subject(__('waterhole::auth.email-verification-mail-subject'))
             ->line(
-                'If you do not have an account on ' .
-                    config('waterhole.forum.name') .
-                    ', no further action is required.',
-            );
+                __('waterhole::auth.email-verification-mail-body', [
+                    'forum' => config('waterhole.forum.name'),
+                ]),
+            )
+            ->action(__('waterhole::auth.email-verification-mail-button'), $verificationUrl);
     }
 
     protected function verificationUrl(): string

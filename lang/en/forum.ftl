@@ -150,3 +150,4 @@ post-locked-badge = Locked
 
 delete-comment-confirm-message = Are you sure you want to delete this comment?
 delete-post-confirm-message = Are you sure you want to delete this post?
+delete-post-success-message = Post deleted.
