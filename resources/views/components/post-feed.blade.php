@@ -1,6 +1,6 @@
 <turbo-frame
     id="post-feed"
-    class="stack gap-lg"
+    class="post-feed stack gap-lg"
     target="_top"
     data-controller="post-feed"
     data-post-feed-filter-value="{{ $feed->currentFilter()->handle() }}"
@@ -34,7 +34,7 @@
 
         @if ($posts->isNotEmpty())
             <x-waterhole::infinite-scroll :paginator="$posts">
-                <div class="post-{{ $feed->currentLayout() }}">
+                <div class="post-feed__content post-{{ $feed->currentLayout() }}">
                     @foreach ($posts as $post)
                         @if ($showLastVisit && $post->last_activity_at < session('previously_seen_at'))
                             @once

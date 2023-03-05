@@ -31,3 +31,8 @@
 .post-cards {
   &:extend(.card-list all);
 }
+
+// Hide the channel label from posts when we're viewing a specific channel
+[data-route='waterhole.channels.show'] .post-feed__content .channel-label {
+  display: none;
+}
