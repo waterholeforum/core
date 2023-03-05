@@ -8,11 +8,16 @@ use Illuminate\View\Component;
 
 class TimeAgo extends Component
 {
-    public Carbon $dateTime;
+    public ?Carbon $dateTime;
 
-    public function __construct(DateTime $datetime)
+    public function __construct(?DateTime $datetime)
     {
-        $this->dateTime = new Carbon($datetime);
+        $this->dateTime = $datetime ? new Carbon($datetime) : null;
+    }
+
+    public function shouldRender(): bool
+    {
+        return (bool) $this->dateTime;
     }
 
     public function render()
