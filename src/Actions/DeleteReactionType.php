@@ -10,7 +10,6 @@ use Waterhole\Models\User;
 class DeleteReactionType extends Action
 {
     public bool $confirm = true;
-
     public bool $destructive = true;
 
     public function appliesTo(Model $model): bool
