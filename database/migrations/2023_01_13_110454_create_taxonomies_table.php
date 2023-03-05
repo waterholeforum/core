@@ -11,7 +11,6 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->boolean('allow_multiple')->default(0);
-            $table->boolean('show_on_post_summary')->default(0);
             $table->timestamps();
         });
     }

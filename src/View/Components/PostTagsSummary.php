@@ -13,9 +13,7 @@ class PostTagsSummary extends Component
 
     public function __construct(public Post $post)
     {
-        $this->tags = $post->tags
-            ->filter(fn($tag) => $tag->taxonomy->show_on_post_summary)
-            ->sortBy('taxonomy_id');
+        $this->tags = $post->tags->sortBy('taxonomy_id');
     }
 
     public function shouldRender(): bool

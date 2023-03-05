@@ -30,11 +30,6 @@ class TaxonomyOptions extends Field
                         <input type="checkbox" name="allow_multiple" value="1" @checked($model->allow_multiple)>
                         Allow selection of multiple tags
                     </label>
-                    <label class="choice">
-                        <input type="hidden" name="show_on_post_summary" value="0">
-                        <input type="checkbox" name="show_on_post_summary" value="1" @checked($model->show_on_post_summary)>
-                        Show tags on post summaries
-                    </label>
                 </div>
             </div>
         blade;
@@ -45,7 +40,6 @@ class TaxonomyOptions extends Field
         $validator->addRules([
             'is_required' => ['boolean'],
             'allow_multiple' => ['boolean'],
-            'show_on_post_summary' => ['boolean'],
         ]);
     }
 
@@ -53,6 +47,5 @@ class TaxonomyOptions extends Field
     {
         $this->model->is_required = $request->validated('is_required');
         $this->model->allow_multiple = $request->validated('allow_multiple');
-        $this->model->show_on_post_summary = $request->validated('show_on_post_summary');
     }
 }
