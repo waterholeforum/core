@@ -29,7 +29,7 @@ trait UsesFormatter
                         static::$formatters[$attribute]->render($value, new Context($this, $user)),
                     )
                     : '',
-                __('waterhole::system.formatter-error'),
+                '',
             );
         }
 

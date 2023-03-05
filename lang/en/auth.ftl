@@ -22,6 +22,10 @@ new-password-label = New Password
 confirm-password-label = Confirm Password
 reset-password-submit = Reset Password
 
+reset-password-mail-subject = Reset Your Password
+reset-password-mail-body = We received a password reset request for your account on { $forum }. If this was not you, no further action is required. This link will expire in { $minutes } minutes.
+reset-password-mail-button = Reset Password
+
 register-title = Create an Account
 name-label = Username
 register-submit = Create Account
@@ -32,7 +36,10 @@ confirm-password-title = Confirm Your Password
 confirm-password-introduction = Please confirm your password before continuing.
 confirm-password-submit = Confirm
 
-email-verification-message = We've sent a confirmation email to { $email }. If it doesn't arrive soon, check your spam folder.
+email-verification-sent-message = We've sent a confirmation email to { $email }. If it doesn't arrive soon, check your spam folder.
 email-verification-resend-button = Resend
-
 email-verification-required-message = You must verify your email address.
+email-verification-success-message = Thanks for verifying your email!
+email-verification-mail-subject = Verify Email Address
+email-verification-mail-body = Please click the button below to verify your email address. If you do not have an account on { $forum }, no further action is required.
+email-verification-mail-button = Verify Email Address

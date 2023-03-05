@@ -21,7 +21,7 @@ class AtomController extends Controller
             ->get();
 
         $feed = new Feed();
-        $feed->setTitle(config('waterhole.forum.name') . ' - Latest Posts');
+        $feed->setTitle(config('waterhole.forum.name'));
         $feed->setLink(route('waterhole.home'));
 
         return $this->postsFeed($feed, $posts);

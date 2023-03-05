@@ -11,8 +11,10 @@ notification-channel-web = Web
 notification-channel-email = Email
 notifications-following-label = Following
 follow-on-comment-label = Automatically follow posts I comment on
+notification-preferences-saved-message = Notification preferences saved.
 
 edit-profile-title = Edit Profile
+profile-saved-message = Profile saved.
 
 user-top-comments-title = { $userName }'s Top Comments
 user-newest-comments-title = { $userName }'s Newest Comments

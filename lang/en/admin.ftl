@@ -153,6 +153,8 @@ user-password-label = Password
 user-set-password-label = Set new password
 user-groups-label = Groups
 user-profile-title = Profile
+user-created-message = User created.
+user-saved-message = User saved.
 
 license-error-message = Error communicating with waterhole.dev.
 license-invalid-message = Please purchase or enter a valid license key for this site to comply with the License Agreement.
@@ -172,6 +174,7 @@ create-reaction-set-title = Create a Reaction Set
 reaction-set-name-label = Name
 reaction-set-reactions-label = Reactions
 delete-reaction-set-confirm-message = Are you sure you want to delete this reaction set?
+reaction-set-saved-message = Reaction set saved.
 
 edit-reaction-type-title = Edit Reaction Type
 create-reaction-type-title = Create a Reaction Type
@@ -179,6 +182,7 @@ reaction-type-name-label = Name
 reaction-type-score-label = Score
 reaction-type-score-description = The number of points that this reaction is worth.
 delete-reaction-type-confirm-message = Are you sure you want to delete this reaction type?
+reaction-type-saved-message = Reaction type saved.
 
 taxonomies-title = Taxonomies
 create-taxonomy-button = Create Taxonomy

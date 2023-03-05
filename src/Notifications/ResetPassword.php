@@ -19,21 +19,17 @@ class ResetPassword extends Notification
     public function toMail($notifiable): MailMessage
     {
         $resetUrl = $this->resetUrl($notifiable);
+        $minutes = config('auth.passwords.' . config('auth.defaults.passwords') . '.expire');
 
         return (new MailMessage())
-            ->subject('Reset Password Notification')
+            ->subject(__('waterhole::auth.reset-password-mail-subject'))
             ->line(
-                'You are receiving this email because we received a password reset request for your account.',
-            )
-            ->action('Reset Password', $resetUrl)
-            ->line(
-                __('This password reset link will expire in :count minutes.', [
-                    'count' => config(
-                        'auth.passwords.' . config('auth.defaults.passwords') . '.expire',
-                    ),
+                __('waterhole::auth.reset-password-mail-body', [
+                    'forum' => config('waterhole.forum.name'),
+                    'minutes' => $minutes,
                 ]),
             )
-            ->line('If you did not request a password reset, no further action is required.');
+            ->action(__('waterhole::auth.reset-password-mail-button'), $resetUrl);
     }
 
     protected function resetUrl($notifiable): string

@@ -60,7 +60,7 @@ class ReactionTypeController extends Controller
 
         return redirect($request->input('return', $reactionType->reactionSet->edit_url))->with(
             'success',
-            'Reaction type saved.',
+            __('waterhole::admin.reaction-type-saved-message'),
         );
     }
 

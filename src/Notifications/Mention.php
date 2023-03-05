@@ -40,7 +40,7 @@ class Mention extends Notification
 
     public function title(): string
     {
-        return "Mentioned in **{$this->post->title}**";
+        return __('waterhole::notifications.mention-title', ['post' => "**{$this->post->title}**"]);
     }
 
     public function excerpt(): HtmlString
@@ -55,22 +55,26 @@ class Mention extends Notification
 
     public function button(): string
     {
-        return 'View ' . ($this->content instanceof Post ? 'Post' : 'Comment');
+        return __(
+            $this->content instanceof Post
+                ? 'waterhole::notifications.view-post-button'
+                : 'waterhole::notifications.view-comment-button',
+        );
     }
 
     public function reason(): string
     {
-        return 'You received this because you are subscribed to mention notifications.';
+        return __('waterhole::notifications.mention-reason');
     }
 
     public function unsubscribeText(): string
     {
-        return 'Unsubscribe from mention notifications';
+        return __('waterhole::notifications.mention-unsubscribe');
     }
 
     public static function description(): string
     {
-        return 'Mentions';
+        return __('waterhole::notifications.mention-description');
     }
 
     public static function load(Collection $notifications): void

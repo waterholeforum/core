@@ -29,7 +29,10 @@ class NewPost extends Notification
 
     public function title(): string
     {
-        return "New post in {$this->post->channel->name}: **{$this->post->title}**";
+        return __('waterhole::notifications.new-post-title', [
+            'channel' => $this->post->channel->name,
+            'post' => "**{$this->post->title}**",
+        ]);
     }
 
     public function excerpt(): string
@@ -44,17 +47,17 @@ class NewPost extends Notification
 
     public function button(): string
     {
-        return 'View Post';
+        return __('waterhole::notifications.view-post-button');
     }
 
     public function reason(): string
     {
-        return 'You received this because you are following this channel.';
+        return __('waterhole::notifications.new-post-reason');
     }
 
     public function unsubscribeText(): string
     {
-        return 'Unfollow this channel';
+        return __('waterhole::notifications.new-post-unsubscribe');
     }
 
     public function unsubscribe(User $user): void
@@ -64,7 +67,7 @@ class NewPost extends Notification
 
     public static function description(): string
     {
-        return 'New posts in followed channels';
+        return __('waterhole::notifications.new-post-description');
     }
 
     public static function load(Collection $notifications): void

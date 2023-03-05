@@ -85,7 +85,7 @@ class UserController extends Controller
 
         return redirect()
             ->route('waterhole.admin.users.index', ['sort' => 'created_at'])
-            ->with('success', 'User created.');
+            ->with('success', __('waterhole::admin.user-created-message'));
     }
 
     public function edit(User $user)
@@ -101,7 +101,7 @@ class UserController extends Controller
 
         return redirect($request->input('return', route('waterhole.admin.users.index')))->with(
             'success',
-            'User saved.',
+            __('waterhole::admin.user-saved-message'),
         );
     }
 

@@ -47,7 +47,7 @@ class DeletePost extends Action
     {
         $models->each->delete();
 
-        session()->flash('success', 'Post deleted.');
+        session()->flash('success', __('waterhole::system.delete-post-success-message'));
 
         // If the action was initiated from the post's page, we can't send the
         // user back there. Instead, send them to the forum index.
