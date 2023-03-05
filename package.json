@@ -39,6 +39,7 @@
         "highlight.js": "^11.6.0",
         "idiomorph": "^0.0.7",
         "inclusive-elements": "^0.2.1",
+        "inclusive-sort": "^0.1.0-beta.2",
         "ky": "^0.33.2",
         "laravel-echo": "^1.11.3",
         "lodash-es": "^4.17.21",
