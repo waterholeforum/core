@@ -9,7 +9,7 @@
                 :value="$item->id"
                 :active="$item->id == $value"
                 :label="$item->name"
-                :description="$item->description"
+                :description="new Illuminate\Support\HtmlString(strip_tags($item->description_html))"
                 :icon="$item->icon"
                 role=""
             />
