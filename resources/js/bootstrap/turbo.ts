@@ -29,8 +29,7 @@ document.addEventListener('turbo:before-stream-render', (e) => {
 
 document.addEventListener('turbo:before-fetch-response', async (e) => {
     const response = (e as CustomEvent).detail.fetchResponse.response;
-    if (response.ok || response.status === 422 || (Waterhole.debug && response.status >= 500))
-        return;
+    if (response.ok || response.status === 422) return;
     e.preventDefault();
 
     const { target } = e;
