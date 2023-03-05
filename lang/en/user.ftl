@@ -58,3 +58,6 @@ suspended-indefinitely-label = Suspended indefinitely
 suspended-until-label = Suspended until...
 suspended-badge = Suspended
 suspended-message = Your account has been suspended.
+
+copy-impersonation-url-button = Copy Impersonation URL
+impersonation-url-copied-message = Impersonation URL copied – open it in a new private window.

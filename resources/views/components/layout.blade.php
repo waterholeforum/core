@@ -111,9 +111,11 @@
     </template>
 @endforeach
 
-<template id="template-alert-danger">
-    <x-waterhole::alert type="danger" />
-</template>
+@foreach (['success', 'warning', 'danger'] as $type)
+    <template id="template-alert-{{ $type }}">
+        <x-waterhole::alert :$type />
+    </template>
+@endforeach
 
 <template id="frame-error">
     <div class="placeholder">
