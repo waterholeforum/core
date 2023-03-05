@@ -20,7 +20,7 @@
 
             <span class="menu-item__description overflow-ellipsis">
                 <x-waterhole::user-label :user="$notification->template->sender()"/> ·
-                {{ Waterhole\emojify(strip_tags($notification->template->excerpt())) }}
+                {{ Waterhole\emojify(Illuminate\Support\Str::limit(strip_tags($notification->template->excerpt()), 200)) }}
             </span>
         </span>
 
