@@ -2,6 +2,7 @@
 
 namespace Waterhole\View\Components;
 
+use Illuminate\Support\HtmlString;
 use Illuminate\View\Component;
 
 class MenuItem extends Component
@@ -10,7 +11,7 @@ class MenuItem extends Component
         public ?bool $active = null,
         public ?string $icon = null,
         public ?string $label = null,
-        public ?string $description = null,
+        public null|string|HtmlString $description = null,
         public ?string $href = null,
     ) {
     }
