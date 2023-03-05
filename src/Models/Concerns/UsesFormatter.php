@@ -24,11 +24,12 @@ trait UsesFormatter
 
         if (!isset($this->renderCache[$key])) {
             $this->renderCache[$key] = rescue(
-                fn() => $value
+                fn() => str_starts_with($value, '<')
                     ? new HtmlString(
                         static::$formatters[$attribute]->render($value, new Context($this, $user)),
                     )
-                    : '',
+                    : ($value ?:
+                    ''),
                 '',
             );
         }
@@ -47,7 +48,7 @@ trait UsesFormatter
     /**
      * Set a formatter instance for this model.
      */
-    public static function setFormatter(string $attribute, Formatter $formatter)
+    public static function setFormatter(string $attribute, Formatter $formatter): void
     {
         static::$formatters[$attribute] = $formatter;
     }
@@ -71,7 +72,7 @@ trait UsesFormatter
         return parent::getAttribute($key);
     }
 
-    public function setAttribute($key, $value)
+    public function setAttribute($key, $value): void
     {
         parent::setAttribute($key, $value);
 

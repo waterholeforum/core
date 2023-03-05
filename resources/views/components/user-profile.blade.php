@@ -21,11 +21,11 @@
                 </h1>
 
                 @if ($user->headline)
-                    <p class="h4 user-profile__headline">{{ $user->headline }}</p>
+                    <p class="h4 user-profile__headline">{{ Waterhole\emojify($user->headline) }}</p>
                 @endif
 
-                @if ($user->bio)
-                    <p class="content user-profile__bio">{{ $user->bio }}</p>
+                @if ($user->bio_html)
+                    <div class="content user-profile__bio">{{ Waterhole\emojify($user->bio_html) }}</div>
                 @endif
 
                 <div class="row gap-sm wrap align-baseline color-muted text-xs user-profile__info">

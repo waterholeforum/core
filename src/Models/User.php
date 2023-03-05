@@ -20,6 +20,7 @@ use Intervention\Image\Image;
 use Waterhole\Extend\NotificationTypes;
 use Waterhole\Models\Concerns\HasImageAttributes;
 use Waterhole\Models\Concerns\ReceivesPermissions;
+use Waterhole\Models\Concerns\UsesFormatter;
 use Waterhole\Notifications\ResetPassword;
 use Waterhole\Notifications\VerifyEmail;
 
@@ -64,6 +65,7 @@ class User extends Model implements
     use MustVerifyEmail;
     use Notifiable;
     use ReceivesPermissions;
+    use UsesFormatter;
 
     public const UPDATED_AT = null;
 
