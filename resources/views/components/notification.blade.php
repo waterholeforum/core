@@ -27,7 +27,7 @@
         <x-waterhole::time-ago
             :datetime="$notification->created_at"
             format="micro"
-            class="text-xxs push-end nowrap"
+            class="text-xxs color-muted push-end nowrap"
         />
     </a>
 </turbo-frame>
