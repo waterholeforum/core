@@ -9,6 +9,8 @@ mix.ts('resources/js/index.ts', 'resources/dist/index.js')
     .less('resources/less/forum/app.less', 'resources/dist/index.css')
     .less('resources/less/admin/app.less', 'resources/dist/admin.css');
 
-mix.webpackConfig({
-    plugins: [new BundleAnalyzerPlugin()],
-});
+if (process.env.ANALYZE) {
+    mix.webpackConfig({
+        plugins: [new BundleAnalyzerPlugin()],
+    });
+}
