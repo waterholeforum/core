@@ -12,8 +12,8 @@ class GettingStarted extends Component
     {
         $this->items = [
             'strategy' => [
-                'url' => '#',
-                'icon' => 'tabler-map',
+                'url' => 'https://waterhole.dev/docs',
+                'icon' => 'tabler-book',
             ],
             'structure' => [
                 'url' => route('waterhole.admin.structure'),
@@ -24,8 +24,8 @@ class GettingStarted extends Component
                 'icon' => 'tabler-users',
             ],
             'design' => [
-                'url' => '#',
-                'icon' => 'tabler-color-swatch',
+                'url' => 'https://waterhole.dev/forum',
+                'icon' => 'tabler-bulb',
             ],
         ];
     }

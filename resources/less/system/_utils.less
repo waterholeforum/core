@@ -501,10 +501,6 @@
   -webkit-user-select: none;
 }
 
-.cursor-default {
-  cursor: default;
-}
-
 .clickable {
   &:is(:disabled, .is-disabled) {
     opacity: 0.5;
@@ -530,6 +526,14 @@
       transform: scale(0.97);
     }
   }
+}
+
+.cursor-default {
+  cursor: default !important;
+}
+
+.cursor-help {
+  cursor: help !important;
 }
 
 // JavaScript
