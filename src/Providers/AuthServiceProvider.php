@@ -44,7 +44,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::after(function (User $user, $ability, $result, $arguments) {
-            if ($result === null && strpos($ability, '.')) {
+            if ($result === null && strpos($ability, '.') && isset($arguments[0])) {
                 return Waterhole::permissions()->can(
                     $user,
                     explode('.', $ability)[1],
