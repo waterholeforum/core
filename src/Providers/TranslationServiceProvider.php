@@ -22,17 +22,14 @@ class TranslationServiceProvider extends ServiceProvider
         $this->app->extend('translator', function (Translator $translator) {
             $extended = new LaravelTranslator($translator->getLoader(), $translator->getLocale());
             $extended->setFallback($translator->getFallback());
-
             return $extended;
         });
 
         // On top of that, extend the translator to support loading Fluent
         // translations.
-        $this->app->extend('translator', function (
-            LaravelTranslator $translator,
-            Application $app,
-        ) {
-            return new FluentTranslator(
+        $this->app->extend(
+            'translator',
+            fn(LaravelTranslator $translator, Application $app) => new FluentTranslator(
                 baseTranslator: $translator,
                 files: $app['files'],
                 path: $app['path.lang'],
@@ -42,8 +39,8 @@ class TranslationServiceProvider extends ServiceProvider
                 functions: [
                     'COMPACT_NUMBER' => Closure::fromCallable('Waterhole\\compact_number'),
                 ],
-            );
-        });
+            ),
+        );
 
         $this->app->alias('translator', FluentTranslator::class);
     }
