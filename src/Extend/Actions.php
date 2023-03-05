@@ -84,6 +84,7 @@ Actions::add(Waterhole\Actions\EditReactionType::class, 0, 'edit-reaction-type')
 Actions::add(Waterhole\Actions\EditTag::class, 0, 'edit-tag');
 Actions::add(Waterhole\Actions\EditTaxonomy::class, 0, 'edit-taxonomy');
 
+Actions::add(Waterhole\Actions\CopyImpersonationUrl::class, 0, 'copy-impersonation-url');
 Actions::add(Waterhole\Actions\SuspendUser::class, 0, 'suspend-user');
 
 Actions::add(Waterhole\Actions\DeleteChannel::class, 0, 'delete-channel');

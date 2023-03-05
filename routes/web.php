@@ -18,6 +18,7 @@ use Waterhole\Http\Controllers\Forum\PostController;
 use Waterhole\Http\Controllers\Forum\PreferencesController;
 use Waterhole\Http\Controllers\Forum\SearchController;
 use Waterhole\Http\Controllers\Forum\UserController;
+use Waterhole\Http\Controllers\ImpersonateController;
 use Waterhole\Http\Controllers\UploadController;
 use Waterhole\Http\Controllers\UserLookupController;
 
@@ -135,6 +136,7 @@ Route::get('oauth/{provider}/callback', [OAuthController::class, 'callback'])->n
 Route::get('user-lookup', UserLookupController::class)->name('user-lookup');
 Route::post('format', FormatController::class)->name('format');
 Route::post('upload', UploadController::class)->name('upload');
+Route::get('impersonate/{user}', ImpersonateController::class)->name('impersonate');
 
 foreach (Waterhole\Extend\ForumRoutes::values() as $callback) {
     $callback();
