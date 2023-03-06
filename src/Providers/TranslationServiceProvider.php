@@ -15,7 +15,7 @@ class TranslationServiceProvider extends ServiceProvider
     {
         $this->loadTranslationsFrom(__DIR__ . '/../../lang', 'waterhole');
 
-        // Extend the Laravel translator to load auth/validation messages from
+        // Extend the Laravel translator to load validation messages from
         // the `waterhole` namespace if this is a Waterhole request. This way
         // we can provide comprehensive translations in the Waterhole package
         // without the user having to manually load them into their skeleton.
