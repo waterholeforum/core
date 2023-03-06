@@ -47,26 +47,22 @@ export default class extends Controller {
 
         this.observer.observe(this.chartTarget!);
 
+        const cs = getComputedStyle(document.documentElement);
+
         const options: uPlot.Options = {
             ...this.getSize(),
             padding: [1, 1, 1, 1],
             series: [
                 {},
                 {
-                    stroke: '#ccc',
+                    stroke: cs.getPropertyValue('--color-stroke'),
                     width: 2,
-                    points: {
-                        show: false,
-                    },
+                    points: { show: false },
                 },
                 {
-                    stroke: getComputedStyle(document.documentElement).getPropertyValue(
-                        '--color-accent'
-                    ),
+                    stroke: cs.getPropertyValue('--color-accent'),
                     width: 2,
-                    points: {
-                        show: false,
-                    },
+                    points: { show: false },
                 },
             ],
             cursor: {
@@ -74,9 +70,7 @@ export default class extends Controller {
             },
             axes: [{ show: false }, { show: false }],
             scales: {
-                y: {
-                    range: (u, dataMin, dataMax) => [dataMin, dataMax],
-                },
+                y: { range: (u, dataMin, dataMax) => [dataMin, dataMax] },
             },
             select: {
                 show: false,
