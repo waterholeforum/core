@@ -54,9 +54,9 @@ class ResetPasswordController extends Controller
         return $status == Password::PASSWORD_RESET
             ? redirect()
                 ->route('waterhole.login')
-                ->with('success', __($status))
+                ->with('success', __("waterhole::$status"))
             : back()
                 ->withInput($request->only('email'))
-                ->withErrors(['token' => __($status)]);
+                ->withErrors(['token' => __("waterhole::$status")]);
     }
 }

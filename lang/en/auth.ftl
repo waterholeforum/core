@@ -1,6 +1,7 @@
 ### Auth
 
 ## Laravel strings
+## https://github.com/laravel/framework/blob/master/src/Illuminate/Translation/lang/en/auth.php
 
 failed = These credentials do not match our records.
 password = The provided password is incorrect.

@@ -41,7 +41,7 @@ class LoginController extends Controller
             RateLimiter::hit($this->throttleKey($request));
 
             throw ValidationException::withMessages([
-                'email' => __('auth.failed'),
+                'email' => __('waterhole::auth.failed'),
             ]);
         }
 
@@ -65,7 +65,7 @@ class LoginController extends Controller
         $seconds = RateLimiter::availableIn($this->throttleKey($request));
 
         throw ValidationException::withMessages([
-            'email' => trans('auth.throttle', [
+            'email' => trans('waterhole::auth.throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),
