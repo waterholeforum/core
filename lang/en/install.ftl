@@ -1,7 +1,13 @@
+### Installation
+
+## Groups
+
 group-guest = Guest
 group-member = Member
 group-admin = Admin
 group-moderator = Mod
+
+## Structure
 
 announcements-name = Announcements
 announcements-description = News and other updates from the team.

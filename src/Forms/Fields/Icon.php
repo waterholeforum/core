@@ -18,7 +18,7 @@ class Icon extends Field
         return <<<'blade'
             <x-waterhole::field
                 name="icon"
-                :label="__('waterhole::admin.icon-label')"
+                :label="__('waterhole::system.icon-field-label')"
             >
                 <x-waterhole::admin.icon-picker
                     name="icon"

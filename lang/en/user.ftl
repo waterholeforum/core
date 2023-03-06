@@ -1,9 +1,15 @@
+### User
+
+## Account Settings
+
 account-settings-title = Account Settings
 
 delete-account-button = Delete Your Account
 delete-account-confirmation-title = Are you sure you want to delete your account?
 delete-account-confirmation-description = Your account data will be removed. Your contributions will be retained but marked as anonymous. This cannot be undone.
 delete-account-success-message = Your account has been deleted.
+
+## Notification Preferences
 
 notification-preferences-title = Notification Preferences
 notifications-label = Notifications
@@ -13,31 +19,10 @@ notifications-following-label = Following
 follow-on-comment-label = Automatically follow posts I comment on
 notification-preferences-saved-message = Notification preferences saved.
 
+## Edit Profile
+
 edit-profile-title = Edit Profile
 profile-saved-message = Profile saved.
-
-user-top-comments-title = { $userName }'s Top Comments
-user-newest-comments-title = { $userName }'s Newest Comments
-comments-empty-message = No Comments
-
-user-top-posts-title = { $userName }'s Top Posts
-user-newest-posts-title = { $userName }'s Newest Posts
-posts-empty-message = No Posts
-
-profile-link = Profile
-preferences-link = Preferences
-administration-link = Administration
-log-out-link = Log Out
-
-user-joined-text = Joined { $date }
-user-last-seen-text = Last seen { $date }
-
-posts-link = Posts
-comments-link = Comments
-preferences-heading = Preferences
-account-settings-link = Account
-edit-profile-link = Profile
-notification-preferences-link = Notifications
 
 avatar-label = Avatar
 remove-avatar-label = Remove avatar
@@ -50,7 +35,41 @@ website-label = Website
 privacy-title = Privacy
 show-online-label = Show when I was last online
 
+## Comments
+
+user-top-comments-title = { $userName }'s Top Comments
+user-newest-comments-title = { $userName }'s Newest Comments
+comments-empty-message = No Comments
+
+## Posts
+
+user-top-posts-title = { $userName }'s Top Posts
+user-newest-posts-title = { $userName }'s Newest Posts
+posts-empty-message = No Posts
+
+## User Menu
+
+profile-link = Profile
+preferences-link = Preferences
+administration-link = Administration
+log-out-link = Log Out
+
+## Profile
+
+user-joined-text = Joined { $date }
+user-last-seen-text = Last seen { $date }
 online-label = Online
+
+## Sidebar
+
+posts-link = Posts
+comments-link = Comments
+preferences-heading = Preferences
+account-settings-link = Account
+edit-profile-link = Profile
+notification-preferences-link = Notifications
+
+## Admin
 
 suspend-button = Suspend
 edit-suspension-button = Edit Suspension

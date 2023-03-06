@@ -1,4 +1,13 @@
+### Forum
+
 home = Home
+
+## Header
+
+log-in = Log In
+register = Sign Up
+
+## Search
 
 search-placeholder = Search all discussions
 search-results-title = Search Results for "{ $query }"
@@ -23,11 +32,14 @@ search-sort-top = Sort by Top
 search-empty-message = No Results Found
 search-keywords-too-short-message = Your keywords are too short – try something longer.
 
+## Posts
+
 post-activity-replied = replied
 post-activity-posted = posted
 
 post-new-badge = New
 post-new-badge-tooltip = New post
+post-locked-badge = Locked
 
 post-unread-comments-badge-tooltip = { $count } { $count ->
     [one] unread comment
@@ -47,13 +59,6 @@ post-comments-link = { $count } { $count ->
     [one] comment
     *[other] comments
 }
-
-comments-unread-heading = Unread
-comments-unread-link = Unread
-
-create-comment-title = Write a Comment
-edit-comment-title = Edit Comment
-comment-number-title = Comment #{ $number }
 
 move-post-title = Move { $count ->
     [one] Post:
@@ -76,6 +81,18 @@ post-body-label = Body
 
 channel-picker-placeholder = Select a Channel
 
+delete-post-confirm-message = Are you sure you want to delete this post?
+delete-post-success-message = Post deleted.
+
+## Comments
+
+comments-unread-heading = Unread
+comments-unread-link = Unread
+
+create-comment-title = Write a Comment
+edit-comment-title = Edit Comment
+comment-number-title = Comment #{ $number }
+
 comment-in-reply-to-link = In reply to
 comment-show-replies-button = Show { $count } { $count ->
     [one] reply
@@ -84,7 +101,6 @@ comment-show-replies-button = Show { $count } { $count ->
 comment-reply-button = Reply
 
 comments-locked-message = Comments are locked.
-
 lock-comments-button = Lock Comments
 unlock-comments-button = Unlock Comments
 
@@ -94,7 +110,13 @@ composer-replying-to-label = Replying to
 composer-clear-reply-button = Clear
 composer-submit = Post
 
+delete-comment-confirm-message = Are you sure you want to delete this comment?
+
+## Misc
+
 quote-button = Quote
+
+## Filters
 
 filter-alphabetical = Alphabetical
 filter-following = Following
@@ -110,6 +132,8 @@ filter-top-month = Month
 filter-top-week = Week
 filter-top-day = Day
 filter-trending = Trending
+
+## Followables
 
 follow-button = Follow
 follow-button-following = Following
@@ -136,18 +160,12 @@ post-ignore-description = Never be notified about activity in this post, and hid
 post-following-badge = Following
 post-ignored-badge = Ignored
 
+## Index
+
 menu-button = Menu
 navigation-title = Forum Navigation
 
 post-feed-new-activity-button = New Activity
 post-feed-new-activity-heading = New Activity
-
-feed-empty-message = No Posts
-
-feed-controls-layout-heading = Display as
-
-post-locked-badge = Locked
-
-delete-comment-confirm-message = Are you sure you want to delete this comment?
-delete-post-confirm-message = Are you sure you want to delete this post?
-delete-post-success-message = Post deleted.
+post-feed-empty-message = No Posts
+post-feed-controls-layout-heading = Display as

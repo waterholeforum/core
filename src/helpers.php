@@ -25,7 +25,7 @@ function format_number(float $number, array $options = []): string
 function compact_number(float $number): string
 {
     if ($number >= 100) {
-        $key = 'waterhole::number.compact-number-1' . str_repeat('0', floor(log10($number)));
+        $key = 'waterhole::system.compact-number-1' . str_repeat('0', floor(log10($number)));
 
         if (($format = __($key, [], app()->getLocale())) !== $key) {
             [$numberFormat, $unit] = str_split($format, strrpos($format, '0') + 1);

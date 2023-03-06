@@ -49,7 +49,7 @@ class GroupPermissions extends Field
                         <tr>
                             <td></td>
                             @foreach ($abilities as $ability)
-                                <th>{{ __("waterhole::admin.ability-$ability") }}</th>
+                                <th>{{ __("waterhole::system.ability-$ability") }}</th>
                             @endforeach
                         </tr>
                     </thead>

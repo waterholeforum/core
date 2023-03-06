@@ -59,7 +59,7 @@
                     icon="tabler-messages"
                     class="placeholder__icon"
                 />
-                <p class="h4">{{ __('waterhole::forum.feed-empty-message') }}</p>
+                <p class="h4">{{ __('waterhole::forum.post-feed-empty-message') }}</p>
             </div>
         @endif
     </div>

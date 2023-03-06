@@ -21,31 +21,31 @@ class DefaultSeeder extends Seeder
         // Groups
         $guest = Group::firstOrCreate([
             'id' => Group::GUEST_ID,
-            'name' => __('waterhole::seeder.group-guest'),
+            'name' => __('waterhole::install.group-guest'),
         ]);
 
         $member = Group::firstOrCreate([
             'id' => Group::MEMBER_ID,
-            'name' => __('waterhole::seeder.group-member'),
+            'name' => __('waterhole::install.group-member'),
         ]);
 
         $admin = Group::firstOrCreate([
             'id' => Group::ADMIN_ID,
-            'name' => __('waterhole::seeder.group-admin'),
+            'name' => __('waterhole::install.group-admin'),
         ]);
 
         $mod = Group::firstOrCreate([
-            'name' => __('waterhole::seeder.group-moderator'),
+            'name' => __('waterhole::install.group-moderator'),
             'is_public' => true,
         ]);
 
         // Community Guide
         $guide = Page::firstOrCreate(
-            ['slug' => Str::slug(__('waterhole::seeder.guide-title'))],
+            ['slug' => Str::slug(__('waterhole::install.guide-title'))],
             [
                 'icon' => 'emoji:📖',
-                'name' => __('waterhole::seeder.guide-title'),
-                'body' => __('waterhole::seeder.guide-body'),
+                'name' => __('waterhole::install.guide-title'),
+                'body' => __('waterhole::install.guide-body'),
             ],
         );
 
@@ -60,29 +60,29 @@ class DefaultSeeder extends Seeder
         // Channels
         $channels = [
             [
-                'name' => __('waterhole::seeder.announcements-name'),
-                'description' => __('waterhole::seeder.announcements-description'),
+                'name' => __('waterhole::install.announcements-name'),
+                'description' => __('waterhole::install.announcements-description'),
                 'icon' => 'emoji:📣',
                 'default_layout' => 'cards',
             ],
             [
-                'name' => __('waterhole::seeder.introductions-name'),
-                'description' => __('waterhole::seeder.introductions-description'),
+                'name' => __('waterhole::install.introductions-name'),
+                'description' => __('waterhole::install.introductions-description'),
                 'icon' => 'emoji:👋',
             ],
             [
-                'name' => __('waterhole::seeder.support-name'),
-                'description' => __('waterhole::seeder.support-description'),
+                'name' => __('waterhole::install.support-name'),
+                'description' => __('waterhole::install.support-description'),
                 'icon' => 'emoji:❓',
             ],
             [
-                'name' => __('waterhole::seeder.ideas-name'),
-                'description' => __('waterhole::seeder.ideas-description'),
+                'name' => __('waterhole::install.ideas-name'),
+                'description' => __('waterhole::install.ideas-description'),
                 'icon' => 'emoji:💡',
             ],
             [
-                'name' => __('waterhole::seeder.staff-name'),
-                'description' => __('waterhole::seeder.staff-description'),
+                'name' => __('waterhole::install.staff-name'),
+                'description' => __('waterhole::install.staff-description'),
                 'icon' => 'emoji:🔒',
                 'group' => $mod,
             ],
