@@ -1,5 +1,5 @@
 <h4 class="menu-heading">
-    {{ __('waterhole::forum.feed-controls-layout-heading') }}
+    {{ __('waterhole::forum.post-feed-controls-layout-heading') }}
 </h4>
 
 <x-waterhole::menu-item

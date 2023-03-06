@@ -1,8 +1,13 @@
+### Localization for Waterhole admin panel
+
 admin-title = Admin
+
+## Dashboard
 
 dashboard-title = Dashboard
 
-icon-label = Icon
+configure-mail-message = You need to configure a mail driver in order for Waterhole to be able to send out verification emails.
+debug-mode-on-message = Debug mode is ON. Sensitive configuration values may be exposed.
 
 getting-started-title = Get Started With Waterhole
 getting-started-strategy-title = Read the Docs
@@ -14,6 +19,10 @@ getting-started-groups-description = Set up groups for moderators, staff, and su
 getting-started-design-title = Join the Waterhole Community
 getting-started-design-description = Ask questions, share tips, and learn how to get the most out of your community.
 
+dashboard-users-title = Users
+dashboard-posts-title = Posts
+dashboard-comments-title = Comments
+
 period-today = Today
 period-last-7-days = Last 7 days
 period-last-4-weeks = Last 4 weeks
@@ -23,38 +32,10 @@ period-this-month = This month
 period-this-quarter = This quarter
 period-this-year = This year
 period-all-time = All time
-
 period-current-heading = Current Period
 preiod-previous-heading = Previous Period
 
-dashboard-users-title = Users
-dashboard-posts-title = Posts
-dashboard-comments-title = Comments
-
-groups-title = Groups
-create-group-button = Create Group
-group-user-count = { $count } { $count ->
-    [one] user
-    *[other] users
-}
-
-edit-group-title = Edit Group
-create-group-title = Create a Group
-group-details-title = Details
-group-name-label = Name
-group-appearance-label = Appearance
-group-show-as-badge-label = Show this group as a user badge
-group-color-label = Color
-group-icon-label = Icon
-group-permissions-title = Permissions
-
-delete-group-confirm-message = Are you sure you want to delete this group?
-delete-structure-confirm-message = Are you sure you want to delete this node?
-
-ability-view = View
-ability-comment = Comment
-ability-post = Post
-ability-moderate = Moderate
+## Structure
 
 structure-title = Structure
 
@@ -62,6 +43,7 @@ structure-channel-label = Channel
 structure-page-label = Page
 structure-link-label = Link
 structure-heading-label = Heading
+structure-visibility-public-label = Public
 
 structure-navigation-title = Navigation
 structure-navigation-description = Move items here to show them in the navigation menu.
@@ -69,11 +51,15 @@ structure-navigation-description = Move items here to show them in the navigatio
 structure-unlisted-title = Unlisted
 structure-unlisted-description = Move items here to hide them from the navigation menu.
 
-structure-visibility-public-label = Public
+delete-structure-confirm-message = Are you sure you want to delete this node?
+
+## Structure - Heading
 
 edit-heading-title = Edit Heading
 create-heading-title = Create a Heading
 heading-name-label = Name
+
+## Structure - Link
 
 edit-link-title = Edit Link
 create-link-title = Create a Link
@@ -81,6 +67,8 @@ link-details-title = Details
 link-name-label = Name
 link-url-label = URL
 link-permissions-title = Permissions
+
+## Structure - Page
 
 edit-page-title = Edit Page
 create-page-title = Create a Page
@@ -90,6 +78,8 @@ page-slug-label = Slug
 page-slug-url-label = This page will be accessible at:
 page-body-label = Body
 page-permissions-title = Permissions
+
+## Structure - Channel
 
 edit-channel-title = Edit Channel
 create-channel-title = Create a Channel
@@ -124,13 +114,28 @@ move-to-channel-posts-label = Move { $count } { $count ->
     *[other] posts
 } to another channel
 
-delete-user-title = Delete { $count ->
-    [one] User:
-    *[other] { $count } Users
+## Groups
+
+groups-title = Groups
+create-group-button = Create Group
+group-user-count = { $count } { $count ->
+    [one] user
+    *[other] users
 }
-keep-user-content-label = Keep content and mark as anonymous
-delete-user-content-label = Delete content permanently
-delete-user-success-message = User deleted.
+
+edit-group-title = Edit Group
+create-group-title = Create a Group
+group-details-title = Details
+group-name-label = Name
+group-appearance-label = Appearance
+group-show-as-badge-label = Show this group as a user badge
+group-color-label = Color
+group-icon-label = Icon
+group-permissions-title = Permissions
+
+delete-group-confirm-message = Are you sure you want to delete this group?
+
+## Users
 
 users-title = Users
 users-filter-placeholder = Filter users
@@ -156,15 +161,15 @@ user-profile-title = Profile
 user-created-message = User created.
 user-saved-message = User saved.
 
-license-error-message = Error communicating with waterhole.dev.
-license-invalid-message = Please purchase or enter a valid license key for this site to comply with the License Agreement.
+delete-user-title = Delete { $count ->
+    [one] User:
+    *[other] { $count } Users
+}
+keep-user-content-label = Keep content and mark as anonymous
+delete-user-content-label = Delete content permanently
+delete-user-success-message = User deleted.
 
-trial-badge = Trial
-licensed-badge = Licensed
-unlicensed-badge = Unlicensed
-
-configure-mail-message = You need to configure a mail driver in order for Waterhole to be able to send out verification emails.
-debug-mode-on-message = Debug mode is ON. Sensitive configuration values may be exposed.
+## Reactions
 
 reactions-title = Reactions
 reaction-sets-title = Reaction Sets
@@ -184,6 +189,8 @@ reaction-type-score-description = The number of points that this reaction is wor
 delete-reaction-type-confirm-message = Are you sure you want to delete this reaction type?
 reaction-type-saved-message = Reaction type saved.
 
+## Taxonomies
+
 taxonomies-title = Taxonomies
 create-taxonomy-button = Create Taxonomy
 create-taxonomy-title = Create a Taxonomy
@@ -200,3 +207,15 @@ edit-tag-title = Edit Tag
 tag-name-label = Name
 tag-saved-message = Tag saved.
 delete-tag-confirm-message = Are you sure you want to delete this tag?
+
+## Licensing
+
+license-error-message = Error communicating with waterhole.dev.
+license-invalid-message = Please purchase or enter a valid license key for this site to comply with the License Agreement.
+
+trial-badge = Trial
+licensed-badge = Licensed
+unlicensed-badge = Unlicensed
+
+
+# Move to system
