@@ -1,5 +1,6 @@
 import { Controller } from '@hotwired/stimulus';
 import { FrameElement } from '@hotwired/turbo/dist/types/elements';
+import { cloneFromTemplate } from '../utils';
 
 /**
  * Controller for some useful <turbo-frame> actions.
@@ -21,5 +22,9 @@ export default class extends Controller<FrameElement> {
 
     removeSrc() {
         this.element.removeAttribute('src');
+    }
+
+    replaceWithSpinner() {
+        this.element.replaceChildren(cloneFromTemplate('loading'));
     }
 }
