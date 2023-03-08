@@ -75,7 +75,7 @@ text-editor-preview = Preview
 
 ## Icon Picker
 
-icon-fields-label = Icon
+icon-field-label = Icon
 icon-picker-change-button = Change
 icon-picker-none-option = None
 icon-picker-emoji-option = Emoji
