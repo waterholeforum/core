@@ -2,7 +2,6 @@
 
 namespace Waterhole\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\File;
 use Waterhole\Formatter\FormatUploads;
