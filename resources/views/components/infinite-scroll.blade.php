@@ -32,10 +32,11 @@
     @if ($paginator->hasMorePages() && request('direction') !== 'backwards')
         <turbo-frame
             id="page_{{ $isCursor ? $paginator->nextCursor()->encode() : $paginator->currentPage() + 1 }}_frame"
+            target="_top"
             class="next-page"
             @if ($paginator->onFirstPage() || $endless)
                 src="{{ $paginator->appends('direction', 'forwards')->nextPageUrl() }}"
-            loading="lazy"
+                loading="lazy"
             @endif
         >
             @if ($paginator->onFirstPage() || $endless)
@@ -46,6 +47,7 @@
                         href="{{ $paginator->appends('direction', 'forwards')->nextPageUrl() }}"
                         class="btn"
                         onclick="this.classList.add('is-disabled')"
+                        data-turbo-frame="_self"
                     >
                         {{ __('waterhole::system.load-more-button') }}
                     </a>
