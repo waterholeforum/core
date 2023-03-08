@@ -38,21 +38,18 @@
                 src="{{ $paginator->appends('direction', 'forwards')->nextPageUrl() }}"
                 loading="lazy"
             @endif
+            data-controller="turbo-frame"
+            data-action="turbo:before-fetch-request->turbo-frame#replaceWithSpinner"
         >
-            @if ($paginator->onFirstPage() || $endless)
-                <x-waterhole::spinner class="spinner--block"/>
-            @else
-                <div class="text-center" style="padding: var(--space-md)">
-                    <a
-                        href="{{ $paginator->appends('direction', 'forwards')->nextPageUrl() }}"
-                        class="btn"
-                        onclick="this.classList.add('is-disabled')"
-                        data-turbo-frame="_self"
-                    >
-                        {{ __('waterhole::system.load-more-button') }}
-                    </a>
-                </div>
-            @endif
+            <div class="text-center p-md">
+                <a
+                    href="{{ $paginator->appends('direction', 'forwards')->nextPageUrl() }}"
+                    class="btn"
+                    data-turbo-frame="_self"
+                >
+                    {{ __('waterhole::system.load-more-button') }}
+                </a>
+            </div>
         </turbo-frame>
     @endif
 </turbo-frame>
