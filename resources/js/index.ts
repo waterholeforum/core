@@ -1,4 +1,4 @@
-import '@github/time-elements';
+import '@github/relative-time-element';
 import { Application } from '@hotwired/stimulus';
 import { definitionsFromContext } from '@hotwired/stimulus-webpack-helpers';
 import { AlertsElement } from 'inclusive-elements';
