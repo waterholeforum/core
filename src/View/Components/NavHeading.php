@@ -13,7 +13,7 @@ class NavHeading extends Component
     public function render()
     {
         return <<<'blade'
-            <h3 class="nav-heading">{{ $heading }}</h3>
+            <h3 {{ $attributes->class('nav-heading') }}>{{ $heading }}</h3>
         blade;
     }
 }
