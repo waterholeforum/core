@@ -36,7 +36,7 @@ class NavLink extends Component
         if ($this->route) {
             return request()->routeIs($this->route);
         } elseif ($this->href) {
-            return request()->fullUrlIs($this->href.'*');
+            return request()->fullUrlIs($this->href . '*');
         }
 
         return false;
