@@ -26,6 +26,7 @@ edit-link = Edit
 copy-link-button = Copy Link
 controls-button = Controls
 more-button = More
+loading = Loading
 
 ## Post Feed Layouts
 
