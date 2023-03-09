@@ -636,6 +636,11 @@
   }
 }
 
+.hide-if-not-only-child:not(:only-child),
+.hide-if-empty:empty {
+  display: none;
+}
+
 // Dark mode
 
 :root[data-theme='dark'] .light-only,
