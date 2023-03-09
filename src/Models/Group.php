@@ -28,7 +28,7 @@ class Group extends Model
 
     public $timestamps = false;
 
-    private array $instances = [];
+    private static array $instances = [];
 
     /**
      * Relationship with the group's users.
@@ -75,7 +75,7 @@ class Group extends Model
      */
     public static function guest(): static
     {
-        return $instances[static::GUEST_ID] ??= static::findOrFail(static::GUEST_ID);
+        return static::$instances[static::GUEST_ID] ??= static::findOrFail(static::GUEST_ID);
     }
 
     /**
@@ -83,7 +83,7 @@ class Group extends Model
      */
     public static function member(): static
     {
-        return $instances[static::MEMBER_ID] ??= static::findOrFail(static::MEMBER_ID);
+        return static::$instances[static::MEMBER_ID] ??= static::findOrFail(static::MEMBER_ID);
     }
 
     /**
@@ -91,7 +91,7 @@ class Group extends Model
      */
     public static function admin(): static
     {
-        return $instances[static::ADMIN_ID] ??= static::findOrFail(static::ADMIN_ID);
+        return static::$instances[static::ADMIN_ID] ??= static::findOrFail(static::ADMIN_ID);
     }
 
     /**
