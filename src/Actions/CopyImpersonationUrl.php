@@ -21,7 +21,7 @@ class CopyImpersonationUrl extends Link
 
     public function authorize(?User $user, Model $model): bool
     {
-        return $user->isAdmin();
+        return (bool) $user?->isAdmin();
     }
 
     public function label(Collection $models): string
