@@ -4,13 +4,13 @@
     @endif
 
     <div class="grow stack gap-xs">
-        @if ($description)
-            <p class="field__description">{{ $description }}</p>
-        @endif
-
         <div>
             {{ $slot }}
         </div>
+
+        @if ($description)
+            <p class="field__description">{{ $description }}</p>
+        @endif
 
         @error($name)
             <div class="field__status color-danger">{{ $message }}</div>
