@@ -125,14 +125,14 @@ h6 {
     padding: var(--space-md) !important;
   }
 
-  img:not(.twemoji, .avatar, .icon) {
+  :where(img:not([class])) {
     max-width: 100%;
     max-height: 70vh;
     width: auto;
     height: auto;
   }
 
-  hr {
+  :where(hr:not([class])) {
     border: 0;
     border-top: 3px solid var(--color-stroke);
     margin: 2em 0;
