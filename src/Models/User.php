@@ -262,4 +262,14 @@ class User extends Model implements
                 new Expression('COALESCE(group_id, id)'),
             ]);
     }
+
+    public function broadcastChannelRoute(): string
+    {
+        return 'Waterhole.Models.User.{user}';
+    }
+
+    public function broadcastChannel(): string
+    {
+        return 'Waterhole.Models.User.' . $this->getKey();
+    }
 }
