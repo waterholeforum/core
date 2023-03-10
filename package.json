@@ -7,11 +7,14 @@
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
         "prod": "npm run production",
-        "production": "mix --production"
+        "production": "mix --production",
+        "release": "release-it"
     },
     "devDependencies": {
         "@babel/runtime": "^7.16.3",
         "@prettier/plugin-php": "^0.18.9",
+        "@release-it/bumper": "^4.0.2",
+        "@release-it/conventional-changelog": "^5.1.1",
         "@types/lodash-es": "^4.17.5",
         "@types/webpack-env": "^1.16.3",
         "laravel-mix": "^6.0",
@@ -19,6 +22,7 @@
         "less-loader": "^9.0.0",
         "postcss": "^8.3",
         "prettier": "^2.8.4",
+        "release-it": "^15.8.0",
         "ts-loader": "^9.2.6",
         "typescript": "^4.4.4",
         "webpack-bundle-analyzer": "^4.7.0"
@@ -50,5 +54,26 @@
         "twemoji": "^14.0.2",
         "uplot": "^1.6.17",
         "vanilla-colorful": "^0.7.1"
+    },
+    "release-it": {
+        "npm": false,
+        "git": {
+            "commitMessage": "chore: release v${version}"
+        },
+        "github": {
+            "release": true
+        },
+        "plugins": {
+            "@release-it/bumper": {
+                "out": {
+                    "file": "src/Waterhole.php",
+                    "type": "text/php"
+                }
+            },
+            "@release-it/conventional-changelog": {
+                "preset": "angular",
+                "infile": "CHANGELOG.md"
+            }
+        }
     }
 }
