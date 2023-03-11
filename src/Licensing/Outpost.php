@@ -2,8 +2,9 @@
 
 namespace Waterhole\Licensing;
 
-use Exception;
 use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use Waterhole\Waterhole;
@@ -40,42 +41,30 @@ class Outpost
                 ->connectTimeout(static::TIMEOUT)
                 ->post(static::ENDPOINT, $payload);
 
+            $json = $response->json();
             $expiry = now()->addHour();
+        } catch (RequestException $e) {
+            $json = ['error' => $e->response->status()];
 
-            switch ($response->status()) {
-                case 200:
-                    $json = $response->json();
-                    break;
-
-                case 422:
-                    $json = ['error' => 422, 'message' => $response->json('message')];
-                    break;
-
-                case 429:
-                    $json = ['error' => 429];
-                    $expiry = now()->addSeconds($response->header('Retry-After')[0]);
-                    break;
-
-                default:
-                    $json = ['error' => $response->status()];
-                    $expiry = now()->addMinutes(5);
+            if ($json['error'] === 422) {
+                $json['message'] = $e->response->json('message');
             }
-        } catch (Exception) {
-            $json = ['error' => 500];
+
+            $expiry = match ($json['error']) {
+                429 => now()->addSeconds($e->response->header('Retry-After')[0]),
+                default => now()->addMinutes(5),
+            };
+
+            report($e);
+        } catch (ConnectionException $e) {
+            $json = ['error' => 'connection'];
             $expiry = now()->addMinutes(5);
-        } finally {
-            if (!empty($json['error'])) {
-                logger()->error("Error validating license ({$json['error']})", $payload);
-            }
-
-            $this->cache->put(
-                static::CACHE_KEY,
-                ['payload' => $payload, 'response' => $json],
-                $expiry,
-            );
-
-            return $json;
+            report($e);
         }
+
+        $this->cache->put(static::CACHE_KEY, ['payload' => $payload, 'response' => $json], $expiry);
+
+        return $json;
     }
 
     private function payload(): array
