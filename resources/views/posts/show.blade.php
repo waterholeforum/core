@@ -9,7 +9,7 @@
         <div class="stack gap-xxxl">
             <div
                 @if (!$comments->onFirstPage()) hidden @endif
-            data-post-page-target="post"
+                data-post-page-target="post"
             >
                 <x-waterhole::post-full :post="$post"/>
             </div>
