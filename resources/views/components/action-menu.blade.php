@@ -4,7 +4,6 @@
     :exclude="$exclude"
     :placement="$placement"
     :button-attributes="['class' => 'btn btn--icon btn--transparent btn--sm']"
-    tooltips
     :limit="1"
 >
     @isset($button)
