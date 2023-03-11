@@ -29,10 +29,7 @@
                         class="with-icon"
                         data-turbo-frame="_top"
                     >
-                        <x-waterhole::icon
-                            icon="tabler-arrow-back-up"
-                            class="rotate-180"
-                        />
+                        <x-waterhole::icon icon="tabler-corner-down-right"/>
                         <span>
                             {{ __('waterhole::forum.comment-in-reply-to-link') }}
                             <span class="user-label">

@@ -11,6 +11,6 @@
     @endif
     class="btn btn--sm btn--transparent"
 >
-    <x-waterhole::icon icon="tabler-arrow-back-up"/>
+    <x-waterhole::icon icon="tabler-share-3" class="flip-horizontal"/>
     <span>{{ __('waterhole::forum.comment-reply-button') }}</span>
 </a>
