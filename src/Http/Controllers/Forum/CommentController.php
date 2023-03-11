@@ -35,7 +35,7 @@ class CommentController extends Controller
         // Load the comment tree for this comment, load the necessary
         // relationships, and pre-fill the `post` relationship for each comment.
         $comment = $comment->childrenAndSelf
-            ->load('user.groups', 'reactions.reactionType', 'parent.user.groups')
+            ->load('user.groups', 'reactions.reactionType', 'parent.user.groups', 'mentions')
             ->each(function ($comment) use ($post) {
                 $comment->setRelation('post', $post);
                 $comment->parent?->setRelation('post', $post);
