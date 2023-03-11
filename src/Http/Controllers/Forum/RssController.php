@@ -9,9 +9,9 @@ use Waterhole\Models\Channel;
 use Waterhole\Models\Post;
 
 /**
- * Controller for Atom feeds.
+ * Controller for RSS feeds.
  */
-class AtomController extends Controller
+class RssController extends Controller
 {
     public function posts()
     {
@@ -43,17 +43,21 @@ class AtomController extends Controller
 
     private function postsFeed(Feed $feed, Collection $posts)
     {
-        $feed->setFeedLink(url()->current(), 'atom');
+        $posts->load('user');
+
+        $feed->setDescription($feed->getTitle());
+        $feed->setFeedLink(url()->current(), 'rss');
         $feed->setDateModified(now());
 
         foreach ($posts as $post) {
             $entry = $feed->createEntry();
+            $entry->setId((string) $post->id);
             $entry->setTitle($post->title);
             $entry->setLink($post->url);
             $entry->setCommentLink($post->url . '#comments');
             // $entry->setCommentFeedLink([
-            //     'uri' => route('waterhole.atom.post', compact('post')),
-            //     'type' => 'atom',
+            //     'uri' => route('waterhole.rss.post', compact('post')),
+            //     'type' => 'rss',
             // ]);
             if ($post->user) {
                 $entry->addAuthor([
@@ -69,6 +73,11 @@ class AtomController extends Controller
             $feed->addEntry($entry);
         }
 
-        return response($feed->export('atom'), 200, ['Content-Type' => 'application/atom+xml']);
+        // We use RSS over ATOM simply because Laminas Feed has an annoying
+        // bug (or feature?) where it encodes entry content as XHTML, rather
+        // than wrapping the HTML in CDATA. However, in the absence of the PHP
+        // tidy extension, self-closing tags like <br> and <img> result in
+        // invalid XML output. https://github.com/laminas/laminas-feed/issues/7
+        return response($feed->export('rss'), 200, ['Content-Type' => 'application/rss+xml']);
     }
 }

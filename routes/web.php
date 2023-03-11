@@ -11,12 +11,12 @@ use Waterhole\Http\Controllers\Auth\RegisterController;
 use Waterhole\Http\Controllers\Auth\ResetPasswordController;
 use Waterhole\Http\Controllers\Auth\VerifyEmailController;
 use Waterhole\Http\Controllers\FormatController;
-use Waterhole\Http\Controllers\Forum\AtomController;
 use Waterhole\Http\Controllers\Forum\CommentController;
 use Waterhole\Http\Controllers\Forum\IndexController;
 use Waterhole\Http\Controllers\Forum\NotificationController;
 use Waterhole\Http\Controllers\Forum\PostController;
 use Waterhole\Http\Controllers\Forum\PreferencesController;
+use Waterhole\Http\Controllers\Forum\RssController;
 use Waterhole\Http\Controllers\Forum\SearchController;
 use Waterhole\Http\Controllers\Forum\UserController;
 use Waterhole\Http\Controllers\ImpersonateController;
@@ -28,10 +28,10 @@ Route::get('/', [IndexController::class, 'home'])->name('home');
 Route::get('channels/{channel:slug}', [IndexController::class, 'channel'])->name('channels.show');
 Route::get('pages/{page:slug}', [IndexController::class, 'page'])->name('page');
 
-// Atom
-Route::get('posts.xml', [AtomController::class, 'posts'])->name('atom.posts');
-Route::get('channels/{channel:slug}/posts.xml', [AtomController::class, 'channel'])->name(
-    'atom.channel',
+// RSS
+Route::get('posts.rss', [RssController::class, 'posts'])->name('rss.posts');
+Route::get('channels/{channel:slug}/posts.rss', [RssController::class, 'channel'])->name(
+    'rss.channel',
 );
 
 // Actions
