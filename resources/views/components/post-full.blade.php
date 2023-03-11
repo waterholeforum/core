@@ -24,6 +24,8 @@
                 </a>
             @endcan
         </div>
+
+        @components(Waterhole\Extend\PostPage::build(), compact('post'))
     </div>
 
     <div

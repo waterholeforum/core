@@ -4,6 +4,7 @@ namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\OfComponents;
 use Waterhole\Extend\Concerns\OrderedList;
+use Waterhole\Forms\Fields\ChannelAnswers;
 use Waterhole\Forms\Fields\ChannelDefaultLayout;
 use Waterhole\Forms\Fields\ChannelFilters;
 use Waterhole\Forms\Fields\ChannelReactions;
@@ -19,4 +20,5 @@ ChannelFormOptions::add(ChannelSandbox::class, 0, 'sandbox');
 ChannelFormOptions::add(ChannelDefaultLayout::class, 0, 'default-layout');
 ChannelFormOptions::add(ChannelFilters::class, 0, 'filters');
 ChannelFormOptions::add(ChannelReactions::class, 0, 'reactions');
+ChannelFormOptions::add(ChannelAnswers::class, 0, 'answers');
 ChannelFormOptions::add(ChannelTaxonomies::class, 0, 'taxonomies');

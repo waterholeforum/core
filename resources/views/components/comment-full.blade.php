@@ -5,8 +5,10 @@
     data-controller="comment"
     tabindex="-1"
 >
-    <div class="comment__main">
+    <div class="comment__main stack gap-md">
         <header class="comment__header">
+            @components(Waterhole\Extend\CommentHeader::build(), compact('comment'))
+
             <x-waterhole::attribution
                 :user="$comment->user"
                 :date="$comment->created_at"
@@ -98,7 +100,7 @@
         <footer class="comment__footer row gap-xs wrap">
             @components(Waterhole\Extend\CommentFooter::build(), compact('comment', 'withReplies'))
 
-            <div class="row gap-xs wrap push-end">
+            <div class="row wrap push-end">
                 @components(Waterhole\Extend\CommentActions::build(), compact('comment', 'withReplies'))
 
                 <x-waterhole::action-menu

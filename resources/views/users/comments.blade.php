@@ -28,9 +28,7 @@
                                     >{{ $comment->post->title }}</a>
                                 </li>
                             </ol>
-                            <div class="card__body">
-                                <x-waterhole::comment-full :comment="$comment" truncate/>
-                            </div>
+                            <x-waterhole::comment-full :comment="$comment" truncate/>
                         </li>
                     @endforeach
                 </ul>

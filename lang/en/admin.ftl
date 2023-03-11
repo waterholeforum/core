@@ -103,6 +103,9 @@ channel-permissions-title = Permissions
 channel-post-reactions-label = Post Reactions
 channel-comment-reactions-label = Comment Reactions
 channel-taxonomies-label = Taxonomies
+channel-answers-label = Answers
+channel-enable-answers-label = Enable answers on this channel
+channel-enable-answers-description = Allow post authors to mark a comment as the answer.
 
 delete-channel-title = Delete Channel:
 delete-channel-posts-label = Delete { $count } { $count ->

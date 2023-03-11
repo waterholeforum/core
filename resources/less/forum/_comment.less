@@ -1,5 +1,7 @@
 .comment {
-  padding-left: calc(var(--attribution-avatar-size) + var(--space-md));
+  padding: var(--space-md);
+  padding-left: calc(var(--attribution-avatar-size) + var(--space-md) * 2);
+  border-radius: var(--radius);
   position: relative;
   transition: background 0.2s;
 
@@ -17,20 +19,15 @@
   :target > & {
     background: var(--color-warning-soft);
   }
-}
 
-// We can't use our usual stack/gap utils here because the attribution avatar
-// is floated to the left - the following flexbox item would clear the float.
-.comment__main > * + * {
-  margin-top: var(--space-md);
-}
-
-.comment__header > * + * {
-  margin-top: var(--space-xs);
+  &.is-answer {
+    border: 2px solid var(--color-success);
+  }
 }
 
 // The "in reply to" bit in the comment header
 .comment__parent {
+  margin-top: var(--space-xs);
   width: fit-content;
 
   > a {
@@ -45,7 +42,7 @@
   max-height: 10em;
   overflow: hidden;
   text-align: left;
-  padding: var(--space-md);
+  padding-block: 0;
 
   .comment > * + * {
     margin-top: var(--space-xs);
@@ -56,8 +53,8 @@
   margin-top: var(--space-md);
   padding-inline: var(--space-md);
 
-  > :first-child > * > .comment {
-    border-top: 0;
+  > :first-child > * > .comment::before {
+    display: none;
   }
 
   .comment__parent {
@@ -67,11 +64,19 @@
 
 .comment-list {
   .comment {
-    border-top: 1px solid var(--color-stroke);
-    padding-block: var(--space-md);
+    margin-inline: calc(-1 * var(--space-md));
+
+    &:not(.is-answer)::before {
+      content: '';
+      position: absolute;
+      left: var(--space-md);
+      right: var(--space-md);
+      top: 0;
+      border-top: 1px solid var(--color-stroke);
+    }
   }
 
-  .divider + * > .comment {
-    border-top: 0;
+  .divider + * > .comment::before {
+    display: none;
   }
 }

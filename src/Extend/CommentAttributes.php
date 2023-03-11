@@ -2,6 +2,7 @@
 
 namespace Waterhole\Extend;
 
+use Arr;
 use Illuminate\Support\Facades\Auth;
 use Waterhole\Extend\Concerns\Attributes;
 use Waterhole\Models\Comment;
@@ -16,9 +17,12 @@ abstract class CommentAttributes
 
 CommentAttributes::add(
     fn(Comment $comment) => [
-        'is-unread' => $comment->isUnread(),
-        'is-read' => $comment->isRead(),
-        'is-mine' => $comment->user_id === Auth::id(),
-        'has-replies' => $comment->reply_count,
+        'class' => Arr::toCssClasses([
+            'is-unread' => $comment->isUnread(),
+            'is-read' => $comment->isRead(),
+            'is-mine' => $comment->user_id === Auth::id(),
+            'is-answer' => $comment->isAnswer(),
+            'has-replies' => $comment->reply_count,
+        ]),
     ],
 );

@@ -40,6 +40,10 @@ post-activity-posted = posted
 post-new-badge = New
 post-new-badge-tooltip = New post
 post-locked-badge = Locked
+post-answered-badge = Answered
+
+post-answered-by = Answered by
+post-view-answer-link = View Answer
 
 post-unread-comments-badge-tooltip = { $count } { $count ->
     [one] unread comment
@@ -99,6 +103,9 @@ comment-show-replies-button = Show { $count } { $count ->
     *[other] replies
 }
 comment-reply-button = Reply
+mark-as-answer-button = Mark as Answer
+unmark-as-answer-button = Unmark as Answer
+comment-answer-badge = Answer
 
 comments-locked-message = Comments are locked.
 lock-comments-button = Lock Comments

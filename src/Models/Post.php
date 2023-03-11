@@ -35,6 +35,7 @@ use Waterhole\View\TurboStream;
  * @property int $comment_count
  * @property int $score
  * @property bool $is_locked
+ * @property ?int $answer_id
  * @property-read Channel $channel
  * @property-read ?User $user
  * @property-read \Illuminate\Database\Eloquent\Collection $comments
@@ -42,6 +43,7 @@ use Waterhole\View\TurboStream;
  * @property-read \Illuminate\Database\Eloquent\Collection $tags
  * @property-read ?Comment $lastComment
  * @property-read ?PostUser $userState
+ * @property-read ?Comment $answer
  * @property-read string $url
  * @property-read string $edit_url
  * @property-read string $unread_url
@@ -176,6 +178,14 @@ class Post extends Model
     public function lastComment(): HasOne
     {
         return $this->hasOne(Comment::class)->latestOfMany();
+    }
+
+    /**
+     * Relationship with the post's answer comment.
+     */
+    public function answer(): BelongsTo
+    {
+        return $this->belongsTo(Comment::class, 'answer_id');
     }
 
     /**

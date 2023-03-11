@@ -128,6 +128,14 @@ class Comment extends Model
     }
 
     /**
+     * Determine whether this comment has been marked as the answer.
+     */
+    public function isAnswer(): bool
+    {
+        return $this->post->answer_id === $this->id;
+    }
+
+    /**
      * Mark this comment as having been edited just now.
      */
     public function markAsEdited(): static

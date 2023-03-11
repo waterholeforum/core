@@ -97,4 +97,5 @@ Actions::add(Waterhole\Actions\DeleteTag::class, 0, 'delete-tag');
 Actions::add(Waterhole\Actions\DeleteTaxonomy::class, 0, 'delete-taxonomy');
 
 // Hidden actions
+Actions::add(Waterhole\Actions\MarkAsAnswer::class, 0, 'mark-as-answer');
 Actions::add(Waterhole\Actions\React::class, 0, 'react');

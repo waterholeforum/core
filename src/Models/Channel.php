@@ -22,10 +22,15 @@ use Waterhole\Models\Concerns\UsesFormatter;
  * @property ?array $filters
  * @property ?string $default_layout
  * @property bool $sandbox
+ * @property bool $answerable
+ * @property ?int $posts_reaction_set_id
+ * @property ?int $comments_reaction_set_id
  * @property-read \Illuminate\Database\Eloquent\Collection $posts
  * @property-read \Illuminate\Database\Eloquent\Collection $newPosts
  * @property-read \Illuminate\Database\Eloquent\Collection $unreadPosts
  * @property-read ?ChannelUser $userState
+ * @property-read ReactionSet $postsReactionSet
+ * @property-read ReactionSet $commentsReactionSet
  * @property-read string $url
  * @property-read string $edit_url
  */
@@ -43,6 +48,7 @@ class Channel extends Model
     protected $casts = [
         'filters' => 'json',
         'sandbox' => 'bool',
+        'answerable' => 'bool',
     ];
 
     /**
