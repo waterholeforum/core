@@ -31,7 +31,7 @@ return [
         [
             'component' => Waterhole\Widgets\Feed::class,
             'width' => 50,
-            'url' => 'http://waterhole.test/channels/announcements/posts.xml',
+            'url' => 'https://waterhole.dev/forum/channels/announcements/posts.rss',
             'limit' => 4,
         ],
         [
