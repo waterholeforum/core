@@ -22,17 +22,17 @@ class LicenseManager
 
     public function public(): bool
     {
-        return $this->response('public');
+        return (bool) $this->response('public');
     }
 
     public function test(): bool
     {
-        return !$this->public();
+        return !$this->error() && !$this->public();
     }
 
     public function valid(): bool
     {
-        return $this->response('waterhole.valid');
+        return (bool) $this->response('waterhole.valid');
     }
 
     public function invalid(): bool

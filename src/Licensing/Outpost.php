@@ -35,7 +35,8 @@ class Outpost
         }
 
         try {
-            $response = Http::timeout(static::TIMEOUT)
+            $response = Http::throw()
+                ->timeout(static::TIMEOUT)
                 ->connectTimeout(static::TIMEOUT)
                 ->post(static::ENDPOINT, $payload);
 
@@ -63,6 +64,10 @@ class Outpost
             $json = ['error' => 500];
             $expiry = now()->addMinutes(5);
         } finally {
+            if (!empty($json['error'])) {
+                logger()->error("Error validating license ({$json['error']})", $payload);
+            }
+
             $this->cache->put(
                 static::CACHE_KEY,
                 ['payload' => $payload, 'response' => $json],

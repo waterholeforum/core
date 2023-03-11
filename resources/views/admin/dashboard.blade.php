@@ -1,5 +1,5 @@
 <x-waterhole::admin :title="__('waterhole::admin.dashboard-title')">
-    <div class="stack gap-lg">
+    <div class="admin-dashboard stack gap-lg">
         @section('debug')
             <x-waterhole::alert type="warning" icon="tabler-bug">
                 {{ __('waterhole::admin.debug-mode-on-message') }}
@@ -34,7 +34,7 @@
             </div>
         @endif
 
-        <div class="admin-dashboard">
+        <div class="admin-dashboard__widgets">
             @foreach (config('waterhole.admin.widgets', []) as $id => $widget)
                 <div style="
                     --admin-dashboard-widget-width: {{ $widget['width'] ?: 100 }}%;

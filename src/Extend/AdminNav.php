@@ -78,5 +78,3 @@ AdminNav::add(
     -50,
     'reactions',
 );
-
-AdminNav::add(Version::class, 10, 'version');

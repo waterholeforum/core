@@ -213,7 +213,7 @@ delete-tag-confirm-message = Are you sure you want to delete this tag?
 
 ## Licensing
 
-license-error-message = Error communicating with waterhole.dev.
+license-error-message = Your license could not be validated, because there was an error communicating with { $host }.
 license-invalid-message = Please purchase or enter a valid license key for this site to comply with the License Agreement.
 
 trial-badge = Trial

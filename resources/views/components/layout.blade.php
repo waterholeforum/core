@@ -91,7 +91,7 @@
     window.Waterhole.alerts. For API information:
     https://github.com/tobyzerner/inclusive-elements/tree/master/src/alerts
 --}}
-<ui-alerts id="alerts" class="alerts">
+<ui-alerts id="alerts" class="alerts" data-turbo-temporary>
     @foreach (['success', 'warning', 'danger'] as $type)
         @if (session($type))
             <x-waterhole::alert :type="$type">

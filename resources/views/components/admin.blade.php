@@ -8,7 +8,10 @@
     <div class="admin__layout section container with-sidebar">
         <div class="admin__sidebar sidebar sidebar--sticky">
             <x-waterhole::responsive-nav
-                :components="Waterhole\build_components(Waterhole\Extend\AdminNav::build())"
+                :components="Waterhole\build_components([
+                    ...Waterhole\Extend\AdminNav::build(),
+                    Waterhole\View\Components\Admin\Version::class,
+                ])"
             />
         </div>
 
