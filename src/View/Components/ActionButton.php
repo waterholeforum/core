@@ -11,6 +11,7 @@ class ActionButton extends Component
         public string $action,
         public ?string $return = null,
         public bool $icon = false,
+        public array $formAttributes = [],
     ) {
     }
 

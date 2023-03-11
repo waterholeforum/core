@@ -8,7 +8,11 @@
 @if ($action)
     {{ $before ?? '' }}
 
-    <form action="{{ route('waterhole.action.store') }}" method="POST">
+    <form
+        action="{{ route('waterhole.action.store') }}"
+        method="POST"
+        {{ new Illuminate\View\ComponentAttributeBag($formAttributes) }}
+    >
         @csrf
         <input type="hidden" name="actionable" value="{{ $actionable }}">
         <input type="hidden" name="id[]" value="{{ $for->id }}">
