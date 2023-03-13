@@ -19,11 +19,6 @@ select {
 * {
   overflow-wrap: anywhere;
   -webkit-tap-highlight-color: transparent;
-
-  // Putting scroll-padding-top on the html element breaks inputs inside the
-  // sticky header - so we do a global scroll-margin-top instead.
-  // See https://stackoverflow.com/questions/65929206/sticky-header-input-scrolls-on-input
-  scroll-margin-top: var(--header-height);
 }
 
 a,
@@ -78,6 +73,10 @@ mark {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+
+  * {
+    scroll-margin-top: var(--header-height);
+  }
 }
 
 ui-popup > .enter-active,
