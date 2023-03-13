@@ -1,5 +1,5 @@
-<div class="bg-success-soft color-inherit rounded p-lg stack align-start gap-md">
-    <div class="with-icon color-success weight-medium">
+<div class="bg-success-soft rounded p-lg stack align-start gap-md">
+    <div class="with-icon weight-medium">
         <x-waterhole::icon icon="tabler-circle-check-filled" class="text-md"/>
         <span>
             {{ __('waterhole::forum.post-answered-by') }}
@@ -7,7 +7,7 @@
         </span>
     </div>
 
-    <div class="content">
+    <div class="content color-text">
         {{ Waterhole\emojify($post->answer->body_html) }}
     </div>
 
