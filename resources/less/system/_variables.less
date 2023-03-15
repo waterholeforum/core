@@ -71,9 +71,9 @@
   --radius: 10px;
 
   // Shadows
-  --shadow-ring: 0 0 0 1px rgb(0 0 0 / 0.05);
-  --shadow-sm: var(--shadow-ring), 0 1px 4px rgb(0 0 0 / 0.1);
-  --shadow-md: var(--shadow-ring), 0 5px 15px rgb(0 0 0 / 0.2);
+  --shadow-ring: 0 0 0 1px hsl(var(--muted-hsl) / 0.1);
+  --shadow-sm: var(--shadow-ring), 0 1px 4px hsl(var(--muted-hsl) / 0.1);
+  --shadow-md: var(--shadow-ring), 0 5px 15px hsl(var(--muted-hsl) / 0.2);
 
   // Filters
   --filter-hover: brightness(0.95);
@@ -144,5 +144,4 @@
   --color-success-text: hsl(var(--success-h) var(--success-s) 35%);
   --color-warning-text: hsl(var(--warning-h) var(--warning-s) 40%);
   --color-activity-text: hsl(var(--activity-h) var(--activity-s) 60%);
-  --shadow-ring: 0 0 0 1px rgb(255 255 255 / 0.1);
 }
