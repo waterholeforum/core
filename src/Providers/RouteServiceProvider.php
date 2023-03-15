@@ -18,14 +18,7 @@ class RouteServiceProvider extends ServiceProvider
         );
 
         Route::middlewareGroup('waterhole.web', [
-            \Illuminate\Cookie\Middleware\EncryptCookies::class,
-            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
-            \Waterhole\Http\Middleware\StartSession::class,
-            \Illuminate\Session\Middleware\AuthenticateSession::class,
-            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \Tonysm\TurboLaravel\Http\Middleware\TurboMiddleware::class,
-            \Waterhole\Http\Middleware\VerifyCsrfToken::class,
-            \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \Waterhole\Http\Middleware\ActorSeen::class,
             \Waterhole\Http\Middleware\Localize::class,
             \Waterhole\Http\Middleware\PoweredByHeader::class,
@@ -34,19 +27,19 @@ class RouteServiceProvider extends ServiceProvider
         Route::middlewareGroup('waterhole.admin', [
             'auth',
             'can:administrate',
-            'waterhole.confirm-password',
+            \Waterhole\Http\Middleware\MaybeRequirePassword::class,
             \Waterhole\Http\Middleware\Admin\ContactOutpost::class,
         ]);
 
         $this->configureRateLimiting();
 
         $this->routes(function () {
-            Route::middleware('waterhole.web')
+            Route::middleware(['web', 'waterhole.web'])
                 ->name('waterhole.')
                 ->prefix(config('waterhole.forum.path'))
                 ->group(__DIR__ . '/../../routes/web.php');
 
-            Route::middleware(['waterhole.web', 'waterhole.admin'])
+            Route::middleware(['web', 'waterhole.web', 'waterhole.admin'])
                 ->name('waterhole.admin.')
                 ->prefix(config('waterhole.admin.path'))
                 ->group(__DIR__ . '/../../routes/admin.php');
