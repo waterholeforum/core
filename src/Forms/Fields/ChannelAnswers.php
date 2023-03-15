@@ -21,7 +21,7 @@ class ChannelAnswers extends Field
                     {{ __('waterhole::admin.channel-answers-label') }}
                 </div>
                 <div>
-                    <input type="hidden" name="sandbox" value="0">
+                    <input type="hidden" name="answerable" value="0">
                     <label class="choice">
                         <input
                             type="checkbox"
