@@ -11,7 +11,7 @@ trait OrderedList
      */
     public static function add($content = null, int $position = 0, ?string $key = null): void
     {
-        static::$items[$key] = compact('content', 'position');
+        static::$items[$key ?? uniqid()] = compact('content', 'position');
     }
 
     /**
