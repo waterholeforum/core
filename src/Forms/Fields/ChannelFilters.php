@@ -49,7 +49,7 @@ class ChannelFilters extends Field
                                 $filters = old('filters', $model->filters ?? config('waterhole.forum.post_filters', []));
 
                                 $availableFilters = collect(Waterhole\resolve_all(Waterhole\Extend\PostFilters::values()))
-                                    ->sortBy(fn($filter, $key) => ($k = array_search($key, $filters)) === false ? INF : $k);
+                                    ->sortBy(fn($filter) => ($k = array_search(get_class($filter), $filters)) === false ? INF : $k);
                             @endphp
 
                             @foreach ($availableFilters as $filter)
