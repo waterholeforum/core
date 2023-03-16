@@ -6,11 +6,27 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 use Waterhole\Forms\Field;
 use Waterhole\Models\Post;
+use Waterhole\Search\Results;
+use Waterhole\Search\Searcher;
 
 class PostTitle extends Field
 {
+    public ?Results $similarPosts = null;
+
     public function __construct(public ?Post $model)
     {
+        if (
+            !$model->exists &&
+            $model->channel->show_similar_posts &&
+            ($title = old('title')) &&
+            strlen($title) >= 10
+        ) {
+            $this->similarPosts = resolve(Searcher::class)->search(
+                q: $title,
+                limit: 3,
+                channelIds: [$model->channel_id],
+            );
+        }
     }
 
     public function render(): string
@@ -26,15 +42,48 @@ class PostTitle extends Field
                     "waterhole.channel-{$model->channel->slug}-post-title-description",
                     '',
                 ]);
+
+                $similarPostsLabel = __([
+                    "waterhole.channel-{$model->channel->slug}-similar-posts-label",
+                    'waterhole::forum.similar-posts-label',
+                ]);
             @endphp
 
-            <x-waterhole::field name="title" :$label :$description>
-                <input
-                    id="{{ $component->id }}"
-                    name="title"
-                    type="text"
-                    value="{{ old('title', $model->title ?? '') }}"
-                >
+            <x-waterhole::field
+                name="title"
+                :$label
+                :$description
+                data-controller="similar-posts"
+            >
+                <div class="stack gap-sm">
+                    <input
+                        id="{{ $component->id }}"
+                        name="title"
+                        type="text"
+                        value="{{ old('title', $model->title ?? '') }}"
+                        data-action="similar-posts#input"
+                    >
+
+                    @if ($model->channel->show_similar_posts)
+                        <button
+                            type="submit"
+                            hidden
+                            data-similar-posts-target="submit"
+                            data-turbo-frame="similar-posts"
+                        ></button>
+
+                        <turbo-frame id="similar-posts" target="_top" hidden data-similar-posts-target="frame">
+                            @if (!empty($similarPosts->hits))
+                                <div class="bg-warning-soft p-md rounded stack gap-xs text-xs">
+                                    <p class="weight-bold">{{ $similarPostsLabel }}</p>
+                                    @foreach ($similarPosts->hits as $hit)
+                                        <p><a href="{{ $hit->post->url }}">{{ $hit->post->title }}</a></p>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </turbo-frame>
+                    @endif
+                </div>
             </x-waterhole::field>
         blade;
     }

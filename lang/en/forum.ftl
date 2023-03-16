@@ -82,6 +82,7 @@ edit-post-title = Edit Post
 edit-post-link = Edit Post
 post-title-label = Title
 post-body-label = Body
+similar-posts-label = See these similar posts:
 
 channel-picker-placeholder = Select a Channel
 
