@@ -49,13 +49,8 @@ class PostTitle extends Field
                 ]);
             @endphp
 
-            <x-waterhole::field
-                name="title"
-                :$label
-                :$description
-                data-controller="similar-posts"
-            >
-                <div class="stack gap-sm">
+            <div class="stack gap-sm" data-controller="similar-posts">
+                <x-waterhole::field name="title" :$label :$description>
                     <input
                         id="{{ $component->id }}"
                         name="title"
@@ -63,28 +58,28 @@ class PostTitle extends Field
                         value="{{ old('title', $model->title ?? '') }}"
                         data-action="similar-posts#input"
                     >
+                </x-waterhole::field>
 
-                    @if ($model->channel->show_similar_posts)
-                        <button
-                            type="submit"
-                            hidden
-                            data-similar-posts-target="submit"
-                            data-turbo-frame="similar-posts"
-                        ></button>
+                @if ($model->channel->show_similar_posts)
+                    <button
+                        type="submit"
+                        hidden
+                        data-similar-posts-target="submit"
+                        data-turbo-frame="similar-posts"
+                    ></button>
 
-                        <turbo-frame id="similar-posts" target="_top" hidden data-similar-posts-target="frame">
-                            @if (!empty($similarPosts->hits))
-                                <div class="bg-warning-soft p-md rounded stack gap-xs text-xs">
-                                    <p class="weight-bold">{{ $similarPostsLabel }}</p>
-                                    @foreach ($similarPosts->hits as $hit)
-                                        <p><a href="{{ $hit->post->url }}">{{ $hit->post->title }}</a></p>
-                                    @endforeach
-                                </div>
-                            @endif
-                        </turbo-frame>
-                    @endif
-                </div>
-            </x-waterhole::field>
+                    <turbo-frame id="similar-posts" target="_top" hidden data-similar-posts-target="frame">
+                        @if (!empty($similarPosts->hits))
+                            <div class="bg-warning-soft p-md rounded stack gap-xs text-xs">
+                                <p class="weight-bold">{{ $similarPostsLabel }}</p>
+                                @foreach ($similarPosts->hits as $hit)
+                                    <p><a href="{{ $hit->post->url }}">{{ $hit->post->title }}</a></p>
+                                @endforeach
+                            </div>
+                        @endif
+                    </turbo-frame>
+                @endif
+            </div>
         blade;
     }
 
