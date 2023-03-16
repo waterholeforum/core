@@ -8,7 +8,7 @@ use s9e\TextFormatter\Utils;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Post;
 
-class MySqlEngine
+class MySqlEngine implements EngineInterface
 {
     public function search(
         string $q,

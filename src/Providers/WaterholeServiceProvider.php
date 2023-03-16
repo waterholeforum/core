@@ -14,6 +14,7 @@ class WaterholeServiceProvider extends AggregateServiceProvider
         EventServiceProvider::class,
         FormatterServiceProvider::class,
         RouteServiceProvider::class,
+        SearchServiceProvider::class,
         TranslationServiceProvider::class,
         TwemojiServiceProvider::class,
         ViewServiceProvider::class,
