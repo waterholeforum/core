@@ -22,7 +22,9 @@ class PostUnread extends Component
 
     public function shouldRender()
     {
-        return $this->post->isUnread() && (!$this->post->isNew() || $this->isNotifiable);
+        return $this->post->isUnread() &&
+            (!$this->post->isNew() || $this->isNotifiable) &&
+            $this->post->unread_comments_count;
     }
 
     public function render()
