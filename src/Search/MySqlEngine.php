@@ -24,9 +24,9 @@ class MySqlEngine implements EngineInterface
             ->leftJoin('comments', 'comments.post_id', '=', 'posts.id')
             ->where(function (Builder $query) use ($q) {
                 $query
-                    ->orWhereFullText('posts.title', $q, ['mode' => 'boolean'])
-                    ->orWhereFullText('posts.body', $q, ['mode' => 'boolean'])
-                    ->orWhereFullText('comments.body', $q, ['mode' => 'boolean']);
+                    ->orWhereFullText('posts.title', $q)
+                    ->orWhereFullText('posts.body', $q)
+                    ->orWhereFullText('comments.body', $q);
             });
 
         // Get a breakdown of each channel and how many hits were found within
