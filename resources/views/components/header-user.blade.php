@@ -1,6 +1,6 @@
 @auth
     <ui-popup placement="bottom-end" class="header-user">
-        <a href="{{ Auth::user()->url }}" class="btn btn--icon">
+        <a href="{{ Auth::user()->url }}" class="btn btn--icon" role="button">
             <x-waterhole::avatar :user="Auth::user()"/>
             <ui-tooltip>{{ Auth::user()->name }}</ui-tooltip>
         </a>

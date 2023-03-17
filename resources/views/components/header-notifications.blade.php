@@ -7,6 +7,7 @@
         href="{{ route('waterhole.notifications.index') }}"
         class="btn btn--icon btn--transparent"
         data-action="notifications-popup#open"
+        role="button"
     >
         <x-waterhole::icon icon="tabler-bell"/>
 
