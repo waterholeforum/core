@@ -64,7 +64,7 @@ h6 {
   line-height: var(--line-height-expanded);
 }
 
-.content {
+:where(.content) {
   overflow-wrap: break-word;
   line-height: var(--line-height-expanded);
 
@@ -73,11 +73,11 @@ h6 {
     margin-top: 1em;
   }
 
-  > * + :where(h1, h2, h3, h4, h5, h6) {
+  > * + :is(h1, h2, h3, h4, h5, h6) {
     margin-top: 1.8em;
   }
 
-  :is(a) {
+  a {
     text-decoration: underline;
   }
 
@@ -125,21 +125,21 @@ h6 {
     padding: var(--space-md) !important;
   }
 
-  :where(img:not([class])) {
+  img:not([class]) {
     max-width: 100%;
     max-height: 70vh;
     width: auto;
     height: auto;
   }
 
-  :where(hr:not([class])) {
+  hr:not([class]) {
     border: 0;
     border-top: 3px solid var(--color-stroke);
     margin: 2em 0;
   }
 }
 
-.content--compact {
+:where(.content--compact) {
   > * + * {
     margin-top: 1em;
   }
