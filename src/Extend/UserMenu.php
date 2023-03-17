@@ -39,11 +39,11 @@ UserMenu::add(MenuDivider::class, 0, 'divider');
 
 if (Auth::user()->can('administrate')) {
     UserMenu::add(
-        new MenuItem(
+        (new MenuItem(
             icon: 'tabler-tool',
             label: __('waterhole::user.administration-link'),
             href: route('waterhole.admin.dashboard'),
-        ),
+        ))->withAttributes(['data-turbo' => 'false']),
         0,
         'administration',
     );
