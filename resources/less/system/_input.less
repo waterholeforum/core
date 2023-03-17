@@ -90,7 +90,7 @@ select:not([multiple]),
   display: flex;
   align-items: center;
 
-  > :not(input, .input, script) {
+  > :not(input, .input, select, script) {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -107,7 +107,7 @@ select:not([multiple]),
     }
   }
 
-  > :is(input, .input) {
+  > :is(input, .input, select) {
     &:nth-child(2) {
       padding-left: var(--input-container-padding-start);
     }
