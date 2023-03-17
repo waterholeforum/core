@@ -8,7 +8,7 @@
 
 @media (min-width: calc(@breakpoint-sm + 1px)) {
   .post-page {
-    --sidebar-width: 20ch;
+    --sidebar-width: 16ch;
 
     .sidebar {
       width: var(--sidebar-width);
@@ -17,6 +17,12 @@
     .composer {
       margin-right: calc(var(--sidebar-width) + var(--space-xxl));
     }
+  }
+}
+
+@media (min-width: calc(@breakpoint-md + 1px)) {
+  .post-page {
+    --sidebar-width: 20ch;
   }
 }
 

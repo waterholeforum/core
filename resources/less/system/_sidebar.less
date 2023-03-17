@@ -1,6 +1,7 @@
 .with-sidebar {
   display: flex;
   align-items: flex-start;
+  gap: var(--space-gutter);
 }
 
 .with-sidebar > :not(.sidebar) {
@@ -55,10 +56,6 @@
 }
 
 @media (min-width: calc(@breakpoint-sm + 1px)) {
-  .with-sidebar {
-    gap: var(--space-xxl);
-  }
-
   .sidebar {
     width: 25ch;
     flex-shrink: 0;
@@ -84,5 +81,11 @@
 
   .sidebar__collapsed {
     display: none;
+  }
+}
+
+@media (min-width: calc(@breakpoint-md + 1px)) {
+  .with-sidebar {
+    gap: var(--space-xxl);
   }
 }
