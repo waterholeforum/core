@@ -9,7 +9,7 @@
                 @csrf
                 @method('PATCH')
 
-                <div class="comment__main">
+                <div class="comment__main stack gap-md">
                     <x-waterhole::attribution
                         :user="$comment->user"
                         :date="$comment->created_at"
