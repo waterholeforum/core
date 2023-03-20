@@ -2,6 +2,7 @@
 
 namespace Waterhole\Extend;
 
+use Illuminate\Support\Facades\Auth;
 use Waterhole\Extend\Concerns\OrderedList;
 use Waterhole\View\Components\TextEditorButton;
 use Waterhole\View\Components\TextEditorEmojiButton;
@@ -120,10 +121,12 @@ TextEditor::add(
 TextEditor::add(fn() => new TextEditorEmojiButton(), 0, 'emoji');
 
 TextEditor::add(
-    fn(string $id) => (new TextEditorButton(
-        icon: 'tabler-paperclip',
-        label: __('waterhole::system.text-editor-attachment'),
-    ))->withAttributes(['data-action' => 'text-editor#chooseFiles']),
+    fn(string $id) => Auth::check()
+        ? (new TextEditorButton(
+            icon: 'tabler-paperclip',
+            label: __('waterhole::system.text-editor-attachment'),
+        ))->withAttributes(['data-action' => 'text-editor#chooseFiles'])
+        : null,
     0,
     'attachment',
 );
