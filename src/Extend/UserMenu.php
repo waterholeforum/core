@@ -16,7 +16,7 @@ abstract class UserMenu
 }
 
 UserMenu::add(
-    new MenuItem(
+    fn() => new MenuItem(
         icon: 'tabler-user',
         label: __('waterhole::user.profile-link'),
         href: Auth::user()->url,
@@ -26,7 +26,7 @@ UserMenu::add(
 );
 
 UserMenu::add(
-    new MenuItem(
+    fn() => new MenuItem(
         icon: 'tabler-settings',
         label: __('waterhole::user.preferences-link'),
         href: route('waterhole.preferences'),
@@ -37,14 +37,14 @@ UserMenu::add(
 
 UserMenu::add(MenuDivider::class, 0, 'divider');
 
-if (Auth::user()->can('administrate')) {
-    UserMenu::add(
-        (new MenuItem(
+UserMenu::add(
+    fn() => Auth::user()->can('administrate')
+        ? (new MenuItem(
             icon: 'tabler-tool',
             label: __('waterhole::user.administration-link'),
             href: route('waterhole.admin.dashboard'),
-        ))->withAttributes(['data-turbo' => 'false']),
-        0,
-        'administration',
-    );
-}
+        ))->withAttributes(['data-turbo' => 'false'])
+        : null,
+    0,
+    'administration',
+);
