@@ -5,6 +5,7 @@
   border: 1px solid var(--color-stroke);
   border-radius: var(--radius);
   background: var(--color-bg);
+  color: var(--color-text);
 }
 
 .dialog__header {
@@ -33,8 +34,10 @@
     padding-bottom: 0;
   }
 
-  .container.section .dialog {
-    border: 0;
+  .container.section {
+    .dialog {
+      border: 0;
+    }
 
     .dialog__header,
     .dialog__body {
