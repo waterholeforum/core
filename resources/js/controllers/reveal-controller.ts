@@ -36,7 +36,22 @@ export default class extends Controller {
         }
 
         this.thenTargets.forEach((el) => {
-            el.hidden = el.dataset.revealValue ? value != el.dataset.revealValue : !value;
+            if (!el.dataset.revealValue) el.hidden = !value;
+            else {
+                let values: any = el.dataset.revealValue;
+                try {
+                    values = JSON.parse(values);
+                } catch (e) {
+                    //
+                } finally {
+                    if (Array.isArray(values)) {
+                        values = values.map((v: any) => String(v));
+                    } else {
+                        values = [el.dataset.revealValue];
+                    }
+                }
+                el.hidden = !values.includes(value);
+            }
         });
     };
 }
