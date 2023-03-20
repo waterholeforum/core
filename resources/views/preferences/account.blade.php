@@ -1,7 +1,10 @@
-<x-waterhole::user-profile
-    :user="Auth::user()"
-    :title="__('waterhole::user.account-settings-title')"
->
+@php
+    $title = __('waterhole::user.account-settings-title');
+@endphp
+
+<x-waterhole::user-profile :user="Auth::user()" :title="$title">
+    <h2 class="visually-hidden">{{ $title }}</h2>
+
     <div class="card card__body stack dividers">
         @section('name')
             <div class="field">

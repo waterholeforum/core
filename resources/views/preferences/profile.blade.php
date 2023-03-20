@@ -1,7 +1,10 @@
-<x-waterhole::user-profile
-    :user="Auth::user()"
-    :title="__('waterhole::user.edit-profile-title')"
->
+@php
+    $title = __('waterhole::user.edit-profile-title');
+@endphp
+
+<x-waterhole::user-profile :user="Auth::user()" :title="$title">
+    <h2 class="visually-hidden">{{ $title }}</h2>
+
     <form
         action="{{ route('waterhole.preferences.profile') }}"
         method="POST"

@@ -43,8 +43,6 @@
         </div>
 
         <div>
-            <h2 class="visually-hidden">{{ $title }}</h2>
-
             {{ $slot }}
         </div>
     </div>

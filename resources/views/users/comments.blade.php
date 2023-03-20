@@ -1,7 +1,10 @@
-<x-waterhole::user-profile
-    :user="$user"
-    :title="__('waterhole::user.user-'.$comments->currentFilter()->handle().'-comments-title', ['userName' => $user->name])"
->
+@php
+    $title = __('waterhole::user.user-comments-title', Waterhole\user_variables($user));
+@endphp
+
+<x-waterhole::user-profile :user="$user" :title="$title">
+    <h2 class="visually-hidden">{{ $title }}</h2>
+
     <div class="stack gap-lg">
         <div class="row gap-xs wrap">
             <x-waterhole::feed-filters :feed="$comments"/>

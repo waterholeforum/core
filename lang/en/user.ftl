@@ -37,14 +37,12 @@ show-online-label = Show when I was last online
 
 ## Comments
 
-user-top-comments-title = { $userName }'s Top Comments
-user-newest-comments-title = { $userName }'s Newest Comments
+user-comments-title = { $userName }'s Comments
 comments-empty-message = No Comments
 
 ## Posts
 
-user-top-posts-title = { $userName }'s Top Posts
-user-newest-posts-title = { $userName }'s Newest Posts
+user-posts-title = { $userName }'s Posts
 posts-empty-message = No Posts
 
 ## User Menu
