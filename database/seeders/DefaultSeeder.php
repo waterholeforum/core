@@ -5,14 +5,16 @@ namespace Waterhole\Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Waterhole\Filters;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Group;
 use Waterhole\Models\Page;
 use Waterhole\Models\Permission;
+use Waterhole\Models\ReactionSet;
 
 /**
- * A seeder that creates default groups, pages, channels, and permissions
- * upon installation.
+ * A seeder that creates default groups, pages, channels, permissions, and
+ * reactions upon installation.
  */
 class DefaultSeeder extends Seeder
 {
@@ -57,6 +59,66 @@ class DefaultSeeder extends Seeder
             $guide->structure->update(['is_listed' => true]);
         }
 
+        // Reactions
+        $emoji = ReactionSet::firstOrNew(
+            ['name' => __('waterhole::install.reaction-set-emoji')],
+            ['is_default_posts' => true, 'is_default_comments' => true],
+        );
+
+        if (!$emoji->exists) {
+            $emoji->save();
+            $emoji->reactionTypes()->createMany([
+                [
+                    'name' => __('waterhole::install.reaction-type-like'),
+                    'icon' => 'emoji:👍️',
+                    'score' => 1,
+                ],
+                [
+                    'name' => __('waterhole::install.reaction-type-love'),
+                    'icon' => 'emoji:❤️',
+                    'score' => 2,
+                ],
+                [
+                    'name' => __('waterhole::install.reaction-type-laugh'),
+                    'icon' => 'emoji:😆',
+                    'score' => 1,
+                ],
+                [
+                    'name' => __('waterhole::install.reaction-type-wow'),
+                    'icon' => 'emoji:😮',
+                    'score' => 1,
+                ],
+                [
+                    'name' => __('waterhole::install.reaction-type-sad'),
+                    'icon' => 'emoji:😢',
+                    'score' => 1,
+                ],
+                [
+                    'name' => __('waterhole::install.reaction-type-angry'),
+                    'icon' => 'emoji:😡',
+                    'score' => -1,
+                ],
+            ]);
+        }
+
+        $voting = ReactionSet::firstOrNew(['name' => __('waterhole::install.reaction-set-voting')]);
+
+        if (!$voting->exists) {
+            $voting->save();
+            $voting->reactionTypes()->createMany([
+                [
+                    'name' => __('waterhole::install.reaction-type-upvote'),
+                    'icon' => 'emoji:🔺',
+                    'score' => 1,
+                ],
+                [
+                    'name' => __('waterhole::install.reaction-type-downvote'),
+                    'icon' => 'emoji:🔻',
+                    'score' => -1,
+                ],
+            ]);
+        }
+
         // Channels
         $channels = [
             [
@@ -64,6 +126,13 @@ class DefaultSeeder extends Seeder
                 'description' => __('waterhole::install.announcements-description'),
                 'icon' => 'emoji:📣',
                 'default_layout' => 'cards',
+                'filters' => [
+                    Filters\Newest::class,
+                    Filters\Latest::class,
+                    Filters\Top::class,
+                    Filters\Oldest::class,
+                ],
+                'group_post' => $mod,
             ],
             [
                 'name' => __('waterhole::install.introductions-name'),
@@ -74,11 +143,15 @@ class DefaultSeeder extends Seeder
                 'name' => __('waterhole::install.support-name'),
                 'description' => __('waterhole::install.support-description'),
                 'icon' => 'emoji:❓',
+                'answerable' => true,
+                'show_similar_posts' => true,
             ],
             [
                 'name' => __('waterhole::install.ideas-name'),
                 'description' => __('waterhole::install.ideas-description'),
                 'icon' => 'emoji:💡',
+                'posts_reaction_set_id' => $voting->id,
+                'show_similar_posts' => true,
             ],
             [
                 'name' => __('waterhole::install.staff-name'),
@@ -93,7 +166,7 @@ class DefaultSeeder extends Seeder
 
             $channel = Channel::firstOrCreate(
                 Arr::only($data, 'slug'),
-                Arr::except($data, ['slug', 'group']),
+                Arr::except($data, ['slug', 'group', 'group_post']),
             );
 
             if ($channel->wasRecentlyCreated) {
@@ -105,7 +178,7 @@ class DefaultSeeder extends Seeder
                             ->associate($data['group'] ?? $guest),
                         (new Permission(['ability' => 'post']))
                             ->recipient()
-                            ->associate($data['group'] ?? $member),
+                            ->associate($data['group_post'] ?? ($data['group'] ?? $member)),
                         (new Permission(['ability' => 'comment']))
                             ->recipient()
                             ->associate($data['group'] ?? $member),
