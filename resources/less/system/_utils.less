@@ -31,7 +31,7 @@
 
 // Size
 
-@sizes: px, xxs, xs, sm, md, lg, xl, xxl, xxxl;
+@sizes: px, xxs, xs, sm, md, lg, xl, xxl, xxxl, gutter;
 .loop(@i: length(@sizes)) when (@i > 0) {
   @value: extract(@sizes, @i);
   .gap-@{value} {
