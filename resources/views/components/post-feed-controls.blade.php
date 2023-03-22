@@ -1,5 +1,6 @@
 <ui-popup placement="bottom-end" {{ $attributes }}>
     <button
+        type="button"
         class="btn btn--icon btn--transparent btn--sm"
         aria-label="{{ __('waterhole::system.controls-button') }}"
     >
