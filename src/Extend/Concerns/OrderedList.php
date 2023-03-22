@@ -15,6 +15,16 @@ trait OrderedList
     }
 
     /**
+     * Replace an existing item in the list.
+     */
+    public static function replace(string $key, $content): void
+    {
+        if (isset(static::$items[$key])) {
+            static::$items[$key]['content'] = $content;
+        }
+    }
+
+    /**
      * Remove an item from the list.
      */
     public static function remove(string $key): void
