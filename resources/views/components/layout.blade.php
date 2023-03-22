@@ -36,7 +36,7 @@
     ->class([Auth::check() ? 'logged-in' : 'not-logged-in'])
     ->merge(['data-route' => request()->route()->getName()]) }}>
 
-<div id="waterhole" data-controller="page">
+<div class="waterhole" data-controller="page">
     <a
         href="#main"
         class="skip-link"
@@ -44,7 +44,7 @@
 
     @components(Waterhole\Extend\LayoutBefore::build())
 
-    <main id="main" tabindex="-1">
+    <main id="main" class="waterhole__main" tabindex="-1">
         {{ $slot }}
     </main>
 
