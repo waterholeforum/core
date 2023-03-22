@@ -48,11 +48,11 @@
     padding: var(--space-$(size));
   }
 
-  .pi-$(size) {
+  .px-$(size) {
     padding-inline: var(--space-$(size));
   }
 
-  .pb-$(size) {
+  .py-$(size) {
     padding-block: var(--space-$(size));
   }
 
@@ -60,11 +60,11 @@
     margin: var(--space-$(size));
   }
 
-  .mi-$(size) {
+  .mx-$(size) {
     margin-inline: var(--space-$(size));
   }
 
-  .mb-$(size) {
+  .my-$(size) {
     margin-block: var(--space-$(size));
   }
 
@@ -76,11 +76,11 @@
     margin: calc(-1 * var(--space-$(size)));
   }
 
-  .-mi-$(size) {
+  .-mx-$(size) {
     margin-inline: calc(-1 * var(--space-$(size)));
   }
 
-  .-mb-$(size) {
+  .-my-$(size) {
     margin-block: calc(-1 * var(--space-$(size)));
   }
 
