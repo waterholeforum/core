@@ -5,10 +5,13 @@
 }
 
 .nav-heading {
-  &:extend(.subtitle);
   margin-bottom: var(--space-xs);
   padding: 0 var(--space-sm);
   width: 100%;
+  color: var(--color-muted);
+  font-size: var(--text-xxs);
+  font-weight: var(--weight-medium);
+  text-transform: uppercase;
 
   * + & {
     margin-top: var(--space-lg);

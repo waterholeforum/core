@@ -1,4 +1,4 @@
-.badge {
+.badge, .tag {
   border-radius: 999px;
   background: var(--color-fill);
   color: var(--color-muted);
@@ -46,7 +46,6 @@
 }
 
 .tag {
-  &:extend(.badge);
   border-radius: 4px;
   font-weight: normal;
   padding: 0 0.5em;

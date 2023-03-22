@@ -29,7 +29,9 @@
 }
 
 .post-cards {
-  &:extend(.card-list all);
+  > * {
+    margin-bottom: var(--space-lg);
+  }
 }
 
 // Hide the channel label from posts when we're viewing a specific channel
