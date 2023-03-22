@@ -14,8 +14,11 @@ class Feed extends Component
 
     public FeedInterface $feed;
 
-    public function __construct(public string $url, public int $limit = 3)
-    {
+    public function __construct(
+        public string $url,
+        public int $limit = 3,
+        public ?string $title = null,
+    ) {
         // TODO: be smarter about caching (ie. HTTP Conditional GET)
         $content = Cache::remember(
             'waterhole.feed.' . sha1($url),

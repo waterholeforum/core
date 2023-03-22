@@ -31,7 +31,8 @@ return [
         [
             'component' => Waterhole\Widgets\Feed::class,
             'width' => 50,
-            'url' => 'https://waterhole.dev/forum/channels/announcements/posts.rss',
+            'title' => 'Waterhole Blog',
+            'url' => 'https://waterhole.dev/forum/channels/blog/posts.rss',
             'limit' => 4,
         ],
         [

@@ -7,7 +7,7 @@
             rel="noopener"
         >
             <x-waterhole::icon icon="tabler-rss"/>
-            {{ $feed->getTitle() }}
+            {{ $title ?: $feed->getTitle() }}
         </a>
     </h3>
 
