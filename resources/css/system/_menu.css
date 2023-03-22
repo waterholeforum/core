@@ -1,0 +1,128 @@
+.menu {
+  display: block;
+  background: var(--color-bg);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-xs);
+  border-radius: var(--radius);
+  min-width: 15ch;
+  width: max-content;
+  max-width: 30ch;
+  z-index: var(--z-index-overlay);
+  font-size: var(--text-xs);
+  overflow: auto;
+}
+
+.menu-item {
+  border-radius: calc(var(--radius) * 2 / 3);
+  border: 0;
+  background: transparent;
+  appearance: none;
+  margin: 0;
+  display: flex;
+  gap: var(--space-xs);
+  width: 100%;
+  align-items: flex-start;
+  padding: var(--space-xs);
+  text-decoration: none !important;
+  color: var(--color-text);
+  transform: none !important;
+  text-align: left;
+
+    @mixin clickable;
+
+  &:is(:hover, .is-hovered, :focus, .is-focused, [aria-selected='true']) {
+    background: var(--color-fill);
+    outline: none;
+  }
+
+  &.color-danger:is(:hover, .is-hovered) {
+    background: var(--color-danger);
+    color: var(--color-danger-contrast);
+  }
+
+  &.is-active,
+  &[aria-current='page'],
+  &[aria-checked='true'] {
+    color: var(--color-accent-text);
+    background: var(--color-accent-soft);
+  }
+}
+
+.menu-item__title {
+  display: block;
+  font-weight: var(--weight-medium);
+}
+
+.menu-item__description {
+  display: block;
+  color: var(--color-muted);
+  font-size: 90%;
+  margin-top: var(--space-xxs);
+}
+
+.menu-item__check {
+  margin-left: auto;
+
+  .menu-item:not(.is-active, [aria-current='page'], [aria-checked='true']) & {
+    visibility: hidden;
+  }
+}
+
+.menu-divider {
+  margin: var(--space-xs);
+
+  + .menu-divider,
+  .menu > &:first-child,
+  .menu > &:last-child {
+    display: none;
+  }
+}
+
+.menu-heading {
+  &:extend(.subtitle);
+  padding: var(--space-xs);
+}
+
+.menu-sticky {
+  position: sticky;
+  top: calc(-1 * var(--space-sm));
+  margin-top: calc(-1 * var(--space-sm));
+  padding-top: var(--space-xs);
+  background: var(--color-bg);
+  z-index: 1;
+}
+
+ui-popup:has(> .drawer)::part(backdrop) {
+  background: var(--color-overlay);
+}
+
+.drawer {
+  background: var(--color-bg);
+  position: fixed !important;
+  left: 0 !important;
+  top: 0 !important;
+  max-height: none !important;
+  margin: 0;
+  height: 100vh;
+  width: min(70vw, 30ch);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-lg);
+  z-index: var(--z-index-overlay);
+  overflow: auto;
+
+  &.enter-from,
+  &.leave-to {
+    transform: translateX(-100%);
+    opacity: initial;
+  }
+}
+
+.drawer--right {
+  left: auto !important;
+  right: 0 !important;
+
+  &.enter-from,
+  &.leave-to {
+    transform: translateX(100%);
+  }
+}

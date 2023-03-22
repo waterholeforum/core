@@ -14,5 +14,5 @@ trim_trailing_whitespace = false
 [*.yml]
 indent_size = 2
 
-[{*.less, *.css}]
+[*.css]
 indent_size = 2

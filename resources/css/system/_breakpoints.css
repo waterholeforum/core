@@ -1,0 +1,8 @@
+@custom-media --sm (width <= 40rem);
+@custom-media --md-up (width > 40rem);
+@custom-media --md-down (width <= 52rem);
+@custom-media --md (--md-up) and (--md-down);
+@custom-media --lg-up (width > 52rem);
+@custom-media --lg-down (width <= 68rem);
+@custom-media --lg (--lg-up) and (--lg-down);
+@custom-media --xl-up (width > 68rem);
