@@ -10,7 +10,7 @@
             </h1>
         @endif
 
-        <form action="{{ route('waterhole.search') }}" class="lead row gap-xs">
+        <form action="{{ route('waterhole.search') }}" class="lead row gap-xs" role="search">
             <div class="input-container full-width">
                 <x-waterhole::icon
                     icon="tabler-search"
@@ -21,6 +21,7 @@
                     name="q"
                     value="{{ request('q') }}"
                     placeholder="{{ __('waterhole::forum.search-placeholder') }}"
+                    aria-label="{{ __('waterhole::forum.search-placeholder') }}"
                     autofocus
                 >
             </div>
