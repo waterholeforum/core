@@ -17,7 +17,7 @@
                 target="_blank"
                 id="label_{{ $node->id }}"
             />
-            <span class="with-icon text-xs color-muted hide-xs">
+            <span class="with-icon text-xs color-muted hide-sm">
                 <x-waterhole::icon icon="tabler-message-circle-2"/>
                 <span>{{ __('waterhole::admin.structure-channel-label') }}</span>
             </span>
@@ -32,7 +32,7 @@
                 <x-waterhole::icon :icon="$node->content->icon ?? null"/>
                 <span>{{ $node->content->name ?? 'Page' }}</span>
             </a>
-            <span class="with-icon text-xs color-muted hide-xs">
+            <span class="with-icon text-xs color-muted hide-sm">
                 <x-waterhole::icon icon="tabler-file-text"/>
                 <span>{{ __('waterhole::admin.structure-page-label') }}</span>
             </span>
@@ -52,7 +52,7 @@
                 <x-waterhole::icon :icon="$node->content->icon ?? null"/>
                 <span>{{ $node->content->name ?? 'Link' }}</span>
             </a>
-            <span class="with-icon text-xs color-muted hide-xs">
+            <span class="with-icon text-xs color-muted hide-sm">
                 <x-waterhole::icon icon="tabler-link"/>
                 <span>{{ __('waterhole::admin.structure-link-label') }}</span>
             </span>
@@ -65,17 +65,17 @@
             && $permissions = app('waterhole.permissions')->load('recipient')->scope($node->content)
         )
             @if ($permissions->guest()->allows('view'))
-                <span class="with-icon text-xs color-muted hide-xs">
+                <span class="with-icon text-xs color-muted hide-sm">
                     <x-waterhole::icon icon="tabler-world"/>
                     {{ __('waterhole::admin.structure-visibility-public-label') }}
                 </span>
             @elseif ($permissions->member()->allows('view'))
-                <span class="with-icon text-xs color-muted hide-xs">
+                <span class="with-icon text-xs color-muted hide-sm">
                     <x-waterhole::icon icon="tabler-user"/>
                     {{ Waterhole\Models\Group::member()->name }}
                 </span>
             @else
-                <span class="hide-xs">
+                <span class="hide-sm">
                     @forelse ($permissions->ability('view')->groups()->map->recipient as $group)
                         <x-waterhole::group-badge :group="$group"/>
                     @empty

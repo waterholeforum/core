@@ -64,7 +64,7 @@
   }
 }
 
-@media (max-width: @breakpoint-sm) {
+@media @media-md-down {
   // Allow the responsive nav button to shrink down to 10ch before wrapping
   .responsive-nav {
     flex: 1 1 10ch;
@@ -73,7 +73,7 @@
   }
 }
 
-@media (min-width: calc(@breakpoint-sm + 1px)) {
+@media @media-lg-up {
   .responsive-nav {
     > :first-child {
       display: none;

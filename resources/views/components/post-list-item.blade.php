@@ -8,7 +8,7 @@
         @components(Waterhole\Extend\PostListItem::build(), compact('post'))
     </div>
 
-    <div class="post-list-item__controls hide-xs">
+    <div class="post-list-item__controls hide-sm">
         <x-waterhole::post-actions :post="$post"/>
     </div>
 </article>

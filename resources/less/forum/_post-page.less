@@ -6,7 +6,7 @@
   }
 }
 
-@media (min-width: calc(@breakpoint-sm + 1px)) {
+@media @media-lg-up {
   .post-page {
     --sidebar-width: 16ch;
 
@@ -20,7 +20,7 @@
   }
 }
 
-@media (min-width: calc(@breakpoint-md + 1px)) {
+@media @media-xl-up {
   .post-page {
     --sidebar-width: 20ch;
   }
@@ -30,7 +30,7 @@
   scroll-margin-top: calc(var(--space-lg) + var(--header-height));
 }
 
-@media (max-width: @breakpoint-sm) {
+@media @media-md-down {
   .comments-pagination {
     flex-wrap: nowrap;
     min-width: 0;
@@ -41,7 +41,7 @@
   }
 }
 
-@media (min-width: calc(@breakpoint-sm + 1px)) {
+@media @media-lg-up {
   .comments-pagination {
     width: 100%;
     margin: 0 0 0 calc(-1 * var(--space-md));

@@ -9,7 +9,7 @@
             <div class="grow"></div>
 
             <form
-                class="combobox break-xs"
+                class="combobox break-sm"
                 data-controller="filter-input"
                 data-turbo-action="replace"
                 data-turbo-frame="users_frame"

@@ -1,12 +1,12 @@
 <a
     href="{{ route('waterhole.login') }}"
-    class="btn btn--icon btn--transparent hide-sm-up"
+    class="btn btn--icon btn--transparent hide-md-up"
 >
     <x-waterhole::icon icon="tabler-user-circle"/>
     <ui-tooltip>{{ __('waterhole::forum.log-in') }}</ui-tooltip>
 </a>
 
-<div class="row hide-xs">
+<div class="row hide-sm">
     <a
         href="{{ route('waterhole.login') }}"
         class="header-login btn btn--transparent btn--narrow color-accent"

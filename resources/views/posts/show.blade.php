@@ -72,7 +72,7 @@
                                     icon="tabler-chevrons-up"
                                     class="text-xs icon--narrow"
                                 />
-                                <span class="hide-xs">{{ __('waterhole::system.pagination-first-link') }}</span>
+                                <span class="hide-sm">{{ __('waterhole::system.pagination-first-link') }}</span>
                             </a>
 
                             <div
@@ -96,7 +96,7 @@
                                     icon="tabler-chevrons-down"
                                     class="text-xs icon--narrow"
                                 />
-                                <span class="hide-xs">{{ __('waterhole::system.pagination-last-link') }}</span>
+                                <span class="hide-sm">{{ __('waterhole::system.pagination-last-link') }}</span>
                             </a>
                         </nav>
                     @endif

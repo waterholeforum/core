@@ -8,11 +8,11 @@ import { PopupElement } from 'inclusive-elements';
  * @internal
  */
 export default class extends Controller {
-    static targets = ['badge', 'frame', 'xs'];
+    static targets = ['badge', 'frame', 'sm'];
 
     declare readonly badgeTarget: HTMLElement;
     declare readonly frameTarget: FrameElement;
-    declare readonly xsTarget: HTMLElement;
+    declare readonly smTarget: HTMLElement;
 
     open(e: MouseEvent) {
         if (!this.badgeTarget.hidden) {
@@ -24,7 +24,7 @@ export default class extends Controller {
 
         // If we're on a small display, close the popup and navigate to the
         // link's original target (the notifications page).
-        if (getComputedStyle(this.xsTarget).display === 'none') {
+        if (getComputedStyle(this.smTarget).display === 'none') {
             window.Turbo.visit((e.currentTarget as HTMLAnchorElement).href);
             (this.element as PopupElement).open = false;
         }

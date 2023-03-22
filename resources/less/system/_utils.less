@@ -15,7 +15,7 @@
 .container {
   margin-inline: auto;
   padding-inline: var(--space-gutter);
-  max-width: @breakpoint-md;
+  max-width: @breakpoint-lg;
   width: 100%;
 }
 
@@ -181,8 +181,8 @@
   margin-inline-start: auto;
 }
 
-@media (max-width: @breakpoint-xs) {
-  .break-xs {
+@media @media-sm {
+  .break-sm {
     order: 999;
     width: 100%;
     flex-grow: 1;
@@ -603,50 +603,32 @@
 
 // Responsive Hiding
 
-@media (max-width: @breakpoint-xs) {
-  .hide-xs {
+@media @media-sm {
+  .hide-sm {
     display: none !important;
   }
 }
 
-@media (min-width: calc(@breakpoint-xs + 1px)) {
-  .hide-sm-up {
-    display: none !important;
-  }
-}
-
-@media (max-width: @breakpoint-sm) {
-  .hide-sm-down {
-    display: none !important;
-  }
-}
-
-@media (min-width: calc(@breakpoint-sm + 1px)) {
+@media @media-md-up {
   .hide-md-up {
     display: none !important;
   }
 }
 
-@media (max-width: @breakpoint-md) {
+@media @media-md-down {
   .hide-md-down {
     display: none !important;
   }
 }
 
-@media (min-width: calc(@breakpoint-md + 1px)) {
+@media @media-lg-up {
   .hide-lg-up {
     display: none !important;
   }
 }
 
-@media (max-width: @breakpoint-lg) {
+@media @media-lg-down {
   .hide-lg-down {
-    display: none !important;
-  }
-}
-
-@media (min-width: calc(@breakpoint-lg + 1px)) {
-  .hide-xl {
     display: none !important;
   }
 }

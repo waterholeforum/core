@@ -10,7 +10,7 @@ class TextEditorEmojiButton extends Component
     {
         return <<<'blade'
             <ui-popup
-                class="hide-xs"
+                class="hide-sm"
                 data-controller="emoji-picker"
             >
                 <button

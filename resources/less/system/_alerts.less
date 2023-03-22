@@ -30,7 +30,7 @@
     filter: blur(4px);
   }
 
-  @media (max-width: @breakpoint-sm) {
+  @media @media-sm {
     align-items: stretch;
     top: auto;
     bottom: 0;
@@ -40,7 +40,7 @@
     }
   }
 
-  @media (min-width: calc(@breakpoint-sm + 1px)) {
+  @media @media-md-up {
     > * {
       max-width: 50ch;
     }

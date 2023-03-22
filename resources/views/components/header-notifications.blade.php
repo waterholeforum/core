@@ -29,7 +29,7 @@
     </ui-menu>
 
     {{-- To detect the screen size and determine whether to open the popup vs. follow the link --}}
-    <div class="hide-xs" data-notifications-popup-target="xs"></div>
+    <div class="hide-sm" data-notifications-popup-target="sm"></div>
 
     <x-turbo-stream-from
         :source="Auth::user()"
