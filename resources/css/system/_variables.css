@@ -1,4 +1,5 @@
-:root {
+:root,
+[data-theme='light'] {
   // Background color
   --bg-hsl: 255 100% 100%;
   --color-bg: hsl(var(--bg-hsl));
@@ -78,8 +79,7 @@
   --color-overlay: rgb(0 0 0 / 0.5);
 
   // Font
-  --font-system: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif,
-    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  --font-system: system-ui;
   --font-text: var(--font-system);
   --font-display: var(--font-text);
   --font-mono: SFMono-Regular, Menlo, Monaco, Consolas, 'Courier New', monospace;
@@ -130,7 +130,7 @@
   --header-height: 4rem;
 }
 
-:root[data-theme='dark'] {
+[data-theme='dark'] {
   --bg-hsl: 200 10% 10%;
   --text-hsl: 0 0% 93%;
   --muted-hsl: 250 10% 60%;

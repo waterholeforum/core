@@ -3,36 +3,25 @@
 return [
     /*
     |--------------------------------------------------------------------------
-    | Logo URL
+    | Theme
     |--------------------------------------------------------------------------
     |
-    | Here you may specify a URL to your brand's logo to be displayed in the
-    | forum header and in your forum's email template. For full support in
-    | email clients, you must use a JPG or PNG file.
+    | This option allows you to configure which theme Waterhole uses. A null
+    | value means that Waterhole will allow users to toggle between light
+    | and dark mode. You can disable this toggle by setting this to either
+    | "light" or "dark".
     |
     */
 
-    'logo_url' => null,
-
-    /*
-    |--------------------------------------------------------------------------
-    | Support Dark Mode
-    |--------------------------------------------------------------------------
-    |
-    | This option allows you to configure whether or not the Dark Mode toggle
-    | switch is displayed to users. You may choose to disable this if your
-    | customizations are not compatible with Dark Mode.
-    |
-    */
-
-    'support_dark_mode' => true,
+    'theme' => null,
 
     /*
     |--------------------------------------------------------------------------
     | Twemoji Base URL
     |--------------------------------------------------------------------------
     |
-    |
+    | This option is the base URL from which to serve Twemoji assets. You can
+    | set this to null to disable Twemoji and fall back to system emoji.
     |
     */
 

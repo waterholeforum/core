@@ -1,15 +1,22 @@
 <!doctype html>
-<html lang="{{ config('app.locale') }}" class="no-js">
+<html
+    lang="{{ config('app.locale') }}"
+    class="no-js"
+    data-theme="{{ config('waterhole.design.theme') }}"
+>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+    >
 
     <title>{{ $title ? $title.' - ' : '' }}{{ config('waterhole.forum.name') }}</title>
 
     <script>
         document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
 
-        @if (config('waterhole.design.support_dark_mode'))
+        @if (!config('waterhole.design.theme'))
             document.documentElement.dataset.theme = localStorage.getItem('theme')
             || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         @endif
@@ -115,13 +122,16 @@
 
 @foreach (['success', 'warning', 'danger'] as $type)
     <template id="template-alert-{{ $type }}">
-        <x-waterhole::alert :$type />
+        <x-waterhole::alert :$type/>
     </template>
 @endforeach
 
 <template id="frame-error">
     <div class="placeholder">
-        <x-waterhole::icon icon="tabler-alert-circle" class="placeholder__icon"/>
+        <x-waterhole::icon
+            icon="tabler-alert-circle"
+            class="placeholder__icon"
+        />
         <p class="h4">{{ __('waterhole::system.fatal-error-heading') }}</p>
         <button class="btn btn--transparent color-accent">
             {{ __('waterhole::system.try-again-button') }}

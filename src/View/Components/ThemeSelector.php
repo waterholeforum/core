@@ -8,7 +8,7 @@ class ThemeSelector extends Component
 {
     public function shouldRender(): bool
     {
-        return config('waterhole.design.support_dark_mode');
+        return !config('waterhole.design.theme');
     }
 
     public function render()
