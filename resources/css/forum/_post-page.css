@@ -77,34 +77,6 @@
   }
 
   .comments-pagination__pages {
-    position: relative;
     max-height: 20rem;
-
-    &::before,
-    &::after {
-      content: '';
-      position: sticky;
-      z-index: 1;
-      width: 100%;
-      height: 40px;
-      margin-top: -40px;
-      flex-shrink: 0;
-      pointer-events: none;
-    }
-
-    &::before {
-      top: 0;
-      background-image: linear-gradient(to bottom, var(--color-bg), transparent);
-    }
-
-    &::after {
-      bottom: 0;
-      background-image: linear-gradient(to top, var(--color-bg), transparent);
-    }
-
-    & > :first-child,
-    & > :last-child {
-      z-index: 2;
-    }
   }
 }

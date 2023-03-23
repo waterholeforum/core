@@ -259,13 +259,70 @@
   overflow: visible;
 }
 
-.scrollable {
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.scrollable-x,
+.scrollable-y {
+  position: relative;
   overflow: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
 
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  &::before,
+  &::after {
+    content: '';
+    position: sticky;
+    z-index: 10;
+    flex-shrink: 0;
+    pointer-events: none;
+    align-self:stretch;
+  }
+
+  & > :first-child,
+  & > :last-child {
+    z-index: 11;
+  }
+}
+
+.scrollable-x {
+  &::before,
+  &::after {
+    width: 40px;
+    margin-left: -40px;
+  }
+
+  &::before {
+    left: 0;
+    background-image: linear-gradient(to right, var(--color-bg), transparent);
+  }
+
+  &::after {
+    right: 0;
+    background-image: linear-gradient(to left, var(--color-bg), transparent);
+  }
+}
+
+.scrollable-y {
+  &::before,
+  &::after {
+    height: 40px;
+    margin-top: -40px;
+  }
+
+  &::before {
+    top: 0;
+    background-image: linear-gradient(to bottom, var(--color-bg), transparent);
+  }
+
+  &::after {
+    bottom: 0;
+    background-image: linear-gradient(to top, var(--color-bg), transparent);
   }
 }
 

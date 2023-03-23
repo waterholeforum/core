@@ -76,7 +76,7 @@
                             </a>
 
                             <div
-                                class="scrollable stack comments-pagination__pages"
+                                class="scrollable-y stack comments-pagination__pages"
                                 data-scrollspy-target="container"
                             >
                                 @for ($page = 1; $page <= $comments->lastPage(); $page++)
