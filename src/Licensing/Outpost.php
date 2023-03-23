@@ -42,22 +42,23 @@ class Outpost
                 ->post(static::ENDPOINT, $payload);
 
             $json = $response->json();
+            $json['status'] = $response->status();
             $expiry = now()->addHour();
         } catch (RequestException $e) {
-            $json = ['error' => $e->response->status()];
+            $json = ['status' => $e->response->status()];
 
-            if ($json['error'] === 422) {
+            if ($json['status'] === 422) {
                 $json['message'] = $e->response->json('message');
             }
 
-            $expiry = match ($json['error']) {
+            $expiry = match ($json['status']) {
                 429 => now()->addSeconds($e->response->header('Retry-After')[0]),
                 default => now()->addMinutes(5),
             };
 
             report($e);
         } catch (ConnectionException $e) {
-            $json = ['error' => 'connection'];
+            $json = ['status' => 0];
             $expiry = now()->addMinutes(5);
             report($e);
         }

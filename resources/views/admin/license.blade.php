@@ -13,9 +13,12 @@
 
     @else
         @php
-            $error = $license->error()
-                ? __('waterhole::admin.license-error-message', ['host' => 'api.waterhole.dev'])
-                : __('waterhole::admin.license-invalid-message');
+            $error = $license->status() === 200
+                ? __([
+                      'waterhole::admin.license-'.Str::kebab($license->error()).'-message',
+                      'waterhole::admin.license-invalid-message',
+                  ])
+                : __('waterhole::admin.license-error-message', ['status' => $license->status()]);
         @endphp
 
         <a href="https://waterhole.dev/docs/licensing" target="_blank" class="badge bg-danger">

@@ -15,9 +15,14 @@ class LicenseManager
         return data_get($response, $key, $default);
     }
 
+    public function status(): int
+    {
+        return $this->response('status');
+    }
+
     public function error(): ?string
     {
-        return $this->response('error');
+        return $this->response('waterhole.error');
     }
 
     public function public(): bool
@@ -27,7 +32,7 @@ class LicenseManager
 
     public function test(): bool
     {
-        return !$this->error() && !$this->public();
+        return $this->status() === 200 && !$this->error() && !$this->public();
     }
 
     public function valid(): bool
