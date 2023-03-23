@@ -6,7 +6,7 @@ Permission is hereby granted to any person obtaining a copy of this software (th
 
 2. **Do not use the same license on more than one project.** Each licensed copy of the Software shall be actively installed in no more than one production environment at a time.
 
-3. **Do not alter the licensing features.** Software features related to licensing shall not be altered or circumvented in any way, including (but not limited to) license validation, feature or edition restrictions, and update eligibility.
+3. **Do not alter the licensing features.** Software features related to licensing shall not be altered or circumvented in any way, including (but not limited to) license validation, feature restrictions, and update eligibility.
 
 4. **Not for reuse.** The Software and the proprietary code therein, not limited to but including designs, components, classes, and patterns, may not be reused in other projects without the express written consent of Waterhole Pty Ltd.
 
