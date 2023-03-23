@@ -4,7 +4,10 @@
 
 @if (!empty($icon))
     @if (str_starts_with($icon, 'file:'))
-        <img src="{{ Storage::disk('public')->url('icons/'.substr($icon, 5)) }}" alt="" {{ $attributes }}>
+        <img
+            src="{{ Storage::disk('public')->url('icons/'.substr($icon, 5)) }}"
+            alt="" {{ $attributes }}
+        >
     @elseif (str_starts_with($icon, 'emoji:'))
         <span {{ $attributes }}>{{ Waterhole\emojify(substr($icon, 6)) }}</span>
     @else
@@ -12,8 +15,13 @@
             if (str_starts_with($icon, 'svg:')) {
                 $icon = substr($icon, 4);
             }
+            $attributes = $attributes->class('icon-'.$icon);
             try {
-                echo svg($icon, '', $attributes->class('icon-'.$icon)->getAttributes())->toHtml();
+                echo svg(
+                    $icon,
+                    $attributes->get('class'),
+                    $attributes->except('class')->getAttributes()
+                )->toHtml();
             } catch (BladeUI\Icons\Exceptions\SvgNotFound $e) {
                 if (config('app.debug')) {
                     echo '<script>console.warn("Icon ['.e($icon).'] not found")</script>';
