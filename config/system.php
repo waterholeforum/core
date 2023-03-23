@@ -7,7 +7,8 @@ return [
     |--------------------------------------------------------------------------
     |
     | The site key for the corresponding domain from your Waterhole account.
-    | Without a key entered, your forum is considered to be in Trial Mode.
+    | Without a key entered, your forum is considered to be in Trial Mode and
+    | you cannot make it available on a public domain.
     |
     */
 
@@ -15,7 +16,23 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Extensions Paths
+    | Laravel Echo Configuration
+    |--------------------------------------------------------------------------
+    |
+    | This is the configuration that will be passed in when Waterhole's
+    | frontend JavaScript sets up the Laravel Echo client.
+    |
+    */
+
+    'echo_config' => [
+        'broadcaster' => 'pusher',
+        'key' => env('PUSHER_APP_KEY'),
+        'cluster' => env('PUSHER_APP_CLUSTER', 'mt1'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Default Extensions Path
     |--------------------------------------------------------------------------
     |
     | When generating addons via `php artisan make:waterhole-extension`, this
@@ -45,26 +62,10 @@ return [
     |--------------------------------------------------------------------------
     |
     | Sometimes Waterhole requires extra resources to complete intensive
-    | operations. Here you may configure system resource limits for
-    | those rare times when we need to turn things up to eleven!
+    | operations. Here you may configure these system resource limits.
     |
     */
 
     'php_memory_limit' => '-1',
     'php_max_execution_time' => '-1',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Laravel Echo Configuration
-    |--------------------------------------------------------------------------
-    |
-    |
-    |
-    */
-
-    'echo_config' => [
-        'broadcaster' => 'pusher',
-        'key' => env('PUSHER_APP_KEY'),
-        'cluster' => env('PUSHER_APP_CLUSTER', 'mt1'),
-    ],
 ];

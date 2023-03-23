@@ -19,7 +19,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | This is the URI path where your Waterhole forum will be accessible
-    | from. Feel free to change this path to anything you like.
+    | from. Feel free to change this to anything you like.
     |
     */
 
@@ -69,7 +69,6 @@ return [
     */
 
     'posts_per_page' => 20,
-
     'comments_per_page' => 20,
 
     /*
@@ -77,10 +76,11 @@ return [
     | Rate Limits
     |--------------------------------------------------------------------------
     |
+    | These limits will help to slow down malicious users and spammers.
+    | "Create" refers to the creation of new posts and comments.
     |
     */
 
     'create_per_minute' => 3,
-
     'search_per_minute' => 10,
 ];

@@ -3,11 +3,11 @@
 return [
     /*
     |--------------------------------------------------------------------------
-    | Admin Panel Path
+    | Admin Path
     |--------------------------------------------------------------------------
     |
-    | This is the URI path where the Waterhole Admin Panel will be accessible
-    | from. Feel free to change this path to anything you like.
+    | This is the URI path where the Waterhole Admin will be accessible from.
+    | Feel free to change this to anything you like.
     |
     */
 
@@ -18,9 +18,10 @@ return [
     | Dashboard Widgets
     |--------------------------------------------------------------------------
     |
-    | Here you may define any number of dashboard widgets. You're free to
+    | Here you may the layout of your dashboard widgets. You're free to
     | use the same widget multiple times in different configurations.
     |
+    | Learn more: https://waterhole.dev/docs/dashboard
     */
 
     'widgets' => [
@@ -33,7 +34,6 @@ return [
             'width' => 50,
             'title' => 'Waterhole Blog',
             'url' => 'https://waterhole.dev/forum/channels/blog/posts.rss',
-            'limit' => 4,
         ],
         [
             'component' => Waterhole\Widgets\LineChart::class,
