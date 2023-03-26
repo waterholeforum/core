@@ -219,6 +219,7 @@ delete-tag-confirm-message = Are you sure you want to delete this tag?
 license-error-message = Your license could not be validated, because there was an error communicating with the Waterhole API. ({ $status })
 license-invalid-message = Please purchase or enter a valid license key for this site to comply with the License Agreement.
 license-expired-message = You are not licensed to use this version of Waterhole. Please downgrade or renew your license.
+license-suspended-message = Your Waterhole license has been suspended. Please contact us for more information.
 
 trial-badge = Trial
 licensed-badge = Licensed
