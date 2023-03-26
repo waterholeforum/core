@@ -18,6 +18,11 @@ class ChannelTaxonomies extends Field
         $this->taxonomies = Taxonomy::all();
     }
 
+    public function shouldRender(): bool
+    {
+        return $this->taxonomies->isNotEmpty();
+    }
+
     public function render(): string
     {
         return <<<'blade'
