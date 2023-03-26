@@ -1,5 +1,5 @@
 import * as Turbo from '@hotwired/turbo';
-import { FrameElement } from '@hotwired/turbo';
+import { FrameElement, TurboFrameMissingEvent } from '@hotwired/turbo';
 // @ts-ignore
 import { morph } from 'idiomorph';
 import { cloneFromTemplate } from '../utils';
@@ -43,6 +43,12 @@ document.addEventListener('turbo:before-fetch-response', async (e) => {
     } else {
         Waterhole.fetchError(response);
     }
+});
+
+document.addEventListener('turbo:frame-missing', async (e) => {
+    e.preventDefault();
+    const { detail } = e as TurboFrameMissingEvent;
+    detail.visit(detail.response, { action: 'replace' });
 });
 
 Waterhole.fetchError = async function (response?: Response) {
