@@ -18,7 +18,7 @@ class ChannelSandbox extends Field
         return <<<'blade'
             <div role="group" class="field">
                 <div class="field__label">
-                    {{ __('waterhole::admin.channel-visibility-label') }}
+                    {{ __('waterhole::cp.channel-visibility-label') }}
                 </div>
                 <div>
                     <input type="hidden" name="sandbox" value="0">
@@ -30,8 +30,8 @@ class ChannelSandbox extends Field
                             @checked(old('sandbox', $model->sandbox ?? false))
                         >
                         <span class="stack gap-xxs">
-                            <span>{{ __('waterhole::admin.channel-sandbox-label') }}</span>
-                            <small class="field__description">{{ __('waterhole::admin.channel-sandbox-description') }}</small>
+                            <span>{{ __('waterhole::cp.channel-sandbox-label') }}</span>
+                            <small class="field__description">{{ __('waterhole::cp.channel-sandbox-description') }}</small>
                         </span>
                     </label>
                 </div>

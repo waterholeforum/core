@@ -14,7 +14,7 @@ abstract class PageForm
 
 PageForm::add(
     fn($model) => new FormSection(
-        __('waterhole::admin.page-details-title'),
+        __('waterhole::cp.page-details-title'),
         PageFormDetails::components(compact('model')),
     ),
     position: -20,
@@ -23,7 +23,7 @@ PageForm::add(
 
 PageForm::add(
     fn($model) => new FormSection(
-        __('waterhole::admin.page-permissions-title'),
+        __('waterhole::cp.page-permissions-title'),
         [new Permissions($model)],
         open: false,
     ),

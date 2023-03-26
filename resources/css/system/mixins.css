@@ -1,0 +1,26 @@
+@define-mixin clickable {
+  &:is(:disabled, .is-disabled) {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  .is-inert {
+    cursor: default;
+  }
+
+  &:not(:disabled, .is-disabled, .is-inert) {
+    cursor: pointer;
+
+    &:is(:hover, .is-hovered, :focus, .is-focused, [aria-selected='true']) {
+      filter: var(--filter-hover);
+    }
+
+    &:is(:active) {
+      filter: var(--filter-active);
+    }
+
+    &:active {
+      transform: scale(0.97);
+    }
+  }
+}

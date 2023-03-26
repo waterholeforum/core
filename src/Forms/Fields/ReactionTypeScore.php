@@ -18,8 +18,8 @@ class ReactionTypeScore extends Field
         return <<<'blade'
             <x-waterhole::field
                 name="score"
-                :label="__('waterhole::admin.reaction-type-score-label')"
-                :description="__('waterhole::admin.reaction-type-score-description')"
+                :label="__('waterhole::cp.reaction-type-score-label')"
+                :description="__('waterhole::cp.reaction-type-score-description')"
             >
                 <input
                     type="number"

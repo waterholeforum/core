@@ -32,7 +32,7 @@ return [
     |
     | Here you can configure which filters are available on the forum index.
     | The first one will be used as the default. This can be overridden for
-    | individual channels in the Structure section of the Admin Panel.
+    | individual channels in the Structure section of the Control Panel.
     |
     */
 
@@ -51,7 +51,7 @@ return [
     |
     | Here you can specify which post layout to use by default. This can be
     | overridden for individual channels in the Structure section of the
-    | Admin Panel.
+    | Control Panel.
     |
     | Supported: "list", "cards"
     |

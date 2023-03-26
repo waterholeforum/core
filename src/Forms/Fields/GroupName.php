@@ -18,7 +18,7 @@ class GroupName extends Field
         return <<<'blade'
             <x-waterhole::field
                 name="name"
-                :label="__('waterhole::admin.group-name-label')"
+                :label="__('waterhole::cp.group-name-label')"
             >
                 <input
                     type="text"

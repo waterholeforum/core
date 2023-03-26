@@ -18,7 +18,7 @@ class PageBody extends Field
         return <<<'blade'
             <x-waterhole::field
                 name="body"
-                :label="__('waterhole::admin.page-body-label')"
+                :label="__('waterhole::cp.page-body-label')"
             >
                 <x-waterhole::text-editor
                     name="body"

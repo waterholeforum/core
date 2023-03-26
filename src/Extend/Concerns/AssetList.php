@@ -18,8 +18,8 @@ trait AssetList
      * Add an asset to a bundle.
      *
      * The `default` and `default-{locale}` bundles are loaded on every page
-     * that uses the Waterhole layout. The `admin` and `admin-{locale}` bundles
-     * are loaded on pages in the Admin Panel.
+     * that uses the Waterhole layout. The `cp` and `cp-{locale}` bundles
+     * are loaded on pages in the Control Panel.
      */
     public static function add(string $file, string $bundle = 'default'): void
     {

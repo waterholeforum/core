@@ -117,7 +117,7 @@ class Channel extends Model
 
     public function getEditUrlAttribute(): string
     {
-        return route('waterhole.admin.structure.channels.edit', ['channel' => $this]);
+        return route('waterhole.cp.structure.channels.edit', ['channel' => $this]);
     }
 
     public function scopeIgnoring(Builder $query): void

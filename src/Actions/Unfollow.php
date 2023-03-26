@@ -17,7 +17,7 @@ class Unfollow extends Action
 
     public function shouldRender(Collection $models): bool
     {
-        return !Waterhole::isAdminRoute() && $models->some->isFollowed();
+        return !Waterhole::isCpRoute() && $models->some->isFollowed();
     }
 
     public function label(Collection $models): string

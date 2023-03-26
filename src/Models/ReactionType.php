@@ -24,7 +24,7 @@ class ReactionType extends Model
 
     public function getEditUrlAttribute(): string
     {
-        return route('waterhole.admin.reaction-sets.reaction-types.edit', [
+        return route('waterhole.cp.reaction-sets.reaction-types.edit', [
             'reactionSet' => $this->reactionSet,
             'reactionType' => $this,
         ]);

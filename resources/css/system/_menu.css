@@ -81,6 +81,7 @@
 .menu-heading {
   padding: var(--space-xs);
   color: var(--color-muted);
+  font-family: var(--font-text);
   font-size: var(--text-xxs);
   font-weight: var(--weight-medium);
   text-transform: uppercase;

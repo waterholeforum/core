@@ -19,7 +19,7 @@ class StructureHeading extends Model
 
     public function getEditUrlAttribute(): string
     {
-        return route('waterhole.admin.structure.headings.edit', ['heading' => $this]);
+        return route('waterhole.cp.structure.headings.edit', ['heading' => $this]);
     }
 
     public static function rules(StructureHeading $instance = null): array

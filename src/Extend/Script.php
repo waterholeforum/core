@@ -24,4 +24,4 @@ Script::add(__DIR__ . '/../../resources/dist/index.js');
 Script::add(__DIR__ . '/../../resources/dist/highlight.js');
 Script::add(__DIR__ . '/../../resources/dist/emoji.js');
 
-Script::add(__DIR__ . '/../../resources/dist/admin.js', bundle: 'admin');
+Script::add(__DIR__ . '/../../resources/dist/cp.js', bundle: 'cp');

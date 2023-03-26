@@ -34,7 +34,7 @@ class DeleteReactionType extends Action
 
     public function confirm(Collection $models): string
     {
-        return __('waterhole::admin.delete-reaction-type-confirm-message');
+        return __('waterhole::cp.delete-reaction-type-confirm-message');
     }
 
     public function confirmButton(Collection $models): string

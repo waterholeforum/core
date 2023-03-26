@@ -35,7 +35,7 @@ class SuspendUser extends Action
 
     public function confirm(Collection $models): View
     {
-        return view('waterhole::admin.users.suspend', ['users' => $models]);
+        return view('waterhole::cp.users.suspend', ['users' => $models]);
     }
 
     public function confirmButton(Collection $models): string

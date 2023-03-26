@@ -1,0 +1,25 @@
+@import '_dashboard.css';
+@import '_permission-grid.css';
+@import '_structure.css';
+
+.container {
+  max-width: none;
+}
+
+.cp__content {
+  max-width: 110ch;
+}
+
+.cp-title {
+  margin-bottom: var(--space-lg);
+}
+
+.sortable > * {
+  transition: transform 0.3s;
+}
+
+.cp-help {
+  text-align: center;
+  font-size: var(--text-xs);
+  margin-top: var(--space-xl);
+}

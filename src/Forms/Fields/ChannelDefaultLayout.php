@@ -18,7 +18,7 @@ class ChannelDefaultLayout extends Field
         return <<<'blade'
             <div role="group" class="field">
                 <div class="field__label">
-                    {{ __('waterhole::admin.channel-default-layout-label') }}
+                    {{ __('waterhole::cp.channel-default-layout-label') }}
                 </div>
                 <div class="stack gap-xs">
                     @foreach (['list' => 'tabler-list', 'cards' => 'tabler-layout-list'] as $key => $icon)

@@ -238,7 +238,7 @@ class User extends Model implements
 
     public function getEditUrlAttribute(): string
     {
-        return route('waterhole.admin.users.edit', ['user' => $this]);
+        return route('waterhole.cp.users.edit', ['user' => $this]);
     }
 
     public function getAvatarUrlAttribute(): ?string

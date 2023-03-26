@@ -24,7 +24,7 @@ class RouteServiceProvider extends ServiceProvider
             \Waterhole\Http\Middleware\PoweredByHeader::class,
         ]);
 
-        Route::middlewareGroup('waterhole.admin', [
+        Route::middlewareGroup('waterhole.cp', [
             'auth',
             'can:administrate',
             \Waterhole\Http\Middleware\MaybeRequirePassword::class,
@@ -37,12 +37,12 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware(['web', 'waterhole.web'])
                 ->name('waterhole.')
                 ->prefix(config('waterhole.forum.path'))
-                ->group(__DIR__ . '/../../routes/web.php');
+                ->group(__DIR__ . '/../../routes/forum.php');
 
-            Route::middleware(['web', 'waterhole.web', 'waterhole.admin'])
-                ->name('waterhole.admin.')
-                ->prefix(config('waterhole.admin.path'))
-                ->group(__DIR__ . '/../../routes/admin.php');
+            Route::middleware(['web', 'waterhole.web', 'waterhole.cp'])
+                ->name('waterhole.cp.')
+                ->prefix(config('waterhole.cp.path'))
+                ->group(__DIR__ . '/../../routes/cp.php');
         });
     }
 

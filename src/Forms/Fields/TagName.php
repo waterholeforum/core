@@ -18,7 +18,7 @@ class TagName extends Field
         return <<<'blade'
             <x-waterhole::field
                 name="name"
-                :label="__('waterhole::admin.tag-name-label')"
+                :label="__('waterhole::cp.tag-name-label')"
             >
                 <input
                     type="text"

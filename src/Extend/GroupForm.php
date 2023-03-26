@@ -14,7 +14,7 @@ abstract class GroupForm
 
 GroupForm::add(
     fn($model) => new FormSection(
-        __('waterhole::admin.group-details-title'),
+        __('waterhole::cp.group-details-title'),
         GroupFormDetails::components(compact('model')),
     ),
     position: -20,
@@ -23,7 +23,7 @@ GroupForm::add(
 
 GroupForm::add(
     fn($model) => new FormSection(
-        __('waterhole::admin.group-permissions-title'),
+        __('waterhole::cp.group-permissions-title'),
         [new GroupPermissions($model)],
         open: false,
     ),

@@ -14,7 +14,7 @@ abstract class StructureLinkForm
 
 StructureLinkForm::add(
     fn($model) => new FormSection(
-        __('waterhole::admin.link-details-title'),
+        __('waterhole::cp.link-details-title'),
         StructureLinkFormDetails::components(compact('model')),
     ),
     position: -20,
@@ -23,7 +23,7 @@ StructureLinkForm::add(
 
 StructureLinkForm::add(
     fn($model) => new FormSection(
-        __('waterhole::admin.link-permissions-title'),
+        __('waterhole::cp.link-permissions-title'),
         [new Permissions($model)],
         open: false,
     ),

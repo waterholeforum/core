@@ -13,7 +13,7 @@ abstract class UserForm
 
 UserForm::add(
     fn($model) => new FormSection(
-        __('waterhole::admin.user-account-title'),
+        __('waterhole::cp.user-account-title'),
         UserFormAccount::components(compact('model')),
     ),
     position: -20,
@@ -22,7 +22,7 @@ UserForm::add(
 
 UserForm::add(
     fn($model) => new FormSection(
-        __('waterhole::admin.user-profile-title'),
+        __('waterhole::cp.user-profile-title'),
         UserFormProfile::components(compact('model')),
         open: false,
     ),

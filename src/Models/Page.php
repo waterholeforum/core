@@ -30,6 +30,6 @@ class Page extends Model
 
     public function getEditUrlAttribute(): string
     {
-        return route('waterhole.admin.structure.pages.edit', ['page' => $this]);
+        return route('waterhole.cp.structure.pages.edit', ['page' => $this]);
     }
 }

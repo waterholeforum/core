@@ -1,16 +1,19 @@
 .h1,
 .h2,
 .h3,
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+}
+
 .h4,
 .h5,
 .h6,
-h1,
-h2,
-h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-display);
+  font-family: var(--font-text);
 }
 
 .h1,
@@ -31,7 +34,6 @@ h2 {
 h3 {
   font-size: var(--text-lg);
   font-weight: var(--weight-bold);
-  line-height: var(--line-height-condensed);
 }
 
 .h4,
@@ -54,6 +56,7 @@ h6 {
 
 .subtitle {
   color: var(--color-muted);
+  font-family: var(--font-text);
   font-size: var(--text-xxs);
   font-weight: var(--weight-medium);
   text-transform: uppercase;
@@ -64,10 +67,12 @@ h6 {
   line-height: var(--line-height-expanded);
 }
 
-:where(.content) {
+.content {
   overflow-wrap: break-word;
   line-height: var(--line-height-expanded);
+}
 
+:where(.content) {
   > * + *,
   li p {
     margin-top: 1em;

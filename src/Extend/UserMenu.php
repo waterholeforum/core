@@ -42,7 +42,7 @@ UserMenu::add(
         ? (new MenuItem(
             icon: 'tabler-tool',
             label: __('waterhole::user.administration-link'),
-            href: route('waterhole.admin.dashboard'),
+            href: route('waterhole.cp.dashboard'),
         ))->withAttributes(['data-turbo' => 'false'])
         : null,
     0,

@@ -19,7 +19,7 @@ class ChannelSlug extends Field
         return <<<'blade'
             <x-waterhole::field
                 name="slug"
-                :label="__('waterhole::admin.channel-slug-label')"
+                :label="__('waterhole::cp.channel-slug-label')"
             >
                 <input
                     id="{{ $component->id }}"
@@ -31,7 +31,7 @@ class ChannelSlug extends Field
                 >
 
                 <x-slot:description>
-                    {{ __('waterhole::admin.channel-slug-url-label') }}
+                    {{ __('waterhole::cp.channel-slug-url-label') }}
                     {!! preg_replace('~^https?://~', '', str_replace('*', '<span data-slugger-target="mirror">'.old('slug', $model->slug ?? '').'</span>', route('waterhole.channels.show', ['channel' => '*']))) !!}
                 </x-slot:description>
             </x-waterhole::field>

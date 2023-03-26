@@ -34,7 +34,7 @@ class DeleteTag extends Action
 
     public function confirm(Collection $models): string
     {
-        return __('waterhole::admin.delete-tag-confirm-message');
+        return __('waterhole::cp.delete-tag-confirm-message');
     }
 
     public function confirmButton(Collection $models): string

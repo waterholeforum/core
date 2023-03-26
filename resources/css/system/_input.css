@@ -23,7 +23,7 @@ select,
   color: var(--color-text);
   height: var(--control-height);
   box-sizing: border-box;
-  border-radius: var(--radius);
+  border-radius: var(--control-radius);
   padding: 0.55em 0.7em;
   -webkit-appearance: none;
 
@@ -67,6 +67,7 @@ textarea,
 select[multiple] {
   height: auto;
   padding: 0.7rem;
+  border-radius: var(--radius);
 }
 
 select:not([multiple]),

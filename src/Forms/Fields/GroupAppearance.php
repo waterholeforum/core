@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 use Waterhole\Forms\Field;
 use Waterhole\Models\Group;
-use Waterhole\View\Components\Admin\IconPicker;
+use Waterhole\View\Components\Cp\IconPicker;
 
 class GroupAppearance extends Field
 {
@@ -18,7 +18,7 @@ class GroupAppearance extends Field
     {
         return <<<'blade'
             <div class="field" data-controller="reveal">
-                <div class="field__label">{{ __('waterhole::admin.group-appearance-label') }}</div>
+                <div class="field__label">{{ __('waterhole::cp.group-appearance-label') }}</div>
 
                 <div class="stack gap-lg">
                     <div>
@@ -31,16 +31,16 @@ class GroupAppearance extends Field
                                 value="1"
                                 @checked(old('is_public', $model->is_public ?? null))
                             >
-                            {{ __('waterhole::admin.group-show-as-badge-label') }}
+                            {{ __('waterhole::cp.group-show-as-badge-label') }}
                         </label>
                     </div>
 
                     <div class="card card__body stack gap-lg" data-reveal-target="then">
                         <x-waterhole::field
                             name="color"
-                            :label="__('waterhole::admin.group-color-label')"
+                            :label="__('waterhole::cp.group-color-label')"
                         >
-                            <x-waterhole::admin.color-picker
+                            <x-waterhole::cp.color-picker
                                 name="color"
                                 id="{{ $component->id }}"
                                 value="{{ old('color', $model->color ?? null) }}"
@@ -49,9 +49,9 @@ class GroupAppearance extends Field
 
                         <x-waterhole::field
                             name="icon"
-                            :label="__('waterhole::admin.group-icon-label')"
+                            :label="__('waterhole::cp.group-icon-label')"
                         >
-                            <x-waterhole::admin.icon-picker
+                            <x-waterhole::cp.icon-picker
                                 name="icon"
                                 :value="old('icon', $model->icon ?? null)"
                             />

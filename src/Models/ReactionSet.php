@@ -23,7 +23,7 @@ class ReactionSet extends Model
 
     public function getEditUrlAttribute(): string
     {
-        return route('waterhole.admin.reaction-sets.edit', ['reactionSet' => $this]);
+        return route('waterhole.cp.reaction-sets.edit', ['reactionSet' => $this]);
     }
 
     public static function defaultPosts(): ?static

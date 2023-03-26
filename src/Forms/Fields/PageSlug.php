@@ -19,7 +19,7 @@ class PageSlug extends Field
         return <<<'blade'
             <x-waterhole::field
                 name="slug"
-                :label="__('waterhole::admin.page-slug-label')"
+                :label="__('waterhole::cp.page-slug-label')"
             >
                 <input
                     type="text"
@@ -30,7 +30,7 @@ class PageSlug extends Field
                     data-slugger-target="slug"
                 >
                 <x-slot:description>
-                    {{ __('waterhole::admin.page-slug-url-label') }}
+                    {{ __('waterhole::cp.page-slug-url-label') }}
                     {!! preg_replace('~^https?://~', '', str_replace('*', '<span data-slugger-target="mirror">'.old('slug', $model->slug ?? '').'</span>', route('waterhole.page', ['page' => '*']))) !!}
                 </x-slot:description>
             </x-waterhole::field>

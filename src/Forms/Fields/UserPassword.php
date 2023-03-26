@@ -26,13 +26,13 @@ class UserPassword extends Field
         return <<<'blade'
             <x-waterhole::field
                 name="password"
-                :label="__('waterhole::admin.user-password-label')"
+                :label="__('waterhole::cp.user-password-label')"
             >
                 @if ($model->exists)
                     <div data-controller="reveal" class="stack gap-sm">
                         <label class="choice">
                             <input type="checkbox" data-reveal-target="if">
-                            {{ __('waterhole::admin.user-set-password-label') }}
+                            {{ __('waterhole::cp.user-set-password-label') }}
                         </label>
                 @endif
                         <input

@@ -20,7 +20,7 @@ class ChannelFilters extends Field
         return <<<'blade'
             <div role="group" class="field">
                 <div class="field__label">
-                    {{ __('waterhole::admin.channel-filter-options-label') }}
+                    {{ __('waterhole::cp.channel-filter-options-label') }}
                 </div>
                 <div data-controller="reveal" class="stack gap-md">
                     <label class="choice">
@@ -33,17 +33,17 @@ class ChannelFilters extends Field
                             @checked(old('custom_filters', $model->filters ?? false))
                         >
                         <span class="stack gap-xxs">
-                            <span>{{ __('waterhole::admin.channel-custom-filters-label') }}</span>
-                            <small class="field__description">{{ __('waterhole::admin.channel-custom-filters-description') }}</small>
+                            <span>{{ __('waterhole::cp.channel-custom-filters-label') }}</span>
+                            <small class="field__description">{{ __('waterhole::cp.channel-custom-filters-description') }}</small>
                         </span>
                     </label>
 
-                    <x-waterhole::admin.sortable-context data-reveal-target="then">
+                    <x-waterhole::cp.sortable-context data-reveal-target="then">
                         <ul
                             class="card sortable"
                             role="list"
                             data-sortable-target="container"
-                            aria-label="{{ __('waterhole::admin.channel-filter-options-label') }}"
+                            aria-label="{{ __('waterhole::cp.channel-filter-options-label') }}"
                         >
                             @php
                                 $filters = old('filters', $model->filters ?? config('waterhole.forum.post_filters', []));
@@ -73,7 +73,7 @@ class ChannelFilters extends Field
                                 </li>
                             @endforeach
                         </ul>
-                    </x-waterhole::admin.sortable-context>
+                    </x-waterhole::cp.sortable-context>
                 </div>
             </div>
         blade;

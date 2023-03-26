@@ -18,7 +18,7 @@ class PageName extends Field
         return <<<'blade'
             <x-waterhole::field
                 name="name"
-                :label="__('waterhole::admin.page-name-label')"
+                :label="__('waterhole::cp.page-name-label')"
             >
                 <input
                     type="text"

@@ -34,7 +34,7 @@
             @if ($hits->count())
                 <div class="with-sidebar">
                     <div class="sidebar sidebar--sticky">
-                        <x-waterhole::responsive-nav
+                        <x-waterhole::collapsible-nav
                             :components="$channels
                                 ->map(fn($channel) => new Waterhole\View\Components\NavLink(
                                     label: $channel->name,
@@ -49,7 +49,7 @@
                                 <x-waterhole::icon icon="tabler-filter"/>
                                 <span>{{ __('waterhole::forum.search-filter-button') }}</span>
                             </x-slot>
-                        </x-waterhole::responsive-nav>
+                        </x-waterhole::collapsible-nav>
                     </div>
 
                     <div class="stack gap-md">

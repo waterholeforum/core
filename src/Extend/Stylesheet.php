@@ -20,5 +20,5 @@ class Stylesheet
     const FILE_EXTENSION = 'css';
 }
 
-Stylesheet::add(__DIR__ . '/../../resources/dist/index.css');
-Stylesheet::add(__DIR__ . '/../../resources/dist/admin.css', bundle: 'admin');
+Stylesheet::add(__DIR__ . '/../../resources/dist/global.css');
+Stylesheet::add(__DIR__ . '/../../resources/dist/cp.css', bundle: 'cp');

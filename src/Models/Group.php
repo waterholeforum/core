@@ -112,12 +112,12 @@ class Group extends Model
 
     public function getEditUrlAttribute(): string
     {
-        return route('waterhole.admin.groups.edit', ['group' => $this]);
+        return route('waterhole.cp.groups.edit', ['group' => $this]);
     }
 
     public function getUsersUrlAttribute(): string
     {
-        return route('waterhole.admin.users.index', [
+        return route('waterhole.cp.users.index', [
             'q' =>
                 'group:' . (str_contains($this->name, ' ') ? '"' . $this->name . '"' : $this->name),
         ]);

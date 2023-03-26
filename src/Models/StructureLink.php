@@ -22,6 +22,6 @@ class StructureLink extends Model
 
     public function getEditUrlAttribute(): string
     {
-        return route('waterhole.admin.structure.links.edit', ['link' => $this]);
+        return route('waterhole.cp.structure.links.edit', ['link' => $this]);
     }
 }

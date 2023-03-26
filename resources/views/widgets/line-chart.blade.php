@@ -11,8 +11,8 @@
                 button-class="btn btn--sm btn--transparent"
                 :value="$selectedPeriod"
                 :options="array_keys($periods)"
-                :label="fn($period) => __('waterhole::admin.period-'.str_replace('_', '-', $period))"
-                :href="fn($period) => route('waterhole.admin.dashboard.widget', ['id' => $id]).'?period='.$period"
+                :label="fn($period) => __('waterhole::cp.period-'.str_replace('_', '-', $period))"
+                :href="fn($period) => route('waterhole.cp.dashboard.widget', ['id' => $id]).'?period='.$period"
             />
         </div>
 
@@ -44,13 +44,13 @@
             </thead>
             <tbody>
                 <tr>
-                    <th>{{ __('waterhole::admin.period-current-heading') }}</th>
+                    <th>{{ __('waterhole::cp.period-current-heading') }}</th>
                     @for ($i = $periodStart; $i < $periodEnd; $i = $i->add(1, $selectedUnit))
                         <td>{{ $results->where('date', '>=', $i)->where('date', '<', $i->add(1, $selectedUnit))->sum('count') }}</td>
                     @endfor
                 </tr>
                 <tr>
-                    <th>{{ __('waterhole::admin.period-previous-heading') }}</th>
+                    <th>{{ __('waterhole::cp.period-previous-heading') }}</th>
                     @for ($i = $prevPeriodStart; $i < $prevPeriodEnd; $i = $i->add(1, $selectedUnit))
                         <td>{{ $results->where('date', '>=', $i)->where('date', '<', $i->add(1, $selectedUnit))->sum('count') }}</td>
                     @endfor

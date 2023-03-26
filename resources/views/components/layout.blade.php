@@ -2,7 +2,7 @@
 <html
     lang="{{ config('app.locale') }}"
     class="no-js"
-    data-theme="{{ config('waterhole.design.theme') }}"
+    data-theme="{{ config('waterhole.design.theme', 'light') }}"
 >
 <head>
     <meta charset="utf-8">

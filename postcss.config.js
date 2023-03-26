@@ -5,6 +5,9 @@ module.exports = {
             files: ['./resources/css/system/breakpoints.css'],
         }),
         require('postcss-each'),
+        require('postcss-mixins')({
+            mixinsFiles: ['./resources/css/system/mixins.css'],
+        }),
         require('postcss-preset-env')({
             stage: 2,
             features: {

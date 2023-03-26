@@ -18,8 +18,8 @@ class ChannelDescription extends Field
         return <<<'blade'
             <x-waterhole::field
                 name="description"
-                :label="__('waterhole::admin.channel-description-label')"
-                :description="__('waterhole::admin.channel-description-description')"
+                :label="__('waterhole::cp.channel-description-label')"
+                :description="__('waterhole::cp.channel-description-description')"
             >
                 <textarea
                     id="{{ $component->id }}"

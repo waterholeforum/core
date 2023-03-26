@@ -34,7 +34,7 @@ class DeleteReactionSet extends Action
 
     public function confirm(Collection $models): string
     {
-        return __('waterhole::admin.delete-reaction-set-confirm-message');
+        return __('waterhole::cp.delete-reaction-set-confirm-message');
     }
 
     public function confirmButton(Collection $models): string

@@ -16,7 +16,7 @@ class Permissions extends Field
     public function render(): string
     {
         return <<<'blade'
-            <x-waterhole::admin.permission-grid
+            <x-waterhole::cp.permission-grid
                 :abilities="$model->abilities()"
                 :permissions="$model->exists ? $model->permissions : null"
                 :defaults="$model->defaultAbilities()"

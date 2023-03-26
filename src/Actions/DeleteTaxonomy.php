@@ -34,7 +34,7 @@ class DeleteTaxonomy extends Action
 
     public function confirm(Collection $models): string
     {
-        return __('waterhole::admin.delete-taxonomy-confirm-message');
+        return __('waterhole::cp.delete-taxonomy-confirm-message');
     }
 
     public function confirmButton(Collection $models): string

@@ -18,7 +18,7 @@ class ChannelReactions extends Field
         return <<<'blade'
             <x-waterhole::field
                 name="posts_reaction_set_id"
-                :label="__('waterhole::admin.channel-post-reactions-label')"
+                :label="__('waterhole::cp.channel-post-reactions-label')"
             >
                 @php $id = $component->id @endphp
                 <x-waterhole::reaction-set-picker
@@ -31,7 +31,7 @@ class ChannelReactions extends Field
 
             <x-waterhole::field
                 name="comments_reaction_set_id"
-                :label="__('waterhole::admin.channel-comment-reactions-label')"
+                :label="__('waterhole::cp.channel-comment-reactions-label')"
             >
                 @php $id = $component->id @endphp
                 <x-waterhole::reaction-set-picker

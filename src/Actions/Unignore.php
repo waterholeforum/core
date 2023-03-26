@@ -17,7 +17,7 @@ class Unignore extends Action
 
     public function shouldRender(Collection $models): bool
     {
-        return !Waterhole::isAdminRoute() && $models->some->isIgnored();
+        return !Waterhole::isCpRoute() && $models->some->isIgnored();
     }
 
     public function label(Collection $models): string

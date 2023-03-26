@@ -3,7 +3,7 @@
 namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Waterhole\View\Components\Admin\TagRow;
+use Waterhole\View\Components\Cp\TagRow;
 use Waterhole\View\TurboStream;
 
 class Tag extends Model
@@ -24,7 +24,7 @@ class Tag extends Model
 
     public function getEditUrlAttribute(): string
     {
-        return route('waterhole.admin.taxonomies.tags.edit', [
+        return route('waterhole.cp.taxonomies.tags.edit', [
             'taxonomy' => $this->taxonomy,
             'tag' => $this,
         ]);

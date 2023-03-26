@@ -23,7 +23,7 @@ class UserEmail extends Field
         return <<<'blade'
             <x-waterhole::field
                 name="email"
-                :label="__('waterhole::admin.user-email-label')"
+                :label="__('waterhole::cp.user-email-label')"
             >
                 <input
                     type="email"

@@ -265,7 +265,6 @@
 
 .scrollable-x,
 .scrollable-y {
-  position: relative;
   overflow: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -472,18 +471,20 @@
 
 // Background Color
 
+.bg-emphasis,
 .bg-accent,
-.bg-accent-soft,
 .bg-success,
-.bg-success-soft,
 .bg-warning,
-.bg-warning-soft,
 .bg-danger,
-.bg-danger-soft,
-.bg-activity,
-.bg-activity-soft {
-  --color-fill: rgb(0 0 0 / 0.1);
-  --color-stroke: rgb(0 0 0 / 0.25);
+.bg-activity {
+  --color-fill: rgb(255 255 255 / 0.1);
+  --color-stroke: rgb(255 255 255 / 0.25);
+  --color-muted: var(--color-text);
+  --color-accent: var(--color-text);
+  --color-accent-text: var(--color-text);
+
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
 .bg-fill {
@@ -491,15 +492,13 @@
 }
 
 .bg-emphasis {
-  background: var(--color-emphasis);
-  color: var(--color-emphasis-contrast);
+  --color-bg: var(--palette-emphasis);
+  --color-text: var(--palette-emphasis-contrast);
 }
 
 .bg-accent {
-  --color-text: var(--color-accent-contrast);
-  --color-muted: var(--color-accent-contrast);
-  background-color: var(--color-accent);
-  color: var(--color-text);
+  --color-bg: var(--palette-accent);
+  --color-text: var(--palette-accent-contrast);
 }
 
 .bg-accent-soft {
@@ -508,10 +507,8 @@
 }
 
 .bg-success {
-  --color-text: var(--color-success-contrast);
-  --color-muted: var(--color-success-contrast);
-  background-color: var(--color-success);
-  color: var(--color-text);
+  --color-bg: var(--palette-success);
+  --color-text: var(--palette-success-contrast);
 }
 
 .bg-success-soft {
@@ -520,10 +517,8 @@
 }
 
 .bg-warning {
-  --color-text: var(--color-warning-contrast);
-  --color-muted: var(--color-warning-contrast);
-  background-color: var(--color-warning);
-  color: var(--color-text);
+  --color-bg: var(--palette-warning);
+  --color-text: var(--palette-warning-contrast);
 }
 
 .bg-warning-soft {
@@ -532,10 +527,8 @@
 }
 
 .bg-danger {
-  --color-text: var(--color-danger-contrast);
-  --color-muted: var(--color-danger-contrast);
-  background-color: var(--color-danger);
-  color: var(--color-text);
+  --color-bg: var(--palette-danger);
+  --color-text: var(--palette-danger-contrast);
 }
 
 .bg-danger-soft {
@@ -544,10 +537,8 @@
 }
 
 .bg-activity {
-  --color-text: var(--color-activity-contrast);
-  --color-muted: var(--color-activity-contrast);
-  background-color: var(--color-activity);
-  color: var(--color-text);
+  --color-bg: var(--palette-activity);
+  --color-text: var(--palette-activity-contrast);
 }
 
 .bg-activity-soft {
@@ -564,33 +555,6 @@
 .no-select {
   user-select: none;
   -webkit-user-select: none;
-}
-
-@define-mixin clickable {
-  &:is(:disabled, .is-disabled) {
-    opacity: 0.5;
-    cursor: default;
-  }
-
-  .is-inert {
-    cursor: default;
-  }
-
-  &:not(:disabled, .is-disabled, .is-inert) {
-    cursor: pointer;
-
-    &:is(:hover, .is-hovered, :focus, .is-focused, [aria-selected='true']) {
-      filter: var(--filter-hover);
-    }
-
-    &:is(:active) {
-      filter: var(--filter-active);
-    }
-
-    &:active {
-      transform: scale(0.97);
-    }
-  }
 }
 
 .clickable {
@@ -671,6 +635,16 @@
 
 .weight-bold {
   font-weight: var(--weight-bold);
+}
+
+// Underline
+
+.underline {
+  text-decoration: underline;
+}
+
+.no-underline {
+  text-decoration: none;
 }
 
 // Responsive Hiding

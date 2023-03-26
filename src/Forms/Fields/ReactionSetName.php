@@ -18,7 +18,7 @@ class ReactionSetName extends Field
         return <<<'blade'
             <x-waterhole::field
                 name="name"
-                :label="__('waterhole::admin.reaction-set-name-label')"
+                :label="__('waterhole::cp.reaction-set-name-label')"
             >
                 <input
                     type="text"

@@ -18,7 +18,7 @@ class ChannelName extends Field
         return <<<'blade'
             <x-waterhole::field
                 name="name"
-                :label="__('waterhole::admin.channel-name-label')"
+                :label="__('waterhole::cp.channel-name-label')"
             >
                 <input
                     id="{{ $component->id }}"
@@ -26,6 +26,7 @@ class ChannelName extends Field
                     type="text"
                     value="{{ old('name', $model->name ?? '') }}"
                     data-action="slugger#updateName"
+                    autofocus
                 >
             </x-waterhole::field>
         blade;

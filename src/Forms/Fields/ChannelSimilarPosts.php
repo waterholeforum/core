@@ -18,7 +18,7 @@ class ChannelSimilarPosts extends Field
         return <<<'blade'
             <div role="group" class="field">
                 <div class="field__label">
-                    {{ __('waterhole::admin.channel-similar-posts-title') }}
+                    {{ __('waterhole::cp.channel-similar-posts-title') }}
                 </div>
                 <div>
                     <input type="hidden" name="show_similar_posts" value="0">
@@ -30,7 +30,7 @@ class ChannelSimilarPosts extends Field
                             @checked(old('show_similar_posts', $model->show_similar_posts ?? false))
                         >
                         <span class="stack gap-xxs">
-                            <span>{{ __('waterhole::admin.channel-show-similar-posts-label') }}</span>
+                            <span>{{ __('waterhole::cp.channel-show-similar-posts-label') }}</span>
                         </span>
                     </label>
                 </div>

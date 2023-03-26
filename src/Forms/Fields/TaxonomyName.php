@@ -18,7 +18,7 @@ class TaxonomyName extends Field
         return <<<'blade'
             <x-waterhole::field
                 name="name"
-                :label="__('waterhole::admin.taxonomy-name-label')"
+                :label="__('waterhole::cp.taxonomy-name-label')"
             >
                 <input
                     type="text"

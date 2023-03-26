@@ -34,7 +34,7 @@ class DeleteGroup extends Action
 
     public function confirm(Collection $models): string
     {
-        return __('waterhole::admin.delete-group-confirm-message');
+        return __('waterhole::cp.delete-group-confirm-message');
     }
 
     public function confirmButton(Collection $models): string

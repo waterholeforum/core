@@ -27,7 +27,7 @@ class Taxonomy extends Model
 
     public function getEditUrlAttribute(): string
     {
-        return route('waterhole.admin.taxonomies.edit', ['taxonomy' => $this]);
+        return route('waterhole.cp.taxonomies.edit', ['taxonomy' => $this]);
     }
 
     public function getTranslatedNameAttribute(): string

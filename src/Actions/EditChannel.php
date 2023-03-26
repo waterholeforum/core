@@ -22,7 +22,7 @@ class EditChannel extends Link
 
     public function shouldRender(Collection $models): bool
     {
-        return Waterhole::isAdminRoute();
+        return Waterhole::isCpRoute();
     }
 
     public function label(Collection $models): string

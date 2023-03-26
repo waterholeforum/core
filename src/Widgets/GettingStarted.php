@@ -16,11 +16,11 @@ class GettingStarted extends Component
                 'icon' => 'tabler-book',
             ],
             'structure' => [
-                'url' => route('waterhole.admin.structure'),
+                'url' => route('waterhole.cp.structure'),
                 'icon' => 'tabler-layout-list',
             ],
             'groups' => [
-                'url' => route('waterhole.admin.groups.index'),
+                'url' => route('waterhole.cp.groups.index'),
                 'icon' => 'tabler-users',
             ],
             'design' => [

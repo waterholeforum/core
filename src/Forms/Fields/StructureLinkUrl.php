@@ -18,7 +18,7 @@ class StructureLinkUrl extends Field
         return <<<'blade'
             <x-waterhole::field
                 name="url"
-                :label="__('waterhole::admin.link-url-label')"
+                :label="__('waterhole::cp.link-url-label')"
             >
                 <input
                     type="text"

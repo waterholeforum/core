@@ -14,14 +14,14 @@ abstract class Waterhole
         return str_starts_with(request()->path(), config('waterhole.forum.path'));
     }
 
-    public static function isAdminRoute(): bool
+    public static function isCpRoute(): bool
     {
-        return str_starts_with(request()->path(), config('waterhole.admin.path'));
+        return str_starts_with(request()->path(), config('waterhole.cp.path'));
     }
 
     public static function isWaterholeRoute(): bool
     {
-        return static::isForumRoute() || static::isAdminRoute();
+        return static::isForumRoute() || static::isCpRoute();
     }
 
     public static function permissions(): PermissionCollection

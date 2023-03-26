@@ -5,7 +5,7 @@ namespace Waterhole\Forms\Fields;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 use Waterhole\Forms\Field;
-use Waterhole\View\Components\Admin\IconPicker;
+use Waterhole\View\Components\Cp\IconPicker;
 
 class Icon extends Field
 {
@@ -20,7 +20,7 @@ class Icon extends Field
                 name="icon"
                 :label="__('waterhole::system.icon-field-label')"
             >
-                <x-waterhole::admin.icon-picker
+                <x-waterhole::cp.icon-picker
                     name="icon"
                     :value="old('icon', $model->icon ?? null)"
                 />

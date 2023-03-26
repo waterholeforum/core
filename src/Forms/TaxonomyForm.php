@@ -17,11 +17,11 @@ class TaxonomyForm extends Form
     {
         return [
             new FormSection(
-                __('waterhole::admin.taxonomy-details-title'),
+                __('waterhole::cp.taxonomy-details-title'),
                 Extend\TaxonomyForm::components(['model' => $this->model]),
             ),
             new FormSection(
-                __('waterhole::admin.taxonomy-permissions-title'),
+                __('waterhole::cp.taxonomy-permissions-title'),
                 [new Permissions($this->model)],
                 open: false,
             ),

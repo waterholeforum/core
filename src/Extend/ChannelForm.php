@@ -14,7 +14,7 @@ abstract class ChannelForm
 
 ChannelForm::add(
     fn($model) => new FormSection(
-        __('waterhole::admin.channel-details-title'),
+        __('waterhole::cp.channel-details-title'),
         ChannelFormDetails::components(compact('model')),
     ),
     position: -100,
@@ -23,7 +23,7 @@ ChannelForm::add(
 
 ChannelForm::add(
     fn($model) => new FormSection(
-        __('waterhole::admin.channel-options-title'),
+        __('waterhole::cp.channel-options-title'),
         ChannelFormOptions::components(compact('model')),
         open: false,
     ),
@@ -33,7 +33,7 @@ ChannelForm::add(
 
 ChannelForm::add(
     fn($model) => new FormSection(
-        __('waterhole::admin.channel-posting-title'),
+        __('waterhole::cp.channel-posting-title'),
         ChannelFormPosting::components(compact('model')),
         open: false,
     ),
@@ -43,7 +43,7 @@ ChannelForm::add(
 
 ChannelForm::add(
     fn($model) => new FormSection(
-        __('waterhole::admin.channel-permissions-title'),
+        __('waterhole::cp.channel-permissions-title'),
         [new Permissions($model)],
         open: false,
     ),

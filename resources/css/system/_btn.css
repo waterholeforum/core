@@ -2,7 +2,7 @@
   height: var(--control-height);
   background: var(--color-fill);
   color: var(--color-text);
-  border-radius: var(--radius);
+  border-radius: var(--control-radius);
   border: 0;
   margin: 0;
   display: inline-flex;
@@ -16,7 +16,7 @@
   vertical-align: middle;
   flex-shrink: 0;
 
-    @mixin clickable;
+  @mixin clickable;
 }
 
 // Outline

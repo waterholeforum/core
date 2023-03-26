@@ -27,7 +27,7 @@ class DeleteChannel extends Action
 
     public function shouldRender(Collection $models): bool
     {
-        return Waterhole::isAdminRoute();
+        return Waterhole::isCpRoute();
     }
 
     public function label(Collection $models): string
@@ -45,7 +45,7 @@ class DeleteChannel extends Action
         $channel = $models[0];
         $postCount = $channel->posts()->count();
 
-        return view('waterhole::admin.structure.delete-channel', compact('channel', 'postCount'));
+        return view('waterhole::cp.structure.delete-channel', compact('channel', 'postCount'));
     }
 
     public function confirmButton(Collection $models): string

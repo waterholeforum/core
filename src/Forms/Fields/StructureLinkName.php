@@ -18,7 +18,7 @@ class StructureLinkName extends Field
         return <<<'blade'
             <x-waterhole::field
                 name="name"
-                :label="__('waterhole::admin.link-name-label')"
+                :label="__('waterhole::cp.link-name-label')"
             >
                 <input
                     id="{{ $component->id }}"

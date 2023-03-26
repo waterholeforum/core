@@ -18,7 +18,7 @@ class ChannelAnswers extends Field
         return <<<'blade'
             <div role="group" class="field">
                 <div class="field__label">
-                    {{ __('waterhole::admin.channel-answers-label') }}
+                    {{ __('waterhole::cp.channel-answers-label') }}
                 </div>
                 <div>
                     <input type="hidden" name="answerable" value="0">
@@ -30,8 +30,8 @@ class ChannelAnswers extends Field
                             @checked(old('answerable', $model->answerable))
                         >
                         <span class="stack gap-xxs">
-                            <span>{{ __('waterhole::admin.channel-enable-answers-label') }}</span>
-                            <small class="field__description">{{ __('waterhole::admin.channel-enable-answers-description') }}</small>
+                            <span>{{ __('waterhole::cp.channel-enable-answers-label') }}</span>
+                            <small class="field__description">{{ __('waterhole::cp.channel-enable-answers-description') }}</small>
                         </span>
                     </label>
                 </div>

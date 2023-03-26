@@ -18,8 +18,8 @@ class ChannelInstructions extends Field
         return <<<'blade'
             <x-waterhole::field
                 name="instructions"
-                :label="__('waterhole::admin.channel-instructions-label')"
-                :description="__('waterhole::admin.channel-instructions-description')"
+                :label="__('waterhole::cp.channel-instructions-label')"
+                :description="__('waterhole::cp.channel-instructions-description')"
             >
                 <x-waterhole::text-editor
                     name="instructions"

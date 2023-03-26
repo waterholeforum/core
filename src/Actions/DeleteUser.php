@@ -35,7 +35,7 @@ class DeleteUser extends Action
 
     public function confirm(Collection $models): View
     {
-        return view('waterhole::admin.users.delete', [
+        return view('waterhole::cp.users.delete', [
             'users' => $models,
         ]);
     }
@@ -58,7 +58,7 @@ class DeleteUser extends Action
             $models->each->delete();
         });
 
-        session()->flash('success', __('waterhole::admin.delete-user-success-message'));
+        session()->flash('success', __('waterhole::cp.delete-user-success-message'));
 
         // If the action was initiated from the user's page, we can't send the
         // user back there. Instead, send them to the forum index.

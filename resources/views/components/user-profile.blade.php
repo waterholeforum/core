@@ -37,7 +37,7 @@
 
     <div class="section container with-sidebar">
         <div class="sidebar sidebar--sticky">
-            <x-waterhole::responsive-nav
+            <x-waterhole::collapsible-nav
                 :components="Waterhole\build_components(Waterhole\Extend\UserNav::build(), compact('user'))"
             />
         </div>

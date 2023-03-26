@@ -24,7 +24,7 @@ class UserGroups extends Field
         return <<<'blade'
             <div class="field">
                 <div class="field__label">
-                    {{ __('waterhole::admin.user-groups-label') }}
+                    {{ __('waterhole::cp.user-groups-label') }}
                 </div>
                 <div class="stack gap-sm">
                     <input type="hidden" name="groups" value="">
