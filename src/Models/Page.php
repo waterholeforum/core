@@ -2,6 +2,7 @@
 
 namespace Waterhole\Models;
 
+use Illuminate\Support\Str;
 use Waterhole\Models\Concerns\HasBody;
 use Waterhole\Models\Concerns\HasIcon;
 use Waterhole\Models\Concerns\HasPermissions;
@@ -22,6 +23,13 @@ class Page extends Model
     use Structurable;
 
     public $timestamps = false;
+
+    protected static function booting(): void
+    {
+        static::creating(function (self $model) {
+            $model->slug ??= Str::slug($model->name);
+        });
+    }
 
     public function getUrlAttribute(): string
     {

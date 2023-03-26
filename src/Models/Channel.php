@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 use Waterhole\Models\Concerns\Followable;
 use Waterhole\Models\Concerns\HasIcon;
 use Waterhole\Models\Concerns\HasPermissions;
@@ -50,6 +51,13 @@ class Channel extends Model
         'sandbox' => 'bool',
         'answerable' => 'bool',
     ];
+
+    protected static function booting(): void
+    {
+        static::creating(function (self $model) {
+            $model->slug ??= Str::slug($model->name);
+        });
+    }
 
     /**
      * Relationship with the channel's posts.
