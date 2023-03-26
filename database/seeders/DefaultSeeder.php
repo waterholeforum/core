@@ -47,7 +47,9 @@ class DefaultSeeder extends Seeder
             [
                 'icon' => 'emoji:📖',
                 'name' => __('waterhole::install.guide-title'),
-                'body' => __('waterhole::install.guide-body'),
+                'body' => __('waterhole::install.guide-body', [
+                    'forumName' => config('waterhole.forum.name'),
+                ]),
             ],
         );
 
@@ -101,21 +103,14 @@ class DefaultSeeder extends Seeder
             ]);
         }
 
-        $voting = ReactionSet::firstOrNew(['name' => __('waterhole::install.reaction-set-voting')]);
+        $votes = ReactionSet::firstOrNew(['name' => __('waterhole::install.reaction-set-votes')]);
 
-        if (!$voting->exists) {
-            $voting->save();
-            $voting->reactionTypes()->createMany([
-                [
-                    'name' => __('waterhole::install.reaction-type-upvote'),
-                    'icon' => 'emoji:🔺',
-                    'score' => 1,
-                ],
-                [
-                    'name' => __('waterhole::install.reaction-type-downvote'),
-                    'icon' => 'emoji:🔻',
-                    'score' => -1,
-                ],
+        if (!$votes->exists) {
+            $votes->save();
+            $votes->reactionTypes()->create([
+                'name' => __('waterhole::install.reaction-type-upvote'),
+                'icon' => 'emoji:🔺',
+                'score' => 1,
             ]);
         }
 
@@ -150,7 +145,7 @@ class DefaultSeeder extends Seeder
                 'name' => __('waterhole::install.ideas-name'),
                 'description' => __('waterhole::install.ideas-description'),
                 'icon' => 'emoji:💡',
-                'posts_reaction_set_id' => $voting->id,
+                'posts_reaction_set_id' => $votes->id,
                 'show_similar_posts' => true,
             ],
             [
