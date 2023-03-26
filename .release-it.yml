@@ -1,0 +1,27 @@
+npm: false
+
+git:
+  commitMessage: 'release: v${version}'
+  tagName: v${version}
+
+github:
+  release: true
+  releaseName: v${version}
+
+plugins:
+  '@release-it/bumper':
+    out:
+      file: src/Waterhole.php
+      type: text/php
+  '@release-it/conventional-changelog':
+    preset: conventionalcommits
+    infile: CHANGELOG.md
+    header: '# Changelog'
+
+hooks:
+  after:bump: npm run prod
+  after:release: 'curl -X POST --location "https://api.waterhole.dev/releases"
+    -H "Content-Type: application/json"
+    -H "Accept: application/json"
+    -H "Authorization: Bearer $WATERHOLE_TOKEN"
+    -d "{\"version\": \"${version}\"}"'

@@ -58,32 +58,5 @@
         "twemoji": "^14.0.2",
         "uplot": "^1.6.24",
         "vanilla-colorful": "^0.7.2"
-    },
-    "release-it": {
-        "npm": false,
-        "git": {
-            "commitMessage": "release: v${version}",
-            "tagName": "v${version}"
-        },
-        "github": {
-            "release": true,
-            "releaseName": "v${version}"
-        },
-        "plugins": {
-            "@release-it/bumper": {
-                "out": {
-                    "file": "src/Waterhole.php",
-                    "type": "text/php"
-                }
-            },
-            "@release-it/conventional-changelog": {
-                "preset": "conventionalcommits",
-                "infile": "CHANGELOG.md",
-                "header": "# Changelog"
-            }
-        },
-        "hooks": {
-            "after:bump": "npm run prod"
-        }
     }
 }
