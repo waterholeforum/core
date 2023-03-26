@@ -1,0 +1,31 @@
+name: Bug Report
+description: Fill out a bug report about something that's broken.
+body:
+  - type: textarea
+    attributes:
+      label: Bug description
+      description: What happened? What did you expect to happen? Feel free to drop any screenshots in here.
+      placeholder: I did this, and then this happened...
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      description: List the steps so we're able to recreate this bug. If possible, please provide a GitHub repository to demonstrate your issue.
+      placeholder: Go here, type this, click that, look over there.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Logs
+      description: You can paste any relevant logs here, they'll be automatically rendered in code blocks. You can find your logs in `storage/logs`.
+      render: shell
+  - type: textarea
+    attributes:
+      label: Environment
+      description: |
+        Details about your environment. Versions of Waterhole, PHP, Laravel, any extensions that are installed, etc.
+        Paste the output of the `php artisan about --only=environment` command.
+      render: yaml
+    validations:
+      required: true

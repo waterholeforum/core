@@ -1,0 +1,12 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: Feature Requests and Ideas
+    url: https://waterhole.dev/community/channel/ideas
+    about: 'Please submit feature requests to the Ideas channel in our community.'
+  - name: Support Questions & Other
+    url: https://waterhole.dev/support
+    about: 'This repository is only for reporting bugs. If you have a question or need help using Waterhole, see our support page.'
+  - name: Documentation Issue
+    url: https://github.com/waterholeforum/docs
+    about: For documentation issues, open a pull request at the waterholeforum/docs repository.
