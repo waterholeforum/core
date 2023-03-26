@@ -1,8 +1,9 @@
 <?php
 
-namespace Waterhole\Http\Middleware\Admin;
+namespace Waterhole\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Gate;
 use Waterhole\Licensing\Outpost;
 
 class ContactOutpost
@@ -13,7 +14,9 @@ class ContactOutpost
 
     public function handle($request, Closure $next)
     {
-        $this->outpost->contact();
+        if (Gate::allows('administrate')) {
+            $this->outpost->contact();
+        }
 
         return $next($request);
     }

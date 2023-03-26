@@ -19,6 +19,7 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::middlewareGroup('waterhole.web', [
             \Tonysm\TurboLaravel\Http\Middleware\TurboMiddleware::class,
+            \Waterhole\Http\Middleware\ContactOutpost::class,
             \Waterhole\Http\Middleware\ActorSeen::class,
             \Waterhole\Http\Middleware\Localize::class,
             \Waterhole\Http\Middleware\PoweredByHeader::class,
@@ -28,7 +29,6 @@ class RouteServiceProvider extends ServiceProvider
             'auth',
             'can:administrate',
             \Waterhole\Http\Middleware\MaybeRequirePassword::class,
-            \Waterhole\Http\Middleware\Admin\ContactOutpost::class,
         ]);
 
         $this->configureRateLimiting();
