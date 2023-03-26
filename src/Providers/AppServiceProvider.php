@@ -4,10 +4,12 @@ namespace Waterhole\Providers;
 
 use BladeUI\Icons\Factory;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Foundation\Console\AboutCommand;
 use Illuminate\Notifications\ChannelManager;
 use Illuminate\Support\ServiceProvider;
 use Waterhole\Models;
 use Waterhole\Notifications\DatabaseChannel;
+use Waterhole\Waterhole;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -57,5 +59,14 @@ class AppServiceProvider extends ServiceProvider
         resolve(ChannelManager::class)->extend('database', function () {
             return new DatabaseChannel();
         });
+
+        $this->addAboutCommandInfo();
+    }
+
+    private function addAboutCommandInfo(): void
+    {
+        AboutCommand::add('Environment', [
+            'Waterhole Version' => Waterhole::VERSION,
+        ]);
     }
 }
