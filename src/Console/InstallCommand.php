@@ -2,6 +2,7 @@
 
 namespace Waterhole\Console;
 
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
@@ -20,9 +21,13 @@ class InstallCommand extends Command
 
     public function handle()
     {
-        if (User::find(1)) {
-            $this->error('Waterhole has already been installed.');
-            return;
+        try {
+            if (User::find(1)) {
+                $this->error('Waterhole has already been installed.');
+                return;
+            }
+        } catch (Exception) {
+            //
         }
 
         $this->publish();
@@ -31,6 +36,7 @@ class InstallCommand extends Command
         $this->createAdmin();
 
         $this->info('Waterhole successfully installed.');
+        $this->info('Check out your forum at: ' . config('app.url'));
     }
 
     private function publish(): void
