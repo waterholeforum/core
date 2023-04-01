@@ -5,6 +5,7 @@ namespace Waterhole\Extend\Concerns;
 trait OrderedList
 {
     private static array $items = [];
+    private static array $built;
 
     /**
      * Add an item to the list.
@@ -45,7 +46,7 @@ trait OrderedList
      */
     public static function build(): array
     {
-        return collect(static::$items)
+        return static::$built ??= collect(static::$items)
             ->sortBy('position')
             ->map(fn($item) => $item['content'])
             ->all();

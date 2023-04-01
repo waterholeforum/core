@@ -2,12 +2,12 @@
 
 namespace Waterhole\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ReactionSet extends Model
 {
-    private static ?ReactionSet $defaultPosts;
-    private static ?ReactionSet $defaultComments;
+    private static Collection $defaults;
 
     protected $casts = [
         'is_default_posts' => 'bool',
@@ -26,13 +26,21 @@ class ReactionSet extends Model
         return route('waterhole.cp.reaction-sets.edit', ['reactionSet' => $this]);
     }
 
+    private static function defaults(): Collection
+    {
+        return static::$defaults ??= static::query()
+            ->where('is_default_posts', true)
+            ->orWhere('is_default_comments', true)
+            ->get();
+    }
+
     public static function defaultPosts(): ?static
     {
-        return static::$defaultPosts ??= static::firstWhere('is_default_posts', true);
+        return static::defaults()->firstWhere('is_default_posts', true);
     }
 
     public static function defaultComments(): ?static
     {
-        return static::$defaultComments ??= static::firstWhere('is_default_comments', true);
+        return static::defaults()->firstWhere('is_default_comments', true);
     }
 }

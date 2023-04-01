@@ -6,9 +6,12 @@ use Countable;
 use Illuminate\Contracts\Translation\Loader;
 use Illuminate\Contracts\Translation\Translator as TranslatorContract;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Translation\MessageSelector;
 use Illuminate\Translation\Translator as BaseTranslator;
 use Major\Fluent\Bundle\FluentBundle;
+use Major\Fluent\Node\Syntax\FluentResource;
+use Major\Fluent\Parser\FluentParser;
 
 /**
  * Translator decorator that adds support for Fluent translations.
@@ -112,17 +115,28 @@ final class FluentTranslator implements TranslatorContract
 
     protected function loadPath(string $path, string $locale, string $group): FluentBundle|false
     {
-        if ($this->files->exists($full = "{$path}/{$locale}/{$group}.ftl")) {
-            $bundle = new FluentBundle($locale, ...$this->bundleOptions);
+        $full = "{$path}/{$locale}/{$group}.ftl";
 
-            foreach ($this->functions as $name => $function) {
-                $bundle->addFunction($name, $function);
+        $body = Cache::rememberForever("fluent:$full", function () use ($locale, $full) {
+            $parser = new FluentParser(strict: true);
+            if (!$this->files->exists($full)) {
+                return null;
             }
+            $resource = $parser->parse($this->files->get($full));
+            return $resource->body;
+        });
 
-            return $bundle->addFtl($this->files->get($full));
+        if (!$body) {
+            return false;
         }
 
-        return false;
+        $bundle = new FluentBundle($locale, ...$this->bundleOptions);
+
+        foreach ($this->functions as $name => $function) {
+            $bundle->addFunction($name, $function);
+        }
+
+        return $bundle->addResource(new FluentResource($body));
     }
 
     protected function loadNamespaced(

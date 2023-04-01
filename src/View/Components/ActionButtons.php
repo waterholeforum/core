@@ -32,13 +32,13 @@ class ActionButtons extends Component
         }
 
         if (isset($exclude)) {
-            $actions = $actions->filter(fn($action) => !in_array(get_class($action), $exclude));
+            $actions = $actions->reject(fn($action) => in_array(get_class($action), $exclude));
         }
 
+        $models = collect([$for]);
+
         $this->actions = $actions
-            ->filter(
-                fn($action) => !$action instanceof Action || $action->shouldRender(collect([$for])),
-            )
+            ->filter(fn($action) => !$action instanceof Action || $action->shouldRender($models))
             ->values()
             ->reject(fn($action, $i) => $action instanceof MenuDivider && $i === 0);
     }

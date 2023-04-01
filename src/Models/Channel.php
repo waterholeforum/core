@@ -68,6 +68,35 @@ class Channel extends Model
     }
 
     /**
+     * Relationship with posts that are followed and contain unread content.
+     */
+    public function unreadPosts(): HasMany
+    {
+        return $this->posts()
+            ->following()
+            ->unread();
+    }
+
+    /**
+     * Scope to select count of posts that are new since a channel was followed.
+     */
+    public function scopeWithNewPostsCount(Builder $query): void
+    {
+        $sub = Post::query()
+            ->selectRaw('COUNT(*)')
+            ->whereColumn('posts.channel_id', 'channels.id')
+            ->whereDoesntHave('userState')
+            ->where('created_at', '>', 'followed_at');
+
+        $query
+            ->leftJoinRelation('userState')
+            ->selectRaw(
+                'IF(followed_at IS NOT NULL, (' . $sub->toSql() . '), 0) AS new_posts_count',
+                $sub->getBindings(),
+            );
+    }
+
+    /**
      * Relationship with posts that are new since this channel was followed.
      */
     public function newPosts(): HasMany
@@ -77,16 +106,6 @@ class Channel extends Model
             ->whereHas('channel.userState', function ($query) {
                 $query->whereColumn('posts.created_at', '>', 'followed_at');
             });
-    }
-
-    /**
-     * Relationship with posts that are followed and contain unread content.
-     */
-    public function unreadPosts(): HasMany
-    {
-        return $this->posts()
-            ->following()
-            ->unread();
     }
 
     public function postsReactionSet(): BelongsTo

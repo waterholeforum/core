@@ -2,32 +2,26 @@
 
 namespace Waterhole\View\Components;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
-use Waterhole\Extend\Actions;
+use Waterhole\Actions\React;
 
 class ActionForm extends Component
 {
-    public ?bool $isAuthorized = null;
+    public bool $isAuthorized = false;
 
     public function __construct(
         public $for,
         public ?string $action = null,
         public ?string $return = null,
     ) {
-        if ($action) {
-            $this->isAuthorized = $this->isAuthorized($action);
+        if ($user = Auth::user()) {
+            $this->isAuthorized = resolve(React::class)->authorize($user, $for);
         }
     }
 
     public function render()
     {
         return view('waterhole::components.action-form');
-    }
-
-    public function isAuthorized(string $action = null): bool
-    {
-        $action ??= $this->action;
-
-        return collect(Actions::for($this->for))->contains(fn($i) => $i instanceof $action);
     }
 }

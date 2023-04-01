@@ -4,6 +4,7 @@ namespace Waterhole\Providers;
 
 use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Waterhole\Models\Permission;
 use Waterhole\Models\PermissionCollection;
@@ -21,7 +22,11 @@ class AuthServiceProvider extends ServiceProvider
             fn() => new Providers(config('waterhole.auth.oauth_providers')),
         );
 
-        $this->app->singleton('waterhole.permissions', fn() => Permission::all());
+        $this->app->singleton(
+            'waterhole.permissions',
+            fn() => Cache::rememberForever('waterhole.permissions', fn() => Permission::all()),
+        );
+
         $this->app->alias('waterhole.permissions', PermissionCollection::class);
 
         Gate::before(function (User $user, $ability, $arguments) {

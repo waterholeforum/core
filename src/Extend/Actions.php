@@ -24,6 +24,8 @@ abstract class Actions
 {
     use OrderedList;
 
+    private static Collection $instances;
+
     /**
      * Get a list of action instances that can be applied to the given model(s).
      */
@@ -33,21 +35,21 @@ abstract class Actions
             $models = collect(is_array($models) ? $models : [$models]);
         }
 
-        $actions = collect(static::build())
+        $actions = static::$instances ??= collect(static::build())
             ->values()
             ->map(fn($class) => resolve($class));
 
-        if ($models->count() > 1) {
-            $actions = $actions->filter(fn($action) => !$action instanceof Action || $action->bulk);
-        }
+        $single = $models->count() <= 1;
+        $user ??= Auth::user();
 
         return $actions
             ->filter(
-                fn($action) => $models->every(
-                    fn($model) => !$action instanceof Action ||
-                        ($action->appliesTo($model) &&
-                            $action->authorize($user ?: Auth::user(), $model)),
-                ),
+                fn($action) => !$action instanceof Action ||
+                    (($single || $action->bulk) &&
+                        $models->every(
+                            fn($model) => $action->appliesTo($model) &&
+                                $action->authorize($user, $model),
+                        )),
             )
             ->all();
     }

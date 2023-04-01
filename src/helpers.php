@@ -124,7 +124,7 @@ function build_components(array $components, array $data = []): array
         if (is_object($component)) {
             return $component;
         } elseif (class_exists($component)) {
-            return resolve($component, $data);
+            return $component::resolve($data);
         } elseif (view()->exists($component)) {
             return resolve(AnonymousComponent::class, ['view' => $component, 'data' => $data]);
         }

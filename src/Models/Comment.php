@@ -59,7 +59,7 @@ class Comment extends Model
 
     protected static function booted(): void
     {
-        static::addGlobalScope(function ($query) {
+        static::addGlobalScope('visible', function ($query) {
             $query->whereHas('post');
         });
 

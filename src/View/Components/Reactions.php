@@ -27,8 +27,8 @@ class Reactions extends Component
         }
 
         $this->reactionsByType = $model->reactions
-            ->load('reactionType', 'user')
-            ->groupBy('reactionType.id');
+            ->loadMissing('user')
+            ->groupBy('reaction_type_id');
 
         $countReactions = fn($reactionType) => isset($this->reactionsByType[$reactionType->id])
             ? $this->reactionsByType[$reactionType->id]->count()

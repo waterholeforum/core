@@ -13,17 +13,17 @@ class ActorSeen
 {
     public function handle(Request $request, Closure $next)
     {
-        $actor = $request->user();
-
-        if ($actor) {
+        if ($actor = $request->user()) {
             $request->session()->put('previously_seen_at', $actor->last_seen_at);
         }
 
         return $next($request);
     }
 
-    public function terminate(Request $request)
+    public function terminate(Request $request): void
     {
-        $request->user()?->update(['last_seen_at' => now()]);
+        if (($actor = $request->user()) && $actor->last_seen_at < now()->subMinutes(1)) {
+            $actor->update(['last_seen_at' => now()]);
+        }
     }
 }

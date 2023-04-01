@@ -3,6 +3,7 @@
 namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * @property int $id
@@ -17,6 +18,12 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class Permission extends Model
 {
     public $timestamps = false;
+
+    protected static function booting(): void
+    {
+        static::saved(fn() => Cache::forget('waterhole.permissions'));
+        static::deleted(fn() => Cache::forget('waterhole.permissions'));
+    }
 
     /**
      * Relationship with the model that this permission is for.

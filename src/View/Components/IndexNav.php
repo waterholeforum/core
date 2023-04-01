@@ -22,8 +22,11 @@ class IndexNav extends Component
             ->with([
                 'content' => function (MorphTo $morphTo) {
                     if (Auth::check()) {
-                        $morphTo->morphWithCount([
-                            Channel::class => ['newPosts', 'unreadPosts'],
+                        $morphTo->constrain([
+                            Channel::class => function ($query) {
+                                $query->withCount('unreadPosts');
+                                $query->withNewPostsCount();
+                            },
                         ]);
                     }
                 },
