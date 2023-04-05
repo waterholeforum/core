@@ -12,13 +12,16 @@ use Waterhole\Models\Structure;
 use Waterhole\Models\StructureHeading;
 use Waterhole\Models\StructureLink;
 
+use function Waterhole\is_absolute_url;
+
 class IndexNav extends Component
 {
     public Collection $nav;
 
     public function __construct()
     {
-        $structure = Structure::where('is_listed', true)
+        $structure = Structure::query()
+            ->where('is_listed', true)
             ->with([
                 'content' => function (MorphTo $morphTo) {
                     if (Auth::check()) {
@@ -60,9 +63,7 @@ class IndexNav extends Component
                             icon: $node->content->icon,
                             href: $node->content->href,
                         ))->withAttributes(
-                            preg_match('~https?://~i', $node->content->href)
-                                ? ['target' => '_blank']
-                                : [],
+                            is_absolute_url($node->content->href) ? ['target' => '_blank'] : [],
                         );
                     } elseif ($node->content instanceof Page) {
                         return new NavLink(
