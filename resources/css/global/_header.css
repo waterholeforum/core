@@ -3,14 +3,15 @@
   top: -1px; // ensures that .is-stuck only applies when scrolled down
   z-index: var(--z-index-header);
   transition: box-shadow 0.2s;
+  background: var(--color-bg);
+  box-shadow: var(--shadow-sm);
 
   .container {
     height: var(--header-height);
   }
 
-  &.is-stuck {
-    background: var(--color-bg);
-    box-shadow: var(--shadow-sm);
+  &.is-unstuck {
+    box-shadow: none;
   }
 }
 

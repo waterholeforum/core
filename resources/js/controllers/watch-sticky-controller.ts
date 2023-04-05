@@ -10,6 +10,7 @@ export default class extends Controller {
     connect() {
         this.observer = new StickyObserver(this.element, (stuck) => {
             this.element.classList.toggle('is-stuck', stuck);
+            this.element.classList.toggle('is-unstuck', !stuck);
         });
     }
 
