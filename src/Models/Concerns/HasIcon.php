@@ -58,11 +58,13 @@ trait HasIcon
         }
     }
 
-    public function icon(): Attribute
+    public function iconFile(): Attribute
     {
         return Attribute::make(
-            get: fn() => str_starts_with($this->icon, 'file:') ? substr($this->icon, 5) : null,
-            set: fn(?string $value) => ($this->icon = $value ? 'file:' . $value : null),
+            get: fn(?string $value) => $value && str_starts_with($value, 'file:')
+                ? substr($value, 5)
+                : null,
+            set: fn(?string $value) => ['icon' => $value ? 'file:' . $value : null],
         );
     }
 }
