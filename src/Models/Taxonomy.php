@@ -3,6 +3,7 @@
 namespace Waterhole\Models;
 
 use Auth;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 use Waterhole\Models\Concerns\HasPermissions;
@@ -25,14 +26,18 @@ class Taxonomy extends Model
         return $this->hasMany(Tag::class)->orderBy('name');
     }
 
-    public function getEditUrlAttribute(): string
+    public function editUrl(): Attribute
     {
-        return route('waterhole.cp.taxonomies.edit', ['taxonomy' => $this]);
+        return Attribute::make(
+            get: fn() => route('waterhole.cp.taxonomies.edit', ['taxonomy' => $this]),
+        )->shouldCache();
     }
 
-    public function getTranslatedNameAttribute(): string
+    public function translatedName(): Attribute
     {
-        return __(['waterhole.taxonomy-' . Str::kebab($this->name), $this->name]);
+        return Attribute::make(
+            get: fn() => __(['waterhole.taxonomy-' . Str::kebab($this->name), $this->name]),
+        )->shouldCache();
     }
 
     public function abilities(): array

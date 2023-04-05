@@ -3,6 +3,7 @@
 namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Notifications\DatabaseNotification;
@@ -82,21 +83,27 @@ class Notification extends DatabaseNotification
             ->firstOrFail();
     }
 
-    public function getTemplateAttribute(): ?NotificationTemplate
+    public function template(): Attribute
     {
-        if (!$this->content) {
-            return null;
-        }
+        return Attribute::make(
+            get: function () {
+                if (!$this->content) {
+                    return null;
+                }
 
-        if (!isset($this->template)) {
-            $this->template = new $this->type($this->content);
-        }
+                if (!isset($this->template)) {
+                    $this->template = new $this->type($this->content);
+                }
 
-        return $this->template;
+                return $this->template;
+            },
+        )->shouldCache();
     }
 
-    public function getUrlAttribute(): string
+    public function url(): Attribute
     {
-        return route('waterhole.notifications.show', ['notification' => $this]);
+        return Attribute::make(
+            get: fn() => route('waterhole.notifications.show', ['notification' => $this]),
+        )->shouldCache();
     }
 }

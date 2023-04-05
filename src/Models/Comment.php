@@ -2,6 +2,7 @@
 
 namespace Waterhole\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Notification;
@@ -176,23 +177,37 @@ class Comment extends Model
         return [TurboStream::remove(new Components\CommentFrame($this))];
     }
 
-    public function getUrlAttribute(): string
+    public function url(): Attribute
     {
-        return route('waterhole.posts.comments.show', ['post' => $this->post, 'comment' => $this]);
+        return Attribute::make(
+            get: fn() => route('waterhole.posts.comments.show', [
+                'post' => $this->post,
+                'comment' => $this,
+            ]),
+        )->shouldCache();
     }
 
-    public function getEditUrlAttribute(): string
+    public function editUrl(): Attribute
     {
-        return route('waterhole.posts.comments.edit', ['post' => $this->post, 'comment' => $this]);
+        return Attribute::make(
+            get: fn() => route('waterhole.posts.comments.edit', [
+                'post' => $this->post,
+                'comment' => $this,
+            ]),
+        )->shouldCache();
     }
 
-    public function getPostUrlAttribute(): string
+    public function postUrl(): Attribute
     {
-        if (isset($this->index)) {
-            return $this->post->url($this->index) . '#' . dom_id($this);
-        }
+        return Attribute::make(
+            get: function () {
+                if (isset($this->index)) {
+                    return $this->post->urlAtIndex($this->index) . '#' . dom_id($this);
+                }
 
-        return $this->post->url . '?comment=' . $this->id;
+                return $this->post->url . '?comment=' . $this->id;
+            },
+        )->shouldCache();
     }
 
     public static function rules(Comment $instance = null): array

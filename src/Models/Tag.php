@@ -2,6 +2,7 @@
 
 namespace Waterhole\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Waterhole\View\Components\Cp\TagRow;
 use Waterhole\View\TurboStream;
@@ -22,12 +23,14 @@ class Tag extends Model
         return $this->belongsTo(Taxonomy::class);
     }
 
-    public function getEditUrlAttribute(): string
+    public function editUrl(): Attribute
     {
-        return route('waterhole.cp.taxonomies.tags.edit', [
-            'taxonomy' => $this->taxonomy,
-            'tag' => $this,
-        ]);
+        return Attribute::make(
+            get: fn() => route('waterhole.cp.taxonomies.tags.edit', [
+                'taxonomy' => $this->taxonomy,
+                'tag' => $this,
+            ]),
+        )->shouldCache();
     }
 
     /**

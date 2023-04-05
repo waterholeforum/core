@@ -13,7 +13,7 @@ use function Waterhole\is_absolute_url;
  * Methods to associate uploaded images with a model.
  *
  * These methods are all private. The model will usually want to expose public
- * methods for each image attribute, eg. `getAvatarUrlAttribute`, `uploadAvatar`,
+ * methods for each image attribute, eg. `avatar`, `uploadAvatar`,
  * and `removeAvatar`, wrapping around these private methods.
  */
 trait HasImageAttributes

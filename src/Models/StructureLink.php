@@ -2,6 +2,7 @@
 
 namespace Waterhole\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Waterhole\Models\Concerns\HasIcon;
 use Waterhole\Models\Concerns\HasPermissions;
 use Waterhole\Models\Concerns\Structurable;
@@ -20,8 +21,10 @@ class StructureLink extends Model
 
     public $timestamps = false;
 
-    public function getEditUrlAttribute(): string
+    public function editUrl(): Attribute
     {
-        return route('waterhole.cp.structure.links.edit', ['link' => $this]);
+        return Attribute::make(
+            get: fn() => route('waterhole.cp.structure.links.edit', ['link' => $this]),
+        )->shouldCache();
     }
 }

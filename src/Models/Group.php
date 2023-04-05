@@ -3,6 +3,7 @@
 namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Waterhole\Models\Concerns\HasIcon;
 use Waterhole\Models\Concerns\ReceivesPermissions;
@@ -110,16 +111,21 @@ class Group extends Model
         $query->whereKeyNot([static::GUEST_ID, static::MEMBER_ID]);
     }
 
-    public function getEditUrlAttribute(): string
+    public function editUrl(): Attribute
     {
-        return route('waterhole.cp.groups.edit', ['group' => $this]);
+        return Attribute::make(
+            get: fn() => route('waterhole.cp.groups.edit', ['group' => $this]),
+        )->shouldCache();
     }
 
-    public function getUsersUrlAttribute(): string
+    public function usersUrl(): Attribute
     {
-        return route('waterhole.cp.users.index', [
-            'q' =>
-                'group:' . (str_contains($this->name, ' ') ? '"' . $this->name . '"' : $this->name),
-        ]);
+        return Attribute::make(
+            get: fn() => route('waterhole.cp.users.index', [
+                'q' =>
+                    'group:' .
+                    (str_contains($this->name, ' ') ? '"' . $this->name . '"' : $this->name),
+            ]),
+        )->shouldCache();
     }
 }

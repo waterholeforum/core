@@ -2,6 +2,7 @@
 
 namespace Waterhole\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Str;
 use Waterhole\Models\Concerns\HasBody;
 use Waterhole\Models\Concerns\HasIcon;
@@ -31,13 +32,17 @@ class Page extends Model
         });
     }
 
-    public function getUrlAttribute(): string
+    public function url(): Attribute
     {
-        return route('waterhole.page', ['page' => $this]);
+        return Attribute::make(
+            get: fn() => route('waterhole.page', ['page' => $this]),
+        )->shouldCache();
     }
 
-    public function getEditUrlAttribute(): string
+    public function editUrl(): Attribute
     {
-        return route('waterhole.cp.structure.pages.edit', ['page' => $this]);
+        return Attribute::make(
+            get: fn() => route('waterhole.cp.structure.pages.edit', ['page' => $this]),
+        )->shouldCache();
     }
 }

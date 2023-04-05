@@ -2,6 +2,7 @@
 
 namespace Waterhole\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Waterhole\Models\Concerns\HasIcon;
 
@@ -22,11 +23,13 @@ class ReactionType extends Model
         return $this->belongsTo(ReactionSet::class);
     }
 
-    public function getEditUrlAttribute(): string
+    public function editUrl(): Attribute
     {
-        return route('waterhole.cp.reaction-sets.reaction-types.edit', [
-            'reactionSet' => $this->reactionSet,
-            'reactionType' => $this,
-        ]);
+        return Attribute::make(
+            get: fn() => route('waterhole.cp.reaction-sets.reaction-types.edit', [
+                'reactionSet' => $this->reactionSet,
+                'reactionType' => $this,
+            ]),
+        )->shouldCache();
     }
 }

@@ -3,6 +3,7 @@
 namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -18,7 +19,6 @@ use Waterhole\Models\Concerns\HasUserState;
 use Waterhole\Models\Concerns\NotificationContent;
 use Waterhole\Models\Concerns\Reactable;
 use Waterhole\Notifications\Mention;
-use Waterhole\Scopes\CommentIndexScope;
 use Waterhole\Scopes\PostVisibleScope;
 use Waterhole\View\Components;
 use Waterhole\View\TurboStream;
@@ -198,7 +198,7 @@ class Post extends Model
     /**
      * Generate a URL for a particular comment index in this post.
      */
-    public function url(int $index = 0): string
+    public function urlAtIndex(int $index = 0): string
     {
         $params = ['post' => $this];
 
@@ -297,25 +297,34 @@ class Post extends Model
         return $this->whereKey(explode('-', $value)[0])->firstOrFail();
     }
 
-    public function getUrlAttribute(): string
+    public function url(): Attribute
     {
-        return route('waterhole.posts.show', ['post' => $this]);
+        return Attribute::make(
+            get: fn() => route('waterhole.posts.show', ['post' => $this]),
+        )->shouldCache();
     }
 
-    public function getEditUrlAttribute(): string
+    public function editUrl(): Attribute
     {
-        return route('waterhole.posts.edit', ['post' => $this]);
+        return Attribute::make(
+            get: fn() => route('waterhole.posts.edit', ['post' => $this]),
+        )->shouldCache();
     }
 
-    public function getUnreadUrlAttribute(): string
+    public function unreadUrl(): Attribute
     {
-        $fragment = match (true) {
-            $this->isNew() => '',
-            (bool) $this->unread_comments_count => '#unread',
-            default => '#bottom',
-        };
+        return Attribute::make(
+            get: function () {
+                $fragment = match (true) {
+                    $this->isNew() => '',
+                    (bool) $this->unread_comments_count => '#unread',
+                    default => '#bottom',
+                };
 
-        return $this->url($this->comment_count - $this->unread_comments_count - 1) . $fragment;
+                return $this->urlAtIndex($this->comment_count - $this->unread_comments_count - 1) .
+                    $fragment;
+            },
+        )->shouldCache();
     }
 
     public function setTitleAttribute($value)

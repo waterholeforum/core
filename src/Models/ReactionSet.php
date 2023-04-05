@@ -2,6 +2,7 @@
 
 namespace Waterhole\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -21,9 +22,11 @@ class ReactionSet extends Model
         return $this->hasMany(ReactionType::class)->orderBy('position');
     }
 
-    public function getEditUrlAttribute(): string
+    public function editUrl(): Attribute
     {
-        return route('waterhole.cp.reaction-sets.edit', ['reactionSet' => $this]);
+        return Attribute::make(
+            get: fn() => route('waterhole.cp.reaction-sets.edit', ['reactionSet' => $this]),
+        )->shouldCache();
     }
 
     private static function defaults(): Collection

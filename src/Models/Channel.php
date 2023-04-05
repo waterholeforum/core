@@ -3,6 +3,7 @@
 namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -137,14 +138,18 @@ class Channel extends Model
         return ['view', 'comment', 'post'];
     }
 
-    public function getUrlAttribute(): string
+    public function url(): Attribute
     {
-        return route('waterhole.channels.show', ['channel' => $this]);
+        return Attribute::make(
+            get: fn() => route('waterhole.channels.show', ['channel' => $this]),
+        )->shouldCache();
     }
 
-    public function getEditUrlAttribute(): string
+    public function editUrl(): Attribute
     {
-        return route('waterhole.cp.structure.channels.edit', ['channel' => $this]);
+        return Attribute::make(
+            get: fn() => route('waterhole.cp.structure.channels.edit', ['channel' => $this]),
+        )->shouldCache();
     }
 
     public function scopeIgnoring(Builder $query): void

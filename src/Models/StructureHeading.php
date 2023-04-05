@@ -2,6 +2,7 @@
 
 namespace Waterhole\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Waterhole\Models\Concerns\Structurable;
 use Waterhole\Models\Concerns\ValidatesData;
 
@@ -17,9 +18,11 @@ class StructureHeading extends Model
 
     public $timestamps = false;
 
-    public function getEditUrlAttribute(): string
+    public function editUrl(): Attribute
     {
-        return route('waterhole.cp.structure.headings.edit', ['heading' => $this]);
+        return Attribute::make(
+            get: fn() => route('waterhole.cp.structure.headings.edit', ['heading' => $this]),
+        )->shouldCache();
     }
 
     public static function rules(StructureHeading $instance = null): array

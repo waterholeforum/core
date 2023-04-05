@@ -2,6 +2,7 @@
 
 namespace Waterhole\Models\Concerns;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Http\UploadedFile;
 use Intervention\Image\Facades\Image;
 use Intervention\Image\Image as ImageObject;
@@ -57,13 +58,11 @@ trait HasIcon
         }
     }
 
-    public function getIconFileAttribute(): ?string
+    public function icon(): Attribute
     {
-        return str_starts_with($this->icon, 'file:') ? substr($this->icon, 5) : null;
-    }
-
-    public function setIconFileAttribute(?string $value): void
-    {
-        $this->icon = $value ? 'file:' . $value : null;
+        return Attribute::make(
+            get: fn() => str_starts_with($this->icon, 'file:') ? substr($this->icon, 5) : null,
+            set: fn(?string $value) => ($this->icon = $value ? 'file:' . $value : null),
+        );
     }
 }

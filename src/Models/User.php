@@ -10,6 +10,7 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -231,36 +232,46 @@ class User extends Model implements
         return (bool) $this->suspended_until?->isFuture();
     }
 
-    public function getUrlAttribute(): string
+    public function url(): Attribute
     {
-        return route('waterhole.users.show', ['user' => $this]);
+        return Attribute::make(
+            get: fn() => route('waterhole.users.show', ['user' => $this]),
+        )->shouldCache();
     }
 
-    public function getEditUrlAttribute(): string
+    public function editUrl(): Attribute
     {
-        return route('waterhole.cp.users.edit', ['user' => $this]);
+        return Attribute::make(
+            get: fn() => route('waterhole.cp.users.edit', ['user' => $this]),
+        )->shouldCache();
     }
 
-    public function getAvatarUrlAttribute(): ?string
+    public function avatarUrl(): Attribute
     {
-        return $this->resolvePublicUrl($this->avatar, 'avatars');
+        return Attribute::make(
+            get: fn() => $this->resolvePublicUrl($this->avatar, 'avatars'),
+        )->shouldCache();
     }
 
-    public function getUnreadNotificationCountAttribute(): int
+    public function unreadNotificationCount(): Attribute
     {
-        $query = $this->unreadNotifications();
+        return Attribute::make(
+            get: function () {
+                $query = $this->unreadNotifications();
 
-        if ($this->notifications_read_at) {
-            $query->where('notifications.created_at', '>', $this->notifications_read_at);
-        }
+                if ($this->notifications_read_at) {
+                    $query->where('notifications.created_at', '>', $this->notifications_read_at);
+                }
 
-        return $query
-            ->distinct()
-            ->count([
-                'type',
-                new Expression('COALESCE(group_type, id)'),
-                new Expression('COALESCE(group_id, id)'),
-            ]);
+                return $query
+                    ->distinct()
+                    ->count([
+                        'type',
+                        new Expression('COALESCE(group_type, id)'),
+                        new Expression('COALESCE(group_id, id)'),
+                    ]);
+            },
+        )->shouldCache();
     }
 
     public function broadcastChannelRoute(): string
