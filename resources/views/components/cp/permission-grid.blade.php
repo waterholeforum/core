@@ -42,7 +42,7 @@
                                         type="checkbox"
                                         name="permissions[{{ $group->getMorphClass() }}:{{ $group->getKey() }}][{{ $ability }}]"
                                         value="1"
-                                        @checked(old("permissions.{$group->getMorphClass()}:{$group->getKey()}.$ability", $permissions?->group($group)->allows($ability) ?? in_array($ability, $defaults)))
+                                        @checked(old("permissions.{$group->getMorphClass()}:{$group->getKey()}.$ability", $scope ? Waterhole::permissions()->can($group, $ability, $scope) : in_array($ability, $defaults)))
                                         data-implied-by="
                                             @if ($group->isMember()) permissions[group:1][{{ $ability }}] @endif
                                             @if ($group->isCustom()) permissions[group:2][{{ $ability }}] @endif

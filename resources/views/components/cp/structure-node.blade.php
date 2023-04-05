@@ -62,21 +62,26 @@
 
         @if (
             method_exists($node->content, 'permissions')
-            && $permissions = app('waterhole.permissions')->load('recipient')->scope($node->content)
+            && $recipients = Waterhole::permissions()
+                ->scope($node->content)
+                ->where('ability', 'view')
+                ->load('recipient')
+                ->filter(fn($permission) => $permission->recipient instanceof Waterhole\Models\Group)
+                ->map->recipient
         )
-            @if ($permissions->guest()->allows('view'))
+            @if ($recipients->contains(Waterhole\Models\Group::GUEST_ID))
                 <span class="with-icon text-xs color-muted hide-sm">
                     @icon('tabler-world')
                     {{ __('waterhole::cp.structure-visibility-public-label') }}
                 </span>
-            @elseif ($permissions->member()->allows('view'))
+            @elseif ($recipients->contains(Waterhole\Models\Group::MEMBER_ID))
                 <span class="with-icon text-xs color-muted hide-sm">
                     @icon('tabler-user')
                     {{ Waterhole\Models\Group::member()->name }}
                 </span>
             @else
                 <span class="hide-sm">
-                    @forelse ($permissions->ability('view')->groups()->map->recipient as $group)
+                    @forelse ($recipients as $group)
                         <x-waterhole::group-badge :group="$group"/>
                     @empty
                         <x-waterhole::group-badge :group="Waterhole\Models\Group::admin()"/>

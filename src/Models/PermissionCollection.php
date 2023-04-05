@@ -2,71 +2,12 @@
 
 namespace Waterhole\Models;
 
+use Closure;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Collection as BaseCollection;
 
 class PermissionCollection extends Collection
 {
-    /**
-     * Get the permission records received by a specific user.
-     */
-    public function user(?User $user): static
-    {
-        if (!$user) {
-            return $this->guest();
-        }
-
-        return $this->group($user->groups)->merge(
-            $this->where('recipient_type', $user->getMorphClass())->where(
-                'recipient_id',
-                $user->getKey(),
-            ),
-        );
-    }
-
-    /**
-     * Get the permission records received by any group.
-     */
-    public function groups(): static
-    {
-        return $this->where('recipient_type', (new Group())->getMorphClass());
-    }
-
-    /**
-     * Get the permission records received by any of the specified groups.
-     */
-    public function group(Group|int|array|Collection $group): static
-    {
-        $ids = collect($group instanceof Group ? [$group] : $group)->map(
-            fn($group) => $group instanceof Group ? $group->id : $group,
-        );
-
-        if (!$ids->contains(Group::GUEST_ID)) {
-            $ids->push(Group::GUEST_ID);
-
-            if (!$ids->contains(Group::MEMBER_ID)) {
-                $ids->push(Group::MEMBER_ID);
-            }
-        }
-
-        return $this->groups()->whereIn('recipient_id', $ids);
-    }
-
-    /**
-     * Get the permission records received by guests.
-     */
-    public function guest(): static
-    {
-        return $this->group(Group::GUEST_ID);
-    }
-
-    /**
-     * Get the permission records received by members.
-     */
-    public function member(): static
-    {
-        return $this->group(Group::MEMBER_ID);
-    }
+    private static array $resultCache = [];
 
     /**
      * Get the permission records pertaining to a specific model.
@@ -87,41 +28,74 @@ class PermissionCollection extends Collection
         );
     }
 
-    /**
-     * Get the scope IDs present in the permission collection.
-     */
-    public function ids(): BaseCollection
+    public function can(User|Group|null $recipient, string $ability, Model|string $scope): bool
     {
-        return $this->pluck('scope_id');
+        $recipientType = $recipient?->getMorphClass();
+        $recipientId = $recipient?->getKey();
+
+        $scopeType = is_string($scope) ? (new $scope())->getMorphClass() : $scope->getMorphClass();
+        $scopeId = is_string($scope) ? null : $scope->getKey();
+
+        $resultKey = "$recipientType|$recipientId|$ability|$scopeType|$scopeId";
+
+        return static::$resultCache[$resultKey] ??= $this->some(
+            $this->callback($recipient, $ability, $scope),
+        );
     }
 
-    /**
-     * Get the permission records pertaining to a specific ability.
-     */
-    public function ability(string $ability): static
+    public function ids(User|Group|null $recipient, string $ability, string $scope): array
     {
-        return $this->where('ability', $ability);
+        return $this->filter($this->callback($recipient, $ability, $scope))
+            ->pluck('scope_id')
+            ->all();
     }
 
-    /**
-     * Determine whether this set of permissions contains a specific ability.
-     */
-    public function allows(string $ability, Model $model = null): bool
-    {
-        return ($model ? $this->scope($model) : $this)->ability($ability)->isNotEmpty();
-    }
+    private function callback(
+        User|Group|null $recipient,
+        string $ability,
+        Model|string $scope,
+    ): Closure {
+        $recipients = [[(new Group())->getMorphClass(), Group::GUEST_ID]];
 
-    /**
-     * Determine whether a user has an ability in this set of permissions.
-     *
-     * For Admins, this will always return true.
-     */
-    public function can(?User $user, string $ability, Model $model = null): bool
-    {
-        if ($user?->groups->contains(Group::ADMIN_ID)) {
-            return true;
+        if (
+            $recipient &&
+            ($recipient instanceof User || $recipient->getKey() !== Group::GUEST_ID)
+        ) {
+            $recipients[] = [(new Group())->getMorphClass(), Group::MEMBER_ID];
+            $recipients[] = [$recipient->getMorphClass(), $recipient->getKey()];
+
+            if ($recipient instanceof User) {
+                $recipients = array_merge(
+                    $recipients,
+                    $recipient->groups->map(
+                        fn($group) => [$group->getMorphClass(), $group->getKey()],
+                    ),
+                );
+            }
         }
 
-        return $this->user($user)->allows($ability, $model);
+        $scopeType = is_string($scope) ? (new $scope())->getMorphClass() : $scope->getMorphClass();
+        $scopeId = is_string($scope) ? null : $scope->getKey();
+
+        return function ($item) use ($ability, $recipients, $scopeType, $scopeId) {
+            if (
+                $item['ability'] !== $ability ||
+                $item['scope_type'] !== $scopeType ||
+                ($scopeId && $item['scope_id'] !== $scopeId)
+            ) {
+                return false;
+            }
+
+            foreach ($recipients as [$recipientType, $recipientId]) {
+                if (
+                    $item['recipient_type'] === $recipientType &&
+                    $item['recipient_id'] === $recipientId
+                ) {
+                    return true;
+                }
+            }
+
+            return false;
+        };
     }
 }

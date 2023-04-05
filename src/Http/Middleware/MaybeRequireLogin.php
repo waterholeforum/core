@@ -24,15 +24,9 @@ class MaybeRequireLogin
     {
         if (
             Auth::guest() &&
-            $this->permissions
-                ->guest()
-                ->whereIn('scope_type', [
-                    (new Channel())->getMorphClass(),
-                    (new Page())->getMorphClass(),
-                    (new StructureLink())->getMorphClass(),
-                ])
-                ->ability('view')
-                ->isEmpty()
+            ($this->permissions->can(null, 'view', Channel::class) ||
+                $this->permissions->can(null, 'view', Page::class) ||
+                $this->permissions->can(null, 'view', StructureLink::class))
         ) {
             return redirect()->route('waterhole.login');
         }

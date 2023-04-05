@@ -85,12 +85,7 @@ trait HasPermissions
 
     public function isPublic(string $ability = 'view'): bool
     {
-        return Waterhole::permissions()
-            ->guest()
-            ->ability($ability)
-            ->scope(static::class)
-            ->ids()
-            ->contains($this->id);
+        return Waterhole::permissions()->can(null, $ability, $this);
     }
 
     /**
@@ -105,11 +100,6 @@ trait HasPermissions
             return null;
         }
 
-        return Waterhole::permissions()
-            ->user($user)
-            ->ability($ability)
-            ->scope(static::class)
-            ->ids()
-            ->all();
+        return Waterhole::permissions()->ids($user, $ability, static::class);
     }
 }

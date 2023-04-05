@@ -18,7 +18,7 @@ class Permissions extends Field
         return <<<'blade'
             <x-waterhole::cp.permission-grid
                 :abilities="$model->abilities()"
-                :permissions="$model->exists ? $model->permissions : null"
+                :scope="$model->exists ? $model : null"
                 :defaults="$model->defaultAbilities()"
             />
         blade;

@@ -3,13 +3,13 @@
 namespace Waterhole\View\Components\Cp;
 
 use Illuminate\View\Component;
-use Waterhole\Models\PermissionCollection;
+use Waterhole\Models\Model;
 
 class PermissionGrid extends Component
 {
     public function __construct(
         public array $abilities,
-        public ?PermissionCollection $permissions,
+        public ?Model $scope,
         public array $defaults = [],
     ) {
     }
