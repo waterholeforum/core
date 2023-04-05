@@ -8,6 +8,6 @@ class HeaderUser extends Component
 {
     public function render()
     {
-        return view('waterhole::components.header-user');
+        return $this->view('waterhole::components.header-user');
     }
 }

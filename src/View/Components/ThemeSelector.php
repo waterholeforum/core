@@ -13,6 +13,6 @@ class ThemeSelector extends Component
 
     public function render()
     {
-        return view('waterhole::components.theme-selector');
+        return $this->view('waterhole::components.theme-selector');
     }
 }

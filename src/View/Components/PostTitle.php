@@ -13,6 +13,6 @@ class PostTitle extends Component
 
     public function render()
     {
-        return view('waterhole::components.post-title');
+        return $this->view('waterhole::components.post-title');
     }
 }

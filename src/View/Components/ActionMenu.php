@@ -18,6 +18,6 @@ class ActionMenu extends Component
 
     public function render()
     {
-        return view('waterhole::components.action-menu');
+        return $this->view('waterhole::components.action-menu');
     }
 }

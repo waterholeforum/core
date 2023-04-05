@@ -22,6 +22,6 @@ class ActionForm extends Component
 
     public function render()
     {
-        return view('waterhole::components.action-form');
+        return $this->view('waterhole::components.action-form');
     }
 }

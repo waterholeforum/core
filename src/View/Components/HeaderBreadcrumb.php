@@ -8,6 +8,6 @@ class HeaderBreadcrumb extends Component
 {
     public function render()
     {
-        return view('waterhole::components.header-breadcrumb');
+        return $this->view('waterhole::components.header-breadcrumb');
     }
 }

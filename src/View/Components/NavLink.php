@@ -20,7 +20,7 @@ class NavLink extends Component
 
     public function render()
     {
-        return view('waterhole::components.nav-link');
+        return $this->view('waterhole::components.nav-link');
     }
 
     public function isActive(): bool

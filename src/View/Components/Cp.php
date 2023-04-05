@@ -12,6 +12,6 @@ class Cp extends Component
 
     public function render()
     {
-        return view('waterhole::components.cp');
+        return $this->view('waterhole::components.cp');
     }
 }

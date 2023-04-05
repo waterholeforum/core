@@ -17,6 +17,6 @@ class TextEditor extends Component
 
     public function render()
     {
-        return view('waterhole::components.text-editor');
+        return $this->view('waterhole::components.text-editor');
     }
 }

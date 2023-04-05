@@ -18,6 +18,6 @@ class Composer extends Component
 
     public function render()
     {
-        return view('waterhole::components.composer');
+        return $this->view('waterhole::components.composer');
     }
 }

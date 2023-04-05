@@ -18,6 +18,6 @@ class TextEditorButton extends Component
 
     public function render(): View
     {
-        return view('waterhole::components.text-editor-button');
+        return $this->view('waterhole::components.text-editor-button');
     }
 }

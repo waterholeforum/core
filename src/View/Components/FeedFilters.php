@@ -15,7 +15,7 @@ class FeedFilters extends Component
 
     public function render()
     {
-        return view('waterhole::components.feed-filters');
+        return $this->view('waterhole::components.feed-filters');
     }
 
     public function url(Filter $filter): string

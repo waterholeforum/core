@@ -45,7 +45,7 @@ class ActionButtons extends Component
 
     public function render()
     {
-        return view('waterhole::components.action-buttons');
+        return $this->view('waterhole::components.action-buttons');
     }
 
     public function shouldRender(): bool

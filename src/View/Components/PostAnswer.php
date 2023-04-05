@@ -20,6 +20,6 @@ class PostAnswer extends Component
 
     public function render()
     {
-        return view('waterhole::components.post-answer');
+        return $this->view('waterhole::components.post-answer');
     }
 }

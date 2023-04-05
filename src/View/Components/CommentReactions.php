@@ -13,6 +13,6 @@ class CommentReactions extends Component
 
     public function render()
     {
-        return view('waterhole::components.comment-reactions');
+        return $this->view('waterhole::components.comment-reactions');
     }
 }

@@ -16,6 +16,6 @@ class PostSummary extends Component
 
     public function render()
     {
-        return view('waterhole::components.post-summary');
+        return $this->view('waterhole::components.post-summary');
     }
 }

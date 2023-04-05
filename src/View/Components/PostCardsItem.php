@@ -17,6 +17,6 @@ class PostCardsItem extends Component
 
     public function render()
     {
-        return view('waterhole::components.post-cards-item');
+        return $this->view('waterhole::components.post-cards-item');
     }
 }

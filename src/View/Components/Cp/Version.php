@@ -9,6 +9,6 @@ class Version extends Component
 {
     public function render(): View
     {
-        return view('waterhole::components.cp.version');
+        return $this->view('waterhole::components.cp.version');
     }
 }

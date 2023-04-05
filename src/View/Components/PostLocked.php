@@ -18,6 +18,6 @@ class PostLocked extends Component
 
     public function render()
     {
-        return view('waterhole::components.post-locked');
+        return $this->view('waterhole::components.post-locked');
     }
 }

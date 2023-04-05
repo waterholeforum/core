@@ -16,6 +16,6 @@ class UserProfile extends Component
 
     public function render()
     {
-        return view('waterhole::components.user-profile');
+        return $this->view('waterhole::components.user-profile');
     }
 }

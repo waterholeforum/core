@@ -24,7 +24,7 @@ class IconPicker extends Component
 
     public function render()
     {
-        return view('waterhole::components.cp.icon-picker');
+        return $this->view('waterhole::components.cp.icon-picker');
     }
 
     public static function validationRules(): array

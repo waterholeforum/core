@@ -18,6 +18,6 @@ class CommentMarkAsAnswer extends Component
 
     public function render()
     {
-        return view('waterhole::components.comment-mark-as-answer');
+        return $this->view('waterhole::components.comment-mark-as-answer');
     }
 }

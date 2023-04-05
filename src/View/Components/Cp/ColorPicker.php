@@ -16,6 +16,6 @@ class ColorPicker extends Component
 
     public function render()
     {
-        return view('waterhole::components.cp.color-picker');
+        return $this->view('waterhole::components.cp.color-picker');
     }
 }

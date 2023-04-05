@@ -16,6 +16,6 @@ class PostListItem extends Component
 
     public function render()
     {
-        return view('waterhole::components.post-list-item');
+        return $this->view('waterhole::components.post-list-item');
     }
 }

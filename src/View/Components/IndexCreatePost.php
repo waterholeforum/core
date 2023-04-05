@@ -24,6 +24,6 @@ class IndexCreatePost extends Component
 
     public function render()
     {
-        return view('waterhole::components.index-create-post');
+        return $this->view('waterhole::components.index-create-post');
     }
 }

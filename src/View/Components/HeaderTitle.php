@@ -8,6 +8,6 @@ class HeaderTitle extends Component
 {
     public function render()
     {
-        return view('waterhole::components.header-title');
+        return $this->view('waterhole::components.header-title');
     }
 }

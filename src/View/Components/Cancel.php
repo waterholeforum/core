@@ -12,6 +12,6 @@ class Cancel extends Component
 
     public function render()
     {
-        return view('waterhole::components.cancel');
+        return $this->view('waterhole::components.cancel');
     }
 }

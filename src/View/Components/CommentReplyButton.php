@@ -26,6 +26,6 @@ class CommentReplyButton extends Component
 
     public function render(): View
     {
-        return view('waterhole::components.comment-reply-button');
+        return $this->view('waterhole::components.comment-reply-button');
     }
 }

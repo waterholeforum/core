@@ -17,6 +17,6 @@ class CollapsibleNav extends Component
 
     public function render()
     {
-        return view('waterhole::components.collapsible-nav');
+        return $this->view('waterhole::components.collapsible-nav');
     }
 }

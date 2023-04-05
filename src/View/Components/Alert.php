@@ -24,6 +24,6 @@ class Alert extends Component
 
     public function render()
     {
-        return view('waterhole::components.alert');
+        return $this->view('waterhole::components.alert');
     }
 }

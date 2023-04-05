@@ -13,6 +13,6 @@ class UserLabel extends Component
 
     public function render()
     {
-        return view('waterhole::components.user-label');
+        return $this->view('waterhole::components.user-label');
     }
 }

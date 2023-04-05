@@ -23,6 +23,6 @@ class IndexFooterLanguage extends Component
 
     public function render()
     {
-        return view('waterhole::components.index-footer-language');
+        return $this->view('waterhole::components.index-footer-language');
     }
 }

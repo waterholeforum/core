@@ -16,6 +16,6 @@ class PermissionGrid extends Component
 
     public function render()
     {
-        return view('waterhole::components.cp.permission-grid');
+        return $this->view('waterhole::components.cp.permission-grid');
     }
 }

@@ -19,6 +19,6 @@ class CommentFrame extends Component
 
     public function render()
     {
-        return view('waterhole::components.comment-frame');
+        return $this->view('waterhole::components.comment-frame');
     }
 }

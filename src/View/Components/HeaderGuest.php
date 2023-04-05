@@ -14,6 +14,6 @@ class HeaderGuest extends Component
 
     public function render()
     {
-        return view('waterhole::components.header-guest');
+        return $this->view('waterhole::components.header-guest');
     }
 }

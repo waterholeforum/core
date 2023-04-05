@@ -17,6 +17,6 @@ class Field extends Component
 
     public function render()
     {
-        return view('waterhole::components.field');
+        return $this->view('waterhole::components.field');
     }
 }

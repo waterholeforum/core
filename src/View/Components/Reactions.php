@@ -3,7 +3,9 @@
 namespace Waterhole\View\Components;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
+use Waterhole\Actions\React;
 use Waterhole\Models\Model;
 use Waterhole\Models\ReactionSet;
 use Waterhole\View\Components\Concerns\Streamable;
@@ -26,9 +28,7 @@ class Reactions extends Component
             return;
         }
 
-        $this->reactionsByType = $model->reactions
-            ->loadMissing('user')
-            ->groupBy('reaction_type_id');
+        $this->reactionsByType = $model->reactions->groupBy('reaction_type_id');
 
         $countReactions = fn($reactionType) => isset($this->reactionsByType[$reactionType->id])
             ? $this->reactionsByType[$reactionType->id]->count()
@@ -43,11 +43,12 @@ class Reactions extends Component
 
     public function shouldRender()
     {
-        return (bool) $this->reactionSet?->reactionTypes->count();
+        return $this->model->reactions->count() ||
+            resolve(React::class)->authorize(Auth::user(), $this->model);
     }
 
     public function render()
     {
-        return view('waterhole::components.reactions');
+        return $this->view('waterhole::components.reactions');
     }
 }

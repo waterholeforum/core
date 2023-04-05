@@ -22,6 +22,6 @@ class TimeAgo extends Component
 
     public function render()
     {
-        return view('waterhole::components.time-ago');
+        return $this->view('waterhole::components.time-ago');
     }
 }

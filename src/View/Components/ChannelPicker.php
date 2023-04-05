@@ -46,6 +46,6 @@ class ChannelPicker extends Component
 
     public function render()
     {
-        return view('waterhole::components.channel-picker');
+        return $this->view('waterhole::components.channel-picker');
     }
 }

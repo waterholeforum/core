@@ -14,6 +14,6 @@ class PostFeedToolbar extends Component
 
     public function render()
     {
-        return view('waterhole::components.post-feed-toolbar');
+        return $this->view('waterhole::components.post-feed-toolbar');
     }
 }

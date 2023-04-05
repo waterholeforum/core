@@ -18,6 +18,6 @@ class MenuItem extends Component
 
     public function render()
     {
-        return view('waterhole::components.menu-item');
+        return $this->view('waterhole::components.menu-item');
     }
 }

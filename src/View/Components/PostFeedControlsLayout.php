@@ -14,6 +14,6 @@ class PostFeedControlsLayout extends Component
 
     public function render()
     {
-        return view('waterhole::components.post-feed-controls-layout');
+        return $this->view('waterhole::components.post-feed-controls-layout');
     }
 }

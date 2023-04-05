@@ -15,7 +15,7 @@ class Avatar extends Component
 
     public function render()
     {
-        return view('waterhole::components.avatar');
+        return $this->view('waterhole::components.avatar');
     }
 
     public function color(): string

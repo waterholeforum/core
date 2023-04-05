@@ -8,6 +8,6 @@ class Spacer extends Component
 {
     public function render()
     {
-        return view('waterhole::components.spacer');
+        return $this->view('waterhole::components.spacer');
     }
 }

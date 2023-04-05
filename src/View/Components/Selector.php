@@ -19,6 +19,6 @@ class Selector extends Component
 
     public function render()
     {
-        return view('waterhole::components.selector');
+        return $this->view('waterhole::components.selector');
     }
 }

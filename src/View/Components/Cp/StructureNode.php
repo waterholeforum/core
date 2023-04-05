@@ -13,6 +13,6 @@ class StructureNode extends Component
 
     public function render()
     {
-        return view('waterhole::components.cp.structure-node');
+        return $this->view('waterhole::components.cp.structure-node');
     }
 }

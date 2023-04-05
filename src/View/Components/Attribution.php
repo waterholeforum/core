@@ -17,6 +17,6 @@ class Attribution extends Component
 
     public function render()
     {
-        return view('waterhole::components.attribution');
+        return $this->view('waterhole::components.attribution');
     }
 }

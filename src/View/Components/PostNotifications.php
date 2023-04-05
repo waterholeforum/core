@@ -18,6 +18,6 @@ class PostNotifications extends Component
 
     public function render()
     {
-        return view('waterhole::components.post-notifications');
+        return $this->view('waterhole::components.post-notifications');
     }
 }

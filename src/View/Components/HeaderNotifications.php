@@ -14,6 +14,6 @@ class HeaderNotifications extends Component
 
     public function render()
     {
-        return view('waterhole::components.header-notifications');
+        return $this->view('waterhole::components.header-notifications');
     }
 }

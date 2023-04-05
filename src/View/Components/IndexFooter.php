@@ -8,6 +8,6 @@ class IndexFooter extends Component
 {
     public function render()
     {
-        return view('waterhole::components.index-footer');
+        return $this->view('waterhole::components.index-footer');
     }
 }

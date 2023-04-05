@@ -13,6 +13,6 @@ class GroupBadge extends Component
 
     public function render()
     {
-        return view('waterhole::components.group-badge');
+        return $this->view('waterhole::components.group-badge');
     }
 }

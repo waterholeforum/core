@@ -28,6 +28,6 @@ class FollowButton extends Component
 
     public function render()
     {
-        return view('waterhole::components.follow-button');
+        return $this->view('waterhole::components.follow-button');
     }
 }

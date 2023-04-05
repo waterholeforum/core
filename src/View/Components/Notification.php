@@ -18,6 +18,6 @@ class Notification extends Component
 
     public function render()
     {
-        return view('waterhole::components.notification');
+        return $this->view('waterhole::components.notification');
     }
 }

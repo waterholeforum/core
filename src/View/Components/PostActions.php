@@ -16,6 +16,6 @@ class PostActions extends Component
 
     public function render()
     {
-        return view('waterhole::components.post-actions');
+        return $this->view('waterhole::components.post-actions');
     }
 }

@@ -16,6 +16,6 @@ class EmailVerification extends Component
 
     public function render()
     {
-        return view('waterhole::components.email-verification');
+        return $this->view('waterhole::components.email-verification');
     }
 }

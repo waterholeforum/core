@@ -16,6 +16,6 @@ class CommentsLocked extends Component
 
     public function render()
     {
-        return view('waterhole::components.comments-locked');
+        return $this->view('waterhole::components.comments-locked');
     }
 }

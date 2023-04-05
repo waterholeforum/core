@@ -91,6 +91,6 @@ class IndexNav extends Component
 
     public function render()
     {
-        return view('waterhole::components.index-nav');
+        return $this->view('waterhole::components.index-nav');
     }
 }

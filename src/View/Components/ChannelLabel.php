@@ -13,6 +13,6 @@ class ChannelLabel extends Component
 
     public function render()
     {
-        return view('waterhole::components.channel-label');
+        return $this->view('waterhole::components.channel-label');
     }
 }

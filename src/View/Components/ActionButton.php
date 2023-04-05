@@ -17,6 +17,6 @@ class ActionButton extends Component
 
     public function render()
     {
-        return view('waterhole::components.action-button');
+        return $this->view('waterhole::components.action-button');
     }
 }
