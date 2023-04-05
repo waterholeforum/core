@@ -3,6 +3,7 @@
 namespace Waterhole\Feed;
 
 use Closure;
+use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Http\Request;
 use Waterhole\Models\Post;
 
@@ -44,6 +45,15 @@ class PostFeed extends Feed
         parent::__construct($request, $query, $filters);
 
         $this->defaultLayout = $defaultLayout;
+    }
+
+    public function items(): CursorPaginator
+    {
+        if ($this->currentLayout() === 'cards') {
+            $this->query->with('mentions', 'attachments');
+        }
+
+        return parent::items();
     }
 
     public function defaultLayout(): string
