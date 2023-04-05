@@ -163,10 +163,7 @@
                 </div>
             @else
                 <div class="placeholder card">
-                    <x-waterhole::icon
-                        class="placeholder__icon"
-                        icon="tabler-search"
-                    />
+                    @icon('tabler-search', ['class' => 'placeholder__icon'])
                     <h4>{{ __('waterhole::cp.users-empty-message') }}</h4>
                 </div>
             @endif
