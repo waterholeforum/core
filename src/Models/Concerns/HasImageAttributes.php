@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Image;
 
+use function Waterhole\is_absolute_url;
+
 /**
  * Methods to associate uploaded images with a model.
  *
@@ -67,7 +69,7 @@ trait HasImageAttributes
             return null;
         }
 
-        if (preg_match('|^https?://|', $value)) {
+        if (is_absolute_url($value)) {
             return $value;
         }
 
