@@ -29,6 +29,12 @@ class AuthServiceProvider extends ServiceProvider
 
         $this->app->alias('waterhole.permissions', PermissionCollection::class);
 
+        // Make our policies singletons, to improve performance when we do a lot
+        // of auth checks in a single page load.
+        $this->app->singleton(Policies\ChannelPolicy::class);
+        $this->app->singleton(Policies\CommentPolicy::class);
+        $this->app->singleton(Policies\PostPolicy::class);
+
         Gate::before(function (User $user, $ability, $arguments) {
             // Allow administrators to perform all gated actions.
             if ($user->isAdmin()) {
