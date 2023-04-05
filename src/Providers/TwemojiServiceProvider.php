@@ -8,9 +8,11 @@ use Waterhole\Extend;
 
 class TwemojiServiceProvider extends ServiceProvider
 {
-    public function boot()
+    private static string $twemojiBase;
+
+    public function boot(): void
     {
-        if (config('waterhole.design.twemoji_base')) {
+        if (static::$twemojiBase = config('waterhole.design.twemoji_base')) {
             Extend\Emoji::provide([static::class, 'twemoji']);
         }
     }
@@ -32,7 +34,7 @@ class TwemojiServiceProvider extends ServiceProvider
         );
 
         return Twemoji::text($text)
-            ->base(config('waterhole.design.twemoji_base'))
+            ->base(static::$twemojiBase)
             ->toHtml(null, $attributes);
     }
 }
