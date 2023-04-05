@@ -15,11 +15,8 @@ class PostFeed extends Feed
         'channel.postsReactionSet',
         'lastComment:id,comments.post_id' => ['user'],
         'userState',
-        'reactions.reactionType',
         'reactions.user',
         'tags',
-        'mentions',
-        'attachments',
     ];
 
     public static array $scopes = [];
@@ -34,7 +31,7 @@ class PostFeed extends Feed
     ) {
         $query = Post::query()
             ->with(static::$eagerLoad)
-            ->withCount('unreadComments');
+            ->withUnreadCommentsCount();
 
         if ($scope) {
             $scope($query);

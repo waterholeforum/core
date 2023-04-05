@@ -133,6 +133,21 @@ class Post extends Model
     }
 
     /**
+     * Scope to select count of comments that are unread.
+     */
+    public function scopeWithUnreadCommentsCount(Builder $query): void
+    {
+        $query->leftJoinRelation('userState')->selectSub(
+            Comment::query()
+                ->withoutGlobalScope('visible')
+                ->selectRaw('COUNT(*)')
+                ->whereColumn('comments.post_id', 'posts.id')
+                ->whereColumn('comments.created_at', '>', 'last_read_at'),
+            'unread_comments_count',
+        );
+    }
+
+    /**
      * Relationship with the post's channel.
      */
     public function channel(): BelongsTo
@@ -153,23 +168,7 @@ class Post extends Model
      */
     public function comments(): HasMany
     {
-        return $this->hasMany(Comment::class);
-    }
-
-    /**
-     * Relationship with the post's unread comments for the current user.
-     */
-    public function unreadComments(): HasMany
-    {
-        // This relationship is used to provide a count of unread comments for
-        // each post in the post feed. Remove the `CommentIndexScope` as it is
-        // not needed and causes performance to suffer in this context.
-        return $this->comments()
-            ->withoutGlobalScope(CommentIndexScope::class)
-            ->whereRaw(
-                'created_at > COALESCE((select last_read_at from post_user where post_id = comments.post_id and post_user.user_id = ?), 0)',
-                [Auth::id()],
-            );
+        return $this->hasMany(Comment::class)->withoutGlobalScope('visible');
     }
 
     /**
