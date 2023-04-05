@@ -3,10 +3,13 @@
 namespace Waterhole\View\Components;
 
 use Closure;
+use Illuminate\Support\Facades\Request;
 use Illuminate\View\Component;
 
 class NavLink extends Component
 {
+    public bool $isActive;
+
     public function __construct(
         public string $label,
         public ?string $icon = null,
@@ -16,6 +19,7 @@ class NavLink extends Component
         public bool|Closure|null $active = null,
         public ?string $badgeClass = null,
     ) {
+        $this->isActive = $this->isActive();
     }
 
     public function render()
@@ -23,7 +27,7 @@ class NavLink extends Component
         return $this->view('waterhole::components.nav-link');
     }
 
-    public function isActive(): bool
+    private function isActive(): bool
     {
         if (is_callable($this->active)) {
             return ($this->active)();
@@ -34,9 +38,9 @@ class NavLink extends Component
         }
 
         if ($this->route) {
-            return request()->routeIs($this->route);
+            return Request::routeIs($this->route);
         } elseif ($this->href) {
-            return request()->fullUrlIs($this->href . '*');
+            return Request::fullUrlIs($this->href . '*');
         }
 
         return false;

@@ -11,7 +11,7 @@ class CollapsibleNav extends Component
     public function __construct(public array $components)
     {
         $this->activeComponent = collect($components)->firstWhere(
-            fn($component) => $component instanceof NavLink && $component->isActive(),
+            fn($component) => $component instanceof NavLink && $component->isActive,
         );
     }
 
