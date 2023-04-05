@@ -6,7 +6,7 @@
             <div class="grow"></div>
 
             <a href="{{ route('waterhole.cp.taxonomies.create') }}" type="button" class="btn bg-accent">
-                <x-waterhole::icon icon="tabler-plus"/>
+                @icon('tabler-plus')
                 <span>{{ __('waterhole::cp.create-taxonomy-button') }}</span>
             </a>
         </div>

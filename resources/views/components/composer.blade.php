@@ -42,7 +42,7 @@
                 data-hotkey="Escape"
                 data-hotkey-scope="new-comment"
             >
-                <x-waterhole::icon icon="tabler-chevron-down"/>
+                @icon('tabler-chevron-down')
             </button>
 
             <div class="h5 overflow-ellipsis">{{ __('waterhole::forum.create-comment-title') }}</div>
@@ -63,7 +63,7 @@
                         class="btn btn--sm btn--transparent btn--icon"
                         name="parent_id"
                     >
-                        <x-waterhole::icon icon="tabler-x"/>
+                        @icon('tabler-x')
                         <ui-tooltip>{{ __('waterhole::forum.composer-clear-reply-button') }}</ui-tooltip>
                     </button>
                 @endif

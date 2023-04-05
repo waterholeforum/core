@@ -31,7 +31,7 @@ class ChannelDefaultLayout extends Field
                                 @checked(old('default_layout', $model->default_layout ?? config('waterhole.forum.default_post_layout')) === $key)
                             >
                             <span class="with-icon">
-                                <x-waterhole::icon :icon="$icon"/>
+                                @icon($icon)
                                 {{ __("waterhole::system.layout-$key") }}
                             </span>
                         </label>

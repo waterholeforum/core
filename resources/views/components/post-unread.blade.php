@@ -5,7 +5,7 @@
 >
     <button type="submit" class="badge clickable @if ($isNotifiable) bg-activity @endif">
         @if ($isNotifiable)
-            <x-waterhole::icon icon="tabler-bell"/>
+            @icon('tabler-bell')
         @endif
         @if ($post->isNew())
             <span>{{ __('waterhole::forum.post-new-badge') }}</span>

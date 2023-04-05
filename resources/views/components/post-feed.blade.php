@@ -22,7 +22,7 @@
                     class="btn btn--sm bg-activity"
                     data-action="post-feed#scrollToTop"
                 >
-                    <x-waterhole::icon icon="tabler-refresh"/>
+                    @icon('tabler-refresh')
                     <span>{{ __('waterhole::forum.post-feed-new-activity-button') }}</span>
                 </button>
             </div>
@@ -55,10 +55,7 @@
             </x-waterhole::infinite-scroll>
         @else
             <div class="placeholder">
-                <x-waterhole::icon
-                    icon="tabler-messages"
-                    class="placeholder__icon"
-                />
+                @icon('tabler-messages', ['class' => 'placeholder__icon'])
                 <p class="h4">{{ __('waterhole::forum.post-feed-empty-message') }}</p>
             </div>
         @endif

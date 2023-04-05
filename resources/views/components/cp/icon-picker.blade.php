@@ -1,7 +1,7 @@
 <div data-controller="icon-picker" class="icon-picker">
     @if (is_string($value) && $content)
         <div class="row gap-sm" data-icon-picker-target="preview">
-            <x-waterhole::icon icon="{{ $value }}" class="text-md"/>
+            @icon($value, ['class' => 'text-md'])
             <button type="button" class="btn" data-action="icon-picker#change">
                 {{ __('waterhole::system.icon-picker-change-button') }}
             </button>
@@ -48,7 +48,7 @@
 
             <ui-popup data-controller="emoji-picker" hidden>
                 <button type="button" class="btn btn--icon">
-                    <x-waterhole::icon :icon="($type === 'emoji' && $content ? 'emoji:'.$content : null) ?: 'tabler-mood-smile'"/>
+                    @icon(($type === 'emoji' && $content ? 'emoji:'.$content : null) ?: 'tabler-mood-smile')
                 </button>
                 <div class="menu emoji-picker" hidden>
                     <emoji-picker></emoji-picker>
@@ -74,13 +74,13 @@
                 ]) }}
                 <a href="https://blade-ui-kit.com/blade-icons#search" target="_blank" rel="noopener" class="with-icon">
                     <span>{{ __('waterhole::system.icon-picker-svg-search-link') }}</span>
-                    <x-waterhole::icon icon="tabler-external-link"/>
+                    @icon('tabler-external-link')
                 </a>
             </div>
 
 {{--            <div class="field__description">--}}
 {{--                <a href="" class="with-icon">--}}
-{{--                    <x-waterhole::icon icon="tabler-question-mark-circle"/>--}}
+{{--                    @icon('tabler-question-mark-circle')--}}
 {{--                    Learn more about SVG icons--}}
 {{--                </a>--}}
 {{--            </div>--}}

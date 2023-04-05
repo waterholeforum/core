@@ -10,7 +10,7 @@
     @endif
     {{ $attributes->class('btn btn--transparent btn--icon') }}
 >
-    <x-waterhole::icon :icon="$icon"/>
+    @icon($icon)
     <ui-tooltip>
         {{ $label }}
         @if ($hotkey)

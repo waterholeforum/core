@@ -29,7 +29,7 @@
                         class="with-icon"
                         data-turbo-frame="_top"
                     >
-                        <x-waterhole::icon icon="tabler-corner-down-right"/>
+                        @icon('tabler-corner-down-right')
                         <span>
                             {{ __('waterhole::forum.comment-in-reply-to-link') }}
                             <span class="user-label">
@@ -88,7 +88,7 @@
                     data-action="quotable#quoteSelectedText"
                     hidden
                 >
-                    <x-waterhole::icon icon="tabler-quote"/>
+                    @icon('tabler-quote')
                     <span>{{ __('waterhole::forum.quote-button') }}</span>
                 </a>
             @endcan

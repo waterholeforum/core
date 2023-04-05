@@ -6,7 +6,7 @@
 >
     <div class="cp-structure__content row gap-xs">
         <button type="button" class="drag-handle" data-handle>
-            <x-waterhole::icon icon="tabler-menu-2"/>
+            @icon('tabler-menu-2')
         </button>
 
         @if ($node->content instanceof Waterhole\Models\Channel)
@@ -18,7 +18,7 @@
                 id="label_{{ $node->id }}"
             />
             <span class="with-icon text-xs color-muted hide-sm">
-                <x-waterhole::icon icon="tabler-message-circle-2"/>
+                @icon('tabler-message-circle-2')
                 <span>{{ __('waterhole::cp.structure-channel-label') }}</span>
             </span>
 
@@ -29,11 +29,11 @@
                 target="_blank"
                 id="label_{{ $node->id }}"
             >
-                <x-waterhole::icon :icon="$node->content->icon ?? null"/>
+                @icon($node->content->icon ?? null)
                 <span>{{ $node->content->name ?? 'Page' }}</span>
             </a>
             <span class="with-icon text-xs color-muted hide-sm">
-                <x-waterhole::icon icon="tabler-file-text"/>
+                @icon('tabler-file-text')
                 <span>{{ __('waterhole::cp.structure-page-label') }}</span>
             </span>
 
@@ -49,11 +49,11 @@
                 target="_blank"
                 id="label_{{ $node->id }}"
             >
-                <x-waterhole::icon :icon="$node->content->icon ?? null"/>
+                @icon($node->content->icon ?? null)
                 <span>{{ $node->content->name ?? 'Link' }}</span>
             </a>
             <span class="with-icon text-xs color-muted hide-sm">
-                <x-waterhole::icon icon="tabler-link"/>
+                @icon('tabler-link')
                 <span>{{ __('waterhole::cp.structure-link-label') }}</span>
             </span>
         @endif
@@ -66,12 +66,12 @@
         )
             @if ($permissions->guest()->allows('view'))
                 <span class="with-icon text-xs color-muted hide-sm">
-                    <x-waterhole::icon icon="tabler-world"/>
+                    @icon('tabler-world')
                     {{ __('waterhole::cp.structure-visibility-public-label') }}
                 </span>
             @elseif ($permissions->member()->allows('view'))
                 <span class="with-icon text-xs color-muted hide-sm">
-                    <x-waterhole::icon icon="tabler-user"/>
+                    @icon('tabler-user')
                     {{ Waterhole\Models\Group::member()->name }}
                 </span>
             @else

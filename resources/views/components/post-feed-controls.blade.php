@@ -4,7 +4,7 @@
         class="btn btn--icon btn--transparent btn--sm"
         aria-label="{{ __('waterhole::system.controls-button') }}"
     >
-        <x-waterhole::icon icon="tabler-settings"/>
+        @icon('tabler-settings')
     </button>
 
     <ui-menu class="menu" hidden>

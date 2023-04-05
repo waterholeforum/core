@@ -8,7 +8,7 @@
                     <form action="{{ route('waterhole.notifications.read') }}" method="POST">
                         @csrf
                         <button type="submit" class="btn btn--icon btn--transparent">
-                            <x-waterhole::icon icon="tabler-check"/>
+                            @icon('tabler-check')
                             <ui-tooltip>{{ __('waterhole::notifications.mark-all-as-read-button') }}</ui-tooltip>
                         </button>
                     </form>
@@ -18,7 +18,7 @@
                         class="btn btn--icon btn--transparent"
                         data-turbo-frame="_top"
                     >
-                        <x-waterhole::icon icon="tabler-settings"/>
+                        @icon('tabler-settings')
                         <ui-tooltip>{{ __('waterhole::notifications.preferences-button') }}</ui-tooltip>
                     </a>
                 </div>
@@ -32,7 +32,7 @@
                 </x-waterhole::infinite-scroll>
             @else
                 <div class="placeholder">
-                    <x-waterhole::icon icon="tabler-bell" class="placeholder__icon"/>
+                    @icon('tabler-bell', ['class' => 'placeholder__icon'])
                     <p class="h4">{{ __('waterhole::notifications.empty-message') }}</p>
                 </div>
             @endif

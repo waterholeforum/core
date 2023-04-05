@@ -15,10 +15,7 @@
                 data-turbo-frame="users_frame"
             >
                 <div class="input-container">
-                    <x-waterhole::icon
-                        icon="tabler-search"
-                        class="no-pointer color-muted"
-                    />
+                    @icon('tabler-search', ['class' => 'no-pointer color-muted'])
                     <input
                         data-action="
                             incremental-search#input
@@ -79,7 +76,7 @@
                 type="button"
                 class="btn bg-accent"
             >
-                <x-waterhole::icon icon="tabler-plus"/>
+                @icon('tabler-plus')
                 <span>{{ __('waterhole::cp.create-user-button') }}</span>
             </a>
         </div>
@@ -106,7 +103,7 @@
                                                     {{ __('waterhole::cp.users-'.str_replace('_', '-', $column).'-column') }}
                                                 </span>
                                                 @if ($sort === $column)
-                                                    <x-waterhole::icon :icon="'tabler-chevron-'.($direction === 'asc' ? 'up' : 'down')"/>
+                                                    @icon('tabler-chevron-'.($direction === 'asc' ? 'up' : 'down'))
                                                 @endif
                                             </a>
                                         @else

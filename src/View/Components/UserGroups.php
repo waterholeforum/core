@@ -35,7 +35,7 @@ class UserGroups extends Component
 
                 @if ($user?->isSuspended() && Gate::allows('user.suspend', $user))
                     <span class="badge suspended-badge">
-                        <x-waterhole::icon icon="tabler-ban"/>
+                        @icon('tabler-ban')
                         {{ __('waterhole::user.suspended-badge') }}
                     </span>
                 @endif

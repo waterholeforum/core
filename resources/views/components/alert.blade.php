@@ -3,7 +3,7 @@
     ->class(['alert', $type ? "alert--$type bg-$type" : null]) }}>
     @if ($icon)
         <div class="alert__icon">
-            <x-waterhole::icon :icon="$icon"/>
+            @icon($icon)
         </div>
     @endif
 
@@ -21,7 +21,7 @@
                     data-action="alert#dismiss"
                     type="button"
                 >
-                    <x-waterhole::icon icon="tabler-x"/>
+                    @icon('tabler-x')
                 </button>
             @endif
         </div>

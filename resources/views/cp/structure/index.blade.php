@@ -12,9 +12,9 @@
 
                 <ui-popup placement="bottom-end">
                     <button type="button" class="btn bg-accent">
-                        <x-waterhole::icon icon="tabler-plus"/>
+                        @icon('tabler-plus')
                         <span>{{ __('waterhole::system.create-button') }}</span>
-                        <x-waterhole::icon icon="tabler-chevron-down"/>
+                        @icon('tabler-chevron-down')
                     </button>
 
                     <ui-menu class="menu" hidden>
@@ -24,7 +24,7 @@
                             class="menu-item"
                             role="menuitem"
                         >
-                            <x-waterhole::icon icon="tabler-message-circle-2"/>
+                            @icon('tabler-message-circle-2')
                             <span>{{ __('waterhole::cp.structure-channel-label') }}</span>
                         </a>
                         <a
@@ -33,7 +33,7 @@
                             class="menu-item"
                             role="menuitem"
                         >
-                            <x-waterhole::icon icon="tabler-file-text"/>
+                            @icon('tabler-file-text')
                             <span>{{ __('waterhole::cp.structure-page-label') }}</span>
                         </a>
                         <a
@@ -41,7 +41,7 @@
                             class="menu-item"
                             role="menuitem"
                         >
-                            <x-waterhole::icon icon="tabler-link"/>
+                            @icon('tabler-link')
                             <span>{{ __('waterhole::cp.structure-link-label') }}</span>
                         </a>
                         <a
@@ -49,7 +49,7 @@
                             class="menu-item"
                             role="menuitem"
                         >
-                            <x-waterhole::icon icon="tabler-hash"/>
+                            @icon('tabler-hash')
                             <span>{{ __('waterhole::cp.structure-heading-label') }}</span>
                         </a>
                     </ui-menu>

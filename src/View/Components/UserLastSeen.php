@@ -26,7 +26,7 @@ class UserLastSeen extends Component
                 </span>
             @elseif ($user->last_seen_at)
                 <span class="with-icon">
-                    <x-waterhole::icon icon="tabler-eye"/>
+                    @icon('tabler-eye')
                     <span>{{ __('waterhole::user.user-last-seen-text', ['date' => $user->last_seen_at->isoFormat('MMM YYYY')]) }}</span>
                 </span>
             @endif

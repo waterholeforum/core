@@ -27,7 +27,7 @@ class UserWebsite extends Component
                 class="with-icon color-muted"
                 rel="noopener nofollow ugc"
             >
-                <x-waterhole::icon icon="tabler-link"/>
+                @icon('tabler-link')
                 <span>{{ $host }}</span>
             </a>
         blade;

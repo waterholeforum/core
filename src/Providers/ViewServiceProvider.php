@@ -64,6 +64,10 @@ class ViewServiceProvider extends ServiceProvider
             ]);
         });
 
+        Blade::directive('icon', function (string $expression) {
+            return '<?php echo Waterhole\icon(' . $expression . '); ?>';
+        });
+
         Blade::directive('return', function (string $expression): string {
             return '<?php echo Waterhole\return_field(' . $expression . '); ?>';
         });

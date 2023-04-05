@@ -26,7 +26,7 @@ class OAuthButtons extends Component
                         class="btn oauth-button"
                         data-provider="{{ $provider }}"
                     >
-                        <x-waterhole::icon :icon="$config['icon']"/>
+                        @icon($config['icon'])
                         {{ __('waterhole::auth.continue-with-provider', ['provider' => $config['name']]) }}
                     </a>
                 @endforeach

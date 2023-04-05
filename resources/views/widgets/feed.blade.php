@@ -6,7 +6,7 @@
             target="_blank"
             rel="noopener"
         >
-            <x-waterhole::icon icon="tabler-rss"/>
+            @icon('tabler-rss')
             {{ $title ?: $feed->getTitle() }}
         </a>
     </h3>

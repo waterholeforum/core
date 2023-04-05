@@ -77,10 +77,10 @@
                                             class="drag-handle"
                                             data-handle
                                         >
-                                            <x-waterhole::icon icon="tabler-menu-2"/>
+                                            @icon('tabler-menu-2')
                                         </button>
 
-                                        <x-waterhole::icon :icon="$reactionType->icon"/>
+                                        @icon($reactionType->icon)
                                         {{ $reactionType->name }}
                                         <span class="color-muted text-xs">{{ $reactionType->score > 0 ? '+' : '' }}{{ $reactionType->score }}</span>
 
@@ -119,7 +119,7 @@
                                 class="btn"
                                 data-turbo-frame="modal"
                             >
-                                <x-waterhole::icon icon="tabler-plus"/>
+                                @icon('tabler-plus')
                                 Add
                             </a>
                         </div>

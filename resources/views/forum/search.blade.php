@@ -12,10 +12,7 @@
 
         <form action="{{ route('waterhole.search') }}" class="lead row gap-xs" role="search">
             <div class="input-container full-width">
-                <x-waterhole::icon
-                    icon="tabler-search"
-                    class="no-pointer"
-                />
+                @icon('tabler-search', ['class' => 'no-pointer'])
                 <input
                     type="search"
                     name="q"
@@ -46,7 +43,7 @@
                                 ->all()"
                         >
                             <x-slot name="empty">
-                                <x-waterhole::icon icon="tabler-filter"/>
+                                @icon('tabler-filter')
                                 <span>{{ __('waterhole::forum.search-filter-button') }}</span>
                             </x-slot>
                         </x-waterhole::collapsible-nav>
@@ -87,10 +84,7 @@
                 </div>
             @else
                 <div class="placeholder">
-                    <x-waterhole::icon
-                        class="placeholder__icon"
-                        icon="tabler-search"
-                    />
+                    @icon('tabler-search', ['class' => 'placeholder__icon'])
 
                     <p class="h4">
                         {{ __('waterhole::forum.search-empty-message') }}

@@ -20,7 +20,7 @@
             <span class="text-lg">{{ Waterhole\format_number($periodTotal) }}</span>
             @if ($prevPeriodTotal && $periodTotal !== $prevPeriodTotal)
                 <span class="badge bg-{{ $color = $periodTotal < $prevPeriodTotal ? 'warning' : 'success' }}-soft color-{{ $color }}">
-                    <x-waterhole::icon :icon="$periodTotal < $prevPeriodTotal ? 'tabler-arrow-down' : 'tabler-arrow-up'"/>
+                    @icon($periodTotal < $prevPeriodTotal ? 'tabler-arrow-down' : 'tabler-arrow-up')
                     {{ Waterhole\format_number(abs(round(($periodTotal - $prevPeriodTotal) / $prevPeriodTotal)), ['style' => 'percent']) }}
                 </span>
             @endif

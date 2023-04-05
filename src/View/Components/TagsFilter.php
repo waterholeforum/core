@@ -29,7 +29,7 @@ class TagsFilter extends Component
                     @if ($id = request("tags.$taxonomy->id"))
                         <a href="{{ $href($taxonomy, null) }}" class="btn btn--sm is-active">
                             {{ $taxonomy->tags->find($id)?->name }}
-                            <x-waterhole::icon icon="tabler-x"/>
+                            @icon('tabler-x')
                         </a>
                     @else
                         <x-waterhole::selector

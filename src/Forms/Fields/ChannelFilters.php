@@ -58,7 +58,7 @@ class ChannelFilters extends Field
                                     aria-label="{{ $filter->label() }}"
                                 >
                                     <button type="button" class="drag-handle" data-handle>
-                                        <x-waterhole::icon icon="tabler-menu-2"/>
+                                        @icon('tabler-menu-2')
                                     </button>
 
                                     <label class="choice">

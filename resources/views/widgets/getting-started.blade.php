@@ -8,10 +8,7 @@
                 class="row gap-md align-start block-link"
                 data-turbo-frame="_top"
             >
-                <x-waterhole::icon
-                    :icon="$item['icon']"
-                    class="text-xl no-shrink icon--thin"
-                />
+                @icon($item['icon'], ['class' => 'text-xl no-shrink icon--thin'])
                 <div class="stack gap-xs">
                     <div class="h5 color-accent">
                         {{ __("waterhole::cp.getting-started-$key-title") }}

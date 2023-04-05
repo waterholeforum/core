@@ -1,16 +1,16 @@
 <ui-popup {{ $attributes->merge(['placement' => 'bottom-start']) }}>
     <button type="button" class="{{ $buttonClass }} {{ $followable->isFollowed() ? 'bg-warning-soft color-warning' : '' }}">
         @if ($followable->isFollowed())
-            <x-waterhole::icon icon="tabler-bell"/>
+            @icon('tabler-bell')
             <span>{{ __('waterhole::forum.follow-button-following') }}</span>
         @elseif ($followable->isIgnored())
-            <x-waterhole::icon icon="tabler-volume-3"/>
+            @icon('tabler-volume-3')
             <span>{{ __('waterhole::forum.follow-button-ignored') }}</span>
         @else
-            <x-waterhole::icon icon="tabler-bell"/>
+            @icon('tabler-bell')
             <span>{{ __('waterhole::forum.follow-button') }}</span>
         @endif
-        <x-waterhole::icon icon="tabler-chevron-down"/>
+        @icon('tabler-chevron-down')
     </button>
 
     <ui-menu class="menu" hidden>

@@ -6,7 +6,7 @@
             <div class="grow"></div>
 
             <a href="{{ route('waterhole.cp.groups.create') }}" type="button" class="btn bg-accent">
-                <x-waterhole::icon icon="tabler-plus"/>
+                @icon('tabler-plus')
                 <span>{{ __('waterhole::cp.create-group-button') }}</span>
             </a>
         </div>

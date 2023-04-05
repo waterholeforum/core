@@ -21,10 +21,7 @@
             placement="bottom-start"
         >
             <x-slot name="button">
-                <x-waterhole::icon
-                    icon="tabler-dots"
-                    :aria-label="__('waterhole::system.more-button')"
-                />
+                @icon('tabler-dots', ['aria-label' => __('waterhole::system.more-button')])
             </x-slot>
         </x-waterhole::selector>
     @endif

@@ -67,7 +67,7 @@
             target="_blank"
             class="color-muted with-icon"
         >
-            <x-waterhole::icon icon="tabler-help"/>
+            @icon('tabler-help')
             Customize the Dashboard
         </a>
     </div>

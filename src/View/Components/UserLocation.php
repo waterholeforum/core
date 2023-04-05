@@ -20,7 +20,7 @@ class UserLocation extends Component
     {
         return <<<'blade'
             <span class="with-icon">
-                <x-waterhole::icon icon="tabler-map-pin"/>
+                @icon('tabler-map-pin')
                 <span>{{ $user->location }}</span>
             </span>
         blade;

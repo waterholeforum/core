@@ -6,7 +6,7 @@
             <div class="grow"></div>
 
             <a href="{{ route('waterhole.cp.reaction-sets.create') }}" type="button" class="btn bg-accent">
-                <x-waterhole::icon icon="tabler-plus"/>
+                @icon('tabler-plus')
                 <span>{{ __('waterhole::cp.create-reaction-set-button') }}</span>
             </a>
         </div>
@@ -16,7 +16,7 @@
                 <li class="card__row row gap-xs">
                     <div class="row reverse text-md reactions-condensed">
                         @foreach ($reactionSet->reactionTypes->reverse() as $reactionType)
-                            <x-waterhole::icon :icon="$reactionType->icon"/>
+                            @icon($reactionType->icon)
                         @endforeach
                     </div>
 

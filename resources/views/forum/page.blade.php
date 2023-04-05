@@ -5,7 +5,7 @@
                 <ol class="breadcrumb">
                     <li>
                         <a href="{{ route('waterhole.home') }}" class="with-icon">
-                            <x-waterhole::icon icon="tabler-home"/>
+                            @icon('tabler-home')
                             Home
                         </a>
                     </li>

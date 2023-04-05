@@ -4,9 +4,9 @@
             <x-waterhole::action-menu :for="$user" placement="bottom-end">
                 <x-slot name="button">
                     <button type="button" class="btn">
-                        <x-waterhole::icon icon="tabler-settings"/>
+                        @icon('tabler-settings')
                         <span>{{ __('waterhole::system.controls-button') }}</span>
-                        <x-waterhole::icon icon="tabler-chevron-down"/>
+                        @icon('tabler-chevron-down')
                     </button>
                 </x-slot>
             </x-waterhole::action-menu>

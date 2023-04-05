@@ -68,10 +68,7 @@
                                 class="tab with-icon"
                                 href="{{ $post->url }}#top"
                             >
-                                <x-waterhole::icon
-                                    icon="tabler-chevrons-up"
-                                    class="text-xs icon--narrow"
-                                />
+                                @icon('tabler-chevrons-up', ['class' => 'text-xs icon--narrow'])
                                 <span class="hide-sm">{{ __('waterhole::system.pagination-first-link') }}</span>
                             </a>
 
@@ -92,10 +89,7 @@
                                 class="tab with-icon"
                                 href="{{ $comments->fragment('bottom')->url($comments->lastPage()) }}"
                             >
-                                <x-waterhole::icon
-                                    icon="tabler-chevrons-down"
-                                    class="text-xs icon--narrow"
-                                />
+                                @icon('tabler-chevrons-down', ['class' => 'text-xs icon--narrow'])
                                 <span class="hide-sm">{{ __('waterhole::system.pagination-last-link') }}</span>
                             </a>
                         </nav>

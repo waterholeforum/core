@@ -18,7 +18,7 @@
             'is-active' => $reactions->contains('user_id', Auth::id()),
             'is-inert' => !$component->isAuthorized,
         ]) }}>
-            <x-waterhole::icon :icon="$reactionType->icon"/>
+            @icon($reactionType->icon)
             <span>{{ $reactions->count() }}</span>
 
             <ui-tooltip tooltip-class="tooltip tooltip--block">
@@ -38,7 +38,7 @@
     @if ($component->isAuthorized && $reactionSet->reactionTypes->count() > 1)
         <ui-popup placement="top" class="js-only">
             <button class="btn btn--sm btn--icon btn--transparent control">
-                <x-waterhole::icon icon="tabler-mood-plus"/>
+                @icon('tabler-mood-plus')
             </button>
 
             <ui-menu class="menu reactions-menu" hidden>
@@ -49,7 +49,7 @@
                         value="{{ $reactionType->id }}"
                         role="menuitemradio"
                     >
-                        <x-waterhole::icon :icon="$reactionType->icon"/>
+                        @icon($reactionType->icon)
                         <ui-tooltip>{{ $reactionType->name }}</ui-tooltip>
                     </button>
                 @endforeach

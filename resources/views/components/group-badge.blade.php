@@ -6,7 +6,7 @@
     " @endif
 >
     @if ($group->is_public && $group->icon)
-        <x-waterhole::icon :icon="$group->icon"/>
+        @icon($group->icon)
     @endif
     <span>{{ $group->name }}</span>
 </span>

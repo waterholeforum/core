@@ -3,10 +3,7 @@
     role="search"
     {{ $attributes->class('input-container') }}
 >
-    <x-waterhole::icon
-        icon="tabler-search"
-        class="no-pointer color-muted"
-    />
+    @icon('tabler-search', ['class' => 'no-pointer color-muted'])
 
     <input
         class="rounded-full"
@@ -24,7 +21,7 @@
             class="btn btn--icon btn--transparent btn--sm color-accent"
             aria-label="{{ __('waterhole::forum.search-button') }}"
         >
-            <x-waterhole::icon icon="tabler-arrow-right"/>
+            @icon('tabler-arrow-right')
         </button>
     </div>
 </form>

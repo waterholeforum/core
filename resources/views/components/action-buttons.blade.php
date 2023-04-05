@@ -15,7 +15,7 @@
                 {{ $button }}
             @else
                 <button type="button" {{ new Illuminate\View\ComponentAttributeBag($buttonAttributes) }}>
-                    <x-waterhole::icon icon="tabler-dots"/>
+                    @icon('tabler-dots')
                     <ui-tooltip>{{ __('waterhole::system.actions-button') }}</ui-tooltip>
                 </button>
             @endif

@@ -4,7 +4,7 @@
 ]) }}>
     <span class="row reverse">
         @foreach ($reactionTypes->take(3)->reverse() as $reactionType)
-            <x-waterhole::icon :icon="$reactionType->icon"/>
+            @icon($reactionType->icon)
         @endforeach
     </span>
     {{ $model->reactions->count() }}

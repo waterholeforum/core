@@ -2,9 +2,13 @@
 
 namespace Waterhole;
 
+use BladeUI\Icons\Exceptions\SvgNotFound;
 use Closure;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
 use Illuminate\View\AnonymousComponent;
+use Illuminate\View\ComponentAttributeBag;
 use Major\Fluent\Formatters\Number\NumberFormatter;
 use Major\Fluent\Formatters\Number\Options;
 use Waterhole\Extend\Emoji;
@@ -129,4 +133,50 @@ function build_components(array $components, array $data = []): array
             return resolve(AnonymousComponent::class, ['view' => $component, 'data' => $data]);
         }
     }, $components);
+}
+
+function icon(?string $icon, array $attributes = []): string
+{
+    if (!$icon) {
+        return '';
+    }
+
+    $attributes['class'] = ($attributes['class'] ?? '') . ' icon';
+
+    if (str_starts_with($icon, 'emoji:')) {
+        return sprintf(
+            '<span %s>%s</span>',
+            new ComponentAttributeBag($attributes),
+            emojify(substr($icon, 6)),
+        );
+    }
+
+    if (str_starts_with($icon, 'file:')) {
+        return sprintf(
+            '<img src="%s" alt="" %s>',
+            e(Storage::disk('public')->url('icons/' . substr($icon, 5))),
+            new ComponentAttributeBag($attributes),
+        );
+    }
+
+    if (str_starts_with($icon, 'svg:')) {
+        $icon = substr($icon, 4);
+    }
+
+    $attributes['class'] .= " icon-$icon";
+
+    try {
+        return svg($icon, $attributes['class'], Arr::except($attributes, 'class'))->toHtml();
+    } catch (SvgNotFound $e) {
+        if (config('app.debug')) {
+            return '<script>console.warn("Icon [' . e($icon) . '] not found")</script>';
+        }
+    }
+
+    return '';
+}
+
+function is_absolute_url(string $path): bool
+{
+    return str_starts_with($path, 'https://') || str_starts_with($path, 'http://');
 }

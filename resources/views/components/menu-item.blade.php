@@ -11,7 +11,7 @@
         'aria-current' => $active && $tag === 'a' ? 'page' : null,
     ]) }}
 >
-    <x-waterhole::icon :icon="$icon"/>
+    @icon($icon)
     @empty ($description)
         {{ $label }}
     @else
@@ -22,6 +22,6 @@
     @endif
 
     @if ($active)
-        <x-waterhole::icon icon="tabler-check" class="menu-item__check"/>
+        @icon('tabler-check', ['class' => 'menu-item__check'])
     @endif
 </{{ $tag }}>

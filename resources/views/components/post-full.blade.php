@@ -19,7 +19,7 @@
                     data-action="quotable#quoteSelectedText"
                     hidden
                 >
-                    <x-waterhole::icon icon="tabler-quote"/>
+                    @icon('tabler-quote')
                     <span>{{ __('waterhole::forum.quote-button') }}</span>
                 </a>
             @endcan
@@ -35,9 +35,9 @@
         <x-waterhole::action-menu :for="$post">
             <x-slot name="button">
                 <button type="button" class="btn">
-                    <x-waterhole::icon icon="tabler-settings"/>
+                    @icon('tabler-settings')
                     <span>{{ __('waterhole::system.controls-button') }}</span>
-                    <x-waterhole::icon icon="tabler-chevron-down"/>
+                    @icon('tabler-chevron-down')
                 </button>
             </x-slot>
         </x-waterhole::action-menu>

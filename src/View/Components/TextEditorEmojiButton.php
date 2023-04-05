@@ -17,7 +17,7 @@ class TextEditorEmojiButton extends Component
                     type="button"
                     class="btn btn--transparent btn--icon"
                 >
-                    <x-waterhole::icon icon="tabler-mood-smile"/>
+                    @icon('tabler-mood-smile')
                     <ui-tooltip>{{ __('waterhole::system.text-editor-emoji') }}</ui-tooltip>
                 </button>
 

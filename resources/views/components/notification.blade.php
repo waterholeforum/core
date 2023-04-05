@@ -10,10 +10,7 @@
         role="menuitem"
         target="_top"
     >
-        <x-waterhole::icon
-            :icon="$notification->template->icon()"
-            class="color-muted text-sm"
-        />
+        @icon($notification->template->icon(), ['class' => 'color-muted text-sm'])
 
         <span class="shrink">
             {{ Waterhole\emojify(Illuminate\Mail\Markdown::parse($notification->template->title())) }}

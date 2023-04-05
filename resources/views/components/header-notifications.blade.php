@@ -9,7 +9,7 @@
         data-action="notifications-popup#open"
         role="button"
     >
-        <x-waterhole::icon icon="tabler-bell"/>
+        @icon('tabler-bell')
 
         <x-waterhole::notifications-badge :user="Auth::user()"/>
 

@@ -20,7 +20,7 @@
                         <ui-popup placement="bottom-start">
                             <button class="btn" type="button">
                                 <x-waterhole::channel-label :channel="$form->model->channel"/>
-                                <x-waterhole::icon icon="tabler-selector"/>
+                                @icon('tabler-selector')
                             </button>
 
                             <ui-menu class="menu measure" hidden>

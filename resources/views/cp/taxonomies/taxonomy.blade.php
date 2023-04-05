@@ -64,7 +64,7 @@
                                 class="btn"
                                 data-turbo-frame="modal"
                             >
-                                <x-waterhole::icon icon="tabler-plus"/>
+                                @icon('tabler-plus')
                                 Add
                             </a>
                         </div>

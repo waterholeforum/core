@@ -128,10 +128,7 @@
 
 <template id="frame-error">
     <div class="placeholder">
-        <x-waterhole::icon
-            icon="tabler-alert-circle"
-            class="placeholder__icon"
-        />
+        @icon('tabler-alert-circle', ['class' => 'placeholder__icon'])
         <p class="h4">{{ __('waterhole::system.fatal-error-heading') }}</p>
         <button class="btn btn--transparent color-accent">
             {{ __('waterhole::system.try-again-button') }}

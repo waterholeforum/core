@@ -30,10 +30,7 @@
             </x-waterhole::infinite-scroll>
         @else
             <div class="placeholder">
-                <x-waterhole::icon
-                    icon="tabler-messages"
-                    class="placeholder__icon"
-                />
+                @icon('tabler-messages', ['class' => 'placeholder__icon'])
                 <p class="h4">
                     {{ __('waterhole::user.posts-empty-message') }}
                 </p>
