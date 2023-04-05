@@ -42,14 +42,13 @@ class PostController extends Controller
             return redirect($comment->post_url);
         }
 
-        $post->load(['reactions.reactionType', 'reactions.user']);
+        $post->load('reactions.user');
 
         $comments = $post
             ->comments()
             ->with([
                 'user.groups',
                 'parent.user.groups',
-                'reactions.reactionType',
                 'reactions.user',
                 'mentions',
                 'attachments',
