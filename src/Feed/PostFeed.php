@@ -11,10 +11,10 @@ class PostFeed extends Feed
 {
     // TODO: move this stuff to extenders
     public static array $eagerLoad = [
-        'user',
+        'user.groups',
         'channel.userState',
         'channel.postsReactionSet',
-        'lastComment:id,comments.post_id' => ['user'],
+        'lastComment.user',
         'userState',
         'reactions.user',
         'tags',
