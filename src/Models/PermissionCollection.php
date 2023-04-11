@@ -30,10 +30,6 @@ class PermissionCollection extends Collection
 
     public function can(User|Group|null $recipient, string $ability, Model|string $scope): bool
     {
-        if (!$recipient?->exists) {
-            $recipient = null;
-        }
-
         $recipientType = $recipient?->getMorphClass();
         $recipientId = $recipient?->getKey();
 
@@ -59,10 +55,6 @@ class PermissionCollection extends Collection
         string $ability,
         Model|string $scope,
     ): Closure {
-        if (!$recipient?->exists) {
-            $recipient = null;
-        }
-
         $recipients = [[(new Group())->getMorphClass(), Group::GUEST_ID]];
 
         if (
