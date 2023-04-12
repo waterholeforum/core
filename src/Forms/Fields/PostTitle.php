@@ -49,7 +49,7 @@ class PostTitle extends Field
                 ]);
             @endphp
 
-            <div class="stack gap-sm" data-controller="similar-posts">
+            <div class="stack gap-sm" @if (!$model->exists) data-controller="similar-posts" @endif>
                 <x-waterhole::field name="title" :$label :$description>
                     <input
                         id="{{ $component->id }}"
@@ -60,7 +60,7 @@ class PostTitle extends Field
                     >
                 </x-waterhole::field>
 
-                @if ($model->channel->show_similar_posts)
+                @if (!$model->exists && $model->channel->show_similar_posts)
                     <button
                         type="submit"
                         hidden
