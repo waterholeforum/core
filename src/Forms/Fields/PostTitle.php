@@ -25,6 +25,7 @@ class PostTitle extends Field
                 q: $title,
                 limit: 3,
                 channelIds: [$model->channel_id],
+                in: ['title', 'body'],
             );
         }
     }

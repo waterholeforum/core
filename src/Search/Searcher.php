@@ -17,6 +17,7 @@ class Searcher
         int $offset = 0,
         string $sort = null,
         array $channelIds = [],
+        array $in = ['title', 'body', 'comments'],
     ): Results {
         $results = $this->engine->search(
             q: $q,
@@ -24,6 +25,7 @@ class Searcher
             offset: $offset,
             sort: $sort,
             channelIds: $channelIds,
+            in: $in,
         );
 
         // The engine has given us a Results object with an array of Hits,

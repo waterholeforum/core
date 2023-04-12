@@ -2,7 +2,6 @@
 
 namespace Waterhole\Search;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use s9e\TextFormatter\Utils;
 use Waterhole\Models\Channel;
@@ -16,18 +15,28 @@ class MySqlEngine implements EngineInterface
         int $offset = 0,
         string $sort = null,
         array $channelIds = [],
+        array $in = ['title', 'body', 'comments'],
     ): Results {
         // Build a query that finds posts that match the search query, or that
         // contain comments that match the search query. This will form the
         // basis of both the search results, and the channel hit breakdown.
-        $query = Post::query()
-            ->leftJoin('comments', 'comments.post_id', '=', 'posts.id')
-            ->where(function (Builder $query) use ($q) {
-                $query
-                    ->orWhereFullText('posts.title', $q)
-                    ->orWhereFullText('posts.body', $q)
-                    ->orWhereFullText('comments.body', $q);
-            });
+        $query = Post::where(function ($query) use ($in, $q) {
+            if (in_array('title', $in)) {
+                $query->orWhereFullText('posts.title', $q);
+            }
+
+            if (in_array('body', $in)) {
+                $query->orWhereFullText('posts.body', $q);
+            }
+
+            if (in_array('comments', $in)) {
+                $query->orWhereFullText('comments.body', $q);
+            }
+        });
+
+        if (in_array('comments', $in)) {
+            $query->leftJoin('comments', 'comments.post_id', '=', 'posts.id');
+        }
 
         // Get a breakdown of each channel and how many hits were found within
         // them. Even if we're filtering by certain channels, we still report
@@ -57,21 +66,33 @@ class MySqlEngine implements EngineInterface
         // information we need. We will wrap a final "outer" query around this
         // to ensure that we only get one result per post, even if it contains
         // multiple relevant comments inside.
-        $query
-            ->select(
-                'posts.id as post_id',
-                'comments.id as comment_id',
-                'posts.title',
-                'posts.body as post_body',
-                'comments.body as comment_body',
-            )
-            ->selectRaw(
-                'ROW_NUMBER() OVER (PARTITION BY posts.id ORDER BY MATCH (comments.body) AGAINST (?) DESC) as r',
-                [$q],
-            )
-            ->selectRaw('MATCH (posts.title) AGAINST (?) * 10 as tscore', [$q])
-            ->selectRaw('MATCH (posts.body) AGAINST (?) as pscore', [$q])
-            ->selectRaw('MATCH (comments.body) AGAINST (?) as cscore', [$q]);
+        $query->select('posts.id as post_id', 'posts.title', 'posts.body as post_body');
+
+        $score = [];
+
+        if (in_array('title', $in)) {
+            $score[] = 'tscore';
+            $query->selectRaw('MATCH (posts.title) AGAINST (?) * 10 as tscore', [$q]);
+        }
+
+        if (in_array('body', $in)) {
+            $score[] = 'pscore';
+            $query->selectRaw('MATCH (posts.body) AGAINST (?) as pscore', [$q]);
+        }
+
+        if (in_array('comments', $in)) {
+            $score[] = 'cscore';
+            $query
+                ->addSelect('comments.id as comment_id')
+                ->addSelect('comments.body as comment_body')
+                ->selectRaw(
+                    'ROW_NUMBER() OVER (PARTITION BY posts.id ORDER BY MATCH (comments.body) AGAINST (?) DESC) as r',
+                    [$q],
+                )
+                ->selectRaw('MATCH (comments.body) AGAINST (?) as cscore', [$q]);
+        } else {
+            $query->selectRaw('1 as r');
+        }
 
         switch ($sort) {
             case 'latest':
@@ -83,7 +104,7 @@ class MySqlEngine implements EngineInterface
                 break;
 
             default:
-                $query->orderByRaw('tscore + pscore + cscore desc');
+                $query->orderByRaw(implode(' + ', $score) . ' desc');
         }
 
         // Finally we get the query results and map them into Hit instances.
@@ -102,7 +123,9 @@ class MySqlEngine implements EngineInterface
                 $body = $highlighter->highlight(
                     $highlighter->truncate(
                         Utils::removeFormatting(
-                            $row->pscore >= $row->cscore ? $row->post_body : $row->comment_body,
+                            ($row->pscore ?? 1) >= ($row->cscore ?? 0)
+                                ? $row->post_body
+                                : $row->comment_body,
                         ),
                     ),
                 );

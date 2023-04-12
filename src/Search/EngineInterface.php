@@ -10,5 +10,6 @@ interface EngineInterface
         int $offset = 0,
         string $sort = null,
         array $channelIds = [],
+        array $in = ['title', 'body', 'comments'],
     ): Results;
 }
