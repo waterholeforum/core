@@ -24,7 +24,7 @@ trait UsesFormatter
 
         if (!isset($this->renderCache[$key])) {
             $this->renderCache[$key] = rescue(
-                fn() => str_starts_with($value, '<')
+                fn() => $value && str_starts_with($value, '<')
                     ? new HtmlString(
                         static::$formatters[$attribute]->render($value, new Context($this, $user)),
                     )

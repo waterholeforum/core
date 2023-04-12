@@ -36,7 +36,7 @@ class SearchController extends Controller
         $currentPage = Paginator::resolveCurrentPage();
         $perPage = (new Post())->getPerPage();
 
-        if ($ids = explode(',', $request->query('channels'))) {
+        if ($ids = explode(',', $request->query('channels', ''))) {
             $selectedChannels = $channels->find($ids);
         }
 
