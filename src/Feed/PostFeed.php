@@ -5,21 +5,11 @@ namespace Waterhole\Feed;
 use Closure;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Http\Request;
+use Waterhole\Extend\PostFeedQuery;
 use Waterhole\Models\Post;
 
 class PostFeed extends Feed
 {
-    // TODO: move this stuff to extenders
-    public static array $eagerLoad = [
-        'user.groups',
-        'channel.userState',
-        'channel.postsReactionSet',
-        'lastComment.user',
-        'userState',
-        'reactions.user',
-        'tags',
-    ];
-
     public static array $scopes = [];
 
     private ?string $defaultLayout;
@@ -30,15 +20,17 @@ class PostFeed extends Feed
         string $defaultLayout,
         Closure $scope = null,
     ) {
-        $query = Post::query()
-            ->with(static::$eagerLoad)
-            ->withUnreadCommentsCount();
+        $query = Post::query();
 
         if ($scope) {
             $scope($query);
         }
 
         foreach (static::$scopes as $scope) {
+            $scope($query);
+        }
+
+        foreach (PostFeedQuery::values() as $scope) {
             $scope($query);
         }
 
