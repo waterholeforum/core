@@ -1,5 +1,5 @@
 <div class="section container with-sidebar index-layout">
-    <div class="sidebar sidebar--sticky gap-md">
+    <div class="index-sidebar sidebar sidebar--sticky gap-x-md gap-y-lg">
         @components(Waterhole\Extend\IndexSidebar::build(), compact('channel'))
     </div>
 

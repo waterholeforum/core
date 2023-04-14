@@ -14,7 +14,7 @@
                 <h1 class="h3">{{ $title }}</h1>
             </header>
 
-            <x-waterhole::comment-frame :comment="$comment" with-replies/>
+            <x-waterhole::comment-frame :comment="$comment" with-replies class="card"/>
 
             @can('post.comment', $post)
                 <x-waterhole::composer

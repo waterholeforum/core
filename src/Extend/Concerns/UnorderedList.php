@@ -9,9 +9,9 @@ trait UnorderedList
     /**
      * Add an item to the list.
      */
-    public static function add(string $key, $content): void
+    public static function add($content = null, ?string $key = null): void
     {
-        static::$items[$key] = $content;
+        static::$items[$key ?? uniqid()] = $content;
     }
 
     /**

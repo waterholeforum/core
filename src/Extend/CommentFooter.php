@@ -14,5 +14,5 @@ abstract class CommentFooter
     use OrderedList;
 }
 
-CommentFooter::add(CommentReactions::class, 0, 'reactions');
-CommentFooter::add(CommentReplies::class, 0, 'replies');
+CommentFooter::add(CommentReactions::class, -90, 'reactions');
+CommentFooter::add(CommentReplies::class, -100, 'replies');

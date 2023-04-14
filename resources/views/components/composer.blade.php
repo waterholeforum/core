@@ -42,7 +42,7 @@
                 data-hotkey="Escape"
                 data-hotkey-scope="new-comment"
             >
-                @icon('tabler-chevron-down')
+                @icon('tabler-x')
             </button>
 
             <div class="h5 overflow-ellipsis">{{ __('waterhole::forum.create-comment-title') }}</div>

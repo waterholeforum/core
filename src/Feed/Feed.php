@@ -14,19 +14,26 @@ use Waterhole\Filters\Filter;
  */
 class Feed
 {
-    protected Request $request;
-    protected Builder $query;
-    protected Collection $filters;
+    public Collection $filters;
+    public Filter $currentFilter;
 
-    public function __construct(Request $request, Builder $query, array $filters)
-    {
-        $this->request = $request;
-        $this->query = $query;
+    public function __construct(
+        protected Request $request,
+        protected Builder $query,
+        array $filters,
+    ) {
         $this->filters = collect($filters);
 
         if (!$this->filters->count()) {
             throw new RuntimeException('A feed must have at least 1 filter');
         }
+
+        $query = $this->request->query('filter');
+
+        $this->currentFilter = $this->filters->first(
+            fn(Filter $filter) => $filter->handle() === $query,
+            $this->filters[0],
+        );
     }
 
     /**
@@ -36,31 +43,8 @@ class Feed
     {
         $query = $this->query->clone();
 
-        if ($filter = $this->currentFilter()) {
-            $filter->apply($query);
-        }
+        $this->currentFilter->apply($query);
 
         return $query->cursorPaginate();
-    }
-
-    /**
-     * Get the available filters.
-     */
-    public function filters(): Collection
-    {
-        return $this->filters;
-    }
-
-    /**
-     * Get the filter that is currently active.
-     */
-    public function currentFilter(): Filter
-    {
-        $query = $this->request->query('filter', $this->filters->keys()[0]);
-
-        return $this->filters->first(
-            fn(Filter $filter) => $filter->handle() === $query,
-            $this->filters[0],
-        );
     }
 }

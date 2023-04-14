@@ -77,7 +77,7 @@
                                             class="drag-handle"
                                             data-handle
                                         >
-                                            @icon('tabler-menu-2')
+                                            @icon('tabler-grip-vertical')
                                         </button>
 
                                         @icon($reactionType->icon)

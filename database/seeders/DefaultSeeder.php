@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Waterhole\Filters;
+use Waterhole\Layouts;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Group;
 use Waterhole\Models\Page;
@@ -120,7 +121,7 @@ class DefaultSeeder extends Seeder
                 'name' => __('waterhole::install.announcements-name'),
                 'description' => __('waterhole::install.announcements-description'),
                 'icon' => 'emoji:📣',
-                'default_layout' => 'cards',
+                'layout' => Layouts\CardsLayout::class,
                 'filters' => [
                     Filters\Newest::class,
                     Filters\Latest::class,

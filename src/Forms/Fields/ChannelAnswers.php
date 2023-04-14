@@ -17,7 +17,8 @@ class ChannelAnswers extends Field
     {
         return <<<'blade'
             <div role="group" class="field">
-                <div class="field__label">
+                <div class="field__label with-icon">
+                    @icon('tabler-check', ['class' => 'text-md'])
                     {{ __('waterhole::cp.channel-answers-label') }}
                 </div>
                 <div>

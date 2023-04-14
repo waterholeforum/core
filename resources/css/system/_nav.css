@@ -48,7 +48,7 @@
     margin-left: auto;
   }
 
-    @mixin clickable;
+  @mixin clickable;
   transform: none !important;
 
   &:hover,
@@ -57,7 +57,8 @@
   }
 
   &.is-active,
-  &[aria-current='page'] {
+  &[aria-current='page'],
+  &:has(:checked) {
     color: var(--color-accent-text);
     background: var(--color-accent-soft);
 

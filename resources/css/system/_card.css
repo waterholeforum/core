@@ -1,12 +1,19 @@
 .card {
-  border: 1px solid var(--color-stroke);
+  --color-bg: var(--palette-surface);
+
   border-radius: var(--radius);
+  background: var(--color-bg);
+  box-shadow: var(--shadow-sm);
+}
+
+.card .card {
+  border: 1px solid var(--color-fill);
 }
 
 .card__header {
-  background: var(--color-fill);
   padding: var(--space-sm) var(--space-md);
   border-radius: var(--radius) var(--radius) 0 0;
+  background: var(--color-bg);
 
   &summary {
     @mixin clickable;
@@ -15,7 +22,7 @@
 
     &::marker,
     &::-webkit-details-marker {
-      color: var(--color-muted);
+      color: var(--color-stroke);
       margin-right: var(--space-sm);
     }
 
@@ -30,19 +37,30 @@ details.card:not([open]) .card__header {
 }
 
 .card__body {
-  padding: var(--space-lg);
+  padding: min(var(--space-gutter), var(--space-lg));
 }
 
 .card__row {
   padding: var(--space-sm) var(--space-md);
 
-  * + & {
-    border-top: 1px solid var(--color-stroke);
+  :not(.divider) + & {
+    border-top: 1px solid var(--color-fill);
   }
 }
 
 .card-list {
   > * {
     margin-bottom: var(--space-lg);
+  }
+}
+
+@media (--sm) {
+  .container .card:not(.card .card) {
+    margin-inline: calc(-1 * var(--space-gutter)) !important;
+    border-radius: 0;
+
+    > .card__header {
+      border-radius: 0;
+    }
   }
 }

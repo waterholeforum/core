@@ -23,8 +23,12 @@
 
 .btn--outline {
   border: 1px solid var(--color-stroke);
-  background: var(--color-bg);
+  background: transparent;
   color: var(--color-muted);
+
+  &:hover {
+    background: var(--color-bg);
+  }
 }
 
 // Transparent
@@ -91,9 +95,32 @@
 
 .btn {
   &.is-active,
-  &[aria-pressed='true'] {
+  &[aria-pressed='true'],
+  &:has(:checked) {
     color: var(--color-accent-text) !important;
     background: var(--color-accent-soft) !important;
     border-color: transparent;
+  }
+}
+
+// Button group
+
+.btn-group {
+  display: flex;
+  align-items: stretch;
+  gap: 1px;
+
+  > :first-child:not(:only-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  > :not(:first-child, :last-child) {
+    border-radius: 0;
+  }
+
+  > :last-child:not(:only-child) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
   }
 }

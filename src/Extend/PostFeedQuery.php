@@ -22,6 +22,8 @@ PostFeedQuery::add(function (Builder $query) {
         'userState',
         'reactions.user',
         'tags',
+        'mentions',
+        'attachments',
     ]);
 
     $query->withUnreadCommentsCount();

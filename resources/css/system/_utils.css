@@ -15,7 +15,7 @@
 .container {
   margin-inline: auto;
   padding-inline: var(--space-gutter);
-  max-width: 68rem;
+  max-width: 76rem;
   width: 100%;
 }
 
@@ -224,6 +224,10 @@
   flex-wrap: wrap;
 }
 
+.wrap-reverse {
+  flex-wrap: wrap-reverse;
+}
+
 .nowrap {
   flex-wrap: nowrap;
   white-space: nowrap;
@@ -280,7 +284,7 @@
     z-index: 10;
     flex-shrink: 0;
     pointer-events: none;
-    align-self:stretch;
+    align-self: stretch;
   }
 
   & > :first-child,
@@ -607,6 +611,25 @@
 
 .pseudo-overlay::before {
   content: '';
+}
+
+// Truncated
+
+.truncated {
+  overflow: hidden;
+  position: relative;
+  max-height: 15em;
+}
+
+.truncated__expander {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 5em;
+  background: linear-gradient(to bottom, transparent, var(--color-bg) 60%);
+  display: flex;
+  align-items: flex-end;
 }
 
 // Font Family

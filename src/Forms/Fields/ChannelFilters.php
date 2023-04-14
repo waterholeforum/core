@@ -20,7 +20,7 @@ class ChannelFilters extends Field
         return <<<'blade'
             <div role="group" class="field">
                 <div class="field__label">
-                    {{ __('waterhole::cp.channel-filter-options-label') }}
+                    {{ __('waterhole::cp.channel-filters-label') }}
                 </div>
                 <div data-controller="reveal" class="stack gap-md">
                     <label class="choice">
@@ -43,7 +43,7 @@ class ChannelFilters extends Field
                             class="card sortable"
                             role="list"
                             data-sortable-target="container"
-                            aria-label="{{ __('waterhole::cp.channel-filter-options-label') }}"
+                            aria-label="{{ __('waterhole::cp.channel-filters-label') }}"
                         >
                             @php
                                 $filters = old('filters', $model->filters ?? config('waterhole.forum.post_filters', []));
@@ -58,7 +58,7 @@ class ChannelFilters extends Field
                                     aria-label="{{ $filter->label() }}"
                                 >
                                     <button type="button" class="drag-handle" data-handle>
-                                        @icon('tabler-menu-2')
+                                        @icon('tabler-grip-vertical')
                                     </button>
 
                                     <label class="choice">

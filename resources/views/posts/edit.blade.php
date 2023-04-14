@@ -3,7 +3,7 @@
 @endphp
 
 <x-waterhole::layout :title="$title">
-    <div class="container section">
+    <div class="container section measure">
         <x-waterhole::dialog :title="$title">
             <form
                 method="POST"

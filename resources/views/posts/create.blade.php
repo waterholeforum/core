@@ -3,8 +3,11 @@
 @endphp
 
 <x-waterhole::layout :title="$title">
-    <div class="container section">
-        <form method="POST" action="{{ route('waterhole.posts.store') }}">
+    <div class="container section measure">
+        <form
+            method="POST"
+            action="{{ route('waterhole.posts.store') }}"
+        >
             @csrf
 
             @if (!$form->model->channel)

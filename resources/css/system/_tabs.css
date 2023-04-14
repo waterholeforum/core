@@ -2,14 +2,14 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  margin: 0 calc(-1 * var(--space-xs));
+  margin-inline: calc(-1 * var(--space-sm));
 }
 
 .tab {
   color: var(--color-muted);
   font-weight: var(--weight-medium);
   text-decoration: none !important;
-  padding: var(--space-xxs) var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
   white-space: nowrap;
   min-width: 2ch;
   text-align: center;
@@ -36,9 +36,10 @@
       left: 50%;
       transform: translateX(-50%);
       min-width: 2ch;
-      width: calc(100% - 2 * var(--space-xs));
+      width: calc(100% - 2 * var(--space-sm));
       background: var(--color-accent-soft);
-      height: 3px;
+      height: 4px;
+      border-radius: var(--radius);
     }
   }
 
@@ -50,8 +51,7 @@
 }
 
 .tabs--vertical {
-  width: calc(100% + var(--space-md));
-  margin: 0 0 0 calc(-1 * var(--space-md));
+  margin-inline: calc(-1 * var(--space-sm));
   flex-direction: column;
   flex-wrap: nowrap;
   align-items: stretch;
@@ -60,14 +60,15 @@
   .tab {
     display: block;
     text-align: left;
-    padding-left: var(--space-md);
+    padding-block: var(--space-xxs);
+    padding-inline: var(--space-sm);
 
     &.is-active,
     &[aria-current='page'] {
       &::after {
-        width: 3px;
-        height: 100%;
-        bottom: 0;
+        width: 4px;
+        height: calc(100% - 2 * var(--space-xxs));
+        bottom: var(--space-xxs);
         left: 0;
         transform: none;
         min-width: 0;

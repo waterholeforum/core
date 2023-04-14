@@ -10,7 +10,7 @@
             </h1>
         @endif
 
-        <form action="{{ route('waterhole.search') }}" class="lead row gap-xs" role="search">
+        <form action="{{ route('waterhole.search') }}" class="lead row gap-xs card card__body" role="search">
             <div class="input-container full-width">
                 @icon('tabler-search', ['class' => 'no-pointer'])
                 <input
@@ -65,21 +65,13 @@
                             />
                         </div>
 
-                        <x-waterhole::infinite-scroll :paginator="$hits" divider>
-                            <ul role="list" class="search-results post-list">
+                        <div class="card search-results post-list">
+                            <x-waterhole::infinite-scroll :paginator="$hits" divider>
                                 @foreach ($hits as $hit)
-                                    <li class="stack gap-xxs">
-                                        <x-waterhole::post-list-item :post="$hit->post"/>
-                                        <div class="post-summary">
-                                            <div class="post-summary__avatar"></div>
-                                            <div class="content text-xs">
-                                                {{ $hit->body }}
-                                            </div>
-                                        </div>
-                                    </li>
+                                    <x-waterhole::post-list-item :post="$hit->post" :excerpt="$hit->body"/>
                                 @endforeach
-                            </ul>
-                        </x-waterhole::infinite-scroll>
+                            </x-waterhole::infinite-scroll>
+                        </div>
                     </div>
                 </div>
             @else

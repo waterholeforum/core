@@ -8,7 +8,6 @@ use Waterhole\View\Components\PostAnswered;
 use Waterhole\View\Components\PostChannel;
 use Waterhole\View\Components\PostLocked;
 use Waterhole\View\Components\PostNotifications;
-use Waterhole\View\Components\PostTagsSummary;
 use Waterhole\View\Components\PostUnread;
 
 /**
@@ -25,4 +24,3 @@ PostInfo::add(PostAnswered::class, position: -80, key: 'answered');
 PostInfo::add(PostLocked::class, position: -70, key: 'locked');
 PostInfo::add(PostNotifications::class, position: -60, key: 'notifications');
 PostInfo::add(PostActivity::class, position: -50, key: 'activity');
-PostInfo::add(PostTagsSummary::class, position: -40, key: 'tags');

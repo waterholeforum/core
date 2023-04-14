@@ -1,6 +1,6 @@
-<article {{ $attributes->class('post-full with-sidebar') }}>
-    <div class="post-full__main stack gap-xl">
-        <header class="post-header row wrap gap-x-md gap-y-xl">
+<article {{ $attributes->class('post-full') }}>
+    <div class="post-full__main stack gap-xl card p-gutter">
+        <header class="post-header stack gap-x-md gap-y-xl">
             @components(Waterhole\Extend\PostHeader::build(), compact('post'))
         </header>
 
@@ -25,25 +25,10 @@
             @endcan
         </div>
 
-        @components(Waterhole\Extend\PostPage::build(), compact('post'))
-    </div>
-
-    <div
-        class="sidebar sidebar--sticky sidebar--bottom overflow-visible gap-md"
-        data-controller="watch-sticky"
-    >
-        <x-waterhole::action-menu :for="$post">
-            <x-slot name="button">
-                <button type="button" class="btn">
-                    @icon('tabler-settings')
-                    <span>{{ __('waterhole::system.controls-button') }}</span>
-                    @icon('tabler-chevron-down')
-                </button>
-            </x-slot>
-        </x-waterhole::action-menu>
-
-        <div class="row gap-y-md gap-x-xs wrap">
-            @components(Waterhole\Extend\PostSidebar::build(), compact('post'))
+        <div class="row gap-xs">
+            @components(Waterhole\Extend\PostFooter::build(), compact('post'))
         </div>
+
+        @components(Waterhole\Extend\PostPage::build(), compact('post'))
     </div>
 </article>

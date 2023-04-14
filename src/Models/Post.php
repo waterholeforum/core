@@ -265,9 +265,9 @@ class Post extends Model
     {
         return [
             TurboStream::replace(new Components\PostListItem($this)),
-            TurboStream::replace(new Components\PostCardsItem($this)),
+            TurboStream::replace(new Components\PostCard($this)),
             TurboStream::replace(new Components\PostFull($this)),
-            TurboStream::replace(new Components\PostActions($this)),
+            TurboStream::replace(new Components\PostSidebar($this)),
         ];
     }
 
@@ -278,7 +278,7 @@ class Post extends Model
     {
         return [
             TurboStream::remove(new Components\PostListItem($this)),
-            TurboStream::remove(new Components\PostCardsItem($this)),
+            TurboStream::remove(new Components\PostCard($this)),
         ];
     }
 

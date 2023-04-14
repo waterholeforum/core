@@ -34,7 +34,7 @@ class GroupPermissions extends Field
     public function render(): string
     {
         return <<<'blade'
-            <div class="table-container">
+            <div class="table-container card">
                 <table
                     class="table permission-grid"
                     data-controller="permission-grid"
@@ -83,12 +83,12 @@ class GroupPermissions extends Field
                                                         If members are allowed, then this group *must* be allowed too,
                                                         so disable the checkbox.
                                                     --}}
-                                                    @disabled(Waterhole::permissions()->member()->allows($ability, $node->content))
+                                                    @disabled(Waterhole::permissions()->can(Waterhole\Models\Group::member(), $ability, $node->content))
                                                     {{--
                                                         Check this box if it was checked before, or if the ability is
                                                         allowed for this group, or for members in general.
                                                     --}}
-                                                    @checked(old("permissions.$key.$ability", Waterhole::permissions()->group($model ?? Waterhole\Models\Group::member())->allows($ability, $node->content)))
+                                                    @checked(old("permissions.$key.$ability", Waterhole::permissions()->can($model ?? Waterhole\Models\Group::member(), $ability, $node->content)))
                                                     {{--
                                                         Non-"view" abilities depend on the "view" ability being allowed.
                                                     --}}

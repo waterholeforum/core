@@ -4,9 +4,9 @@
     data-content-type="{{ $node->content->getMorphClass() }}"
     aria-labelledby="label_{{ $node->id }}"
 >
-    <div class="cp-structure__content row gap-xs">
+    <div class="cp-structure__content row gap-md">
         <button type="button" class="drag-handle" data-handle>
-            @icon('tabler-menu-2')
+            @icon('tabler-grip-vertical')
         </button>
 
         @if ($node->content instanceof Waterhole\Models\Channel)

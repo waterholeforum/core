@@ -12,17 +12,30 @@ export default class extends Controller {
 
     declare observer: IntersectionObserver;
 
+    private hideBreadcrumb?: number;
+
     initialize() {
         this.observer = new IntersectionObserver(
             (entries) => {
+                if (this.hideBreadcrumb) {
+                    cancelAnimationFrame(this.hideBreadcrumb);
+                }
                 this.breadcrumbTarget.hidden = entries[0].isIntersecting;
+                if (!entries[0].isIntersecting) {
+                    this.breadcrumbTarget.innerHTML = entries[0].target.innerHTML || '';
+                }
             },
             { rootMargin: `-${getHeaderHeight()}px` }
         );
     }
 
+    connect() {
+        this.hideBreadcrumb = requestAnimationFrame(() => {
+            this.breadcrumbTarget.hidden = true;
+        });
+    }
+
     titleTargetConnected(element: HTMLElement) {
-        this.breadcrumbTarget.innerHTML = element.innerHTML || '';
         this.observer.observe(element);
     }
 

@@ -34,15 +34,15 @@ abstract class Actionables
     }
 }
 
-Actionables::add('channel', Models\Channel::class);
-Actionables::add('comment', Models\Comment::class);
-Actionables::add('group', Models\Group::class);
-Actionables::add('page', Models\Page::class);
-Actionables::add('post', Models\Post::class);
-Actionables::add('reactionSet', Models\ReactionSet::class);
-Actionables::add('reactionType', Models\ReactionType::class);
-Actionables::add('structureHeading', Models\StructureHeading::class);
-Actionables::add('structureLink', Models\StructureLink::class);
-Actionables::add('tag', Models\Tag::class);
-Actionables::add('taxonomy', Models\Taxonomy::class);
-Actionables::add('user', Models\User::class);
+Actionables::add(Models\Channel::class, 'channel');
+Actionables::add(Models\Comment::class, 'comment');
+Actionables::add(Models\Group::class, 'group');
+Actionables::add(Models\Page::class, 'page');
+Actionables::add(Models\Post::class, 'post');
+Actionables::add(Models\ReactionSet::class, 'reactionSet');
+Actionables::add(Models\ReactionType::class, 'reactionType');
+Actionables::add(Models\StructureHeading::class, 'structureHeading');
+Actionables::add(Models\StructureLink::class, 'structureLink');
+Actionables::add(Models\Tag::class, 'tag');
+Actionables::add(Models\Taxonomy::class, 'taxonomy');
+Actionables::add(Models\User::class, 'user');

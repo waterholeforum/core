@@ -1,49 +1,20 @@
-<ui-popup {{ $attributes->merge(['placement' => 'bottom-start']) }}>
-    <button type="button" class="{{ $buttonClass }} {{ $followable->isFollowed() ? 'bg-warning-soft color-warning' : '' }}">
+<x-waterhole::action-form :for="$followable" {{ $attributes }}>
+    <button
+        type="submit"
+        name="action_class"
+        value="{{ $followable->isFollowed() ? Waterhole\Actions\Unfollow::class : ($followable->isIgnored() ? Waterhole\Actions\Unignore::class : Waterhole\Actions\Follow::class) }}"
+        class="{{ $buttonClass }} {{ $followable->isFollowed() ? 'bg-warning-soft color-warning' : '' }}"
+    >
         @if ($followable->isFollowed())
             @icon('tabler-bell')
             <span>{{ __('waterhole::forum.follow-button-following') }}</span>
         @elseif ($followable->isIgnored())
-            @icon('tabler-volume-3')
+            @icon('tabler-eye-off')
             <span>{{ __('waterhole::forum.follow-button-ignored') }}</span>
         @else
             @icon('tabler-bell')
             <span>{{ __('waterhole::forum.follow-button') }}</span>
+            <ui-tooltip>{{ __($localePrefix.'-follow-description') }}</ui-tooltip>
         @endif
-        @icon('tabler-chevron-down')
     </button>
-
-    <ui-menu class="menu" hidden>
-        <x-waterhole::action-form :for="$followable">
-            <x-waterhole::menu-item
-                tag="button"
-                name="action_class"
-                :value="Waterhole\Actions\Unfollow::class"
-                :active="!$followable->isFollowed() && !$followable->isIgnored()"
-                icon="tabler-at"
-                :label="__($localePrefix.'-default-notifications-title')"
-                :description="__($localePrefix.'-default-notifications-description')"
-            />
-
-            <x-waterhole::menu-item
-                tag="button"
-                name="action_class"
-                :value="Waterhole\Actions\Follow::class"
-                :active="$followable->isFollowed()"
-                icon="tabler-bell"
-                :label="__($localePrefix.'-follow-title')"
-                :description="__($localePrefix.'-follow-description')"
-            />
-
-            <x-waterhole::menu-item
-                tag="button"
-                name="action_class"
-                :value="Waterhole\Actions\Ignore::class"
-                :active="$followable->isIgnored()"
-                icon="tabler-volume-3"
-                :label="__($localePrefix.'-ignore-title')"
-                :description="__($localePrefix.'-ignore-description')"
-            />
-        </x-waterhole::action-form>
-    </ui-menu>
-</ui-popup>
+</x-waterhole::action-form>

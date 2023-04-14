@@ -17,20 +17,6 @@
 
 .cp-structure__node {
   list-style: none;
-  padding: 0;
-
-  &.is-dragging {
-    background: var(--color-accent-soft);
-  }
-}
-
-.cp-structure__content {
-  padding: var(--space-sm);
-  gap: var(--space-md);
-}
-
-.cp-structure__children {
-  border-left: 3.5ch solid var(--color-fill);
 }
 
 .drag-handle {

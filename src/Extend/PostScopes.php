@@ -15,8 +15,8 @@ abstract class PostScopes
     use UnorderedList;
 }
 
-PostScopes::add('channel', function (Builder $query, ?User $user) {
+PostScopes::add(function (Builder $query, ?User $user) {
     if (!is_null($ids = Channel::allPermitted($user))) {
         $query->whereIn('channel_id', $ids);
     }
-});
+}, 'channel');

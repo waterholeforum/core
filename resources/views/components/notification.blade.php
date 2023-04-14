@@ -6,11 +6,11 @@
     --}}
     <a
         href="{{ route('waterhole.notifications.go', compact('notification')) }}"
-        class="menu-item notification @if (!$notification->read_at) is-unread @endif"
+        class="menu-item notification p-sm gap-sm @if (!$notification->read_at) is-unread @endif"
         role="menuitem"
         target="_top"
     >
-        @icon($notification->template->icon(), ['class' => 'color-muted text-sm'])
+        @icon($notification->template->icon(), ['class' => 'color-muted text-md'])
 
         <span class="shrink">
             {{ Waterhole\emojify(Illuminate\Mail\Markdown::parse($notification->template->title())) }}
@@ -24,7 +24,7 @@
         <x-waterhole::time-ago
             :datetime="$notification->created_at"
             format="micro"
-            class="notification__time text-xxs color-muted push-end nowrap"
+            class="notification__time text-xs color-muted push-end nowrap"
         />
     </a>
 </turbo-frame>

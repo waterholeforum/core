@@ -4,12 +4,7 @@ import { getHeaderHeight } from '../utils';
 /**
  * Controller to apply "active" nav link styles based on the scroll position.
  */
-export default class extends Controller {
-    static targets = ['container'];
-
-    declare readonly hasContainerTarget: boolean;
-    declare readonly containerTarget: HTMLElement;
-
+export default class extends Controller<HTMLElement> {
     current?: HTMLElement;
 
     connect() {
@@ -35,14 +30,10 @@ export default class extends Controller {
             if (el && el.getBoundingClientRect().top <= headerHeight + 50) {
                 a.setAttribute('aria-current', 'page');
 
-                if (this.current !== a && this.hasContainerTarget) {
-                    this.containerTarget.scroll({
-                        top:
-                            a.offsetTop +
-                            a.offsetHeight / 2 -
-                            this.containerTarget.offsetHeight / 2,
-                        left:
-                            a.offsetLeft + a.offsetWidth / 2 - this.containerTarget.offsetWidth / 2,
+                if (this.current !== a && this.element) {
+                    this.element.scroll({
+                        top: a.offsetTop + a.offsetHeight / 2 - this.element.offsetHeight / 2,
+                        left: a.offsetLeft + a.offsetWidth / 2 - this.element.offsetWidth / 2,
                         behavior: this.current ? 'smooth' : 'auto',
                     });
                 }

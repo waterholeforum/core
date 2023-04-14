@@ -46,18 +46,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Post Layout
+    | Post Layouts
     |--------------------------------------------------------------------------
     |
-    | Here you can specify which post layout to use by default. This can be
-    | overridden for individual channels in the Structure section of the
-    | Control Panel.
-    |
-    | Supported: "list", "cards"
+    | Here you can specify which post layout is used on the forum index. This
+    | can be overridden for individual channels in the Structure section of
+    | the Control Panel.
     |
     */
 
-    'default_post_layout' => 'list',
+    'post_layout' => \Waterhole\Layouts\ListLayout::class,
 
     /*
     |--------------------------------------------------------------------------

@@ -15,7 +15,7 @@ class RssController extends Controller
 {
     public function posts()
     {
-        $posts = Post::whereRelation('channel', 'sandbox', false)
+        $posts = Post::whereRelation('channel', 'ignore', false)
             ->latest()
             ->take(20)
             ->get();

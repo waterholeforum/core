@@ -1,9 +1,11 @@
 .dialog {
+  --color-bg: var(--palette-surface);
+
   margin-left: auto;
   margin-right: auto;
   max-width: 100%;
-  border: 1px solid var(--color-stroke);
   border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
   background: var(--color-bg);
   color: var(--color-text);
 }
@@ -34,18 +36,9 @@
     padding-bottom: 0;
   }
 
-  .container.section {
-    .dialog {
-      border: 0;
-    }
-
-    .dialog__header,
-    .dialog__body {
-      padding: 0;
-    }
-
-    .dialog__header {
-      margin-bottom: var(--space-gutter);
-    }
+  .container .dialog {
+    margin-inline: calc(-1 * var(--space-gutter)) !important;
+    border-radius: 0;
+    max-width: none;
   }
 }

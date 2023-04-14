@@ -28,7 +28,9 @@ class Reactions extends Component
             return;
         }
 
-        $this->reactionsByType = $model->reactions->groupBy('reaction_type_id');
+        $this->reactionsByType = $model->reactions
+            ->loadMissing('user')
+            ->groupBy('reaction_type_id');
 
         $countReactions = fn($reactionType) => isset($this->reactionsByType[$reactionType->id])
             ? $this->reactionsByType[$reactionType->id]->count()

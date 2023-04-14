@@ -1,49 +1,53 @@
 <x-waterhole::layout :title="$title">
-    <div class="section container user-profile">
-        <div class="row gap-xs wrap justify-end user-profile__controls">
-            <x-waterhole::action-menu :for="$user" placement="bottom-end">
-                <x-slot name="button">
-                    <button type="button" class="btn">
-                        @icon('tabler-settings')
-                        <span>{{ __('waterhole::system.controls-button') }}</span>
-                        @icon('tabler-chevron-down')
-                    </button>
-                </x-slot>
-            </x-waterhole::action-menu>
-        </div>
+    <div class="section container user-profile stack gap-gutter">
 
-        <div class="row align-start gap-x-xl gap-y-md wrap user-profile__inner">
-            <x-waterhole::avatar :user="$user"/>
+        <div class="card card__body user-profile__card">
+            <div class="user-profile__controls">
+                <x-waterhole::action-menu :for="$user" placement="bottom-end">
+                    <x-slot name="button">
+                        <button type="button" class="btn">
+                            @icon('tabler-settings')
+                            <span>{{ __('waterhole::system.controls-button') }}</span>
+                            @icon('tabler-chevron-down')
+                        </button>
+                    </x-slot>
+                </x-waterhole::action-menu>
+            </div>
 
-            <div class="grow stack gap-xs user-profile__content">
-                <h1 class="h1 user-profile__name" data-page-target="title">
-                    {{ $user->name }}
-                </h1>
+            <div class="row align-start gap-x-xl gap-y-md wrap">
+                <x-waterhole::avatar :user="$user"/>
 
-                @if ($user->headline)
-                    <p class="h4 user-profile__headline">{{ Waterhole\emojify($user->headline) }}</p>
-                @endif
+                <div class="grow stack gap-xs user-profile__content">
+                    <h1 class="h1 user-profile__name" data-page-target="title">
+                        {{ $user->name }}
+                    </h1>
 
-                @if ($user->bio_html)
-                    <div class="content user-profile__bio">{{ Waterhole\emojify($user->bio_html) }}</div>
-                @endif
+                    @if ($user->headline)
+                        <p class="h4 user-profile__headline">{{ Waterhole\emojify($user->headline) }}</p>
+                    @endif
 
-                <div class="row gap-sm wrap align-baseline color-muted text-xs user-profile__info">
-                    @components(Waterhole\Extend\UserInfo::build(), compact('user'))
+                    @if ($user->bio_html)
+                        <div class="content user-profile__bio">{{ Waterhole\emojify($user->bio_html) }}</div>
+                    @endif
+
+                    <div class="row gap-sm wrap align-baseline color-muted text-xs user-profile__info">
+                        @components(Waterhole\Extend\UserInfo::build(), compact('user'))
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="section container with-sidebar">
-        <div class="sidebar sidebar--sticky">
-            <x-waterhole::collapsible-nav
-                :components="Waterhole\build_components(Waterhole\Extend\UserNav::build(), compact('user'))"
-            />
+        <div class="with-sidebar">
+            <div class="sidebar sidebar--sticky">
+                <x-waterhole::collapsible-nav
+                    :components="Waterhole\build_components(Waterhole\Extend\UserNav::build(), compact('user'))"
+                />
+            </div>
+
+            <div>
+                {{ $slot }}
+            </div>
         </div>
 
-        <div>
-            {{ $slot }}
-        </div>
     </div>
 </x-waterhole::layout>

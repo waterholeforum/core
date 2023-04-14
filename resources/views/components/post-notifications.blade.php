@@ -8,7 +8,7 @@
 
     @case('ignore')
         <span class="badge">
-            @icon('tabler-volume-3')
+            @icon('tabler-eye-off')
             <span>{{ __('waterhole::forum.post-ignored-badge') }}</span>
         </span>
 @endswitch

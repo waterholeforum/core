@@ -27,7 +27,7 @@ class Unignore extends Action
 
     public function icon(Collection $models): string
     {
-        return 'tabler-circle-x';
+        return 'tabler-eye';
     }
 
     public function run(Collection $models)

@@ -1,4 +1,6 @@
 .header {
+  --color-bg: var(--palette-surface);
+
   position: sticky;
   top: -1px; // ensures that .is-stuck only applies when scrolled down
   z-index: var(--z-index-header);
@@ -8,10 +10,6 @@
 
   .container {
     height: var(--header-height);
-  }
-
-  &.is-unstuck {
-    box-shadow: none;
   }
 }
 

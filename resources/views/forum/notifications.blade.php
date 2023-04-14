@@ -1,6 +1,6 @@
 <x-waterhole::layout>
     <div class="container section">
-        <turbo-frame id="notifications">
+        <turbo-frame id="notifications" class="card card__body">
             <div class="row gap-xs justify-between menu-sticky">
                 <h1 class="menu-heading">{{ __('waterhole::notifications.title') }}</h1>
 

@@ -1,10 +1,7 @@
-.channel-card__info {
-  flex-basis: 50ch;
+.channel-card__inner {
+  flex-basis: 30ch;
 }
 
-.channel-card__controls {
-  float: right;
-  margin-bottom: -50%;
-  margin-top: calc(-1 * var(--space-xxs));
-  position: relative;
+.channel-card__info {
+  flex-basis: 30ch;
 }

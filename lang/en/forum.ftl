@@ -57,12 +57,12 @@ post-comments-heading = { $count } { $count ->
 
 mark-as-read-instruction = Click to mark as read
 
-post-read-more-link = Read more
-
 post-comments-link = { $count } { $count ->
     [one] comment
     *[other] comments
 }
+
+add-reaction-button = Add Reaction
 
 move-post-title = Move { $count ->
     [one] Post:
@@ -151,19 +151,8 @@ ignore-button = Ignore
 unfollow-button = Unfollow
 unignore-button = Unignore
 
-channel-default-notifications-title = Default
-channel-default-notifications-description = Receive notifications when you're mentioned.
-channel-follow-title = Follow
-channel-follow-description = Receive notifications when there are new posts in this channel.
-channel-ignore-title = Ignore
-channel-ignore-description = Never be notified about activity in this channel, and hide posts from Home.
-
-post-default-notifications-title = Default
-post-default-notifications-description = Receive notifications when you're mentioned.
-post-follow-title = Follow
-post-follow-description = Receive notifications when there are new comments on this post.
-post-ignore-title = Ignore
-post-ignore-description = Never be notified about activity in this post, and hide it from Home.
+channel-follow-description = Get notified when there are new posts in this channel.
+post-follow-description = Get notified when there are new comments on this post.
 
 post-following-badge = Following
 post-ignored-badge = Ignored

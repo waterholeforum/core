@@ -18,7 +18,7 @@ class Follow extends Action
     public function shouldRender(Collection $models): bool
     {
         return !Waterhole::isCpRoute() &&
-            $models->some(fn($item) => !$item->userState->notifications);
+            $models->some(fn($item) => $item->userState->notifications !== 'follow');
     }
 
     public function label(Collection $models): string

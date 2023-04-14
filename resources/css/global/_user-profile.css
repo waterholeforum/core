@@ -1,4 +1,4 @@
-.user-profile__inner {
+.user-profile__card {
   .avatar {
     width: 12ch;
   }
@@ -10,7 +10,6 @@
 
 .user-profile__controls {
   float: right;
-  margin-bottom: -50%;
-  margin-left: 50%;
+  margin-left: -100%;
   position: relative;
 }

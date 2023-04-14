@@ -8,6 +8,7 @@
 
 .cp__content {
   max-width: 110ch;
+  margin-inline: auto;
 }
 
 .cp-title {

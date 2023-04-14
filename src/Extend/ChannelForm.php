@@ -23,12 +23,22 @@ ChannelForm::add(
 
 ChannelForm::add(
     fn($model) => new FormSection(
-        __('waterhole::cp.channel-options-title'),
-        ChannelFormOptions::components(compact('model')),
+        __('waterhole::cp.channel-features-title'),
+        ChannelFormFeatures::components(compact('model')),
         open: false,
     ),
     position: -90,
-    key: 'options',
+    key: 'features',
+);
+
+ChannelForm::add(
+    fn($model) => new FormSection(
+        __('waterhole::cp.channel-layout-title'),
+        ChannelFormLayout::components(compact('model')),
+        open: false,
+    ),
+    position: -80,
+    key: 'layout',
 );
 
 ChannelForm::add(
@@ -37,7 +47,7 @@ ChannelForm::add(
         ChannelFormPosting::components(compact('model')),
         open: false,
     ),
-    position: -80,
+    position: -70,
     key: 'posting',
 );
 
@@ -47,6 +57,6 @@ ChannelForm::add(
         [new Permissions($model)],
         open: false,
     ),
-    position: -70,
+    position: -60,
     key: 'permissions',
 );

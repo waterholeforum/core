@@ -3,7 +3,7 @@
     class="post-feed stack gap-lg"
     target="_top"
     data-controller="post-feed"
-    data-post-feed-filter-value="{{ $feed->currentFilter()->handle() }}"
+    data-post-feed-filter-value="{{ $feed->currentFilter->handle() }}"
     data-post-feed-public-channels-value="@json(Waterhole\Models\Channel::allPermitted(null))"
     data-post-feed-channels-value="@json($channel ? [$channel->id] : Waterhole\Models\Channel::pluck('id'))"
 >
@@ -33,8 +33,8 @@
         @endphp
 
         @if ($posts->isNotEmpty())
-            <x-waterhole::infinite-scroll :paginator="$posts">
-                <div class="post-feed__content post-{{ $feed->currentLayout() }}">
+            <div class="post-feed__content {{ $feed->layout->wrapperClass() }}">
+                <x-waterhole::infinite-scroll :paginator="$posts">
                     @foreach ($posts as $post)
                         @if ($showLastVisit && $post->last_activity_at < session('previously_seen_at'))
                             @once
@@ -47,12 +47,12 @@
                         @endif
 
                         <x-dynamic-component
-                            :component="'waterhole::post-'.$feed->currentLayout().'-item'"
+                            :component="$feed->layout->itemComponent()"
                             :post="$post"
                         />
                     @endforeach
-                </div>
-            </x-waterhole::infinite-scroll>
+                </x-waterhole::infinite-scroll>
+            </div>
         @else
             <div class="placeholder">
                 @icon('tabler-messages', ['class' => 'placeholder__icon'])

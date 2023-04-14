@@ -18,5 +18,5 @@ abstract class PostHeader
 
 PostHeader::add(PostChannel::class, position: -100, key: 'channel');
 PostHeader::add(PostTagsSummary::class, position: -90, key: 'tags');
-PostHeader::add(PostTitle::class, position: -80, key: 'title');
-PostHeader::add(PostAttribution::class, position: -70, key: 'attribution');
+PostHeader::add(PostAttribution::class, position: -80, key: 'attribution');
+PostHeader::add(PostTitle::class, position: -70, key: 'title');

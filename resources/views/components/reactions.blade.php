@@ -39,6 +39,7 @@
         <ui-popup placement="top" class="js-only">
             <button class="btn btn--sm btn--icon btn--transparent control">
                 @icon('tabler-mood-plus')
+                <ui-tooltip>{{ __('waterhole::forum.add-reaction-button') }}</ui-tooltip>
             </button>
 
             <ui-menu class="menu reactions-menu" hidden>

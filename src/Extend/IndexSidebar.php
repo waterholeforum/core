@@ -3,7 +3,6 @@
 namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\OrderedList;
-use Waterhole\View\Components\IndexCreatePost;
 use Waterhole\View\Components\IndexNav;
 
 /**
@@ -14,5 +13,5 @@ abstract class IndexSidebar
     use OrderedList;
 }
 
-IndexSidebar::add(IndexCreatePost::class, 0, 'createPost');
 IndexSidebar::add(IndexNav::class, 0, 'nav');
+// IndexSidebar::add(IndexCreatePost::class, 0, 'createPost');

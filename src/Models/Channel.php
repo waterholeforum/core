@@ -14,6 +14,8 @@ use Waterhole\Models\Concerns\HasPermissions;
 use Waterhole\Models\Concerns\HasUserState;
 use Waterhole\Models\Concerns\Structurable;
 use Waterhole\Models\Concerns\UsesFormatter;
+use Waterhole\View\Components\PostFeedChannel;
+use Waterhole\View\TurboStream;
 
 /**
  * @property int $id
@@ -22,7 +24,8 @@ use Waterhole\Models\Concerns\UsesFormatter;
  * @property ?string $description
  * @property ?string $instructions
  * @property ?array $filters
- * @property ?string $default_layout
+ * @property ?string $layout
+ * @property ?array $layout_config
  * @property bool $sandbox
  * @property bool $answerable
  * @property ?int $posts_reaction_set_id
@@ -49,7 +52,8 @@ class Channel extends Model
 
     protected $casts = [
         'filters' => 'json',
-        'sandbox' => 'bool',
+        'layout_config' => 'json',
+        'ignore' => 'bool',
         'answerable' => 'bool',
     ];
 
@@ -158,7 +162,7 @@ class Channel extends Model
             ->whereHas('userState', fn($query) => $query->where('notifications', 'ignore'))
             ->orWhere(
                 fn($query) => $query
-                    ->where('sandbox', true)
+                    ->where('ignore', true)
                     ->whereDoesntHave(
                         'userState',
                         fn($query) => $query->whereNotNull('notifications'),
@@ -169,6 +173,14 @@ class Channel extends Model
     public function isIgnored(): bool
     {
         return $this->userState?->notifications === 'ignore' ||
-            (!$this->userState?->notifications && $this->sandbox);
+            (!$this->userState?->notifications && $this->ignore);
+    }
+
+    /**
+     * Get the Turbo Streams that should be sent when this post is updated.
+     */
+    public function streamUpdated(): array
+    {
+        return [TurboStream::replace(new PostFeedChannel($this))];
     }
 }

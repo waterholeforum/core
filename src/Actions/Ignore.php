@@ -18,7 +18,7 @@ class Ignore extends Action
     public function shouldRender(Collection $models): bool
     {
         return !Waterhole::isCpRoute() &&
-            $models->some(fn($item) => !$item->userState->notifications);
+            $models->some(fn($item) => $item->userState->notifications !== 'ignore');
     }
 
     public function label(Collection $models): string
@@ -28,7 +28,7 @@ class Ignore extends Action
 
     public function icon(Collection $models): string
     {
-        return 'tabler-volume-3';
+        return 'tabler-eye-off';
     }
 
     public function run(Collection $models)

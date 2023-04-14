@@ -6,7 +6,7 @@ use Illuminate\View\Component;
 use Waterhole\Models\Post;
 use Waterhole\View\Components\Concerns\Streamable;
 
-class PostActions extends Component
+class PostSidebar extends Component
 {
     use Streamable;
 
@@ -16,6 +16,6 @@ class PostActions extends Component
 
     public function render()
     {
-        return $this->view('waterhole::components.post-actions');
+        return $this->view('waterhole::components.post-sidebar');
     }
 }

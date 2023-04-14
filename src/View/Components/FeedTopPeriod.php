@@ -13,7 +13,7 @@ class FeedTopPeriod extends Component
 
     public function __construct(public Feed $feed)
     {
-        $filter = $feed->currentFilter();
+        $filter = $feed->currentFilter;
 
         if ($filter instanceof Top) {
             $this->periods = $filter::PERIODS;

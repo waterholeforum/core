@@ -1,14 +1,8 @@
 .choice {
   cursor: pointer;
-  padding-left: calc(1.2em + var(--space-xs));
   display: flex;
   align-items: flex-start;
-  gap: var(--space-xs);
-
-  > input[type='checkbox'],
-  > input[type='radio'] {
-    margin-left: calc(-1.2em - var(--space-xs));
-  }
+  gap: var(--space-sm);
 
   > :disabled + * {
     color: var(--color-muted);
@@ -25,6 +19,7 @@ input[type='radio'] {
   color: currentColor;
   width: 1.2em;
   height: 1.2em;
+  flex-shrink: 0;
   border: 2px solid var(--color-stroke);
   vertical-align: -0.2em;
   position: relative;

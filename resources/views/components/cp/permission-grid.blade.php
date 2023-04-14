@@ -1,4 +1,4 @@
-<div class="table-container" tabindex="0">
+<div class="table-container card" tabindex="0">
     <table
         class="table permission-grid"
         data-controller="permission-grid"

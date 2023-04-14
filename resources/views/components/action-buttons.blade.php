@@ -3,9 +3,9 @@
     <input type="hidden" name="actionable" value="{{ $actionable }}">
     <input type="hidden" name="id[]" value="{{ $for->getKey() }}">
 
-    @php $menu = $actions->count() > $limit @endphp
+    @php $menu = $limit !== null && $actions->count() > $limit @endphp
 
-    @foreach ($menu ? $actions->take($limit - 1) : $actions as $action)
+    @foreach ($menu ? $actions->take($limit ? $limit - 1 : 0) : $actions as $action)
         {{ $action->render(collect([$for]), $buttonAttributes, $tooltips) }}
     @endforeach
 
@@ -20,7 +20,7 @@
                 </button>
             @endif
             <ui-menu class="menu" hidden>
-                @foreach ($actions->skip($limit - 1) as $action)
+                @foreach ($actions->skip($limit ? $limit - 1 : 0) as $action)
                     {{ $action->render(collect([$for]), ['class' => 'menu-item', 'role' => 'menuitem']) }}
                 @endforeach
             </ui-menu>

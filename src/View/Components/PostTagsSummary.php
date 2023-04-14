@@ -25,15 +25,13 @@ class PostTagsSummary extends Component
     {
         return <<<'blade'
             <div class="post-tags-summary row gap-xxs">
-                <span class="tags row gap-xxs">
-                    @foreach ($tags->take($limit) as $tag)
-                        <a
-                            href="{{ route('waterhole.channels.show', ['channel' => $post->channel]) . '?'. Arr::query(['tags' => [$tag->taxonomy->id => $tag->id]]) }}"
-                            class="tag"
-                            data-tag-id="{{ $tag->id }}"
-                        >{{ Waterhole\emojify($tag->name) }}</a>
-                    @endforeach
-                </span>
+                @foreach ($tags->take($limit) as $tag)
+                    <a
+                        href="{{ route('waterhole.channels.show', ['channel' => $post->channel]) . '?'. Arr::query(['tags' => [$tag->taxonomy->id => $tag->id]]) }}"
+                        class="tag"
+                        data-tag-id="{{ $tag->id }}"
+                    >{{ Waterhole\emojify($tag->name) }}</a>
+                @endforeach
                 @if ($tags->count() > $limit)
                     <span class="cursor-default">
                         +{{ $tags->count() - $limit }}

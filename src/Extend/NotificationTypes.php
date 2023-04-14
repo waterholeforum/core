@@ -15,6 +15,6 @@ abstract class NotificationTypes
     use UnorderedList;
 }
 
-NotificationTypes::add('new-post', NewPost::class);
-NotificationTypes::add('new-comment', NewComment::class);
-NotificationTypes::add('mention', Mention::class);
+NotificationTypes::add(NewPost::class, 'new-post');
+NotificationTypes::add(NewComment::class, 'new-comment');
+NotificationTypes::add(Mention::class, 'mention');

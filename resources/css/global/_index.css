@@ -1,7 +1,6 @@
 // When the sidebar becomes horizontal, move the create post button to the right side.
 @media (--md-down) {
-  .index-create-post {
-    order: 1;
+  .index-sidebar .index-create-post {
     margin-left: auto;
   }
 }

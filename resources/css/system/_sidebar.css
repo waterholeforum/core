@@ -1,13 +1,17 @@
+:root {
+  --sidebar-width: 25ch;
+}
+
 .with-sidebar {
   display: flex;
   align-items: flex-start;
+  justify-content: center;
   gap: var(--space-gutter);
 }
 
 .with-sidebar > :not(.sidebar) {
   flex-grow: 999;
   min-width: 0;
-  margin-inline: auto;
 }
 
 .sidebar {
@@ -22,7 +26,7 @@
   }
 
   .with-sidebar > :not(.sidebar) {
-    width: 100%;
+    min-width: 100%;
   }
 
   .sidebar {
@@ -37,27 +41,22 @@
     padding-inline: var(--space-gutter);
     background: var(--color-bg);
     width: calc(100% + 2 * var(--space-gutter)) !important;
-    padding-block: var(--space-md);
+    padding-block: var(--space-sm);
     flex-wrap: nowrap !important;
     flex-direction: row !important;
+    flex-basis: auto !important;
     align-items: center;
+    z-index: var(--z-index-header);
 
     &.is-stuck {
       box-shadow: var(--shadow-sm);
-    }
-
-    // When there are multiple sticky sidebars with protruding content (like
-    // popups), bring the "active" one to the front.
-    &:hover,
-    &:focus-within {
-      z-index: 1;
     }
   }
 }
 
 @media (--lg-up) {
   .sidebar {
-    width: 25ch;
+    flex-basis: var(--sidebar-width);
     flex-shrink: 0;
     flex-direction: column;
   }
@@ -65,9 +64,9 @@
   .sidebar--sticky {
     position: sticky;
     top: var(--header-height);
-    margin-block: calc(-1 * var(--space-lg));
-    padding-block: var(--space-lg);
-    max-height: calc(100vh - var(--header-height) - 2 * var(--space-lg));
+    margin-block: calc(-1 * var(--space-gutter));
+    padding-block: var(--space-gutter);
+    max-height: calc(100vh - var(--header-height) - 2 * var(--space-gutter));
     overflow: auto;
     box-sizing: content-box;
 
@@ -81,11 +80,5 @@
 
   .sidebar__collapsed {
     display: none;
-  }
-}
-
-@media (--xl-up) {
-  .with-sidebar {
-    gap: var(--space-xxl);
   }
 }

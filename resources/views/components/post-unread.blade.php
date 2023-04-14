@@ -1,7 +1,7 @@
 <x-waterhole::action-form
     :for="$post"
     :action="Waterhole\Actions\MarkAsRead::class"
-    class="post-summary__unread"
+    class="post-list-item__unread"
 >
     <button type="submit" class="badge clickable @if ($isNotifiable) bg-activity @endif">
         @if ($isNotifiable)

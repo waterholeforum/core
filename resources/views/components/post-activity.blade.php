@@ -4,7 +4,7 @@
             {{ Waterhole\username($post->lastComment->user) }}
         </x-waterhole::user-link>
         {{ __('waterhole::forum.post-activity-replied') }}
-        <x-waterhole::time-ago :datetime="$post->last_activity_at"/>
+        <x-waterhole::time-ago :datetime="$post->last_activity_at" format="micro"/>
     </span>
 @elseif ($post->user)
     <span>
@@ -12,6 +12,6 @@
             {{ Waterhole\username($post->user) }}
         </x-waterhole::user-link>
         {{ __('waterhole::forum.post-activity-posted') }}
-        <x-waterhole::time-ago :datetime="$post->created_at"/>
+        <x-waterhole::time-ago :datetime="$post->created_at" format="micro"/>
     </span>
 @endif

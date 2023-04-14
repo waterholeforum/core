@@ -27,7 +27,8 @@ class ChannelTaxonomies extends Field
     {
         return <<<'blade'
             <div role="group" class="field">
-                <div class="field__label">
+                <div class="field__label with-icon">
+                    @icon('tabler-tags', ['class' => 'text-md'])
                     {{ __('waterhole::cp.channel-taxonomies-label') }}
                 </div>
 

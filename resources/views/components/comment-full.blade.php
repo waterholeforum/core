@@ -61,19 +61,21 @@
         </header>
 
         <div
-            class="comment__body content @if ($truncate) content--compact @endif"
-            data-controller="quotable"
+            class="comment__body content @if ($truncate) content--compact truncated @endif"
+            data-controller="quotable @if ($truncate) truncated @endif"
         >
+            {{ Waterhole\emojify($comment->body_html) }}
+
             @if ($truncate)
-                <x-waterhole::truncate :html="$comment->body_html">
-                    <p>
-                        <a href="{{ $comment->post_url }}" class="weight-bold">
-                            {{ __('waterhole::forum.post-read-more-link') }}
-                        </a>
-                    </p>
-                </x-waterhole::truncate>
-            @else
-                {{ Waterhole\emojify($comment->body_html) }}
+                <button
+                    type="button"
+                    class="truncated__expander link weight-bold"
+                    hidden
+                    data-truncated-target="expander"
+                    data-action="truncated#expand"
+                >
+                    {{ __('waterhole::system.show-more-button') }}
+                </button>
             @endif
 
             @can('post.comment', $comment->post)
@@ -117,10 +119,10 @@
                 <ol
                     role="list"
                     tabindex="-1"
-                    class="comment__replies comment-list card text-xs"
+                    class="comment__replies comment-list card bg-fill text-xs"
                 >
                     @foreach ($comment->children as $child)
-                        <li>
+                        <li class="card__row">
                             <x-waterhole::comment-frame :comment="$child"/>
                         </li>
                     @endforeach

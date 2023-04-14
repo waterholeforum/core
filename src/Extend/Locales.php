@@ -12,4 +12,4 @@ abstract class Locales
     use UnorderedList;
 }
 
-Locales::add('en', 'English');
+Locales::add('English', 'en');

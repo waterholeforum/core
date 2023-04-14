@@ -22,9 +22,9 @@
         <div class="stack gap-lg" data-controller="slugger">
             <x-waterhole::validation-errors/>
 
-            <div class="stack gap-md">
+            <ui-accordion class="stack gap-md">
                 @components($form->fields())
-            </div>
+            </ui-accordion>
 
             <div class="row gap-xs wrap">
                 <button

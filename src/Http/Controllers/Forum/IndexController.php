@@ -43,8 +43,8 @@ class IndexController extends Controller
 
         $feed = new PostFeed(
             request: $request,
-            filters: $this->addFilters(resolve_all(config('waterhole.forum.post_filters', []))),
-            defaultLayout: config('waterhole.forum.default_post_layout'),
+            filters: $this->resolveFilters(config('waterhole.forum.post_filters', [])),
+            layout: resolve(config('waterhole.forum.post_layout')),
             scope: $scope,
         );
 
@@ -55,11 +55,10 @@ class IndexController extends Controller
     {
         $feed = new PostFeed(
             request: $request,
-            filters: $this->addFilters(
-                resolve_all($channel->filters ?: config('waterhole.forum.post_filters', [])),
+            filters: $this->resolveFilters(
+                $channel->filters ?: config('waterhole.forum.post_filters', []),
             ),
-            defaultLayout: $channel->default_layout ?:
-            config('waterhole.forum.default_post_layout'),
+            layout: resolve($channel->layout ?: config('waterhole.forum.post_layout')),
             scope: function (Builder $query) use ($channel) {
                 $query->where('posts.channel_id', $channel->id);
 
@@ -79,8 +78,10 @@ class IndexController extends Controller
         return view('waterhole::forum.page', compact('page'));
     }
 
-    private function addFilters(array $filters)
+    private function resolveFilters(array $filters)
     {
+        $filters = resolve_all($filters);
+
         if (Auth::user()) {
             $filters[] = new Following();
             $filters[] = new Ignoring();

@@ -9,8 +9,6 @@
         <div class="row gap-xs wrap">
             <x-waterhole::feed-filters :feed="$posts"/>
             <x-waterhole::feed-top-period :feed="$posts"/>
-            <div class="grow"></div>
-            <x-waterhole::post-feed-controls :feed="$posts"/>
         </div>
 
         @php
@@ -18,16 +16,16 @@
         @endphp
 
         @if ($items->isNotEmpty())
-            <x-waterhole::infinite-scroll :paginator="$items">
-                <div class="post-{{ $posts->currentLayout() }}">
+            <div class="{{ $posts->layout->wrapperClass() }}">
+                <x-waterhole::infinite-scroll :paginator="$items">
                     @foreach ($items as $post)
                         <x-dynamic-component
-                            :component="'waterhole::post-'.$posts->currentLayout().'-item'"
+                            :component="$posts->layout->itemComponent()"
                             :post="$post"
                         />
                     @endforeach
-                </div>
-            </x-waterhole::infinite-scroll>
+                </x-waterhole::infinite-scroll>
+            </div>
         @else
             <div class="placeholder">
                 @icon('tabler-messages', ['class' => 'placeholder__icon'])

@@ -8,23 +8,28 @@ import { StreamElement } from '@hotwired/turbo/dist/types/elements';
  * @internal
  */
 export default class extends Controller {
-    static targets = ['post'];
+    static targets = ['post', 'currentPage'];
 
     static values = {
         id: Number,
     };
 
     declare readonly postTarget: HTMLElement;
+    declare readonly currentPageTarget: HTMLElement;
     declare readonly idValue: number;
 
     connect() {
         document.addEventListener('turbo:before-stream-render', this.beforeStreamRender);
         document.addEventListener('turbo:frame-render', this.showPostOnFirstPage);
+
+        window.addEventListener('scroll', this.onScroll);
     }
 
     disconnect() {
         document.removeEventListener('turbo:before-stream-render', this.beforeStreamRender);
         document.removeEventListener('turbo:frame-render', this.showPostOnFirstPage);
+
+        window.removeEventListener('scroll', this.onScroll);
     }
 
     private showPostOnFirstPage = () => {
@@ -51,5 +56,11 @@ export default class extends Controller {
             );
             e.preventDefault();
         }
+    };
+
+    private onScroll = () => {
+        this.currentPageTarget.textContent =
+            this.element.querySelector('.comments-pagination [aria-current="page"]')?.textContent ||
+            '1';
     };
 }

@@ -27,13 +27,13 @@ class TagsFilter extends Component
             <div class="row gap-xxs wrap">
                 @foreach ($channel->taxonomies->load('tags') as $taxonomy)
                     @if ($id = request("tags.$taxonomy->id"))
-                        <a href="{{ $href($taxonomy, null) }}" class="btn btn--sm is-active">
+                        <a href="{{ $href($taxonomy, null) }}" class="btn is-active">
                             {{ $taxonomy->tags->find($id)?->name }}
                             @icon('tabler-x')
                         </a>
                     @else
                         <x-waterhole::selector
-                            button-class="btn btn--sm"
+                            button-class="btn btn--transparent"
                             placement="bottom-end"
                             :options="$taxonomy->tags->modelKeys()"
                             :placeholder="$taxonomy->translated_name"

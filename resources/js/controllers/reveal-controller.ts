@@ -14,9 +14,12 @@ export default class extends Controller {
 
     declare readonly thenTargets: HTMLElement[];
 
-    ifTargetConnected(el: HTMLElement) {
+    ifTargetConnected(el: HTMLInputElement) {
         el.addEventListener('change', this.toggle);
-        el.dispatchEvent(new Event('change'));
+
+        if (el.type !== 'radio' || el.checked) {
+            el.dispatchEvent(new Event('change'));
+        }
     }
 
     ifTargetDisconnected(el: HTMLElement) {

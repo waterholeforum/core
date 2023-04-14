@@ -1,28 +1,33 @@
-@php
-    $filters = $feed->filters();
-@endphp
+<div {{ $attributes->class('row') }}>
+    <div class="tabs hide-sm">
+        @components($firstComponents->all())
 
-<div {{ $attributes->class('tabs') }}>
-    @foreach ($filters->slice(0, $limit) as $filter)
-        <a
-            href="{{ $url($filter) }}"
-            class="tab"
-            @if ($feed->currentFilter() === $filter) aria-current="page" @endif
-        >{{ $filter->label() }}</a>
-    @endforeach
+        @if (count($overflowComponents))
+            <x-waterhole::selector
+                :value="$activeComponent"
+                :options="$overflowComponents->all()"
+                :label="fn($component) => $component->label"
+                :href="fn($component) => $component->href"
+                button-class="tab"
+                placement="bottom-start"
+            >
+                <x-slot name="button">
+                    @icon('tabler-dots', ['aria-label' => __('waterhole::system.more-button')])
+                </x-slot>
+            </x-waterhole::selector>
+        @endif
+    </div>
 
-    @if ($filters->count() > $limit)
+    <div class="tabs hide-md-up">
         <x-waterhole::selector
-            :value="$feed->currentFilter()"
-            :options="$filters->slice($limit)->all()"
-            :label="fn($filter) => $filter->label()"
-            :href="$url"
+            class="hide-md-up"
+            :value="$activeComponent"
+            :options="$components->all()"
+            :label="fn($component) => $component->label"
+            :href="fn($component) => $component->href"
             button-class="tab"
             placement="bottom-start"
-        >
-            <x-slot name="button">
-                @icon('tabler-dots', ['aria-label' => __('waterhole::system.more-button')])
-            </x-slot>
-        </x-waterhole::selector>
-    @endif
+        />
+    </div>
 </div>
+

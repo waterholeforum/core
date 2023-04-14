@@ -64,13 +64,11 @@ export default class extends Controller<HTMLElement> {
             window.scroll(0, window.scrollY + el.getBoundingClientRect().bottom - startBottom);
         };
 
-        el.classList.add('is-resizing');
         document.addEventListener('mousemove', move);
         document.addEventListener(
             'mouseup',
             () => {
                 document.removeEventListener('mousemove', move);
-                el.classList.remove('is-resizing');
             },
             { once: true }
         );

@@ -1,5 +1,6 @@
 import '@github/text-expander-element';
 import {
+    AccordionElement,
     AlertsElement,
     MenuElement,
     ModalElement,
@@ -8,6 +9,7 @@ import {
     TooltipElement,
 } from 'inclusive-elements';
 
+window.customElements.define('ui-accordion', AccordionElement);
 window.customElements.define('ui-alerts', AlertsElement);
 window.customElements.define('ui-menu', MenuElement);
 window.customElements.define('ui-modal', ModalElement);

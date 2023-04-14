@@ -1,5 +1,6 @@
 .composer {
-  --height-transition-duration: 0.2s;
+  --height-transition-duration: 0s;
+
   border-radius: var(--radius);
   background: var(--color-bg);
   transition: box-shadow 0.2s, border 0.2s, height var(--height-transition-duration), bottom 0.2s;
@@ -7,7 +8,6 @@
 
   // The composer is "static" (cannot be opened/closed) on a standalone comment page
   &.is-static {
-    --height-transition-duration: 0s;
     position: static;
     height: 70vh !important;
 
@@ -18,6 +18,7 @@
   }
 
   &:not(.is-open) {
+    --height-transition-duration: 0.2s;
     height: 4.75em !important; // override user resizing
     bottom: -4.75em;
 
@@ -27,6 +28,7 @@
   }
 
   &.is-open {
+    --color-bg: var(--palette-surface);
     --focus-shadow: 0 0 0 transparent;
     border: 1px solid var(--color-stroke);
     bottom: calc(-1 * var(--radius));
@@ -43,22 +45,18 @@
       display: none;
     }
   }
-
-  &.is-resizing {
-    --height-transition-duration: 0s;
-  }
-
-  &.is-stuck {
-    border-color: transparent;
-    box-shadow: var(--focus-shadow), var(--shadow-md);
-    padding-bottom: var(--radius);
-    z-index: var(--z-index-overlay);
-  }
 }
 
-@media (--md-up) {
+@media (--lg-up) {
   .composer {
     position: sticky;
+
+    &.is-stuck {
+      border-color: transparent;
+      box-shadow: var(--focus-shadow), var(--shadow-md);
+      padding-bottom: var(--radius);
+      z-index: var(--z-index-overlay);
+    }
   }
 }
 
@@ -100,6 +98,18 @@
   top: -5px;
   height: 20px;
   cursor: ns-resize;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20%;
+    height: 5px;
+    border-radius: var(--radius);
+    background: var(--color-fill);
+  }
 }
 
 .composer__toolbar {

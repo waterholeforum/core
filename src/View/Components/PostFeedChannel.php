@@ -3,12 +3,14 @@
 namespace Waterhole\View\Components;
 
 use Illuminate\View\Component;
-use Waterhole\Feed\PostFeed;
 use Waterhole\Models\Channel;
+use Waterhole\View\Components\Concerns\Streamable;
 
 class PostFeedChannel extends Component
 {
-    public function __construct(public PostFeed $feed, public ?Channel $channel = null)
+    use Streamable;
+
+    public function __construct(public ?Channel $channel = null)
     {
     }
 

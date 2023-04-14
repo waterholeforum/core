@@ -1,4 +1,6 @@
 .menu {
+  --color-bg: var(--palette-surface);
+
   display: block;
   background: var(--color-bg);
   box-shadow: var(--shadow-md);

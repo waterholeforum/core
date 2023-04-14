@@ -17,7 +17,7 @@ class PostFeed extends Component
     ) {
         $this->channel = $channel?->exists ? $channel : null;
 
-        $filter = $feed->currentFilter();
+        $filter = $feed->currentFilter;
         $this->showLastVisit = $filter instanceof Newest || $filter instanceof Latest;
     }
 

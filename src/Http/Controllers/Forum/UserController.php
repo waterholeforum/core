@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Waterhole\Feed\CommentFeed;
 use Waterhole\Feed\PostFeed;
 use Waterhole\Http\Controllers\Controller;
+use Waterhole\Layouts;
 use Waterhole\Models\User;
 
 use function Waterhole\resolve_all;
@@ -25,7 +26,7 @@ class UserController extends Controller
         $posts = new PostFeed(
             request: $request,
             filters: resolve_all(config('waterhole.users.post_filters', [])),
-            defaultLayout: 'cards',
+            layout: resolve(Layouts\CardsLayout::class),
             scope: fn($query) => $query->whereBelongsTo($user),
         );
 

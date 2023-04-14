@@ -3,10 +3,10 @@
 namespace Waterhole\Translation;
 
 use Countable;
+use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Contracts\Translation\Loader;
 use Illuminate\Contracts\Translation\Translator as TranslatorContract;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Translation\MessageSelector;
 use Illuminate\Translation\Translator as BaseTranslator;
 use Major\Fluent\Bundle\FluentBundle;
@@ -23,6 +23,7 @@ use Major\Fluent\Parser\FluentParser;
  *   overridden by the consumer.
  * - Adding functions to FluentBundle instances.
  * - Accept an array of keys and use the first one that exists.
+ * - Cache parsed Fluent bundles.
  *
  * @link https://github.com/jrmajor/laravel-fluent/pull/2
  *
@@ -42,6 +43,7 @@ final class FluentTranslator implements TranslatorContract
         protected string $fallback,
         /** @var array{strict: bool, useIsolating: bool, allowOverrides: bool} */
         protected array $bundleOptions,
+        protected ?Repository $cache = null,
         protected array $functions = [],
     ) {
     }
@@ -117,14 +119,17 @@ final class FluentTranslator implements TranslatorContract
     {
         $full = "{$path}/{$locale}/{$group}.ftl";
 
-        $body = Cache::rememberForever("fluent:$full", function () use ($locale, $full) {
-            $parser = new FluentParser(strict: true);
+        $getBody = function () use ($locale, $full) {
             if (!$this->files->exists($full)) {
                 return null;
             }
-            $resource = $parser->parse($this->files->get($full));
-            return $resource->body;
-        });
+
+            $parser = new FluentParser(strict: true);
+
+            return $parser->parse($this->files->get($full))->body;
+        };
+
+        $body = $this->cache ? $this->cache->rememberForever("fluent:$full", $getBody) : $getBody();
 
         if (!$body) {
             return false;

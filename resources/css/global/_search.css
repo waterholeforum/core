@@ -1,4 +1,4 @@
-.search-results .post-summary__title a:visited {
+.search-results .post-list-item__title a:visited {
   &,
   mark {
     color: var(--color-muted);
