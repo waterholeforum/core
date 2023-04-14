@@ -91,9 +91,8 @@
 
 :root {
   // Shadows
-  --shadow-ring: 0 0 0 1px hsl(var(--palette-muted-hsl) / 0.1);
-  --shadow-sm: 0 1px 4px hsl(var(--palette-muted-hsl) / 0.1);
-  --shadow-md: var(--shadow-ring), 0 5px 15px hsl(var(--palette-muted-hsl) / 0.2);
+  --shadow-sm: 0 1px 4px var(--palette-fill);
+  --shadow-md: 0 0 0 1px var(--palette-fill), 0 5px 15px var(--palette-stroke);
 
   // Overlays
   --color-overlay: rgb(0 0 0 / 0.5);

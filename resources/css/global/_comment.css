@@ -9,9 +9,11 @@
     padding-left: 0;
   }
 
-  .attribution__info {
-    display: inline;
-    margin-left: var(--space-xxs);
+  @media (--md-up) {
+    .attribution__info {
+      display: inline;
+      margin-left: var(--space-xxs);
+    }
   }
 
   &.is-highlighted,
