@@ -21,11 +21,12 @@ class ChannelReactions extends Field
                     @icon('tabler-mood-smile', ['class' => 'text-md'])
                     {{ __('waterhole::cp.channel-reactions-label') }}
                 </div>
-                <div class="row gap-sm">
+
+                <div class="stack gap-md">
                     <x-waterhole::field
                         name="posts_reaction_set_id"
                         :label="__('waterhole::cp.channel-reactions-posts-label')"
-                        class="grow color-muted"
+                        class="grow color-muted align-center"
                     >
                         @php $id = $component->id @endphp
                         <x-waterhole::reaction-set-picker
@@ -39,7 +40,7 @@ class ChannelReactions extends Field
                     <x-waterhole::field
                         name="comments_reaction_set_id"
                         :label="__('waterhole::cp.channel-reactions-comments-label')"
-                        class="grow color-muted"
+                        class="grow color-muted align-center"
                     >
                         @php $id = $component->id @endphp
                         <x-waterhole::reaction-set-picker
