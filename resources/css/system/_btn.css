@@ -45,7 +45,7 @@
 .btn--sm {
   --control-height: var(--control-height-small);
   padding: 0 calc(0.3 * var(--control-height-small));
-  font-size: var(--text-xs);
+  font-size: 87.5%;
 }
 
 .btn--narrow {

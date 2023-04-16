@@ -25,7 +25,7 @@
             @endcan
         </div>
 
-        <div class="row gap-xs">
+        <div class="row gap-xs text-md">
             @components(Waterhole\Extend\PostFooter::build(), compact('post'))
         </div>
 
