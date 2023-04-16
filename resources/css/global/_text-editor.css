@@ -5,8 +5,8 @@
 }
 
 .text-editor__toolbar {
-  padding: var(--space-xxs);
-  padding-left: var(--space-xs);
+  margin: var(--space-xxs);
+  margin-bottom: 0;
 
   .is-previewing & {
     z-index: 1;

@@ -5,7 +5,10 @@
     data-text-editor-upload-url-value="{{ route('waterhole.upload') }}"
     {{ $attributes->class('input text-editor stack overlay-container') }}
 >
-    <ui-toolbar class="row text-editor__toolbar js-only text-xxs scrollable-x">
+    <ui-toolbar
+        class="text-editor__toolbar row js-only text-xxs scrollable-x"
+        data-controller="watch-scroll"
+    >
         @components(Waterhole\Extend\TextEditor::build(), compact('id'))
 
         <button

@@ -83,7 +83,7 @@
 
                             <div
                                 class="scrollable-y stack comments-pagination__pages"
-                                data-controller="scrollspy"
+                                data-controller="scrollspy watch-scroll"
                             >
                                 @for ($page = 1; $page <= $comments->lastPage(); $page++)
                                     <a
