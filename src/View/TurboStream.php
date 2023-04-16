@@ -41,33 +41,33 @@ abstract class TurboStream
     /**
      * Make a Turbo Stream to append a component to a target.
      */
-    public static function append(Component $component, string $target): string
+    public static function append(Component $component, string $targets): string
     {
-        return static::stream($component, 'append', compact('target'));
+        return static::stream($component, 'append', compact('targets'));
     }
 
     /**
      * Make a Turbo Stream to prepend a component to a target.
      */
-    public static function prepend(Component $component, string $target): string
+    public static function prepend(Component $component, string $targets): string
     {
-        return static::stream($component, 'prepend', compact('target'));
+        return static::stream($component, 'prepend', compact('targets'));
     }
 
     /**
      * Make a Turbo Stream to insert a component before a target.
      */
-    public static function before(Component $component, string $target): string
+    public static function before(Component $component, string $targets): string
     {
-        return static::stream($component, 'before', compact('target'));
+        return static::stream($component, 'before', compact('targets'));
     }
 
     /**
      * Make a Turbo Stream to insert a component after a target.
      */
-    public static function after(Component $component, string $target): string
+    public static function after(Component $component, string $targets): string
     {
-        return static::stream($component, 'after', compact('target'));
+        return static::stream($component, 'after', compact('targets'));
     }
 
     private static function stream(Component $component, string $action, array $attributes): string

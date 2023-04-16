@@ -25,7 +25,7 @@ class NotificationReceived implements ShouldBroadcast, TransactionalEvent
     {
         return [
             'streams' => implode([
-                TurboStream::append(new NotificationAlert($this->notification), 'alerts'),
+                TurboStream::append(new NotificationAlert($this->notification), '#alerts'),
                 TurboStream::replace(new NotificationsBadge($this->notification->notifiable)),
             ]),
         ];

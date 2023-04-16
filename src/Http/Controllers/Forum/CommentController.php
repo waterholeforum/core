@@ -118,7 +118,10 @@ class CommentController extends Controller
         // the post has been followed, refresh the post controls.
         if ($request->wantsTurboStream()) {
             $streams = [
-                TurboStream::before(new CommentFrame($comment), 'bottom'),
+                TurboStream::append(
+                    (new CommentFrame($comment))->withAttributes(['class' => 'card__row']),
+                    '.comment-list',
+                ),
                 TurboStream::replace(new Composer($post)),
             ];
 

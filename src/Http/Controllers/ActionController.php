@@ -71,7 +71,7 @@ final class ActionController extends Controller
                 if ($message = session()->get($type)) {
                     $streams[] = TurboStream::append(
                         new Alert(type: $type, message: $message),
-                        'alerts',
+                        '#alerts',
                     );
                 }
             }

@@ -34,9 +34,11 @@ class NewComment implements ShouldBroadcast, TransactionalEvent
     public function broadcastWith(): array
     {
         return [
-            'streams' => TurboStream::before(
-                new CommentFrame($this->comment, lazy: true),
-                'bottom',
+            'streams' => TurboStream::append(
+                (new CommentFrame($this->comment, lazy: true))->withAttributes([
+                    'class' => 'card__row',
+                ]),
+                '.comment-list',
             ),
         ];
     }

@@ -28,7 +28,7 @@ class TagController
 
         if ($request->wantsTurboStream()) {
             return TurboResponseFactory::makeStream(
-                TurboStream::before(new TagRow($tag), 'tag-list-end'),
+                TurboStream::before(new TagRow($tag), '#tag-list-end'),
             );
         }
 
