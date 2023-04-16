@@ -42,6 +42,6 @@
     </div>
 
     <div class="post-list-item__controls hide-sm">
-        <x-waterhole::action-menu :for="$post"/>
+        <x-waterhole::action-menu :for="$post" placement="bottom-end"/>
     </div>
 </article>

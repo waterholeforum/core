@@ -19,7 +19,7 @@
             </h3>
         </div>
 
-        <x-waterhole::action-menu :for="$post"/>
+        <x-waterhole::action-menu :for="$post" placement="bottom-end"/>
     </header>
 
     <div
