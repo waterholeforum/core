@@ -1,6 +1,7 @@
 import { Controller } from '@hotwired/stimulus';
 import { renderStreamMessage } from '@hotwired/turbo';
 import { StreamElement } from '@hotwired/turbo/dist/types/elements';
+import { getHeaderHeight } from '../utils';
 
 /**
  * Controller for the post page.
@@ -8,7 +9,7 @@ import { StreamElement } from '@hotwired/turbo/dist/types/elements';
  * @internal
  */
 export default class extends Controller {
-    static targets = ['post', 'currentPage'];
+    static targets = ['post', 'currentPage', 'commentsLink', 'commentsPagination'];
 
     static values = {
         id: Number,
@@ -16,13 +17,18 @@ export default class extends Controller {
 
     declare readonly postTarget: HTMLElement;
     declare readonly currentPageTarget: HTMLElement;
+    declare readonly hasCommentsLinkTarget: boolean;
+    declare readonly commentsLinkTarget: HTMLElement;
+    declare readonly hasCommentsPaginationTarget: boolean;
+    declare readonly commentsPaginationTarget: HTMLElement;
     declare readonly idValue: number;
 
     connect() {
         document.addEventListener('turbo:before-stream-render', this.beforeStreamRender);
         document.addEventListener('turbo:frame-render', this.showPostOnFirstPage);
 
-        window.addEventListener('scroll', this.onScroll);
+        window.addEventListener('scroll', this.onScroll, { passive: true });
+        this.onScroll();
     }
 
     disconnect() {
@@ -62,5 +68,11 @@ export default class extends Controller {
         this.currentPageTarget.textContent =
             this.element.querySelector('.comments-pagination [aria-current="page"]')?.textContent ||
             '1';
+
+        if (this.hasCommentsLinkTarget && this.hasCommentsPaginationTarget) {
+            this.commentsLinkTarget.hidden =
+                this.postTarget.getBoundingClientRect().bottom < getHeaderHeight() + 10;
+            this.commentsPaginationTarget.hidden = !this.commentsLinkTarget.hidden;
+        }
     };
 }

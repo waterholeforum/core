@@ -22,11 +22,9 @@
 
 .with-icon {
   display: inline-flex;
-  align-items: baseline;
+  align-items: center;
 
   > .icon {
-    align-self: center;
-    margin-top: -1px;
     margin-right: 0.2em;
 
     &:not(:first-child) {

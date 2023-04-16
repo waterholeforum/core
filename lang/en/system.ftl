@@ -51,6 +51,7 @@ pagination-previous-link = Previous
 pagination-next-link = Next
 pagination-last-link = Last
 load-more-button = Load More
+page-number-prefix = Page
 page-number-heading = Page { $number }
 
 ## Theme Switcher

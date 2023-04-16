@@ -64,21 +64,34 @@
             <x-waterhole::post-sidebar :post="$post"/>
 
             @if ($comments->total())
-                <ui-popup class="collapsible-nav stack">
-                    <button class="btn">
-                        Page
+                <a
+                    href="#comments"
+                    class="with-icon color-muted text-xs weight-medium"
+                    data-post-page-target="commentsLink"
+                    hidden
+                >
+                    @icon('tabler-message-circle-2')
+                    {{ __('waterhole::forum.post-comments-link', ['count' => $comments->total()]) }}
+                </a>
+
+                <ui-popup
+                    class="collapsible-nav stack"
+                    data-post-page-target="commentsPagination"
+                >
+                    <button class="btn btn--transparent">
+                        {{ __('waterhole::forum.page-number-prefix') }}
                         <span data-post-page-target="currentPage">{{ $comments->currentPage() }}</span>
                         @icon('tabler-selector')
                     </button>
 
                     <div hidden class="drawer drawer--right">
-                        <nav class="comments-pagination tabs tabs--vertical">
+                        <nav class="comments-pagination tabs tabs--vertical gap-sm">
                             <a
                                 class="tab with-icon"
                                 href="{{ $post->url }}#top"
                             >
-                                @icon('tabler-chevrons-up', ['class' => 'text-xs icon--narrow'])
-                                {{ __('waterhole::system.pagination-first-link') }}
+                                @icon('tabler-chevrons-up', ['class' => 'icon--narrow'])
+                                {{ __('waterhole::forum.original-post-link') }}
                             </a>
 
                             <div
@@ -98,7 +111,7 @@
                                 class="tab with-icon"
                                 href="{{ $comments->fragment('bottom')->url($comments->lastPage()) }}"
                             >
-                                @icon('tabler-chevrons-down', ['class' => 'text-xs icon--narrow'])
+                                @icon('tabler-chevrons-down', ['class' => 'icon--narrow'])
                                 {{ __('waterhole::system.pagination-last-link') }}
                             </a>
                         </nav>

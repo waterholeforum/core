@@ -89,6 +89,8 @@ channel-picker-placeholder = Select a Channel
 delete-post-confirm-message = Are you sure you want to delete this post?
 delete-post-success-message = Post deleted.
 
+original-post-link = Original Post
+
 ## Comments
 
 comments-unread-heading = Unread
