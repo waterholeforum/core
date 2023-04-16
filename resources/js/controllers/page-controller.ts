@@ -8,6 +8,7 @@ import { getHeaderHeight } from '../utils';
 export default class extends Controller {
     static targets = ['breadcrumb', 'title'];
 
+    declare readonly hasBreadcrumbTarget: boolean;
     declare readonly breadcrumbTarget: HTMLElement;
 
     declare observer: IntersectionObserver;
@@ -17,6 +18,7 @@ export default class extends Controller {
     initialize() {
         this.observer = new IntersectionObserver(
             (entries) => {
+                if (!this.hasBreadcrumbTarget) return;
                 if (this.hideBreadcrumb) {
                     cancelAnimationFrame(this.hideBreadcrumb);
                 }
@@ -31,6 +33,7 @@ export default class extends Controller {
 
     connect() {
         this.hideBreadcrumb = requestAnimationFrame(() => {
+            if (!this.hasBreadcrumbTarget) return;
             this.breadcrumbTarget.hidden = true;
         });
     }
