@@ -5,7 +5,7 @@
         ->first();
 @endphp
 
-@if ($action && $action->shouldRender(collect([$for])))
+@if ($action)
     {{ $before ?? '' }}
 
     <form
