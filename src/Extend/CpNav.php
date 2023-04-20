@@ -14,7 +14,7 @@ abstract class CpNav
 }
 
 CpNav::add(
-    new NavLink(
+    fn() => new NavLink(
         label: __('waterhole::cp.dashboard-title'),
         icon: 'tabler-report-analytics',
         route: 'waterhole.cp.dashboard',
@@ -24,55 +24,55 @@ CpNav::add(
 );
 
 CpNav::add(
-    new NavLink(
+    fn() => new NavLink(
         label: __('waterhole::cp.structure-title'),
         icon: 'tabler-layout-list',
         route: 'waterhole.cp.structure',
-        active: fn() => request()->routeIs('waterhole.cp.structure*'),
+        active: request()->routeIs('waterhole.cp.structure*'),
     ),
     -90,
     'structure',
 );
 
 CpNav::add(
-    new NavLink(
+    fn() => new NavLink(
         label: __('waterhole::cp.taxonomies-title'),
         icon: 'tabler-tags',
         route: 'waterhole.cp.taxonomies.index',
-        active: fn() => request()->routeIs('waterhole.cp.taxonomies*'),
+        active: request()->routeIs('waterhole.cp.taxonomies*'),
     ),
     -80,
     'taxonomies',
 );
 
 CpNav::add(
-    new NavLink(
+    fn() => new NavLink(
         label: __('waterhole::cp.users-title'),
         icon: 'tabler-user',
         route: 'waterhole.cp.users.index',
-        active: fn() => request()->routeIs('waterhole.cp.users*'),
+        active: request()->routeIs('waterhole.cp.users*'),
     ),
     -70,
     'users',
 );
 
 CpNav::add(
-    new NavLink(
+    fn() => new NavLink(
         label: __('waterhole::cp.groups-title'),
         icon: 'tabler-users',
         route: 'waterhole.cp.groups.index',
-        active: fn() => request()->routeIs('waterhole.cp.groups*'),
+        active: request()->routeIs('waterhole.cp.groups*'),
     ),
     -60,
     'groups',
 );
 
 CpNav::add(
-    new NavLink(
+    fn() => new NavLink(
         label: __('waterhole::cp.reactions-title'),
         icon: 'tabler-mood-smile',
         route: 'waterhole.cp.reaction-sets.index',
-        active: fn() => request()->routeIs('waterhole.cp.reaction*'),
+        active: request()->routeIs('waterhole.cp.reaction*'),
     ),
     -50,
     'reactions',
