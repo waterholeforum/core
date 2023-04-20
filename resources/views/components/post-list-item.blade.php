@@ -29,7 +29,7 @@
                 </div>
             </div>
 
-            <div class="post-list-item__end row wrap-reverse justify-end gap-xs align-center">
+            <div class="post-list-item__end row wrap justify-end gap-xs align-center">
                 @components(Waterhole\Extend\PostListItem::build(), compact('post', 'config'))
             </div>
         </div>
