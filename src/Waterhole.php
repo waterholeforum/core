@@ -3,29 +3,22 @@
 namespace Waterhole;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Request;
 use Waterhole\Models\PermissionCollection;
 
 abstract class Waterhole
 {
     public const VERSION = '0.1.0';
 
-    private static bool $isForumRoute;
-    private static bool $isCpRoute;
-
     public static function isForumRoute(): bool
     {
-        return static::$isForumRoute ??= str_starts_with(
-            request()->path(),
-            config('waterhole.forum.path'),
-        );
+        return str_starts_with(Request::path(), Config::get('waterhole.forum.path'));
     }
 
     public static function isCpRoute(): bool
     {
-        return static::$isCpRoute ??= str_starts_with(
-            request()->path(),
-            config('waterhole.cp.path'),
-        );
+        return str_starts_with(Request::path(), Config::get('waterhole.cp.path'));
     }
 
     public static function isWaterholeRoute(): bool
