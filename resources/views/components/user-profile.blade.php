@@ -30,7 +30,7 @@
                         <div class="content user-profile__bio">{{ Waterhole\emojify($user->bio_html) }}</div>
                     @endif
 
-                    <div class="row gap-sm wrap align-baseline color-muted text-xs user-profile__info">
+                    <div class="row gap-sm wrap align-center color-muted text-xs user-profile__info">
                         @components(Waterhole\Extend\UserInfo::build(), compact('user'))
                     </div>
                 </div>
