@@ -52,7 +52,7 @@
 }
 
 .tabs--vertical {
-  margin-inline: calc(-1 * var(--space-sm));
+  margin-right: 0;
   flex-direction: column;
   flex-wrap: nowrap;
   align-items: stretch;
