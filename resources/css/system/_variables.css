@@ -1,10 +1,12 @@
 :root,
 [data-theme='light'] {
   // Background color
-  //--palette-bg-hsl: 255 0% 98%;
-  //--palette-bg: hsl(252, 38%, 97%);//hsl(var(--palette-bg-hsl));
-  --palette-bg: hsl(250 38% 98%);
-  --palette-surface: #fff;
+  --palette-bg-hsl: 250 38% 98%;
+  --palette-bg: hsl(var(--palette-bg-hsl));
+
+  // Surface color
+  --palette-surface-hsl: 255 100% 100%;
+  --palette-surface: hsl(var(--palette-surface-hsl));
 
   // Text color
   --palette-text-hsl: 0 0% 0%;
@@ -67,8 +69,8 @@
 }
 
 [data-theme='dark'] {
-  --palette-bg: hsl(250 20% 8%);
-  --palette-surface: hsl(250 20% 12%);
+  --palette-bg-hsl: 250 20% 8%;
+  --palette-surface-hsl: 250 20% 12%;
 
   --palette-text-hsl: 250 20% 93%;
   --palette-muted-hsl: 250 20% 60%;
