@@ -79,7 +79,7 @@
                     data-post-page-target="commentsPagination"
                 >
                     <button class="btn btn--transparent">
-                        {{ __('waterhole::forum.page-number-prefix') }}
+                        {{ __('waterhole::system.page-number-prefix') }}
                         <span data-post-page-target="currentPage">{{ $comments->currentPage() }}</span>
                         @icon('tabler-selector')
                     </button>
