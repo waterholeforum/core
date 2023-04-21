@@ -38,13 +38,15 @@
             @foreach (config('waterhole.cp.widgets', []) as $id => $widget)
                 <div
                     style="
-                    --cp-dashboard-widget-width: {{ $widget['width'] ?: 100 }}%;
-                    @isset($widget['height'])
-                        --cp-dashboard-widget-height: {{ $widget['height'] . (is_numeric($widget['height']) ? 'px' : '') }}
-                    @endisset
-                "
+                        @isset($widget['width'])
+                            --cp-dashboard-widget-width: {{ is_numeric($widget['width']) ? $widget['width'] * 100 . '%' : $widget['width'] }};
+                        @endisset
+                        @isset($widget['height'])
+                            --cp-dashboard-widget-height: {{ $widget['height'] . (is_numeric($widget['height']) ? 'px' : '') }};
+                        @endisset
+                    "
                 >
-                    @if (empty($widget['component']::$lazy))
+                    @empty ($widget['component']::$lazy)
                         @include('waterhole::cp.widget')
                     @else
                         <turbo-frame
@@ -55,7 +57,7 @@
                         >
                             <x-waterhole::spinner class="spinner--block"/>
                         </turbo-frame>
-                    @endif
+                    @endempty
                 </div>
             @endforeach
         </div>

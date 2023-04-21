@@ -27,29 +27,29 @@ return [
     'widgets' => [
         [
             'component' => Waterhole\Widgets\GettingStarted::class,
-            'width' => 50,
+            'width' => 1 / 2,
         ],
         [
             'component' => Waterhole\Widgets\Feed::class,
-            'width' => 50,
+            'width' => 1 / 2,
             'title' => 'Waterhole Blog',
             'url' => 'https://waterhole.dev/forum/channels/blog/posts.rss',
         ],
         [
             'component' => Waterhole\Widgets\LineChart::class,
-            'width' => 100 / 3,
+            'width' => 1 / 3,
             'title' => 'waterhole::cp.dashboard-users-title',
             'model' => Waterhole\Models\User::class,
         ],
         [
             'component' => Waterhole\Widgets\LineChart::class,
-            'width' => 100 / 3,
+            'width' => 1 / 3,
             'title' => 'waterhole::cp.dashboard-posts-title',
             'model' => Waterhole\Models\Post::class,
         ],
         [
             'component' => Waterhole\Widgets\LineChart::class,
-            'width' => 100 / 3,
+            'width' => 1 / 3,
             'title' => 'waterhole::cp.dashboard-comments-title',
             'model' => Waterhole\Models\Comment::class,
         ],
