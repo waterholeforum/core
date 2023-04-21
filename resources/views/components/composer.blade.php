@@ -31,7 +31,7 @@
 
         <div
             class="composer__handle js-only"
-            data-action="mousedown->composer#startResize"
+            data-action="pointerdown->composer#startResize"
         ></div>
 
         <div class="composer__toolbar row gap-xs">

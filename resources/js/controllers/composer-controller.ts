@@ -49,7 +49,7 @@ export default class extends Controller<HTMLElement> {
         }
     }
 
-    startResize(e: MouseEvent) {
+    startResize(e: PointerEvent) {
         e.preventDefault();
 
         const el = this.element as HTMLElement;
@@ -57,18 +57,18 @@ export default class extends Controller<HTMLElement> {
         const startHeight = el.offsetHeight;
         const startBottom = el.getBoundingClientRect().bottom;
 
-        const move = (e: MouseEvent) => {
+        const move = (e: PointerEvent) => {
             const height = startHeight - (e.clientY - startY);
             el.style.height = height + 'px';
             localStorage.setItem('composer_height', String(height));
             window.scroll(0, window.scrollY + el.getBoundingClientRect().bottom - startBottom);
         };
 
-        document.addEventListener('mousemove', move);
+        document.addEventListener('pointermove', move);
         document.addEventListener(
-            'mouseup',
+            'pointerup',
             () => {
-                document.removeEventListener('mousemove', move);
+                document.removeEventListener('pointermove', move);
             },
             { once: true }
         );

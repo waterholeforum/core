@@ -98,6 +98,7 @@
   top: -5px;
   height: 20px;
   cursor: ns-resize;
+  touch-action: none;
 
   &::before {
     content: '';
