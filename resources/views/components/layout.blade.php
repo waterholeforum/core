@@ -1,4 +1,6 @@
 <x-waterhole::html :$title :$assets {{ $attributes }}>
+    <x-slot:head>{{ $head ?? '' }}</x-slot:head>
+
     <div class="waterhole" data-controller="page">
         <a
             href="#main"

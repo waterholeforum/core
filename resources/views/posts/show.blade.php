@@ -1,4 +1,10 @@
 <x-waterhole::layout :title="$post->title">
+    <x-slot:head>
+        @unless ($post->channel->structure->is_listed)
+            <meta name="robots" content="noindex">
+        @endunless
+    </x-slot:head>
+
     <div
         class="post-page section container with-sidebar"
         data-controller="post-page"

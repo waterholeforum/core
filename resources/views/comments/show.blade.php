@@ -3,6 +3,12 @@
 @endphp
 
 <x-waterhole::layout :title="$title.' - '.$post->title">
+    <x-slot:head>
+        @unless ($post->channel->structure->is_listed)
+            <meta name="robots" content="noindex">
+        @endunless
+    </x-slot:head>
+
     <div class="container section">
         <div class="measure stack gap-lg">
             <header class="stack gap-xs">
