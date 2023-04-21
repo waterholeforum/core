@@ -3,6 +3,7 @@
 namespace Waterhole\Formatter;
 
 use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Filesystem\Filesystem;
 use s9e\TextFormatter\Configurator;
 use s9e\TextFormatter\Parser;
 use s9e\TextFormatter\Renderer;
@@ -19,18 +20,16 @@ use s9e\TextFormatter\Unparser;
  */
 class Formatter
 {
-    protected string $cacheDir;
-    protected Repository $cache;
-    protected string $cacheKey;
     protected array $configurationCallbacks = [];
     protected array $parsingCallbacks = [];
     protected array $renderingCallbacks = [];
 
-    public function __construct(string $cacheDir, Repository $cache, string $cacheKey)
-    {
-        $this->cacheDir = $cacheDir;
-        $this->cache = $cache;
-        $this->cacheKey = $cacheKey;
+    public function __construct(
+        protected Filesystem $files,
+        protected string $cacheDir,
+        protected Repository $cache,
+        protected string $cacheKey,
+    ) {
     }
 
     /**
@@ -99,6 +98,10 @@ class Formatter
     public function flush(): void
     {
         $this->cache->forget($this->cacheKey);
+
+        foreach ($this->files->glob("{$this->cacheDir}/*") as $file) {
+            $this->files->delete($file);
+        }
     }
 
     protected function getConfigurator(): Configurator

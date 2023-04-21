@@ -36,7 +36,7 @@ class TranslationServiceProvider extends ServiceProvider
                 locale: $app->getLocale(),
                 fallback: $app->getFallbackLocale(),
                 bundleOptions: ['allowOverrides' => true],
-                cache: config('app.debug') ? null : $app['cache.store'],
+                cachePath: config('app.debug') ? null : $app->storagePath('waterhole/translations'),
                 functions: [
                     'COMPACT_NUMBER' => Closure::fromCallable('Waterhole\\compact_number'),
                 ],

@@ -3,7 +3,6 @@
 namespace Waterhole\Translation;
 
 use Countable;
-use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Contracts\Translation\Loader;
 use Illuminate\Contracts\Translation\Translator as TranslatorContract;
 use Illuminate\Filesystem\Filesystem;
@@ -43,7 +42,7 @@ final class FluentTranslator implements TranslatorContract
         protected string $fallback,
         /** @var array{strict: bool, useIsolating: bool, allowOverrides: bool} */
         protected array $bundleOptions,
-        protected ?Repository $cache = null,
+        protected ?string $cachePath = null,
         protected array $functions = [],
     ) {
     }
@@ -129,7 +128,16 @@ final class FluentTranslator implements TranslatorContract
             return $parser->parse($this->files->get($full))->body;
         };
 
-        $body = $this->cache ? $this->cache->rememberForever("fluent:$full", $getBody) : $getBody();
+        $cacheFile = $this->cachePath ? $this->cachePath . '/' . sha1($full) : null;
+
+        if ($cacheFile && $this->files->exists($cacheFile)) {
+            $body = unserialize(file_get_contents($cacheFile));
+        } else {
+            $body = $getBody();
+            if ($cacheFile) {
+                $this->files->put($cacheFile, serialize($body));
+            }
+        }
 
         if (!$body) {
             return false;
@@ -142,6 +150,15 @@ final class FluentTranslator implements TranslatorContract
         }
 
         return $bundle->addResource(new FluentResource($body));
+    }
+
+    public function flush(): void
+    {
+        if ($this->cachePath) {
+            foreach ($this->files->glob("{$this->cachePath}/*") as $file) {
+                $this->files->delete($file);
+            }
+        }
     }
 
     protected function loadNamespaced(
