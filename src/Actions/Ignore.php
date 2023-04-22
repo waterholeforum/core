@@ -17,8 +17,7 @@ class Ignore extends Action
 
     public function shouldRender(Collection $models): bool
     {
-        return !Waterhole::isCpRoute() &&
-            $models->some(fn($item) => $item->userState->notifications !== 'ignore');
+        return !Waterhole::isCpRoute() && !$models->some->isIgnored();
     }
 
     public function label(Collection $models): string
