@@ -4,7 +4,7 @@
     "description": "",
     "license": "MIT",
     "require": {
-        "waterhole/core": "^{{ waterhole_verison }}"
+        "waterhole/core": "^{{ waterhole_version }}"
     },
     "autoload": {
         "psr-4": {

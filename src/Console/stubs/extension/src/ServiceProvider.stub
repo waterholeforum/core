@@ -3,6 +3,7 @@
 namespace {{ namespace }};
 
 use Illuminate\Support\ServiceProvider;
+use Waterhole\Extend;
 
 class {{ prefix }}ServiceProvider extends ServiceProvider
 {

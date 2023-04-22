@@ -109,7 +109,7 @@ class MakeExtensionCommand extends Command
             (new PhpExecutableFinder())->find(),
             $this->laravel->basePath('vendor/bin/composer'),
             'require',
-            $name,
+            "$name:dev-main",
         ];
 
         system(implode(' ', $args));
