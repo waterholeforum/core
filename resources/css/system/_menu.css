@@ -34,7 +34,7 @@
   transform: none !important;
   text-align: left;
 
-    @mixin clickable;
+  @mixin clickable;
 
   &:is(:hover, .is-hovered, :focus, .is-focused, [aria-selected='true']) {
     background: var(--color-fill);

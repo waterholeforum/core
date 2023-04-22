@@ -1,4 +1,5 @@
-.badge, .tag {
+.badge,
+.tag {
   border-radius: 999px;
   background: var(--color-fill);
   color: var(--color-muted);

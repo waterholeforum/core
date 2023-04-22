@@ -8,6 +8,7 @@
         "hot": "mix watch --hot",
         "prod": "npm run production",
         "production": "mix --production",
+        "prettier": "prettier --write .",
         "release": "release-it"
     },
     "devDependencies": {
