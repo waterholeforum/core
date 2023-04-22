@@ -53,7 +53,7 @@
   );
   --palette-warning-contrast: hsl(var(--palette-warning-h) var(--palette-warning-s) 15%);
   --palette-warning-soft: hsl(var(--palette-warning-h) var(--palette-warning-s) 92%);
-  --palette-warning-text: hsl(var(--palette-warning-h) var(--palette-warning-s) 20%);
+  --palette-warning-text: hsl(var(--palette-warning-h) var(--palette-warning-s) 24%);
 
   // Success color
   --palette-success-h: 127;
