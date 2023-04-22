@@ -17,7 +17,7 @@
         <article class="stack gap-xxs overlay-container">
             <a
                 href="{{ $item->getLink() }}"
-                class="h6 color-accent block pseudo-overlay"
+                class="h6 color-accent block has-overlay"
                 target="_blank"
                 rel="noopener"
             >{{ $item->getTitle() }}</a>
