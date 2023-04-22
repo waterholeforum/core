@@ -1,7 +1,7 @@
 npm: false
 
 git:
-  commitMessage: 'release: v${version}'
+  commitMessage: 'Release v${version}'
   tagName: v${version}
 
 github:
@@ -13,10 +13,10 @@ plugins:
     out:
       file: src/Waterhole.php
       type: text/php
-  '@release-it/conventional-changelog':
-    preset: conventionalcommits
-    infile: CHANGELOG.md
-    header: '# Changelog'
+  '@release-it/keep-a-changelog':
+    filename: CHANGELOG.md
+    addVersionUrl: true
+    addUnreleased: true
 
 hooks:
   after:bump: npm run prod

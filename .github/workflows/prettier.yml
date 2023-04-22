@@ -19,4 +19,4 @@ jobs:
           prettier_options: --write .
           prettier_plugins: '@prettier/plugin-php'
           only_changed: true
-          commit_message: Run Prettier
+          commit_message: 'Run Prettier'
