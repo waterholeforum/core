@@ -73,6 +73,10 @@ final class FluentTranslator implements TranslatorContract
         $keys = (array) $key;
 
         foreach ($keys as $k) {
+            if (!$k || !str_contains($k, '.')) {
+                continue;
+            }
+
             [$namespace, $group, $item] = $this->parseKey($k);
 
             $message = $this->getBundle($namespace, $locale, $group)?->message($item, $replace);

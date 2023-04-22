@@ -37,8 +37,7 @@ class PostTags extends Field
             @foreach ($taxonomies as $taxonomy)
                 <x-waterhole::field
                     name="tag_ids.{{ $taxonomy->id }}*"
-                    :label="$taxonomy->translated_name"
-                    :description="__(['waterhole.taxonomy-' . Str::kebab($taxonomy->name) . '-description', ''])"
+                    :label="__($taxonomy->name)"
                 >
                     <select
                         name="tag_ids[{{ $taxonomy->id }}][]"

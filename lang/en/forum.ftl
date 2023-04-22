@@ -81,8 +81,8 @@ post-submit-button = Post
 edit-post-title = Edit Post
 edit-post-link = Edit Post
 post-title-label = Title
-post-body-label = Body
 similar-posts-label = See these similar posts:
+post-body-label = Body
 
 channel-picker-placeholder = Select a Channel
 

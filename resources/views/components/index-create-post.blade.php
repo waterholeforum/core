@@ -4,13 +4,10 @@
     if ($enabled) {
         $attributes = $attributes->merge(['href' => route('waterhole.posts.create', ['channel_id' => $channel?->id])]);
     }
-    $defaultLabel = 'waterhole::forum.create-post-button';
 @endphp
 
 <{{ $tag }} {{ $attributes->class(['btn text-md index-create-post', $enabled ? 'bg-accent' : 'is-disabled']) }}>
-    {{ $channel
-        ? __(["waterhole.channel-$channel->slug-create-post-button", $defaultLabel])
-        : __($defaultLabel) }}
+    {{ __($channel->translations[$key = 'waterhole::forum.create-post-button'] ?? $key) }}
 
     @unless ($enabled)
         <ui-tooltip>

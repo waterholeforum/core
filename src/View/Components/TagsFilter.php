@@ -36,7 +36,7 @@ class TagsFilter extends Component
                             button-class="tab"
                             placement="bottom-end"
                             :options="$taxonomy->tags->modelKeys()"
-                            :placeholder="$taxonomy->translated_name"
+                            :placeholder="__($taxonomy->name)"
                             :label="fn($id) => $taxonomy->tags->find($id)->name ?? ''"
                             :href="fn($id) => $href($taxonomy, $id)"
                         />

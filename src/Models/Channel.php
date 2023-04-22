@@ -28,6 +28,7 @@ use Waterhole\View\TurboStream;
  * @property ?array $layout_config
  * @property bool $sandbox
  * @property bool $answerable
+ * @property ?array $translations
  * @property ?int $posts_reaction_set_id
  * @property ?int $comments_reaction_set_id
  * @property-read \Illuminate\Database\Eloquent\Collection $posts
@@ -55,6 +56,7 @@ class Channel extends Model
         'layout_config' => 'json',
         'ignore' => 'bool',
         'answerable' => 'bool',
+        'translations' => 'json',
     ];
 
     protected static function booting(): void

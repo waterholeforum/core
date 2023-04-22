@@ -33,25 +33,11 @@ class PostTitle extends Field
     public function render(): string
     {
         return <<<'blade'
-            @php
-                $label = __([
-                    "waterhole.channel-{$model->channel->slug}-post-title-label",
-                    'waterhole::forum.post-title-label',
-                ]);
-
-                $description = __([
-                    "waterhole.channel-{$model->channel->slug}-post-title-description",
-                    '',
-                ]);
-
-                $similarPostsLabel = __([
-                    "waterhole.channel-{$model->channel->slug}-similar-posts-label",
-                    'waterhole::forum.similar-posts-label',
-                ]);
-            @endphp
-
             <div class="stack gap-sm" @if (!$model->exists) data-controller="similar-posts" @endif>
-                <x-waterhole::field name="title" :$label :$description>
+                <x-waterhole::field
+                    name="title"
+                    :label="__($channel->translations[$key = 'waterhole::forum.post-title-label'] ?? $key)"
+                    :description="__($channel->translations[$key = 'waterhole::forum.post-title-description'] ?? '')">
                     <input
                         id="{{ $component->id }}"
                         name="title"
@@ -72,7 +58,9 @@ class PostTitle extends Field
                     <turbo-frame id="similar-posts" target="_top" hidden data-similar-posts-target="frame">
                         @if (!empty($similarPosts->hits))
                             <div class="bg-warning-soft p-md rounded stack gap-xs text-xs">
-                                <p class="weight-bold">{{ $similarPostsLabel }}</p>
+                                <p class="weight-bold">
+                                    {{ __($channel->translations[$key = 'waterhole::forum.similar-posts-label'] ?? $key) }}
+                                </p>
                                 @foreach ($similarPosts->hits as $hit)
                                     <p><a href="{{ $hit->post->url }}">{{ $hit->post->title }}</a></p>
                                 @endforeach
