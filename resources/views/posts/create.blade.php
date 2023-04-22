@@ -26,7 +26,7 @@
                                 @icon('tabler-selector')
                             </button>
 
-                            <ui-menu class="menu measure" hidden>
+                            <ui-menu class="menu menu--lg" hidden>
                                 <x-waterhole::channel-picker
                                     id="channel_id"
                                     name="channel_id"

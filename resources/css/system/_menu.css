@@ -14,6 +14,10 @@
   overflow: auto;
 }
 
+.menu--lg {
+  max-width: 50ch;
+}
+
 .menu-item {
   border-radius: calc(var(--radius) * 2 / 3);
   border: 0;
