@@ -114,6 +114,11 @@ h6 {
     }
   }
 
+  & figcaption {
+    color: var(--color-muted);
+    font-size: 90%;
+  }
+
   & code {
     font-family: var(--font-mono);
     font-size: 80%;
@@ -130,7 +135,6 @@ h6 {
   & img:not([class]) {
     max-width: 100%;
     max-height: 70vh;
-    width: auto;
     height: auto;
   }
 
