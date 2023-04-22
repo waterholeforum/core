@@ -1,0 +1,22 @@
+name: Prettier
+
+on: [push, pull_request]
+
+jobs:
+  prettier:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: creyD/prettier_action@v4.3
+        with:
+          prettier_options: --write .
+          prettier_plugins: '@prettier/plugin-php'
+          only_changed: true
+          commit_message: Run Prettier
