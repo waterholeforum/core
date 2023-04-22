@@ -1,6 +1,6 @@
 @inject('license', Waterhole\Licensing\LicenseManager::class)
 
-<div class="cp__version text-xs row gap-xs" style="margin-top: var(--space-md)">
+<div class="cp__version text-xs row gap-xs mt-lg">
     <a
         href="https://waterhole.dev"
         class="color-muted"
