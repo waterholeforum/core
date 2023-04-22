@@ -89,7 +89,7 @@ abstract class FormatMentions
      */
     public static function rendering(Renderer $renderer, string &$xml, ?Context $context): void
     {
-        if (!($mentions = $context->model?->mentions)) {
+        if (!($mentions = $context?->model?->mentions)) {
             return;
         }
 
