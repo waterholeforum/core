@@ -49,11 +49,11 @@ class ViewServiceProvider extends ServiceProvider
                 '<?php foreach (Waterhole\build_components($_components, ' .
                 ($data ?: '[]') .
                 ') as $key => $instance): ?>',
-                '<?php if ($instance === null && !is_numeric($key)): ?>',
+                '<?php if ($instance === null && !is_numeric($key) && $__env->hasSection($key)): ?>',
                 '<?php echo $__env->yieldContent($key); ?>',
                 '<?php elseif (!$instance && config(\'app.debug\')): ?>',
                 '<script>console.warn(\'Component [<?php echo e(addslashes($_components[$key])); ?>] not found in ' .
-                e($components) .
+                addslashes(e($components)) .
                 '\')</script>',
                 '<?php endif; ?>',
                 '<?php if ($instance instanceof Illuminate\View\Component && $instance->shouldRender()): ?>',
