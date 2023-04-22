@@ -40,5 +40,6 @@
     margin-inline: calc(-1 * var(--space-gutter)) !important;
     border-radius: 0;
     max-width: none;
+    width: calc(100% + 2 * var(--space-gutter));
   }
 }
