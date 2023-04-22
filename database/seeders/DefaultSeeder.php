@@ -162,7 +162,8 @@ class DefaultSeeder extends Seeder
 
             $channel = Channel::firstOrCreate(
                 Arr::only($data, 'slug'),
-                Arr::except($data, ['slug', 'group', 'group_post']),
+                ['layout' => Layouts\ListLayout::class] +
+                    Arr::except($data, ['slug', 'group', 'group_post']),
             );
 
             if ($channel->wasRecentlyCreated) {
