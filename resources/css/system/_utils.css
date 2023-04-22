@@ -267,6 +267,7 @@
   overflow: hidden;
 }
 
+.scrollable,
 .scrollable-x,
 .scrollable-y {
   position: relative;
@@ -287,7 +288,7 @@
     flex-shrink: 0;
     pointer-events: none;
     opacity: 0;
-    transition: opacity .5s;
+    transition: opacity 0.5s;
   }
 }
 
@@ -719,7 +720,7 @@
 
 // Dark mode
 
-:root[data-theme='dark'] .light-only,
-:root:not([data-theme='dark']) .dark-only {
+[data-theme='dark'] .light-only,
+[data-theme='light'] .dark-only {
   display: none;
 }
