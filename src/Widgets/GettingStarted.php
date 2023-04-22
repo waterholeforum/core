@@ -24,7 +24,7 @@ class GettingStarted extends Component
                 'icon' => 'tabler-users',
             ],
             'design' => [
-                'url' => 'https://waterhole.dev/forum',
+                'url' => 'https://waterhole.dev/community',
                 'icon' => 'tabler-bulb',
             ],
         ];

@@ -33,7 +33,7 @@ return [
             'component' => Waterhole\Widgets\Feed::class,
             'width' => 1 / 2,
             'title' => 'Waterhole Blog',
-            'url' => 'https://waterhole.dev/forum/channels/blog/posts.rss',
+            'url' => 'https://waterhole.dev/community/channels/blog/posts.rss',
         ],
         [
             'component' => Waterhole\Widgets\LineChart::class,
