@@ -600,7 +600,7 @@
   border-radius: var(--radius);
 }
 
-.rounded-full {
+.pill {
   border-radius: 999px;
 }
 

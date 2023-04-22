@@ -6,7 +6,7 @@
     @icon('tabler-search', ['class' => 'no-pointer color-muted'])
 
     <input
-        class="rounded-full"
+        class="pill"
         type="text"
         name="q"
         placeholder="{{ __('waterhole::forum.search-placeholder') }}"
