@@ -119,12 +119,9 @@ h6 {
     font-size: 80%;
   }
 
-  & pre {
-    white-space: pre-wrap;
-  }
-
   & pre code {
     display: block;
+    overflow: auto;
     background: var(--color-fill);
     border-radius: var(--radius);
     padding: var(--space-md) !important;
