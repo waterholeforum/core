@@ -26,7 +26,7 @@ use Waterhole\View\TurboStream;
  * @property ?array $filters
  * @property ?string $layout
  * @property ?array $layout_config
- * @property bool $sandbox
+ * @property bool $ignore
  * @property bool $answerable
  * @property ?array $translations
  * @property ?int $posts_reaction_set_id
@@ -144,14 +144,14 @@ class Channel extends Model
         return ['view', 'comment', 'post'];
     }
 
-    public function url(): Attribute
+    protected function url(): Attribute
     {
         return Attribute::make(
             get: fn() => route('waterhole.channels.show', ['channel' => $this]),
         )->shouldCache();
     }
 
-    public function editUrl(): Attribute
+    protected function editUrl(): Attribute
     {
         return Attribute::make(
             get: fn() => route('waterhole.cp.structure.channels.edit', ['channel' => $this]),

@@ -2,7 +2,7 @@
 
 namespace Waterhole\Extend;
 
-use Arr;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Waterhole\Extend\Concerns\Attributes;
 use Waterhole\Models\Comment;

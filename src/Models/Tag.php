@@ -23,7 +23,7 @@ class Tag extends Model
         return $this->belongsTo(Taxonomy::class);
     }
 
-    public function editUrl(): Attribute
+    protected function editUrl(): Attribute
     {
         return Attribute::make(
             get: fn() => route('waterhole.cp.taxonomies.tags.edit', [

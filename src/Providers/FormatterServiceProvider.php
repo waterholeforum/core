@@ -19,11 +19,11 @@ class FormatterServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->singleton('waterhole.formatter', function () {
+        $this->app->singleton('waterhole.formatter', function ($app) {
             $formatter = new Formatter(
-                $this->app['files'],
-                $this->app->storagePath('waterhole/formatter'),
-                $this->app['cache.store'],
+                $app->make('files'),
+                $app->storagePath('waterhole/formatter'),
+                $app->make('cache.store'),
                 'waterhole.formatter',
             );
 

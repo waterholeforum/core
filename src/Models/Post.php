@@ -47,6 +47,7 @@ use Waterhole\View\TurboStream;
  * @property-read string $url
  * @property-read string $edit_url
  * @property-read string $unread_url
+ * @property-read ?int $unread_comments_count
  */
 class Post extends Model
 {
@@ -297,21 +298,21 @@ class Post extends Model
         return $this->whereKey(explode('-', $value)[0])->firstOrFail();
     }
 
-    public function url(): Attribute
+    protected function url(): Attribute
     {
         return Attribute::make(
             get: fn() => route('waterhole.posts.show', ['post' => $this]),
         )->shouldCache();
     }
 
-    public function editUrl(): Attribute
+    protected function editUrl(): Attribute
     {
         return Attribute::make(
             get: fn() => route('waterhole.posts.edit', ['post' => $this]),
         )->shouldCache();
     }
 
-    public function unreadUrl(): Attribute
+    protected function unreadUrl(): Attribute
     {
         return Attribute::make(
             get: function () {

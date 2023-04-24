@@ -23,7 +23,7 @@ class ReactionType extends Model
         return $this->belongsTo(ReactionSet::class);
     }
 
-    public function editUrl(): Attribute
+    protected function editUrl(): Attribute
     {
         return Attribute::make(
             get: fn() => route('waterhole.cp.reaction-sets.reaction-types.edit', [

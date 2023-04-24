@@ -29,10 +29,11 @@ class Upload extends Model
 
         Storage::disk('public')->putFile('uploads', $file);
 
+        // @phpstan-ignore-next-line
         return new static($attributes);
     }
 
-    protected static function booted()
+    protected static function booted(): void
     {
         static::deleted(function (self $upload) {
             Storage::disk('public')->delete('uploads/' . $upload->filename);

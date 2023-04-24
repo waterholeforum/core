@@ -22,7 +22,7 @@ class ReactionSet extends Model
         return $this->hasMany(ReactionType::class)->orderBy('position');
     }
 
-    public function editUrl(): Attribute
+    protected function editUrl(): Attribute
     {
         return Attribute::make(
             get: fn() => route('waterhole.cp.reaction-sets.edit', ['reactionSet' => $this]),

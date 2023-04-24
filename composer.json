@@ -23,6 +23,10 @@
         "staudenmeir/laravel-adjacency-list": "^1.7",
         "staudenmeir/laravel-cte": "^1.0"
     },
+    "require-dev": {
+        "nunomaduro/larastan": "^2.0",
+        "orchestra/testbench": "^8.5"
+    },
     "autoload": {
         "psr-4": {
             "Waterhole\\": "src/",

@@ -40,6 +40,7 @@ use Waterhole\Notifications\VerifyEmail;
  * @property ?string $avatar
  * @property ?\Carbon\Carbon $created_at
  * @property ?\Carbon\Carbon $last_seen_at
+ * @property ?\Carbon\Carbon $suspended_until
  * @property bool $show_online
  * @property ?\Illuminate\Database\Eloquent\Casts\ArrayObject $notification_channels
  * @property ?\Carbon\Carbon $notifications_read_at
@@ -232,28 +233,28 @@ class User extends Model implements
         return (bool) $this->suspended_until?->isFuture();
     }
 
-    public function url(): Attribute
+    protected function url(): Attribute
     {
         return Attribute::make(
             get: fn() => route('waterhole.users.show', ['user' => $this]),
         )->shouldCache();
     }
 
-    public function editUrl(): Attribute
+    protected function editUrl(): Attribute
     {
         return Attribute::make(
             get: fn() => route('waterhole.cp.users.edit', ['user' => $this]),
         )->shouldCache();
     }
 
-    public function avatarUrl(): Attribute
+    protected function avatarUrl(): Attribute
     {
         return Attribute::make(
             get: fn() => $this->resolvePublicUrl($this->avatar, 'avatars'),
         )->shouldCache();
     }
 
-    public function unreadNotificationCount(): Attribute
+    protected function unreadNotificationCount(): Attribute
     {
         return Attribute::make(
             get: function () {

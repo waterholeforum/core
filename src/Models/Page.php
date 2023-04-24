@@ -32,14 +32,14 @@ class Page extends Model
         });
     }
 
-    public function url(): Attribute
+    protected function url(): Attribute
     {
         return Attribute::make(
             get: fn() => route('waterhole.page', ['page' => $this]),
         )->shouldCache();
     }
 
-    public function editUrl(): Attribute
+    protected function editUrl(): Attribute
     {
         return Attribute::make(
             get: fn() => route('waterhole.cp.structure.pages.edit', ['page' => $this]),

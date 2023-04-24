@@ -17,6 +17,7 @@ class OAuthController
     {
         abort_unless($providers->has($provider), 400);
 
+        // @phpstan-ignore-next-line
         return Socialite::driver($provider)->redirect();
     }
 
@@ -24,6 +25,7 @@ class OAuthController
     {
         abort_unless($providers->has($provider), 400);
 
+        // @phpstan-ignore-next-line
         $externalUser = Socialite::driver($provider)->user();
         $identifier = $externalUser->getId();
         $email = $externalUser->getEmail();

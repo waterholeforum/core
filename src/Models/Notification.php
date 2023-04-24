@@ -83,7 +83,7 @@ class Notification extends DatabaseNotification
             ->firstOrFail();
     }
 
-    public function template(): Attribute
+    protected function template(): Attribute
     {
         return Attribute::make(
             get: function () {
@@ -100,7 +100,7 @@ class Notification extends DatabaseNotification
         )->shouldCache();
     }
 
-    public function url(): Attribute
+    protected function url(): Attribute
     {
         return Attribute::make(
             get: fn() => route('waterhole.notifications.show', ['notification' => $this]),

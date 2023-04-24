@@ -122,7 +122,7 @@ final class FluentTranslator implements TranslatorContract
     {
         $full = "{$path}/{$locale}/{$group}.ftl";
 
-        $getBody = function () use ($locale, $full) {
+        $getBody = function () use ($full) {
             if (!$this->files->exists($full)) {
                 return null;
             }

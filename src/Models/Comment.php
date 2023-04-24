@@ -177,7 +177,7 @@ class Comment extends Model
         return [TurboStream::remove(new Components\CommentFrame($this))];
     }
 
-    public function url(): Attribute
+    protected function url(): Attribute
     {
         return Attribute::make(
             get: fn() => route('waterhole.posts.comments.show', [
@@ -187,7 +187,7 @@ class Comment extends Model
         )->shouldCache();
     }
 
-    public function editUrl(): Attribute
+    protected function editUrl(): Attribute
     {
         return Attribute::make(
             get: fn() => route('waterhole.posts.comments.edit', [
@@ -197,7 +197,7 @@ class Comment extends Model
         )->shouldCache();
     }
 
-    public function postUrl(): Attribute
+    protected function postUrl(): Attribute
     {
         return Attribute::make(
             get: function () {

@@ -18,7 +18,7 @@ class StructureHeading extends Model
 
     public $timestamps = false;
 
-    public function editUrl(): Attribute
+    protected function editUrl(): Attribute
     {
         return Attribute::make(
             get: fn() => route('waterhole.cp.structure.headings.edit', ['heading' => $this]),

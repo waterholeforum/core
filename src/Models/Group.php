@@ -111,14 +111,14 @@ class Group extends Model
         $query->whereKeyNot([static::GUEST_ID, static::MEMBER_ID]);
     }
 
-    public function editUrl(): Attribute
+    protected function editUrl(): Attribute
     {
         return Attribute::make(
             get: fn() => route('waterhole.cp.groups.edit', ['group' => $this]),
         )->shouldCache();
     }
 
-    public function usersUrl(): Attribute
+    protected function usersUrl(): Attribute
     {
         return Attribute::make(
             get: fn() => route('waterhole.cp.users.index', [

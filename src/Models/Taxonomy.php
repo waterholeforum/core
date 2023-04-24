@@ -2,9 +2,9 @@
 
 namespace Waterhole\Models;
 
-use Auth;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Auth;
 use Waterhole\Models\Concerns\HasPermissions;
 
 class Taxonomy extends Model
@@ -25,7 +25,7 @@ class Taxonomy extends Model
         return $this->hasMany(Tag::class)->orderBy('name');
     }
 
-    public function editUrl(): Attribute
+    protected function editUrl(): Attribute
     {
         return Attribute::make(
             get: fn() => route('waterhole.cp.taxonomies.edit', ['taxonomy' => $this]),

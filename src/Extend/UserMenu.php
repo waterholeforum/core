@@ -2,7 +2,7 @@
 
 namespace Waterhole\Extend;
 
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Waterhole\Extend\Concerns\OrderedList;
 use Waterhole\View\Components\MenuDivider;
 use Waterhole\View\Components\MenuItem;

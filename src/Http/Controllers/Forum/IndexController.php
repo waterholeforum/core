@@ -2,10 +2,10 @@
 
 namespace Waterhole\Http\Controllers\Forum;
 
-use Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Waterhole\Feed\PostFeed;
 use Waterhole\Filters\Following;
 use Waterhole\Filters\Ignoring;
