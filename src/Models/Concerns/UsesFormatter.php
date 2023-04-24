@@ -72,16 +72,14 @@ trait UsesFormatter
         return parent::getAttribute($key);
     }
 
-    public function setAttribute($key, $value): void
+    public function setAttribute($key, $value)
     {
-        parent::setAttribute($key, $value);
-
         if (str_starts_with($key, 'parsed_')) {
             $this->attributes[substr($key, 7)] = $value;
-        }
-
-        if ($formatter = static::$formatters[$key] ?? null) {
+        } elseif ($formatter = static::$formatters[$key] ?? null) {
             $this->attributes[$key] = $value ? $formatter->parse($value, new Context($this)) : null;
+        } else {
+            return parent::setAttribute($key, $value);
         }
     }
 }
