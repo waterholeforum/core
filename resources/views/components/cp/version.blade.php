@@ -30,7 +30,7 @@
                               'waterhole::cp.license-'.Str::kebab($license->error()).'-message',
                               'waterhole::cp.license-invalid-message',
                           ])
-                        : __('waterhole::cp.license-error-message', ['status' => $license->status()]) }} &nbsp;
+                        : __('waterhole::cp.license-error-message', ['status' => $license->status()]) }}
                     <a href="https://waterhole.dev/docs/licensing" target="_blank" class="color-inherit nowrap weight-bold">
                         {{ __('waterhole::system.learn-more-link') }}
                     </a>

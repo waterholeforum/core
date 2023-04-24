@@ -3,7 +3,6 @@
         @section('debug')
             <x-waterhole::alert type="warning" icon="tabler-bug">
                 {{ __('waterhole::cp.debug-mode-on-message') }}
-                &nbsp;
                 <a
                     href="https://waterhole.dev/docs/configuration#debug-mode"
                     class="color-inherit weight-bold nowrap"
@@ -17,7 +16,6 @@
         @section('mail')
             <x-waterhole::alert type="warning" icon="tabler-mail">
                 {{ __('waterhole::cp.configure-mail-message') }}
-                &nbsp;
                 <a
                     href="https://waterhole.dev/docs/configuration#mail-configuration"
                     class="color-inherit weight-bold nowrap"
