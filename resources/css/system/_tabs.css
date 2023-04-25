@@ -59,7 +59,6 @@
   font-size: var(--text-xs);
 
   .tab {
-    display: flex;
     text-align: left;
     padding-block: var(--space-xxs);
     padding-inline: var(--space-sm);
