@@ -4,7 +4,6 @@
     ->merge([
         'lang' => config('app.locale'),
         'data-theme' => config('waterhole.design.theme', 'light'),
-        'data-route' => request()->route()->getName()
     ]) }}>
 <head>
     <meta charset="utf-8">
@@ -43,7 +42,7 @@
     @components(Waterhole\Extend\DocumentHead::build(), compact('title', 'assets'))
 </head>
 
-<body>
+<body {{ $attributes->merge(['data-route' => request()->route()->getName()]) }}>
 
 {{ $slot }}
 
