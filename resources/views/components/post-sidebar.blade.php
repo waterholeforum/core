@@ -12,4 +12,6 @@
     <div class="hide-sm grow">
         <x-waterhole::follow-button :followable="$post"/>
     </div>
+
+    @components(Waterhole\Extend\PostSidebar::build(), compact('post'))
 </div>
