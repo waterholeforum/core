@@ -36,8 +36,8 @@ class PostTitle extends Field
             <div class="stack gap-sm" @if (!$model->exists) data-controller="similar-posts" @endif>
                 <x-waterhole::field
                     name="title"
-                    :label="__($channel->translations[$key = 'waterhole::forum.post-title-label'] ?? $key)"
-                    :description="__($channel->translations[$key = 'waterhole::forum.post-title-description'] ?? '')">
+                    :label="__($model->channel->translations[$key = 'waterhole::forum.post-title-label'] ?? $key)"
+                    :description="__($model->channel->translations[$key = 'waterhole::forum.post-title-description'] ?? '')">
                     <input
                         id="{{ $component->id }}"
                         name="title"
@@ -59,7 +59,7 @@ class PostTitle extends Field
                         @if (!empty($similarPosts->hits))
                             <div class="bg-warning-soft p-md rounded stack gap-xs text-xs">
                                 <p class="weight-bold">
-                                    {{ __($channel->translations[$key = 'waterhole::forum.similar-posts-label'] ?? $key) }}
+                                    {{ __($model->channel->translations[$key = 'waterhole::forum.similar-posts-label'] ?? $key) }}
                                 </p>
                                 @foreach ($similarPosts->hits as $hit)
                                     <p><a href="{{ $hit->post->url }}">{{ $hit->post->title }}</a></p>
