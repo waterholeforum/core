@@ -37,7 +37,7 @@
   background-image: linear-gradient(var(--color-activity-soft), var(--color-activity-soft));
 
   .alert__message {
-    margin: 0 calc(-1 * var(--space-xs));
+    margin: calc(-1 * var(--space-xs));
     line-height: unset;
   }
 
