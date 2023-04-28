@@ -185,11 +185,13 @@ abstract class Notification extends BaseNotification implements ShouldQueue
     public function unsubscribeUrl($notifiable): string
     {
         return URL::signedRoute('waterhole.notifications.unsubscribe', [
-            'type' => get_class($this),
-            'notifiable_type' => $notifiable->getMorphClass(),
-            'notifiable_id' => $notifiable->getKey(),
-            'content_type' => $this->content()?->getMorphClass(),
-            'content_id' => $this->content()?->getKey(),
+            'payload' => Crypt::encrypt([
+                'type' => get_class($this),
+                'notifiable_type' => $notifiable->getMorphClass(),
+                'notifiable_id' => $notifiable->getKey(),
+                'content_type' => $this->content()?->getMorphClass(),
+                'content_id' => $this->content()?->getKey(),
+            ]),
         ]);
     }
 

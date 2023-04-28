@@ -2,8 +2,10 @@
 
 namespace Waterhole\Http\Controllers\Forum;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Crypt;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Notification;
 use Waterhole\View\Components\Notification as NotificationComponent;
@@ -58,6 +60,8 @@ class NotificationController extends Controller
     {
         Notification::groupedWith($notification)->update(['read_at' => now()]);
 
+        $notification->type::load(new Collection([$notification]));
+
         return redirect($notification->template->groupedUrl());
     }
 
@@ -73,17 +77,15 @@ class NotificationController extends Controller
 
     public function unsubscribe(Request $request)
     {
+        $payload = collect(Crypt::decrypt($request->query('payload')));
+
         // An unsubscribe request will come in with the notification type,
         // its user, and content. Find the matching notification in the database
         // so we can reconstruct its template and call its unsubscribe method.
         $notification = Notification::where(
-            $request->only(
-                'type',
-                'notifiable_type',
-                'notifiable_id',
-                'content_type',
-                'content_id',
-            ),
+            $payload
+                ->only('type', 'notifiable_type', 'notifiable_id', 'content_type', 'content_id')
+                ->all(),
         )->firstOrFail();
 
         $notification->template->unsubscribe($notification->notifiable);
