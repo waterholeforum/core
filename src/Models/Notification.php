@@ -34,8 +34,6 @@ class Notification extends DatabaseNotification
 {
     use QueriesExpressions;
 
-    private NotificationTemplate $template;
-
     /**
      * Relationship with the user whose action caused the notification to be
      * sent.
@@ -86,17 +84,7 @@ class Notification extends DatabaseNotification
     protected function template(): Attribute
     {
         return Attribute::make(
-            get: function () {
-                if (!$this->content) {
-                    return null;
-                }
-
-                if (!isset($this->template)) {
-                    $this->template = new $this->type($this->content);
-                }
-
-                return $this->template;
-            },
+            get: fn() => $this->content ? new $this->type($this->content) : null,
         )->shouldCache();
     }
 
