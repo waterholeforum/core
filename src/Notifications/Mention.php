@@ -38,9 +38,13 @@ class Mention extends Notification
         return 'tabler-at';
     }
 
-    public function title(): string
+    public function title(): HtmlString
     {
-        return __('waterhole::notifications.mention-title', ['post' => "**{$this->post->title}**"]);
+        return new HtmlString(
+            __('waterhole::notifications.mention-title', [
+                'post' => '<strong>' . e($this->post->title) . '</strong>',
+            ]),
+        );
     }
 
     public function excerpt(): HtmlString

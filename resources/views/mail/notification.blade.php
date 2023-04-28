@@ -1,7 +1,7 @@
-@component('mail::message')
-{{ $html }}
+<x-mail::message>
+{{ $title }}
 
-@component('mail::panel')
+<x-mail::panel>
 <p>
 @isset($avatar)
 <img src="{{ $avatar }}" width="32" height="32" style="border-radius: 100%; vertical-align: middle">
@@ -10,19 +10,18 @@
 </p>
 
 {!! preg_replace('/<script.*?\/script>/s', '', $excerpt) !!}
-@endcomponent
-
+</x-mail::panel>
 
 @isset($button)
-@component('mail::button', ['url' => $url, 'color' => 'primary'])
+<x-mail::button :url="$url" color="primary">
 {{ $button }}
-@endcomponent
+</x-mail::button>
 @endisset
 
-@slot('subcopy')
+<x-slot:subcopy>
 {{ $reason }}<br>
-[{{ $unsubscribeText }}]({{ $unsubscribeUrl }}) &nbsp;
-[{{ __('waterhole::notifications.manage-notification-preferences-link') }}]({{ route('waterhole.preferences.notifications') }})
-@endslot
-@endcomponent
 
+<x-mail::link :url="$unsubscribeUrl">{{ $unsubscribeText }}</x-mail::link> &nbsp;
+<x-mail::link :url="route('waterhole.preferences.notifications')">{{ __('waterhole::notifications.manage-notification-preferences-link') }}</x-mail::link>
+</x-slot:subcopy>
+</x-mail::message>

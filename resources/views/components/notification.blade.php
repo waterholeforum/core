@@ -13,7 +13,7 @@
         @icon($notification->template->icon(), ['class' => 'color-muted text-md'])
 
         <span class="shrink">
-            {{ Waterhole\emojify(Illuminate\Mail\Markdown::parse($notification->template->title())) }}
+            {{ Waterhole\emojify($notification->template->title()) }}
 
             <span class="menu-item__description overflow-ellipsis">
                 <x-waterhole::user-label :user="$notification->template->sender()"/> ·

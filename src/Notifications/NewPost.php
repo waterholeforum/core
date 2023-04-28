@@ -3,6 +3,7 @@
 namespace Waterhole\Notifications;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\HtmlString;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
 
@@ -27,12 +28,14 @@ class NewPost extends Notification
         return $this->post->channel->icon;
     }
 
-    public function title(): string
+    public function title(): HtmlString
     {
-        return __('waterhole::notifications.new-post-title', [
-            'channel' => $this->post->channel->name,
-            'post' => "**{$this->post->title}**",
-        ]);
+        return new HtmlString(
+            __('waterhole::notifications.new-post-title', [
+                'channel' => e($this->post->channel->name),
+                'post' => '<strong>' . e($this->post->title) . '</strong>',
+            ]),
+        );
     }
 
     public function excerpt(): string

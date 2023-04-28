@@ -29,11 +29,13 @@ class NewComment extends Notification
         return 'tabler-message-circle-2';
     }
 
-    public function title(): string
+    public function title(): HtmlString
     {
-        return __('waterhole::notifications.new-comment-title', [
-            'post' => "**{$this->comment->post->title}**",
-        ]);
+        return new HtmlString(
+            __('waterhole::notifications.new-comment-title', [
+                'post' => '<strong>' . e($this->comment->post->title) . '</strong>',
+            ]),
+        );
     }
 
     public function excerpt(): HtmlString
@@ -83,6 +85,9 @@ class NewComment extends Notification
 
     public static function load(Collection $notifications): void
     {
-        $notifications->load('content.post', 'content.user');
+        $notifications->load([
+            'content.post' => fn($query) => $query->withUnreadCommentsCount(),
+            'content.user',
+        ]);
     }
 }

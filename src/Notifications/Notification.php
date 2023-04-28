@@ -5,11 +5,12 @@ namespace Waterhole\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Mail\Markdown;
-use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Notification as BaseNotification;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\HtmlString;
+use Waterhole\Mail\Markdown;
 use Waterhole\Models\Model;
 use Waterhole\Models\User;
 
@@ -58,23 +59,29 @@ abstract class Notification extends BaseNotification implements ShouldQueue
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail($notifiable): MailMessage
+    public function toMail($notifiable): Mailable
     {
-        $html = Markdown::parse($this->title());
+        $title = $this->title();
 
-        return (new MailMessage())
-            ->subject(strip_tags($html))
-            ->markdown('waterhole::mail.notification', [
-                'html' => $html,
-                'avatar' => $this->sender()->avatar_url,
-                'name' => $this->sender()->name,
-                'excerpt' => $this->excerpt(),
-                'button' => $this->button(),
-                'url' => $this->url(),
-                'reason' => $this->reason(),
-                'unsubscribeText' => $this->unsubscribeText(),
-                'unsubscribeUrl' => $this->unsubscribeUrl($notifiable),
-            ]);
+        $markdown = resolve(Markdown::class);
+        $view = 'waterhole::mail.notification';
+        $data = [
+            'title' => $title,
+            'avatar' => $this->sender()->avatar_url,
+            'name' => $this->sender()->name,
+            'excerpt' => $this->excerpt(),
+            'button' => $this->button(),
+            'url' => $this->url(),
+            'reason' => $this->reason(),
+            'unsubscribeText' => $this->unsubscribeText(),
+            'unsubscribeUrl' => $this->unsubscribeUrl($notifiable),
+        ];
+
+        return (new Mailable())
+            ->to($notifiable->routeNotificationFor('mail'))
+            ->subject(strip_tags($title))
+            ->view($markdown->render($view, $data))
+            ->text($markdown->renderText($view, $data));
     }
 
     /**
@@ -110,11 +117,13 @@ abstract class Notification extends BaseNotification implements ShouldQueue
     }
 
     /**
-     * The title of the notification using Markdown syntax.
+     * The title of the notification.
      *
-     * This allows the notification to be expressed both in HTML and plain-text.
+     * This can be a plain string or an `HtmlString` if you want to wrap
+     * certain words in `<strong>`, for example. Just be sure to escape user-
+     * generated content if returning an `HtmlString`.
      */
-    abstract public function title(): string;
+    abstract public function title(): string|HtmlString;
 
     /**
      * An excerpt from the notification content.
