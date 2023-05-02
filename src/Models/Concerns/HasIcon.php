@@ -61,8 +61,11 @@ trait HasIcon
     protected function iconFile(): Attribute
     {
         return Attribute::make(
-            get: fn(?string $value) => $value && str_starts_with($value, 'file:')
-                ? substr($value, 5)
+            get: fn($value, array $attributes) => str_starts_with(
+                $attributes['icon'] ?? '',
+                'file:',
+            )
+                ? substr($attributes['icon'], 5)
                 : null,
             set: fn(?string $value) => ['icon' => $value ? 'file:' . $value : null],
         );
