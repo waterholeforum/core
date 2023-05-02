@@ -6,7 +6,6 @@ use Illuminate\Support\Collection;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Model;
 use Waterhole\Models\User;
-use Waterhole\Waterhole;
 
 class EditChannel extends Link
 {
@@ -18,11 +17,6 @@ class EditChannel extends Link
     public function authorize(?User $user, Model $model): bool
     {
         return $user && $user->can('channel.edit', $model);
-    }
-
-    public function shouldRender(Collection $models): bool
-    {
-        return Waterhole::isCpRoute();
     }
 
     public function label(Collection $models): string
