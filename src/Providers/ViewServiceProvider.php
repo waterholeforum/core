@@ -51,10 +51,6 @@ class ViewServiceProvider extends ServiceProvider
                 ') as $key => $instance): ?>',
                 '<?php if ($instance === null && !is_numeric($key) && $__env->hasSection($key)): ?>',
                 '<?php echo $__env->yieldContent($key); ?>',
-                '<?php elseif (!$instance && config(\'app.debug\')): ?>',
-                '<script>console.warn(\'Component [<?php echo e(addslashes($_components[$key])); ?>] not found in ' .
-                addslashes(e($components)) .
-                '\')</script>',
                 '<?php endif; ?>',
                 '<?php if ($instance instanceof Illuminate\View\Component && $instance->shouldRender()): ?>',
                 '<?php $__env->startComponent($instance->resolveView(), $instance->data()); ?>',

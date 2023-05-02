@@ -130,7 +130,7 @@ function build_components(array $components, array $data = []): array
         } elseif (class_exists($component)) {
             return $component::resolve($data);
         } elseif (view()->exists($component)) {
-            return resolve(AnonymousComponent::class, ['view' => $component, 'data' => $data]);
+            return new AnonymousComponent($component, $data);
         }
     }, $components);
 }
