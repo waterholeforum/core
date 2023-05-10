@@ -28,12 +28,19 @@ class Feed
             throw new RuntimeException('A feed must have at least 1 filter');
         }
 
-        $query = $this->request->query('filter');
+        if ($query = $this->request->query('filter')) {
+            $currentFilter = $this->filters->first(
+                fn(Filter $filter) => $filter->handle() === $query,
+            );
 
-        $this->currentFilter = $this->filters->first(
-            fn(Filter $filter) => $filter->handle() === $query,
-            $this->filters[0],
-        );
+            if (!$currentFilter) {
+                abort(404);
+            }
+
+            $this->currentFilter = $currentFilter;
+        } else {
+            $this->currentFilter = $this->filters[0];
+        }
     }
 
     /**
