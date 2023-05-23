@@ -32,7 +32,7 @@ class LicenseManager
 
     public function test(): bool
     {
-        return $this->status() === 200 && !$this->error() && !$this->public();
+        return $this->status() === 200 && !$this->public();
     }
 
     public function valid(): bool
