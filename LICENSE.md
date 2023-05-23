@@ -1,17 +1,53 @@
-Copyright © Waterhole Pty Ltd
+# Waterhole Software Licence Agreement
 
-Permission is hereby granted to any person obtaining a copy of this software (the “Software”) to use, copy, modify, merge, publish and/or distribute copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+1. **The Software:** This licence agreement relates to the software program known as 'Waterhole' including any updates that have been incorporated in the software program ("Software").
 
-1. **Do not plagiarize.** The above copyright notice and this license shall be included in all copies or substantial portions of the Software.
+2. **Copyright and Licence:** The copyright in the Software is owned by Waterhole Pty Ltd (Australian Business Number 69 667 084 577) ("Waterhole"). Waterhole permits any person to use the Software, but only on the terms of this licence agreement.
 
-2. **Do not use the same license on more than one project.** Each licensed copy of the Software shall be actively installed in no more than one production environment at a time.
+3. **Free Trial:** Any person may use the Software in an environment that is purely for the purposes of development and client preview, and only accessible by a restricted number of users (like on a personal computer, on a server in a network with restricted access, or when protecting a staging website with a password that only a restricted number of users know).
 
-3. **Do not alter the licensing features.** Software features related to licensing shall not be altered or circumvented in any way, including (but not limited to) license validation, feature restrictions, and update eligibility.
+4. **Production Licence:** Any person wishing to use the Software in a live, usable operation for the intended end users ("Production Environment") is required to either:
 
-4. **Not for reuse.** The Software and the proprietary code therein, not limited to but including designs, components, classes, and patterns, may not be reused in other projects without the express written consent of Waterhole Pty Ltd.
+   (a) have purchased a licence ("Licensee") to use the Software in a Production Environment from Waterhole ("Production Licence"); or
 
-5. **Follow the law.** All use of the Software shall not violate any applicable law or regulation, nor infringe the rights of any other person or entity.
+   (b) be an officer, employee, agent, contractor, representative or affiliate of the Licensee who has been authorised to use the Software by the Licensee ("Authorised User").
 
-Failure to comply with the foregoing conditions will automatically and immediately result in termination of the permission granted hereby. This license does not include any right to receive updates to the Software or technical support. Licensees bear all risk related to the quality and performance of the Software and any modifications made or obtained to it, including liability for actual and consequential harm, such as loss or corruption of data, and any necessary service, repair, or correction.
+   Any use of the Software under a Production Licence is subject to any restrictions or additional terms advised to the Licensee at the time the Production Licence is purchased (“Scope of the Licence”). Where the Scope of the Licence is inconsistent with the terms of this licence agreement, the Scope of the Licence will prevail over the terms of this licence agreement to the extent of that inconsistency.
 
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, INCLUDING SPECIAL, INCIDENTAL AND CONSEQUENTIAL DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+   The Licensee must ensure that its Authorised Users are aware of the terms of this licence agreement and the Scope of the Licence.
+
+5. **Single Project:** The Licensee and its Authorised Users may only use the Software for its intended purposes, for a single project at a time and in a single Production Environment at a time.
+
+6. **Copying and Distribution:** Any person accessing or using the Software is not permitted to copy, reproduce, merge, publish and/or distribute the Software, unless that person is:
+
+   (a) a Licensee or an Authorised User deploying a website to a server under a Production Licence; or
+
+   (b) copying the Software when developing a website on a personal computer or server; or
+
+   (c) copying the Software when working on code contributions to be made available to Waterhole; or
+
+   (d) copying the Software as a backup; or
+
+   (e) a Licensee or Authorised User making the Software available to third parties via a Software-as-a-Service (SaaS) offering, provided that a separate Production Licence is purchased for each separate project or separate client.
+
+   All proprietary notices and this licence agreement shall be included in all copies or substantial portions of the Software.
+
+7. **Alteration of Software:** Any person may alter, modify or extend the Software. However, they may not:
+
+   (a) alter or circumvent the licensing features, including (but not limited to) the licence validation and payment prompts; or
+
+   (b) resell, redistribute or transfer the modified or derivative version.
+
+8. **Not For Reuse:** The Software and the proprietary code therein, including (but not limited to) designs, components, classes, and patterns, may not be reused in other software or projects.
+
+9. **No Illegal or Immoral Use:** The Software may not be used for any illegal, immoral or objectionable purpose.
+
+10. **Automatic Termination for Non-Compliance:** If any person using this Software does not comply with any requirements of this licence agreement, this licence agreement will automatically terminate and that person, and if that person is an Authorised User then also the Licensee, shall no longer have any right to use the Software.
+
+11. **Separate Agreement for Updates:** This licence agreement does not of itself include any right to receive updates to the Software. Any such right must be purchased from Waterhole.
+
+12. **Use Solely at Own Risk:** Each user of the Software must make their own assessment of the suitability and functionality of the Software and bears all risk related to the quality and performance of the Software, including the risk of actual and consequential harm, such as loss or corruption of data, and any necessary service, repair, or correction.
+
+13. **Disclaimer:** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, INCLUDING SPECIAL, INCIDENTAL AND CONSEQUENTIAL DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+14. **Governing Law:** The Scope of the Licence and this licence agreement are governed by the laws of South Australia. Any person using the Software submits to the jurisdiction of South Australian courts in respect of any dispute, action, proceeding or demand arising out of or in connection with the Scope of the Licence, this licence agreement or the use of the Software.
