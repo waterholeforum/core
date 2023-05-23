@@ -8,35 +8,35 @@
 
 4. **Production Licence:** Any person wishing to use the Software in a live, usable operation for the intended end users ("Production Environment") is required to either:
 
-   (a) have purchased a licence ("Licensee") to use the Software in a Production Environment from Waterhole ("Production Licence"); or
+    (a) have purchased a licence ("Licensee") to use the Software in a Production Environment from Waterhole ("Production Licence"); or
 
-   (b) be an officer, employee, agent, contractor, representative or affiliate of the Licensee who has been authorised to use the Software by the Licensee ("Authorised User").
+    (b) be an officer, employee, agent, contractor, representative or affiliate of the Licensee who has been authorised to use the Software by the Licensee ("Authorised User").
 
-   Any use of the Software under a Production Licence is subject to any restrictions or additional terms advised to the Licensee at the time the Production Licence is purchased (“Scope of the Licence”). Where the Scope of the Licence is inconsistent with the terms of this licence agreement, the Scope of the Licence will prevail over the terms of this licence agreement to the extent of that inconsistency.
+    Any use of the Software under a Production Licence is subject to any restrictions or additional terms advised to the Licensee at the time the Production Licence is purchased (“Scope of the Licence”). Where the Scope of the Licence is inconsistent with the terms of this licence agreement, the Scope of the Licence will prevail over the terms of this licence agreement to the extent of that inconsistency.
 
-   The Licensee must ensure that its Authorised Users are aware of the terms of this licence agreement and the Scope of the Licence.
+    The Licensee must ensure that its Authorised Users are aware of the terms of this licence agreement and the Scope of the Licence.
 
 5. **Single Project:** The Licensee and its Authorised Users may only use the Software for its intended purposes, for a single project at a time and in a single Production Environment at a time.
 
 6. **Copying and Distribution:** Any person accessing or using the Software is not permitted to copy, reproduce, merge, publish and/or distribute the Software, unless that person is:
 
-   (a) a Licensee or an Authorised User deploying a website to a server under a Production Licence; or
+    (a) a Licensee or an Authorised User deploying a website to a server under a Production Licence; or
 
-   (b) copying the Software when developing a website on a personal computer or server; or
+    (b) copying the Software when developing a website on a personal computer or server; or
 
-   (c) copying the Software when working on code contributions to be made available to Waterhole; or
+    (c) copying the Software when working on code contributions to be made available to Waterhole; or
 
-   (d) copying the Software as a backup; or
+    (d) copying the Software as a backup; or
 
-   (e) a Licensee or Authorised User making the Software available to third parties via a Software-as-a-Service (SaaS) offering, provided that a separate Production Licence is purchased for each separate project or separate client.
+    (e) a Licensee or Authorised User making the Software available to third parties via a Software-as-a-Service (SaaS) offering, provided that a separate Production Licence is purchased for each separate project or separate client.
 
-   All proprietary notices and this licence agreement shall be included in all copies or substantial portions of the Software.
+    All proprietary notices and this licence agreement shall be included in all copies or substantial portions of the Software.
 
 7. **Alteration of Software:** Any person may alter, modify or extend the Software. However, they may not:
 
-   (a) alter or circumvent the licensing features, including (but not limited to) the licence validation and payment prompts; or
+    (a) alter or circumvent the licensing features, including (but not limited to) the licence validation and payment prompts; or
 
-   (b) resell, redistribute or transfer the modified or derivative version.
+    (b) resell, redistribute or transfer the modified or derivative version.
 
 8. **Not For Reuse:** The Software and the proprietary code therein, including (but not limited to) designs, components, classes, and patterns, may not be reused in other software or projects.
 
