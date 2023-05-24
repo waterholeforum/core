@@ -9,8 +9,7 @@ return [
     'after' => 'Поле :attribute должно быть датой после :date.',
     'after_or_equal' => 'Поле :attribute должно быть датой после или равной :date.',
     'alpha' => 'Поле :attribute должно содержать только буквы.',
-    'alpha_dash' =>
-        'Поле :attribute должно содержать только буквы, цифры, дефисы и подчеркивания.',
+    'alpha_dash' => 'Поле :attribute должно содержать только буквы, цифры, дефисы и подчеркивания.',
     'alpha_num' => 'Поле :attribute должно содержать только буквы и цифры.',
     'array' => 'Поле :attribute должно быть массивом.',
     'ascii' =>
@@ -23,7 +22,7 @@ return [
         'numeric' => 'Поле :attribute должно быть от :min до :max.',
         'string' => 'Поле :attribute должно быть от :min до :max символов.',
     ],
-    'boolean' => 'Поле :attribute должно быть true или false.',    
+    'boolean' => 'Поле :attribute должно быть true или false.',
     'confirmed' => 'Подтверждение поля :attribute не совпадает.',
     'current_password' => 'Неверный пароль.',
     'date' => 'Поле :attribute должно быть корректной датой.',
@@ -37,7 +36,8 @@ return [
     'digits_between' => 'Поле :attribute должно быть от :min до :max цифр.',
     'dimensions' => 'Поле :attribute имеет недопустимые размеры изображения.',
     'distinct' => 'Поле :attribute имеет повторяющееся значение.',
-    'doesnt_end_with' => 'Поле :attribute не должно оканчиваться на одно из следующих значений: :values.',
+    'doesnt_end_with' =>
+        'Поле :attribute не должно оканчиваться на одно из следующих значений: :values.',
     'doesnt_start_with' =>
         'Поле :attribute не должно начинаться с одного из следующих значений: :values.',
     'email' => 'Поле :attribute должно быть корректным адресом электронной почты.',
@@ -107,8 +107,7 @@ return [
     'numeric' => 'Поле :attribute должно быть числом.',
     'password' => [
         'letters' => 'Поле :attribute должно содержать хотя бы одну букву.',
-        'mixed' =>
-            'Поле :attribute должно содержать хотя бы одну прописную и одну строчную букву.',
+        'mixed' => 'Поле :attribute должно содержать хотя бы одну прописную и одну строчную букву.',
         'numbers' => 'Поле :attribute должно содержать хотя бы одну цифру.',
         'symbols' => 'Поле :attribute должно содержать хотя бы один символ.',
         'uncompromised' =>
@@ -128,7 +127,8 @@ return [
     'required_with' => 'Поле :attribute является обязательным, когда присутствует :values.',
     'required_with_all' => 'Поле :attribute является обязательным, когда присутствуют все :values.',
     'required_without' => 'Поле :attribute является обязательным, когда отсутствует :values.',
-    'required_without_all' => 'Поле :attribute является обязательным, когда отсутствуют все :values.',
+    'required_without_all' =>
+        'Поле :attribute является обязательным, когда отсутствуют все :values.',
     'same' => 'Поле :attribute должно совпадать с :other.',
     'size' => [
         'array' => 'Поле :attribute должно содержать :size элементов.',
