@@ -40,6 +40,11 @@ class VerifyEmailController extends Controller
 
         $request->user()->sendEmailVerificationNotification();
 
-        return back()->with('success', __('waterhole::auth.email-verification-sent-message', ['email' => $request->user()->email]));
+        return back()->with(
+            'success',
+            __('waterhole::auth.email-verification-sent-message', [
+                'email' => $request->user()->email,
+            ]),
+        );
     }
 }
