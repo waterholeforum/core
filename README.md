@@ -33,4 +33,4 @@ In order to ensure that the Waterhole community is welcoming to all, please revi
 
 [docs]: https://waterhole.dev/docs
 [community]: https://waterhole.dev/community
-[skeleton]: https://github.com/waterholeforum/skeleton
+[skeleton]: https://github.com/waterholeforum/waterhole

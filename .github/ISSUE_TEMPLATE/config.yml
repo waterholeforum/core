@@ -2,7 +2,7 @@ blank_issues_enabled: false
 
 contact_links:
   - name: Feature Requests and Ideas
-    url: https://waterhole.dev/community/channel/ideas
+    url: https://waterhole.dev/community/channels/ideas
     about: 'Please submit feature requests to the Ideas channel in our community.'
   - name: Support Questions & Other
     url: https://waterhole.dev/support
