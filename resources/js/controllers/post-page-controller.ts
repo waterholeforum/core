@@ -16,6 +16,7 @@ export default class extends Controller {
     };
 
     declare readonly postTarget: HTMLElement;
+    declare readonly hasCurrentPageTarget: boolean;
     declare readonly currentPageTarget: HTMLElement;
     declare readonly hasCommentsLinkTarget: boolean;
     declare readonly commentsLinkTarget: HTMLElement;
@@ -65,9 +66,11 @@ export default class extends Controller {
     };
 
     private onScroll = () => {
-        this.currentPageTarget.textContent =
-            this.element.querySelector('.comments-pagination [aria-current="page"]')?.textContent ||
-            '1';
+        if (this.hasCurrentPageTarget) {
+            this.currentPageTarget.textContent =
+                this.element.querySelector('.comments-pagination [aria-current="page"]')
+                    ?.textContent || '1';
+        }
 
         if (this.hasCommentsLinkTarget && this.hasCommentsPaginationTarget) {
             this.commentsLinkTarget.hidden =
