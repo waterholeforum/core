@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+-   Add support for looking up users by ID
+
 ### Changed
 
 -   Don't open internal links in a new window

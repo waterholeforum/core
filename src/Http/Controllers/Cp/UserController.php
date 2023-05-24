@@ -42,6 +42,8 @@ class UserController extends Controller
                     $query->where('suspended_until', '>', now());
                 } elseif (filter_var($token[0], FILTER_VALIDATE_EMAIL)) {
                     $query->where('email', $token[0]);
+                } elseif (filter_var($token[0], FILTER_VALIDATE_INT)) {
+                    $query->where('id', $token[0]);
                 } else {
                     $query->where('name', 'LIKE', $token[0] . '%');
                 }
