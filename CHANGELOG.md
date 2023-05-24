@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 -   Add support for looking up users by ID
+-   Add Russian translation ([#2](https://github.com/waterholeforum/core/pull/2) by @Awilum)
 
 ### Changed
 
