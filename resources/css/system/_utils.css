@@ -270,7 +270,6 @@
 .scrollable,
 .scrollable-x,
 .scrollable-y {
-  position: relative;
   overflow: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
