@@ -20,7 +20,7 @@ getting-started-design-description = Задавайте вопросы, дели
 
 dashboard-users-title = Пользователи
 dashboard-posts-title = Сообщения
-dashboard-comments-title = Комментарии 
+dashboard-comments-title = Комментарии
 
 period-today = Сегодня
 period-last-7-days = Последние 7 дней
@@ -232,6 +232,3 @@ license-suspended-message = Ваша лицензия Waterhole была при�
 trial-badge = Пробная версия
 licensed-badge = Лицензировано
 unlicensed-badge = Без лицензии
-
-
-# Move to system

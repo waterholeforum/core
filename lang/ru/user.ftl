@@ -19,7 +19,7 @@ notifications-following-label = Подписка
 follow-on-comment-label = Автоматически подписываться на посты, на которые я оставляю комментарии
 notification-preferences-saved-message = Настройки уведомлений сохранены.
 
-## Editprofile
+## Edit Profile
 
 edit-profile-title = Редактирование профиля
 profile-saved-message = Профиль сохранен.
@@ -52,7 +52,7 @@ preferences-link = Настройки
 administration-link = Администрирование
 log-out-link = Выйти
 
-##profile
+## Profile
 
 user-joined-text = Присоединился { $date }
 user-last-seen-text = Был в сети { $date }

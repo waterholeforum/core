@@ -229,6 +229,3 @@ license-suspended-message = Your Waterhole license has been suspended. Please co
 trial-badge = Trial
 licensed-badge = Licensed
 unlicensed-badge = Unlicensed
-
-
-# Move to system
