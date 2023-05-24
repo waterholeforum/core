@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use s9e\TextFormatter\Configurator;
 use s9e\TextFormatter\Renderer;
 use Waterhole\Formatter\Context;
+use Waterhole\Formatter\FormatExternalLinks;
 use Waterhole\Formatter\FormatMentions;
 use Waterhole\Formatter\Formatter;
 use Waterhole\Formatter\FormatUploads;
@@ -41,9 +42,12 @@ class FormatterServiceProvider extends ServiceProvider
                 $config->Autoimage;
             });
 
-            $formatter->rendering(function (Renderer $renderer, string $xml, ?Context $context) {
+            $formatter->rendering(function (Renderer $renderer, string &$xml, ?Context $context) {
                 $renderer->setParameter('USER_ID', $context->user->id ?? null);
             });
+
+            $formatter->configure([FormatExternalLinks::class, 'configure']);
+            $formatter->rendering([FormatExternalLinks::class, 'rendering']);
 
             $formatter->configure([FormatMentions::class, 'configure']);
             $formatter->rendering([FormatMentions::class, 'rendering']);

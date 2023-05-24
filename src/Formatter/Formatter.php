@@ -116,8 +116,6 @@ class Formatter
             $callback($configurator);
         }
 
-        $this->configureExternalLinks($configurator);
-
         return $configurator;
     }
 
@@ -145,18 +143,6 @@ class Formatter
         });
 
         return $this->getComponent('renderer');
-    }
-
-    private function configureExternalLinks(Configurator $configurator): void
-    {
-        $dom = $configurator->tags['URL']->template->asDOM();
-
-        foreach ($dom->getElementsByTagName('a') as $a) {
-            $a->setAttribute('target', '_blank');
-            $a->setAttribute('rel', 'nofollow ugc');
-        }
-
-        $dom->saveChanges();
     }
 
     private function configureRenderingCache(Configurator $configurator): void
