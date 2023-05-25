@@ -79,7 +79,7 @@ class MakeExtensionCommand extends Command
         $this->installExtension($name);
     }
 
-    private function addComposerRepository()
+    private function addComposerRepository(): void
     {
         $file = $this->laravel->basePath('composer.json');
 
@@ -90,7 +90,7 @@ class MakeExtensionCommand extends Command
             'url' => 'extensions/*',
         ];
 
-        if (in_array($repository, $decoded['repositories'])) {
+        if (in_array($repository, $decoded['repositories'] ?? [])) {
             return;
         }
 
@@ -101,7 +101,7 @@ class MakeExtensionCommand extends Command
         $this->info('Path repository added to composer.json.');
     }
 
-    private function installExtension(string $name)
+    private function installExtension(string $name): void
     {
         $this->info('Installing your extension...');
 
