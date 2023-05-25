@@ -2,81 +2,81 @@
 
 ## Account Settings
 
-account-settings-title = Account Settings
+account-settings-title = Paramètres du compte
 
-delete-account-button = Delete Your Account
-delete-account-confirmation-title = Are you sure you want to delete your account?
-delete-account-confirmation-description = Your account data will be removed. Your contributions will be retained but marked as anonymous. This cannot be undone.
-delete-account-success-message = Your account has been deleted.
+delete-account-button = Supprimer votre compte
+delete-account-confirmation-title = Êtes-vous sûr de vouloir supprimer votre compte ?
+delete-account-confirmation-description = Les données de votre compte seront supprimées. Vos contributions seront conservées mais marquées comme anonymes. Cette action est irréversible.
+delete-account-success-message = Votre compte a été supprimé.
 
 ## Notification Preferences
 
-notification-preferences-title = Notification Preferences
+notification-preferences-title = Préférences de notification
 notifications-label = Notifications
 notification-channel-web = Web
-notification-channel-email = Email
-notifications-following-label = Following
-follow-on-comment-label = Automatically follow posts I comment on
-notification-preferences-saved-message = Notification preferences saved.
+notification-channel-email = Courriel
+notifications-following-label = Abonnements
+follow-on-comment-label = Suivre automatiquement les messages que je commente
+notification-preferences-saved-message = Les préférences de notification ont été enregistrées.
 
 ## Edit Profile
 
-edit-profile-title = Edit Profile
-profile-saved-message = Profile saved.
+edit-profile-title = Modifier le profil
+profile-saved-message = le profil a été enregistré.
 
 avatar-label = Avatar
-remove-avatar-label = Remove avatar
-headline-label = Headline
-headline-description = Describe yourself in a few words. This will be displayed next to your name.
-bio-label = Bio
-bio-description = Write more about yourself. This will be displayed on your profile.
-location-label = Location
-website-label = Website
-privacy-title = Privacy
-show-online-label = Show when I was last online
+remove-avatar-label = Supprimer l'avatar
+headline-label = Intitulé
+headline-description = Décrivez-vous en quelques mots. Cette description sera affichée à côté de votre nom.
+bio-label = Biographie
+bio-description = Donnez plus d'informations sur vous. Ces informations seront affichées sur votre profil.
+location-label = Localisation
+website-label = Site internet
+privacy-title = Confidentialité
+show-online-label = Afficher la date de ma dernière connexion
 
 ## Comments
 
-user-comments-title = { $userName }'s Comments
-comments-empty-message = No Comments
+user-comments-title = Commentaires de { $userName }
+comments-empty-message = Aucun commentaire
 
 ## Posts
 
-user-posts-title = { $userName }'s Posts
-posts-empty-message = No Posts
+user-posts-title = Messages de { $userName }
+posts-empty-message = Aucun message
 
 ## User Menu
 
-profile-link = Profile
-preferences-link = Preferences
+profile-link = Profil
+preferences-link = Préférences
 administration-link = Administration
-log-out-link = Log Out
+log-out-link = Se déconnecter
 
 ## Profile
 
-user-joined-text = Joined { $date }
-user-last-seen-text = Last seen { $date }
-online-label = Online
+user-joined-text = Inscrit le { $date }
+user-last-seen-text = Dernière visite le { $date }
+online-label = En ligne
 
 ## Sidebar
 
-posts-link = Posts
-comments-link = Comments
-preferences-heading = Preferences
-account-settings-link = Account
-edit-profile-link = Profile
+posts-link = Messages
+comments-link = Commentaires
+preferences-heading = Préférences
+account-settings-link = Compte
+edit-profile-link = Profil
 notification-preferences-link = Notifications
 
 ## Admin
 
-suspend-button = Suspend
-edit-suspension-button = Edit Suspension
-suspend-user-title = Suspend
-not-suspended-label = Not suspended
-suspended-indefinitely-label = Suspended indefinitely
-suspended-until-label = Suspended until...
-suspended-badge = Suspended
-suspended-message = Your account has been suspended.
+suspend-button = Suspendre
+edit-suspension-button = Modifier la suspension
+suspend-user-title = Suspendre
+not-suspended-label = Non suspendu
+suspended-indefinitely-label = Suspendu indéfiniment
+suspended-until-label = Suspendu jusqu'à…
+suspended-badge = Suspendu
+suspended-message = Votre compte a été suspendu.
 
-copy-impersonation-url-button = Copy Impersonation URL
-impersonation-url-copied-message = Impersonation URL copied – open it in a new private window.
+copy-impersonation-url-button = Copier l'URL d'usurpation d'identité
+impersonation-url-copied-message = L'URL d'usurpation d'identité a été copiée, vous pouvez l'ouvrir dans une nouvelle fenêtre privée.
