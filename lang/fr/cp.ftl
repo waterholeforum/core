@@ -1,231 +1,231 @@
 ### Localization for Waterhole Control Panel
 
-title = Control Panel
+title = Panneau de contrôle
 
 ## Dashboard
 
-dashboard-title = Dashboard
+dashboard-title = Tableau de bord
 
-configure-mail-message = You need to configure a mail driver in order for Waterhole to be able to send out verification emails.
-debug-mode-on-message = Debug mode is ON. Sensitive configuration values may be exposed.
+configure-mail-message = Vous devez configurer un pilote de messagerie pour que Waterhole puisse envoyer des courriels de vérification.
+debug-mode-on-message = Le mode débogage est activé. Des valeurs de configuration sensibles peuvent être exposées.
 
-getting-started-title = Get Started With Waterhole
-getting-started-strategy-title = Read the Docs
-getting-started-strategy-description = Learn how to build a successful community with Waterhole.
-getting-started-structure-title = Set Up Your Structure
-getting-started-structure-description = Configure the channels and pages that make up the skeleton of your community.
-getting-started-groups-title = Define User Groups
-getting-started-groups-description = Set up groups for moderators, staff, and superusers.
-getting-started-design-title = Join the Waterhole Community
-getting-started-design-description = Ask questions, share tips, and learn how to get the most out of your community.
+getting-started-title = Démarrer avec Waterhole
+getting-started-strategy-title = Lire la documentation
+getting-started-strategy-description = Apprendre à bâtir une communauté avec Waterhole.
+getting-started-structure-title = Mettre en place votre structure
+getting-started-structure-description = Configurer les canaux et les pages qui constituent le squelette de votre communauté.
+getting-started-groups-title = Définir les groupes d'utilisateurs
+getting-started-groups-description = Créer des groupes pour les modérateurs, les membres de l'équipe et les super utilisateurs.
+getting-started-design-title = Rejoindre la communauté de Waterhole
+getting-started-design-description = Poser des questions, partager des conseils et apprendre à exploiter au mieux votre communauté.
 
-dashboard-users-title = Users
-dashboard-posts-title = Posts
-dashboard-comments-title = Comments
+dashboard-users-title = Utilisateurs
+dashboard-posts-title = Messages
+dashboard-comments-title = Commentaires
 
-period-today = Today
-period-last-7-days = Last 7 days
-period-last-4-weeks = Last 4 weeks
-period-last-3-months = Last 3 months
-period-last-12-months = Last 12 months
-period-this-month = This month
-period-this-quarter = This quarter
-period-this-year = This year
-period-all-time = All time
-period-current-heading = Current Period
-preiod-previous-heading = Previous Period
+period-today = Aujourd'hui
+period-last-7-days = Ces 7 derniers jours
+period-last-4-weeks = Ces 4 dernières semaines
+period-last-3-months = Ces 3 derniers mois
+period-last-12-months = Ces 12 derniers mois
+period-this-month = Ce mois
+period-this-quarter = Ce trimestre
+period-this-year = Cette année
+period-all-time = Depuis toujours
+period-current-heading = Période actuelle
+preiod-previous-heading = Période antérieure
 
 ## Structure
 
 structure-title = Structure
 
-structure-channel-label = Channel
+structure-channel-label = Canal
 structure-page-label = Page
-structure-link-label = Link
-structure-heading-label = Heading
+structure-link-label = Lien
+structure-heading-label = Rubrique
 structure-visibility-public-label = Public
 
 structure-navigation-title = Navigation
-structure-navigation-description = Move items here to show them in the navigation menu.
+structure-navigation-description = Déplacez les éléments ici pour les afficher dans le menu de navigation.
 
-structure-unlisted-title = Unlisted
-structure-unlisted-description = Move items here to hide them from the navigation menu.
+structure-unlisted-title = Non répertorié
+structure-unlisted-description = Déplacez les éléments ici pour les masquer du menu de navigation.
 
-delete-structure-confirm-message = Are you sure you want to delete this node?
+delete-structure-confirm-message = Êtes-vous sûr de vouloir supprimer ce nœud ?
 
 ## Structure - Heading
 
-edit-heading-title = Edit Heading
-create-heading-title = Create a Heading
-heading-name-label = Name
+edit-heading-title = Modifier la rubrique
+create-heading-title = Créer une rubrique
+heading-name-label = Nom
 
 ## Structure - Link
 
-edit-link-title = Edit Link
-create-link-title = Create a Link
-link-details-title = Details
-link-name-label = Name
+edit-link-title = Modifier le lien
+create-link-title = Créer un lien
+link-details-title = Informations
+link-name-label = Nom
 link-url-label = URL
 link-permissions-title = Permissions
 
 ## Structure - Page
 
-edit-page-title = Edit Page
-create-page-title = Create a Page
-page-details-title = Details
-page-name-label = Name
-page-slug-label = Slug
-page-slug-url-label = This page will be accessible at:
-page-body-label = Body
+edit-page-title = Modifier la page
+create-page-title = Créer une page
+page-details-title = Informations
+page-name-label = Nom
+page-slug-label = Identifiant texte unique
+page-slug-url-label = Cette page sera accessible sur :
+page-body-label = Corps
 page-permissions-title = Permissions
 
 ## Structure - Channel
 
-edit-channel-title = Edit Channel
-create-channel-title = Create a Channel
-channel-details-title = Details
-channel-name-label = Name
-channel-slug-label = Slug
-channel-slug-url-label = This channel will be accessible at:
+edit-channel-title = Modifier le canal
+create-channel-title = Créer un canal
+channel-details-title = Informations
+channel-name-label = Nom
+channel-slug-label = Identifiant texte unique
+channel-slug-url-label = Ce canal sera accessible sur :
 channel-description-label = Description
-channel-description-description = A brief description of what this channel is for.
+channel-description-description = Une courte description de ce à quoi sert ce canal.
 channel-options-title = Options
-channel-visibility-label = Visibility
-channel-ignore-label = Ignored by default
-channel-ignore-description = Hide posts in this channel from the Feed for all users, unless they explicitly follow it.
-channel-layout-title = Layout
-channel-layout-label = Layout
-channel-layout-show-author-label = Show post author
-channel-layout-show-excerpt-label = Show post excerpt
-channel-filters-label = Filters
-channel-custom-filters-label = Use custom filters for this channel
-channel-custom-filters-description = Override the global filters for this channel.
+channel-visibility-label = Visibilité
+channel-ignore-label = Ignoré par défaut
+channel-ignore-description = Masque les messages de ce canal dans le fil d'actualité de tous les utilisateurs, à moins qu'ils ne le suivent explicitement.
+channel-layout-title = Disposition
+channel-layout-label = Disposition
+channel-layout-show-author-label = Afficher l'auteur du message
+channel-layout-show-excerpt-label = Afficher l'extrait du message
+channel-filters-label = Filtres
+channel-custom-filters-label = Utiliser des filtres personnalisés sur ce canal
+channel-custom-filters-description = Remplace les filtres généraux de ce canal.
 channel-permissions-title = Permissions
-channel-features-title = Features
-channel-reactions-label = Reactions
-channel-reactions-posts-label = Posts
-channel-reactions-comments-label = Comments
+channel-features-title = Fonctionnalités
+channel-reactions-label = Réactions
+channel-reactions-posts-label = Messages
+channel-reactions-comments-label = Commentaires
 channel-taxonomies-label = Taxonomies
-channel-answers-label = Answers
-channel-enable-answers-label = Enable answers on this channel
-channel-enable-answers-description = Allow post authors to mark a comment as the answer.
-channel-posting-title = Posting
-channel-instructions-label = Posting Instructions
-channel-instructions-description = Give instructions to be shown to users as they create posts in this channel.
-channel-similar-posts-title = Similar Posts
-channel-show-similar-posts-label = Show similar posts from this channel based on the title
+channel-answers-label = Réponses
+channel-enable-answers-label = Activer les réponses sur ce canal
+channel-enable-answers-description = Permet aux auteurs de messages de marquer un commentaire comme étant la réponse.
+channel-posting-title = Publication
+channel-instructions-label = Instructions de publication
+channel-instructions-description = Affiche les instructions de publication aux utilisateurs lorsqu'ils rédigent des messages dans ce canal.
+channel-similar-posts-title = Messages similaires
+channel-show-similar-posts-label = Afficher les messages similaires de ce canal en fonction du titre
 
-delete-channel-title = Delete Channel:
-delete-channel-posts-label = Delete { $count } { $count ->
-    [one] post
-    *[other] posts
+delete-channel-title = Supprimer le canal :
+delete-channel-posts-label = Supprimer { $count } { $count ->
+    [one] message
+    *[other] messages
 }
-move-to-channel-posts-label = Move { $count } { $count ->
-    [one] post
-    *[other] posts
-} to another channel
+move-to-channel-posts-label = Déplacer { $count } { $count ->
+    [one] message
+    *[other] messages
+} vers un autre canal
 
 ## Groups
 
-groups-title = Groups
-create-group-button = Create Group
+groups-title = Groupes
+create-group-button = Créer un groupe
 group-user-count = { $count } { $count ->
-    [one] user
-    *[other] users
+    [one] utilisateur
+    *[other] utilisateurs
 }
 
-edit-group-title = Edit Group
-create-group-title = Create a Group
-group-details-title = Details
-group-name-label = Name
-group-appearance-label = Appearance
-group-show-as-badge-label = Show this group as a user badge
-group-color-label = Color
-group-icon-label = Icon
+edit-group-title = Modifier le groupe
+create-group-title = Créer un groupe
+group-details-title = Informations
+group-name-label = Nom
+group-appearance-label = Apparence
+group-show-as-badge-label = Afficher ce groupe comme badge pour l'utilisateur
+group-color-label = Couleur
+group-icon-label = Icône
 group-permissions-title = Permissions
 
-delete-group-confirm-message = Are you sure you want to delete this group?
+delete-group-confirm-message = Êtes-vous sûr de vouloir supprimer ce groupe ?
 
 ## Users
 
-users-title = Users
-users-filter-placeholder = Filter users
-users-filter-group-description = Filter by group
-create-user-button = Create User
+users-title = Utilisateurs
+users-filter-placeholder = Filtrer les utilisateurs
+users-filter-group-description = Filtrer par groupe
+create-user-button = Créer un utilisateur
 
-users-name-column = Name
-users-email-column = Email
-users-groups-column = Groups
-users-created-at-column = Created
-users-last-seen-at-column = Last Seen
-users-empty-message = No Results Found
+users-name-column = Nom
+users-email-column = Adresse de courriel
+users-groups-column = Groupes
+users-created-at-column = Création
+users-last-seen-at-column = Dernière visite
+users-empty-message = Aucun résultat n'a été trouvé
 
-edit-user-title = Edit User
-create-user-title = Create a User
-user-account-title = Account
-user-name-label = Name
-user-email-label = Email
-user-password-label = Password
-user-set-password-label = Set new password
-user-groups-label = Groups
-user-profile-title = Profile
-user-created-message = User created.
-user-saved-message = User saved.
+edit-user-title = Modifier l'utilisateur
+create-user-title = Créer un utilisateur
+user-account-title = Compte
+user-name-label = Nom
+user-email-label = Adresse de courriel
+user-password-label = Mot de passe
+user-set-password-label = Définir un nouveau mot de passe
+user-groups-label = Groupes
+user-profile-title = Profil
+user-created-message = L'utilisateur a été créé.
+user-saved-message = L'utilisateur a été enregistré.
 
-delete-user-title = Delete { $count ->
-    [one] User:
-    *[other] { $count } Users
+delete-user-title = Supprimer { $count ->
+    [one] l'utilisateur :
+    *[other] { $count } utilisateurs
 }
-keep-user-content-label = Keep content and mark as anonymous
-delete-user-content-label = Delete content permanently
-delete-user-success-message = User deleted.
+keep-user-content-label = Conserver le contenu et le marquer comme anonyme
+delete-user-content-label = Supprimer définitivement le contenu
+delete-user-success-message = L'utilisateur a été supprimé.
 
 ## Reactions
 
-reactions-title = Reactions
-reaction-sets-title = Reaction Sets
-create-reaction-set-button = Create Reaction Set
-edit-reaction-set-title = Edit Reaction Set
-create-reaction-set-title = Create a Reaction Set
-reaction-set-name-label = Name
-reaction-set-reactions-label = Reactions
-delete-reaction-set-confirm-message = Are you sure you want to delete this reaction set?
-reaction-set-saved-message = Reaction set saved.
+reactions-title = Réactions
+reaction-sets-title = Ensembles de réactions
+create-reaction-set-button = Créer un ensemble de réactions
+edit-reaction-set-title = Modifier l'ensemble de réactions
+create-reaction-set-title = Créer un ensemble de réactions
+reaction-set-name-label = Nom
+reaction-set-reactions-label = Réactions
+delete-reaction-set-confirm-message = Êtes-vous sûr de vouloir supprimer cet ensemble de réactions ?
+reaction-set-saved-message = L'ensemble de réactions a été enregistré.
 
-edit-reaction-type-title = Edit Reaction Type
-create-reaction-type-title = Create a Reaction Type
-reaction-type-name-label = Name
+edit-reaction-type-title = Modifier le type de réaction
+create-reaction-type-title = Créer un type de réaction
+reaction-type-name-label = Nom
 reaction-type-score-label = Score
-reaction-type-score-description = The number of points that this reaction is worth.
-delete-reaction-type-confirm-message = Are you sure you want to delete this reaction type?
-reaction-type-saved-message = Reaction type saved.
+reaction-type-score-description = Le nombre de points que vaut cette réaction.
+delete-reaction-type-confirm-message = Êtes-vous sûr de vouloir supprimer ce type de réaction ?
+reaction-type-saved-message = Le type de réaction a été enregistré.
 
 ## Taxonomies
 
 taxonomies-title = Taxonomies
-create-taxonomy-button = Create Taxonomy
-create-taxonomy-title = Create a Taxonomy
-edit-taxonomy-title = Edit Taxonomy
-taxonomy-details-title = Details
+create-taxonomy-button = Créer une taxonomie
+create-taxonomy-title = Créer une taxonomie
+edit-taxonomy-title = Modifier la taxonomie
+taxonomy-details-title = Informations
 taxonomy-permissions-title = Permissions
-taxonomy-tags-title = Tags
-taxonomy-name-label = Name
-taxonomy-saved-message = Taxonomy saved.
-delete-taxonomy-confirm-message = Are you sure you want to delete this taxonomy?
+taxonomy-tags-title = Étiquettes
+taxonomy-name-label = Nom
+taxonomy-saved-message = La taxonomie a été enregistrée.
+delete-taxonomy-confirm-message = Êtes-vous sûr de vouloir supprimer cette taxonomie ?
 
-create-tag-title = Create a Tag
-edit-tag-title = Edit Tag
-tag-name-label = Name
-tag-saved-message = Tag saved.
-delete-tag-confirm-message = Are you sure you want to delete this tag?
+create-tag-title = Créer une étiquette
+edit-tag-title = Modifier l'étiquette
+tag-name-label = Nom
+tag-saved-message = L'étiquette a été enregistrée.
+delete-tag-confirm-message = Êtes-vous sûr de vouloir supprimer cette étiquette ?
 
 ## Licensing
 
-license-error-message = Your license could not be validated, because there was an error communicating with the Waterhole API. ({ $status })
-license-invalid-message = Please purchase or enter a valid license key for this site to comply with the License Agreement.
-license-expired-message = You are not licensed to use this version of Waterhole. Please downgrade or renew your license.
-license-suspended-message = Your Waterhole license has been suspended. Please contact us for more information.
+license-error-message = Votre licence n'a pas pu être validée en raison d'une erreur de communication avec l'API de Waterhole. ({ $status })
+license-invalid-message = Veuillez acheter ou saisir une clé de licence valide pour ce site afin de vous conformer à l'accord de licence.
+license-expired-message = Vous n'êtes pas autorisé à utiliser cette version de Waterhole. Veuillez rétrograder votre version ou renouveler votre licence.
+license-suspended-message = Votre licence Waterhole a été suspendue. Veuillez nous contacter pour plus d'informations.
 
-trial-badge = Trial
-licensed-badge = Licensed
-unlicensed-badge = Unlicensed
+trial-badge = Version d'essai
+licensed-badge = Licence valide
+unlicensed-badge = Sans licence
