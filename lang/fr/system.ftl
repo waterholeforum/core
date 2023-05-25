@@ -1,119 +1,119 @@
 ## Accessibility
 
-skip-to-main-content-link = Skip to main content
+skip-to-main-content-link = Passer au contenu principal
 
 ## Errors
 
-fatal-error-heading = Something Went Wrong
-try-again-button = Try Again
+fatal-error-heading = Une erreur s'est produite
+try-again-button = Réessayer
 
-fatal-error-message = Something went wrong! Please reload the page and try again.
-too-many-requests-message = You're going a bit too fast! Take a break and try again in a moment.
-forbidden-message = You don't have permission to do this.
-validation-errors-message = The following errors were found:
+fatal-error-message = Une erreur s'est produite ! Veuillez recharger la page puis réessayer
+too-many-requests-message = Vous allez un peu trop vite ! Faites une pause et réessayez dans un instant.
+forbidden-message = Vous n'avez pas la permission de faire cela.
+validation-errors-message = Les erreurs suivantes ont été détectées :
 
 ## Generic Buttons & Links
 
-save-changes-button = Save Changes
-create-button = Create
-cancel-button = Cancel
-change-button = Change
-continue-button = Continue
+save-changes-button = Enregistrer les modifications
+create-button = Créer
+cancel-button = Annuler
+change-button = Modifier
+continue-button = Continuer
 actions-button = Actions
-learn-more-link = Learn More
-delete-button = Delete
-edit-link = Edit
-copy-link-button = Copy Link
-controls-button = Controls
-more-button = More
-loading = Loading
-show-more-button = Show more
+learn-more-link = En savoir plus
+delete-button = Supprimer
+edit-link = Modifier
+copy-link-button = Copier le lien
+controls-button = Contrôles
+more-button = Plus
+loading = Chargement
+show-more-button = Afficher plus
 
 ## Post Feed Layouts
 
-layout-list = List
-layout-cards = Cards
+layout-list = Liste
+layout-cards = Cartes
 
 ## Actions
 
-confirm-action-title = Confirm Action
-delete-confirm-button = Delete
+confirm-action-title = Confirmer l'action
+delete-confirm-button = Supprimer
 
 ## Users
 
-deleted-user = Deleted User
-user-list-overflow = { $count } others
+deleted-user = Utilisateur supprimé
+user-list-overflow = { $count } autres
 
 ## Pagination
 
-pagination-first-link = First
-pagination-previous-link = Previous
-pagination-next-link = Next
-pagination-last-link = Last
-load-more-button = Load More
+pagination-first-link = Premier
+pagination-previous-link = Précédent
+pagination-next-link = Suivant
+pagination-last-link = Dernier
+load-more-button = Charger plus
 page-number-prefix = Page
 page-number-heading = Page { $number }
 
 ## Theme Switcher
 
-theme-button = Theme
-theme-light = Light
-theme-dark = Dark
-theme-automatic = Automatic
+theme-button = Thème
+theme-light = Clair
+theme-dark = Sombre
+theme-automatic = Automatique
 
 ## Text Editor
 
-text-editor-heading = Heading
-text-editor-bold = Bold
-text-editor-italic = Italic
-text-editor-quote = Quote
+text-editor-heading = Titre
+text-editor-bold = Gras
+text-editor-italic = Italique
+text-editor-quote = Citer
 text-editor-code = Code
-text-editor-link = Link
-text-editor-bulleted-list = Bulleted List
-text-editor-numbered-list = Numbered List
-text-editor-mention = Mention a User
-text-editor-emoji = Insert Emoji
-text-editor-attachment = Attach Files
-text-editor-preview = Preview
+text-editor-link = Lien
+text-editor-bulleted-list = Liste à puces
+text-editor-numbered-list = Liste numérotée
+text-editor-mention = Mentionner un utilisateur
+text-editor-emoji = Insérer un émoji
+text-editor-attachment = Joindre des fichiers
+text-editor-preview = Prévisualiser
 
 ## Icon Picker
 
-icon-field-label = Icon
-icon-picker-change-button = Change
-icon-picker-none-option = None
-icon-picker-emoji-option = Emoji
-icon-picker-emoji-description = Enter a single emoji character.
-icon-picker-svg-option = SVG Icon
-icon-picker-svg-description = Enter the name of an icon from one of the following installed sets: { $sets }.
-icon-picker-svg-search-link = Search icons
+icon-field-label = Icône
+icon-picker-change-button = Modifier
+icon-picker-none-option = Aucun
+icon-picker-emoji-option = Émoji
+icon-picker-emoji-description = Saisissez un seul caractère émoji.
+icon-picker-svg-option = Icône SVG
+icon-picker-svg-description = Saisissez le nom d'une icône appartenant à l'un des ensembles installés suivants : { $sets }.
+icon-picker-svg-search-link = Rechercher des icônes
 icon-picker-image-option = Image
 
 ## Abilities
 
-ability-view = View
-ability-comment = Comment
-ability-post = Post
-ability-moderate = Moderate
-ability-assign-tags = Assign Tags
+ability-view = Voir
+ability-comment = Commenter
+ability-post = Publier
+ability-moderate = Modérer
+ability-assign-tags = Étiqueter
 
 ## Sortable Lists
 
 sortable-instructions =
-    To pick up a sortable item, press space or enter.
-    While dragging, use the arrow keys to move the item.
-    Press space or enter again to drop the item in its new position, or press escape to cancel.
+    Pour sélectionner un élément à trier, appuyez sur la touche « Espace » ou « Entrée ».
+    Tout en faisant glisser l'élément, utilisez les touches fléchées pour le déplacer.
+    Appuyez à nouveau sur la touche « Espace » ou « Entrée » pour déposer l'élément dans sa nouvelle position, ou appuyez sur la touche « Échap » pour annuler.
 
-sortable-drag-start-announcement = Picked up { $activeLabel } in { $containerLabel }
-sortable-drag-over-announcement = { $activeLabel } was moved to position { $overPosition } in { $containerLabel }
-sortable-drop-announcement = { $activeLabel } was dropped in position { $overPosition } in { $containerLabel }
-sortable-drag-cancel-announcement = Sorting was cancelled. { $activeLabel } was dropped.
+sortable-drag-start-announcement = { $activeLabel } a été sélectionné dans { $containerLabel }
+sortable-drag-over-announcement = { $activeLabel } a été déplacé dans la position { $overPosition } dans { $containerLabel }
+sortable-drop-announcement = { $activeLabel } a été déposé en position { $overPosition } dans { $containerLabel }
+sortable-drag-cancel-announcement = Le tri a été annulé. { $activeLabel } a été abandonné.
 
 ## Used in the Waterhole\compact_number() function
 
-compact-number-1000 = 0.0K
-compact-number-10000 = 00K
-compact-number-100000 = 000K
-compact-number-1000000 = 0.0M
-compact-number-10000000 = 00M
-compact-number-100000000 = 000M
-compact-number-1000000000 = 0.0B
+compact-number-1000 = 0.0 k
+compact-number-10000 = 00 k
+compact-number-100000 = 000 k
+compact-number-1000000 = 0.0 M
+compact-number-10000000 = 00 M
+compact-number-100000000 = 000 M
+compact-number-1000000000 = 0.0 G
