@@ -2,47 +2,47 @@
 
 ## Groups
 
-group-guest = Guest
-group-member = Member
-group-admin = Admin
-group-moderator = Mod
+group-guest = Invité
+group-member = Membre
+group-admin = Administrateur
+group-moderator = Modérateur
 
 ## Reactions
 
-reaction-set-emoji = Emoji
-reaction-type-like = Like
-reaction-type-love = Love
-reaction-type-laugh = Laugh
-reaction-type-wow = Wow
-reaction-type-sad = Sad
-reaction-type-angry = Angry
+reaction-set-emoji = Émoji
+reaction-type-like = J'aime
+reaction-type-love = Cœur
+reaction-type-laugh = Rire
+reaction-type-wow = Waouh
+reaction-type-sad = Triste
+reaction-type-angry = En colère
 
 reaction-set-votes = Votes
-reaction-type-upvote = Upvote
+reaction-type-upvote = Voter pour
 
 ## Structure
 
-announcements-name = Announcements
-announcements-description = News and other updates from the team.
+announcements-name = Annonces
+announcements-description = Actualités et autres annonces de l'équipe.
 
 introductions-name = Introductions
-introductions-description = New to the community? Introduce yourself!
+introductions-description = Nouveau dans la communauté ? Présentez-vous !
 
-support-name = Support
-support-description = Get help setting up, using, and customising our product.
+support-name = Assistance
+support-description = Obtenez de l'aide pour configurer, utiliser et personnaliser notre logiciel.
 
-ideas-name = Ideas
-ideas-description = Have an idea? We want to hear it!
+ideas-name = Idées
+ideas-description = Vous avez une idée ? Nous voulons l'entendre !
 
-staff-name = Staff Only
-staff-description = A private channel for staff discussion.
+staff-name = Réservé à l'équipe
+staff-description = Un canal privé pour les discussions entre membres de l'équipe.
 
-guide-title = Community Guide
+guide-title = Guide communautaire
 guide-body =
-  Welcome to { $forumName }, and thanks for joining us! We want everyone to get the most out of of this community, so we ask that you please read and follow these guidelines.
+  Bienvenue sur { $forumName } et merci de nous rejoindre ! Nous souhaitons que chacun puisse profiter au maximum de cette communauté, et c'est pourquoi nous vous demandons de bien vouloir lire et respecter les lignes directrices suivantes.
 
-  - **Be civil.** This is a place to share knowledge and interests through conversation. Be kind, patient, and respectful towards everyone, including people outside of the Waterhole community.
+  - **Soyez courtois.** Il s'agit d'un lieu de partage de connaissances et d'intérêts par le biais de conversations. Soyez aimable, patient et respectueux envers tout le monde, y compris les personnes extérieures à la communauté de Waterhole.
 
-  - **No personal attacks.** Criticizing ideas, by means of reasoned arguments, is an important part of what we're doing here. But it's not okay for that to devolve into personal attacks. Harassment and other exclusionary behavior are never acceptable.
+  - **Pas d'attaque personnelle.** La critique des idées, au moyen d'arguments raisonnés, est une partie importante de ce que nous faisons ici. Il n'est cependant pas acceptable que cela dégénère en attaques personnelles. Le harcèlement et les autres comportements discriminatoires ne sont pas tolérés.
 
-  - **Assume good faith.** When there is disagreement, try to understand why, always assuming good intentions. Remember that different people have different perspectives on issues, and that's okay.
+  - **Présumez de la bonne foi.** En cas de désaccord, essayez d'en comprendre les raisons tout en présumant que leurs intentions sont toujours bonnes. N'oubliez pas que les gens ont des points de vue différents sur de nombreux sujets, ce qui est parfaitement normal.
