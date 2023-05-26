@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Add support for looking up users by ID
 -   Add Russian translation ([#2](https://github.com/waterholeforum/core/pull/2) by @Awilum)
 -   Add French translation ([#5](https://github.com/waterholeforum/core/pull/5) by @qiaeru)
+-   Set the `color-scheme` CSS property according to the current theme
 
 ### Changed
 

@@ -1,5 +1,7 @@
 :root,
 [data-theme='light'] {
+  color-scheme: light;
+
   // Background color
   --palette-bg-hsl: 250 38% 98%;
   --palette-bg: hsl(var(--palette-bg-hsl));
@@ -83,6 +85,8 @@
 }
 
 [data-theme='dark'] {
+  color-scheme: dark;
+
   --palette-bg-hsl: 250 20% 8%;
   --palette-surface-hsl: 250 20% 12%;
 
