@@ -19,6 +19,10 @@ class PostVisibleScope implements Scope
     {
         $user = $this->user instanceof Closure ? ($this->user)() : $this->user;
 
+        if (app()->runningInConsole() && !$user) {
+            return;
+        }
+
         foreach (PostScopes::build() as $scope) {
             $scope($builder, $user);
         }

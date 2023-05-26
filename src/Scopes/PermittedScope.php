@@ -31,11 +31,12 @@ class PermittedScope implements Scope
 
     public function apply(Builder $builder, Model $model)
     {
-        if (app()->runningInConsole()) {
+        $user = $this->user ?: Auth::user();
+
+        if (app()->runningInConsole() && !$user) {
             return;
         }
 
-        $user = $this->user ?: Auth::user();
         $model = $this->model ?: $model;
 
         // If the list of IDs is null, then the user must be an administrator,
