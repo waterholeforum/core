@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fix a JavaScript error on posts with a single page of comments
 -   Fix untranslated variable in resend confirmation email message ([#4](https://github.com/waterholeforum/core/pull/4) by @askerakbar)
 -   Fix undefined array key error when running `waterhole:make:extension` command ([#6](https://github.com/waterholeforum/core/issues/6))
+-   Emojify the post title on the single comment page
 
 ## [0.1.1] - 2023-05-23
 
