@@ -31,7 +31,6 @@
     --color-bg: var(--palette-surface);
     --focus-shadow: 0 0 0 transparent;
     border: 1px solid var(--color-stroke);
-    bottom: calc(-1 * var(--radius));
     box-shadow: var(--focus-shadow);
     height: 300px;
     min-height: 200px;
@@ -50,8 +49,9 @@
 @media (--lg-up) {
   .composer {
     position: sticky;
+    bottom: calc(-1 * var(--radius));
 
-    &.is-stuck {
+    &.is-open {
       border-color: transparent;
       box-shadow: var(--focus-shadow), var(--shadow-md);
       padding-bottom: var(--radius);
