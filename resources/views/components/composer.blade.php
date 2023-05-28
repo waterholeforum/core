@@ -1,7 +1,7 @@
 <turbo-frame
     id="composer"
     {{ $attributes->class('composer stack') }}
-    data-controller="composer watch-sticky"
+    data-controller="composer"
     data-action="
         turbo:before-fetch-request->composer#open
         turbo:frame-render->composer#open

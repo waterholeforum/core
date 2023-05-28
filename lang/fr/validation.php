@@ -19,7 +19,8 @@ return [
     'before_or_equal' => 'Le :attribute doit être une date antérieure ou égale au :date.',
     'between' => [
         'array' => 'Le tableau :attribute doit contenir entre :min et :max éléments.',
-        'file' => 'La taille du fichier de :attribute doit être comprise entre :min et :max kilo-octets.',
+        'file' =>
+            'La taille du fichier de :attribute doit être comprise entre :min et :max kilo-octets.',
         'numeric' => 'La valeur de :attribute doit être comprise entre :min et :max.',
         'string' => 'Le texte :attribute doit contenir entre :min et :max caractèress.',
     ],
@@ -37,7 +38,8 @@ return [
     'digits_between' => 'Le :attribute doit contenir entre :min et :max chiffres.',
     'dimensions' => "Les dimensions de l'image du :attribute ne sont pas valides.",
     'distinct' => 'Le :attribute a une valeur dupliquée.',
-    'doesnt_end_with' => "Le :attribute ne doit pas se terminer par l'un des éléments suivants : :values.",
+    'doesnt_end_with' =>
+        "Le :attribute ne doit pas se terminer par l'un des éléments suivants : :values.",
     'doesnt_start_with' =>
         "Le :attribute ne doit pas commencer par l'un des éléments suivants : :values.",
     'email' => 'Le :attribute doit être une adresse de courriel valide.',
@@ -54,7 +56,8 @@ return [
     ],
     'gte' => [
         'array' => 'Le tableau :attribute doit contenir au moins :value éléments.',
-        'file' => 'La taille du fichier de :attribute doit être supérieure ou égale à :value kilo-octets.',
+        'file' =>
+            'La taille du fichier de :attribute doit être supérieure ou égale à :value kilo-octets.',
         'numeric' => 'La valeur de :attribute doit être supérieure ou égale à :value.',
         'string' => 'Le texte :attribute doit contenir au moins :value caractères.',
     ],
@@ -75,7 +78,8 @@ return [
     ],
     'lte' => [
         'array' => 'Le tableau :attribute doit contenir au plus :value éléments.',
-        'file' => 'La taille du fichier de :attribute doit être inférieure ou égale à :value kilo-octets.',
+        'file' =>
+            'La taille du fichier de :attribute doit être inférieure ou égale à :value kilo-octets.',
         'numeric' => 'La valeur de :attribute doit être inférieure ou égale à :value.',
         'string' => 'Le texte :attribute doit contenir au plus :value caractères.',
     ],
@@ -122,13 +126,17 @@ return [
     'regex' => "Le format du :attribute n'est pas valide.",
     'required' => 'Le champ du :attribute est obligatoire.',
     'required_array_keys' => 'Le champ du :attribute doit contenir des entrées pour : :values.',
-    'required_if' => 'Le champ du :attribute est obligatoire lorsque la valeur du :other est :value.',
+    'required_if' =>
+        'Le champ du :attribute est obligatoire lorsque la valeur du :other est :value.',
     'required_if_accepted' => 'Le champ du :attribute est obligatoire lorsque :other est accepté.',
     'required_unless' => 'Le champ du :attribute est obligatoire sauf si :other est :values.',
     'required_with' => 'Le champ du :attribute est obligatoire lorsque le :values est présent.',
-    'required_with_all' => 'Le champ du :attribute est obligatoire lorsque le :values sont présents.',
-    'required_without' => "Le champ du :attribute est obligatoire lorsque le :values n'est pas présent.",
-    'required_without_all' => 'Le champ du :attribute est obligatoire lorsque le :values ne sont pas présents.',
+    'required_with_all' =>
+        'Le champ du :attribute est obligatoire lorsque le :values sont présents.',
+    'required_without' =>
+        "Le champ du :attribute est obligatoire lorsque le :values n'est pas présent.",
+    'required_without_all' =>
+        'Le champ du :attribute est obligatoire lorsque le :values ne sont pas présents.',
     'same' => 'Le :attribute et le :other doivent être identiques.',
     'size' => [
         'array' => 'Le tableau :attribute doit contenir :size éléments.',

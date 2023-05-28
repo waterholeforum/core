@@ -13,7 +13,7 @@
         <div class="measure stack gap-lg">
             <header class="stack gap-xs">
                 <ol class="breadcrumb">
-                    <li><a href="{{ $comment->post_url }}">{{ $post->title }}</a></li>
+                    <li><a href="{{ $comment->post_url }}">{{ Waterhole\emojify($post->title) }}</a></li>
                     <li aria-hidden="true"></li>
                 </ol>
 

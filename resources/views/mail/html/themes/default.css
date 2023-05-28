@@ -75,6 +75,10 @@ img {
   height: auto;
 }
 
+pre {
+  white-space: pre-wrap;
+}
+
 /* Layout */
 
 .wrapper {
