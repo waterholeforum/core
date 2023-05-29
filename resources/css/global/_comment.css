@@ -66,6 +66,10 @@
     padding: 0;
   }
 
+  #page_1 + .card__row {
+    border-top: 0;
+  }
+
   .comment {
     border-radius: 4px;
   }
