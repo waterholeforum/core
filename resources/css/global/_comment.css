@@ -1,6 +1,8 @@
 .comment {
-  padding: var(--space-lg);
-  padding-left: calc(var(--attribution-avatar-size) + var(--space-md) + var(--space-lg));
+  --comment-padding: var(--space-lg);
+
+  padding: var(--comment-padding);
+  padding-left: calc(var(--attribution-avatar-size) + var(--space-md) + var(--comment-padding));
   border-radius: var(--radius);
   position: relative;
   transition: background 0.2s;
@@ -46,7 +48,11 @@
   max-height: 10em;
   overflow: hidden;
   text-align: left;
-  padding-block: 0;
+  padding: 0;
+
+  .comment {
+    --comment-padding: var(--space-md);
+  }
 
   .comment > * + * {
     margin-top: var(--space-xs);
@@ -58,6 +64,10 @@
 
   .comment__parent {
     display: none;
+  }
+
+  .comment {
+    --comment-padding: var(--space-md);
   }
 }
 
