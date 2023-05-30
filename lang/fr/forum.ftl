@@ -73,6 +73,7 @@ move-to-channel-button = Déplacer vers le canal
 move-to-channel-confirm-button = Déplacer
 
 mark-as-read-button = Marquer comme lu
+mark-as-unread-button = Marquer comme non lu
 
 create-post-button = Créer un message
 create-post-title = Nouveau message
