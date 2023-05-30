@@ -8,7 +8,7 @@
     </div>
 
     <div class="content color-text">
-        {{ Waterhole\emojify($post->answer->body_html) }}
+        {{ $post->answer->body_html }}
     </div>
 
     <a href="{{ $post->answer->post_url }}" class="with-icon weight-medium">

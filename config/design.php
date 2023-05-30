@@ -17,13 +17,15 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Twemoji Base URL
+    | Emoji URL
     |--------------------------------------------------------------------------
     |
-    | This option is the base URL from which to serve Twemoji assets. You can
-    | set this to null to disable Twemoji and fall back to system emoji.
+    | This URL will be used to output emoji. You can set this to null to
+    | disable emoji parsing and fall back to system emoji.
+    |
+    | Learn more: https://s9etextformatter.readthedocs.io/Plugins/Emoji/Synopsis/
     |
     */
 
-    'twemoji_base' => 'https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.1/',
+    'emoji_url' => 'https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/{@tseq}.svg',
 ];

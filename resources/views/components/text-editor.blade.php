@@ -1,8 +1,6 @@
 <div
     data-controller="text-editor"
     data-text-editor-format-url-value="{{ route('waterhole.format') }}"
-    data-text-editor-user-lookup-url-value="{{ route('waterhole.user-lookup') }}"
-    data-text-editor-upload-url-value="{{ route('waterhole.upload') }}"
     {{ $attributes->class('input text-editor stack overlay-container') }}
 >
     <ui-toolbar
@@ -25,15 +23,18 @@
     <div class="text-editor__content grow stack">
         <text-expander
             keys="@"
-            data-text-editor-target="expander"
+            data-controller="mentions"
+            data-mentions-user-lookup-url-value="{{ $userLookupUrl }}"
             class="text-editor__expander grow stack"
         >
             <textarea
                 name="{{ $name }}"
                 id="{{ $id }}"
                 class="text-editor__input grow content"
-                data-text-editor-target="input"
                 placeholder="{{ $placeholder }}"
+                data-controller="uploads"
+                data-uploads-url-value="{{ route('waterhole.upload') }}"
+                data-text-editor-target="input"
             >{{ $value }}</textarea>
         </text-expander>
 

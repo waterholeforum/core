@@ -8,6 +8,8 @@ use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
 
+use function Waterhole\emojify;
+
 class NewComment extends Notification
 {
     public function __construct(protected Comment $comment)
@@ -33,7 +35,7 @@ class NewComment extends Notification
     {
         return new HtmlString(
             __('waterhole::notifications.new-comment-title', [
-                'post' => '<strong>' . e($this->comment->post->title) . '</strong>',
+                'post' => '<strong>' . emojify($this->comment->post->title) . '</strong>',
             ]),
         );
     }

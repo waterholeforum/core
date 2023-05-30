@@ -36,6 +36,16 @@ class PostUser extends Model
         return $this;
     }
 
+    /**
+     * Mark this post as having not been read by the user.
+     */
+    public function unread(): static
+    {
+        $this->last_read_at = null;
+
+        return $this;
+    }
+
     public function post(): BelongsTo
     {
         return $this->belongsTo(Post::class);

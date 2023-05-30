@@ -25,7 +25,7 @@
                 @if ($permalink)
                     <a href="{{ $permalink }}" class="color-inherit" target="_top">
                 @endif
-                    <time datetime="{{ $date }}">{{ $date->diffForHumans() }}</time>
+                    <x-waterhole::relative-time :datetime="$date"/>
                 @if ($permalink)
                     </a>
                 @endif

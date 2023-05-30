@@ -2,7 +2,7 @@
 <html {{ $attributes
     ->class(['no-js', Auth::check() ? 'logged-in' : 'not-logged-in'])
     ->merge([
-        'lang' => config('app.locale'),
+        'lang' => app()->getLocale(),
         'data-theme' => config('waterhole.design.theme', 'light'),
     ]) }}>
 <head>

@@ -22,6 +22,6 @@ class FormatController extends Controller
     {
         $xml = $this->formatter->parse((string) $request->getContent());
 
-        return emojify($this->formatter->render($xml));
+        return $this->formatter->render($xml);
     }
 }

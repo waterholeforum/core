@@ -6,7 +6,7 @@
             <h2 class="h3">{{ $channel->name }}</h2>
 
             @if ($description = $channel->description_html)
-                <div class="content measure">{{ Waterhole\emojify($description) }}</div>
+                <div class="content measure">{{ $description }}</div>
             @endif
         </div>
 

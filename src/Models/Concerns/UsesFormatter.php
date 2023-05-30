@@ -3,9 +3,12 @@
 namespace Waterhole\Models\Concerns;
 
 use Illuminate\Support\HtmlString;
+use Waterhole\Console\ReformatCommand;
 use Waterhole\Formatter\Context;
 use Waterhole\Formatter\Formatter;
 use Waterhole\Models\User;
+
+use function Waterhole\remove_formatting;
 
 trait UsesFormatter
 {
@@ -51,22 +54,34 @@ trait UsesFormatter
     public static function setFormatter(string $attribute, Formatter $formatter): void
     {
         static::$formatters[$attribute] = $formatter;
+
+        ReformatCommand::addModelAttribute(static::class, $attribute);
     }
 
     public function getAttribute($key)
     {
-        if (str_starts_with($key, 'parsed_')) {
-            return $this->attributes[substr($key, 7)];
-        }
+        foreach (static::$formatters as $attribute => $formatter) {
+            if ($key === $attribute) {
+                return !empty($this->attributes[$key])
+                    ? $formatter->unparse($this->attributes[$key])
+                    : null;
+            }
 
-        if (str_ends_with($key, '_html')) {
-            return $this->format(substr($key, 0, -5));
-        }
+            if (!str_contains($key, $attribute)) {
+                continue;
+            }
 
-        if ($formatter = static::$formatters[$key] ?? null) {
-            return !empty($this->attributes[$key])
-                ? $formatter->unparse($this->attributes[$key])
-                : null;
+            if (str_starts_with($key, 'parsed_')) {
+                return $this->attributes[$attribute];
+            }
+
+            if (str_ends_with($key, '_html')) {
+                return $this->format($attribute);
+            }
+
+            if (str_ends_with($key, '_text')) {
+                return remove_formatting($this->attributes[$attribute]);
+            }
         }
 
         return parent::getAttribute($key);
@@ -77,7 +92,7 @@ trait UsesFormatter
         if (str_starts_with($key, 'parsed_')) {
             $this->attributes[substr($key, 7)] = $value;
         } elseif ($formatter = static::$formatters[$key] ?? null) {
-            $this->attributes[$key] = $value ? $formatter->parse($value, new Context($this)) : null;
+            $this->attributes[$key] = $value ? $formatter->parse($value, new Context($this)) : '';
         } else {
             return parent::setAttribute($key, $value);
         }

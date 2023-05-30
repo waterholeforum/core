@@ -54,8 +54,8 @@ log-out-link = Se déconnecter
 
 ## Profile
 
-user-joined-text = Inscrit le { $date }
-user-last-seen-text = Dernière visite le { $date }
+user-joined-text = Inscrit le
+user-last-seen-text = Dernière visite le
 online-label = En ligne
 
 ## Sidebar

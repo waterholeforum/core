@@ -1,6 +1,8 @@
 .comment {
-  padding: var(--space-lg);
-  padding-left: calc(var(--attribution-avatar-size) + var(--space-md) + var(--space-lg));
+  --comment-padding: var(--space-lg);
+
+  padding: var(--comment-padding);
+  padding-left: calc(var(--attribution-avatar-size) + var(--space-md) + var(--comment-padding));
   border-radius: var(--radius);
   position: relative;
   transition: background 0.2s;
@@ -43,10 +45,13 @@
 
 .comment__parent-tooltip {
   max-width: 80ch;
-  max-height: 10em;
   overflow: hidden;
   text-align: left;
-  padding-block: 0;
+  padding: 0;
+
+  .comment {
+    --comment-padding: var(--space-md);
+  }
 
   .comment > * + * {
     margin-top: var(--space-xs);
@@ -59,11 +64,19 @@
   .comment__parent {
     display: none;
   }
+
+  .comment {
+    --comment-padding: var(--space-md);
+  }
 }
 
 .comment-list {
   .card__row {
     padding: 0;
+  }
+
+  #page_1 + .card__row {
+    border-top: 0;
   }
 
   .comment {

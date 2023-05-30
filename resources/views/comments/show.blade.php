@@ -13,14 +13,20 @@
         <div class="measure stack gap-lg">
             <header class="stack gap-xs">
                 <ol class="breadcrumb">
-                    <li><a href="{{ $comment->post_url }}">{{ Waterhole\emojify($post->title) }}</a></li>
+                    <li>
+                        <a href="{{ $comment->post_url }}">{{ Waterhole\emojify($post->title) }}</a>
+                    </li>
                     <li aria-hidden="true"></li>
                 </ol>
 
                 <h1 class="h3">{{ $title }}</h1>
             </header>
 
-            <x-waterhole::comment-frame :comment="$comment" with-replies class="card"/>
+            <x-waterhole::comment-frame
+                :comment="$comment"
+                with-replies
+                class="card"
+            />
 
             @can('post.comment', $post)
                 <x-waterhole::composer
