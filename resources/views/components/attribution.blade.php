@@ -25,7 +25,7 @@
                 @if ($permalink)
                     <a href="{{ $permalink }}" class="color-inherit" target="_top">
                 @endif
-                    <x-waterhole::time-ago :datetime="$date"/>
+                    <x-waterhole::relative-time :datetime="$date"/>
                 @if ($permalink)
                     </a>
                 @endif

@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use DateTime;
 use Illuminate\View\Component;
 
-class TimeAgo extends Component
+class RelativeTime extends Component
 {
     public ?Carbon $dateTime;
 
@@ -22,6 +22,6 @@ class TimeAgo extends Component
 
     public function render()
     {
-        return $this->view('waterhole::components.time-ago');
+        return $this->view('waterhole::components.relative-time');
     }
 }

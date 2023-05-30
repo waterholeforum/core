@@ -29,7 +29,7 @@ class UserLastSeen extends Component
                     @icon('tabler-eye')
                     <span>
                         {{ __('waterhole::user.user-last-seen-text') }}
-                        <x-waterhole::time-ago :datetime="$user->last_seen_at"/>
+                        <x-waterhole::relative-time :datetime="$user->last_seen_at"/>
                     </span>
                 </span>
             @endif

@@ -9,7 +9,7 @@
         <ui-tooltip>
             {{ Waterhole\username($post->user) }}
             {{ __('waterhole::forum.post-activity-posted') }}
-            <x-waterhole::time-ago :datetime="$post->created_at"/>
+            <x-waterhole::relative-time :datetime="$post->created_at"/>
         </ui-tooltip>
     </x-waterhole::user-link>
 

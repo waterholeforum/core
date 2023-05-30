@@ -21,7 +21,7 @@
             </span>
         </span>
 
-        <x-waterhole::time-ago
+        <x-waterhole::relative-time
             :datetime="$notification->created_at"
             class="notification__time text-xs color-muted push-end nowrap"
         />

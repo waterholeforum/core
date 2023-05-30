@@ -128,10 +128,10 @@
                                             <x-waterhole::user-groups :user="$user"/>
                                         </td>
                                         <td>
-                                            <x-waterhole::time-ago :datetime="$user->created_at"/>
+                                            <x-waterhole::relative-time :datetime="$user->created_at"/>
                                         </td>
                                         <td>
-                                            <x-waterhole::time-ago :datetime="$user->last_seen_at"/>
+                                            <x-waterhole::relative-time :datetime="$user->last_seen_at"/>
                                         </td>
                                         <td>
                                             <x-waterhole::action-buttons

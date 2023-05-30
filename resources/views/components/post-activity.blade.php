@@ -5,7 +5,7 @@
         </x-waterhole::user-link>
         {{ __('waterhole::forum.post-activity-replied') }}
         <a href="{{ $post->urlAtIndex($post->comment_count) }}#bottom" class="color-inherit">
-            <x-waterhole::time-ago :datetime="$post->last_activity_at"/>
+            <x-waterhole::relative-time :datetime="$post->last_activity_at"/>
         </a>
     </span>
 @elseif ($post->user)
@@ -15,7 +15,7 @@
         </x-waterhole::user-link>
         {{ __('waterhole::forum.post-activity-posted') }}
         <a href="{{ $post->url }}" class="color-inherit">
-            <x-waterhole::time-ago :datetime="$post->created_at"/>
+            <x-waterhole::relative-time :datetime="$post->created_at"/>
         </a>
     </span>
 @endif

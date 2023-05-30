@@ -23,7 +23,7 @@ class UserJoined extends Component
                 @icon('tabler-calendar')
                 <span>
                     {{ __('waterhole::user.user-joined-text') }}
-                    <x-waterhole::time-ago :datetime="$user->created_at"/>
+                    <x-waterhole::relative-time :datetime="$user->created_at"/>
                 </span>
             </span>
         blade;
