@@ -29,7 +29,8 @@
 .text-editor__input {
   width: 100%;
   outline: none;
-  padding: var(--space-xs) var(--space-md);
+  padding: var(--space-md);
+  padding-top: var(--space-xs);
   resize: vertical;
   border: 0;
   background: transparent;
