@@ -5,4 +5,5 @@
     :options="array_keys($locales)"
     :label="fn($locale) => $locales[$locale] ?? $locale"
     :href="fn($locale) => '?locale='.$locale"
+    data-turbo="false"
 />
