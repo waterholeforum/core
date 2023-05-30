@@ -54,8 +54,8 @@ log-out-link = Log Out
 
 ## Profile
 
-user-joined-text = Joined { $date }
-user-last-seen-text = Last seen { $date }
+user-joined-text = Joined
+user-last-seen-text = Last seen
 online-label = Online
 
 ## Sidebar
