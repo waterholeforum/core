@@ -73,7 +73,6 @@ move-to-channel-button = Move to Channel
 move-to-channel-confirm-button = Move
 
 mark-as-read-button = Mark as Read
-mark-as-unread-button = Mark as Unread
 
 create-post-button = Create a Post
 create-post-title = New Post

@@ -1,5 +1,5 @@
 import * as Turbo from '@hotwired/turbo';
-import { FrameElement, TurboFrameMissingEvent } from '@hotwired/turbo';
+import { FrameElement, StreamElement, TurboFrameMissingEvent } from '@hotwired/turbo';
 // @ts-ignore
 import { morph } from 'idiomorph';
 import { cloneFromTemplate } from '../utils';
@@ -16,21 +16,20 @@ window.Turbo = Turbo;
 
 // Use idiomorph for "replace" Turbo Streams for more fine-grained DOM patching,
 // which will hopefully preserve keyboard focus.
-// TODO: temporarily disable this pending https://github.com/bigskysoftware/idiomorph/pull/6
-// document.addEventListener('turbo:before-stream-render', (e) => {
-//     const { detail } = e as CustomEvent;
-//     const fallback = detail.render;
-//
-//     detail.render = (stream: StreamElement) => {
-//         if (stream.action === 'replace') {
-//             stream.targetElements.forEach((el) => {
-//                 morph(el, stream.templateContent.firstElementChild!);
-//             });
-//         } else {
-//             fallback(stream);
-//         }
-//     };
-// });
+document.addEventListener('turbo:before-stream-render', (e) => {
+    const { detail } = e as CustomEvent;
+    const fallback = detail.render;
+
+    detail.render = (stream: StreamElement) => {
+        if (stream.action === 'replace') {
+            stream.targetElements.forEach((el) => {
+                morph(el, stream.templateContent.firstElementChild!);
+            });
+        } else {
+            fallback(stream);
+        }
+    };
+});
 
 document.addEventListener('turbo:before-fetch-response', async (e) => {
     const response = (e as CustomEvent).detail.fetchResponse.response;
