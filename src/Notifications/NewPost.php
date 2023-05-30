@@ -7,6 +7,8 @@ use Illuminate\Support\HtmlString;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
 
+use function Waterhole\emojify;
+
 class NewPost extends Notification
 {
     public function __construct(protected Post $post)
@@ -32,8 +34,8 @@ class NewPost extends Notification
     {
         return new HtmlString(
             __('waterhole::notifications.new-post-title', [
-                'channel' => e($this->post->channel->name),
-                'post' => '<strong>' . e($this->post->title) . '</strong>',
+                'channel' => emojify($this->post->channel->name),
+                'post' => '<strong>' . emojify($this->post->title) . '</strong>',
             ]),
         );
     }

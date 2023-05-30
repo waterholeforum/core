@@ -13,11 +13,11 @@
         @icon($notification->template->icon(), ['class' => 'color-muted text-md'])
 
         <span class="shrink">
-            {{ Waterhole\emojify($notification->template->title()) }}
+            {{ $notification->template->title() }}
 
             <span class="menu-item__description overflow-ellipsis">
                 <x-waterhole::user-label :user="$notification->template->sender()"/> ·
-                {{ Waterhole\emojify(Str::limit(strip_tags($notification->template->excerpt()), 200)) }}
+                {{ Str::limit(strip_tags($notification->template->excerpt()), 200) }}
             </span>
         </span>
 
