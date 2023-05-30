@@ -49,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Remove top border from first comment
 -   Remove height limit on comment preview tooltips
 -   Prevent crashing if database content contains invalid XML
+-   Fix localization of dates
 
 ### Security
 
