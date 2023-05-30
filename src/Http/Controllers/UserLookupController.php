@@ -30,7 +30,7 @@ class UserLookupController extends Controller
         return User::query()
             ->where('name', 'like', $query . '%')
             ->orderByRaw('name = ? desc', [$query])
-            ->orderByRaw('name like ? desc', [$query . '%'])
+            ->orderBy('name')
             ->take(5)
             ->get(['id', 'name', 'avatar'])
             ->map(

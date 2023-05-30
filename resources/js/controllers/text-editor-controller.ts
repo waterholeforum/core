@@ -6,6 +6,12 @@ import { PopupElement } from 'inclusive-elements';
 import TextareaEditor from 'textarea-editor';
 import { cloneFromTemplate } from '../utils';
 
+interface UserLookupResult {
+    id: number;
+    name: string;
+    html: string;
+}
+
 /**
  * Controller for the <x-waterhole::text-editor> component.
  *
@@ -53,9 +59,8 @@ export default class extends Controller {
                 if (text.length < 2) return;
 
                 provide(
-                    // TODO: use ky
-                    fetch(this.userLookupUrlValue + `?q=${encodeURIComponent(text)}`)
-                        .then((response) => response.json())
+                    Waterhole.fetch(this.userLookupUrlValue + `?q=${encodeURIComponent(text)}`)
+                        .json<UserLookupResult[]>()
                         .then((json) => {
                             const listbox = document.createElement('ul');
                             listbox.setAttribute('role', 'listbox');
@@ -64,7 +69,7 @@ export default class extends Controller {
                             listbox.style.marginTop = '24px';
 
                             listbox.append(
-                                ...json.map(({ name, html }: any) => {
+                                ...json.map(({ name, html }) => {
                                     const option = document.createElement('li');
                                     option.setAttribute('role', 'option');
                                     option.id = `suggestion-${Math.floor(
