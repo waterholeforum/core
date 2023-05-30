@@ -23,7 +23,6 @@
 
         <x-waterhole::time-ago
             :datetime="$notification->created_at"
-            format="micro"
             class="notification__time text-xs color-muted push-end nowrap"
         />
     </a>
