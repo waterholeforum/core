@@ -7,7 +7,6 @@
     "license": "proprietary",
     "require": {
         "ext-json": "*",
-        "astrotomic/php-twemoji": "^0.2.4",
         "composer/composer": "^2.4",
         "doctrine/dbal": "^3.1",
         "fntneves/laravel-transactional-events": "^2.0",
@@ -47,7 +46,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-main": "0.1.x-dev"
+            "dev-main": "0.x-dev"
         },
         "laravel": {
             "providers": [

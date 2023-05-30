@@ -4,6 +4,7 @@ namespace Waterhole\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
+use Waterhole\Models\Post;
 use Waterhole\Models\User;
 use Waterhole\View\Components\UserLabel;
 
@@ -19,19 +20,71 @@ use Waterhole\View\Components\UserLabel;
  */
 class UserLookupController extends Controller
 {
-    public function __invoke(Request $request)
-    {
-        $query = $request->query('q');
+    const LIMIT = 5;
 
-        if (strlen($query) < 2) {
-            abort(400, 'Query must be 2 or more characters');
+    public function __invoke(?Post $post, Request $request)
+    {
+        if (!$post->exists) {
+            $post = null;
         }
 
-        return User::query()
-            ->where('name', 'like', $query . '%')
-            ->orderByRaw('name = ? desc', [$query])
-            ->orderByRaw('name like ? desc', [$query . '%'])
-            ->take(5)
+        $search = $request->query('q');
+
+        if (!$search && !$post) {
+            return [];
+        }
+
+        // Construct a base query that selects the data we want and filters
+        // by name if a search query is present.
+        $users = User::select(['users.id', 'name', 'avatar']);
+
+        if ($search) {
+            $users
+                ->where('name', 'like', "$search%")
+                ->orderByRaw('name = ? desc', [$search])
+                ->orderBy('name')
+                ->limit(static::LIMIT);
+        }
+
+        // If we are getting suggestions geared towards a post, we will clone
+        // the above query a couple times to specifically find users who posted
+        // or commented on the post.
+        if ($post) {
+            $comments = $users
+                ->clone()
+                ->selectRaw('MAX(comments.created_at) as created_at')
+                ->joinRelationship(
+                    'comments',
+                    fn($query) => $query->where('comments.post_id', $post->getKey()),
+                )
+                ->groupBy('users.id')
+                ->orderByRaw('MAX(comments.created_at) DESC');
+
+            $post = $users
+                ->clone()
+                ->addSelect('posts.created_at')
+                ->joinRelationship(
+                    'posts',
+                    fn($query) => $query->where('posts.id', $post->getKey()),
+                );
+
+            $sub = $comments->unionAll($post)->latest('created_at');
+
+            // If there is a search query, then we still want to tack other
+            // users (that haven't posted here) onto the bottom of the results.
+            if ($search) {
+                $sub->unionAll($users->selectRaw('NULL'));
+            }
+        } else {
+            $sub = $users;
+        }
+
+        // Finally, select distinct users out of these unionized results, and
+        // present them in the desired format.
+        return User::select(['id', 'name', 'avatar'])
+            ->fromSub($sub, 't')
+            ->groupBy(['id', 'name', 'avatar'])
+            ->take(static::LIMIT)
             ->get(['id', 'name', 'avatar'])
             ->map(
                 fn(User $user) => [

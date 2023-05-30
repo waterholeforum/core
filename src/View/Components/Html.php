@@ -20,7 +20,6 @@ class Html extends Component
             'userId' => Auth::id(),
             'debug' => config('app.debug'),
             'echoConfig' => config('waterhole.system.echo_config'),
-            'twemojiBase' => config('waterhole.design.twemoji_base'),
         ];
     }
 

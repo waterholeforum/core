@@ -8,7 +8,7 @@
             class="post-body content text-md"
             data-controller="quotable"
         >
-            {{ Waterhole\emojify($post->body_html) }}
+            {{ $post->body_html }}
 
             @can('post.comment', $post)
                 <a

@@ -3,10 +3,11 @@
 
     $isCursor = $paginator instanceof CursorPaginator;
     $current = $isCursor ? $paginator->cursor()?->encode() ?? '1' : $paginator->currentPage();
+    $direction = request()->query('direction');
 @endphp
 
 <turbo-frame id="page_{{ $current }}_frame" target="_top" {{ $attributes }}>
-    @if (!$paginator->onFirstPage() && request()->query('direction') !== 'forwards')
+    @if (!$paginator->onFirstPage() && $direction !== 'forwards')
         <turbo-frame
             id="page_{{ $isCursor ? $paginator->previousCursor()->encode() ?? '1' : $paginator->currentPage() - 1 }}_frame"
             src="{{ $paginator->appends('direction', 'backwards')->previousPageUrl() }}"
@@ -29,7 +30,7 @@
 
     {{ $slot ?? '' }}
 
-    @if ($paginator->hasMorePages() && request('direction') !== 'backwards')
+    @if ($paginator->hasMorePages() && $direction !== 'backwards')
         <turbo-frame
             id="page_{{ $isCursor ? $paginator->nextCursor()->encode() : $paginator->currentPage() + 1 }}_frame"
             target="_top"

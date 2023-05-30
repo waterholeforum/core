@@ -54,8 +54,8 @@ log-out-link = Выйти
 
 ## Profile
 
-user-joined-text = Присоединился { $date }
-user-last-seen-text = Был в сети { $date }
+user-joined-text = Присоединился
+user-last-seen-text = Был в сети
 online-label = В сети
 
 ## Sidebar

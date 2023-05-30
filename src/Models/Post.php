@@ -316,11 +316,11 @@ class Post extends Model
     {
         return Attribute::make(
             get: function () {
-                $fragment = match (true) {
-                    $this->isNew() => '',
-                    (bool) $this->unread_comments_count => '#unread',
-                    default => '#bottom',
-                };
+                if ($this->isNew()) {
+                    return $this->url;
+                }
+
+                $fragment = $this->unread_comments_count ? '#unread' : '#bottom';
 
                 return $this->urlAtIndex($this->comment_count - $this->unread_comments_count - 1) .
                     $fragment;

@@ -8,6 +8,8 @@ use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
 
+use function Waterhole\emojify;
+
 class Mention extends Notification
 {
     protected Post $post;
@@ -42,7 +44,7 @@ class Mention extends Notification
     {
         return new HtmlString(
             __('waterhole::notifications.mention-title', [
-                'post' => '<strong>' . e($this->post->title) . '</strong>',
+                'post' => '<strong>' . emojify($this->post->title) . '</strong>',
             ]),
         );
     }

@@ -4,6 +4,7 @@
 @import '_channel-card.css';
 @import '_comment.css';
 @import '_composer.css';
+@import '_emoji.css';
 @import '_header.css';
 @import '_index.css';
 @import '_notifications.css';
@@ -12,5 +13,4 @@
 @import '_reactions.css';
 @import '_search.css';
 @import '_text-editor.css';
-@import '_twemoji.css';
 @import '_user-profile.css';

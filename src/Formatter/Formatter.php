@@ -23,6 +23,7 @@ class Formatter
     protected array $configurationCallbacks = [];
     protected array $parsingCallbacks = [];
     protected array $renderingCallbacks = [];
+    private array $components;
 
     public function __construct(
         protected Filesystem $files,
@@ -121,12 +122,18 @@ class Formatter
 
     protected function getComponent(string $name)
     {
-        $components = $this->cache->rememberForever(
+        spl_autoload_register(function ($class) {
+            if (file_exists($file = "$this->cacheDir/$class.php")) {
+                include $file;
+            }
+        });
+
+        $this->components ??= $this->cache->rememberForever(
             $this->cacheKey,
             fn() => $this->getConfigurator()->finalize(),
         );
 
-        return $components[$name];
+        return $this->components[$name];
     }
 
     protected function getParser(): Parser
@@ -136,12 +143,6 @@ class Formatter
 
     protected function getRenderer(): Renderer
     {
-        spl_autoload_register(function ($class) {
-            if (file_exists($file = "$this->cacheDir/$class.php")) {
-                include $file;
-            }
-        });
-
         return $this->getComponent('renderer');
     }
 

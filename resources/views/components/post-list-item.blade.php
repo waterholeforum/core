@@ -9,7 +9,7 @@
         <ui-tooltip>
             {{ Waterhole\username($post->user) }}
             {{ __('waterhole::forum.post-activity-posted') }}
-            <x-waterhole::time-ago :datetime="$post->created_at"/>
+            <x-waterhole::relative-time :datetime="$post->created_at"/>
         </ui-tooltip>
     </x-waterhole::user-link>
 
@@ -21,7 +21,7 @@
                         href="{{ $post->isUnread() ? $post->unread_url : $post->url }}"
                         data-action="post#appearAsRead"
                         class="post-title-link"
-                    >{{ Waterhole\emojify($post->title) }}</a>
+                    >{{ $title }}</a>
                 </h3>
 
                 <div class="post-list-item__info row wrap gap-y-xxs gap-x-sm text-xs color-muted">
@@ -36,7 +36,7 @@
 
         @if ($excerpt)
             <div class="post-list-item__excerpt content text-xs measure">
-                {{ Waterhole\emojify($excerpt) }}
+                <p>{{ $excerpt }}</p>
             </div>
         @endif
     </div>

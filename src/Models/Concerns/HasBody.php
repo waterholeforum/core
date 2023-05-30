@@ -27,6 +27,7 @@ use Waterhole\Models\User;
  * @property-read HtmlString $body_html The formatted HTML version of the body
  *   for the current user.
  * @property string $parsed_body The intermediary parsed XML document.
+ * @property-read string $body_text The parsed body with formatting removed.
  */
 trait HasBody
 {

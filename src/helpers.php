@@ -4,6 +4,7 @@ namespace Waterhole;
 
 use BladeUI\Icons\Exceptions\SvgNotFound;
 use Closure;
+use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
@@ -11,9 +12,8 @@ use Illuminate\View\AnonymousComponent;
 use Illuminate\View\ComponentAttributeBag;
 use Major\Fluent\Formatters\Number\NumberFormatter;
 use Major\Fluent\Formatters\Number\Options;
-use Waterhole\Extend\Emoji;
+use s9e\TextFormatter\Utils;
 use Waterhole\Models\User;
-use Waterhole\Support\Text;
 
 /**
  * Format a number.
@@ -55,23 +55,33 @@ function compact_number(float $number): string
 }
 
 /**
- * Replace Emoji characters in a text string.
+ * Replace Emoji characters in a plain-text string.
  */
-function emojify(string $text, array $attributes = []): HtmlString|string
+function emojify(?string $text): HtmlString|string
 {
-    return Emoji::emojify($text, $attributes);
+    if (!$text) {
+        return '';
+    }
+
+    $formatter = app('waterhole.formatter.emoji');
+
+    return new HtmlString($formatter->render($formatter->parse($text)));
 }
 
 /**
- * Truncate a string, handing HTML tags and words correctly.
+ * Strip the formatting of an intermediate representation and return plain text.
  */
-function truncate_html(string $html, int $limit, string $end = '...'): string
+function remove_formatting(?string $xml): string
 {
-    return Text::truncate($html, $limit, [
-        'exact' => false,
-        'html' => true,
-        'ellipsis' => $end,
-    ]);
+    if (!$xml) {
+        return '';
+    }
+
+    try {
+        return Utils::removeFormatting($xml);
+    } catch (Exception $e) {
+        return '';
+    }
 }
 
 /**

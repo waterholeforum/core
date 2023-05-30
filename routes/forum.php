@@ -140,7 +140,7 @@ Route::get('oauth/{provider}/callback', [OAuthController::class, 'callback'])->n
 );
 
 // Utils
-Route::get('user-lookup', UserLookupController::class)->name('user-lookup');
+Route::get('user-lookup/{post?}', UserLookupController::class)->name('user-lookup');
 Route::post('format', FormatController::class)->name('format');
 Route::post('upload', UploadController::class)->name('upload');
 Route::get('impersonate/{user}', ImpersonateController::class)->name('impersonate');
