@@ -4,6 +4,7 @@ namespace Waterhole\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
+use Waterhole\Models\Post;
 use Waterhole\Models\User;
 use Waterhole\View\Components\UserLabel;
 
@@ -19,18 +20,28 @@ use Waterhole\View\Components\UserLabel;
  */
 class UserLookupController extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke(?Post $post, Request $request)
     {
-        $query = $request->query('q');
+        $query = User::query();
 
-        if (strlen($query) < 2) {
-            abort(400, 'Query must be 2 or more characters');
+        if ($post->exists) {
+            $query
+                ->joinRelationship('comments')
+                ->where('comments.post_id', $post->getKey())
+                ->groupBy('users.id')
+                ->orderByRaw('MAX(comments.created_at) DESC');
         }
 
-        return User::query()
-            ->where('name', 'like', $query . '%')
-            ->orderByRaw('name = ? desc', [$query])
-            ->orderBy('name')
+        if ($search = $request->query('q')) {
+            $query
+                ->where('name', 'like', "$search%")
+                ->orderByRaw('name = ? desc', [$search])
+                ->orderBy('name');
+        } elseif (!$post->exists) {
+            return [];
+        }
+
+        return $query
             ->take(5)
             ->get(['id', 'name', 'avatar'])
             ->map(

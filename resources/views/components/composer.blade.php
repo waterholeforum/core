@@ -91,10 +91,11 @@
         <x-waterhole::text-editor
             name="body"
             :value="old('body')"
-            placeholder="{{ __('waterhole::forum.composer-placeholder') }}"
+            :placeholder="__('waterhole::forum.composer-placeholder')"
             id="new-comment"
             data-action="quotable:quote-text@document->text-editor#insertQuote"
             class="grow"
+            :user-lookup-url="route('waterhole.user-lookup', ['post' => $post->id])"
         />
     </form>
 </turbo-frame>
