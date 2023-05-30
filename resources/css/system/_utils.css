@@ -15,7 +15,7 @@
 .container {
   margin-inline: auto;
   padding-inline: var(--space-gutter);
-  max-width: 76rem;
+  max-width: 72rem;
   width: 100%;
 }
 
