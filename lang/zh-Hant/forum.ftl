@@ -74,22 +74,22 @@ move-to-channel-confirm-button = 移動
 
 mark-as-read-button = 標記為已讀
 
-create-post-button = 發表帖子
-create-post-title = 新帖子
+create-post-button = 發表文章
+create-post-title = 新增文章
 post-channel-label = 頻道
 post-submit-button = 發表
-edit-post-title = 編輯帖子
-edit-post-link = 編輯帖子
+edit-post-title = 編輯文章
+edit-post-link = 編輯文章
 post-title-label = 標題
-similar-posts-label = 查看這些相似帖子：
+similar-posts-label = 查看這些相似文章：
 post-body-label = 內容
 
 channel-picker-placeholder = 選擇一個頻道
 
-delete-post-confirm-message = 您確定要刪除此帖子嗎？
-delete-post-success-message = 帖子已刪除。
+delete-post-confirm-message = 您確定要刪除此文章嗎？
+delete-post-success-message = 文章已刪除。
 
-original-post-link = 原始帖子
+original-post-link = 原始文章
 
 ## Comments
 
