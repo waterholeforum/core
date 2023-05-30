@@ -2,10 +2,12 @@
 
 namespace Waterhole\Search;
 
+use Exception;
 use Illuminate\Support\Facades\DB;
-use s9e\TextFormatter\Utils;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Post;
+
+use function Waterhole\remove_formatting;
 
 class MySqlEngine implements EngineInterface
 {
@@ -120,15 +122,19 @@ class MySqlEngine implements EngineInterface
             ->map(function ($row) use ($highlighter) {
                 $title = $highlighter->highlight($row->title);
 
-                $body = $highlighter->highlight(
-                    $highlighter->truncate(
-                        Utils::removeFormatting(
-                            ($row->pscore ?? 1) >= ($row->cscore ?? 0)
-                                ? $row->post_body
-                                : $row->comment_body,
+                try {
+                    $body = $highlighter->highlight(
+                        $highlighter->truncate(
+                            remove_formatting(
+                                ($row->pscore ?? 1) >= ($row->cscore ?? 0)
+                                    ? $row->post_body
+                                    : $row->comment_body,
+                            ),
                         ),
-                    ),
-                );
+                    );
+                } catch (Exception $e) {
+                    $body = '';
+                }
 
                 return new Hit($row->post_id, $title, $body);
             });

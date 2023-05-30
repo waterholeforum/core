@@ -3,11 +3,12 @@
 namespace Waterhole\Models\Concerns;
 
 use Illuminate\Support\HtmlString;
-use s9e\TextFormatter\Utils;
 use Waterhole\Console\ReformatCommand;
 use Waterhole\Formatter\Context;
 use Waterhole\Formatter\Formatter;
 use Waterhole\Models\User;
+
+use function Waterhole\remove_formatting;
 
 trait UsesFormatter
 {
@@ -79,7 +80,7 @@ trait UsesFormatter
             }
 
             if (str_ends_with($key, '_text')) {
-                return Utils::removeFormatting($this->attributes[$attribute]);
+                return remove_formatting($this->attributes[$attribute]);
             }
         }
 

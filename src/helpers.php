@@ -4,6 +4,7 @@ namespace Waterhole;
 
 use BladeUI\Icons\Exceptions\SvgNotFound;
 use Closure;
+use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
@@ -11,8 +12,8 @@ use Illuminate\View\AnonymousComponent;
 use Illuminate\View\ComponentAttributeBag;
 use Major\Fluent\Formatters\Number\NumberFormatter;
 use Major\Fluent\Formatters\Number\Options;
+use s9e\TextFormatter\Utils;
 use Waterhole\Models\User;
-use Waterhole\Support\Text;
 
 /**
  * Format a number.
@@ -65,6 +66,22 @@ function emojify(?string $text): HtmlString|string
     $formatter = app('waterhole.formatter.emoji');
 
     return new HtmlString($formatter->render($formatter->parse($text)));
+}
+
+/**
+ * Strip the formatting of an intermediate representation and return plain text.
+ */
+function remove_formatting(?string $xml): string
+{
+    if (!$xml) {
+        return '';
+    }
+
+    try {
+        return Utils::removeFormatting($xml);
+    } catch (Exception $e) {
+        return '';
+    }
 }
 
 /**
