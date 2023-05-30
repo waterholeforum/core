@@ -52,7 +52,7 @@
                             />
 
                             <div class="content">
-                                {!! Waterhole\emojify(Waterhole\truncate_html($comment->parent->body, 300)) !!}
+                                {{ Waterhole\emojify(Str::limit($comment->parent->body_text, 200)) }}
                             </div>
                         </div>
                     </ui-tooltip>
@@ -64,7 +64,7 @@
             class="comment__body content @if ($truncate) content--compact truncated @endif"
             data-controller="quotable @if ($truncate) truncated @endif"
         >
-            {{ Waterhole\emojify($comment->body_html) }}
+            {{ $comment->body_html }}
 
             @if ($truncate)
                 <button

@@ -26,7 +26,7 @@
         class="post-card__content content content--compact text-sm truncated"
         data-controller="truncated"
     >
-        {{ Waterhole\emojify($post->body_html) }}
+        {{ $post->body_html }}
 
         <button
             type="button"

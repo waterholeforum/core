@@ -40,6 +40,8 @@ class FormatterServiceProvider extends ServiceProvider
                 $config->TaskLists;
                 $config->Autovideo;
                 $config->Autoimage;
+
+                $this->configureEmoji($config);
             });
 
             $formatter->rendering(function (Renderer $renderer, string &$xml, ?Context $context) {
@@ -59,6 +61,19 @@ class FormatterServiceProvider extends ServiceProvider
         });
 
         $this->app->alias('waterhole.formatter', Formatter::class);
+
+        $this->app->singleton('waterhole.formatter.emoji', function ($app) {
+            $formatter = new Formatter(
+                $app->make('files'),
+                $app->storagePath('waterhole/formatter'),
+                $app->make('cache.store'),
+                'waterhole.formatter.emoji',
+            );
+
+            $formatter->configure($this->configureEmoji(...));
+
+            return $formatter;
+        });
     }
 
     public function boot()
@@ -71,5 +86,18 @@ class FormatterServiceProvider extends ServiceProvider
         Channel::setFormatter('description', $formatter);
         Channel::setFormatter('instructions', $formatter);
         User::setFormatter('bio', $formatter);
+    }
+
+    private function configureEmoji(Configurator $config): void
+    {
+        $tag = $config->Emoji->getTag();
+
+        if ($url = config('waterhole.design.emoji_url')) {
+            $tag->template = <<<html
+                <img alt="{.}" class="emoji" draggable="false" src="$url"/>
+            html;
+        } else {
+            $tag->template = '<span class="emoji"><xsl:value-of select="."/></span>';
+        }
     }
 }

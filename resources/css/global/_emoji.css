@@ -1,12 +1,18 @@
-.twemoji {
+.emoji {
   display: inline-block;
+}
+
+span.emoji {
+  transform: scale(1.2);
+}
+
+img.emoji {
   height: 1.2em;
   width: 1.2em;
   vertical-align: -0.2em;
 }
 
-.icon .twemoji {
+.icon .emoji {
   width: 100%;
   height: 100%;
-  vertical-align: 0;
 }

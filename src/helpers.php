@@ -11,7 +11,6 @@ use Illuminate\View\AnonymousComponent;
 use Illuminate\View\ComponentAttributeBag;
 use Major\Fluent\Formatters\Number\NumberFormatter;
 use Major\Fluent\Formatters\Number\Options;
-use Waterhole\Extend\Emoji;
 use Waterhole\Models\User;
 use Waterhole\Support\Text;
 
@@ -55,23 +54,17 @@ function compact_number(float $number): string
 }
 
 /**
- * Replace Emoji characters in a text string.
+ * Replace Emoji characters in a plain-text string.
  */
-function emojify(string $text, array $attributes = []): HtmlString|string
+function emojify(?string $text): HtmlString|string
 {
-    return Emoji::emojify($text, $attributes);
-}
+    if (!$text) {
+        return '';
+    }
 
-/**
- * Truncate a string, handing HTML tags and words correctly.
- */
-function truncate_html(string $html, int $limit, string $end = '...'): string
-{
-    return Text::truncate($html, $limit, [
-        'exact' => false,
-        'html' => true,
-        'ellipsis' => $end,
-    ]);
+    $formatter = app('waterhole.formatter.emoji');
+
+    return new HtmlString($formatter->render($formatter->parse($text)));
 }
 
 /**

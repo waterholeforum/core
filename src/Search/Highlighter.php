@@ -4,11 +4,13 @@ namespace Waterhole\Search;
 
 use Illuminate\Support\HtmlString;
 
+use function Waterhole\emojify;
+
 class Highlighter
 {
     private ?string $re;
 
-    public function __construct(private string $q)
+    public function __construct(string $q)
     {
         $this->re = $this->buildRegularExpression($q);
     }
@@ -28,7 +30,7 @@ class Highlighter
                 function (array $matches) {
                     return "<mark>$matches[0]</mark>";
                 },
-                e($text),
+                emojify($text),
             ),
         );
     }

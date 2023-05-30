@@ -12,6 +12,7 @@ class ConsoleServiceProvider extends ServiceProvider
         Console\CacheClearCommand::class,
         Console\InstallCommand::class,
         Console\MakeExtensionCommand::class,
+        Console\ReformatCommand::class,
     ];
 
     public function boot()

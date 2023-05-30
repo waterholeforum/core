@@ -1,7 +1,6 @@
 import { Controller } from '@hotwired/stimulus';
 import { Picker } from 'emoji-picker-element';
 import { PopupElement } from 'inclusive-elements';
-import twemoji from 'twemoji';
 
 /**
  * Controller for the <x-waterhole::icon-picker> component.
@@ -31,12 +30,7 @@ export default class extends Controller {
 
         picker.addEventListener('emoji-click', (e) => {
             input.value = e.detail.unicode || '';
-            button.innerHTML = Waterhole.twemojiBase
-                ? twemoji.parse(input.value, {
-                      base: Waterhole.twemojiBase,
-                      className: 'icon',
-                  })
-                : input.value;
+            button.innerHTML = input.value;
             popup.open = false;
         });
     }

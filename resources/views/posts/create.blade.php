@@ -41,7 +41,7 @@
 
                         @if ($instructions = $form->model->channel->instructions_html)
                             <div class="rounded p-lg bg-warning-soft content">
-                                {{ Waterhole\emojify($instructions) }}
+                                {{ $instructions }}
                             </div>
                         @endif
 
