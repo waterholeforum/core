@@ -140,7 +140,7 @@
   --space-xl: calc(var(--space-lg) * var(--ratio));
   --space-xxl: calc(var(--space-xl) * var(--ratio));
   --space-xxxl: calc(var(--space-xxl) * var(--ratio));
-  --space-gutter: min(2rem, 5vw);
+  --space-gutter: clamp(var(--space-lg), 3vw, var(--space-xl));
 
   // Font
   --font-system: system-ui;
