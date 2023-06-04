@@ -16,7 +16,7 @@
             dominant-baseline="central"
             text-anchor="middle"
         >
-            {{ $user?->name ? strtoupper($user->name[0]) : '?' }}
+            {{ $user?->name ? mb_strtoupper(mb_substr($user->name, 0, 1)) : '?' }}
         </text>
     </svg>
 @endif
