@@ -6,7 +6,7 @@ title = Control Panel
 
 dashboard-title = Dashboard
 
-configure-mail-message = You need to configure a mail driver in order for Waterhole to be able to send out verification emails.
+configure-mail-message = You need to configure a mail driver in order for Waterhole to be able to send out verification emails and notifications.
 debug-mode-on-message = Debug mode is ON. Sensitive configuration values may be exposed.
 
 getting-started-title = Get Started With Waterhole
