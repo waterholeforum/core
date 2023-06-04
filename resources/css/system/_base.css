@@ -44,7 +44,7 @@ strong {
 
 mark {
   background: transparent;
-  font-weight: var(--weight-bold);
+  font-weight: 700;
   color: inherit;
 }
 
