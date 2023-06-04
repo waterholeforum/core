@@ -2,16 +2,17 @@
   --comment-padding: var(--space-lg);
 
   padding: var(--comment-padding);
-  padding-left: calc(var(--attribution-avatar-size) + var(--space-md) + var(--comment-padding));
-  border-radius: var(--radius);
-  position: relative;
-  transition: background 0.2s;
-
-  .attribution {
-    padding-left: 0;
-  }
 
   @media (--md-up) {
+    padding-left: calc(var(--attribution-avatar-size) + var(--space-md) + var(--comment-padding));
+    border-radius: var(--radius);
+    position: relative;
+    transition: background 0.2s;
+
+    .attribution {
+      padding-left: 0;
+    }
+
     .attribution__info {
       display: inline;
       margin-left: var(--space-xxs);
