@@ -58,7 +58,6 @@ abstract class Actions
 // User actions
 Actions::add(Waterhole\Actions\CopyLink::class, 0, 'copy-link');
 Actions::add(Waterhole\Actions\MarkAsRead::class, 0, 'mark-as-read');
-Actions::add(Waterhole\Actions\MarkAsUnread::class, 0, 'mark-as-unread');
 Actions::add(Waterhole\Actions\Follow::class, 0, 'follow');
 Actions::add(Waterhole\Actions\Unfollow::class, 0, 'unfollow');
 Actions::add(Waterhole\Actions\Ignore::class, 0, 'ignore');
