@@ -6,7 +6,7 @@ title = Panneau de contrôle
 
 dashboard-title = Tableau de bord
 
-configure-mail-message = Vous devez configurer un pilote de messagerie pour que Waterhole puisse envoyer des courriels de vérification.
+configure-mail-message = Vous devez configurer un pilote de messagerie pour que Waterhole puisse envoyer des courriels de vérification et des notifications.
 debug-mode-on-message = Le mode débogage est activé. Des valeurs de configuration sensibles peuvent être exposées.
 
 getting-started-title = Démarrer avec Waterhole
