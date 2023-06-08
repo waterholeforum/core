@@ -73,13 +73,11 @@ abstract class TurboStream
     private static function stream(Component $component, string $action, array $attributes): string
     {
         $attributes = new ComponentAttributeBag($attributes);
-        $content = Blade::renderComponent($component);
+        $content = trim(Blade::renderComponent($component));
 
         return <<<html
             <turbo-stream action="$action" $attributes>
-                <template>
-                    $content
-                </template>
+                <template>$content</template>
             </turbo-stream>
         html;
     }

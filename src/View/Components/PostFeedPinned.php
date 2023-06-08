@@ -33,11 +33,6 @@ class PostFeedPinned extends Component
         $this->posts = $query->latest()->get();
     }
 
-    public function shouldRender()
-    {
-        return $this->posts->isNotEmpty();
-    }
-
     public function render()
     {
         return $this->view('waterhole::components.post-feed-pinned');
