@@ -151,7 +151,7 @@
                 </div>
 
                 <div>
-                    {{ $users->links() }}
+                    {{ $users->links('waterhole::pagination.default') }}
                 </div>
             @else
                 <div class="placeholder card">

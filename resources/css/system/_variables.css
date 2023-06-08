@@ -18,6 +18,7 @@
   --palette-muted-hsl: 250 20% 50%;
   --palette-muted: hsl(var(--palette-muted-hsl));
   --palette-fill: hsl(var(--palette-muted-hsl) / 0.1);
+  --palette-fill-soft: hsl(var(--palette-muted-hsl) / 0.05);
   --palette-stroke: hsl(var(--palette-muted-hsl) / 0.25);
 
   // Emphasis color
@@ -140,7 +141,7 @@
   --space-xl: calc(var(--space-lg) * var(--ratio));
   --space-xxl: calc(var(--space-xl) * var(--ratio));
   --space-xxxl: calc(var(--space-xxl) * var(--ratio));
-  --space-gutter: min(2rem, 5vw);
+  --space-gutter: clamp(var(--space-lg), 3vw, var(--space-xl));
 
   // Font
   --font-system: system-ui;
@@ -194,6 +195,7 @@
   --color-text: var(--palette-text);
   --color-muted: var(--palette-muted);
   --color-fill: var(--palette-fill);
+  --color-fill-soft: var(--palette-fill-soft);
   --color-stroke: var(--palette-stroke);
   --color-emphasis: var(--palette-emphasis);
   --color-emphasis-contrast: var(--palette-emphasis-contrast);

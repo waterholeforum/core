@@ -73,7 +73,6 @@ move-to-channel-button = Move to Channel
 move-to-channel-confirm-button = Move
 
 mark-as-read-button = Mark as Read
-mark-as-unread-button = Mark as Unread
 
 create-post-button = Create a Post
 create-post-title = New Post
@@ -91,6 +90,9 @@ delete-post-confirm-message = Are you sure you want to delete this post?
 delete-post-success-message = Post deleted.
 
 original-post-link = Original Post
+
+pin-to-top-button = Pin to Top
+unpin-button = Unpin
 
 ## Comments
 
@@ -122,6 +124,21 @@ composer-clear-reply-button = Clear
 composer-submit = Post
 
 delete-comment-confirm-message = Are you sure you want to delete this comment?
+
+hide-comment-button = Hide
+unhide-comment-button = Unhide
+
+hide-comment-title = Hide Comment
+hide-reason-label = Reason
+hide-reason-unspecified = Unspecified
+
+comment-hidden-message = Comment hidden
+comment-hidden-with-reason-message = Comment marked as { $reason }
+
+report-reason-off-topic = Off-topic
+report-reason-inappropriate = Inappropriate
+report-reason-spam = Spam
+report-reason-other = Other
 
 ## Misc
 

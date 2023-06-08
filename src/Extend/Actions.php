@@ -58,7 +58,6 @@ abstract class Actions
 // User actions
 Actions::add(Waterhole\Actions\CopyLink::class, 0, 'copy-link');
 Actions::add(Waterhole\Actions\MarkAsRead::class, 0, 'mark-as-read');
-Actions::add(Waterhole\Actions\MarkAsUnread::class, 0, 'mark-as-unread');
 Actions::add(Waterhole\Actions\Follow::class, 0, 'follow');
 Actions::add(Waterhole\Actions\Unfollow::class, 0, 'unfollow');
 Actions::add(Waterhole\Actions\Ignore::class, 0, 'ignore');
@@ -71,9 +70,13 @@ Actions::add(Waterhole\View\Components\MenuDivider::class, 0, 'divider');
 // Super actions
 Actions::add(Waterhole\Actions\EditComment::class, 0, 'edit-comment');
 Actions::add(Waterhole\Actions\EditPost::class, 0, 'edit-post');
+Actions::add(Waterhole\Actions\Pin::class, 0, 'pin');
+Actions::add(Waterhole\Actions\Unpin::class, 0, 'unpin');
 Actions::add(Waterhole\Actions\Lock::class, 0, 'lock');
 Actions::add(Waterhole\Actions\Unlock::class, 0, 'unlock');
 Actions::add(Waterhole\Actions\MoveToChannel::class, 0, 'move-to-channel');
+Actions::add(Waterhole\Actions\HideComment::class, 0, 'hide-comment');
+Actions::add(Waterhole\Actions\UnhideComment::class, 0, 'unhide-comment');
 Actions::add(Waterhole\Actions\DeleteComment::class, 0, 'delete-comment');
 Actions::add(Waterhole\Actions\DeletePost::class, 0, 'delete-post');
 

@@ -72,7 +72,7 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('comment.create', [Policies\CommentPolicy::class, 'create']);
         Gate::define('comment.edit', [Policies\CommentPolicy::class, 'edit']);
-        Gate::define('comment.delete', [Policies\CommentPolicy::class, 'delete']);
+        Gate::define('comment.moderate', [Policies\CommentPolicy::class, 'moderate']);
         Gate::define('comment.react', [Policies\CommentPolicy::class, 'react']);
 
         Gate::define('post.create', [Policies\PostPolicy::class, 'create']);

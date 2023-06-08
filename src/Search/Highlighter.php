@@ -77,6 +77,6 @@ class Highlighter
             return '\b' . $phrase . '\b';
         }, $phrases[0]);
 
-        return '/' . implode('|', $phrases) . '/i';
+        return '/' . implode('|', $phrases) . '/iu';
     }
 }

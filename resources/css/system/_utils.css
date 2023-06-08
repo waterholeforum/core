@@ -114,6 +114,11 @@
   grid-template-columns: repeat(auto-fill, minmax(min(var(--grid-min, 15ch), 100%), 1fr));
 }
 
+.grid-fit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(var(--grid-min, 15ch), 100%), 1fr));
+}
+
 .block {
   display: block;
   width: 100%;
@@ -503,6 +508,10 @@
 
 .bg-fill {
   background-color: var(--color-fill);
+}
+
+.bg-fill-soft {
+  background-color: var(--color-fill-soft);
 }
 
 .bg-emphasis {
