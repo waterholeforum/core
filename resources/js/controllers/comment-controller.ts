@@ -2,6 +2,8 @@ import { Controller } from '@hotwired/stimulus';
 import { TooltipElement } from 'inclusive-elements';
 import { isElementInViewport } from '../utils';
 
+const expanded: Record<string, boolean> = {};
+
 /**
  * Controller for the <x-waterhole::comment-full> component.
  *
@@ -24,6 +26,20 @@ export default class extends Controller {
         return Array.from(
             document.querySelectorAll<HTMLElement>(`[data-comment-id="${this.parentId}"]`)
         );
+    }
+
+    connect() {
+        if (expanded[this.commentId]) {
+            this.toggleHidden();
+        }
+    }
+
+    disconnect() {
+        expanded[this.commentId] = this.element.classList.contains('is-expanded');
+    }
+
+    toggleHidden() {
+        this.element.classList.toggle('is-expanded');
     }
 
     highlightParent() {

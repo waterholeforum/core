@@ -32,6 +32,23 @@
   }
 }
 
+.comment.is-hidden {
+  padding-top: var(--space-xs);
+  background: var(--palette-fill-soft);
+
+  &.is-expanded > .comment__hidden {
+    margin-bottom: var(--space-sm);
+  }
+
+  &:not(.is-expanded) {
+    padding-bottom: var(--space-xs);
+
+    > .comment__hidden ~ * {
+      display: none;
+    }
+  }
+}
+
 // The "in reply to" bit in the comment header
 .comment__parent {
   margin-top: var(--space-xs);

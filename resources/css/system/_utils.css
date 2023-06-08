@@ -510,6 +510,10 @@
   background-color: var(--color-fill);
 }
 
+.bg-fill-soft {
+  background-color: var(--color-fill-soft);
+}
+
 .bg-emphasis {
   --color-bg: var(--palette-emphasis);
   --color-text: var(--palette-emphasis-contrast);

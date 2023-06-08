@@ -75,6 +75,8 @@ Actions::add(Waterhole\Actions\Unpin::class, 0, 'unpin');
 Actions::add(Waterhole\Actions\Lock::class, 0, 'lock');
 Actions::add(Waterhole\Actions\Unlock::class, 0, 'unlock');
 Actions::add(Waterhole\Actions\MoveToChannel::class, 0, 'move-to-channel');
+Actions::add(Waterhole\Actions\HideComment::class, 0, 'hide-comment');
+Actions::add(Waterhole\Actions\UnhideComment::class, 0, 'unhide-comment');
 Actions::add(Waterhole\Actions\DeleteComment::class, 0, 'delete-comment');
 Actions::add(Waterhole\Actions\DeletePost::class, 0, 'delete-post');
 

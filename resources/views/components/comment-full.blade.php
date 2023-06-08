@@ -5,6 +5,22 @@
     data-controller="comment"
     tabindex="-1"
 >
+    @if ($comment->isHidden())
+        <div class="comment__hidden row gap-sm color-muted">
+            <button class="btn btn--sm btn--transparent btn--start" data-action="comment#toggleHidden">
+                @icon('tabler-selector')
+
+                @if ($comment->hidden_reason)
+                    {{ __('waterhole::forum.comment-hidden-with-reason-message', [
+                        'reason' => __("waterhole::forum.report-reason-$comment->hidden_reason")
+                    ]) }}
+                @else
+                    {{ __('waterhole::forum.comment-hidden-message') }}
+                @endif
+            </button>
+        </div>
+    @endif
+
     <div class="comment__main stack gap-md">
         <header class="comment__header">
             @components(Waterhole\Extend\CommentHeader::build(), compact('comment'))
@@ -119,7 +135,7 @@
                 <ol
                     role="list"
                     tabindex="-1"
-                    class="comment__replies comment-list card bg-fill text-xs"
+                    class="comment__replies comment-list card bg-fill-soft text-xs"
                 >
                     @foreach ($comment->children as $child)
                         <li class="card__row">

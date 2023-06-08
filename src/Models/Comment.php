@@ -31,10 +31,14 @@ use function Tonysm\TurboLaravel\dom_id;
  * @property ?\Carbon\Carbon $edited_at
  * @property int $reply_count
  * @property int $score
+ * @property ?\Carbon\Carbon $hidden_at
+ * @property ?int $hidden_by
+ * @property ?string $hidden_reason
  * @property-read Post $post
  * @property-read ?User $user
  * @property-read \Illuminate\Database\Eloquent\Collection $replies
  * @property-read ?Comment $parent
+ * @property-read ?User $hiddenBy
  * @property-read string $url
  * @property-read string $edit_url
  * @property-read string $post_url
@@ -52,6 +56,7 @@ class Comment extends Model
 
     protected $casts = [
         'edited_at' => 'datetime',
+        'hidden_at' => 'datetime',
         'is_pinned' => 'boolean',
     ];
 
@@ -109,7 +114,12 @@ class Comment extends Model
 
     public function parent(): BelongsTo
     {
-        return $this->belongsTo(self::class, 'parent_id');
+        return $this->belongsTo(self::class);
+    }
+
+    public function hiddenBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'hidden_by');
     }
 
     /**
@@ -134,6 +144,14 @@ class Comment extends Model
     public function isAnswer(): bool
     {
         return $this->post->answer_id === $this->id;
+    }
+
+    /**
+     * Determine whether this comment has been hidden.
+     */
+    public function isHidden(): bool
+    {
+        return (bool) $this->hidden_at;
     }
 
     /**
@@ -166,7 +184,7 @@ class Comment extends Model
      */
     public function streamUpdated(): array
     {
-        return [TurboStream::replace(new Components\CommentFrame($this))];
+        return [TurboStream::replace(new Components\CommentFull($this))];
     }
 
     /**

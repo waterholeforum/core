@@ -1,5 +1,8 @@
 .btn {
-  height: var(--control-height);
+  --btn-height: var(--control-height);
+  --btn-padding: calc(0.4 * var(--btn-height));
+
+  height: var(--btn-height);
   background: var(--color-fill);
   color: var(--color-text);
   border-radius: var(--control-radius);
@@ -9,7 +12,7 @@
   gap: var(--space-xxs);
   align-items: center;
   justify-content: center;
-  padding: 0 calc(0.4 * var(--control-height));
+  padding: 0 var(--btn-padding);
   text-decoration: none !important;
   font-weight: var(--weight-medium);
   white-space: nowrap;
@@ -43,17 +46,26 @@
 // Sizes
 
 .btn--sm {
-  --control-height: var(--control-height-small);
-  padding: 0 calc(0.3 * var(--control-height-small));
+  --btn-height: var(--control-height-small);
+  --btn-padding: calc(0.3 * var(--btn-height));
+
   font-size: 87.5%;
 }
 
 .btn--narrow {
-  padding: 0 calc(0.3 * var(--control-height));
+  --btn-padding: calc(0.3 * var(--btn-height));
 }
 
 .btn--wide {
-  padding: 0 calc(0.5 * var(--control-height));
+  --btn-padding: calc(0.5 * var(--btn-height));
+}
+
+.btn--start {
+  margin-left: calc(-1 * var(--btn-padding));
+}
+
+.btn--end {
+  margin-right: calc(-1 * var(--btn-padding));
 }
 
 // Icon button

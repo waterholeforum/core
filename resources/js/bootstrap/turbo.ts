@@ -1,7 +1,7 @@
 import * as Turbo from '@hotwired/turbo';
 import { FrameElement, StreamElement, TurboFrameMissingEvent } from '@hotwired/turbo';
 // @ts-ignore
-import { morph } from 'idiomorph';
+import morph from 'nanomorph';
 import { cloneFromTemplate } from '../utils';
 
 declare global {

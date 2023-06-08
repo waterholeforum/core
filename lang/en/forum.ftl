@@ -125,6 +125,21 @@ composer-submit = Post
 
 delete-comment-confirm-message = Are you sure you want to delete this comment?
 
+hide-comment-button = Hide
+unhide-comment-button = Unhide
+
+hide-comment-title = Hide Comment
+hide-reason-label = Reason
+hide-reason-unspecified = Unspecified
+
+comment-hidden-message = Comment hidden
+comment-hidden-with-reason-message = Comment marked as { $reason }
+
+report-reason-off-topic = Off-topic
+report-reason-inappropriate = Inappropriate
+report-reason-spam = Spam
+report-reason-other = Other
+
 ## Misc
 
 quote-button = Quote
