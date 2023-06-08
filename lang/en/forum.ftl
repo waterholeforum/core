@@ -91,6 +91,9 @@ delete-post-success-message = Post deleted.
 
 original-post-link = Original Post
 
+pin-to-top-button = Pin to Top
+unpin-button = Unpin
+
 ## Comments
 
 comments-unread-heading = Unread

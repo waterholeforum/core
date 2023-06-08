@@ -70,6 +70,8 @@ Actions::add(Waterhole\View\Components\MenuDivider::class, 0, 'divider');
 // Super actions
 Actions::add(Waterhole\Actions\EditComment::class, 0, 'edit-comment');
 Actions::add(Waterhole\Actions\EditPost::class, 0, 'edit-post');
+Actions::add(Waterhole\Actions\Pin::class, 0, 'pin');
+Actions::add(Waterhole\Actions\Unpin::class, 0, 'unpin');
 Actions::add(Waterhole\Actions\Lock::class, 0, 'lock');
 Actions::add(Waterhole\Actions\Unlock::class, 0, 'unlock');
 Actions::add(Waterhole\Actions\MoveToChannel::class, 0, 'move-to-channel');
