@@ -91,6 +91,9 @@ delete-post-success-message = Le message a été supprimé.
 
 original-post-link = Message original
 
+pin-to-top-button = Épingler en haut
+unpin-button = Ne plus épingler
+
 ## Comments
 
 comments-unread-heading = Non lu
@@ -121,6 +124,21 @@ composer-clear-reply-button = Effacer
 composer-submit = Publier
 
 delete-comment-confirm-message = Êtes-vous sûr de vouloir supprimer ce commentaire ?
+
+hide-comment-button = Masquer
+unhide-comment-button = Ne plus masquer
+
+hide-comment-title = Masquer le commentaire
+hide-reason-label = Motif
+hide-reason-unspecified = Non spécifié
+
+comment-hidden-message = Commentaire masqué
+comment-hidden-with-reason-message = Commentaire marqué comme { $reason }
+
+report-reason-off-topic = hors-sujet
+report-reason-inappropriate = inapproprié
+report-reason-spam = indésirable
+report-reason-other = autre
 
 ## Misc
 
