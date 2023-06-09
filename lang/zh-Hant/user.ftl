@@ -47,24 +47,24 @@ posts-empty-message = 沒有文章
 
 ## User Menu
 
-profile-link = 個人檔案
-preferences-link = 偏好設定
-administration-link = 管理員設定
+profile-link = 個人主頁
+preferences-link = 設置
+administration-link = 管理後台
 log-out-link = 登出
 
 ## Profile
 
-user-joined-text = 加入於 { $date }
-user-last-seen-text = 上次活動時間 { $date }
+user-joined-text = 加入於  
+user-last-seen-text = 上次活動時間  
 online-label = 在線上
 
 ## Sidebar
 
-posts-link = 文章
+posts-link = 主題
 comments-link = 評論
 preferences-heading = 偏好設定
-account-settings-link = 帳戶設定
-edit-profile-link = 編輯個人檔案
+account-settings-link = 帳戶管理
+edit-profile-link = 個人信息
 notification-preferences-link = 通知設定
 
 ## Admin

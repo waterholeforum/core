@@ -24,7 +24,7 @@ learn-more-link = 了解更多
 delete-button = 刪除
 edit-link = 編輯
 copy-link-button = 複製連結
-controls-button = 控制項
+controls-button = 選單
 more-button = 更多
 loading = 載入中
 show-more-button = 顯示更多
@@ -41,17 +41,17 @@ delete-confirm-button = 刪除
 
 ## Users
 
-deleted-user = 已刪除使用者
-user-list-overflow = 還有 $count 人
+deleted-user = [已註銷]
+user-list-overflow = 還有 { $count } 人
 
 ## Pagination
 
 pagination-first-link = 第一頁
 pagination-previous-link = 上一頁
 pagination-next-link = 下一頁
-pagination-last-link = 最後一頁
+pagination-last-link = 最新評論
 load-more-button = 載入更多
-page-number-prefix = 第
+page-number-prefix = 頁面
 page-number-heading = 第 { $number } 頁
 
 ## Theme Switcher

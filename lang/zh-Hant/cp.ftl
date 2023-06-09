@@ -6,13 +6,13 @@ title = Control Panel
 
 dashboard-title = 主控台
 
-configure-mail-message = 您需要配置郵件驅動程序，以便 Waterhole 能夠發送驗證郵件。
+configure-mail-message = 您需要配置郵件驅動程序，以便 Waterhole 能夠發送驗證郵件及寄送通知。
 debug-mode-on-message = 調試模式已啟用。敏感配置值可能會被暴露。
 
 getting-started-title = 開始使用 Waterhole
 getting-started-strategy-title = 閱讀文檔
 getting-started-strategy-description = 學習如何通過 Waterhole 構建一個成功的社區。
-getting-started-structure-title = 設置您的結構
+getting-started-structure-title = 設置您的佈局
 getting-started-structure-description = 配置構成您社區框架的頻道和頁面。
 getting-started-groups-title = 定義用戶組
 getting-started-groups-description = 為版主、工作人員和超級用戶設置用戶組。
@@ -37,7 +37,7 @@ preiod-previous-heading = 上一時期
 
 ## Structure
 
-structure-title = 結構
+structure-title = 佈局
 
 structure-channel-label = 頻道
 structure-page-label = 頁面
@@ -92,7 +92,7 @@ channel-description-label = 描述
 channel-description-description = 簡要描述此頻道的用途。
 channel-options-title = 選項
 channel-visibility-label = 可見性
-channel-ignore-label = 預設忽略
+channel-ignore-label = 預設為"忽略"
 channel-ignore-description = 對於所有使用者，在動態消息中隱藏此頻道的帖子，除非他們明確追蹤該頻道。
 channel-layout-title = 佈局
 channel-layout-label = 佈局
@@ -106,7 +106,7 @@ channel-features-title = 功能
 channel-reactions-label = 回應
 channel-reactions-posts-label = 帖子
 channel-reactions-comments-label = 評論
-channel-taxonomies-label = 分類法
+channel-taxonomies-label = 標籤
 channel-answers-label = 答案
 channel-enable-answers-label = 啟用此頻道的答案功能
 channel-enable-answers-description = 允許帖子作者將評論標記為答案。
@@ -193,23 +193,23 @@ delete-user-success-message = 使用者已刪除。
 
 ## Reactions
 
-reactions-title = 回應
-reaction-sets-title = 回應集
-create-reaction-set-button = 建立回應集
-edit-reaction-set-title = 編輯回應集
-create-reaction-set-title = 建立回應集
+reactions-title = 心情回應
+reaction-sets-title = 表情集
+create-reaction-set-button = 建立表情集
+edit-reaction-set-title = 編輯表情集
+create-reaction-set-title = 建立表情集
 reaction-set-name-label = 名稱
-reaction-set-reactions-label = 回應
-delete-reaction-set-confirm-message = 確定要刪除此回應集嗎？
-reaction-set-saved-message = 回應集已儲存。
+reaction-set-reactions-label = 表情
+delete-reaction-set-confirm-message = 確定要刪除此表情集嗎？
+reaction-set-saved-message = 表情集已儲存。
 
-edit-reaction-type-title = 編輯回應類型
-create-reaction-type-title = 建立回應類型
+edit-reaction-type-title = 編輯表情 
+create-reaction-type-title = 建立表情 
 reaction-type-name-label = 名稱
 reaction-type-score-label = 分數
-reaction-type-score-description = 此回應的分數值。
-delete-reaction-type-confirm-message = 確定要刪除此回應類型嗎？
-reaction-type-saved-message = 回應類型已儲存。
+reaction-type-score-description = 此表情的分數值。
+delete-reaction-type-confirm-message = 確定要刪除此表情嗎？
+reaction-type-saved-message = 表情已儲存。
 
 ## Taxonomies
 
