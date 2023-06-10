@@ -11,7 +11,7 @@
     </div>
 
     <div class="stack gap-xxs overlay-container">
-        <h3 class="h4">
+        <h3 class="h4 weight-medium">
             <a
                 href="{{ $post->isUnread() ? $post->unread_url : $post->url }}"
                 data-action="post#appearAsRead"
