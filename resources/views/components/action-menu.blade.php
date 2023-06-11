@@ -13,7 +13,13 @@
     </a>
 
     <ui-menu class="menu" hidden>
-        <turbo-frame id="actions" loading="lazy" src="{{ $url }}" target="_top">
+        <turbo-frame
+            id="actions"
+            loading="lazy"
+            src="{{ $url }}"
+            data-controller="turbo-frame"
+            data-action="turbo:frame-load->turbo-frame#remove"
+        >
             <x-waterhole::spinner class="spinner--block" />
         </turbo-frame>
     </ui-menu>
