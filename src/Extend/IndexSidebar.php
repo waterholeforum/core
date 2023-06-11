@@ -14,4 +14,3 @@ abstract class IndexSidebar
 }
 
 IndexSidebar::add(IndexNav::class, 0, 'nav');
-// IndexSidebar::add(IndexCreatePost::class, 0, 'createPost');
