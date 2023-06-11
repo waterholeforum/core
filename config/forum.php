@@ -66,8 +66,8 @@ return [
     |
     */
 
-    'posts_per_page' => 20,
-    'comments_per_page' => 20,
+    'posts_per_page' => 15,
+    'comments_per_page' => 15,
 
     /*
     |--------------------------------------------------------------------------
