@@ -25,9 +25,8 @@ class PostFeedPinned extends Component
             $query->whereDoesntHave('channel', fn($query) => $query->ignoring());
         }
 
-        foreach (PostFeedQuery::values() as $scope) {
-            $scope($query);
-        }
+        $query->with(['channel.userState', 'userState']);
+        $query->withUnreadCommentsCount();
 
         $this->posts = $query->latest()->get();
     }
