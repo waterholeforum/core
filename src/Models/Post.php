@@ -309,7 +309,10 @@ class Post extends Model
 
     public function resolveRouteBinding($value, $field = null)
     {
-        return $this->whereKey(explode('-', $value)[0])->firstOrFail();
+        return $this->select('*')
+            ->withReactions()
+            ->whereKey(explode('-', $value)[0])
+            ->firstOrFail();
     }
 
     protected function url(): Attribute
@@ -340,6 +343,14 @@ class Post extends Model
                     $fragment;
             },
         )->shouldCache();
+    }
+
+    public function reactionsUrl(ReactionType $reactionType): string
+    {
+        return route('waterhole.posts.reactions', [
+            'post' => $this,
+            'reactionType' => $reactionType,
+        ]);
     }
 
     public function setTitleAttribute($value)

@@ -53,6 +53,15 @@ Route::resource('posts.comments', CommentController::class)
     ->only(['show', 'create', 'store', 'edit', 'update'])
     ->scoped();
 
+// Reactions
+Route::get('posts/{post}/reactions/{reactionType}', [PostController::class, 'reactions'])->name(
+    'posts.reactions',
+);
+Route::get('comments/{comment}/reactions/{reactionType}', [
+    CommentController::class,
+    'reactions',
+])->name('comments.reactions');
+
 // Users
 Route::get('users/{user}/posts', [UserController::class, 'posts'])->name('user.posts');
 Route::get('users/{user}/comments', [UserController::class, 'comments'])->name('user.comments');

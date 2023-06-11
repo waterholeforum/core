@@ -62,6 +62,13 @@ class React extends Action
 
     public function stream(Model $model): array
     {
+        $model = $model
+            ->newQuery()
+            ->whereKey($model->getKey())
+            ->select('*')
+            ->withReactions()
+            ->firstOrFail();
+
         return [TurboStream::replace(new Reactions($model))];
     }
 }

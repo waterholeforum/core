@@ -10,7 +10,7 @@
 >
     @foreach ($reactionTypes as $reactionType)
         @php
-            $reactions = $reactionsByType[$reactionType->id] ?? collect()
+            $count = $model->reaction_counts[$reactionType->id] ?? 0
         @endphp
 
         <{{ $component->isAuthorized ? 'button' : 'span' }}
@@ -19,30 +19,28 @@
                     'name' => 'reaction_type_id',
                     'value' => $reactionType->id,
                     'data-reaction-type' => $reactionType->id,
-                    'data-count' => $reactions->count(),
+                    'data-count' => $count,
                 ]))->class([
                     'btn btn--sm btn--outline reaction',
-                    'is-active' => $reactions->contains('user_id', Auth::id()),
+                    'is-active' => $model->user_reactions?->contains($reactionType->id),
                     'is-inert' => ! $component->isAuthorized,
                 ])
             }}
         >
             @icon($reactionType->icon)
-            <span>{{ $reactions->count() }}</span>
+            <span>{{ $count }}</span>
 
             <ui-tooltip tooltip-class="tooltip tooltip--block">
                 <strong>{{ $reactionType->name }}</strong>
-                <ul role="list">
-                    @foreach ($reactions->take(20) as $reaction)
-                        <li>{{ $reaction->user->name }}</li>
-                    @endforeach
-
-                    @if ($reactions->count() > 20)
-                        <li>
-                            {{ __('waterhole::system.user-list-overflow', ['count' => $reactions->count() - 20]) }}
-                        </li>
-                    @endif
-                </ul>
+                @if ($count)
+                    <turbo-frame
+                        id="reactions"
+                        src="{{ $model->reactionsUrl($reactionType) }}"
+                        loading="lazy"
+                    >
+                        Loading...
+                    </turbo-frame>
+                @endif
             </ui-tooltip>
         </{{ $component->isAuthorized ? 'button' : 'span' }}>
     @endforeach
