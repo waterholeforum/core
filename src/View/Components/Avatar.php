@@ -24,16 +24,18 @@ class Avatar extends Component
             return 'transparent';
         }
 
-        if (!isset(static::$colorCache[$this->user->name])) {
-            $len = strlen($this->user->name);
+        $name = $this->user->name;
+
+        if (!isset(static::$colorCache[$name])) {
+            $len = strlen($name);
             $hue = 0;
             for ($i = 0; $i < $len; $i++) {
-                $hue += ord($this->user->name[$i]);
+                $hue += ord($name[$i]);
             }
 
-            static::$colorCache[$this->user->name] = 'hsl(' . $hue % 360 . ' 50% 50% / 0.5)';
+            static::$colorCache[$name] = 'hsl(' . $hue % 360 . ' 50% 50% / 0.5)';
         }
 
-        return static::$colorCache[$this->user->name];
+        return static::$colorCache[$name];
     }
 }
