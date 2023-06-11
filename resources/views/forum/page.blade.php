@@ -1,9 +1,9 @@
 <x-waterhole::layout :title="$page->name">
-    <x-slot:head>
+    <x-slot name="head">
         @unless ($page->structure->is_listed)
-            <meta name="robots" content="noindex">
+            <meta name="robots" content="noindex" />
         @endunless
-    </x-slot:head>
+    </x-slot>
 
     <x-waterhole::index>
         <div class="stack gap-xl measure card p-gutter">

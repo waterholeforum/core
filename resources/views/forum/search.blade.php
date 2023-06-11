@@ -10,7 +10,11 @@
             </h1>
         @endif
 
-        <form action="{{ route('waterhole.search') }}" class="lead row gap-xs card card__body" role="search">
+        <form
+            action="{{ route('waterhole.search') }}"
+            class="lead row gap-xs card card__body"
+            role="search"
+        >
             <div class="input-container full-width">
                 @icon('tabler-search', ['class' => 'no-pointer'])
                 <input
@@ -20,7 +24,7 @@
                     placeholder="{{ __('waterhole::forum.search-placeholder') }}"
                     aria-label="{{ __('waterhole::forum.search-placeholder') }}"
                     autofocus
-                >
+                />
             </div>
             <button type="submit" class="btn bg-accent">
                 {{ __('waterhole::forum.search-button') }}
@@ -52,7 +56,7 @@
                     <div class="stack gap-md">
                         <div class="row gap-xs wrap justify-between">
                             <h2 class="h4">
-                                {{ __('waterhole::forum.search-showing-results'.($results->exhaustiveTotal ? '' : '-non-exhaustive').'-title', ['total' => $results->total]) }}
+                                {{ __('waterhole::forum.search-showing-results' . ($results->exhaustiveTotal ? '' : '-non-exhaustive') . '-title', ['total' => $results->total]) }}
                             </h2>
 
                             <x-waterhole::selector
@@ -68,7 +72,10 @@
                         <div class="card search-results post-list">
                             <x-waterhole::infinite-scroll :paginator="$hits" divider>
                                 @foreach ($hits as $hit)
-                                    <x-waterhole::post-list-item :post="$hit->post" :excerpt="$hit->body"/>
+                                    <x-waterhole::post-list-item
+                                        :post="$hit->post"
+                                        :excerpt="$hit->body"
+                                    />
                                 @endforeach
                             </x-waterhole::infinite-scroll>
                         </div>

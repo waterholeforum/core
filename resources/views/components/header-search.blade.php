@@ -6,4 +6,4 @@
     <ui-tooltip>{{ __('waterhole::forum.search-button') }}</ui-tooltip>
 </a>
 
-<x-waterhole::search-form class="header-search__form hide-md-down"/>
+<x-waterhole::search-form class="header-search__form hide-md-down" />

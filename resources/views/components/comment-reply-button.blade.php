@@ -8,7 +8,7 @@
     @else
         href="{{ route('waterhole.login', ['return' => $comment->post_url]) }}"
         data-turbo-frame="_top"
-    @endif
+    @endcan
     class="btn btn--sm btn--transparent"
 >
     @icon('tabler-share-3', ['class' => 'flip-horizontal'])

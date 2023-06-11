@@ -23,10 +23,7 @@
                     {{ __('waterhole::auth.email-label') }}
                 </h4>
                 <turbo-frame id="change-email">
-                    <form
-                        action="{{ route('waterhole.preferences.email') }}"
-                        method="POST"
-                    >
+                    <form action="{{ route('waterhole.preferences.email') }}" method="POST">
                         @csrf
                         <x-waterhole::field name="email">
                             <div class="row gap-xs">
@@ -35,7 +32,7 @@
                                     name="email"
                                     type="email"
                                     value="{{ old('email', Auth::user()->email) }}"
-                                >
+                                />
                                 <button class="btn">
                                     {{ __('waterhole::system.change-button') }}
                                 </button>
@@ -52,10 +49,7 @@
                     {{ __('waterhole::auth.password-label') }}
                 </h4>
                 <turbo-frame id="change-password">
-                    <form
-                        action="{{ route('waterhole.preferences.password') }}"
-                        method="POST"
-                    >
+                    <form action="{{ route('waterhole.preferences.password') }}" method="POST">
                         @csrf
                         <x-waterhole::field name="password">
                             <div class="row gap-xs">
@@ -65,7 +59,7 @@
                                     name="password"
                                     placeholder="{{ __('waterhole::auth.new-password-label') }}"
                                     type="password"
-                                >
+                                />
                                 <button class="btn">
                                     {{ __('waterhole::system.change-button') }}
                                 </button>

@@ -1,7 +1,4 @@
-<div
-    class="card card__body line-chart-widget stack gap-xs"
-    data-controller="line-chart"
->
+<div class="card card__body line-chart-widget stack gap-xs" data-controller="line-chart">
     <div class="line-chart-widget__head stack gap-xs">
         <div class="row justify-between">
             <h3 class="h4">{{ $title }}</h3>
@@ -19,7 +16,9 @@
         <div class="row gap-sm align-baseline" data-line-chart-target="summary">
             <span class="text-lg">{{ Waterhole\format_number($periodTotal) }}</span>
             @if ($prevPeriodTotal && $periodTotal !== $prevPeriodTotal)
-                <span class="badge bg-{{ $color = $periodTotal < $prevPeriodTotal ? 'warning' : 'success' }}-soft color-{{ $color }}">
+                <span
+                    class="badge bg-{{ $color = $periodTotal < $prevPeriodTotal ? 'warning' : 'success' }}-soft color-{{ $color }}"
+                >
                     @icon($periodTotal < $prevPeriodTotal ? 'tabler-arrow-down' : 'tabler-arrow-up')
                     {{ Waterhole\format_number(abs(round(($periodTotal - $prevPeriodTotal) / $prevPeriodTotal)), ['style' => 'percent']) }}
                 </span>
@@ -38,7 +37,9 @@
                 <tr>
                     <th></th>
                     @for ($i = $periodStart; $i < $periodEnd; $i = $i->add(1, $selectedUnit))
-                        <th data-timestamp="{{ $i->timestamp }}">{{ $units[$selectedUnit]['label']($i) }}</th>
+                        <th data-timestamp="{{ $i->timestamp }}">
+                            {{ $units[$selectedUnit]['label']($i) }}
+                        </th>
                     @endfor
                 </tr>
             </thead>
@@ -46,24 +47,24 @@
                 <tr>
                     <th>{{ __('waterhole::cp.period-current-heading') }}</th>
                     @for ($i = $periodStart; $i < $periodEnd; $i = $i->add(1, $selectedUnit))
-                        <td>{{ $results->where('date', '>=', $i)->where('date', '<', $i->add(1, $selectedUnit))->sum('count') }}</td>
+                        <td>
+                            {{ $results->where('date', '>=', $i)->where('date', '<', $i->add(1, $selectedUnit))->sum('count') }}
+                        </td>
                     @endfor
                 </tr>
                 <tr>
                     <th>{{ __('waterhole::cp.period-previous-heading') }}</th>
                     @for ($i = $prevPeriodStart; $i < $prevPeriodEnd; $i = $i->add(1, $selectedUnit))
-                        <td>{{ $results->where('date', '>=', $i)->where('date', '<', $i->add(1, $selectedUnit))->sum('count') }}</td>
+                        <td>
+                            {{ $results->where('date', '>=', $i)->where('date', '<', $i->add(1, $selectedUnit))->sum('count') }}
+                        </td>
                     @endfor
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <div
-        data-line-chart-target="chart"
-        class="line-chart-widget__chart grow"
-        hidden
-    ></div>
+    <div data-line-chart-target="chart" class="line-chart-widget__chart grow" hidden></div>
 
     <div
         data-line-chart-target="axis"

@@ -7,8 +7,8 @@
 
     <div class="stack gap-lg">
         <div class="row gap-xs wrap">
-            <x-waterhole::feed-filters :feed="$comments"/>
-            <x-waterhole::feed-top-period :feed="$comments"/>
+            <x-waterhole::feed-filters :feed="$comments" />
+            <x-waterhole::feed-top-period :feed="$comments" />
         </div>
 
         @php
@@ -22,16 +22,17 @@
                         <li class="card comment-card">
                             <ol class="color-muted text-xs card__header breadcrumb">
                                 <li>
-                                    <x-waterhole::channel-label :channel="$comment->post->channel"/>
+                                    <x-waterhole::channel-label
+                                        :channel="$comment->post->channel"
+                                    />
                                 </li>
                                 <li>
-                                    <a
-                                        href="{{ $comment->post_url }}"
-                                        class="weight-medium"
-                                    >{{ $comment->post->title }}</a>
+                                    <a href="{{ $comment->post_url }}" class="weight-medium">
+                                        {{ $comment->post->title }}
+                                    </a>
                                 </li>
                             </ol>
-                            <x-waterhole::comment-full :comment="$comment" truncate/>
+                            <x-waterhole::comment-full :comment="$comment" truncate />
                         </li>
                     @endforeach
                 </ul>

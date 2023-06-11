@@ -1,15 +1,17 @@
 <article
-    {{ $attributes
-        ->class('post-list-item card__row row align-start gap-md')
-        ->merge(Waterhole\Extend\PostAttributes::build($post)) }}
+    {{
+        $attributes
+            ->class('post-list-item card__row row align-start gap-md')
+            ->merge(Waterhole\Extend\PostAttributes::build($post))
+    }}
     data-controller="post"
 >
     <x-waterhole::user-link :user="$post->user" class="post-list-item__avatar">
-        <x-waterhole::avatar :user="$post->user"/>
+        <x-waterhole::avatar :user="$post->user" />
         <ui-tooltip>
             {{ Waterhole\username($post->user) }}
             {{ __('waterhole::forum.post-activity-posted') }}
-            <x-waterhole::relative-time :datetime="$post->created_at"/>
+            <x-waterhole::relative-time :datetime="$post->created_at" />
         </ui-tooltip>
     </x-waterhole::user-link>
 
@@ -21,7 +23,9 @@
                         href="{{ $post->isUnread() ? $post->unread_url : $post->url }}"
                         data-action="post#appearAsRead"
                         class="post-title-link"
-                    >{{ $title }}</a>
+                    >
+                        {{ $title }}
+                    </a>
                 </h3>
 
                 <div class="post-list-item__info row wrap gap-y-xxs gap-x-sm text-xs color-muted">
@@ -42,6 +46,6 @@
     </div>
 
     <div class="post-list-item__controls hide-sm">
-        <x-waterhole::action-menu :for="$post" placement="bottom-end"/>
+        <x-waterhole::action-menu :for="$post" placement="bottom-end" />
     </div>
 </article>

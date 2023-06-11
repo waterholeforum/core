@@ -1,10 +1,12 @@
 <div {{ $attributes->class('row') }}>
     <form action="{{ route('waterhole.actions.store') }}" method="POST" class="row">
         @csrf
-        <input type="hidden" name="actionable" value="{{ $actionable }}">
-        <input type="hidden" name="id[]" value="{{ $for->getKey() }}">
+        <input type="hidden" name="actionable" value="{{ $actionable }}" />
+        <input type="hidden" name="id[]" value="{{ $for->getKey() }}" />
 
-        @php $menu = $limit !== null && $actions->count() > $limit @endphp
+        @php
+            $menu = $limit !== null && $actions->count() > $limit
+        @endphp
 
         @foreach ($menu ? $actions->take($limit ? $limit - 1 : 0) : $actions as $action)
             {{ $action->render(collect([$for]), ['class' => 'btn btn--transparent btn--icon'], true) }}

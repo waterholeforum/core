@@ -7,13 +7,18 @@
 >
     @if ($comment->isHidden())
         <div class="comment__hidden row gap-sm color-muted">
-            <button class="btn btn--sm btn--transparent btn--start" data-action="comment#toggleHidden">
+            <button
+                class="btn btn--sm btn--transparent btn--start"
+                data-action="comment#toggleHidden"
+            >
                 @icon('tabler-selector')
 
                 @if ($comment->hidden_reason)
-                    {{ __('waterhole::forum.comment-hidden-with-reason-message', [
-                        'reason' => __("waterhole::forum.report-reason-$comment->hidden_reason")
-                    ]) }}
+                    {{
+                        __('waterhole::forum.comment-hidden-with-reason-message', [
+                            'reason' => __("waterhole::forum.report-reason-$comment->hidden_reason"),
+                        ])
+                    }}
                 @else
                     {{ __('waterhole::forum.comment-hidden-message') }}
                 @endif
@@ -49,7 +54,7 @@
                         <span>
                             {{ __('waterhole::forum.comment-in-reply-to-link') }}
                             <span class="user-label">
-                                <x-waterhole::avatar :user="$comment->parent->user"/>
+                                <x-waterhole::avatar :user="$comment->parent->user" />
                                 <span>{{ Waterhole\username($comment->parent->user) }}</span>
                             </span>
                         </span>
@@ -96,10 +101,12 @@
 
             @can('post.comment', $comment->post)
                 <a
-                    href="{{ route('waterhole.posts.comments.create', [
-                        'post' => $comment->post,
-                        'parent' => $comment->id
-                    ]) }}"
+                    href="{{
+                        route('waterhole.posts.comments.create', [
+                            'post' => $comment->post,
+                            'parent' => $comment->id,
+                        ])
+                    }}"
                     class="quotable-button btn bg-emphasis no-select"
                     data-turbo-frame="@domid($comment->post, 'comment_parent')"
                     data-quotable-target="button"
@@ -118,18 +125,12 @@
             <div class="row wrap push-end">
                 @components(Waterhole\Extend\CommentActions::build(), compact('comment', 'withReplies'))
 
-                <x-waterhole::action-menu
-                    :for="$comment"
-                    placement="bottom-end"
-                />
+                <x-waterhole::action-menu :for="$comment" placement="bottom-end" />
             </div>
         </footer>
     </div>
 
-    <turbo-frame
-        id="@domid($comment, 'replies')"
-        @unless ($withReplies) hidden @endunless
-    >
+    <turbo-frame id="@domid($comment, 'replies')" @unless ($withReplies) hidden @endunless>
         @if ($withReplies)
             @if (count($comment->children))
                 <ol
@@ -139,13 +140,13 @@
                 >
                     @foreach ($comment->children as $child)
                         <li class="card__row">
-                            <x-waterhole::comment-frame :comment="$child"/>
+                            <x-waterhole::comment-frame :comment="$child" />
                         </li>
                     @endforeach
                 </ol>
             @endif
         @else
-            <x-waterhole::spinner class="spinner--block"/>
+            <x-waterhole::spinner class="spinner--block" />
         @endif
     </turbo-frame>
 </article>

@@ -62,7 +62,7 @@
             data-sortable-target="container"
         >
             @foreach ($structure->where('is_listed', true) as $node)
-                <x-waterhole::cp.structure-node :node="$node"/>
+                <x-waterhole::cp.structure-node :node="$node" />
             @endforeach
 
             <li class="placeholder hide-if-not-only-child">
@@ -80,7 +80,7 @@
                 data-sortable-target="container"
             >
                 @foreach ($structure->where('is_listed', false) as $node)
-                    <x-waterhole::cp.structure-node :node="$node"/>
+                    <x-waterhole::cp.structure-node :node="$node" />
                 @endforeach
 
                 <li class="placeholder hide-if-not-only-child">
@@ -96,11 +96,7 @@
                 data-form-target="form"
             >
                 @csrf
-                <input
-                    type="hidden"
-                    name="order"
-                    data-sortable-target="orderInput"
-                >
+                <input type="hidden" name="order" data-sortable-target="orderInput" />
             </form>
         </turbo-frame>
     </x-waterhole::cp.sortable-context>

@@ -1,8 +1,4 @@
-<x-waterhole::layout
-    :title="$title"
-    :assets="['cp']"
-    {{ $attributes->class('cp') }}
->
+<x-waterhole::layout :title="$title" :assets="['cp']" {{ $attributes->class('cp') }}>
     <div hidden data-page-target="title">{{ __('waterhole::cp.title') }}</div>
 
     <div class="cp__layout section container with-sidebar">

@@ -4,7 +4,7 @@
         role="button"
         {{ new Illuminate\View\ComponentAttributeBag($buttonAttributes) }}
     >
-        @isset ($button)
+        @isset($button)
             {{ $button }}
         @else
             @icon('tabler-dots')
@@ -13,13 +13,8 @@
     </a>
 
     <ui-menu class="menu" hidden>
-        <turbo-frame
-            id="actions"
-            loading="lazy"
-            src="{{ $url }}"
-            target="_top"
-        >
-            <x-waterhole::spinner class="spinner--block"/>
+        <turbo-frame id="actions" loading="lazy" src="{{ $url }}" target="_top">
+            <x-waterhole::spinner class="spinner--block" />
         </turbo-frame>
     </ui-menu>
 </ui-popup>

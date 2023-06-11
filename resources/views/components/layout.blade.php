@@ -1,11 +1,10 @@
 <x-waterhole::html :$title :$assets {{ $attributes }}>
-    <x-slot:head>{{ $head ?? '' }}</x-slot:head>
+    <x-slot name="head">{{ $head ?? '' }}</x-slot>
 
     <div class="waterhole" data-controller="page">
-        <a
-            href="#main"
-            class="skip-link"
-        >{{ __('waterhole::system.skip-to-main-content-link') }}</a>
+        <a href="#main" class="skip-link">
+            {{ __('waterhole::system.skip-to-main-content-link') }}
+        </a>
 
         @components(Waterhole\Extend\LayoutBefore::build())
 

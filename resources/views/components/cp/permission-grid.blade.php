@@ -1,19 +1,16 @@
 <div class="table-container card" tabindex="0">
-    <table
-        class="table permission-grid"
-        data-controller="permission-grid"
-    >
+    <table class="table permission-grid" data-controller="permission-grid">
         <colgroup>
-            <col>
+            <col />
             @foreach ($abilities as $ability)
-                <col>
+                <col />
             @endforeach
         </colgroup>
         <thead>
             <tr>
                 <td></td>
                 @foreach ($abilities as $ability)
-                    <th>{{ __('waterhole::system.ability-'.$ability) }}</th>
+                    <th>{{ __('waterhole::system.ability-' . $ability) }}</th>
                 @endforeach
             </tr>
         </thead>
@@ -22,7 +19,7 @@
                 <tr data-group-id="{{ $group->getKey() }}">
                     <th>
                         @if ($group->isCustom())
-                            <x-waterhole::group-badge :group="$group"/>
+                            <x-waterhole::group-badge :group="$group" />
                         @else
                             {{ $group->name }}
                         @endif
@@ -37,7 +34,7 @@
                                         type="hidden"
                                         name="permissions[{{ $group->getMorphClass() }}:{{ $group->getKey() }}][{{ $ability }}]"
                                         value="0"
-                                    >
+                                    />
                                     <input
                                         type="checkbox"
                                         name="permissions[{{ $group->getMorphClass() }}:{{ $group->getKey() }}][{{ $ability }}]"
@@ -50,7 +47,7 @@
                                         data-depends-on="
                                             @if ($ability !== 'view') permissions[group:{{ $group->getKey() }}][view] @endif
                                         "
-                                    >
+                                    />
                                 </label>
                             </td>
                         @endif

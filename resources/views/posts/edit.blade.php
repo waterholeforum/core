@@ -5,16 +5,13 @@
 <x-waterhole::layout :title="$title">
     <div class="container section measure">
         <x-waterhole::dialog :title="$title">
-            <form
-                method="POST"
-                action="{{ route('waterhole.posts.update', ['post' => $post]) }}"
-            >
+            <form method="POST" action="{{ route('waterhole.posts.update', ['post' => $post]) }}">
                 @csrf
                 @method('PATCH')
                 @return($post->url)
 
                 <div class="stack gap-xl stacked-fields">
-                    <x-waterhole::validation-errors/>
+                    <x-waterhole::validation-errors />
 
                     @components($form->fields())
 
@@ -28,7 +25,7 @@
                             {{ __('waterhole::system.save-changes-button') }}
                         </button>
 
-                        <x-waterhole::cancel :default="$post->url" class="btn"/>
+                        <x-waterhole::cancel :default="$post->url" class="btn" />
                     </div>
                 </div>
             </form>

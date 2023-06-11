@@ -7,11 +7,11 @@
         {{ new Illuminate\View\ComponentAttributeBag($formAttributes) }}
     >
         @csrf
-        <input type="hidden" name="actionable" value="{{ $actionable }}">
-        <input type="hidden" name="id[]" value="{{ $for->id }}">
+        <input type="hidden" name="actionable" value="{{ $actionable }}" />
+        <input type="hidden" name="id[]" value="{{ $for->id }}" />
 
-        @isset ($return)
-            <input type="hidden" name="return" value="{{ $return }}">
+        @isset($return)
+            <input type="hidden" name="return" value="{{ $return }}" />
         @endisset
 
         {{ $actionInstance->render(collect([$for]), $attributes->getAttributes(), $icon) }}

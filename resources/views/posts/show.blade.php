@@ -1,9 +1,9 @@
 <x-waterhole::layout :title="$post->title">
-    <x-slot:head>
+    <x-slot name="head">
         @unless ($post->channel->structure->is_listed)
-            <meta name="robots" content="noindex">
+            <meta name="robots" content="noindex" />
         @endunless
-    </x-slot:head>
+    </x-slot>
 
     <div
         class="post-page section container with-sidebar"
@@ -12,11 +12,8 @@
         {{ new Illuminate\View\ComponentAttributeBag(Waterhole\Extend\PostAttributes::build($post)) }}
     >
         <div class="stack gap-lg measure">
-            <div
-                @if (!$comments->onFirstPage()) hidden @endif
-                data-post-page-target="post"
-            >
-                <x-waterhole::post-full :post="$post"/>
+            <div data-post-page-target="post" @if (!$comments->onFirstPage()) hidden @endif>
+                <x-waterhole::post-full :post="$post" />
             </div>
 
             <section class="post-page__comments stack gap-md">
@@ -35,31 +32,25 @@
                     @foreach ($comments as $i => $comment)
                         @if ($lastReadAt && $comment->created_at > $lastReadAt)
                             @once
-                                <div
-                                    class="divider color-activity"
-                                    id="unread"
-                                    tabindex="-1"
-                                >{{ __('waterhole::forum.comments-unread-heading') }}</div>
+                                <div class="divider color-activity" id="unread" tabindex="-1">
+                                    {{ __('waterhole::forum.comments-unread-heading') }}
+                                </div>
                             @endonce
                         @endif
 
-                        <x-waterhole::comment-frame :comment="$comment" class="card__row"/>
+                        <x-waterhole::comment-frame :comment="$comment" class="card__row" />
                     @endforeach
                 </x-waterhole::infinite-scroll>
             </section>
 
-            @if (!$comments->hasMorePages())
-                <div
-                    class="stack gap-md"
-                    id="bottom"
-                    tabindex="-1"
-                >
+            @if (! $comments->hasMorePages())
+                <div class="stack gap-md" id="bottom" tabindex="-1">
                     @components(Waterhole\Extend\CommentsBottom::build(), compact('post'))
                 </div>
             @endif
 
             @can('post.comment', $post)
-                <x-waterhole::composer :post="$post" data-turbo-permanent/>
+                <x-waterhole::composer :post="$post" data-turbo-permanent />
             @endcan
         </div>
 
@@ -67,7 +58,7 @@
             class="sidebar sidebar--sticky sidebar--bottom overflow-visible stack gap-lg justify-between"
             data-controller="watch-sticky"
         >
-            <x-waterhole::post-sidebar :post="$post"/>
+            <x-waterhole::post-sidebar :post="$post" />
 
             @if ($comments->total())
                 <a
@@ -80,22 +71,18 @@
                     {{ __('waterhole::forum.post-comments-link', ['count' => $comments->total()]) }}
                 </a>
 
-                <ui-popup
-                    class="collapsible-nav stack"
-                    data-post-page-target="commentsPagination"
-                >
+                <ui-popup class="collapsible-nav stack" data-post-page-target="commentsPagination">
                     <button class="btn btn--transparent">
                         {{ __('waterhole::system.page-number-prefix') }}
-                        <span data-post-page-target="currentPage">{{ $comments->currentPage() }}</span>
+                        <span data-post-page-target="currentPage">
+                            {{ $comments->currentPage() }}
+                        </span>
                         @icon('tabler-selector')
                     </button>
 
                     <div hidden class="drawer drawer--right">
                         <nav class="comments-pagination tabs tabs--vertical gap-sm">
-                            <a
-                                class="tab with-icon"
-                                href="{{ $post->url }}#top"
-                            >
+                            <a class="tab with-icon" href="{{ $post->url }}#top">
                                 @icon('tabler-chevrons-up', ['class' => 'icon--narrow'])
                                 {{ __('waterhole::forum.original-post-link') }}
                             </a>
@@ -107,9 +94,11 @@
                                 @for ($page = 1; $page <= $comments->lastPage(); $page++)
                                     <a
                                         class="tab"
-                                        href="{{ $comments->fragment('page_'.$page)->url($page) }}"
+                                        href="{{ $comments->fragment('page_' . $page)->url($page) }}"
                                         @if ($page == $comments->currentPage()) aria-current="page" @endif
-                                    >{{ $page }}</a>
+                                    >
+                                        {{ $page }}
+                                    </a>
                                 @endfor
                             </div>
 

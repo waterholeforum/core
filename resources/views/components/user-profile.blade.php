@@ -1,6 +1,5 @@
 <x-waterhole::layout :title="$title">
     <div class="section container user-profile stack gap-gutter">
-
         <div class="card card__body user-profile__card">
             <div class="user-profile__controls">
                 <x-waterhole::action-menu
@@ -17,7 +16,7 @@
             </div>
 
             <div class="row align-start gap-x-xl gap-y-md wrap">
-                <x-waterhole::avatar :user="$user"/>
+                <x-waterhole::avatar :user="$user" />
 
                 <div class="grow stack gap-xs user-profile__content">
                     <h1 class="h1 user-profile__name" data-page-target="title">
@@ -25,14 +24,18 @@
                     </h1>
 
                     @if ($user->headline)
-                        <p class="h4 user-profile__headline">{{ Waterhole\emojify($user->headline) }}</p>
+                        <p class="h4 user-profile__headline">
+                            {{ Waterhole\emojify($user->headline) }}
+                        </p>
                     @endif
 
                     @if ($user->bio_html)
                         <div class="content user-profile__bio">{{ $user->bio_html }}</div>
                     @endif
 
-                    <div class="row gap-sm wrap align-center color-muted text-xs user-profile__info">
+                    <div
+                        class="row gap-sm wrap align-center color-muted text-xs user-profile__info"
+                    >
                         @components(Waterhole\Extend\UserInfo::build(), compact('user'))
                     </div>
                 </div>
@@ -50,6 +53,5 @@
                 {{ $slot }}
             </div>
         </div>
-
     </div>
 </x-waterhole::layout>

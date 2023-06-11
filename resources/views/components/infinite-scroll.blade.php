@@ -7,7 +7,7 @@
 @endphp
 
 <turbo-frame id="page_{{ $current }}_frame" target="_top" {{ $attributes }}>
-    @if (!$paginator->onFirstPage() && $direction !== 'forwards')
+    @if (! $paginator->onFirstPage() && $direction !== 'forwards')
         <turbo-frame
             id="page_{{ $isCursor ? $paginator->previousCursor()->encode() ?? '1' : $paginator->currentPage() - 1 }}_frame"
             src="{{ $paginator->appends('direction', 'backwards')->previousPageUrl() }}"
@@ -16,13 +16,13 @@
             target="_top"
             data-controller="load-backwards"
         >
-            <x-waterhole::spinner class="spinner--block"/>
+            <x-waterhole::spinner class="spinner--block" />
         </turbo-frame>
     @endif
 
     <div id="page_{{ $current }}" tabindex="-1"></div>
 
-    @if (!$isCursor && !$paginator->onFirstPage() && $divider)
+    @if (! $isCursor && ! $paginator->onFirstPage() && $divider)
         <div class="divider">
             {{ __('waterhole::system.page-number-heading', ['number' => $paginator->currentPage()]) }}
         </div>

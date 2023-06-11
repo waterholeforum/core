@@ -1,7 +1,7 @@
 @php
     $title = isset($reactionSet)
-        ? __('waterhole::cp.edit-reaction-set-title')
-        : __('waterhole::cp.create-reaction-set-title');
+    ? __('waterhole::cp.edit-reaction-set-title')
+    : __('waterhole::cp.create-reaction-set-title');
 @endphp
 
 <x-waterhole::cp :title="$title">
@@ -12,15 +12,17 @@
     />
 
     <div class="stack gap-md">
-        <x-waterhole::validation-errors/>
+        <x-waterhole::validation-errors />
 
         <details class="card" open>
             <summary class="card__header h5">Details</summary>
             <form
                 method="POST"
-                action="{{ isset($reactionSet)
-                ? route('waterhole.cp.reaction-sets.update', compact('reactionSet'))
-                : route('waterhole.cp.reaction-sets.store') }}"
+                action="{{
+                    isset($reactionSet)
+                        ? route('waterhole.cp.reaction-sets.update', compact('reactionSet'))
+                        : route('waterhole.cp.reaction-sets.store')
+                }}"
                 enctype="multipart/form-data"
                 class="card__body"
             >
@@ -33,19 +35,17 @@
                     @components($form->fields())
 
                     <div class="row gap-xs wrap">
-                        <button
-                            type="submit"
-                            class="btn bg-accent btn--wide"
-                        >
-                            {{ isset($reactionSet)
-                                ? __('waterhole::system.save-changes-button')
-                                : __('waterhole::system.continue-button') }}
+                        <button type="submit" class="btn bg-accent btn--wide">
+                            {{
+                                isset($reactionSet)
+                                    ? __('waterhole::system.save-changes-button')
+                                    : __('waterhole::system.continue-button')
+                            }}
                         </button>
 
-                        <a
-                            href="{{ route('waterhole.cp.reaction-sets.index') }}"
-                            class="btn"
-                        >{{ __('waterhole::system.cancel-button') }}</a>
+                        <a href="{{ route('waterhole.cp.reaction-sets.index') }}" class="btn">
+                            {{ __('waterhole::system.cancel-button') }}
+                        </a>
                     </div>
                 </div>
             </form>
@@ -66,34 +66,34 @@
                                 data-sortable-target="container"
                                 aria-label="{{ __('waterhole::cp.reaction-set-reactions-label') }}"
                             >
-                                @forelse ($reactionSet->reactionTypes->load('reactionSet') as $reactionType)
-                                    <li
-                                        class="card__row row gap-sm"
-                                        aria-label="{{ $reactionType->name }}"
-                                        data-id="{{ $reactionType->id }}"
-                                    >
-                                        <button
-                                            type="button"
-                                            class="drag-handle"
-                                            data-handle
-                                        >
-                                            @icon('tabler-grip-vertical')
-                                        </button>
-
-                                        @icon($reactionType->icon)
-                                        {{ $reactionType->name }}
-                                        <span class="color-muted text-xs">{{ $reactionType->score > 0 ? '+' : '' }}{{ $reactionType->score }}</span>
-
-                                        <x-waterhole::action-buttons
-                                            class="row text-xs push-end -m-xxs"
-                                            :for="$reactionType"
-                                            :limit="2"
-                                            context="cp"
-                                        />
-                                    </li>
-                                @empty
+                                @empty($reactionSet->reactionTypes->load('reactionSet'))
                                     <li class="placeholder">No Reaction Types</li>
-                                @endforelse
+                                @else
+                                    @foreach ($reactionSet->reactionTypes->load('reactionSet') as $reactionType)
+                                        <li
+                                            class="card__row row gap-sm"
+                                            aria-label="{{ $reactionType->name }}"
+                                            data-id="{{ $reactionType->id }}"
+                                        >
+                                            <button type="button" class="drag-handle" data-handle>
+                                                @icon('tabler-grip-vertical')
+                                            </button>
+
+                                            @icon($reactionType->icon)
+                                            {{ $reactionType->name }}
+                                            <span class="color-muted text-xs">
+                                                {{ $reactionType->score > 0 ? '+' : '' }}{{ $reactionType->score }}
+                                            </span>
+
+                                            <x-waterhole::action-buttons
+                                                class="row text-xs push-end -m-xxs"
+                                                :for="$reactionType"
+                                                :limit="2"
+                                                context="cp"
+                                            />
+                                        </li>
+                                    @endforeach
+                                @endempty
                             </ul>
 
                             <form
@@ -107,7 +107,7 @@
                                     type="hidden"
                                     name="order"
                                     data-sortable-target="orderInput"
-                                >
+                                />
                             </form>
                         </x-waterhole::cp.sortable-context>
 

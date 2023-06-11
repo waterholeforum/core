@@ -14,11 +14,7 @@
         data-controller="reveal"
         @if (is_string($value) && $content) hidden @endif
     >
-        <select
-            style="width: auto"
-            data-reveal-target="if"
-            name="{{ $name }}[type]"
-        >
+        <select style="width: auto" data-reveal-target="if" name="{{ $name }}[type]">
             <option value="">
                 {{ __('waterhole::system.icon-picker-none-option') }}
             </option>
@@ -44,11 +40,11 @@
                 name="{{ $name }}[emoji]"
                 @if ($type === 'emoji') value="{{ $content }}" @endif
                 style="width: 5ch"
-            >
+            />
 
             <ui-popup data-controller="emoji-picker" hidden>
                 <button type="button" class="btn btn--icon">
-                    @icon(($type === 'emoji' && $content ? 'emoji:'.$content : null) ?: 'tabler-mood-smile')
+                    @icon($type === 'emoji' && $content ? 'emoji:' . $content : null ?: 'tabler-mood-smile')
                 </button>
                 <div class="menu emoji-picker" hidden>
                     <emoji-picker></emoji-picker>
@@ -56,52 +52,51 @@
             </ui-popup>
         </div>
 
-        <div
-            class="stack gap-xs full-width"
-            data-reveal-target="then"
-            data-reveal-value="svg"
-        >
+        <div class="stack gap-xs full-width" data-reveal-target="then" data-reveal-value="svg">
             <input
                 type="text"
                 list="icons"
                 name="{{ $name }}[svg]"
                 @if ($type === 'svg') value="{{ $content }}" @endif
-            >
+            />
 
             <div class="field__description">
-                {{ __('waterhole::system.icon-picker-svg-description', [
-                    'sets' => implode(', ', array_map(fn($set) => $set['prefix'], app(BladeUI\Icons\Factory::class)->all()))
-                ]) }}
-                <a href="https://blade-ui-kit.com/blade-icons#search" target="_blank" rel="noopener" class="with-icon">
+                {{
+                    __('waterhole::system.icon-picker-svg-description', [
+                        'sets' => implode(', ', array_map(fn ($set) => $set['prefix'], app(BladeUI\Icons\Factory::class)->all())),
+                    ])
+                }}
+                <a
+                    href="https://blade-ui-kit.com/blade-icons#search"
+                    target="_blank"
+                    rel="noopener"
+                    class="with-icon"
+                >
                     <span>{{ __('waterhole::system.icon-picker-svg-search-link') }}</span>
                     @icon('tabler-external-link')
                 </a>
             </div>
 
-{{--            <div class="field__description">--}}
-{{--                <a href="" class="with-icon">--}}
-{{--                    @icon('tabler-question-mark-circle')--}}
-{{--                    Learn more about SVG icons--}}
-{{--                </a>--}}
-{{--            </div>--}}
+            {{-- <div class="field__description"> --}}
+            {{-- <a href="" class="with-icon"> --}}
+            {{-- @icon('tabler-question-mark-circle') --}}
+            {{-- Learn more about SVG icons --}}
+            {{-- </a> --}}
+            {{-- </div> --}}
 
             <datalist id="icons">
                 @foreach (app(BladeUI\Icons\IconsManifest::class)->getManifest($sets = app(BladeUI\Icons\Factory::class)->all()) as $set => $paths)
                     @foreach ($paths as $icons)
                         @foreach ($icons as $icon)
-                            <option value="{{ $sets[$set]['prefix'] }}-{{ $icon }}">
+                            <option value="{{ $sets[$set]['prefix'] }}-{{ $icon }}"></option>
                         @endforeach
                     @endforeach
                 @endforeach
             </datalist>
         </div>
 
-        <div
-            class="stack gap-xs full-width"
-            data-reveal-target="then"
-            data-reveal-value="file"
-        >
-            <input type="file" name="{{ $name }}[file]">
+        <div class="stack gap-xs full-width" data-reveal-target="then" data-reveal-value="file">
+            <input type="file" name="{{ $name }}[file]" />
         </div>
     </div>
 </div>

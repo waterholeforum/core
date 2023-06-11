@@ -1,7 +1,7 @@
 @php
     $title = isset($group)
-        ? __('waterhole::cp.edit-group-title')
-        : __('waterhole::cp.create-group-title');
+    ? __('waterhole::cp.edit-group-title')
+    : __('waterhole::cp.create-group-title');
 @endphp
 
 <x-waterhole::cp :title="$title">
@@ -17,27 +17,25 @@
         enctype="multipart/form-data"
     >
         @csrf
-        @if (isset($group)) @method('PATCH') @endif
+        @if (isset($group))
+            @method('PATCH')
+        @endif
 
         <div class="stack gap-lg">
-            <x-waterhole::validation-errors/>
+            <x-waterhole::validation-errors />
 
             <div class="stack gap-md">
                 @components($form->fields())
             </div>
 
             <div class="row gap-xs wrap">
-                <button
-                    type="submit"
-                    class="btn bg-accent btn--wide"
-                >
+                <button type="submit" class="btn bg-accent btn--wide">
                     {{ isset($group) ? __('waterhole::system.save-changes-button') : __('waterhole::system.create-button') }}
                 </button>
 
-                <a
-                    href="{{ route('waterhole.cp.groups.index') }}"
-                    class="btn"
-                >{{ __('waterhole::system.cancel-button') }}</a>
+                <a href="{{ route('waterhole.cp.groups.index') }}" class="btn">
+                    {{ __('waterhole::system.cancel-button') }}
+                </a>
             </div>
         </div>
     </form>
