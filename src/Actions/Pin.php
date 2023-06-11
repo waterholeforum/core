@@ -6,10 +6,6 @@ use Illuminate\Support\Collection;
 use Waterhole\Models\Model;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
-use Waterhole\View\Components\PinnedPost;
-use Waterhole\View\Components\PostCard;
-use Waterhole\View\Components\PostListItem;
-use Waterhole\View\TurboStream;
 
 class Pin extends Action
 {
@@ -33,19 +29,13 @@ class Pin extends Action
         return 'tabler-pin';
     }
 
-    public function run(Collection $models)
+    public function run(Collection $models): void
     {
         $models->each->update(['is_pinned' => true]);
     }
 
     public function stream(Model $model): array
     {
-        /** @var Post $model */
-        return [
-            ...parent::stream($model),
-            TurboStream::append(new PinnedPost($model), '.post-feed__pinned'),
-            TurboStream::remove(new PostCard($model)),
-            TurboStream::remove(new PostListItem($model)),
-        ];
+        return [];
     }
 }

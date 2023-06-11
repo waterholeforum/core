@@ -6,8 +6,6 @@ use Illuminate\Support\Collection;
 use Waterhole\Models\Model;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
-use Waterhole\View\Components\PinnedPost;
-use Waterhole\View\TurboStream;
 
 class Unpin extends Action
 {
@@ -38,6 +36,6 @@ class Unpin extends Action
 
     public function stream(Model $model): array
     {
-        return [...parent::stream($model), TurboStream::remove(new PinnedPost($model))];
+        return [];
     }
 }
