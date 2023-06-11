@@ -2,9 +2,7 @@
 
 namespace Waterhole\View\Components;
 
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Page;
@@ -22,18 +20,7 @@ class IndexNav extends Component
     {
         $structure = Structure::query()
             ->where('is_listed', true)
-            ->with([
-                'content' => function (MorphTo $morphTo) {
-                    if (Auth::check()) {
-                        $morphTo->constrain([
-                            Channel::class => function ($query) {
-                                $query->withCount('unreadPosts');
-                                $query->withNewPostsCount();
-                            },
-                        ]);
-                    }
-                },
-            ])
+            ->with('content')
             ->orderBy('position')
             ->get()
             ->filter(fn(Structure $node) => $node->content);
@@ -52,9 +39,6 @@ class IndexNav extends Component
                         return new NavLink(
                             label: $node->content->name,
                             icon: $node->content->icon,
-                            badge: $node->content->new_posts_count +
-                            $node->content->unread_posts_count ?:
-                            null,
                             href: $node->content->url,
                         );
                     } elseif ($node->content instanceof StructureLink) {
