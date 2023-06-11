@@ -90,13 +90,6 @@
             @endif
         @endif
 
-        <x-waterhole::action-buttons
-            class="row text-xs"
-            :for="$node->content"
-            :button-attributes="['class' => 'btn btn--icon btn--transparent']"
-            tooltips
-            :limit="2"
-            placement="bottom-end"
-        />
+        <x-waterhole::action-buttons :for="$node->content" context="cp" :limit="2" class="text-xs"/>
     </div>
 </li>

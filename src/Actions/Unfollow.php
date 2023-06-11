@@ -6,7 +6,6 @@ use Illuminate\Support\Collection;
 use Waterhole\Models\Model;
 use Waterhole\View\Components\FollowButton;
 use Waterhole\View\TurboStream;
-use Waterhole\Waterhole;
 
 class Unfollow extends Action
 {
@@ -15,9 +14,9 @@ class Unfollow extends Action
         return method_exists($model, 'unfollow');
     }
 
-    public function shouldRender(Collection $models): bool
+    public function shouldRender(Collection $models, string $context = null): bool
     {
-        return !Waterhole::isCpRoute() && $models->some->isFollowed();
+        return $context !== 'cp' && $models->some->isFollowed();
     }
 
     public function label(Collection $models): string

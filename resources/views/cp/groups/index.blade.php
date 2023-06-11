@@ -26,14 +26,7 @@
                         class="color-muted text-xs"
                     >{{ __('waterhole::cp.group-user-count', ['count' => $group->users_count]) }}</a>
 
-                    <x-waterhole::action-buttons
-                        class="row text-xs"
-                        :for="$group"
-                        :button-attributes="['class' => 'btn btn--transparent btn--icon']"
-                        tooltips
-                        :limit="2"
-                        placement="bottom-end"
-                    />
+                    <x-waterhole::action-buttons :for="$group" :limit="2" context="cp" class="text-xs"/>
                 </li>
             @endforeach
         </ul>

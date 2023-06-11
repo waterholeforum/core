@@ -25,12 +25,10 @@
                     <div class="grow"></div>
 
                     <x-waterhole::action-buttons
-                        class="row text-xs"
+                        class="text-xs"
                         :for="$reactionSet"
-                        placement="bottom-end"
-                        :button-attributes="['class' => 'btn btn--icon btn--transparent']"
-                        tooltips
                         :limit="2"
+                        context="cp"
                     />
                 </li>
             @empty

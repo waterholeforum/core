@@ -27,7 +27,7 @@ class React extends Action
             );
     }
 
-    public function shouldRender(Collection $models): bool
+    public function shouldRender(Collection $models, string $context = null): bool
     {
         return false;
     }

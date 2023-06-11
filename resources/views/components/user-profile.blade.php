@@ -3,13 +3,15 @@
 
         <div class="card card__body user-profile__card">
             <div class="user-profile__controls">
-                <x-waterhole::action-menu :for="$user" placement="bottom-end">
+                <x-waterhole::action-menu
+                    :for="$user"
+                    placement="bottom-end"
+                    :button-attributes="['class' => 'btn']"
+                >
                     <x-slot name="button">
-                        <button type="button" class="btn">
-                            @icon('tabler-settings')
-                            <span>{{ __('waterhole::system.controls-button') }}</span>
-                            @icon('tabler-chevron-down')
-                        </button>
+                        @icon('tabler-settings')
+                        <span>{{ __('waterhole::system.controls-button') }}</span>
+                        @icon('tabler-chevron-down')
                     </x-slot>
                 </x-waterhole::action-menu>
             </div>

@@ -110,6 +110,7 @@
                                     <th style="width: 1px"></th>
                                 </tr>
                             </thead>
+
                             <tbody>
                                 @foreach ($users as $user)
                                     <tr>
@@ -121,27 +122,25 @@
                                                 target="_blank"
                                             />
                                         </td>
+
                                         <td>
                                             <a href="mailto:{{ $user->email }}">{{ Str::limit($user->email, 20) }}</a>
                                         </td>
+
                                         <td>
                                             <x-waterhole::user-groups :user="$user"/>
                                         </td>
+
                                         <td>
                                             <x-waterhole::relative-time :datetime="$user->created_at"/>
                                         </td>
+
                                         <td>
                                             <x-waterhole::relative-time :datetime="$user->last_seen_at"/>
                                         </td>
+
                                         <td>
-                                            <x-waterhole::action-buttons
-                                                class="row text-xs"
-                                                :for="$user"
-                                                :button-attributes="['class' => 'btn btn--transparent btn--icon']"
-                                                tooltips
-                                                :limit="2"
-                                                placement="bottom-end"
-                                            />
+                                            <x-waterhole::action-buttons :for="$user" :limit="2" context="cp"/>
                                         </td>
                                     </tr>
                                 @endforeach

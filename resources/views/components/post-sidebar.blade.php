@@ -1,11 +1,14 @@
 <div {{ $attributes->class('row wrap gap-sm') }}>
-    <x-waterhole::action-menu :for="$post" class="grow">
+    <x-waterhole::action-menu
+        :for="$post"
+        class="grow"
+        :button-attributes="['class' => 'btn full-width']"
+        placement="bottom-end"
+    >
         <x-slot:button>
-            <button type="button" class="btn block">
-                @icon('tabler-settings')
-                <span>{{ __('waterhole::system.controls-button') }}</span>
-                @icon('tabler-chevron-down')
-            </button>
+            @icon('tabler-settings')
+            <span>{{ __('waterhole::system.controls-button') }}</span>
+            @icon('tabler-chevron-down')
         </x-slot:button>
     </x-waterhole::action-menu>
 

@@ -16,9 +16,6 @@
             <x-waterhole::action-menu
                 placement="bottom-end"
                 :for="$channel"
-                :exclude="[
-                    Waterhole\Actions\Follow::class,
-                ]"
             />
         </div>
     </div>

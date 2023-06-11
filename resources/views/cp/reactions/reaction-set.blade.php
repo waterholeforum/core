@@ -87,10 +87,8 @@
                                         <x-waterhole::action-buttons
                                             class="row text-xs push-end -m-xxs"
                                             :for="$reactionType"
-                                            placement="bottom-end"
-                                            :button-attributes="['class' => 'btn btn--icon btn--transparent']"
-                                            tooltips
                                             :limit="2"
+                                            context="cp"
                                         />
                                     </li>
                                 @empty

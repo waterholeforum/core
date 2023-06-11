@@ -18,10 +18,8 @@ class ActionButtons extends Component
         public Model $for,
         array $only = null,
         array $exclude = null,
-        public array $buttonAttributes = [],
-        public bool $tooltips = false,
         public ?int $limit = null,
-        public string $placement = 'bottom-start',
+        public ?string $context = null,
     ) {
         $this->actionable = Actionables::getActionableName($for);
 
@@ -38,7 +36,10 @@ class ActionButtons extends Component
         $models = collect([$for]);
 
         $this->actions = $actions
-            ->filter(fn($action) => !$action instanceof Action || $action->shouldRender($models))
+            ->filter(
+                fn($action) => !$action instanceof Action ||
+                    $action->shouldRender($models, $context),
+            )
             ->values()
             ->reject(fn($action, $i) => $action instanceof MenuDivider && $i === 0);
     }

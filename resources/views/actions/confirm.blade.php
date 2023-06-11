@@ -5,7 +5,7 @@
                 :aria-label="__('waterhole::system.confirm-action-title')"
                 class="dialog--sm confirm-action"
             >
-                <form action="{{ route('waterhole.action.store') }}" method="POST">
+                <form action="{{ route('waterhole.actions.store') }}" method="POST">
                     @csrf
 
                     <input
