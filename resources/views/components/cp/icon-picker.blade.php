@@ -44,7 +44,7 @@
 
             <ui-popup data-controller="emoji-picker" hidden>
                 <button type="button" class="btn btn--icon">
-                    @icon($type === 'emoji' && $content ? 'emoji:' . $content : null ?: 'tabler-mood-smile')
+                    @icon($type === 'emoji' && $content ? 'emoji:' . $content : 'tabler-mood-smile')
                 </button>
                 <div class="menu emoji-picker" hidden>
                     <emoji-picker></emoji-picker>
