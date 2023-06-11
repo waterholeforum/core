@@ -9,7 +9,9 @@
                         @csrf
                         <button type="submit" class="btn btn--icon btn--transparent">
                             @icon('tabler-check')
-                            <ui-tooltip>{{ __('waterhole::notifications.mark-all-as-read-button') }}</ui-tooltip>
+                            <ui-tooltip>
+                                {{ __('waterhole::notifications.mark-all-as-read-button') }}
+                            </ui-tooltip>
                         </button>
                     </form>
 
@@ -19,7 +21,9 @@
                         data-turbo-frame="_top"
                     >
                         @icon('tabler-settings')
-                        <ui-tooltip>{{ __('waterhole::notifications.preferences-button') }}</ui-tooltip>
+                        <ui-tooltip>
+                            {{ __('waterhole::notifications.preferences-button') }}
+                        </ui-tooltip>
                     </a>
                 </div>
             </div>
@@ -27,7 +31,7 @@
             @if ($notifications->isNotEmpty())
                 <x-waterhole::infinite-scroll :paginator="$notifications">
                     @foreach ($notifications as $notification)
-                        <x-waterhole::notification :notification="$notification"/>
+                        <x-waterhole::notification :notification="$notification" />
                     @endforeach
                 </x-waterhole::infinite-scroll>
             @else

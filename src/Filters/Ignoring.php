@@ -22,7 +22,6 @@ class Ignoring extends Filter
         $query
             ->withoutGlobalScope(static::EXCLUDE_IGNORED_SCOPE)
             ->ignoring()
-            ->leftJoinRelationship('userState')
-            ->latest('followed_at');
+            ->leftJoinRelation('userState');
     }
 }

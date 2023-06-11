@@ -5,31 +5,34 @@
 
             <div class="grow"></div>
 
-            <a href="{{ route('waterhole.cp.taxonomies.create') }}" type="button" class="btn bg-accent">
+            <a
+                href="{{ route('waterhole.cp.taxonomies.create') }}"
+                type="button"
+                class="btn bg-accent"
+            >
                 @icon('tabler-plus')
                 <span>{{ __('waterhole::cp.create-taxonomy-button') }}</span>
             </a>
         </div>
 
         <ul class="card" role="list">
-            @forelse ($taxonomies as $taxonomy)
-                <li class="card__row row gap-xs">
-                    {{ $taxonomy->name }}
+            @if ($taxonomies->count())
+                @foreach ($taxonomies as $taxonomy)
+                    <li class="card__row row gap-xs">
+                        {{ $taxonomy->name }}
 
-                    <div class="grow"></div>
+                        <div class="grow"></div>
 
-                    <x-waterhole::action-buttons
-                        class="row text-xs"
-                        :for="$taxonomy"
-                        :button-attributes="['class' => 'btn btn--icon btn--transparent']"
-                        tooltips
-                        :limit="2"
-                        placement="bottom-end"
-                    />
-                </li>
-            @empty
+                        <x-waterhole::action-buttons
+                            class="row text-xs"
+                            :for="$taxonomy"
+                            :limit="2"
+                        />
+                    </li>
+                @endforeach
+            @else
                 <li class="placeholder">No Taxonomies</li>
-            @endforelse
+            @endif
         </ul>
     </div>
 </x-waterhole::cp>

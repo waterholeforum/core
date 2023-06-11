@@ -6,13 +6,13 @@
 
         <div class="stack gap-xs">
             <label class="choice">
-                <input type="radio" name="hidden_reason" value="" checked>
+                <input type="radio" name="hidden_reason" value="" checked />
                 {{ __('waterhole::forum.hide-reason-unspecified') }}
             </label>
 
             @foreach ($reasons as $reason)
                 <label class="choice">
-                    <input type="radio" name="hidden_reason" value="{{ $reason }}">
+                    <input type="radio" name="hidden_reason" value="{{ $reason }}" />
                     {{ __("waterhole::forum.report-reason-$reason") }}
                 </label>
             @endforeach

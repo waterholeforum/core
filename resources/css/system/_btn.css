@@ -71,7 +71,7 @@
 // Icon button
 
 .btn--icon {
-  width: var(--control-height);
+  width: var(--btn-height);
   padding: 0;
   border-radius: 100px;
   position: relative;

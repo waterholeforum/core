@@ -11,12 +11,9 @@
                 @csrf
 
                 <div class="stack gap-xl">
-                    <x-waterhole::validation-errors/>
+                    <x-waterhole::validation-errors />
 
-                    <x-waterhole::field
-                        name="email"
-                        :label="__('waterhole::auth.email-label')"
-                    >
+                    <x-waterhole::field name="email" :label="__('waterhole::auth.email-label')">
                         <input
                             type="email"
                             id="{{ $component->id }}"
@@ -24,7 +21,7 @@
                             value="{{ old('email', $request->email) }}"
                             required
                             autofocus
-                        >
+                        />
                     </x-waterhole::field>
 
                     <x-waterhole::field
@@ -37,7 +34,7 @@
                             name="password"
                             required
                             autocomplete="new-password"
-                        >
+                        />
                     </x-waterhole::field>
 
                     <x-waterhole::field
@@ -50,7 +47,7 @@
                             name="password_confirmation"
                             required
                             autocomplete="new-password"
-                        >
+                        />
                     </x-waterhole::field>
 
                     <button type="submit" class="btn bg-accent full-width">

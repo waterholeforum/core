@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Waterhole\Http\Controllers\ActionController;
+use Waterhole\Http\Controllers\ActionsController;
 use Waterhole\Http\Controllers\Auth\ConfirmPasswordController;
 use Waterhole\Http\Controllers\Auth\ForgotPasswordController;
 use Waterhole\Http\Controllers\Auth\LoginController;
@@ -35,8 +35,9 @@ Route::get('channels/{channel:slug}/posts.rss', [RssController::class, 'channel'
 );
 
 // Actions
-Route::get('confirm-action', [ActionController::class, 'confirm'])->name('action.create');
-Route::post('action', [ActionController::class, 'run'])->name('action.store');
+Route::get('actions/menu', [ActionsController::class, 'menu'])->name('actions.menu');
+Route::get('actions/confirm', [ActionsController::class, 'confirm'])->name('actions.create');
+Route::post('actions/run', [ActionsController::class, 'run'])->name('actions.store');
 
 // Posts
 Route::resource('posts', PostController::class)->only([
@@ -51,6 +52,15 @@ Route::resource('posts', PostController::class)->only([
 Route::resource('posts.comments', CommentController::class)
     ->only(['show', 'create', 'store', 'edit', 'update'])
     ->scoped();
+
+// Reactions
+Route::get('posts/{post}/reactions/{reactionType}', [PostController::class, 'reactions'])->name(
+    'posts.reactions',
+);
+Route::get('comments/{comment}/reactions/{reactionType}', [
+    CommentController::class,
+    'reactions',
+])->name('comments.reactions');
 
 // Users
 Route::get('users/{user}/posts', [UserController::class, 'posts'])->name('user.posts');

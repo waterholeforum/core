@@ -17,6 +17,6 @@
     @endforeach
 
     @if ($value)
-        <input type="hidden" name="channel_id" value="{{ $value }}">
+        <input type="hidden" name="channel_id" value="{{ $value }}" />
     @endif
 </div>

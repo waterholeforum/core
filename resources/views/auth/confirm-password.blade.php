@@ -27,7 +27,7 @@
                             required
                             autocomplete="current-password"
                             autofocus
-                        >
+                        />
                     </x-waterhole::field>
 
                     <button type="submit" class="btn bg-accent full-width">

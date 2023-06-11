@@ -1,9 +1,6 @@
 <x-waterhole::layout :title="__('waterhole::auth.login-title')">
     <div class="container section">
-        <x-waterhole::dialog
-            :title="__('waterhole::auth.login-title')"
-            class="dialog--sm"
-        >
+        <x-waterhole::dialog :title="__('waterhole::auth.login-title')" class="dialog--sm">
             {{--
                 Opt-out of Turbo so that any fragment that may be present in the
                 redirect URL will be followed. Also, redirect URL may be external.
@@ -29,7 +26,7 @@
                                 value="{{ old('email') }}"
                                 required
                                 autofocus
-                            >
+                            />
                         </x-waterhole::field>
                     @endsection
 
@@ -44,23 +41,16 @@
                                 name="password"
                                 required
                                 autocomplete="current-password"
-                            >
+                            />
                         </x-waterhole::field>
 
                         <div class="row justify-between gap-sm wrap">
                             <label for="remember_me" class="choice">
-                                <input
-                                    id="remember_me"
-                                    type="checkbox"
-                                    name="remember"
-                                >
+                                <input id="remember_me" type="checkbox" name="remember" />
                                 {{ __('waterhole::auth.remember-me-label') }}
                             </label>
 
-                            <a
-                                href="{{ route('waterhole.forgot-password') }}"
-                                data-turbo="true"
-                            >
+                            <a href="{{ route('waterhole.forgot-password') }}" data-turbo="true">
                                 {{ __('waterhole::auth.forgot-password-link') }}
                             </a>
                         </div>
@@ -76,10 +66,7 @@
                         @if (Route::has('waterhole.register'))
                             <p class="text-center">
                                 {{ __('waterhole::auth.login-register-prompt') }}
-                                <a
-                                    href="{{ route('waterhole.register') }}"
-                                    data-turbo="true"
-                                >
+                                <a href="{{ route('waterhole.register') }}" data-turbo="true">
                                     {{ __('waterhole::auth.login-register-link') }}
                                 </a>
                             </p>

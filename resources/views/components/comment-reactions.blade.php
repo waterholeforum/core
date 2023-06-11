@@ -1,1 +1,1 @@
-<x-waterhole::reactions :model="$comment"/>
+<x-waterhole::reactions :model="$comment" />

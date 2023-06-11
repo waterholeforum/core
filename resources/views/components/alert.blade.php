@@ -1,6 +1,10 @@
-<div {{ $attributes
-    ->merge(['role' => 'alert', 'data-controller' => 'alert'])
-    ->class(['alert', $type ? "alert--$type bg-$type" : null]) }}>
+<div
+    {{
+        $attributes
+            ->merge(['role' => 'alert', 'data-controller' => 'alert'])
+            ->class(['alert', $type ? "alert--$type bg-$type" : null])
+    }}
+>
     @if ($icon)
         <div class="alert__icon">
             @icon($icon)
@@ -11,7 +15,7 @@
         {{ $message ?? $slot }}
     </div>
 
-    @if (!empty($action) || $dismissible)
+    @if (! empty($action) || $dismissible)
         <div class="alert__actions">
             {{ $action ?? '' }}
 

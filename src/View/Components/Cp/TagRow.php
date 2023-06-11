@@ -23,10 +23,8 @@ class TagRow extends Component
                 <x-waterhole::action-buttons
                     class="push-end row -m-sm text-xs"
                     :for="$tag"
-                    :button-attributes="['class' => 'btn btn--icon btn--transparent']"
-                    tooltips
                     :limit="2"
-                    placement="bottom-end"
+                    context="cp"
                 />
             </li>
         blade;

@@ -27,4 +27,11 @@ export default class extends Controller<FrameElement> {
     replaceWithSpinner() {
         this.element.replaceChildren(cloneFromTemplate('loading'));
     }
+
+    /**
+     * Remove the <turbo-frame> so that it doesn't interfere with child actions.
+     */
+    remove() {
+        this.element.replaceWith(...this.element.children);
+    }
 }

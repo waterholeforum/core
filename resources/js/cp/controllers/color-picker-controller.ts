@@ -15,12 +15,16 @@ export default class extends Controller {
     declare readonly pickerTarget: any;
     declare readonly swatchTarget: any;
 
+    private timeout?: number;
+
     show() {
+        clearTimeout(this.timeout);
         this.pickerTarget.hidden = false;
     }
 
     hide() {
-        this.pickerTarget.hidden = true;
+        clearTimeout(this.timeout);
+        this.timeout = window.setTimeout(() => (this.pickerTarget.hidden = true));
     }
 
     colorChanged(e: CustomEvent) {

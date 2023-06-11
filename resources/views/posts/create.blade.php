@@ -4,25 +4,19 @@
 
 <x-waterhole::layout :title="$title">
     <div class="container section measure">
-        <form
-            method="POST"
-            action="{{ route('waterhole.posts.store') }}"
-        >
+        <form method="POST" action="{{ route('waterhole.posts.store') }}">
             @csrf
 
-            @if (!$form->model->channel)
+            @if (! $form->model->channel)
                 <x-waterhole::dialog class="measure" :title="$title">
-                    <x-waterhole::channel-picker
-                        id="channel_id"
-                        name="channel_id"
-                    />
+                    <x-waterhole::channel-picker id="channel_id" name="channel_id" />
                 </x-waterhole::dialog>
             @else
                 <x-waterhole::dialog :title="$title">
-                    <x-slot:header>
+                    <x-slot name="header">
                         <ui-popup placement="bottom-start">
                             <button class="btn" type="button">
-                                <x-waterhole::channel-label :channel="$form->model->channel"/>
+                                <x-waterhole::channel-label :channel="$form->model->channel" />
                                 @icon('tabler-selector')
                             </button>
 
@@ -34,10 +28,10 @@
                                 />
                             </ui-menu>
                         </ui-popup>
-                    </x-slot:header>
+                    </x-slot>
 
                     <div class="stack gap-xl stacked-fields">
-                        <x-waterhole::validation-errors/>
+                        <x-waterhole::validation-errors />
 
                         @if ($instructions = $form->model->channel->instructions_html)
                             <div class="rounded p-lg bg-warning-soft content">
@@ -55,12 +49,13 @@
                                 value="1"
                                 data-hotkey="Meta+Enter,Ctrl+Enter"
                                 data-hotkey-scope="post-body"
-                            >{{ __('waterhole::forum.post-submit-button') }}</button>
+                            >
+                                {{ __('waterhole::forum.post-submit-button') }}
+                            </button>
                         </div>
                     </div>
                 </x-waterhole::dialog>
             @endif
-
         </form>
     </div>
 </x-waterhole::layout>

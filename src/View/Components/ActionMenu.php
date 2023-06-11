@@ -3,17 +3,23 @@
 namespace Waterhole\View\Components;
 
 use Illuminate\View\Component;
+use Waterhole\Extend\Actionables;
 use Waterhole\Models\Model;
 
 class ActionMenu extends Component
 {
+    public string $url;
+
     public function __construct(
-        public Model $for,
-        public ?array $only = null,
-        public ?array $exclude = null,
-        public array $buttonAttributes = [],
-        public string $placement = 'bottom-start',
+        Model $for,
+        ?string $context = null,
+        public array $buttonAttributes = ['class' => 'btn btn--transparent btn--icon text-xs'],
     ) {
+        $this->url = route('waterhole.actions.menu', [
+            'actionable' => Actionables::getActionableName($for),
+            'id' => $for->getKey(),
+            'context' => $context,
+        ]);
     }
 
     public function render()

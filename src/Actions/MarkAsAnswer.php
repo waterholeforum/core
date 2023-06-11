@@ -19,7 +19,7 @@ class MarkAsAnswer extends Action
         return (bool) $user?->can('post.edit', $model->post);
     }
 
-    public function shouldRender(Collection $models): bool
+    public function shouldRender(Collection $models, string $context = null): bool
     {
         return false;
     }

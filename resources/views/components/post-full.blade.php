@@ -4,10 +4,7 @@
             @components(Waterhole\Extend\PostHeader::build(), compact('post'))
         </header>
 
-        <div
-            class="post-body content text-md"
-            data-controller="quotable"
-        >
+        <div class="post-body content text-md" data-controller="quotable">
             {{ $post->body_html }}
 
             @can('post.comment', $post)

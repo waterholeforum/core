@@ -40,7 +40,7 @@ class IndexController extends Controller
                 fn($query) => $query->whereNot->ignoring(),
             );
 
-            $query->whereHas('channel', fn($query) => $query->whereNot->ignoring());
+            $query->whereDoesntHave('channel', fn($query) => $query->ignoring());
         };
 
         $feed = new PostFeed(

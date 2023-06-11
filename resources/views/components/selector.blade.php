@@ -3,7 +3,7 @@
         @isset($button)
             {{ $button }}
         @else
-            <span>{{ $value ? $label($value) : ($placeholder ?? $label(null)) }}</span>
+            <span>{{ $value ? $label($value) : $placeholder ?? $label(null) }}</span>
             @icon('tabler-selector', ['class' => 'icon--narrow'])
         @endisset
     </button>

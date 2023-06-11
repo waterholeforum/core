@@ -44,7 +44,7 @@
                         @endisset
                     "
                 >
-                    @empty ($widget['component']::$lazy)
+                    @empty($widget['component']::$lazy)
                         @include('waterhole::cp.widget')
                     @else
                         <turbo-frame
@@ -53,7 +53,7 @@
                             data-controller="turbo-frame"
                             data-action="turbo:frame-load->turbo-frame#removeSrc"
                         >
-                            <x-waterhole::spinner class="spinner--block"/>
+                            <x-waterhole::spinner class="spinner--block" />
                         </turbo-frame>
                     @endempty
                 </div>

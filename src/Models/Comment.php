@@ -228,6 +228,14 @@ class Comment extends Model
         )->shouldCache();
     }
 
+    public function reactionsUrl(ReactionType $reactionType): string
+    {
+        return route('waterhole.comments.reactions', [
+            'comment' => $this,
+            'reactionType' => $reactionType,
+        ]);
+    }
+
     public static function rules(Comment $instance = null): array
     {
         return [

@@ -7,8 +7,8 @@
 
     <div class="stack gap-lg">
         <div class="row gap-xs wrap">
-            <x-waterhole::feed-filters :feed="$posts"/>
-            <x-waterhole::feed-top-period :feed="$posts"/>
+            <x-waterhole::feed-filters :feed="$posts" />
+            <x-waterhole::feed-top-period :feed="$posts" />
         </div>
 
         @php

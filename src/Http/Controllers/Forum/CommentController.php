@@ -8,6 +8,7 @@ use Tonysm\TurboLaravel\Http\TurboResponseFactory;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
+use Waterhole\Models\ReactionType;
 use Waterhole\Notifications\NewComment;
 use Waterhole\View\Components\CommentFrame;
 use Waterhole\View\Components\CommentFull;
@@ -34,8 +35,12 @@ class CommentController extends Controller
     {
         // Load the comment tree for this comment, load the necessary
         // relationships, and pre-fill the `post` relationship for each comment.
-        $comment = $comment->childrenAndSelf
-            ->load('user.groups', 'reactions.reactionType', 'parent.user.groups', 'mentions')
+        $comment = $comment
+            ->childrenAndSelf()
+            ->select('*')
+            ->withReactions()
+            ->with('user.groups', 'parent.user.groups', 'mentions')
+            ->get()
             ->each(function ($comment) use ($post) {
                 $comment->setRelation('post', $post);
                 $comment->parent?->setRelation('post', $post);
@@ -163,5 +168,13 @@ class CommentController extends Controller
             ->save();
 
         return redirect($comment->post_url);
+    }
+
+    public function reactions(Comment $comment, ReactionType $reactionType)
+    {
+        return view('waterhole::reactions.list', [
+            'model' => $comment,
+            'reactionType' => $reactionType,
+        ]);
     }
 }

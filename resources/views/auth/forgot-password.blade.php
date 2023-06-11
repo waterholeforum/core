@@ -29,7 +29,7 @@
                                     value="{{ old('email') }}"
                                     required
                                     autofocus
-                                >
+                                />
                             </x-waterhole::field>
 
                             <button type="submit" class="btn bg-accent block">

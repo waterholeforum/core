@@ -9,13 +9,36 @@ use Tonysm\TurboLaravel\Http\TurboResponseFactory;
 use Waterhole\Actions\Action;
 use Waterhole\Extend;
 use Waterhole\View\Components\Alert;
+use Waterhole\View\Components\MenuDivider;
 use Waterhole\View\TurboStream;
 
 /**
  * Controller for endpoints related to the Actions system.
  */
-final class ActionController extends Controller
+class ActionsController extends Controller
 {
+    /**
+     * Render the contents of the actions menu for a set of models.
+     */
+    public function menu(Request $request)
+    {
+        $models = $this->getModels($request);
+
+        $actions = collect(Extend\Actions::for($models))
+            ->filter(
+                fn($action) => !$action instanceof Action ||
+                    $action->shouldRender($models, $request->input('context')),
+            )
+            ->values();
+
+        $actions = $actions->reject(
+            fn($action, $i) => $action instanceof MenuDivider &&
+                ($i === 0 || $i === $actions->count() - 1),
+        );
+
+        return view('waterhole::actions.menu', compact('actions', 'models'));
+    }
+
     /**
      * Prompt the user to confirm that they want to run an action.
      *
@@ -28,7 +51,7 @@ final class ActionController extends Controller
         $models = $this->getModels($request);
         $action = $this->getAction($models, $request);
 
-        return view('waterhole::confirm-action', [
+        return view('waterhole::actions.confirm', [
             'action' => $action,
             'actionable' => $request->input('actionable'),
             'models' => $models,
@@ -48,7 +71,7 @@ final class ActionController extends Controller
         // will redirect the user back to the confirmation view with all the
         // same input.
         if ($action->confirm && !$request->has('confirmed')) {
-            return redirect()->route('waterhole.action.create', $request->input());
+            return redirect()->route('waterhole.actions.create', $request->input());
         }
 
         // Attempt to run the action. If we catch a validation exception, we
@@ -57,7 +80,7 @@ final class ActionController extends Controller
         try {
             $response = $action->run($models);
         } catch (ValidationException $exception) {
-            throw $exception->redirectTo(route('waterhole.action.create', $request->input()));
+            throw $exception->redirectTo(route('waterhole.actions.create', $request->input()));
         }
 
         // If the client supports Turbo Streams, we will return streams for
