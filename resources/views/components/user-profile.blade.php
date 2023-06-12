@@ -20,7 +20,7 @@
 
                 <div class="grow stack gap-xs user-profile__content">
                     <h1 class="h1 user-profile__name" data-page-target="title">
-                        {{ $user->name }}
+                        {{ Waterhole\username($user) }}
                     </h1>
 
                     @if ($user->headline)
