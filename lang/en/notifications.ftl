@@ -13,7 +13,7 @@ manage-notification-preferences-link = Manage notification preferences
 
 ## Mention
 
-mention-description = Mentions
+mention-description = Mentions and replies to my comments
 mention-title = Mentioned in { $post }
 mention-reason = You received this because you are subscribed to mention notifications.
 mention-unsubscribe = Unsubscribe from mention notifications

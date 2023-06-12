@@ -83,10 +83,20 @@ class Comment extends Model
         static::created(function (self $comment) {
             broadcast(new NewComment($comment))->toOthers();
 
-            // When a new comment is created, send notifications to mentioned users.
-            $comment->post->usersWereMentioned(
-                $users = $comment->mentions->except($comment->user_id),
-            );
+            // When a new comment is created, send notifications to mentioned
+            // users as well as the user the comment is in reply to.
+            $users = $comment->mentions;
+
+            if ($comment->parent?->user) {
+                $users->push($comment->parent->user);
+            }
+
+            $users = $users
+                ->filter()
+                ->unique()
+                ->except($comment->user_id);
+
+            $comment->post->usersWereMentioned($users);
 
             Notification::send($users, new Mention($comment));
         });
