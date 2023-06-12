@@ -155,8 +155,11 @@ class User extends Model implements
     public function markNotificationsRead(Model $model): static
     {
         $this->unreadNotifications()
-            ->whereMorphedTo('group', $model)
-            ->orWhereMorphedTo('content', $model)
+            ->where(
+                fn($query) => $query
+                    ->whereMorphedTo('group', $model)
+                    ->orWhereMorphedTo('content', $model),
+            )
             ->update(['read_at' => now()]);
 
         return $this;
