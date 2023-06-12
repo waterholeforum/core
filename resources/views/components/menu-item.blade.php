@@ -14,6 +14,7 @@
     }}
 >
     @icon($icon)
+
     @empty($description)
         {{ $label }}
     @else

@@ -5,6 +5,7 @@ namespace Waterhole\Scopes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Scope to calculate each comment's index (ie. how many comments came before it)
@@ -18,8 +19,12 @@ class CommentIndexScope implements Scope
             return;
         }
 
-        $builder
-            ->select($builder->qualifyColumn('*'))
-            ->selectRaw('ROW_NUMBER() OVER (ORDER BY `created_at`) + 1 as `index`');
+        $builder->select($builder->qualifyColumn('*'))->selectSub(
+            DB::table('comments', 'ci')
+                ->selectRaw('count(*)')
+                ->whereColumn('ci.post_id', 'comments.post_id')
+                ->whereColumn('ci.id', '<', 'comments.id'),
+            'index',
+        );
     }
 }

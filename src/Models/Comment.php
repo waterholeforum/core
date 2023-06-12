@@ -5,7 +5,6 @@ namespace Waterhole\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rule;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 use Tonysm\TurboLaravel\Models\Broadcasts;
@@ -14,7 +13,6 @@ use Waterhole\Models\Concerns\HasBody;
 use Waterhole\Models\Concerns\NotificationContent;
 use Waterhole\Models\Concerns\Reactable;
 use Waterhole\Models\Concerns\ValidatesData;
-use Waterhole\Notifications\Mention;
 use Waterhole\Scopes\CommentIndexScope;
 use Waterhole\View\Components;
 use Waterhole\View\TurboStream;
@@ -82,13 +80,6 @@ class Comment extends Model
 
         static::created(function (self $comment) {
             broadcast(new NewComment($comment))->toOthers();
-
-            // When a new comment is created, send notifications to mentioned users.
-            $comment->post->usersWereMentioned(
-                $users = $comment->mentions->except($comment->user_id),
-            );
-
-            Notification::send($users, new Mention($comment));
         });
 
         // By default, we calculate each comment's index (ie. how many comments

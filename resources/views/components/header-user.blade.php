@@ -2,11 +2,11 @@
     <ui-popup placement="bottom-end" class="header-user">
         <a href="{{ Auth::user()->url }}" class="btn btn--icon" role="button">
             <x-waterhole::avatar :user="Auth::user()" />
-            <ui-tooltip>{{ Auth::user()->name }}</ui-tooltip>
+            <ui-tooltip>{{ Waterhole\username(Auth::user()) }}</ui-tooltip>
         </a>
 
         <ui-menu class="menu" hidden>
-            <h3 class="menu-heading">{{ Auth::user()->name }}</h3>
+            <h3 class="menu-heading">{{ Waterhole\username(Auth::user()) }}</h3>
 
             @components(Waterhole\Extend\UserMenu::build())
 

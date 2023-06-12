@@ -23,6 +23,7 @@ class VerifyEmail extends Notification
         $verificationUrl = $this->verificationUrl();
 
         return (new MailMessage())
+            ->markdown('waterhole::mail.email')
             ->subject(__('waterhole::auth.email-verification-mail-subject'))
             ->line(
                 __('waterhole::auth.email-verification-mail-body', [

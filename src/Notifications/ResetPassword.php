@@ -22,6 +22,7 @@ class ResetPassword extends Notification
         $minutes = config('auth.passwords.' . config('auth.defaults.passwords') . '.expire');
 
         return (new MailMessage())
+            ->markdown('waterhole::mail.email')
             ->subject(__('waterhole::auth.reset-password-mail-subject'))
             ->line(
                 __('waterhole::auth.reset-password-mail-body', [

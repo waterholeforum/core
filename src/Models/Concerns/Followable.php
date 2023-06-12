@@ -13,6 +13,9 @@ use Waterhole\Models\User;
  * determine how they see and are notified about activity in the model. The
  * model must have user state (see `HasUserState`) with `notification` and
  * `followed_at` columns to store this state.
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection $followedBy
+ * @property-read \Illuminate\Database\Eloquent\Collection $ignoredBy
  */
 trait Followable
 {

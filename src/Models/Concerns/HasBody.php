@@ -28,6 +28,8 @@ use Waterhole\Models\User;
  *   for the current user.
  * @property string $parsed_body The intermediary parsed XML document.
  * @property-read string $body_text The parsed body with formatting removed.
+ * @property-read \Illuminate\Database\Eloquent\Collection $mentions
+ * @property-read \Illuminate\Database\Eloquent\Collection $attachments
  */
 trait HasBody
 {

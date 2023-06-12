@@ -110,6 +110,10 @@ class PostController extends Controller
                 ->withInput();
         }
 
+        if ($request->user()->follow_on_comment) {
+            $post->follow();
+        }
+
         // Send out a "new post" notification to all followers of this post's
         // channel, except for the user who created the post.
         Notification::send(

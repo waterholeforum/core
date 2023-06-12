@@ -1,3 +1,5 @@
+<div id="reply" tabindex="-1"></div>
+
 <turbo-frame
     id="composer"
     {{ $attributes->class('composer stack') }}
@@ -48,9 +50,14 @@
                 {{ __('waterhole::forum.create-comment-title') }}
             </div>
 
+            {{--
+                [complete] is required to prevent this frame from automatically
+                reloading when the composer is reset after posting a comment
+            --}}
             <turbo-frame
                 class="composer__parent nowrap row gap-xs text-xs pill bg-warning-soft"
                 id="@domid($post, 'comment_parent')"
+                complete
             >
                 @if ($parent)
                     <input type="hidden" name="parent_id" value="{{ $parent->id }}" />
