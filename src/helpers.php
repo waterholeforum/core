@@ -117,9 +117,9 @@ function return_field(string $default = null): string
         '">';
 }
 
-function username(?User $user): string|HtmlString
+function username(?User $user): string
 {
-    return $user ? new HtmlString(emojify($user->name)) : __('waterhole::system.deleted-user');
+    return $user->name ?? __('waterhole::system.deleted-user');
 }
 
 function user_variables(?User $user): array
