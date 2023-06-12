@@ -14,7 +14,7 @@ Turbo.start();
 
 window.Turbo = Turbo;
 
-// Use idiomorph for "replace" Turbo Streams for more fine-grained DOM patching,
+// Use nanomorph for "replace" Turbo Streams for more fine-grained DOM patching,
 // which will hopefully preserve keyboard focus.
 document.addEventListener('turbo:before-stream-render', (e) => {
     const { detail } = e as CustomEvent;
