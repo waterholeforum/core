@@ -9,6 +9,7 @@ use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
 use Waterhole\Models\ReactionType;
+use Waterhole\Notifications\Mention;
 use Waterhole\Notifications\NewComment;
 use Waterhole\View\Components\CommentFrame;
 use Waterhole\View\Components\CommentFull;
@@ -110,10 +111,24 @@ class CommentController extends Controller
             $wasFollowed = true;
         }
 
+        // When a new comment is created, send notifications to mentioned
+        // users as well as the user the comment is in reply to.
+        $users = $comment->mentions;
+
+        if ($comment->parent?->user) {
+            $users->push($comment->parent->user);
+        }
+
+        $users = $users->unique()->except($comment->user_id);
+
+        $comment->post->usersWereMentioned($users);
+
+        Notification::send($users, new Mention($comment));
+
         // Send out a "new comment" notification to all followers of this post,
         // except for the user who made the comment.
         Notification::send(
-            $post->followedBy->except($request->user()->id),
+            $post->followedBy->diff($users)->except($comment->user_id),
             new NewComment($comment),
         );
 
