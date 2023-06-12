@@ -16,10 +16,24 @@ export default class extends Controller<HTMLElement> {
             this.element.style.height = height + 'px';
         }
 
-        if (window.location.hash.substring(1) === this.element.id) {
-            this.open();
-        }
+        window.addEventListener('hashchange', this.onHashChange);
+        this.onHashChange();
     }
+
+    disconnect() {
+        window.removeEventListener('hashchange', this.onHashChange);
+    }
+
+    private onHashChange = (e?: any) => {
+        // Turbo sends the hashchange event before the hash has actually
+        // updated, so do this after a tick.
+        setTimeout(() => {
+            if (window.location.hash === '#reply') {
+                this.open();
+                window.scroll({ top: document.body.scrollHeight });
+            }
+        });
+    };
 
     placeholderClick(e: MouseEvent) {
         if (shouldOpenInNewTab(e)) return;
@@ -36,7 +50,7 @@ export default class extends Controller<HTMLElement> {
 
     open() {
         this.element.classList.add('is-open');
-        this.element.querySelector('textarea')?.focus();
+        setTimeout(() => this.element.querySelector('textarea')?.focus());
     }
 
     close() {

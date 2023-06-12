@@ -1,3 +1,5 @@
+<div id="reply" tabindex="-1"></div>
+
 <turbo-frame
     id="composer"
     {{ $attributes->class('composer stack') }}
