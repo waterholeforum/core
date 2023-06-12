@@ -67,7 +67,7 @@ Waterhole.fetchError = async function (response?: Response) {
         case 422:
             const alert = cloneFromTemplate('template-alert-danger');
             alert.querySelector('.alert__message')!.textContent = (await response.json()).message;
-            this.alerts.show(alert, { key: 'fetchError', duration: -1 });
+            Waterhole.alerts.show(alert, { key: 'fetchError', duration: -1 });
             break;
 
         case 429:
@@ -82,7 +82,7 @@ Waterhole.fetchError = async function (response?: Response) {
         const alert = cloneFromTemplate(templateId);
 
         if (alert) {
-            this.alerts.show(alert, { key: 'fetchError', duration: -1 });
+            Waterhole.alerts.show(alert, { key: 'fetchError', duration: -1 });
         }
     }
 };
