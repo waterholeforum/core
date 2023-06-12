@@ -68,6 +68,11 @@ class UserLookupController extends Controller
                     fn($query) => $query->where('posts.id', $post->getKey()),
                 );
 
+            if ($user = $request->user()) {
+                $comments->where('users.id', '!=', $user->id);
+                $post->where('users.id', '!=', $user->id);
+            }
+
             $sub = $comments->unionAll($post)->latest('created_at');
 
             // If there is a search query, then we still want to tack other
