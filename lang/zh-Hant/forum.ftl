@@ -9,7 +9,7 @@ register = 註冊
 
 ## Search
 
-search-placeholder = 搜尋文章
+search-placeholder = 搜尋討論區
 search-results-title = "{ $query }" 的搜尋結果
 search-button = 搜尋
 
@@ -94,6 +94,8 @@ original-post-link = 原始主題
 pin-to-top-button = 全局置頂
 unpin-button = 移除置頂
 
+post-comment-button = 發表評論
+
 ## Comments
 
 comments-unread-heading = 未讀
@@ -117,7 +119,7 @@ comments-locked-message = 評論已鎖定。
 lock-comments-button = 鎖定評論
 unlock-comments-button = 解鎖評論
 
-composer-placeholder = 撰寫評論...
+composer-placeholder = 發表評論...
 composer-reply-to-placeholder = 回覆 { $userName }...
 composer-replying-to-label = 正在回覆
 composer-clear-reply-button = 清除
@@ -171,8 +173,8 @@ ignore-button = 忽略
 unfollow-button = 取消追蹤
 unignore-button = 取消忽略
 
-channel-follow-description = 在此頻道有新貼文時接收通知。
-post-follow-description = 在此貼文有新留言時接收通知。
+channel-follow-description = 在此頻道有新貼文時接收通知 
+post-follow-description = 在此貼文有新留言時接收通知 
 
 post-following-badge = 追蹤中
 post-ignored-badge = 忽略中
