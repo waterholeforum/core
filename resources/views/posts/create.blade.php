@@ -9,7 +9,7 @@
 
             @if (! $form->model->channel)
                 <x-waterhole::dialog class="measure" :title="$title">
-                    <x-waterhole::channel-picker id="channel_id" name="channel_id" />
+                    <x-waterhole::channel-picker id="channel_id" name="channel_id" show-links />
                 </x-waterhole::dialog>
             @else
                 <x-waterhole::dialog :title="$title">
@@ -25,6 +25,7 @@
                                     id="channel_id"
                                     name="channel_id"
                                     :value="$form->model->channel_id"
+                                    show-links
                                 />
                             </ui-menu>
                         </ui-popup>
