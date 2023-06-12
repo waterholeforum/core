@@ -1,4 +1,5 @@
 config
 node_modules
 resources/dist
+resources/views/mail
 vendor

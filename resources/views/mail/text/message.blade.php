@@ -1,20 +1,20 @@
 <x-mail::layout>
     {{-- Header --}}
-    <x-slot name="header">
+    <x-slot:header>
         <x-mail::header :url="route('waterhole.home')">
             {{ config('waterhole.forum.name') }}
         </x-mail::header>
-    </x-slot>
+    </x-slot:header>
 
     {{-- Body --}}
     {{ $slot }}
 
     {{-- Subcopy --}}
     @isset($subcopy)
-        <x-slot name="subcopy">
+        <x-slot:subcopy>
             <x-mail::subcopy>
                 {{ $subcopy }}
             </x-mail::subcopy>
-        </x-slot>
+        </x-slot:subcopy>
     @endisset
 </x-mail::layout>
