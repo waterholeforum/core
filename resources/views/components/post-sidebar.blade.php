@@ -36,9 +36,11 @@
         </x-slot>
     </x-waterhole::action-menu>
 
-    <div class="hide-sm grow">
-        <x-waterhole::follow-button :followable="$post" />
-    </div>
+    @auth
+        <div class="hide-sm grow">
+            <x-waterhole::follow-button :followable="$post" />
+        </div>
+    @endauth
 
     @components(Waterhole\Extend\PostSidebar::build(), compact('post'))
 </div>
