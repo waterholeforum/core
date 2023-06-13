@@ -2,11 +2,15 @@
     @php
         $enabled = $response === true || $response->allowed();
         $tag = $enabled ? 'a' : 'span';
+        $href = $post->urlAtIndex($post->comment_count) . '#reply';
+        if (! Auth::check()) {
+            $href = route('waterhole.login', ['return' => $href]);
+        }
     @endphp
 
     <{{ $tag }}
         class="btn grow hide-sm {{ $enabled ? 'bg-accent' : 'is-disabled' }}"
-        @if ($enabled) href="{{ $post->urlAtIndex($post->comment_count) }}#reply" @endif
+        @if ($enabled) href="{{ $href }}" @endif
     >
         @icon('tabler-message-circle')
 
