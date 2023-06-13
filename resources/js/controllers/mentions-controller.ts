@@ -1,10 +1,13 @@
 import TextExpanderElement from '@github/text-expander-element';
 import { Controller } from '@hotwired/stimulus';
+import * as Turbo from '@hotwired/turbo';
 
 interface UserLookupResult {
     id: number;
     name: string;
     html: string;
+    commentUrl?: string;
+    frameId?: string;
 }
 
 /**
@@ -46,7 +49,7 @@ export default class extends Controller<TextExpanderElement> {
                     listbox.style.marginTop = '24px';
 
                     listbox.append(
-                        ...json.map(({ name, html }) => {
+                        ...json.map(({ name, html, commentUrl, frameId }) => {
                             const option = document.createElement('li');
                             option.setAttribute('role', 'option');
                             option.id = `suggestion-${Math.floor(
@@ -54,7 +57,10 @@ export default class extends Controller<TextExpanderElement> {
                             ).toString()}`;
                             option.className = 'menu-item';
                             option.dataset.value = name;
+                            option.dataset.commentUrl = commentUrl || '';
+                            option.dataset.frameId = frameId || '';
                             option.innerHTML = html;
+
                             return option;
                         })
                     );
@@ -81,6 +87,12 @@ export default class extends Controller<TextExpanderElement> {
 
     private onTextExpanderValue = ((event: CustomEvent) => {
         const { item } = event.detail;
-        event.detail.value = '@' + item.getAttribute('data-value').replace(/ /g, '\xa0');
+
+        event.detail.value = '@' + item.dataset.value.replace(/ /g, '\xa0');
+
+        const { commentUrl, frameId } = item.dataset;
+        if (commentUrl) {
+            Turbo.visit(commentUrl, { frame: frameId });
+        }
     }) as EventListener;
 }

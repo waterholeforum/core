@@ -3,10 +3,8 @@
 namespace Waterhole\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Blade;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
-use Waterhole\View\Components\UserLabel;
 
 /**
  * Controller to look up users by name.
@@ -46,13 +44,16 @@ class UserLookupController extends Controller
                 ->limit(static::LIMIT);
         }
 
+        $main = User::select(['id', 'name', 'avatar']);
+
         // If we are getting suggestions geared towards a post, we will clone
         // the above query a couple times to specifically find users who posted
         // or commented on the post.
         if ($post) {
-            $comments = $users
+            $commentsQuery = $users
                 ->clone()
                 ->selectRaw('MAX(comments.created_at) as created_at')
+                ->selectRaw('MAX(comments.id) as comment_id')
                 ->joinRelationship(
                     'comments',
                     fn($query) => $query->where('comments.post_id', $post->getKey()),
@@ -60,42 +61,53 @@ class UserLookupController extends Controller
                 ->groupBy('users.id')
                 ->orderByRaw('MAX(comments.created_at) DESC');
 
-            $post = $users
+            $postQuery = $users
                 ->clone()
                 ->addSelect('posts.created_at')
+                ->selectRaw('NULL as comment_id')
                 ->joinRelationship(
                     'posts',
                     fn($query) => $query->where('posts.id', $post->getKey()),
                 );
 
             if ($user = $request->user()) {
-                $comments->where('users.id', '!=', $user->id);
-                $post->where('users.id', '!=', $user->id);
+                $commentsQuery->where('users.id', '!=', $user->id);
+                $postQuery->where('users.id', '!=', $user->id);
             }
 
-            $sub = $comments->unionAll($post)->latest('created_at');
+            $sub = $commentsQuery->unionAll($postQuery)->latest('created_at');
 
             // If there is a search query, then we still want to tack other
             // users (that haven't posted here) onto the bottom of the results.
             if ($search) {
-                $sub->unionAll($users->selectRaw('NULL'));
+                $sub->unionAll(
+                    $users->selectRaw('NULL as created_at')->selectRaw('NULL as comment_id'),
+                );
             }
+
+            $main->fromSub($sub, 'a')->selectRaw('MAX(comment_id) as comment_id');
         } else {
-            $sub = $users;
+            $main->fromSub($users, 'a');
         }
 
         // Finally, select distinct users out of these unionized results, and
         // present them in the desired format.
-        return User::select(['id', 'name', 'avatar'])
-            ->fromSub($sub, 't')
+        return $main
             ->groupBy(['id', 'name', 'avatar'])
             ->take(static::LIMIT)
-            ->get(['id', 'name', 'avatar'])
+            ->get()
             ->map(
                 fn(User $user) => [
                     'id' => $user->id,
                     'name' => $user->name,
-                    'html' => Blade::renderComponent(new UserLabel($user)),
+                    'html' => (string) view('waterhole::users.mention-suggestion', compact('user')),
+                    'commentUrl' => $user->comment_id
+                        ? route('waterhole.posts.comments.show', [
+                            'post' => $post,
+                            'comment' => $user->comment_id,
+                        ])
+                        : null,
+                    'frameId' => $user->comment_id ? dom_id($post, 'comment_parent') : null,
                 ],
             );
     }
