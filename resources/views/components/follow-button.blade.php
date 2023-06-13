@@ -14,7 +14,9 @@
         @else
             @icon('tabler-bell')
             <span>{{ __('waterhole::forum.follow-button') }}</span>
-            <ui-tooltip>{{ __($localePrefix . '-follow-description') }}</ui-tooltip>
+            <ui-tooltip placement="bottom">
+                {{ __($localePrefix . '-follow-description') }}
+            </ui-tooltip>
         @endif
     </button>
 </x-waterhole::action-form>
