@@ -45,7 +45,7 @@ strong {
 mark {
   background: transparent;
   font-weight: var(--weight-bold);
-  color: inherit;
+  color: var(--color-accent);
 }
 
 pre,

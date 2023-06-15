@@ -1,6 +1,3 @@
 .search-results .post-list-item__title a:visited {
-  &,
-  mark {
-    color: var(--color-muted);
-  }
+  color: var(--color-muted);
 }

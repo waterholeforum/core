@@ -4,6 +4,7 @@ namespace Waterhole\Extend;
 
 use Waterhole\Extend\Concerns\OrderedList;
 use Waterhole\View\Components\PostFeedChannel;
+use Waterhole\View\Components\PostFeedPinned;
 use Waterhole\View\Components\PostFeedToolbar;
 
 /**
@@ -15,4 +16,5 @@ abstract class PostFeedHeader
 }
 
 PostFeedHeader::add(PostFeedChannel::class, position: -100, key: 'channel');
-PostFeedHeader::add(PostFeedToolbar::class, position: -90, key: 'toolbar');
+PostFeedHeader::add(PostFeedPinned::class, position: -90, key: 'pinned');
+PostFeedHeader::add(PostFeedToolbar::class, position: -80, key: 'toolbar');

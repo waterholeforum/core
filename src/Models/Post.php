@@ -36,6 +36,7 @@ use Waterhole\View\TurboStream;
  * @property int $score
  * @property bool $is_locked
  * @property ?int $answer_id
+ * @property bool $is_pinned
  * @property-read Channel $channel
  * @property-read ?User $user
  * @property-read \Illuminate\Database\Eloquent\Collection $comments
@@ -63,6 +64,7 @@ class Post extends Model
         'edited_at' => 'datetime',
         'last_activity_at' => 'datetime',
         'is_locked' => 'boolean',
+        'is_pinned' => 'boolean',
     ];
 
     public static function booted()
@@ -264,12 +266,18 @@ class Post extends Model
      */
     public function streamUpdated(): array
     {
-        return [
+        $streams = [
             TurboStream::replace(new Components\PostListItem($this)),
             TurboStream::replace(new Components\PostCard($this)),
             TurboStream::replace(new Components\PostFull($this)),
             TurboStream::replace(new Components\PostSidebar($this)),
         ];
+
+        if ($this->is_pinned) {
+            $streams[] = TurboStream::replace(new Components\PinnedPost($this));
+        }
+
+        return $streams;
     }
 
     /**
@@ -277,10 +285,16 @@ class Post extends Model
      */
     public function streamRemoved(): array
     {
-        return [
+        $streams = [
             TurboStream::remove(new Components\PostListItem($this)),
             TurboStream::remove(new Components\PostCard($this)),
         ];
+
+        if ($this->is_pinned) {
+            $streams[] = TurboStream::remove(new Components\PinnedPost($this));
+        }
+
+        return $streams;
     }
 
     public function getPerPage(): int

@@ -33,6 +33,8 @@ class IndexController extends Controller
         // that the user has ignored, to ensure the Home post feed is clean and
         // relevant.
         $scope = function (Builder $query) {
+            $query->where('is_pinned', false);
+
             $query->withGlobalScope(
                 Ignoring::EXCLUDE_IGNORED_SCOPE,
                 fn($query) => $query->whereNot->ignoring(),
@@ -60,6 +62,8 @@ class IndexController extends Controller
             ),
             layout: resolve($channel->layout ?: config('waterhole.forum.post_layout')),
             scope: function (Builder $query) use ($channel) {
+                $query->where('is_pinned', false);
+
                 $query->where('posts.channel_id', $channel->id);
 
                 $param = request('tags');

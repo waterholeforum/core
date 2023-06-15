@@ -2,10 +2,8 @@
 
 namespace Waterhole\Providers;
 
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Waterhole\Waterhole;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -16,11 +14,6 @@ class ViewServiceProvider extends ServiceProvider
         Blade::componentNamespace('Waterhole\\View\\Components', 'waterhole');
 
         $this->registerComponentsDirective();
-
-        if (Waterhole::isWaterholeRoute()) {
-            Paginator::defaultView('waterhole::pagination.default');
-            Paginator::defaultSimpleView('waterhole::pagination.simple-default');
-        }
     }
 
     private function registerComponentsDirective(): void

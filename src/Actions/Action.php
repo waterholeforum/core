@@ -2,10 +2,10 @@
 
 namespace Waterhole\Actions;
 
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 use Illuminate\View\ComponentAttributeBag;
-use Illuminate\View\View;
 use Waterhole\Models\Model;
 use Waterhole\Models\User;
 

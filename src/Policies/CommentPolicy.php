@@ -21,16 +21,15 @@ class CommentPolicy
      */
     public function edit(User $user, Comment $comment): bool
     {
-        return $comment->user_id === $user->id || $user->can('post.moderate', $comment->post);
+        return $comment->user_id === $user->id || $this->moderate($user, $comment);
     }
 
     /**
-     * Users can delete their own comments. Users who can moderate a post can
-     * delete its comments.
+     * Users who can moderate a post can moderate its comments.
      */
-    public function delete(User $user, Comment $comment): bool
+    public function moderate(User $user, Comment $comment): bool
     {
-        return $this->edit($user, $comment);
+        return $user->can('post.moderate', $comment->post);
     }
 
     /**
