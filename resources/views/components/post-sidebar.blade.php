@@ -2,11 +2,15 @@
     @php
         $enabled = $response === true || $response->allowed();
         $tag = $enabled ? 'a' : 'span';
+        $href = $post->urlAtIndex($post->comment_count) . '#reply';
+        if (! Auth::check()) {
+            $href = route('waterhole.login', ['return' => $href]);
+        }
     @endphp
 
     <{{ $tag }}
         class="btn grow hide-sm {{ $enabled ? 'bg-accent' : 'is-disabled' }}"
-        @if ($enabled) href="{{ $post->urlAtIndex($post->comment_count) }}#reply" @endif
+        @if ($enabled) href="{{ $href }}" @endif
     >
         @icon('tabler-message-circle')
 
@@ -32,9 +36,11 @@
         </x-slot>
     </x-waterhole::action-menu>
 
-    <div class="hide-sm grow">
-        <x-waterhole::follow-button :followable="$post" />
-    </div>
+    @auth
+        <div class="hide-sm grow">
+            <x-waterhole::follow-button :followable="$post" />
+        </div>
+    @endauth
 
     @components(Waterhole\Extend\PostSidebar::build(), compact('post'))
 </div>

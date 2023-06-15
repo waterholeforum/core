@@ -1,6 +1,9 @@
 @if ($post->lastComment)
     <span>
-        <x-waterhole::user-link :user="$post->lastComment->user" class="color-inherit">
+        <x-waterhole::user-link
+            :user="$post->lastComment->user"
+            class="color-inherit inline-block"
+        >
             {{ Waterhole\username($post->lastComment->user) }}
         </x-waterhole::user-link>
         {{ __('waterhole::forum.post-activity-replied') }}
@@ -10,7 +13,7 @@
     </span>
 @elseif ($post->user)
     <span>
-        <x-waterhole::user-link :user="$post->user" class="color-inherit">
+        <x-waterhole::user-link :user="$post->user" class="color-inherit inline-block">
             {{ Waterhole\username($post->user) }}
         </x-waterhole::user-link>
         {{ __('waterhole::forum.post-activity-posted') }}
