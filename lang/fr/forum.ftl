@@ -94,6 +94,8 @@ original-post-link = Message original
 pin-to-top-button = Épingler en haut
 unpin-button = Ne plus épingler
 
+post-comment-button = Commenter
+
 ## Comments
 
 comments-unread-heading = Non lu
