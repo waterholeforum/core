@@ -1,10 +1,10 @@
 ### Localization for Waterhole Control Panel
 
-title = Control Panel
+title = 控制台
 
 ## Dashboard
 
-dashboard-title = 主控台
+dashboard-title = 儀表板
 
 configure-mail-message = 您需要配置郵件驅動程序，以便 Waterhole 能夠發送驗證郵件及寄送通知。
 debug-mode-on-message = 調試模式已啟用。敏感配置值可能會被暴露。
@@ -51,7 +51,7 @@ structure-navigation-description = 將項目移至此處以在導航菜單中顯
 structure-unlisted-title = 不列入清單
 structure-unlisted-description = 將項目移至此處以從導航菜單中隱藏。
 
-delete-structure-confirm-message = 您確定要刪除此節點嗎？
+delete-structure-confirm-message = 您確定要刪除此佈局嗎？
 
 ## Structure - Heading
 
