@@ -41,7 +41,7 @@
         </text-expander>
 
         <div
-            class="text-editor__preview content overlay"
+            class="text-editor__preview content overlay busy-spinner"
             data-text-editor-target="preview"
             hidden
         ></div>

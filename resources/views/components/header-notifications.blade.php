@@ -19,9 +19,8 @@
             src="{{ route('waterhole.notifications.index') }}"
             loading="lazy"
             data-notifications-popup-target="frame"
-        >
-            <x-waterhole::spinner class="spinner--block" />
-        </turbo-frame>
+            class="busy-spinner"
+        ></turbo-frame>
     </ui-menu>
 
     {{-- To detect the screen size and determine whether to open the popup vs. follow the link --}}

@@ -24,3 +24,12 @@
     }
   }
 }
+
+@define-mixin spinner {
+  width: 2em;
+  height: 2em;
+  border: 0.35em solid var(--color-fill);
+  border-top-color: var(--color-stroke);
+  border-radius: 50%;
+  animation: spinner 0.6s infinite linear;
+}

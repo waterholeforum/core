@@ -2,6 +2,23 @@ turbo-frame {
   display: block;
 }
 
+.busy-spinner[aria-busy='true'] {
+  position: relative;
+  min-height: 4em;
+  visibility: hidden;
+
+  &::after {
+    visibility: visible;
+    content: '';
+    position: absolute;
+    z-index: 2;
+    left: calc(50% - 1em);
+    top: var(--space-md);
+
+    @mixin spinner;
+  }
+}
+
 .turbo-progress-bar {
   background-color: var(--color-accent);
 }
