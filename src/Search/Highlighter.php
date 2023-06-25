@@ -66,7 +66,7 @@ class Highlighter
             return null;
         }
 
-        preg_match_all('/"[^"]+"|[\w*]+/', $q, $phrases);
+        preg_match_all('/"[^"]+"|[\w*]+/u', $q, $phrases);
 
         $phrases = array_map(function ($phrase) {
             $phrase = preg_replace('/^"|"$/', '', $phrase);
