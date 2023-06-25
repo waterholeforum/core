@@ -4,7 +4,7 @@
     @if ($user->comment_id)
         <span class="with-icon color-muted text-xxs">
             @icon('tabler-share-3', ['class' => 'flip-horizontal'])
-            Reply
+            {{ __('waterhole::forum.comment-reply-button') }}
         </span>
     @endif
 </div>
