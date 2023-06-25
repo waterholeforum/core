@@ -125,7 +125,7 @@ TextEditor::add(
         ? (new TextEditorButton(
             icon: 'tabler-paperclip',
             label: __('waterhole::system.text-editor-attachment'),
-        ))->withAttributes(['data-action' => 'text-editor#chooseFiles'])
+        ))->withAttributes(['data-action' => 'uploads#chooseFiles'])
         : null,
     0,
     'attachment',

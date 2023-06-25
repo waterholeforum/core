@@ -1,5 +1,5 @@
 <div
-    data-controller="text-editor"
+    data-controller="text-editor uploads"
     data-text-editor-format-url-value="{{ route('waterhole.format') }}"
     {{ $attributes->class('input text-editor stack overlay-container') }}
 >
