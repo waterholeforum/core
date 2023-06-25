@@ -47,6 +47,7 @@ class CopyLink extends Link
         return [
             'data-turbo-frame' => '_top',
             'data-controller' => 'copy-link',
+            'data-action' => 'copy-link#copy',
         ];
     }
 
