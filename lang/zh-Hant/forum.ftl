@@ -1,6 +1,6 @@
 ### Forum
 
-home = 首頁
+feed-link = 動態消息
 
 ## Header
 
@@ -93,6 +93,8 @@ original-post-link = 原始主題
 
 pin-to-top-button = 全局置頂
 unpin-button = 移除置頂
+
+post-comment-button = 發表評論
 
 ## Comments
 

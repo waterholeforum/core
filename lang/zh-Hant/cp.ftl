@@ -221,6 +221,9 @@ taxonomy-details-title = 詳細資訊
 taxonomy-permissions-title = 權限
 taxonomy-tags-title = 標籤
 taxonomy-name-label = 名稱
+taxonomy-options-title = 選項
+taxonomy-required-label = 發表文章時，要求選擇標籤
+taxonomy-allow-multiple-label = 允許選擇多個標籤
 taxonomy-saved-message = 分類法已儲存。
 delete-taxonomy-confirm-message = 確定要刪除此分類法嗎？
 

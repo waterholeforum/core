@@ -58,7 +58,7 @@ page-number-heading = 第 { $number } 頁
 
 theme-button = 主題
 theme-light = 明亮模式
-theme-dark = 暗夜模式
+theme-dark = 暗黑模式
 theme-automatic = 自動
 
 ## Text Editor
