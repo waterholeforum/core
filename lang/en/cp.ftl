@@ -210,6 +210,9 @@ taxonomy-details-title = Details
 taxonomy-permissions-title = Permissions
 taxonomy-tags-title = Tags
 taxonomy-name-label = Name
+taxonomy-options-title = Options
+taxonomy-required-label = Require a tag to be selected on post creation
+taxonomy-allow-multiple-label = Allow selection of multiple tags
 taxonomy-saved-message = Taxonomy saved.
 delete-taxonomy-confirm-message = Are you sure you want to delete this taxonomy?
 

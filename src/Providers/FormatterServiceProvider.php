@@ -90,6 +90,9 @@ class FormatterServiceProvider extends ServiceProvider
 
     private function configureEmoji(Configurator $config): void
     {
+        // Allow the <mark> element for highlighting search results
+        $config->HTMLElements->allowElement('mark');
+
         $tag = $config->Emoji->getTag();
 
         if ($url = config('waterhole.design.emoji_url')) {

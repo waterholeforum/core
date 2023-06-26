@@ -20,7 +20,7 @@
   flex-shrink: 99;
 
   &::before {
-    content: ' › ';
+    content: '\203A';
     margin: 0 var(--space-xs);
   }
 

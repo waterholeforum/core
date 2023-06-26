@@ -21,8 +21,7 @@
             data-controller="turbo-frame"
             data-action="turbo:frame-load->turbo-frame#remove"
             data-action-menu-target="frame"
-        >
-            <x-waterhole::spinner class="spinner--block" />
-        </turbo-frame>
+            class="busy-spinner"
+        ></turbo-frame>
     </ui-menu>
 </ui-popup>

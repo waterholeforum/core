@@ -54,8 +54,8 @@
             hidden
             data-controller="modal"
             data-action="
-        turbo:before-stream-render@document->modal#hide
-        turbo:before-render@document->modal#hide"
+                turbo:before-stream-render@document->modal#hide
+                turbo:before-render@document->modal#hide"
             data-turbo-permanent
         >
             {{-- https://github.com/hotwired/turbo/pull/445#issuecomment-995305287 --}}
@@ -65,9 +65,9 @@
                 class="modal__frame"
                 data-modal-target="frame"
                 data-action="
-            turbo:submit-start->modal#loading
-            turbo:before-fetch-request->modal#loading
-            turbo:frame-render->modal#loaded"
+                    turbo:submit-start->modal#loading
+                    turbo:before-fetch-request->modal#loading
+                    turbo:frame-render->modal#loaded"
                 aria-labelledby="dialog-title"
                 disabled
             ></turbo-frame>
@@ -118,10 +118,6 @@
                     {{ __('waterhole::system.try-again-button') }}
                 </button>
             </div>
-        </template>
-
-        <template id="loading">
-            <x-waterhole::spinner class="spinner--block" />
         </template>
     </body>
 </html>

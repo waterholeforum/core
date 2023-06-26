@@ -625,7 +625,7 @@
 
 .overlay,
 .has-overlay::before {
-  position: absolute;
+  position: absolute !important; // !important to override .busy-spinner
   top: 0;
   left: 0;
   right: 0;

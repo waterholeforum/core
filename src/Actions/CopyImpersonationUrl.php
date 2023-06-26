@@ -39,6 +39,7 @@ class CopyImpersonationUrl extends Link
         return [
             'data-turbo-frame' => '_top',
             'data-controller' => 'copy-link',
+            'data-action' => 'copy-link#copy',
             'data-copy-link-message-value' => __(
                 'waterhole::user.impersonation-url-copied-message',
             ),

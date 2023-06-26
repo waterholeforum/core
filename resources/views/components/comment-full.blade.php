@@ -130,7 +130,11 @@
         </footer>
     </div>
 
-    <turbo-frame id="@domid($comment, 'replies')" @unless ($withReplies) hidden @endunless>
+    <turbo-frame
+        id="@domid($comment, 'replies')"
+        class="busy-spinner"
+        @unless ($withReplies) hidden @endunless
+    >
         @if ($withReplies)
             @if (count($comment->children))
                 <ol
@@ -145,8 +149,6 @@
                     @endforeach
                 </ol>
             @endif
-        @else
-            <x-waterhole::spinner class="spinner--block" />
         @endif
     </turbo-frame>
 </article>

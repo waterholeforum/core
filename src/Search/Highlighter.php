@@ -25,12 +25,12 @@ class Highlighter
         }
 
         return new HtmlString(
-            preg_replace_callback(
-                $this->re,
-                function (array $matches) {
-                    return "<mark>$matches[0]</mark>";
-                },
-                emojify($text),
+            emojify(
+                preg_replace_callback(
+                    $this->re,
+                    fn(array $matches) => "<mark>$matches[0]</mark>",
+                    $text,
+                ),
             ),
         );
     }
@@ -66,7 +66,7 @@ class Highlighter
             return null;
         }
 
-        preg_match_all('/"[^"]+"|[\w*]+/', $q, $phrases);
+        preg_match_all('/"[^"]+"|[\w*]+/u', $q, $phrases);
 
         $phrases = array_map(function ($phrase) {
             $phrase = preg_replace('/^"|"$/', '', $phrase);

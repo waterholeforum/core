@@ -1,5 +1,5 @@
 <div
-    data-controller="text-editor"
+    data-controller="text-editor uploads"
     data-text-editor-format-url-value="{{ route('waterhole.format') }}"
     {{ $attributes->class('input text-editor stack overlay-container') }}
 >
@@ -41,7 +41,7 @@
         </text-expander>
 
         <div
-            class="text-editor__preview content overlay"
+            class="text-editor__preview content overlay busy-spinner"
             data-text-editor-target="preview"
             hidden
         ></div>

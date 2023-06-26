@@ -3,7 +3,6 @@ import { ActionEvent, Controller } from '@hotwired/stimulus';
 import { Picker } from 'emoji-picker-element';
 import { PopupElement } from 'inclusive-elements';
 import TextareaEditor from 'textarea-editor';
-import { cloneFromTemplate } from '../utils';
 
 /**
  * Controller for the <x-waterhole::text-editor> component.
@@ -61,16 +60,17 @@ export default class extends Controller {
 
         this.inputTarget.hidden = previewing;
         this.previewTarget.hidden = !previewing;
-        this.previewTarget.replaceChildren(cloneFromTemplate('loading'));
         this.previewButtonTarget?.setAttribute('aria-pressed', String(previewing));
         this.element.classList.toggle('is-previewing', previewing);
 
         if (!previewing) return;
 
-        this.previewTarget!.innerHTML = await Waterhole.fetch
+        this.previewTarget.setAttribute('aria-busy', 'true');
+        this.previewTarget.innerHTML = await Waterhole.fetch
             .post(this.formatUrlValue, { body: this.inputTarget.value })
             .text();
-        this.previewTarget!.hidden = false;
+        this.previewTarget.hidden = false;
+        this.previewTarget.setAttribute('aria-busy', 'false');
     }
 
     insertQuote(e: CustomEvent) {

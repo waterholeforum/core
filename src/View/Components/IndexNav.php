@@ -27,7 +27,7 @@ class IndexNav extends Component
 
         $this->nav = collect([
             new NavLink(
-                label: 'Feed', //__('waterhole::forum.home'),
+                label: __('waterhole::forum.feed-link'),
                 icon: 'tabler-news',
                 route: 'waterhole.home',
             ),

@@ -47,7 +47,7 @@
         "clipboard-copy": "^4.0.1",
         "emoji-picker-element": "^1.16.0",
         "highlight.js": "^11.7.0",
-        "inclusive-elements": "^0.4.2",
+        "inclusive-elements": "^0.4.3",
         "inclusive-sort": "0.1.0-beta.2",
         "ky": "^0.33.3",
         "laravel-echo": "^1.15.0",

@@ -1,6 +1,6 @@
 ### Forum
 
-home = Home
+feed-link = Feed
 
 ## Header
 
