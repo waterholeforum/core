@@ -74,7 +74,7 @@ class Highlighter
             $phrase = preg_replace('/\s+/', '\\W+', $phrase);
             $phrase = preg_replace('/\\*/', '\\w+', $phrase);
 
-            return '\b' . $phrase . '\b';
+            return $phrase;
         }, $phrases[0]);
 
         return '/' . implode('|', $phrases) . '/iu';

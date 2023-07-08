@@ -6,8 +6,10 @@
     }
 @endphp
 
-<{{ $tag }} {{ $attributes->class(['btn text-md index-create-post', $enabled ? 'bg-accent' : 'is-disabled']) }}>
-    {{ __($channel->translations[$key = 'waterhole::forum.create-post-button'] ?? $key) }}
+<{{ $tag }}
+    {{ $attributes->class(['btn text-md index-create-post', $enabled ? 'bg-accent' : 'is-disabled']) }}
+>
+    {{ __($channel->translations[($key = 'waterhole::forum.create-post-button')] ?? $key) }}
 
     @unless ($enabled)
         <ui-tooltip>

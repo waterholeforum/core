@@ -8,6 +8,8 @@ use Tonysm\TurboLaravel\Http\TurboResponseFactory;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
+use Waterhole\Models\ReactionType;
+use Waterhole\Notifications\Mention;
 use Waterhole\Notifications\NewComment;
 use Waterhole\View\Components\CommentFrame;
 use Waterhole\View\Components\CommentFull;
@@ -34,8 +36,12 @@ class CommentController extends Controller
     {
         // Load the comment tree for this comment, load the necessary
         // relationships, and pre-fill the `post` relationship for each comment.
-        $comment = $comment->childrenAndSelf
-            ->load('user.groups', 'reactions.reactionType', 'parent.user.groups', 'mentions')
+        $comment = $comment
+            ->childrenAndSelf()
+            ->select('*')
+            ->withReactions()
+            ->with('user.groups', 'parent.user.groups', 'mentions')
+            ->get()
             ->each(function ($comment) use ($post) {
                 $comment->setRelation('post', $post);
                 $comment->parent?->setRelation('post', $post);
@@ -105,10 +111,24 @@ class CommentController extends Controller
             $wasFollowed = true;
         }
 
+        // When a new comment is created, send notifications to mentioned
+        // users as well as the user the comment is in reply to.
+        $users = $comment->mentions;
+
+        if ($comment->parent?->user) {
+            $users->push($comment->parent->user);
+        }
+
+        $users = $users->unique()->except($comment->user_id);
+
+        $comment->post->usersWereMentioned($users);
+
+        Notification::send($users, new Mention($comment));
+
         // Send out a "new comment" notification to all followers of this post,
         // except for the user who made the comment.
         Notification::send(
-            $post->followedBy->except($request->user()->id),
+            $post->followedBy->diff($users)->except($comment->user_id),
             new NewComment($comment),
         );
 
@@ -163,5 +183,13 @@ class CommentController extends Controller
             ->save();
 
         return redirect($comment->post_url);
+    }
+
+    public function reactions(Comment $comment, ReactionType $reactionType)
+    {
+        return view('waterhole::reactions.list', [
+            'model' => $comment,
+            'reactionType' => $reactionType,
+        ]);
     }
 }

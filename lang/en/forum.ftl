@@ -94,6 +94,8 @@ original-post-link = Original Post
 pin-to-top-button = Pin to Top
 unpin-button = Unpin
 
+post-comment-button = Comment
+
 ## Comments
 
 comments-unread-heading = Unread

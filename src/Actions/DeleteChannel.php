@@ -8,7 +8,6 @@ use Illuminate\View\View;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Model;
 use Waterhole\Models\User;
-use Waterhole\Waterhole;
 
 class DeleteChannel extends Action
 {
@@ -25,9 +24,9 @@ class DeleteChannel extends Action
         return $user && $user->can('channel.delete', $model);
     }
 
-    public function shouldRender(Collection $models): bool
+    public function shouldRender(Collection $models, string $context = null): bool
     {
-        return Waterhole::isCpRoute();
+        return $context === 'cp';
     }
 
     public function label(Collection $models): string

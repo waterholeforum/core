@@ -21,7 +21,7 @@ class DeleteSelf extends Action
         return (bool) $user?->is($model);
     }
 
-    public function shouldRender(Collection $models): bool
+    public function shouldRender(Collection $models, string $context = null): bool
     {
         return false;
     }

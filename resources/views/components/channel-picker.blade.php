@@ -13,10 +13,19 @@
                 :icon="$item->icon"
                 role=""
             />
+        @elseif ($item instanceof Waterhole\Models\StructureLink)
+            <x-waterhole::menu-item :icon="$item->icon" :href="$item->href" target="_blank">
+                <x-slot name="label">
+                    <span class="menu-item__title row gap-xs align-self-center">
+                        {{ $item->name }}
+                        @icon('tabler-external-link', ['class' => 'color-muted'])
+                    </span>
+                </x-slot>
+            </x-waterhole::menu-item>
         @endif
     @endforeach
 
     @if ($value)
-        <input type="hidden" name="channel_id" value="{{ $value }}">
+        <input type="hidden" name="channel_id" value="{{ $value }}" />
     @endif
 </div>

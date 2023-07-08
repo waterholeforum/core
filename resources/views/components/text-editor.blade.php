@@ -35,7 +35,9 @@
                 data-controller="uploads"
                 data-uploads-url-value="{{ route('waterhole.upload') }}"
                 data-text-editor-target="input"
-            >{{ $value }}</textarea>
+            >
+{{ $value }}</textarea
+            >
         </text-expander>
 
         <div

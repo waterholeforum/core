@@ -38,7 +38,7 @@
                     @foreach ($posts as $post)
                         @if ($showLastVisit && $post->last_activity_at < session('previously_seen_at'))
                             @once
-                                @if (!$loop->first)
+                                @if (! $loop->first)
                                     <div class="divider color-accent feed__last-visit-divider">
                                         {{ __('waterhole::forum.post-feed-new-activity-heading') }}
                                     </div>

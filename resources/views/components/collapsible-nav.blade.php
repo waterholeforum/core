@@ -1,6 +1,6 @@
 <ui-popup {{ $attributes->merge(['class' => 'collapsible-nav stack']) }}>
     <button class="btn text-md {{ $buttonClass }}">
-        @isset ($button)
+        @isset($button)
             {{ $button }}
         @elseif ($activeComponent)
             @icon($activeComponent->icon)

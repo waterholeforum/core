@@ -2,12 +2,13 @@
 
 namespace Waterhole\View\Components;
 
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\Component;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Structure;
 use Waterhole\Models\StructureHeading;
+use Waterhole\Models\StructureLink;
 
 class ChannelPicker extends Component
 {
@@ -18,19 +19,20 @@ class ChannelPicker extends Component
         public string $name,
         public ?string $value = null,
         array $exclude = [],
+        bool $showLinks = false,
     ) {
-        $this->items = new Collection(
-            Structure::with('content')
-                ->whereMorphedTo('content', Channel::class)
-                ->orWhereMorphedTo('content', StructureHeading::class)
-                ->orderBy('position')
-                ->get()
-                ->map->content->except($exclude)
-                ->filter(
-                    fn($item) => $item instanceof StructureHeading ||
-                        ($item instanceof Channel && Gate::allows('channel.post', $item)),
-                ),
-        );
+        $this->items = Structure::with('content')
+            ->whereMorphedTo('content', Channel::class)
+            ->orWhereMorphedTo('content', StructureHeading::class)
+            ->when(
+                $showLinks,
+                fn($query) => $query->orWhereMorphedTo('content', StructureLink::class),
+            )
+            ->orderBy('position')
+            ->get()
+            ->toBase()
+            ->map->content->except($exclude)
+            ->filter(fn($item) => !$item instanceof Channel || Gate::allows('channel.post', $item));
 
         // Filter out headings with no items after them
         $this->items = $this->items->filter(function ($item, $i) {
@@ -41,7 +43,9 @@ class ChannelPicker extends Component
             return true;
         });
 
-        $this->selectedChannel = $this->items->find($value);
+        $this->selectedChannel = $this->items->first(
+            fn($item) => $item instanceof Channel && $item->id == $value,
+        );
     }
 
     public function render()

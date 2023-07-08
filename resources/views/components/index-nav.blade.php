@@ -1,1 +1,1 @@
-<x-waterhole::collapsible-nav :components="$nav->all()"/>
+<x-waterhole::collapsible-nav :components="$nav->all()" />

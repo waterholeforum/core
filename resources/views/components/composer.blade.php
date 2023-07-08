@@ -1,3 +1,5 @@
+<div id="reply" tabindex="-1"></div>
+
 <turbo-frame
     id="composer"
     {{ $attributes->class('composer stack') }}
@@ -14,12 +16,14 @@
         data-action="composer#placeholderClick"
         data-hotkey="r"
     >
-        <x-waterhole::avatar :user="Auth::user()"/>
-        <span>{{
-            $parent
-                ? __('waterhole::forum.composer-reply-to-placeholder', Waterhole\user_variables($parent->user))
-                : __('waterhole::forum.composer-placeholder')
-        }}</span>
+        <x-waterhole::avatar :user="Auth::user()" />
+        <span>
+            {{
+                $parent
+                    ? __('waterhole::forum.composer-reply-to-placeholder', Waterhole\user_variables($parent->user))
+                    : __('waterhole::forum.composer-placeholder')
+            }}
+        </span>
     </a>
 
     <form
@@ -29,10 +33,7 @@
     >
         @csrf
 
-        <div
-            class="composer__handle js-only"
-            data-action="pointerdown->composer#startResize"
-        ></div>
+        <div class="composer__handle js-only" data-action="pointerdown->composer#startResize"></div>
 
         <div class="composer__toolbar row gap-xs">
             <button
@@ -45,26 +46,36 @@
                 @icon('tabler-x')
             </button>
 
-            <div class="h5 overflow-ellipsis">{{ __('waterhole::forum.create-comment-title') }}</div>
+            <div class="h5 overflow-ellipsis">
+                {{ __('waterhole::forum.create-comment-title') }}
+            </div>
 
+            {{--
+                [complete] is required to prevent this frame from automatically
+                reloading when the composer is reset after posting a comment
+            --}}
             <turbo-frame
                 class="composer__parent nowrap row gap-xs text-xs pill bg-warning-soft"
                 id="@domid($post, 'comment_parent')"
+                complete
             >
                 @if ($parent)
-                    <input type="hidden" name="parent_id" value="{{ $parent->id }}">
+                    <input type="hidden" name="parent_id" value="{{ $parent->id }}" />
 
-                    <a href="{{ $parent->post_url }}" data-turbo-frame="_top" class="color-inherit">
+                    <a
+                        href="{{ $parent->post_url }}"
+                        data-turbo-frame="_top"
+                        class="color-inherit"
+                    >
                         {{ __('waterhole::forum.composer-replying-to-label') }}
-                        <x-waterhole::user-label :user="$parent->user"/>
+                        <x-waterhole::user-label :user="$parent->user" />
                     </a>
 
-                    <button
-                        class="btn btn--sm btn--transparent btn--icon"
-                        name="parent_id"
-                    >
+                    <button class="btn btn--sm btn--transparent btn--icon" name="parent_id">
                         @icon('tabler-x')
-                        <ui-tooltip>{{ __('waterhole::forum.composer-clear-reply-button') }}</ui-tooltip>
+                        <ui-tooltip>
+                            {{ __('waterhole::forum.composer-clear-reply-button') }}
+                        </ui-tooltip>
                     </button>
                 @endif
             </turbo-frame>

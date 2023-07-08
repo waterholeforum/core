@@ -55,7 +55,7 @@ abstract class Action
     /**
      * Whether the action should be listed in a menu for the given models.
      */
-    public function shouldRender(Collection $models): bool
+    public function shouldRender(Collection $models, string $context = null): bool
     {
         return true;
     }
@@ -95,7 +95,7 @@ abstract class Action
         if ($this->confirm) {
             $attributes = $attributes->merge([
                 'formmethod' => 'GET',
-                'formaction' => route('waterhole.action.create'),
+                'formaction' => route('waterhole.actions.create'),
                 'data-turbo-frame' => 'modal',
             ]);
         }

@@ -129,6 +129,10 @@
   vertical-align: middle;
 }
 
+.inline-block {
+  display: inline-block;
+}
+
 .justify-center {
   justify-content: center;
 }

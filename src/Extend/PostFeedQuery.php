@@ -20,11 +20,11 @@ PostFeedQuery::add(function (Builder $query) {
         'channel.postsReactionSet',
         'lastComment.user',
         'userState',
-        'reactions.user',
         'tags',
         'mentions',
         'attachments',
     ]);
 
     $query->withUnreadCommentsCount();
+    $query->withReactions();
 });

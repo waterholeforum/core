@@ -19,7 +19,7 @@ class Following extends Filter
     {
         $query
             ->following()
-            ->leftJoinRelationship('userState')
+            ->leftJoinRelation('userState')
             ->latest('followed_at');
     }
 }

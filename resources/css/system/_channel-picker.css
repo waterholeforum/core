@@ -1,10 +1,18 @@
 .channel-picker {
   .menu-item {
-    padding: var(--space-sm);
-    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    gap: var(--space-md);
+
+    > .icon:first-child {
+      font-size: var(--text-lg);
+    }
   }
 
-  .icon:first-child {
-    font-size: var(--text-lg);
+  .menu-heading {
+    padding-inline: var(--space-md);
+
+    &:not(:first-child) {
+      padding-top: var(--space-md);
+    }
   }
 }

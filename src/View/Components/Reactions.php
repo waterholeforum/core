@@ -16,7 +16,6 @@ class Reactions extends Component
 
     public Model $model;
     public ?ReactionSet $reactionSet;
-    public Collection $reactionsByType;
     public Collection $reactionTypes;
 
     public function __construct(Model $model)
@@ -28,15 +27,9 @@ class Reactions extends Component
             return;
         }
 
-        $this->reactionsByType = $model->reactions
-            ->loadMissing('user')
-            ->groupBy('reaction_type_id');
+        $countReactions = fn($reactionType) => $model->reaction_counts[$reactionType->id] ?? 0;
 
-        $countReactions = fn($reactionType) => isset($this->reactionsByType[$reactionType->id])
-            ? $this->reactionsByType[$reactionType->id]->count()
-            : 0;
-
-        $this->reactionTypes = $this->reactionSet->reactionTypes->sortBy($countReactions);
+        $this->reactionTypes = $this->reactionSet->reactionTypes->sortByDesc($countReactions);
 
         if (count($this->reactionTypes) > 1) {
             $this->reactionTypes = $this->reactionTypes->filter($countReactions);
@@ -45,7 +38,7 @@ class Reactions extends Component
 
     public function shouldRender()
     {
-        return $this->model->reactions->count() ||
+        return $this->model->reaction_counts ||
             resolve(React::class)->authorize(Auth::user(), $this->model);
     }
 

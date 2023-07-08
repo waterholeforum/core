@@ -6,7 +6,6 @@ use Illuminate\Support\Collection;
 use Waterhole\Models\Model;
 use Waterhole\View\Components\FollowButton;
 use Waterhole\View\TurboStream;
-use Waterhole\Waterhole;
 
 class Unignore extends Action
 {
@@ -15,9 +14,9 @@ class Unignore extends Action
         return method_exists($model, 'unignore');
     }
 
-    public function shouldRender(Collection $models): bool
+    public function shouldRender(Collection $models, string $context = null): bool
     {
-        return !Waterhole::isCpRoute() && $models->some->isIgnored();
+        return $context !== 'cp' && $models->some->isIgnored();
     }
 
     public function label(Collection $models): string

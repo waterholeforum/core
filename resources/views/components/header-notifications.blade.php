@@ -1,8 +1,4 @@
-<ui-popup
-    placement="bottom-end"
-    data-controller="notifications-popup"
-    data-turbo-permanent
->
+<ui-popup placement="bottom-end" data-controller="notifications-popup" data-turbo-permanent>
     <a
         href="{{ route('waterhole.notifications.index') }}"
         class="btn btn--icon btn--transparent"
@@ -11,7 +7,7 @@
     >
         @icon('tabler-bell')
 
-        <x-waterhole::notifications-badge :user="Auth::user()"/>
+        <x-waterhole::notifications-badge :user="Auth::user()" />
 
         <ui-tooltip>{{ __('waterhole::notifications.title') }}</ui-tooltip>
     </a>
@@ -24,7 +20,7 @@
             loading="lazy"
             data-notifications-popup-target="frame"
         >
-            <x-waterhole::spinner class="spinner--block"/>
+            <x-waterhole::spinner class="spinner--block" />
         </turbo-frame>
     </ui-menu>
 

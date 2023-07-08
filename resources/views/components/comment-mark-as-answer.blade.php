@@ -1,4 +1,4 @@
-@if (!$comment->post->answer_id || $comment->isAnswer())
+@if (! $comment->post->answer_id || $comment->isAnswer())
     <x-waterhole::action-button
         :for="$comment"
         :action="Waterhole\Actions\MarkAsAnswer::class"

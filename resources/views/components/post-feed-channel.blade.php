@@ -11,15 +11,9 @@
         </div>
 
         <div class="channel-card__controls row gap-xs justify-end">
-            <x-waterhole::follow-button :followable="$channel"/>
+            <x-waterhole::follow-button :followable="$channel" />
 
-            <x-waterhole::action-menu
-                placement="bottom-end"
-                :for="$channel"
-                :exclude="[
-                    Waterhole\Actions\Follow::class,
-                ]"
-            />
+            <x-waterhole::action-menu placement="bottom-end" :for="$channel" />
         </div>
     </div>
 </div>

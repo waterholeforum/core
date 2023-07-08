@@ -13,7 +13,7 @@
         aria-label="{{ __('waterhole::forum.search-placeholder') }}"
         required
         data-hotkey="/"
-    >
+    />
 
     <div class="hide-if-invalid">
         <button

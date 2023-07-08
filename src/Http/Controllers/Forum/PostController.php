@@ -10,6 +10,7 @@ use Waterhole\Forms\PostForm;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
+use Waterhole\Models\ReactionType;
 use Waterhole\Notifications\NewPost;
 
 /**
@@ -42,17 +43,11 @@ class PostController extends Controller
             return redirect($comment->post_url);
         }
 
-        $post->load('reactions.user');
-
         $comments = $post
             ->comments()
-            ->with([
-                'user.groups',
-                'parent.user.groups',
-                'reactions.user',
-                'mentions',
-                'attachments',
-            ])
+            ->select('*')
+            ->with(['user.groups', 'parent.user.groups', 'mentions', 'attachments'])
+            ->withReactions()
             ->oldest()
             ->paginate();
 
@@ -115,6 +110,10 @@ class PostController extends Controller
                 ->withInput();
         }
 
+        if ($request->user()->follow_on_comment) {
+            $post->follow();
+        }
+
         // Send out a "new post" notification to all followers of this post's
         // channel, except for the user who created the post.
         Notification::send(
@@ -143,5 +142,13 @@ class PostController extends Controller
         (new PostForm($post))->submit($request);
 
         return redirect($request->input('return', $post->url));
+    }
+
+    public function reactions(Post $post, ReactionType $reactionType)
+    {
+        return view('waterhole::reactions.list', [
+            'model' => $post,
+            'reactionType' => $reactionType,
+        ]);
     }
 }

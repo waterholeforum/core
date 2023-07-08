@@ -19,9 +19,11 @@
 @endisset
 
 <x-slot:subcopy>
+<p>
 {{ $reason }}<br>
 
 <x-mail::link :url="$unsubscribeUrl">{{ $unsubscribeText }}</x-mail::link> &nbsp;
 <x-mail::link :url="route('waterhole.preferences.notifications')">{{ __('waterhole::notifications.manage-notification-preferences-link') }}</x-mail::link>
+</p>
 </x-slot:subcopy>
 </x-mail::message>

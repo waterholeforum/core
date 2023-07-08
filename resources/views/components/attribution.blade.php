@@ -1,7 +1,7 @@
 <div class="attribution">
     <span class="attribution__user">
         <x-waterhole::user-link :user="$user" class="attribution__name">
-            <x-waterhole::avatar :user="$user"/>
+            <x-waterhole::avatar :user="$user" />
 
             @if ($user?->isOnline())
                 <span class="dot color-success">
@@ -12,7 +12,7 @@
             <span>{{ Waterhole\username($user) }}</span>
         </x-waterhole::user-link>
 
-        <x-waterhole::user-groups :user="$user"/>
+        <x-waterhole::user-groups :user="$user" />
     </span>
 
     <span class="attribution__info">
@@ -24,10 +24,10 @@
             <span>
                 @if ($permalink)
                     <a href="{{ $permalink }}" class="color-inherit" target="_top">
-                @endif
-                    <x-waterhole::relative-time :datetime="$date"/>
-                @if ($permalink)
+                        <x-waterhole::relative-time :datetime="$date" />
                     </a>
+                @else
+                    <x-waterhole::relative-time :datetime="$date" />
                 @endif
             </span>
         @endif

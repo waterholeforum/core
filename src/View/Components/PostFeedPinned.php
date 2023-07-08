@@ -4,7 +4,6 @@ namespace Waterhole\View\Components;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\Component;
-use Waterhole\Extend\PostFeedQuery;
 use Waterhole\Feed\PostFeed;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Post;
@@ -23,12 +22,11 @@ class PostFeedPinned extends Component
         if ($channel) {
             $query->whereBelongsTo($channel);
         } else {
-            $query->whereHas('channel', fn($query) => $query->whereNot->ignoring());
+            $query->whereDoesntHave('channel', fn($query) => $query->ignoring());
         }
 
-        foreach (PostFeedQuery::values() as $scope) {
-            $scope($query);
-        }
+        $query->with(['channel.userState', 'userState']);
+        $query->withUnreadCommentsCount();
 
         $this->posts = $query->latest()->get();
     }

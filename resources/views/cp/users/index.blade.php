@@ -1,6 +1,5 @@
 <x-waterhole::cp :title="__('waterhole::cp.users-title')">
     <div class="stack gap-md">
-
         <div class="row gap-sm wrap">
             <h1 class="h3">
                 {{ __('waterhole::cp.users-title') }}
@@ -29,7 +28,7 @@
                         placeholder="{{ __('waterhole::cp.users-filter-placeholder') }}"
                         type="search"
                         value="{{ request('q') }}"
-                    >
+                    />
                 </div>
 
                 <ul
@@ -43,39 +42,27 @@
                     id="filter-suggestions"
                     role="listbox"
                 >
-                    <li
-                        id="filter-group"
-                        role="option"
-                        class="menu-item"
-                        data-value="group:"
-                    >
+                    <li id="filter-group" role="option" class="menu-item" data-value="group:">
                         <span class="menu-item__title">group:</span>
-                        <span class="color-muted">{{ __('waterhole::cp.users-filter-group-description') }}</span>
+                        <span class="color-muted">
+                            {{ __('waterhole::cp.users-filter-group-description') }}
+                        </span>
                     </li>
                     @foreach (Waterhole\Models\Group::selectable()->get() as $group)
-                        <li
-                            id="filter-group-{{ $group->id }}"
-                            role="option"
-                            class="menu-item"
-                        >
-                            <span class="menu-item__title">group:{{ str_contains($group->name, ' ') ? '"'.$group->name.'"' : $group->name }}</span>
+                        <li id="filter-group-{{ $group->id }}" role="option" class="menu-item">
+                            <span class="menu-item__title">
+                                group:{{ str_contains($group->name, ' ') ? '"' . $group->name . '"' : $group->name }}
+                            </span>
                         </li>
                     @endforeach
-                    <li
-                        role="option"
-                        class="menu-item"
-                        data-value="is:suspended"
-                    >
+
+                    <li role="option" class="menu-item" data-value="is:suspended">
                         <span class="menu-item__title">is:suspended</span>
                     </li>
                 </ul>
             </form>
 
-            <a
-                href="{{ route('waterhole.cp.users.create') }}"
-                type="button"
-                class="btn bg-accent"
-            >
+            <a href="{{ route('waterhole.cp.users.create') }}" type="button" class="btn bg-accent">
                 @icon('tabler-plus')
                 <span>{{ __('waterhole::cp.create-user-button') }}</span>
             </a>
@@ -96,20 +83,22 @@
                                                     class="with-icon color-text"
                                                 >
                                                     <span>
-                                                        {{ __('waterhole::cp.users-'.str_replace('_', '-', $column).'-column') }}
+                                                        {{ __('waterhole::cp.users-' . str_replace('_', '-', $column) . '-column') }}
                                                     </span>
                                                     @if ($sort === $column)
-                                                        @icon('tabler-chevron-'.($direction === 'asc' ? 'up' : 'down'))
+                                                        @icon('tabler-chevron-' . ($direction === 'asc' ? 'up' : 'down'))
                                                     @endif
                                                 </a>
                                             @else
-                                                {{ __('waterhole::cp.users-'.str_replace('_', '-', $column).'-column') }}
+                                                {{ __('waterhole::cp.users-' . str_replace('_', '-', $column) . '-column') }}
                                             @endif
                                         </th>
                                     @endforeach
+
                                     <th style="width: 1px"></th>
                                 </tr>
                             </thead>
+
                             <tbody>
                                 @foreach ($users as $user)
                                     <tr>
@@ -121,26 +110,34 @@
                                                 target="_blank"
                                             />
                                         </td>
+
                                         <td>
-                                            <a href="mailto:{{ $user->email }}">{{ Str::limit($user->email, 20) }}</a>
+                                            <a href="mailto:{{ $user->email }}">
+                                                {{ Str::limit($user->email, 20) }}
+                                            </a>
                                         </td>
+
                                         <td>
-                                            <x-waterhole::user-groups :user="$user"/>
+                                            <x-waterhole::user-groups :user="$user" />
                                         </td>
+
                                         <td>
-                                            <x-waterhole::relative-time :datetime="$user->created_at"/>
+                                            <x-waterhole::relative-time
+                                                :datetime="$user->created_at"
+                                            />
                                         </td>
+
                                         <td>
-                                            <x-waterhole::relative-time :datetime="$user->last_seen_at"/>
+                                            <x-waterhole::relative-time
+                                                :datetime="$user->last_seen_at"
+                                            />
                                         </td>
+
                                         <td>
                                             <x-waterhole::action-buttons
-                                                class="row text-xs"
                                                 :for="$user"
-                                                :button-attributes="['class' => 'btn btn--transparent btn--icon']"
-                                                tooltips
                                                 :limit="2"
-                                                placement="bottom-end"
+                                                context="cp"
                                             />
                                         </td>
                                     </tr>

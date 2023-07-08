@@ -7,7 +7,6 @@ use Waterhole\Models\Comment;
 use Waterhole\Models\Model;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
-use Waterhole\Waterhole;
 
 /**
  * Copy Link action.
@@ -28,9 +27,9 @@ class CopyLink extends Link
         return true;
     }
 
-    public function shouldRender(Collection $models): bool
+    public function shouldRender(Collection $models, string $context = null): bool
     {
-        return !Waterhole::isCpRoute();
+        return $context !== 'cp';
     }
 
     public function label(Collection $models): string

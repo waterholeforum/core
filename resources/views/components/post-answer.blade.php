@@ -3,7 +3,7 @@
         @icon('tabler-circle-check-filled', ['class' => 'text-md'])
         <span>
             {{ __('waterhole::forum.post-answered-by') }}
-            <x-waterhole::user-label :user="$post->answer->user" link/>
+            <x-waterhole::user-label :user="$post->answer->user" link />
         </span>
     </div>
 
