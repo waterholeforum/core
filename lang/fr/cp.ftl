@@ -210,6 +210,9 @@ taxonomy-details-title = Informations
 taxonomy-permissions-title = Permissions
 taxonomy-tags-title = Étiquettes
 taxonomy-name-label = Nom
+taxonomy-options-title = Options
+taxonomy-required-label = Exiger la sélection d'une étiquette lors de la création d'un message
+taxonomy-allow-multiple-label = Permettre la sélection de plusieurs étiquettes
 taxonomy-saved-message = La taxonomie a été enregistrée.
 delete-taxonomy-confirm-message = Êtes-vous sûr de vouloir supprimer cette taxonomie ?
 
