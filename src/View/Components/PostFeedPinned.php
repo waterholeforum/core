@@ -17,7 +17,9 @@ class PostFeedPinned extends Component
 
     public function __construct(public PostFeed $feed, public ?Channel $channel = null)
     {
-        $query = Post::where('is_pinned', true)->whereNot->ignoring();
+        $query = Post::withoutTrashed()
+            ->where('is_pinned', true)
+            ->whereNot->ignoring();
 
         if ($channel) {
             $query->whereBelongsTo($channel);
@@ -29,6 +31,11 @@ class PostFeedPinned extends Component
         $query->withUnreadCommentsCount();
 
         $this->posts = $query->latest()->get();
+    }
+
+    public function shouldRender(): bool
+    {
+        return $this->posts->isNotEmpty();
     }
 
     public function render()

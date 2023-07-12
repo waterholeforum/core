@@ -20,3 +20,15 @@ PostScopes::add(function (Builder $query, ?User $user) {
         $query->whereIn('channel_id', $ids);
     }
 }, 'channel');
+
+PostScopes::add(function (Builder $query, ?User $user) {
+    $query->withTrashed();
+
+    if (!$user?->isAdmin()) {
+        $query->whereNull('deleted_at');
+
+        if (!is_null($ids = Channel::allPermitted($user, 'moderate'))) {
+            $query->orWhereIn('channel_id', $ids);
+        }
+    }
+}, 'trashed');

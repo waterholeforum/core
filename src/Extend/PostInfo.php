@@ -8,6 +8,7 @@ use Waterhole\View\Components\PostAnswered;
 use Waterhole\View\Components\PostChannel;
 use Waterhole\View\Components\PostLocked;
 use Waterhole\View\Components\PostNotifications;
+use Waterhole\View\Components\PostTrash;
 use Waterhole\View\Components\PostUnread;
 
 /**
@@ -19,6 +20,7 @@ abstract class PostInfo
 }
 
 PostInfo::add(PostUnread::class, position: -100, key: 'unread');
+PostInfo::add(PostTrash::class, position: -95, key: 'trash');
 PostInfo::add(PostChannel::class, position: -90, key: 'channel');
 PostInfo::add(PostAnswered::class, position: -80, key: 'answered');
 PostInfo::add(PostLocked::class, position: -70, key: 'locked');

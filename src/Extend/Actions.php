@@ -78,6 +78,8 @@ Actions::add(Waterhole\Actions\MoveToChannel::class, 0, 'move-to-channel');
 Actions::add(Waterhole\Actions\HideComment::class, 0, 'hide-comment');
 Actions::add(Waterhole\Actions\UnhideComment::class, 0, 'unhide-comment');
 Actions::add(Waterhole\Actions\DeleteComment::class, 0, 'delete-comment');
+Actions::add(Waterhole\Actions\RestorePost::class, 0, 'restore-post');
+Actions::add(Waterhole\Actions\TrashPost::class, 0, 'trash-post');
 Actions::add(Waterhole\Actions\DeletePost::class, 0, 'delete-post');
 
 // Admin actions

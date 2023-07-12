@@ -1,6 +1,6 @@
 <article {{ $attributes->class('post-full') }}>
     <div class="post-full__main stack gap-xl card p-gutter">
-        <header class="post-header stack align-start gap-x-md gap-y-xl">
+        <header class="post-header row wrap align-center gap-x-md gap-y-xl">
             @components(Waterhole\Extend\PostHeader::build(), compact('post'))
         </header>
 

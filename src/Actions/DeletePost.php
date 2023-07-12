@@ -15,7 +15,7 @@ class DeletePost extends Action
 
     public function appliesTo($model): bool
     {
-        return $model instanceof Post;
+        return $model instanceof Post && $model->trashed();
     }
 
     public function authorize(?User $user, Model $model): bool
@@ -25,12 +25,12 @@ class DeletePost extends Action
 
     public function label(Collection $models): string
     {
-        return __('waterhole::system.delete-button');
+        return __('waterhole::forum.delete-forever-button');
     }
 
     public function icon(Collection $models): string
     {
-        return 'tabler-trash';
+        return 'tabler-trash-x';
     }
 
     public function confirm(Collection $models): string
