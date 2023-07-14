@@ -41,6 +41,7 @@ post-new-badge = New
 post-new-badge-tooltip = New post
 post-locked-badge = Locked
 post-answered-badge = Answered
+post-trash-badge = Trash
 
 post-answered-by = Answered by
 post-view-answer-link = View Answer
@@ -95,6 +96,10 @@ pin-to-top-button = Pin to Top
 unpin-button = Unpin
 
 post-comment-button = Comment
+
+move-to-trash-button = Move to Trash
+restore-button = Restore
+delete-forever-button = Delete Forever
 
 ## Comments
 
@@ -162,6 +167,7 @@ filter-top-month = Month
 filter-top-week = Week
 filter-top-day = Day
 filter-trending = Trending
+filter-trash = Trash
 
 ## Followables
 
