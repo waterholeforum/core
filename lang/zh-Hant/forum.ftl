@@ -41,6 +41,7 @@ post-new-badge = 新
 post-new-badge-tooltip = 新的貼文
 post-locked-badge = 已鎖定
 post-answered-badge = 已回答
+post-trash-badge = 已刪除
 
 post-answered-by = 最佳答案
 post-view-answer-link = 查看答案
@@ -95,6 +96,10 @@ pin-to-top-button = 全局置頂
 unpin-button = 移除置頂
 
 post-comment-button = 發表評論
+
+move-to-trash-button = 移置回收筒
+restore-button = 還原 
+delete-forever-button = 永久刪除
 
 ## Comments
 
@@ -162,6 +167,7 @@ filter-top-month = 本月
 filter-top-week = 當週
 filter-top-day = 今日
 filter-trending = 流行趨勢
+filter-trash = 回收筒
 
 ## Followables
 
@@ -181,7 +187,7 @@ post-ignored-badge = 忽略中
 
 ## Index
 
-menu-button = 選單
+menu-button = 論壇導覽
 navigation-title = 論壇導覽
 
 post-feed-new-activity-button = 新動態
