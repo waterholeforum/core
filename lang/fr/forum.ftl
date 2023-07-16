@@ -41,6 +41,7 @@ post-new-badge = Nouveau
 post-new-badge-tooltip = Nouveau message
 post-locked-badge = Verrouillé
 post-answered-badge = Répondu
+post-trash-badge = Corbeille
 
 post-answered-by = Répondu par
 post-view-answer-link = Voir la réponse
@@ -96,6 +97,10 @@ unpin-button = Ne plus épingler
 
 post-comment-button = Commenter
 
+move-to-trash-button = Déplacer vers la corbeille
+restore-button = Restaurer
+delete-forever-button = Supprimer définitivement
+
 ## Comments
 
 comments-unread-heading = Non lu
@@ -149,8 +154,8 @@ quote-button = Citer
 ## Filters
 
 filter-alphabetical = Ordre alphabétique
-filter-following = Nombre d'abonnés
-filter-ignoring = Nombre d'ignorés
+filter-following = Plus suivis
+filter-ignoring = Plus ignorés
 filter-newest = Plus récents
 filter-latest = Plus actifs
 filter-oldest = Plus anciens
@@ -162,6 +167,7 @@ filter-top-month = Mois
 filter-top-week = Semaine
 filter-top-day = Jour
 filter-trending = Plus tendances
+filter-trash = Corbeille
 
 ## Followables
 
