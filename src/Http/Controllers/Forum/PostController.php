@@ -24,7 +24,7 @@ class PostController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except('show');
+        $this->middleware('auth')->only('create', 'store', 'edit', 'update');
         $this->middleware('throttle:waterhole.create')->only('store');
     }
 

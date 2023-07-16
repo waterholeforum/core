@@ -17,18 +17,20 @@ class TaxonomyOptions extends Field
     {
         return <<<'blade'
             <div class="field">
-                <div class="field__label">Options</div>
+                <div class="field__label">
+                    {{ __('waterhole::cp.taxonomy-options-title') }}
+                </div>
 
                 <div class="stack gap-sm">
                     <label class="choice">
                         <input type="hidden" name="is_required" value="0">
                         <input type="checkbox" name="is_required" value="1" @checked($model->is_required)>
-                        Require a tag to be selected on post creation
+                        {{ __('waterhole::cp.taxonomy-required-label') }}
                     </label>
                     <label class="choice">
                         <input type="hidden" name="allow_multiple" value="0">
                         <input type="checkbox" name="allow_multiple" value="1" @checked($model->allow_multiple)>
-                        Allow selection of multiple tags
+                        {{ __('waterhole::cp.taxonomy-allow-multiple-label') }}
                     </label>
                 </div>
             </div>

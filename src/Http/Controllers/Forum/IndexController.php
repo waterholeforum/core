@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Waterhole\Feed\PostFeed;
 use Waterhole\Filters\Following;
 use Waterhole\Filters\Ignoring;
+use Waterhole\Filters\Trash;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Http\Middleware\MaybeRequireLogin;
 use Waterhole\Models\Channel;
@@ -33,7 +34,7 @@ class IndexController extends Controller
         // that the user has ignored, to ensure the Home post feed is clean and
         // relevant.
         $scope = function (Builder $query) {
-            $query->where('is_pinned', false);
+            $this->scope($query);
 
             $query->withGlobalScope(
                 Ignoring::EXCLUDE_IGNORED_SCOPE,
@@ -62,7 +63,7 @@ class IndexController extends Controller
             ),
             layout: resolve($channel->layout ?: config('waterhole.forum.post_layout')),
             scope: function (Builder $query) use ($channel) {
-                $query->where('is_pinned', false);
+                $this->scope($query);
 
                 $query->where('posts.channel_id', $channel->id);
 
@@ -82,13 +83,27 @@ class IndexController extends Controller
         return view('waterhole::forum.page', compact('page'));
     }
 
+    private function scope(Builder $query)
+    {
+        $query->withGlobalScope('withoutPinned', fn($query) => $query->where('is_pinned', false));
+
+        $query->withGlobalScope(
+            Trash::EXCLUDE_TRASHED_SCOPE,
+            fn($query) => $query->withoutTrashed(),
+        );
+    }
+
     private function resolveFilters(array $filters)
     {
         $filters = resolve_all($filters);
 
-        if (Auth::user()) {
+        if ($user = Auth::user()) {
             $filters[] = new Following();
             $filters[] = new Ignoring();
+
+            if ($user->isAdmin() || Channel::allPermitted($user, 'moderate')) {
+                $filters[] = new Trash();
+            }
         }
 
         return $filters;

@@ -4,6 +4,11 @@
       font-size: var(--text-sm);
     }
   }
+
+  .attribution,
+  .post-title {
+    width: 100%;
+  }
 }
 
 .post-page {

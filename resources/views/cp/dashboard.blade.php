@@ -52,9 +52,8 @@
                             src="{{ route('waterhole.cp.dashboard.widget', compact('id')) }}"
                             data-controller="turbo-frame"
                             data-action="turbo:frame-load->turbo-frame#removeSrc"
-                        >
-                            <x-waterhole::spinner class="spinner--block" />
-                        </turbo-frame>
+                            class="busy-spinner"
+                        ></turbo-frame>
                     @endempty
                 </div>
             @endforeach

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
@@ -31,6 +32,7 @@ use Waterhole\View\TurboStream;
  * @property ?string $slug
  * @property ?\Carbon\Carbon $created_at
  * @property ?\Carbon\Carbon $edited_at
+ * @property ?\Carbon\Carbon $deleted_at
  * @property ?\Carbon\Carbon $last_activity_at
  * @property int $comment_count
  * @property int $score
@@ -57,6 +59,7 @@ class Post extends Model
     use Reactable;
     use HasUserState;
     use NotificationContent;
+    use SoftDeletes;
 
     public const UPDATED_AT = null;
 
@@ -67,7 +70,7 @@ class Post extends Model
         'is_pinned' => 'boolean',
     ];
 
-    public static function booted()
+    public static function booting()
     {
         static::addGlobalScope('visible', new PostVisibleScope(fn() => Auth::user()));
 

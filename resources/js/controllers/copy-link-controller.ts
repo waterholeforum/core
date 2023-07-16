@@ -11,16 +11,16 @@ export default class extends Controller {
     declare readonly hasMessageValue: boolean;
     declare readonly messageValue: string;
 
-    connect() {
-        this.element.addEventListener('click', (e) => {
-            copy(this.element.getAttribute('href') || '');
-            e.preventDefault();
+    copy(e: Event) {
+        e.preventDefault();
 
-            if (this.hasMessageValue) {
-                const alert = cloneFromTemplate('template-alert-success');
-                alert.querySelector('.alert__message')!.textContent = this.messageValue;
-                Waterhole.alerts.show(alert);
-            }
-        });
+        const target = e.target as HTMLElement;
+        copy(target.getAttribute('href') || '');
+
+        if (this.hasMessageValue) {
+            const alert = cloneFromTemplate('template-alert-success');
+            alert.querySelector('.alert__message')!.textContent = this.messageValue;
+            Waterhole.alerts.show(alert, { key: 'copy-link' });
+        }
     }
 }

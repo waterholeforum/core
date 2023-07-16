@@ -41,7 +41,6 @@ document.addEventListener('turbo:before-fetch-response', async (e) => {
         const el = cloneFromTemplate('frame-error');
         el.querySelector('button')?.addEventListener('click', () => {
             target.reload();
-            target.replaceChildren(cloneFromTemplate('loading'));
         });
         target.replaceChildren(el);
     } else {

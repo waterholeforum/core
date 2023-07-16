@@ -4,7 +4,7 @@
   border-radius: var(--radius);
   background: var(--color-bg);
   transition: box-shadow 0.2s, border 0.2s, height var(--height-transition-duration), bottom 0.2s;
-  max-height: 90vh;
+  max-height: calc(100vh - var(--header-height));
 
   // The composer is "static" (cannot be opened/closed) on a standalone comment page
   &.is-static {
@@ -55,7 +55,7 @@
       border-color: transparent;
       box-shadow: var(--focus-shadow), var(--shadow-md);
       padding-bottom: var(--radius);
-      z-index: var(--z-index-overlay);
+      z-index: calc(var(--z-index-header) - 1);
     }
   }
 }

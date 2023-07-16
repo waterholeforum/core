@@ -110,7 +110,7 @@ abstract class Action
 
         return new HtmlString(
             <<<html
-                <button type="submit" name="action_class" value="$class" title="$label" $attributes>$content</button>
+                <button type="submit" name="action_class" value="$class" $attributes>$content</button>
             html
             ,
         );

@@ -12,12 +12,10 @@
             id="page_{{ $isCursor ? $paginator->previousCursor()->encode() ?? '1' : $paginator->currentPage() - 1 }}_frame"
             src="{{ $paginator->appends('direction', 'backwards')->previousPageUrl() }}"
             loading="lazy"
-            class="next-page"
+            class="next-page busy-spinner"
             target="_top"
             data-controller="load-backwards"
-        >
-            <x-waterhole::spinner class="spinner--block" />
-        </turbo-frame>
+        ></turbo-frame>
     @endif
 
     <div id="page_{{ $current }}" tabindex="-1"></div>
@@ -34,13 +32,11 @@
         <turbo-frame
             id="page_{{ $isCursor ? $paginator->nextCursor()->encode() : $paginator->currentPage() + 1 }}_frame"
             target="_top"
-            class="next-page"
+            class="next-page busy-spinner"
             @if ($paginator->onFirstPage() || $endless)
                 src="{{ $paginator->appends('direction', 'forwards')->nextPageUrl() }}"
                 loading="lazy"
             @endif
-            data-controller="turbo-frame"
-            data-action="turbo:before-fetch-request->turbo-frame#replaceWithSpinner"
         >
             <div class="text-center p-md">
                 <a

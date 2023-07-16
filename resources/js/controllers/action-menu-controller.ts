@@ -10,9 +10,12 @@ import { PopupElement } from 'inclusive-elements';
 export default class extends Controller<PopupElement> {
     static targets = ['frame'];
 
+    declare readonly hasFrameTarget: boolean;
     declare readonly frameTarget?: FrameElement;
 
     preload() {
-        this.frameTarget?.setAttribute('loading', 'eager');
+        if (this.hasFrameTarget) {
+            this.frameTarget?.setAttribute('loading', 'eager');
+        }
     }
 }
