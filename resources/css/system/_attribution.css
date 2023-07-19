@@ -31,6 +31,6 @@
   margin-top: var(--space-xxs);
 
   > * + *::before {
-    content: ' · ';
+    content: ' \00B7 ';
   }
 }
