@@ -85,8 +85,6 @@ class IndexController extends Controller
 
     private function scope(Builder $query)
     {
-        $query->withGlobalScope('withoutPinned', fn($query) => $query->where('is_pinned', false));
-
         $query->withGlobalScope(
             Trash::EXCLUDE_TRASHED_SCOPE,
             fn($query) => $query->withoutTrashed(),

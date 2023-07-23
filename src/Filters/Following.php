@@ -18,7 +18,6 @@ class Following extends Filter
     public function apply(Builder $query): void
     {
         $query
-            ->withoutGlobalScope('withoutPinned')
             ->following()
             ->leftJoinRelation('userState')
             ->latest('followed_at');

@@ -20,7 +20,6 @@ class Ignoring extends Filter
     public function apply(Builder $query): void
     {
         $query
-            ->withoutGlobalScope('withoutPinned')
             ->withoutGlobalScope(static::EXCLUDE_IGNORED_SCOPE)
             ->ignoring()
             ->leftJoinRelation('userState');

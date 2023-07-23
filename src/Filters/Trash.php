@@ -18,9 +18,6 @@ class Trash extends Filter
 
     public function apply(Builder $query): void
     {
-        $query
-            ->withoutGlobalScope('withoutPinned')
-            ->withoutGlobalScope(static::EXCLUDE_TRASHED_SCOPE)
-            ->onlyTrashed();
+        $query->withoutGlobalScope(static::EXCLUDE_TRASHED_SCOPE)->onlyTrashed();
     }
 }
