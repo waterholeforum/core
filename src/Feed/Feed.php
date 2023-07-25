@@ -48,10 +48,8 @@ class Feed
      */
     public function items(): CursorPaginator
     {
-        $query = $this->query->clone();
+        $this->currentFilter->apply($this->query);
 
-        $this->currentFilter->apply($query);
-
-        return $query->cursorPaginate();
+        return $this->query->cursorPaginate();
     }
 }
