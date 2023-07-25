@@ -47,8 +47,8 @@ register-login-link = 登入
 
 ## Confirm Password
 
-confirm-password-title = 確認密碼
-confirm-password-introduction = 請在繼續之前確認您的密碼。
+confirm-password-title = 檢查密碼
+confirm-password-introduction = 在繼續之前，請重新輸入您的密碼。
 confirm-password-submit = 確認
 
 ## Email Verification

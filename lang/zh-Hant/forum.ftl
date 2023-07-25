@@ -97,8 +97,8 @@ unpin-button = 移除置頂
 
 post-comment-button = 發表評論
 
-move-to-trash-button = 移置回收筒
-restore-button = 還原 
+move-to-trash-button = 資源回收
+restore-button = 還原刪除 
 delete-forever-button = 永久刪除
 
 ## Comments
@@ -167,7 +167,7 @@ filter-top-month = 本月
 filter-top-week = 當週
 filter-top-day = 今日
 filter-trending = 流行趨勢
-filter-trash = 回收筒
+filter-trash = 資源回收筒
 
 ## Followables
 
@@ -183,7 +183,7 @@ channel-follow-description = 在此頻道有新貼文時接收通知。
 post-follow-description = 在此貼文有新留言時接收通知。
 
 post-following-badge = 追蹤中
-post-ignored-badge = 忽略中
+post-ignored-badge = 已忽略 
 
 ## Index
 
