@@ -1,6 +1,7 @@
 <div
     data-controller="text-editor uploads"
     data-text-editor-format-url-value="{{ route('waterhole.format') }}"
+    data-uploads-url-value="{{ route('waterhole.upload') }}"
     {{ $attributes->class('input text-editor stack overlay-container') }}
 >
     <ui-toolbar
@@ -32,9 +33,8 @@
                 id="{{ $id }}"
                 class="text-editor__input grow content"
                 placeholder="{{ $placeholder }}"
-                data-controller="uploads"
-                data-uploads-url-value="{{ route('waterhole.upload') }}"
                 data-text-editor-target="input"
+                data-uploads-target="input"
             >
 {{ $value }}</textarea
             >

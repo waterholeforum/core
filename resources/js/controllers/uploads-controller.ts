@@ -6,25 +6,28 @@ import TextareaEditor from 'textarea-editor';
  *
  * @internal
  */
-export default class extends Controller<HTMLTextAreaElement> {
+export default class extends Controller<HTMLElement> {
+    static targets = ['input'];
+
     static values = {
         url: String,
     };
 
+    declare readonly inputTarget: HTMLTextAreaElement;
     declare readonly urlValue: string;
 
     private editor?: TextareaEditor;
 
     connect() {
-        this.editor = new TextareaEditor(this.element);
+        this.editor = new TextareaEditor(this.inputTarget);
 
-        this.element.addEventListener('drop', this.onDrop);
-        this.element.addEventListener('paste', this.onPaste);
+        this.inputTarget.addEventListener('drop', this.onDrop);
+        this.inputTarget.addEventListener('paste', this.onPaste);
     }
 
     disconnect() {
-        this.element.removeEventListener('drop', this.onDrop);
-        this.element.removeEventListener('paste', this.onPaste);
+        this.inputTarget.removeEventListener('drop', this.onDrop);
+        this.inputTarget.removeEventListener('paste', this.onPaste);
     }
 
     private onDrop = (e: DragEvent) => {
@@ -74,7 +77,7 @@ export default class extends Controller<HTMLTextAreaElement> {
             replacement = `${prefix}[${file.name}](${data.url})\n`;
         } catch (e) {}
 
-        const start = this.element.value.indexOf(placeholder);
+        const start = this.inputTarget.value.indexOf(placeholder);
         if (start === -1 || !this.editor) return;
 
         const delta = replacement.length - placeholder.length;
