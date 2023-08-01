@@ -21,15 +21,14 @@ abstract class Header
     use OrderedList, OfComponents;
 }
 
-Header::add(HeaderTitle::class, 0, 'title');
-Header::add(HeaderBreadcrumb::class, 0, 'breadcrumb');
+Header::add(HeaderTitle::class, -100, 'title');
+Header::add(HeaderBreadcrumb::class, -90, 'breadcrumb');
 
 Header::add(Spacer::class, 0, 'spacer');
 
-Header::add(HeaderSearch::class, 0, 'search');
+Header::add(HeaderSearch::class, 70, 'search');
+Header::add(ThemeSelector::class, 80, 'theme');
+Header::add(HeaderNotifications::class, 90, 'notifications');
 
-Header::add(HeaderNotifications::class, 0, 'notifications');
-Header::add(HeaderGuest::class, 0, 'guest');
-Header::add(HeaderUser::class, 0, 'user');
-
-Header::add(ThemeSelector::class, 0, 'theme');
+Header::add(HeaderGuest::class, 100, 'guest');
+Header::add(HeaderUser::class, 100, 'user');
