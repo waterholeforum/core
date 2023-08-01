@@ -41,6 +41,7 @@ post-new-badge = Nouveau
 post-new-badge-tooltip = Nouveau message
 post-locked-badge = Verrouillé
 post-answered-badge = Répondu
+post-trash-badge = Corbeille
 
 post-answered-by = Répondu par
 post-view-answer-link = Voir la réponse
@@ -91,6 +92,15 @@ delete-post-success-message = Le message a été supprimé.
 
 original-post-link = Message original
 
+pin-to-top-button = Épingler en haut
+unpin-button = Ne plus épingler
+
+post-comment-button = Commenter
+
+move-to-trash-button = Déplacer vers la corbeille
+restore-button = Restaurer
+delete-forever-button = Supprimer définitivement
+
 ## Comments
 
 comments-unread-heading = Non lu
@@ -122,6 +132,21 @@ composer-submit = Publier
 
 delete-comment-confirm-message = Êtes-vous sûr de vouloir supprimer ce commentaire ?
 
+hide-comment-button = Masquer
+unhide-comment-button = Ne plus masquer
+
+hide-comment-title = Masquer le commentaire
+hide-reason-label = Motif
+hide-reason-unspecified = Non spécifié
+
+comment-hidden-message = Commentaire masqué
+comment-hidden-with-reason-message = Commentaire marqué comme { $reason }
+
+report-reason-off-topic = hors-sujet
+report-reason-inappropriate = inapproprié
+report-reason-spam = indésirable
+report-reason-other = autre
+
 ## Misc
 
 quote-button = Citer
@@ -129,8 +154,8 @@ quote-button = Citer
 ## Filters
 
 filter-alphabetical = Ordre alphabétique
-filter-following = Nombre d'abonnés
-filter-ignoring = Nombre d'ignorés
+filter-following = Plus suivis
+filter-ignoring = Plus ignorés
 filter-newest = Plus récents
 filter-latest = Plus actifs
 filter-oldest = Plus anciens
@@ -142,6 +167,7 @@ filter-top-month = Mois
 filter-top-week = Semaine
 filter-top-day = Jour
 filter-trending = Plus tendances
+filter-trash = Corbeille
 
 ## Followables
 
