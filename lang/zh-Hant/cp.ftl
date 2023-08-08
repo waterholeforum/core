@@ -159,10 +159,10 @@ delete-group-confirm-message = 確定要刪除這個群組嗎？
 
 ## Users
 
-users-title = 使用者
-users-filter-placeholder = 篩選使用者
+users-title = 會員用戶
+users-filter-placeholder = 篩選用戶
 users-filter-group-description = 依群組篩選
-create-user-button = 建立使用者
+create-user-button = 建立用戶
 
 users-name-column = 姓名
 users-email-column = 電子郵件
@@ -171,8 +171,8 @@ users-created-at-column = 建立時間
 users-last-seen-at-column = 最後登入時間
 users-empty-message = 找不到結果
 
-edit-user-title = 編輯使用者
-create-user-title = 建立使用者
+edit-user-title = 編輯用戶
+create-user-title = 建立用戶
 user-account-title = 帳戶
 user-name-label = 姓名
 user-email-label = 電子郵件
@@ -180,12 +180,12 @@ user-password-label = 密碼
 user-set-password-label = 設定新密碼
 user-groups-label = 群組
 user-profile-title = 個人資料
-user-created-message = 使用者已建立。
-user-saved-message = 使用者已儲存。
+user-created-message = 用戶已建立。
+user-saved-message = 用戶已儲存。
 
 delete-user-title = 刪除 { $count ->
-[one] 使用者：
-*[other] { $count } 使用者
+[one] 用戶：
+*[other] { $count } 用戶
 }
 keep-user-content-label = 保留內容並標記為匿名
 delete-user-content-label = 永久刪除內容
