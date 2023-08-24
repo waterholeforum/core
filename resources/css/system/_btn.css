@@ -36,7 +36,8 @@
 
 // Transparent
 
-:where(:not([open])) > .btn--transparent:where(:not(:hover, .is-hovered, :focus, .is-focused)),
+:where(:not([open]))
+  > .btn--transparent:where(:not(:hover, .is-hovered, :focus, .is-focused)),
 .btn--transparent:is(:disabled, .is-disabled),
 .btn--transparent:not(button, a, [role='button'], [role='link']) {
   background: transparent;

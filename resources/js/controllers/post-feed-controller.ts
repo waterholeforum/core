@@ -23,7 +23,9 @@ export default class extends Controller {
 
     connect() {
         this.channelsValue?.forEach((id) => {
-            const method = this.publicChannelsValue?.includes(id) ? 'channel' : 'private';
+            const method = this.publicChannelsValue?.includes(id)
+                ? 'channel'
+                : 'private';
             window.Echo[method](`Waterhole.Models.Channel.${id}`)
                 .listen('NewComment', () => {
                     if (this.filterValue === 'latest') {
@@ -31,7 +33,10 @@ export default class extends Controller {
                     }
                 })
                 .listen('NewPost', () => {
-                    if (this.filterValue === 'newest' || this.filterValue === 'latest') {
+                    if (
+                        this.filterValue === 'newest' ||
+                        this.filterValue === 'latest'
+                    ) {
                         this.showNewActivity();
                     }
                 });

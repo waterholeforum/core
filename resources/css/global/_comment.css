@@ -4,7 +4,9 @@
   padding: var(--comment-padding);
 
   @media (--md-up) {
-    padding-left: calc(var(--attribution-avatar-size) + var(--space-md) + var(--comment-padding));
+    padding-left: calc(
+      var(--attribution-avatar-size) + var(--space-md) + var(--comment-padding)
+    );
     border-radius: var(--radius);
     position: relative;
     transition: background 0.2s;

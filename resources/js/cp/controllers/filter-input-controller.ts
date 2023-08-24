@@ -46,7 +46,7 @@ export default class extends Controller {
             (match) =>
                 match.index !== undefined &&
                 match.index < start &&
-                match.index + match[0].length >= start
+                match.index + match[0].length >= start,
         );
     }
 
@@ -63,12 +63,16 @@ export default class extends Controller {
         // first instance of a particular token prefix. Otherwise, only show
         // tokens that start with the query.
         children.forEach((el) => {
-            const text = (el.dataset.value || el.textContent)?.trim().toLowerCase() || '';
+            const text =
+                (el.dataset.value || el.textContent)?.trim().toLowerCase() ||
+                '';
 
             if (tokens.some((token) => token[0].toLowerCase() === text)) {
                 el.hidden = true;
             } else if (query) {
-                el.hidden = !text.startsWith(query) || query.includes(':') === text.endsWith(':');
+                el.hidden =
+                    !text.startsWith(query) ||
+                    query.includes(':') === text.endsWith(':');
             } else {
                 el.hidden = prefixes.some((prefix) => text.startsWith(prefix));
                 prefixes.push(text);
@@ -87,7 +91,7 @@ export default class extends Controller {
             this.inputTarget,
             this.inputTarget.value.slice(0, token?.index) +
                 replacement +
-                (replacement.endsWith(':') ? '' : ' ')
+                (replacement.endsWith(':') ? '' : ' '),
         );
     }
 

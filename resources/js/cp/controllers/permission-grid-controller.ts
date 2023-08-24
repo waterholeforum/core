@@ -9,7 +9,9 @@ export default class extends Controller<HTMLElement> {
     private disabled?: HTMLInputElement[];
 
     connect() {
-        this.disabled = Array.from(this.element.querySelectorAll('input:disabled'));
+        this.disabled = Array.from(
+            this.element.querySelectorAll('input:disabled'),
+        );
         this.update();
 
         this.element.addEventListener('click', this.click);
@@ -27,8 +29,12 @@ export default class extends Controller<HTMLElement> {
         const target = e.target as HTMLElement;
 
         if (target.closest('thead th')) {
-            const index = Array.from(target.parentElement!.children).indexOf(target);
-            this.element.querySelector('colgroup')!.children[index].classList.add('is-highlighted');
+            const index = Array.from(target.parentElement!.children).indexOf(
+                target,
+            );
+            this.element
+                .querySelector('colgroup')!
+                .children[index].classList.add('is-highlighted');
             this.element.style.cursor = 'pointer';
         }
 
@@ -49,16 +55,21 @@ export default class extends Controller<HTMLElement> {
         const target = e.target as HTMLElement;
 
         if (target.closest('thead th')) {
-            const index = Array.from(target.parentElement!.children).indexOf(target);
+            const index = Array.from(target.parentElement!.children).indexOf(
+                target,
+            );
             const checkboxes = Array.from(
                 this.element.querySelectorAll<HTMLInputElement>(
-                    `tbody tr td:nth-child(${index + 1}) input[type="checkbox"]`
-                )
+                    `tbody tr td:nth-child(${
+                        index + 1
+                    }) input[type="checkbox"]`,
+                ),
             ).filter((checkbox) => !this.disabled?.includes(checkbox));
 
             const checked = !checkboxes.find(
                 (checkbox) =>
-                    !checkbox.disabled && checkbox.getAttribute('aria-disabled') !== 'true'
+                    !checkbox.disabled &&
+                    checkbox.getAttribute('aria-disabled') !== 'true',
             )?.checked;
             checkboxes.forEach((el) => (el.checked = checked));
         }
@@ -67,12 +78,15 @@ export default class extends Controller<HTMLElement> {
             const checkboxes = Array.from(
                 target
                     .closest('tr')!
-                    .querySelectorAll<HTMLInputElement>(`td input[type="checkbox"]`)
+                    .querySelectorAll<HTMLInputElement>(
+                        `td input[type="checkbox"]`,
+                    ),
             ).filter((checkbox) => !this.disabled?.includes(checkbox));
 
             const checked = !checkboxes.find(
                 (checkbox) =>
-                    !checkbox.disabled && checkbox.getAttribute('aria-disabled') !== 'true'
+                    !checkbox.disabled &&
+                    checkbox.getAttribute('aria-disabled') !== 'true',
             )?.checked;
             checkboxes.forEach((el) => (el.checked = checked));
         }
@@ -82,7 +96,9 @@ export default class extends Controller<HTMLElement> {
 
     update() {
         this.element
-            .querySelectorAll<HTMLInputElement>('tbody td input[type="checkbox"]')
+            .querySelectorAll<HTMLInputElement>(
+                'tbody td input[type="checkbox"]',
+            )
             .forEach((checkbox) => {
                 if (!this.disabled?.includes(checkbox)) {
                     checkbox.disabled = false;
@@ -90,7 +106,9 @@ export default class extends Controller<HTMLElement> {
             });
 
         this.element
-            .querySelectorAll<HTMLInputElement>('[data-implied-by], [data-depends-on]')
+            .querySelectorAll<HTMLInputElement>(
+                '[data-implied-by], [data-depends-on]',
+            )
             .forEach((el) => {
                 el.dataset.impliedBy
                     ?.trim()
@@ -98,7 +116,7 @@ export default class extends Controller<HTMLElement> {
                     .filter(Boolean)
                     .forEach((name) => {
                         const ref = document.querySelector<HTMLInputElement>(
-                            `[name="${name}"]:last-of-type`
+                            `[name="${name}"]:last-of-type`,
                         );
                         if (ref && ref.checked) {
                             el.checked = true;
@@ -112,7 +130,7 @@ export default class extends Controller<HTMLElement> {
                     .filter(Boolean)
                     .forEach((name) => {
                         const ref = document.querySelector<HTMLInputElement>(
-                            `[name="${name}"]:last-of-type`
+                            `[name="${name}"]:last-of-type`,
                         );
                         if (ref && !ref.checked) {
                             el.checked = false;

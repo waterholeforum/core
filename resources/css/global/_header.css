@@ -15,7 +15,9 @@
 
 .header-breadcrumb {
   color: var(--color-muted);
-  transition: opacity 0.2s, transform 0.2s;
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
   margin-left: var(--space-xs);
   flex-shrink: 99;
 
@@ -29,7 +31,10 @@
     visibility: hidden;
     transform: translateY(10px);
     opacity: 0;
-    transition: opacity 0.2s, transform 0.2s, visibility 0s 0.2s;
+    transition:
+      opacity 0.2s,
+      transform 0.2s,
+      visibility 0s 0.2s;
   }
 }
 

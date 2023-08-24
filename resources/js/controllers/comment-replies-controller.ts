@@ -9,7 +9,8 @@ import { FrameElement } from '@hotwired/turbo/dist/types/elements';
 export default class extends Controller {
     connect() {
         this.element.addEventListener('click', (e) => {
-            const expanded = this.element.getAttribute('aria-expanded') === 'false';
+            const expanded =
+                this.element.getAttribute('aria-expanded') === 'false';
             this.element.setAttribute('aria-expanded', String(expanded));
             const controlled = this.element
                 .closest('.comment')
@@ -31,10 +32,12 @@ export default class extends Controller {
                 // element (if it is tall), but we don't want that, so revert
                 // it afterwards.
                 const top = window.scrollY;
-                (e.target as FrameElement).querySelector<HTMLElement>('.comment__replies')?.focus();
+                (e.target as FrameElement)
+                    .querySelector<HTMLElement>('.comment__replies')
+                    ?.focus();
                 window.scroll({ top });
             },
-            { once: true }
+            { once: true },
         );
     }
 }

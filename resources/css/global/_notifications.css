@@ -16,7 +16,10 @@
 
   &.is-unread {
     background-color: var(--color-bg);
-    background-image: linear-gradient(var(--color-activity-soft), var(--color-activity-soft));
+    background-image: linear-gradient(
+      var(--color-activity-soft),
+      var(--color-activity-soft)
+    );
 
     > .icon,
     .notification__time,
@@ -34,7 +37,10 @@
 
 .alert--notification {
   background-color: var(--color-bg);
-  background-image: linear-gradient(var(--color-activity-soft), var(--color-activity-soft));
+  background-image: linear-gradient(
+    var(--color-activity-soft),
+    var(--color-activity-soft)
+  );
 
   .alert__message {
     margin: calc(-1 * var(--space-xs));

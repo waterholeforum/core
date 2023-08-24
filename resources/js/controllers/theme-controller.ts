@@ -9,11 +9,13 @@ const STORAGE_KEY = 'theme';
  */
 export default class extends Controller {
     connect() {
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-            if (!localStorage.getItem(STORAGE_KEY)) {
-                this.apply(e.matches ? 'dark' : 'light');
-            }
-        });
+        window
+            .matchMedia('(prefers-color-scheme: dark)')
+            .addEventListener('change', (e) => {
+                if (!localStorage.getItem(STORAGE_KEY)) {
+                    this.apply(e.matches ? 'dark' : 'light');
+                }
+            });
 
         this.updateMenuItems();
     }
@@ -21,7 +23,11 @@ export default class extends Controller {
     set({ params: { name } }: any) {
         if (!name) {
             localStorage.removeItem(STORAGE_KEY);
-            this.apply(matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            this.apply(
+                matchMedia('(prefers-color-scheme: dark)').matches
+                    ? 'dark'
+                    : 'light',
+            );
         } else {
             localStorage.setItem(STORAGE_KEY, name);
             this.apply(name);
@@ -37,11 +43,15 @@ export default class extends Controller {
 
     updateMenuItems() {
         const saved = localStorage.getItem(STORAGE_KEY) || '';
-        this.element.querySelectorAll('[data-theme-name-param]').forEach((el) => {
-            el.setAttribute(
-                'aria-checked',
-                el.getAttribute('data-theme-name-param') === saved ? 'true' : 'false'
-            );
-        });
+        this.element
+            .querySelectorAll('[data-theme-name-param]')
+            .forEach((el) => {
+                el.setAttribute(
+                    'aria-checked',
+                    el.getAttribute('data-theme-name-param') === saved
+                        ? 'true'
+                        : 'false',
+                );
+            });
     }
 }

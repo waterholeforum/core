@@ -35,7 +35,9 @@ Object.defineProperty(Waterhole, 'alerts', {
 });
 
 window.Stimulus = Application.start();
-window.Stimulus.load(definitionsFromContext(require.context('./controllers', true, /\.ts$/)));
+window.Stimulus.load(
+    definitionsFromContext(require.context('./controllers', true, /\.ts$/)),
+);
 
 Waterhole.fetch = ky.create({
     headers: { 'X-XSRF-TOKEN': getCookie('XSRF-TOKEN') || undefined },

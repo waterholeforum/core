@@ -1,5 +1,19 @@
 {
     "singleQuote": true,
-    "printWidth": 100,
-    "phpVersion": "8.1"
+    "phpVersion": "8.1",
+    "plugins": ["@prettier/plugin-php", "prettier-plugin-blade"],
+    "overrides": [
+        {
+            "files": ["*.php"],
+            "options": {
+                "printWidth": 100
+            }
+        },
+        {
+            "files": ["*.css"],
+            "options": {
+                "parser": "less"
+            }
+        }
+    ]
 }

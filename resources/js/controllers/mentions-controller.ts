@@ -23,13 +23,25 @@ export default class extends Controller<TextExpanderElement> {
     declare readonly userLookupUrlValue: string;
 
     connect() {
-        this.element.addEventListener('text-expander-change', this.onTextExpanderChange);
-        this.element.addEventListener('text-expander-value', this.onTextExpanderValue);
+        this.element.addEventListener(
+            'text-expander-change',
+            this.onTextExpanderChange,
+        );
+        this.element.addEventListener(
+            'text-expander-value',
+            this.onTextExpanderValue,
+        );
     }
 
     disconnect() {
-        this.element.removeEventListener('text-expander-change', this.onTextExpanderChange);
-        this.element.removeEventListener('text-expander-value', this.onTextExpanderValue);
+        this.element.removeEventListener(
+            'text-expander-change',
+            this.onTextExpanderChange,
+        );
+        this.element.removeEventListener(
+            'text-expander-value',
+            this.onTextExpanderValue,
+        );
     }
 
     private onTextExpanderChange = ((event: CustomEvent) => {
@@ -53,7 +65,7 @@ export default class extends Controller<TextExpanderElement> {
                             const option = document.createElement('li');
                             option.setAttribute('role', 'option');
                             option.id = `suggestion-${Math.floor(
-                                Math.random() * 100000
+                                Math.random() * 100000,
                             ).toString()}`;
                             option.className = 'menu-item';
                             option.dataset.value = name;
@@ -62,11 +74,14 @@ export default class extends Controller<TextExpanderElement> {
                             option.innerHTML = html;
 
                             return option;
-                        })
+                        }),
                     );
 
                     const observer = new MutationObserver(() => {
-                        if (listbox.getBoundingClientRect().bottom > window.innerHeight) {
+                        if (
+                            listbox.getBoundingClientRect().bottom >
+                            window.innerHeight
+                        ) {
                             listbox.style.transform = 'translateY(-100%)';
                             listbox.style.marginTop = '-12px';
                         }
@@ -81,7 +96,7 @@ export default class extends Controller<TextExpanderElement> {
                         matched: Boolean(json.length),
                         fragment: listbox,
                     };
-                })
+                }),
         );
     }) as EventListener;
 

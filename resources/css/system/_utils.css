@@ -111,12 +111,18 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(var(--grid-min, 15ch), 100%), 1fr));
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(var(--grid-min, 15ch), 100%), 1fr)
+  );
 }
 
 .grid-fit {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(var(--grid-min, 15ch), 100%), 1fr));
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(var(--grid-min, 15ch), 100%), 1fr)
+  );
 }
 
 .block {

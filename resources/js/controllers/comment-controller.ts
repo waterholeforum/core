@@ -24,7 +24,9 @@ export default class extends Controller {
 
     get parentElements(): HTMLElement[] {
         return Array.from(
-            document.querySelectorAll<HTMLElement>(`[data-comment-id="${this.parentId}"]`)
+            document.querySelectorAll<HTMLElement>(
+                `[data-comment-id="${this.parentId}"]`,
+            ),
         );
     }
 
@@ -35,7 +37,8 @@ export default class extends Controller {
     }
 
     disconnect() {
-        expanded[this.commentId] = this.element.classList.contains('is-expanded');
+        expanded[this.commentId] =
+            this.element.classList.contains('is-expanded');
     }
 
     toggleHidden() {
@@ -49,7 +52,7 @@ export default class extends Controller {
 
         if (this.parentTooltipTarget) {
             this.parentTooltipTarget.disabled = this.parentElements.some((el) =>
-                isElementInViewport(el, 0.5)
+                isElementInViewport(el, 0.5),
             );
         }
     }

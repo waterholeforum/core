@@ -16,7 +16,7 @@ export class TurboEchoStreamSourceElement extends HTMLElement {
         this.subscription = subscribeTo(this.type, this.channel).listenToAll(
             (event: string, e: any) => {
                 this.dispatchMessageEvent(e.streams);
-            }
+            },
         );
     }
 

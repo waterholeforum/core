@@ -24,10 +24,11 @@ export default class extends Controller {
                 }
                 this.breadcrumbTarget.hidden = entries[0].isIntersecting;
                 if (!entries[0].isIntersecting) {
-                    this.breadcrumbTarget.innerHTML = entries[0].target.innerHTML || '';
+                    this.breadcrumbTarget.innerHTML =
+                        entries[0].target.innerHTML || '';
                 }
             },
-            { rootMargin: `-${getHeaderHeight()}px` }
+            { rootMargin: `-${getHeaderHeight()}px` },
         );
     }
 

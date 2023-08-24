@@ -86,7 +86,9 @@ code {
 
 ui-popup > .enter-active,
 ui-popup > .leave-active {
-  transition: transform 0.15s, opacity 0.15s;
+  transition:
+    transform 0.15s,
+    opacity 0.15s;
 }
 
 ui-popup > .enter-from,

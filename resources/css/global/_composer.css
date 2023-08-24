@@ -3,7 +3,11 @@
 
   border-radius: var(--radius);
   background: var(--color-bg);
-  transition: box-shadow 0.2s, border 0.2s, height var(--height-transition-duration), bottom 0.2s;
+  transition:
+    box-shadow 0.2s,
+    border 0.2s,
+    height var(--height-transition-duration),
+    bottom 0.2s;
   max-height: calc(100vh - var(--header-height));
 
   // The composer is "static" (cannot be opened/closed) on a standalone comment page
@@ -65,7 +69,10 @@
   border-radius: var(--radius);
   padding: var(--space-md);
   cursor: text;
-  transition: box-shadow 0.2s, border 0.2s, color 0.2s;
+  transition:
+    box-shadow 0.2s,
+    border 0.2s,
+    color 0.2s;
   text-decoration: none !important;
 
   &:hover {

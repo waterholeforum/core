@@ -29,22 +29,32 @@
   --palette-accent-h: 252;
   --palette-accent-s: 93%;
   --palette-accent-l: 58%;
-  --palette-accent: hsl(var(--palette-accent-h) var(--palette-accent-s) var(--palette-accent-l));
+  --palette-accent: hsl(
+    var(--palette-accent-h) var(--palette-accent-s) var(--palette-accent-l)
+  );
   --palette-accent-contrast: #fff;
-  --palette-accent-soft: hsl(var(--palette-accent-h) var(--palette-accent-s) 92%);
+  --palette-accent-soft: hsl(
+    var(--palette-accent-h) var(--palette-accent-s) 92%
+  );
   --palette-accent-text: hsl(
-    var(--palette-accent-h) var(--palette-accent-s) calc(var(--palette-accent-l) * 0.9)
+    var(--palette-accent-h) var(--palette-accent-s)
+      calc(var(--palette-accent-l) * 0.9)
   );
 
   // Danger color
   --palette-danger-h: 0;
   --palette-danger-s: 100%;
   --palette-danger-l: 38%;
-  --palette-danger: hsl(var(--palette-danger-h) var(--palette-danger-s) var(--palette-danger-l));
+  --palette-danger: hsl(
+    var(--palette-danger-h) var(--palette-danger-s) var(--palette-danger-l)
+  );
   --palette-danger-contrast: #fff;
-  --palette-danger-soft: hsl(var(--palette-danger-h) var(--palette-danger-s) 92%);
+  --palette-danger-soft: hsl(
+    var(--palette-danger-h) var(--palette-danger-s) 92%
+  );
   --palette-danger-text: hsl(
-    var(--palette-danger-h) var(--palette-danger-s) calc(var(--palette-danger-l) * 0.9)
+    var(--palette-danger-h) var(--palette-danger-s)
+      calc(var(--palette-danger-l) * 0.9)
   );
 
   // Warning color
@@ -54,9 +64,15 @@
   --palette-warning: hsl(
     var(--palette-warning-h) var(--palette-warning-s) var(--palette-warning-l)
   );
-  --palette-warning-contrast: hsl(var(--palette-warning-h) var(--palette-warning-s) 15%);
-  --palette-warning-soft: hsl(var(--palette-warning-h) var(--palette-warning-s) 92%);
-  --palette-warning-text: hsl(var(--palette-warning-h) var(--palette-warning-s) 24%);
+  --palette-warning-contrast: hsl(
+    var(--palette-warning-h) var(--palette-warning-s) 15%
+  );
+  --palette-warning-soft: hsl(
+    var(--palette-warning-h) var(--palette-warning-s) 92%
+  );
+  --palette-warning-text: hsl(
+    var(--palette-warning-h) var(--palette-warning-s) 24%
+  );
 
   // Success color
   --palette-success-h: 127;
@@ -66,9 +82,12 @@
     var(--palette-success-h) var(--palette-success-s) var(--palette-success-l)
   );
   --palette-success-contrast: #fff;
-  --palette-success-soft: hsl(var(--palette-success-h) var(--palette-success-s) 92%);
+  --palette-success-soft: hsl(
+    var(--palette-success-h) var(--palette-success-s) 92%
+  );
   --palette-success-text: hsl(
-    var(--palette-success-h) var(--palette-success-s) calc(var(--palette-success-l) * 0.9)
+    var(--palette-success-h) var(--palette-success-s)
+      calc(var(--palette-success-l) * 0.9)
   );
 
   // Activity color
@@ -76,12 +95,16 @@
   --palette-activity-s: 100%;
   --palette-activity-l: 45%;
   --palette-activity: hsl(
-    var(--palette-activity-h) var(--palette-activity-s) var(--palette-activity-l)
+    var(--palette-activity-h) var(--palette-activity-s)
+      var(--palette-activity-l)
   );
   --palette-activity-contrast: #fff;
-  --palette-activity-soft: hsl(var(--palette-activity-h) var(--palette-activity-s) 92%);
+  --palette-activity-soft: hsl(
+    var(--palette-activity-h) var(--palette-activity-s) 92%
+  );
   --palette-activity-text: hsl(
-    var(--palette-activity-h) var(--palette-activity-s) calc(var(--palette-activity-l) * 0.9)
+    var(--palette-activity-h) var(--palette-activity-s)
+      calc(var(--palette-activity-l) * 0.9)
   );
 }
 
@@ -94,27 +117,43 @@
   --palette-text-hsl: 250 20% 93%;
   --palette-muted-hsl: 250 20% 60%;
 
-  --palette-accent-soft: hsl(var(--palette-accent-h) var(--palette-accent-s) 20%);
+  --palette-accent-soft: hsl(
+    var(--palette-accent-h) var(--palette-accent-s) 20%
+  );
   --palette-accent-text: hsl(
-    var(--palette-accent-h) var(--palette-accent-s) calc(var(--palette-accent-l) * 1.3)
+    var(--palette-accent-h) var(--palette-accent-s)
+      calc(var(--palette-accent-l) * 1.3)
   );
 
-  --palette-danger-soft: hsl(var(--palette-danger-h) var(--palette-danger-s) 10%);
+  --palette-danger-soft: hsl(
+    var(--palette-danger-h) var(--palette-danger-s) 10%
+  );
   --palette-danger-text: hsl(
-    var(--palette-danger-h) var(--palette-danger-s) calc(var(--palette-danger-l) * 1.3)
+    var(--palette-danger-h) var(--palette-danger-s)
+      calc(var(--palette-danger-l) * 1.3)
   );
 
-  --palette-warning-soft: hsl(var(--palette-warning-h) var(--palette-warning-s) 10%);
-  --palette-warning-text: hsl(var(--palette-warning-h) var(--palette-warning-s) 40%);
+  --palette-warning-soft: hsl(
+    var(--palette-warning-h) var(--palette-warning-s) 10%
+  );
+  --palette-warning-text: hsl(
+    var(--palette-warning-h) var(--palette-warning-s) 40%
+  );
 
-  --palette-success-soft: hsl(var(--palette-success-h) var(--palette-success-s) 10%);
+  --palette-success-soft: hsl(
+    var(--palette-success-h) var(--palette-success-s) 10%
+  );
   --palette-success-text: hsl(
-    var(--palette-success-h) var(--palette-success-s) calc(var(--palette-success-l) * 1.3)
+    var(--palette-success-h) var(--palette-success-s)
+      calc(var(--palette-success-l) * 1.3)
   );
 
-  --palette-activity-soft: hsl(var(--palette-activity-h) var(--palette-activity-s) 10%);
+  --palette-activity-soft: hsl(
+    var(--palette-activity-h) var(--palette-activity-s) 10%
+  );
   --palette-activity-text: hsl(
-    var(--palette-activity-h) var(--palette-activity-s) calc(var(--palette-activity-l) * 1.3)
+    var(--palette-activity-h) var(--palette-activity-s)
+      calc(var(--palette-activity-l) * 1.3)
   );
 }
 

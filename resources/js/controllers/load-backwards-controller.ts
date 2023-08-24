@@ -10,13 +10,25 @@ export default class extends Controller {
     observer?: MutationObserver;
 
     connect() {
-        this.element.addEventListener('turbo:before-fetch-response', this.lockScrollPosition);
-        this.element.addEventListener('turbo:frame-render', this.unlockScrollPosition);
+        this.element.addEventListener(
+            'turbo:before-fetch-response',
+            this.lockScrollPosition,
+        );
+        this.element.addEventListener(
+            'turbo:frame-render',
+            this.unlockScrollPosition,
+        );
     }
 
     disconnect() {
-        this.element.removeEventListener('turbo:before-fetch-response', this.lockScrollPosition);
-        this.element.removeEventListener('turbo:frame-render', this.unlockScrollPosition);
+        this.element.removeEventListener(
+            'turbo:before-fetch-response',
+            this.lockScrollPosition,
+        );
+        this.element.removeEventListener(
+            'turbo:frame-render',
+            this.unlockScrollPosition,
+        );
         this.unlockScrollPosition();
     }
 
@@ -30,13 +42,20 @@ export default class extends Controller {
 
         this.observer?.disconnect();
         this.observer = new MutationObserver(() => this.restore());
-        this.observer.observe(document.body, { subtree: true, childList: true, attributes: true });
+        this.observer.observe(document.body, {
+            subtree: true,
+            childList: true,
+            attributes: true,
+        });
     };
 
     restore() {
         if (this.anchor && this.top) {
             window.scroll({
-                top: window.scrollY + this.anchor.getBoundingClientRect().top - this.top,
+                top:
+                    window.scrollY +
+                    this.anchor.getBoundingClientRect().top -
+                    this.top,
             });
         }
     }

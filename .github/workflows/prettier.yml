@@ -16,9 +16,12 @@ jobs:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
 
-      - uses: creyD/prettier_action@v4.3
+      - run: npm ci
+
+      - run: npm run prettier
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          prettier_options: --write .
-          prettier_plugins: '@prettier/plugin-php'
-          only_changed: true
-          commit_message: 'Run Prettier'
+          commit_message: Run Prettier
+          branch: ${{ github.head_ref }}
