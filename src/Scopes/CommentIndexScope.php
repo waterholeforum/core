@@ -22,8 +22,8 @@ class CommentIndexScope implements Scope
         $builder->select($builder->qualifyColumn('*'))->selectSub(
             DB::table('comments', 'ci')
                 ->selectRaw('count(*)')
-                ->whereColumn('ci.post_id', 'comments.post_id')
-                ->whereColumn('ci.id', '<', 'comments.id'),
+                ->whereColumn('ci.post_id', $builder->qualifyColumn('post_id'))
+                ->whereColumn('ci.id', '<', $builder->qualifyColumn('id')),
             'index',
         );
     }

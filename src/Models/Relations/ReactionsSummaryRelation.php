@@ -13,7 +13,11 @@ class ReactionsSummaryRelation extends Relation
 {
     public function __construct(Model $parent)
     {
-        parent::__construct($parent::query(), $parent);
+        // Reset the table to the model's original as it may have been changed
+        // by an adjacency list query.
+        $parent->setTable((new $parent())->getTable());
+
+        parent::__construct($parent->newModelQuery(), $parent);
     }
 
     public function addConstraints(): void
