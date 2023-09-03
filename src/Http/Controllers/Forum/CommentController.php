@@ -16,7 +16,6 @@ use Waterhole\View\Components\CommentFull;
 use Waterhole\View\Components\Composer;
 use Waterhole\View\Components\FollowButton;
 use Waterhole\View\TurboStream;
-
 use function Tonysm\TurboLaravel\dom_id;
 
 /**
@@ -38,9 +37,7 @@ class CommentController extends Controller
         // relationships, and pre-fill the `post` relationship for each comment.
         $comment = $comment
             ->childrenAndSelf()
-            ->select('*')
-            ->withReactions()
-            ->with('user.groups', 'parent.user.groups', 'mentions')
+            ->with(['user.groups', 'parent.user.groups', 'mentions', 'reactionsSummary'])
             ->get()
             ->each(function ($comment) use ($post) {
                 $comment->setRelation('post', $post);

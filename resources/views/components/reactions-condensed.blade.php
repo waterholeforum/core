@@ -1,7 +1,7 @@
 <span
     {{
         $attributes->merge([
-            'data-count' => ($count = $model->reaction_counts->sum()),
+            'data-count' => ($count = $model->reactionsSummary->totalCount()),
             'class' => 'btn btn--sm btn--transparent is-inert reactions-condensed',
         ])
     }}

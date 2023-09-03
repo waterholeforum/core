@@ -45,9 +45,13 @@ class PostController extends Controller
 
         $comments = $post
             ->comments()
-            ->select('*')
-            ->with(['user.groups', 'parent.user.groups', 'mentions', 'attachments'])
-            ->withReactions()
+            ->with([
+                'user.groups',
+                'parent.user.groups',
+                'mentions',
+                'attachments',
+                'reactionsSummary',
+            ])
             ->oldest()
             ->paginate();
 

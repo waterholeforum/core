@@ -10,7 +10,7 @@
 >
     @foreach ($reactionTypes as $reactionType)
         @php
-            $count = $model->reaction_counts[$reactionType->id] ?? 0
+            $count = $model->reactionsSummary->count($reactionType);
         @endphp
 
         <{{ $component->isAuthorized ? 'button' : 'span' }}
@@ -22,7 +22,7 @@
                     'data-count' => $count,
                 ]))->class([
                     'btn btn--sm btn--outline reaction',
-                    'is-active' => $model->user_reactions?->contains($reactionType->id),
+                    'is-active' => $model->reactionsSummary->userReacted($reactionType),
                     'is-inert' => ! $component->isAuthorized,
                 ])
             }}

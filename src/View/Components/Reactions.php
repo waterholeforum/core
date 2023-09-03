@@ -27,7 +27,7 @@ class Reactions extends Component
             return;
         }
 
-        $countReactions = fn($reactionType) => $model->reaction_counts[$reactionType->id] ?? 0;
+        $countReactions = fn($reactionType) => $model->reactionsSummary->count($reactionType);
 
         $this->reactionTypes = $this->reactionSet->reactionTypes->sortByDesc($countReactions);
 
@@ -36,9 +36,9 @@ class Reactions extends Component
         }
     }
 
-    public function shouldRender()
+    public function shouldRender(): bool
     {
-        return $this->model->reaction_counts ||
+        return $this->model->reactionsSummary ||
             resolve(React::class)->authorize(Auth::user(), $this->model);
     }
 
