@@ -1,3 +1,7 @@
+:root {
+  scroll-behavior: auto;
+}
+
 html {
   background: var(--color-bg);
   color: var(--color-text);
