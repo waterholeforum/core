@@ -1,4 +1,10 @@
-import { computePosition, flip, offset, Placement, shift } from '@floating-ui/dom';
+import {
+    computePosition,
+    flip,
+    offset,
+    Placement,
+    shift,
+} from '@floating-ui/dom';
 import { Controller } from '@hotwired/stimulus';
 
 /**
@@ -31,7 +37,12 @@ export default class extends Controller {
 
         const selection = window.getSelection();
 
-        if (!selection || selection.isCollapsed || !selection.anchorNode || !selection.focusNode) {
+        if (
+            !selection ||
+            selection.isCollapsed ||
+            !selection.anchorNode ||
+            !selection.focusNode
+        ) {
             return;
         }
 
@@ -50,7 +61,9 @@ export default class extends Controller {
 
         // Place the quote button according to where the focus of the
         // selection is (ie. where the selection began).
-        const position = selection.anchorNode.compareDocumentPosition(selection.focusNode);
+        const position = selection.anchorNode.compareDocumentPosition(
+            selection.focusNode,
+        );
         const rects = range.getClientRects();
         let anchor: DOMRect;
         let placement: Placement;
@@ -87,7 +100,9 @@ export default class extends Controller {
         if (!selection) return;
 
         container.appendChild(selection.getRangeAt(0).cloneContents());
-        container.querySelectorAll('img').forEach((el) => el.replaceWith(el.alt));
+        container
+            .querySelectorAll('img')
+            .forEach((el) => el.replaceWith(el.alt));
 
         selection.removeAllRanges();
 

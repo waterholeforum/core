@@ -33,14 +33,18 @@ export default class extends Controller<HTMLElement> {
     private onDrop = (e: DragEvent) => {
         if (e.dataTransfer?.files.length) {
             e.preventDefault();
-            Array.from(e.dataTransfer.files).forEach((file) => this.uploadFile(file));
+            Array.from(e.dataTransfer.files).forEach((file) =>
+                this.uploadFile(file),
+            );
         }
     };
 
     private onPaste = (e: ClipboardEvent) => {
         if (e.clipboardData?.files.length) {
             e.preventDefault();
-            Array.from(e.clipboardData.files).forEach((file) => this.uploadFile(file));
+            Array.from(e.clipboardData.files).forEach((file) =>
+                this.uploadFile(file),
+            );
         }
     };
 
@@ -52,7 +56,9 @@ export default class extends Controller<HTMLElement> {
         document.body.appendChild(input);
         input.addEventListener('change', () => {
             if (input.files) {
-                Array.from(input.files).forEach((file) => this.uploadFile(file));
+                Array.from(input.files).forEach((file) =>
+                    this.uploadFile(file),
+                );
             }
         });
         input.click();

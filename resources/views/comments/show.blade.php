@@ -14,7 +14,7 @@
             <header class="stack gap-xs">
                 <ol class="breadcrumb">
                     <li>
-                        <a href="{{ $comment->post_url }}">
+                        <a href="{{ $comment->post_url }}" class="inline-block">
                             {{ Waterhole\emojify($post->title) }}
                         </a>
                     </li>

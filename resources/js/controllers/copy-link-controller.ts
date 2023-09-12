@@ -19,7 +19,8 @@ export default class extends Controller {
 
         if (this.hasMessageValue) {
             const alert = cloneFromTemplate('template-alert-success');
-            alert.querySelector('.alert__message')!.textContent = this.messageValue;
+            alert.querySelector('.alert__message')!.textContent =
+                this.messageValue;
             Waterhole.alerts.show(alert, { key: 'copy-link' });
         }
     }

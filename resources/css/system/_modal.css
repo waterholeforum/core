@@ -43,7 +43,9 @@ ui-modal.leave-to {
 
 ui-modal.enter-active::part(content),
 ui-modal.leave-active::part(content) {
-  transition: transform 0.3s cubic-bezier(0.54, 1.12, 0.38, 1.11), opacity 0.3s;
+  transition:
+    transform 0.3s cubic-bezier(0.54, 1.12, 0.38, 1.11),
+    opacity 0.3s;
 }
 
 ui-modal.enter-from::part(content),

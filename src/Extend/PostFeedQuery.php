@@ -23,8 +23,8 @@ PostFeedQuery::add(function (Builder $query) {
         'tags',
         'mentions',
         'attachments',
+        'reactionsSummary',
     ]);
 
     $query->withUnreadCommentsCount();
-    $query->withReactions();
 });

@@ -18,7 +18,8 @@ export default class extends Controller<HTMLElement> {
 
     frameTargetConnected(element: FrameElement) {
         element.addEventListener('turbo:before-frame-render', (e) => {
-            element.hidden = !(e as TurboBeforeFrameRenderEvent).detail.newFrame.children.length;
+            element.hidden = !(e as TurboBeforeFrameRenderEvent).detail.newFrame
+                .children.length;
         });
     }
 

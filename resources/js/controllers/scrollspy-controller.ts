@@ -32,8 +32,14 @@ export default class extends Controller<HTMLElement> {
 
                 if (this.current !== a && this.element) {
                     this.element.scroll({
-                        top: a.offsetTop + a.offsetHeight / 2 - this.element.offsetHeight / 2,
-                        left: a.offsetLeft + a.offsetWidth / 2 - this.element.offsetWidth / 2,
+                        top:
+                            a.offsetTop +
+                            a.offsetHeight / 2 -
+                            this.element.offsetHeight / 2,
+                        left:
+                            a.offsetLeft +
+                            a.offsetWidth / 2 -
+                            this.element.offsetWidth / 2,
                         behavior: this.current ? 'smooth' : 'auto',
                     });
                 }

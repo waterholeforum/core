@@ -27,6 +27,8 @@ class DocumentTitle {
 
 Waterhole.documentTitle = new DocumentTitle();
 
-document.addEventListener('turbo:load', () => Waterhole.documentTitle.initialize());
+document.addEventListener('turbo:load', () =>
+    Waterhole.documentTitle.initialize(),
+);
 
 window.addEventListener('focus', () => Waterhole.documentTitle.reset());

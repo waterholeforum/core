@@ -9,7 +9,10 @@ import {
     verticalListSorting,
 } from 'inclusive-sort';
 
-function translate(message: string, { activeItem, overIndex, container }: SortableContext) {
+function translate(
+    message: string,
+    { activeItem, overIndex, container }: SortableContext,
+) {
     const activeLabel = getAccessibleLabel(activeItem) || '';
     const containerLabel = getAccessibleLabel(container) || '';
     return message
@@ -52,10 +55,19 @@ export default class extends Controller {
                 new KeyboardSensor({ instructions: this.instructionsValue }),
             ],
             announcements: {
-                onDragStart: translate.bind(undefined, this.dragStartAnnouncementValue),
-                onDragOver: translate.bind(undefined, this.dragOverAnnouncementValue),
+                onDragStart: translate.bind(
+                    undefined,
+                    this.dragStartAnnouncementValue,
+                ),
+                onDragOver: translate.bind(
+                    undefined,
+                    this.dragOverAnnouncementValue,
+                ),
                 onDrop: translate.bind(undefined, this.dropAnnouncementValue),
-                onDragCancel: translate.bind(undefined, this.dragCancelAnnouncementValue),
+                onDragCancel: translate.bind(
+                    undefined,
+                    this.dragCancelAnnouncementValue,
+                ),
             },
         });
 
@@ -86,9 +98,11 @@ export default class extends Controller {
         e.detail.activeItem.style.opacity = '';
 
         const result = this.containerTargets.flatMap((list, i) =>
-            Array.from(list.querySelectorAll<HTMLElement>('[data-id]')).map((el) => {
-                return { id: el.dataset.id, listIndex: i };
-            })
+            Array.from(list.querySelectorAll<HTMLElement>('[data-id]')).map(
+                (el) => {
+                    return { id: el.dataset.id, listIndex: i };
+                },
+            ),
         );
 
         if (result) {

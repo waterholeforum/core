@@ -9,7 +9,12 @@ import { getHeaderHeight } from '../utils';
  * @internal
  */
 export default class extends Controller {
-    static targets = ['post', 'currentPage', 'commentsLink', 'commentsPagination'];
+    static targets = [
+        'post',
+        'currentPage',
+        'commentsLink',
+        'commentsPagination',
+    ];
 
     static values = {
         id: Number,
@@ -25,16 +30,28 @@ export default class extends Controller {
     declare readonly idValue: number;
 
     connect() {
-        document.addEventListener('turbo:before-stream-render', this.beforeStreamRender);
-        document.addEventListener('turbo:frame-render', this.showPostOnFirstPage);
+        document.addEventListener(
+            'turbo:before-stream-render',
+            this.beforeStreamRender,
+        );
+        document.addEventListener(
+            'turbo:frame-render',
+            this.showPostOnFirstPage,
+        );
 
         window.addEventListener('scroll', this.onScroll, { passive: true });
         this.onScroll();
     }
 
     disconnect() {
-        document.removeEventListener('turbo:before-stream-render', this.beforeStreamRender);
-        document.removeEventListener('turbo:frame-render', this.showPostOnFirstPage);
+        document.removeEventListener(
+            'turbo:before-stream-render',
+            this.beforeStreamRender,
+        );
+        document.removeEventListener(
+            'turbo:frame-render',
+            this.showPostOnFirstPage,
+        );
 
         window.removeEventListener('scroll', this.onScroll);
     }
@@ -50,7 +67,10 @@ export default class extends Controller {
     // the stream is executed.
     private beforeStreamRender = (e: Event) => {
         const stream = e.target as StreamElement;
-        if (stream.action === 'remove' && stream.targets?.endsWith('post_' + this.idValue)) {
+        if (
+            stream.action === 'remove' &&
+            stream.targets?.endsWith('post_' + this.idValue)
+        ) {
             window.history.back();
             window.addEventListener(
                 'popstate',
@@ -59,7 +79,7 @@ export default class extends Controller {
                         renderStreamMessage(stream.outerHTML);
                     });
                 },
-                { once: true }
+                { once: true },
             );
             e.preventDefault();
         }
@@ -68,14 +88,17 @@ export default class extends Controller {
     private onScroll = () => {
         if (this.hasCurrentPageTarget) {
             this.currentPageTarget.textContent =
-                this.element.querySelector('.comments-pagination [aria-current="page"]')
-                    ?.textContent || '1';
+                this.element.querySelector(
+                    '.comments-pagination [aria-current="page"]',
+                )?.textContent || '1';
         }
 
         if (this.hasCommentsLinkTarget && this.hasCommentsPaginationTarget) {
             this.commentsLinkTarget.hidden =
-                this.postTarget.getBoundingClientRect().bottom < getHeaderHeight() + 10;
-            this.commentsPaginationTarget.hidden = !this.commentsLinkTarget.hidden;
+                this.postTarget.getBoundingClientRect().bottom <
+                getHeaderHeight() + 10;
+            this.commentsPaginationTarget.hidden =
+                !this.commentsLinkTarget.hidden;
         }
     };
 }

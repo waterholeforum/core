@@ -313,7 +313,6 @@ class Post extends Model
     public function resolveRouteBinding($value, $field = null)
     {
         return $this->select('*')
-            ->withReactions()
             ->whereKey(explode('-', $value)[0])
             ->firstOrFail();
     }

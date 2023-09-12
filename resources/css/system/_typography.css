@@ -134,7 +134,6 @@ h6 {
 
   & img:not([class]) {
     max-width: 100%;
-    max-height: 70vh;
     height: auto;
   }
 

@@ -1,5 +1,9 @@
 import * as Turbo from '@hotwired/turbo';
-import { FrameElement, StreamElement, TurboFrameMissingEvent } from '@hotwired/turbo';
+import {
+    FrameElement,
+    StreamElement,
+    TurboFrameMissingEvent,
+} from '@hotwired/turbo';
 // @ts-ignore
 import morph from 'nanomorph';
 import { cloneFromTemplate } from '../utils';
@@ -65,7 +69,9 @@ Waterhole.fetchError = async function (response?: Response) {
 
         case 422:
             const alert = cloneFromTemplate('template-alert-danger');
-            alert.querySelector('.alert__message')!.textContent = (await response.json()).message;
+            alert.querySelector('.alert__message')!.textContent = (
+                await response.json()
+            ).message;
             Waterhole.alerts.show(alert, { key: 'fetchError' });
             break;
 

@@ -95,7 +95,9 @@ export default class extends Controller {
                     (u) => {
                         const { idx } = u.cursor;
                         this.legendAmountTarget.textContent =
-                            typeof idx === 'number' ? uPlot.fmtNum(u.data[2][idx] || 0) : '';
+                            typeof idx === 'number'
+                                ? uPlot.fmtNum(u.data[2][idx] || 0)
+                                : '';
                         this.legendPeriodTarget.textContent =
                             typeof idx === 'number' ? ths[idx].textContent : '';
                     },
@@ -103,14 +105,18 @@ export default class extends Controller {
             },
         };
 
-        const ths = Array.from(this.tableTarget.querySelectorAll<HTMLElement>('thead th')).slice(1);
+        const ths = Array.from(
+            this.tableTarget.querySelectorAll<HTMLElement>('thead th'),
+        ).slice(1);
 
         const data: uPlot.AlignedData = [
             ths.map((th) => Number(th.dataset.timestamp)),
             ...Array.from(this.tableTarget.querySelectorAll('tbody tr'))
                 .reverse()
                 .map((tr) =>
-                    Array.from(tr.querySelectorAll('td')).map((td) => Number(td.textContent))
+                    Array.from(tr.querySelectorAll('td')).map((td) =>
+                        Number(td.textContent),
+                    ),
                 ),
         ];
 

@@ -24,7 +24,9 @@ export default class extends Controller {
 
     hide() {
         clearTimeout(this.timeout);
-        this.timeout = window.setTimeout(() => (this.pickerTarget.hidden = true));
+        this.timeout = window.setTimeout(
+            () => (this.pickerTarget.hidden = true),
+        );
     }
 
     colorChanged(e: CustomEvent) {

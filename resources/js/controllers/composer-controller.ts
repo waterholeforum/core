@@ -58,7 +58,11 @@ export default class extends Controller<HTMLElement> {
     }
 
     submitEnd(e: CustomEvent) {
-        if (e.detail.fetchResponse.contentType.startsWith('text/vnd.turbo-stream.html')) {
+        if (
+            e.detail.fetchResponse.contentType.startsWith(
+                'text/vnd.turbo-stream.html',
+            )
+        ) {
             this.close();
         }
     }
@@ -75,7 +79,12 @@ export default class extends Controller<HTMLElement> {
             const height = startHeight - (e.clientY - startY);
             el.style.height = height + 'px';
             localStorage.setItem('composer_height', String(height));
-            window.scroll(0, window.scrollY + el.getBoundingClientRect().bottom - startBottom);
+            window.scroll(
+                0,
+                window.scrollY +
+                    el.getBoundingClientRect().bottom -
+                    startBottom,
+            );
         };
 
         document.addEventListener('pointermove', move);
@@ -84,7 +93,7 @@ export default class extends Controller<HTMLElement> {
             () => {
                 document.removeEventListener('pointermove', move);
             },
-            { once: true }
+            { once: true },
         );
     }
 }

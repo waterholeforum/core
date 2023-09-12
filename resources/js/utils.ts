@@ -14,7 +14,10 @@ export function shouldOpenInNewTab(e: MouseEvent): boolean {
 /**
  * Determine if an element is currently visible in the viewport.
  */
-export function isElementInViewport(el: HTMLElement, proportion: number = 1): boolean {
+export function isElementInViewport(
+    el: HTMLElement,
+    proportion: number = 1,
+): boolean {
     const rect = el.getBoundingClientRect();
 
     return (
@@ -54,6 +57,8 @@ export function cloneFromTemplate(id: string): HTMLElement {
  * Get a cookie by name.
  */
 export function getCookie(name: string): string | null {
-    const match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
+    const match = document.cookie.match(
+        new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'),
+    );
     return match ? decodeURIComponent(match[3]) : null;
 }

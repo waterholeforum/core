@@ -10,7 +10,13 @@ import TextareaEditor from 'textarea-editor';
  * @internal
  */
 export default class extends Controller {
-    static targets = ['input', 'preview', 'previewButton', 'hotkeyLabel', 'emojiPicker'];
+    static targets = [
+        'input',
+        'preview',
+        'previewButton',
+        'hotkeyLabel',
+        'emojiPicker',
+    ];
 
     static values = {
         formatUrl: String,
@@ -60,7 +66,10 @@ export default class extends Controller {
 
         this.inputTarget.hidden = previewing;
         this.previewTarget.hidden = !previewing;
-        this.previewButtonTarget?.setAttribute('aria-pressed', String(previewing));
+        this.previewButtonTarget?.setAttribute(
+            'aria-pressed',
+            String(previewing),
+        );
         this.element.classList.toggle('is-previewing', previewing);
 
         if (!previewing) return;
@@ -78,7 +87,9 @@ export default class extends Controller {
 
         let text = (this.inputTarget.selectionStart > 0 ? '\n\n' : '') + '> ';
 
-        this.editor.insert(text + e.detail.text.replace(/\n/g, '\n> ') + '\n\n');
+        this.editor.insert(
+            text + e.detail.text.replace(/\n/g, '\n> ') + '\n\n',
+        );
     }
 
     emojiPickerTargetConnected(el: Picker) {
