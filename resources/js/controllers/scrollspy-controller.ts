@@ -27,7 +27,7 @@ export default class extends Controller<HTMLElement> {
             const id = a.hash.substring(1);
             if (!id) return;
             const el = document.getElementById(id);
-            if (el && el.getBoundingClientRect().top <= headerHeight + 50) {
+            if (el && el.getBoundingClientRect().top <= headerHeight + 100) {
                 a.setAttribute('aria-current', 'page');
 
                 if (this.current !== a && this.element) {
