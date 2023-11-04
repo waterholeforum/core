@@ -44,7 +44,6 @@
         "@hotwired/stimulus-webpack-helpers": "^1.0.1",
         "@hotwired/turbo": "^7.3.0",
         "animated-scroll-to": "^2.3.0",
-        "clipboard-copy": "^4.0.1",
         "emoji-picker-element": "^1.16.0",
         "highlight.js": "^11.7.0",
         "inclusive-elements": "^0.4.3",
