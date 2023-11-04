@@ -9,6 +9,16 @@ import { Controller } from '@hotwired/stimulus';
  * @internal
  */
 export default class extends Controller {
+    connect() {
+        this.element.addEventListener(
+            'submit',
+            () =>
+                this.element
+                    .querySelector('button[type="submit"]')
+                    ?.setAttribute('disabled', ''),
+        );
+    }
+
     disconnect() {
         const value =
             this.element.querySelector<HTMLInputElement>('input[name=email]')
