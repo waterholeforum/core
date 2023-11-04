@@ -109,7 +109,7 @@
 .btn {
   &.is-active,
   &[aria-pressed='true'],
-  &:has(:checked) {
+  :checked + & {
     color: var(--color-accent-text) !important;
     background: var(--color-accent-soft) !important;
     border-color: transparent;
@@ -124,16 +124,25 @@
   gap: 1px;
 
   > :first-child:not(:only-child) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+    &,
+    > .btn {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
   }
 
   > :not(:first-child, :last-child) {
-    border-radius: 0;
+    &,
+    > .btn {
+      border-radius: 0;
+    }
   }
 
   > :last-child:not(:only-child) {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+    &,
+    > .btn {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
   }
 }

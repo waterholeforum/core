@@ -9,7 +9,6 @@ use Illuminate\Validation\Validator;
 use Waterhole\Extend\PostLayouts;
 use Waterhole\Forms\Field;
 use Waterhole\Models\Channel;
-
 use function Waterhole\resolve_all;
 
 class ChannelLayout extends Field
@@ -47,7 +46,7 @@ class ChannelLayout extends Field
                 <div class="stack gap-sm" data-controller="reveal">
                     <div class="btn-group">
                         @foreach ($layouts as $layout)
-                            <label class="btn">
+                            <div>
                                 <input
                                     type="radio"
                                     name="layout"
@@ -57,9 +56,11 @@ class ChannelLayout extends Field
                                     @checked(old('layout', $model->layout) === get_class($layout))
                                     data-reveal-target="if"
                                 >
-                                @icon($layout->icon(), ['class' => 'text-md'])
-                                {{ $layout->label() }}
-                            </label>
+                                <label class="btn" for="layout_{{ get_class($layout) }}">
+                                    @icon($layout->icon(), ['class' => 'text-md'])
+                                    {{ $layout->label() }}
+                                </label>
+                            </div>
                         @endforeach
                     </div>
 

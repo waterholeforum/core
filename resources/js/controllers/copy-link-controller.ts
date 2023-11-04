@@ -1,5 +1,4 @@
 import { Controller } from '@hotwired/stimulus';
-import copy from 'clipboard-copy';
 import { cloneFromTemplate } from '../utils';
 
 /**
@@ -11,17 +10,23 @@ export default class extends Controller {
     declare readonly hasMessageValue: boolean;
     declare readonly messageValue: string;
 
-    copy(e: Event) {
+    async copy(e: Event) {
         e.preventDefault();
 
         const target = e.target as HTMLElement;
-        copy(target.getAttribute('href') || '');
+        const url = target.getAttribute('href') || '';
 
-        if (this.hasMessageValue) {
-            const alert = cloneFromTemplate('template-alert-success');
-            alert.querySelector('.alert__message')!.textContent =
-                this.messageValue;
-            Waterhole.alerts.show(alert, { key: 'copy-link' });
+        try {
+            await navigator.clipboard.writeText(url);
+
+            if (this.hasMessageValue) {
+                const alert = cloneFromTemplate('template-alert-success');
+                alert.querySelector('.alert__message')!.textContent =
+                    this.messageValue;
+                Waterhole.alerts.show(alert, { key: 'copy-link' });
+            }
+        } catch (e) {
+            window.prompt('', url);
         }
     }
 }

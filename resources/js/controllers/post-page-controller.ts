@@ -86,12 +86,16 @@ export default class extends Controller {
     };
 
     private onScroll = () => {
-        if (this.hasCurrentPageTarget) {
-            this.currentPageTarget.textContent =
-                this.element.querySelector(
-                    '.comments-pagination [aria-current="page"]',
-                )?.textContent || '1';
-        }
+        // Wait for the scrollspy controller to update which page
+        // is currently selected.
+        setTimeout(() => {
+            if (this.hasCurrentPageTarget) {
+                this.currentPageTarget.textContent =
+                    this.element.querySelector(
+                        '.comments-pagination [aria-current="page"]',
+                    )?.textContent || '1';
+            }
+        });
 
         if (this.hasCommentsLinkTarget && this.hasCommentsPaginationTarget) {
             this.commentsLinkTarget.hidden =

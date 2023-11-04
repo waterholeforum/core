@@ -57,8 +57,7 @@
   }
 
   &.is-active,
-  &[aria-current='page'],
-  &:has(:checked) {
+  &[aria-current='page'] {
     color: var(--color-accent-text);
     background: var(--color-accent-soft);
 
