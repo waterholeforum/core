@@ -13,7 +13,7 @@ export default class extends Controller {
     async copy(e: Event) {
         e.preventDefault();
 
-        const target = e.target as HTMLElement;
+        const target = e.currentTarget as HTMLElement;
         const url = target.getAttribute('href') || '';
 
         try {
