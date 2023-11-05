@@ -55,7 +55,6 @@ delete-structure-confirm-message = 您確定要刪除此佈局嗎？
 
 ## Structure - Heading
 
-
 edit-heading-title = 編輯標題
 create-heading-title = 建立標題
 heading-name-label = 名稱
@@ -116,24 +115,14 @@ channel-instructions-description = 提供給使用者在此頻道中創建帖子
 channel-similar-posts-title = 相似帖子
 channel-show-similar-posts-label = 根據標題顯示此頻道中的相似帖子
 
-delete-channel-title = Delete Channel:
-delete-channel-posts-label = Delete { $count } { $count ->
-    [one] post
-    *[other] posts
-}
-move-to-channel-posts-label = Move { $count } { $count ->
-    [one] post
-    *[other] posts
-} to another channel
-
 delete-channel-title = 刪除頻道：
 delete-channel-posts-label = 刪除 { $count } { $count ->
-[one] 帖子
-*[other] 帖子
+    [one] 帖子
+    *[other] 帖子
 }
 move-to-channel-posts-label = 將 { $count } { $count ->
-[one] 帖子
-*[other] 帖子
+    [one] 帖子
+    *[other] 帖子
 } 移至其他頻道
 
 ## Groups
@@ -141,8 +130,8 @@ move-to-channel-posts-label = 將 { $count } { $count ->
 groups-title = 群組
 create-group-button = 建立群組
 group-user-count = { $count } { $count ->
-[one] 使用者
-*[other] 使用者
+    [one] 使用者
+    *[other] 使用者
 }
 
 edit-group-title = 編輯群組
@@ -184,8 +173,8 @@ user-created-message = 用戶已建立。
 user-saved-message = 用戶已儲存。
 
 delete-user-title = 刪除 { $count ->
-[one] 用戶：
-*[other] { $count } 用戶
+    [one] 用戶：
+    *[other] { $count } 用戶
 }
 keep-user-content-label = 保留內容並標記為匿名
 delete-user-content-label = 永久刪除內容
@@ -203,8 +192,8 @@ reaction-set-reactions-label = 表情
 delete-reaction-set-confirm-message = 確定要刪除此表情集嗎？
 reaction-set-saved-message = 表情集已儲存。
 
-edit-reaction-type-title = 編輯表情 
-create-reaction-type-title = 建立表情 
+edit-reaction-type-title = 編輯表情
+create-reaction-type-title = 建立表情
 reaction-type-name-label = 名稱
 reaction-type-score-label = 分數
 reaction-type-score-description = 此表情的分數值。
@@ -243,6 +232,3 @@ license-suspended-message = 您的 Waterhole 許可證已被暫停。請聯繫�
 trial-badge = 試用版
 licensed-badge = 已許可
 unlicensed-badge = 未許可
-
-
-# Move to system

@@ -21,7 +21,6 @@ return [
         'numeric' => ':attribute 欄位必須在 :min 到 :max 之間。',
         'string' => ':attribute 欄位必須包含 :min 到 :max 個字符。',
     ],
-
     'boolean' => ':attribute 欄位必須是 true 或 false。',
     'confirmed' => ':attribute 欄位的確認不符。',
     'current_password' => '密碼不正確。',

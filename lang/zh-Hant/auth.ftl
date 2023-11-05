@@ -9,7 +9,6 @@ throttle = 登入嘗試過多。請在 { $seconds } 秒後再試。
 
 ## Login
 
-
 login-title = 登入您的帳號
 login-submit = 登入
 login-register-prompt = 沒有帳號嗎？
@@ -22,7 +21,6 @@ remember-me-label = 記住我
 forgot-password-link = 忘記密碼？
 
 ## Forgot Password
-
 
 forgot-password-title = 忘記密碼？
 forgot-password-introduction = 輸入您的電子郵件地址以請求重設密碼連結。

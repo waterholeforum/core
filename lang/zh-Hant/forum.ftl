@@ -16,13 +16,13 @@ search-button = 搜尋
 search-filter-button = 過濾器
 
 search-showing-results-title = 顯示 { $total } { $total ->
-[one] 個結果
-*[other] 個結果
+    [one] 個結果
+    *[other] 個結果
 }
 
 search-showing-results-non-exhaustive-title = 顯示 { $total }+ { $total ->
-[one] 個結果
-*[other] 個結果
+    [one] 個結果
+    *[other] 個結果
 }
 
 search-sort-relevance = 相關性排序
@@ -47,34 +47,34 @@ post-answered-by = 最佳答案
 post-view-answer-link = 查看答案
 
 post-unread-comments-badge-tooltip = { $count } { $count ->
-[one] 個未讀評論
-*[other] 個未讀評論
+    [one] 個未讀評論
+    *[other] 個未讀評論
 }
 
 post-comments-heading = { $count } { $count ->
-[one] 個評論
-*[other] 個評論
+    [one] 個評論
+    *[other] 個評論
 }
 
 mark-as-read-instruction = 點擊標記為已讀
 
 post-comments-link = { $count } { $count ->
-[one] 個評論
-*[other] 個評論
+    [one] 個評論
+    *[other] 個評論
 }
 
 add-reaction-button = 表達心情
 
 move-post-title = 移動 { $count ->
-[one] 個帖子：
-*[other] { $count } 個帖子
+    [one] 個帖子：
+    *[other] { $count } 個帖子
 }
 
 move-to-channel-button = 移動頻道
 move-to-channel-confirm-button = 移動
 
 mark-as-read-button = 標記為已讀
- 
+
 create-post-button = 發表文章
 create-post-title = 新增文章
 post-channel-label = 頻道
@@ -98,7 +98,7 @@ unpin-button = 移除置頂
 post-comment-button = 發表評論
 
 move-to-trash-button = 資源回收
-restore-button = 還原刪除 
+restore-button = 還原刪除
 delete-forever-button = 永久刪除
 
 ## Comments
@@ -112,8 +112,8 @@ comment-number-title = 評論 #{ $number }
 
 comment-in-reply-to-link = 回覆給
 comment-show-replies-button = 顯示 { $count } { $count ->
-[one] 個回覆
-*[other] 個回覆
+    [one] 個回覆
+    *[other] 個回覆
 }
 comment-reply-button = 回覆
 mark-as-answer-button = 最佳答案
@@ -183,7 +183,7 @@ channel-follow-description = 在此頻道有新貼文時接收通知。
 post-follow-description = 在此貼文有新留言時接收通知。
 
 post-following-badge = 追蹤中
-post-ignored-badge = 已忽略 
+post-ignored-badge = 已忽略
 
 ## Index
 
