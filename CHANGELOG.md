@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+-   Add Traditional Chinese (zh-Hant) translation ([#8](https://github.com/waterholeforum/core/pull/8) by @efast1568)
+-   Update French translation ([#14](https://github.com/waterholeforum/core/pull/14) by @qiaeru)
+
+### Changed
+
+-   Load reaction counts as a relationship rather than via query scopes
+
+### Fixed
+
+-   Fix reactions disappearing when following/unfollowing a post
+-   Opt out of smooth scrolling on Google Chrome
+-   Fix Copy Link action not working
+-   Disable login submit button to prevent double-submission
+-   Fix mobile page selector sometimes displaying incorrect page number
+-   Fix active nav items and buttons not highlighted in Firefox
+-   Remove `max-height` from images causing loss of aspect ratio
+-   Remove extra space from post title on comment page
+
 ## [0.3.0] - 2023-07-31
 
 ### Added
