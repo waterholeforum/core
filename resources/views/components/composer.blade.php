@@ -92,7 +92,7 @@
                 class="btn bg-accent"
                 name="commit"
                 value="1"
-                data-hotkey="Meta+Enter,Ctrl+Enter"
+                data-hotkey="Mod+Enter"
                 data-hotkey-scope="new-comment"
             >
                 {{ __('waterhole::forum.composer-submit') }}

@@ -28,7 +28,7 @@
                         <button
                             type="submit"
                             class="btn bg-accent"
-                            data-hotkey="Meta+Enter,Ctrl+Enter"
+                            data-hotkey="Mod+Enter"
                             data-hotkey-scope="comment-body"
                         >
                             {{ __('waterhole::system.save-changes-button') }}
