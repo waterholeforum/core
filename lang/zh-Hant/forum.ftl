@@ -9,7 +9,7 @@ register = 註冊
 
 ## Search
 
-search-placeholder = 搜尋文章
+search-placeholder = 站內文章搜尋
 search-results-title = "{ $query }" 的搜尋結果
 search-button = 搜尋
 
