@@ -45,7 +45,7 @@ class DeletePost extends Action
 
     public function run(Collection $models)
     {
-        $models->each->delete();
+        $models->each->forceDelete();
 
         session()->flash('success', __('waterhole::forum.delete-post-success-message'));
 
