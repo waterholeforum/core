@@ -9,6 +9,8 @@
     height var(--height-transition-duration),
     bottom 0.2s;
   max-height: calc(100vh - var(--header-height));
+  position: sticky;
+  bottom: calc(-1 * var(--radius));
 
   // The composer is "static" (cannot be opened/closed) on a standalone comment page
   &.is-static {
@@ -34,14 +36,14 @@
   &.is-open {
     --color-bg: var(--palette-surface);
     --focus-shadow: 0 0 0 transparent;
-    border: 1px solid var(--color-stroke);
-    box-shadow: var(--focus-shadow);
     height: 300px;
     min-height: 200px;
+    box-shadow: var(--focus-shadow), var(--shadow-md);
+    padding-bottom: var(--radius);
+    z-index: calc(var(--z-index-header) + 1);
 
     &:focus-within {
       --focus-shadow: 0 0 0 2px var(--color-accent);
-      border-color: transparent;
     }
 
     .composer__placeholder {
@@ -50,17 +52,10 @@
   }
 }
 
-@media (--lg-up) {
-  .composer {
-    position: sticky;
-    bottom: calc(-1 * var(--radius));
-
-    &.is-open {
-      border-color: transparent;
-      box-shadow: var(--focus-shadow), var(--shadow-md);
-      padding-bottom: var(--radius);
-      z-index: calc(var(--z-index-header) - 1);
-    }
+@media (--sm) {
+  .composer.is-open {
+    margin-inline: calc(-1 * var(--space-gutter));
+    border-radius: 0;
   }
 }
 
