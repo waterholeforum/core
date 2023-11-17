@@ -26,6 +26,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fix active nav items and buttons not highlighted in Firefox
 -   Remove `max-height` from images causing loss of aspect ratio
 -   Remove extra space from post title on comment page
+-   Fix post Delete Forever action not working
+-   Fix crawlers causing 500 error with invalid pagination cursor
+-   Don't scroll all the way to bottom of the page when opening composer
 
 ## [0.3.0] - 2023-07-31
 
