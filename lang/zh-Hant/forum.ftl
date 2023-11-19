@@ -9,11 +9,11 @@ register = 註冊
 
 ## Search
 
-search-placeholder = 站內文章檢索
+search-placeholder = 站內文章搜尋
 search-results-title = "{ $query }" 的搜尋結果
 search-button = 搜尋
 
-search-filter-button = 過濾器
+search-filter-button = 篩選器
 
 search-showing-results-title = 顯示 { $total } { $total ->
     [one] 個結果
