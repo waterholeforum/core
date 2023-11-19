@@ -39,7 +39,7 @@ reset-password-mail-button = 重設密碼
 
 register-title = 建立帳號
 name-label = 使用者名稱
-register-submit = 建立帳號
+register-submit = 註冊
 register-login-prompt = 已經有帳號了嗎？
 register-login-link = 登入
 

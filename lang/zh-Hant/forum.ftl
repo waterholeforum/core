@@ -9,7 +9,7 @@ register = 註冊
 
 ## Search
 
-search-placeholder = 站內文章搜尋
+search-placeholder = 站內文章檢索
 search-results-title = "{ $query }" 的搜尋結果
 search-button = 搜尋
 
@@ -59,8 +59,8 @@ post-comments-heading = { $count } { $count ->
 mark-as-read-instruction = 點擊標記為已讀
 
 post-comments-link = { $count } { $count ->
-    [one] 個評論
-    *[other] 個評論
+    [one] 評論
+    *[other] 評論
 }
 
 add-reaction-button = 表達心情
