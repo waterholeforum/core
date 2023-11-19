@@ -25,7 +25,7 @@ return [
     */
 
     'echo_config' => [
-        'broadcaster' => 'pusher',
+        'broadcaster' => env('BROADCAST_DRIVER') === 'pusher' ? 'pusher' : null,
         'key' => env('PUSHER_APP_KEY'),
         'cluster' => env('PUSHER_APP_CLUSTER', 'mt1'),
     ],
