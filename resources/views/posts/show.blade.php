@@ -95,7 +95,8 @@
                                 @for ($page = 1; $page <= $comments->lastPage(); $page++)
                                     <a
                                         class="tab"
-                                        href="{{ $comments->fragment('page_' . $page)->url($page) }}"
+                                        {{-- Exclude ?page=1 from the URL so that the page isn't needlessly reloaded. --}}
+                                        href="{{ $page === 1 ? $post->url : $comments->url($page) }}#page_{{ $page }}"
                                         @if ($page == $comments->currentPage()) aria-current="page" @endif
                                     >
                                         {{ $page }}
