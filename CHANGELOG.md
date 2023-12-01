@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+-   Show comment button in post footer on mobile
+
+### Fixed
+
+-   Fix comment composer being unreachable on mobile ([#44](https://github.com/waterholeforum/core/issues/44))
+-   Prevent composer re-appearing on page reload after it has been closed ([#46](https://github.com/waterholeforum/core/issues/46))
+-   Fix comment composer not clearing after submission
+-   Prevent unnecessary post page load when jumping to page 1
+-   Only configure Laravel Echo if Pusher is configured
+-   Fix entire page scrolling when navigating through @mention suggestions
+
 ## [0.3.1] - 2023-11-17
 
 ### Added
