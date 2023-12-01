@@ -63,6 +63,7 @@ export default class extends Controller<HTMLElement> {
 
     close() {
         this.element.classList.remove('is-open');
+        window.location.hash = '';
     }
 
     submitEnd(e: CustomEvent) {
