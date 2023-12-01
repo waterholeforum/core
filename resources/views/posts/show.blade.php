@@ -106,7 +106,8 @@
 
                             <a
                                 class="tab with-icon"
-                                href="{{ $comments->fragment('bottom')->url($comments->lastPage()) }}"
+                                {{-- Exclude ?page=1 from the URL so that the page isn't needlessly reloaded. --}}
+                                href="{{ $comments->lastPage() === 1 ? $post->url : $comments->url($comments->lastPage()) }}#bottom"
                             >
                                 @icon('tabler-chevrons-down', ['class' => 'icon--narrow'])
                                 {{ __('waterhole::system.pagination-last-link') }}
