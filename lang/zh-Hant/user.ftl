@@ -47,9 +47,9 @@ posts-empty-message = 沒有文章
 
 ## User Menu
 
-profile-link = 個人主頁
-preferences-link = 設置
-administration-link = 控制台
+profile-link = 主頁
+preferences-link = 個人設置
+administration-link = 管理後台
 log-out-link = 登出
 
 ## Profile

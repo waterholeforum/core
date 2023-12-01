@@ -13,7 +13,7 @@ search-placeholder = 站內文章搜尋
 search-results-title = "{ $query }" 的搜尋結果
 search-button = 搜尋
 
-search-filter-button = 篩選器
+search-filter-button = 篩選
 
 search-showing-results-title = 顯示 { $total } { $total ->
     [one] 個結果
@@ -59,8 +59,8 @@ post-comments-heading = { $count } { $count ->
 mark-as-read-instruction = 點擊標記為已讀
 
 post-comments-link = { $count } { $count ->
-    [one] 評論
-    *[other] 評論
+    [one] 個評論
+    *[other] 個評論
 }
 
 add-reaction-button = 表達心情
@@ -97,7 +97,7 @@ unpin-button = 移除置頂
 
 post-comment-button = 發表評論
 
-move-to-trash-button = 資源回收
+move-to-trash-button = 刪除
 restore-button = 還原刪除
 delete-forever-button = 永久刪除
 
