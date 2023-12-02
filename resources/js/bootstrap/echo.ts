@@ -11,11 +11,16 @@ declare global {
 
 window.Pusher = Pusher;
 
-window.Echo = new Echo({
-    namespace: 'Waterhole.Events',
-    ...window.Waterhole.echoConfig,
-});
+if (window.Waterhole.echoConfig.broadcaster) {
+    window.Echo = new Echo({
+        namespace: 'Waterhole.Events',
+        ...window.Waterhole.echoConfig,
+    });
 
-window.Echo.registerTurboRequestInterceptor();
+    window.Echo.registerTurboRequestInterceptor();
 
-customElements.define('turbo-echo-stream-source', TurboEchoStreamSourceElement);
+    customElements.define(
+        'turbo-echo-stream-source',
+        TurboEchoStreamSourceElement,
+    );
+}

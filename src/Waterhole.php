@@ -9,7 +9,7 @@ use Waterhole\Models\PermissionCollection;
 
 abstract class Waterhole
 {
-    public const VERSION = '0.3.0';
+    public const VERSION = '0.3.2';
 
     public static function isForumRoute(): bool
     {
@@ -44,9 +44,7 @@ abstract class Waterhole
         $ran = $repository->getRan();
 
         return Collection::make($files)
-            ->reject(function ($file) use ($ran) {
-                return in_array(str_replace('.php', '', basename($file)), $ran);
-            })
+            ->reject(fn($file) => in_array(str_replace('.php', '', basename($file)), $ran))
             ->isNotEmpty();
     }
 }

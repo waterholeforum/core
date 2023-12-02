@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.2] - 2023-12-02
+
+### Added
+
+-   Show comment button in post footer on mobile
+
+### Fixed
+
+-   Fix comment composer being unreachable on mobile ([#44](https://github.com/waterholeforum/core/issues/44))
+-   Prevent composer re-appearing on page reload after it has been closed ([#46](https://github.com/waterholeforum/core/issues/46))
+-   Fix comment composer not clearing after submission
+-   Prevent unnecessary post page load when jumping to page 1
+-   Only configure Laravel Echo if Pusher is configured
+-   Fix entire page scrolling when navigating through @mention suggestions
+
+## [0.3.1] - 2023-11-17
+
 ### Added
 
 -   Add Traditional Chinese (zh-Hant) translation ([#8](https://github.com/waterholeforum/core/pull/8) by @efast1568)
@@ -26,6 +43,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fix active nav items and buttons not highlighted in Firefox
 -   Remove `max-height` from images causing loss of aspect ratio
 -   Remove extra space from post title on comment page
+-   Fix post Delete Forever action not working
+-   Fix crawlers causing 500 error with invalid pagination cursor
+-   Don't scroll all the way to bottom of the page when opening composer
 
 ## [0.3.0] - 2023-07-31
 
@@ -143,7 +163,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release.
 
-[unreleased]: https://github.com/waterholeforum/core/compare/v0.3.0...HEAD
+[unreleased]: https://github.com/waterholeforum/core/compare/v0.3.2...HEAD
+[0.3.2]: https://github.com/waterholeforum/core/compare/v0.3.1...v0.3.2
+[0.3.1]: https://github.com/waterholeforum/core/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/waterholeforum/core/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/waterholeforum/core/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/waterholeforum/core/compare/v0.1.0...v0.1.1

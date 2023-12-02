@@ -24,13 +24,12 @@ export default class extends Controller<HTMLElement> {
         window.removeEventListener('hashchange', this.onHashChange);
     }
 
-    private onHashChange = (e?: any) => {
+    private onHashChange = () => {
         // Turbo sends the hashchange event before the hash has actually
         // updated, so do this after a tick.
-        setTimeout(() => {
+        requestAnimationFrame(() => {
             if (window.location.hash === '#reply') {
                 this.open();
-                window.scroll({ top: document.body.scrollHeight });
             }
         });
     };
@@ -41,11 +40,20 @@ export default class extends Controller<HTMLElement> {
         e.preventDefault();
 
         this.open();
+        this.scrollToBottom();
+    }
 
-        animateScrollTo(document.documentElement.offsetHeight, {
-            minDuration: 200,
-            maxDuration: 200,
-        });
+    private scrollToBottom() {
+        this.element.style.position = 'static';
+        const composerTop = this.element.getBoundingClientRect().top;
+        const composerHeight = parseInt(getComputedStyle(this.element).height);
+        this.element.style.position = '';
+
+        const scrollTo =
+            scrollY + composerTop + composerHeight - window.innerHeight;
+        if (scrollY > scrollTo) return;
+
+        animateScrollTo(scrollTo, { minDuration: 200, maxDuration: 200 });
     }
 
     open() {
@@ -55,6 +63,10 @@ export default class extends Controller<HTMLElement> {
 
     close() {
         this.element.classList.remove('is-open');
+
+        if (window.location.hash === '#reply') {
+            history.replaceState(null, '', ' ');
+        }
     }
 
     submitEnd(e: CustomEvent) {

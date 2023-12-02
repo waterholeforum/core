@@ -1,5 +1,3 @@
-<div id="reply" tabindex="-1"></div>
-
 <turbo-frame
     id="composer"
     {{ $attributes->class('composer stack') }}
@@ -92,7 +90,7 @@
                 class="btn bg-accent"
                 name="commit"
                 value="1"
-                data-hotkey="Meta+Enter,Ctrl+Enter"
+                data-hotkey="Mod+Enter"
                 data-hotkey-scope="new-comment"
             >
                 {{ __('waterhole::forum.composer-submit') }}

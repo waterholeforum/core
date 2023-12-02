@@ -21,6 +21,7 @@ class CommentFeed extends Feed
             'reactions.user',
             'mentions',
             'attachments',
+            'reactionsSummary',
         ]);
 
         if ($scope) {

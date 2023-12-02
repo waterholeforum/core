@@ -9,7 +9,7 @@
     @endphp
 
     <{{ $tag }}
-        class="btn grow hide-sm {{ $enabled ? 'bg-accent' : 'is-disabled' }}"
+        class="btn grow {{ $enabled ? 'bg-accent' : 'is-disabled' }}"
         @if ($enabled) href="{{ $href }}" @endif
     >
         @icon('tabler-message-circle')
@@ -31,7 +31,7 @@
     >
         <x-slot name="button">
             @icon('tabler-settings')
-            <span>{{ __('waterhole::system.controls-button') }}</span>
+            <span class="hide-sm">{{ __('waterhole::system.controls-button') }}</span>
             @icon('tabler-chevron-down')
         </x-slot>
     </x-waterhole::action-menu>

@@ -50,6 +50,7 @@
             @endif
 
             @can('post.comment', $post)
+                <div id="reply" tabindex="-1"></div>
                 <x-waterhole::composer :post="$post" data-turbo-permanent />
             @endcan
         </div>
@@ -94,7 +95,8 @@
                                 @for ($page = 1; $page <= $comments->lastPage(); $page++)
                                     <a
                                         class="tab"
-                                        href="{{ $comments->fragment('page_' . $page)->url($page) }}"
+                                        {{-- Exclude ?page=1 from the URL so that the page isn't needlessly reloaded. --}}
+                                        href="{{ $page === 1 ? $post->url : $comments->url($page) }}#page_{{ $page }}"
                                         @if ($page == $comments->currentPage()) aria-current="page" @endif
                                     >
                                         {{ $page }}
@@ -104,7 +106,8 @@
 
                             <a
                                 class="tab with-icon"
-                                href="{{ $comments->fragment('bottom')->url($comments->lastPage()) }}"
+                                {{-- Exclude ?page=1 from the URL so that the page isn't needlessly reloaded. --}}
+                                href="{{ $comments->lastPage() === 1 ? $post->url : $comments->url($comments->lastPage()) }}#bottom"
                             >
                                 @icon('tabler-chevrons-down', ['class' => 'icon--narrow'])
                                 {{ __('waterhole::system.pagination-last-link') }}

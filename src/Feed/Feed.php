@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use RuntimeException;
+use UnexpectedValueException;
 use Waterhole\Filters\Filter;
 
 /**
@@ -52,6 +53,12 @@ class Feed
 
         $this->currentFilter->apply($query);
 
-        return $query->cursorPaginate();
+        // Crawlers can sometimes end up remembering an invalid pagination
+        // cursor, which will cause a 500 error - make it a 400 error instead.
+        try {
+            return $query->cursorPaginate();
+        } catch (UnexpectedValueException) {
+            abort(400);
+        }
     }
 }

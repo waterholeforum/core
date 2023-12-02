@@ -48,7 +48,7 @@
                                 name="commit"
                                 type="submit"
                                 value="1"
-                                data-hotkey="Meta+Enter,Ctrl+Enter"
+                                data-hotkey="Mod+Enter"
                                 data-hotkey-scope="post-body"
                             >
                                 {{ __('waterhole::forum.post-submit-button') }}
