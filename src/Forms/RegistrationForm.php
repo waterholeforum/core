@@ -2,13 +2,13 @@
 
 namespace Waterhole\Forms;
 
+use Waterhole\Auth\RegistrationPayload;
 use Waterhole\Extend;
 use Waterhole\Models\User;
-use Waterhole\OAuth\Payload;
 
 class RegistrationForm extends Form
 {
-    public function __construct(User $user, public ?Payload $payload = null)
+    public function __construct(User $user, public ?RegistrationPayload $payload = null)
     {
         parent::__construct($user);
     }

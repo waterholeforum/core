@@ -20,7 +20,8 @@
         "s9e/text-formatter": "^2.13",
         "secondnetwork/blade-tabler-icons": "^2.6",
         "staudenmeir/laravel-adjacency-list": "^1.7",
-        "staudenmeir/laravel-cte": "^1.0"
+        "staudenmeir/laravel-cte": "^1.0",
+        "waterhole/sso": "dev-main"
     },
     "require-dev": {
         "nunomaduro/larastan": "^2.0",

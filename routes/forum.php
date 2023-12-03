@@ -6,9 +6,9 @@ use Waterhole\Http\Controllers\Auth\ConfirmPasswordController;
 use Waterhole\Http\Controllers\Auth\ForgotPasswordController;
 use Waterhole\Http\Controllers\Auth\LoginController;
 use Waterhole\Http\Controllers\Auth\LogoutController;
-use Waterhole\Http\Controllers\Auth\OAuthController;
 use Waterhole\Http\Controllers\Auth\RegisterController;
 use Waterhole\Http\Controllers\Auth\ResetPasswordController;
+use Waterhole\Http\Controllers\Auth\SsoController;
 use Waterhole\Http\Controllers\Auth\VerifyEmailController;
 use Waterhole\Http\Controllers\FormatController;
 use Waterhole\Http\Controllers\Forum\CommentController;
@@ -143,11 +143,9 @@ Route::post('confirm-password', [ConfirmPasswordController::class, 'confirm']);
 // Logout
 Route::post('logout', [LogoutController::class, 'logout'])->name('logout');
 
-// OAuth
-Route::get('oauth/{provider}', [OAuthController::class, 'login'])->name('oauth.login');
-Route::get('oauth/{provider}/callback', [OAuthController::class, 'callback'])->name(
-    'oauth.callback',
-);
+// SSO
+Route::get('sso/{provider}', [SsoController::class, 'login'])->name('sso.login');
+Route::get('sso/{provider}/callback', [SsoController::class, 'callback'])->name('sso.callback');
 
 // Utils
 Route::get('user-lookup/{post?}', UserLookupController::class)->name('user-lookup');

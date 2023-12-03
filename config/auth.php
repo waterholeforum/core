@@ -20,26 +20,42 @@ return [
     |--------------------------------------------------------------------------
     |
     | Whether to enable passwords for authentication. If this is false,
-    | visitors will only be able to log in and register via OAuth providers.
+    | visitors will only be able to log in and register via auth providers.
     |
     | Learn more: https://waterhole.dev/docs/authentication
     |
     */
 
-    'password_enabled' => true,
+    'password_enabled' => false,
 
     /*
     |--------------------------------------------------------------------------
-    | OAuth Providers
+    | Auth Providers
     |--------------------------------------------------------------------------
     |
-    | Add the names of the OAuth providers you want to support. Waterhole will
+    | Add the names of the auth providers you want to support. Waterhole will
     | show buttons for these providers on the login and registration pages.
     |
     | Learn more: https://waterhole.dev/docs/authentication
     */
 
-    'oauth_providers' => [
+    'providers' => [
+        'sso',
         // 'github',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Single Sign-On
+    |--------------------------------------------------------------------------
+    |
+    |
+    |
+    | Learn more: https://waterhole.dev/docs/authentication
+    */
+
+    'sso' => [
+        'url' => env('WATERHOLE_SSO_URL'),
+        'secret' => env('WATERHOLE_SSO_SECRET'),
     ],
 ];

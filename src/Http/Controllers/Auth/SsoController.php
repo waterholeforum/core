@@ -6,18 +6,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
+use Waterhole\Auth\Providers;
+use Waterhole\Auth\RegistrationPayload;
 use Waterhole\Models\AuthProvider;
 use Waterhole\Models\User;
-use Waterhole\OAuth\Payload;
-use Waterhole\OAuth\Providers;
 
-class OAuthController
+class SsoController
 {
     public function login(Providers $providers, string $provider)
     {
         abort_unless($providers->has($provider), 400);
 
-        // @phpstan-ignore-next-line
         return Socialite::driver($provider)->redirect();
     }
 
@@ -25,7 +24,6 @@ class OAuthController
     {
         abort_unless($providers->has($provider), 400);
 
-        // @phpstan-ignore-next-line
         $externalUser = Socialite::driver($provider)->user();
         $identifier = $externalUser->getId();
         $email = $externalUser->getEmail();
@@ -38,7 +36,7 @@ class OAuthController
             return redirect()->intended(route('waterhole.home'));
         }
 
-        if ($user = User::firstWhere(compact('email'))) {
+        if ($user = User::firstWhere('email', $email)) {
             // TODO: ask the user to enter their password (if they have one)
             // before associating this provider with their account
 
@@ -63,14 +61,15 @@ class OAuthController
             redirect()->setIntendedUrl($request->query('return', url()->previous()));
         }
 
-        $payload = new Payload(
+        $payload = new RegistrationPayload(
             provider: $provider,
             identifier: $identifier,
             email: $email,
             name: $externalUser->getNickname() ?: $externalUser->getName(),
             avatar: $externalUser->getAvatar(),
+            groups: method_exists($externalUser, 'getGroups') ? $externalUser->getGroups() : null,
         );
 
-        return redirect()->route('waterhole.register', ['oauth' => $payload->encrypt()]);
+        return redirect()->route('waterhole.register', ['payload' => $payload->encrypt()]);
     }
 }

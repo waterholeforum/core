@@ -7,8 +7,8 @@
             --}}
             <form action="{{ route('waterhole.register') }}" data-turbo="false" method="POST">
                 @csrf
-                @if (request('oauth'))
-                    <input type="hidden" name="oauth" value="{{ request('oauth') }}" />
+                @if (request('payload'))
+                    <input type="hidden" name="payload" value="{{ request('payload') }}" />
                 @endif
 
                 <div class="stack gap-xl">

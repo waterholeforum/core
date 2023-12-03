@@ -6,11 +6,14 @@ use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Socialite\Facades\Socialite;
+use Waterhole\Auth\Providers;
+use Waterhole\Auth\SsoProvider;
 use Waterhole\Models\Permission;
 use Waterhole\Models\PermissionCollection;
 use Waterhole\Models\User;
-use Waterhole\OAuth\Providers;
 use Waterhole\Policies;
+use Waterhole\Sso\WaterholeSso;
 use Waterhole\Waterhole;
 
 class AuthServiceProvider extends ServiceProvider
@@ -19,7 +22,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             Providers::class,
-            fn() => new Providers(config('waterhole.auth.oauth_providers')),
+            fn() => new Providers(config('waterhole.auth.providers')),
         );
 
         $this->app->singleton(
@@ -28,6 +31,18 @@ class AuthServiceProvider extends ServiceProvider
         );
 
         $this->app->alias('waterhole.permissions', PermissionCollection::class);
+
+        $this->app->singleton(
+            WaterholeSso::class,
+            fn() => new WaterholeSso(config('waterhole.auth.sso.secret')),
+        );
+
+        Socialite::extend(
+            'sso',
+            fn() => $this->app->make(SsoProvider::class, [
+                'url' => config('waterhole.auth.sso.url'),
+            ]),
+        );
 
         // Make our policies singletons, to improve performance when we do a lot
         // of auth checks in a single page load.

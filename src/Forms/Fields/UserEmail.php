@@ -5,13 +5,13 @@ namespace Waterhole\Forms\Fields;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
+use Waterhole\Auth\RegistrationPayload;
 use Waterhole\Forms\Field;
 use Waterhole\Models\User;
-use Waterhole\OAuth\Payload;
 
 class UserEmail extends Field
 {
-    public function __construct(public ?User $model, public ?Payload $payload = null)
+    public function __construct(public ?User $model, public ?RegistrationPayload $payload = null)
     {
         if ($payload) {
             $model->email = $payload->email;

@@ -6,10 +6,11 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
+use Waterhole\Auth\Providers;
+use Waterhole\Auth\RegistrationPayload;
 use Waterhole\Forms\RegistrationForm;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\User;
-use Waterhole\OAuth\Payload;
 
 class RegisterController extends Controller
 {
@@ -18,7 +19,7 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
-    public function showRegistrationForm(Request $request)
+    public function showRegistrationForm(Request $request, Providers $providers)
     {
         // Copy any URL passed in the `return` query parameter into the session
         // so that after the registration is complete we can redirect back to it.
@@ -27,6 +28,14 @@ class RegisterController extends Controller
         }
 
         $form = $this->form(new User());
+
+        if (
+            !$form->payload &&
+            !config('waterhole.auth.password_enabled', true) &&
+            ($provider = $providers->sole())
+        ) {
+            return redirect()->route('waterhole.sso.login', ['provider' => $provider['name']]);
+        }
 
         return view('waterhole::auth.register', compact('form'));
     }
@@ -42,6 +51,10 @@ class RegisterController extends Controller
 
             if ($form->payload->avatar) {
                 $user->uploadAvatar(Image::make($form->payload->avatar));
+            }
+
+            if ($form->payload->groups) {
+                $user->groups()->sync($form->payload->groups);
             }
 
             $user->authProviders()->create([
@@ -66,6 +79,6 @@ class RegisterController extends Controller
 
     private function form(User $user)
     {
-        return new RegistrationForm($user, Payload::decrypt(request('oauth')));
+        return new RegistrationForm($user, RegistrationPayload::decrypt(request('payload')));
     }
 }

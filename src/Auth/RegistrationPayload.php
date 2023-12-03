@@ -1,8 +1,8 @@
 <?php
 
-namespace Waterhole\OAuth;
+namespace Waterhole\Auth;
 
-class Payload
+class RegistrationPayload
 {
     public function __construct(
         public string $provider,
@@ -10,6 +10,7 @@ class Payload
         public string $email,
         public ?string $name = null,
         public ?string $avatar = null,
+        public ?array $groups = null,
     ) {
     }
 
