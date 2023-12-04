@@ -81,7 +81,7 @@ class PostController extends Controller
 
     public function create()
     {
-        $this->authorize('post.create');
+        $this->authorize('waterhole.post.create');
 
         $form = new PostForm(new Post(['channel_id' => old('channel_id', request('channel_id'))]));
 
@@ -99,14 +99,14 @@ class PostController extends Controller
                 ->withInput();
         }
 
-        $this->authorize('post.create');
+        $this->authorize('waterhole.post.create');
 
         $post = new Post([
             'user_id' => $request->user()->id,
             'channel_id' => request('channel_id'),
         ]);
 
-        Gate::authorize('channel.post', $post->channel);
+        Gate::authorize('waterhole.channel.post', $post->channel);
 
         if (!(new PostForm($post))->submit($request)) {
             return redirect()
@@ -130,7 +130,7 @@ class PostController extends Controller
 
     public function edit(Post $post)
     {
-        $this->authorize('post.edit', $post);
+        $this->authorize('waterhole.post.edit', $post);
 
         $form = new PostForm($post);
 
@@ -139,7 +139,7 @@ class PostController extends Controller
 
     public function update(Post $post, Request $request)
     {
-        $this->authorize('post.edit', $post);
+        $this->authorize('waterhole.post.edit', $post);
 
         $post->markAsEdited();
 

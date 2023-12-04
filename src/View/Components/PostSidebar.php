@@ -20,7 +20,7 @@ class PostSidebar extends Component
     {
         $gate = Gate::forUser(Auth::user() ?: new User());
 
-        $this->response = $gate->inspect('post.comment', $post);
+        $this->response = $gate->inspect('waterhole.post.comment', $post);
     }
 
     public function render()

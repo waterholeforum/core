@@ -54,8 +54,8 @@ class CommentController extends Controller
 
     public function create(Post $post, Request $request)
     {
-        $this->authorize('comment.create');
-        $this->authorize('post.comment', $post);
+        $this->authorize('waterhole.comment.create');
+        $this->authorize('waterhole.post.comment', $post);
 
         // Comments may be created in reply to a parent comment. The parent ID
         // can either be specified in a query parameter, or it may be present
@@ -80,8 +80,8 @@ class CommentController extends Controller
                 ->withInput();
         }
 
-        $this->authorize('comment.create', Comment::class);
-        $this->authorize('post.comment', $post);
+        $this->authorize('waterhole.comment.create', Comment::class);
+        $this->authorize('waterhole.post.comment', $post);
 
         $data = Comment::validate($request->all());
         $data['user_id'] = $request->user()->id;
@@ -165,14 +165,14 @@ class CommentController extends Controller
 
     public function edit(Post $post, Comment $comment)
     {
-        $this->authorize('comment.edit', $comment);
+        $this->authorize('waterhole.comment.edit', $comment);
 
         return view('waterhole::comments.edit', compact('comment'));
     }
 
     public function update(Post $post, Comment $comment, Request $request)
     {
-        $this->authorize('comment.edit', $comment);
+        $this->authorize('waterhole.comment.edit', $comment);
 
         $comment
             ->fill(Comment::validate($request->all(), $comment))

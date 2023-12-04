@@ -27,7 +27,7 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::middlewareGroup('waterhole.cp', [
             'auth',
-            'can:administrate',
+            'can:waterhole.administrate',
             \Waterhole\Http\Middleware\MaybeRequirePassword::class,
         ]);
 
