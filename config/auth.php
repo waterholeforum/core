@@ -16,7 +16,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Password Login Enabled
+    | Password Authentication Enabled
     |--------------------------------------------------------------------------
     |
     | Whether to enable passwords for authentication. If this is false,
@@ -40,7 +40,6 @@ return [
     */
 
     'providers' => [
-        'sso',
         // 'github',
     ],
 

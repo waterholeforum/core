@@ -38,7 +38,7 @@ class AuthServiceProvider extends ServiceProvider
         );
 
         Socialite::extend(
-            'sso',
+            'waterhole_sso',
             fn() => $this->app->make(SsoProvider::class, [
                 'url' => config('waterhole.auth.sso.url'),
             ]),
