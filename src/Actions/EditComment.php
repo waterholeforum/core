@@ -16,7 +16,7 @@ class EditComment extends Link
 
     public function authorize(?User $user, Model $model): bool
     {
-        return $user && $user->can('comment.edit', $model);
+        return $user && $user->can('waterhole.comment.edit', $model);
     }
 
     public function label(Collection $models): string

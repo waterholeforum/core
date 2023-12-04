@@ -32,7 +32,10 @@ class ChannelPicker extends Component
             ->get()
             ->toBase()
             ->map->content->except($exclude)
-            ->filter(fn($item) => !$item instanceof Channel || Gate::allows('channel.post', $item));
+            ->filter(
+                fn($item) => !$item instanceof Channel ||
+                    Gate::allows('waterhole.channel.post', $item),
+            );
 
         // Filter out headings with no items after them
         $this->items = $this->items->filter(function ($item, $i) {

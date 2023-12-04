@@ -16,7 +16,7 @@ class EditChannel extends Link
 
     public function authorize(?User $user, Model $model): bool
     {
-        return $user && $user->can('channel.edit', $model);
+        return $user && $user->can('waterhole.channel.edit', $model);
     }
 
     public function label(Collection $models): string

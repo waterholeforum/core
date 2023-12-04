@@ -51,6 +51,10 @@ class AuthServiceProvider extends ServiceProvider
         $this->app->singleton(Policies\PostPolicy::class);
 
         Gate::before(function (User $user, $ability, $arguments) {
+            if (!str_starts_with($ability, 'waterhole.')) {
+                return null;
+            }
+
             // Allow administrators to perform all gated actions.
             if ($user->isAdmin()) {
                 return true;
@@ -70,6 +74,11 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::after(function (User $user, $ability, $result, $arguments) {
+            if (!str_starts_with($ability, 'waterhole.')) {
+                return null;
+            }
+
+            $ability = substr($ability, 0, strlen('waterhole.'));
             if ($result === null && strpos($ability, '.') && isset($arguments[0])) {
                 return Waterhole::permissions()->can(
                     $user,
@@ -83,19 +92,19 @@ class AuthServiceProvider extends ServiceProvider
         // too restrictive - extensions wouldn't be able to add or override
         // abilities. Instead, we define each ability absolutely.
 
-        Gate::define('channel.post', [Policies\ChannelPolicy::class, 'post']);
+        Gate::define('waterhole.channel.post', [Policies\ChannelPolicy::class, 'post']);
 
-        Gate::define('comment.create', [Policies\CommentPolicy::class, 'create']);
-        Gate::define('comment.edit', [Policies\CommentPolicy::class, 'edit']);
-        Gate::define('comment.moderate', [Policies\CommentPolicy::class, 'moderate']);
-        Gate::define('comment.react', [Policies\CommentPolicy::class, 'react']);
+        Gate::define('waterhole.comment.create', [Policies\CommentPolicy::class, 'create']);
+        Gate::define('waterhole.comment.edit', [Policies\CommentPolicy::class, 'edit']);
+        Gate::define('waterhole.comment.moderate', [Policies\CommentPolicy::class, 'moderate']);
+        Gate::define('waterhole.comment.react', [Policies\CommentPolicy::class, 'react']);
 
-        Gate::define('post.create', [Policies\PostPolicy::class, 'create']);
-        Gate::define('post.edit', [Policies\PostPolicy::class, 'edit']);
-        Gate::define('post.delete', [Policies\PostPolicy::class, 'delete']);
-        Gate::define('post.move', [Policies\PostPolicy::class, 'move']);
-        Gate::define('post.comment', [Policies\PostPolicy::class, 'comment']);
-        Gate::define('post.react', [Policies\PostPolicy::class, 'react']);
-        Gate::define('post.moderate', [Policies\PostPolicy::class, 'moderate']);
+        Gate::define('waterhole.post.create', [Policies\PostPolicy::class, 'create']);
+        Gate::define('waterhole.post.edit', [Policies\PostPolicy::class, 'edit']);
+        Gate::define('waterhole.post.delete', [Policies\PostPolicy::class, 'delete']);
+        Gate::define('waterhole.post.move', [Policies\PostPolicy::class, 'move']);
+        Gate::define('waterhole.post.comment', [Policies\PostPolicy::class, 'comment']);
+        Gate::define('waterhole.post.react', [Policies\PostPolicy::class, 'react']);
+        Gate::define('waterhole.post.moderate', [Policies\PostPolicy::class, 'moderate']);
     }
 }

@@ -18,7 +18,7 @@ class SuspendUser extends Action
 
     public function authorize(?User $user, Model $model): bool
     {
-        return $user && $user->can('user.suspend', $model) && $user->isNot($model);
+        return $user && $user->can('waterhole.user.suspend', $model) && $user->isNot($model);
     }
 
     public function label(Collection $models): string

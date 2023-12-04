@@ -21,7 +21,7 @@ class DeleteChannel extends Action
 
     public function authorize(?User $user, Model $model): bool
     {
-        return $user && $user->can('channel.delete', $model);
+        return $user && $user->can('waterhole.channel.delete', $model);
     }
 
     public function shouldRender(Collection $models, string $context = null): bool

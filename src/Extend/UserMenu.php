@@ -38,7 +38,7 @@ UserMenu::add(
 UserMenu::add(MenuDivider::class, 0, 'divider');
 
 UserMenu::add(
-    fn() => Auth::user()->can('administrate')
+    fn() => Auth::user()->can('waterhole.administrate')
         ? (new MenuItem(
             icon: 'tabler-tool',
             label: __('waterhole::user.administration-link'),

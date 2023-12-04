@@ -19,7 +19,7 @@ class DeleteReactionType extends Action
 
     public function authorize(?User $user, Model $model): bool
     {
-        return $user && $user->can('reaction-type.delete', $model);
+        return $user && $user->can('waterhole.reaction-type.delete', $model);
     }
 
     public function label(Collection $models): string

@@ -1,5 +1,5 @@
 <a
-    @can('post.comment', $comment->post)
+    @can('waterhole.post.comment', $comment->post)
         href="{{ route('waterhole.posts.comments.show', [
             'post' => $comment->post,
             'comment' => $comment->id,

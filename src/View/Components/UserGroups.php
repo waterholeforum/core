@@ -15,7 +15,7 @@ class UserGroups extends Component
     {
         $this->groups = $this->user?->groups->where('is_public', true);
 
-        if (Auth::user()?->can('user.edit', $user)) {
+        if (Auth::user()?->can('waterhole.user.edit', $user)) {
             $this->groups?->push(...$this->user->groups->where('is_public', false));
         }
     }
@@ -33,7 +33,7 @@ class UserGroups extends Component
                     <x-waterhole::group-badge :group="$group"/>
                 @endforeach
 
-                @if ($user?->isSuspended() && Gate::allows('user.suspend', $user))
+                @if ($user?->isSuspended() && Gate::allows('waterhole.user.suspend', $user))
                     <span class="badge suspended-badge">
                         @icon('tabler-ban')
                         {{ __('waterhole::user.suspended-badge') }}

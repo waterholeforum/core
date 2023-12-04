@@ -22,7 +22,7 @@ class MoveToChannel extends Action
 
     public function authorize(?User $user, Model $model): bool
     {
-        return $user && $user->can('post.move', $model);
+        return $user && $user->can('waterhole.post.move', $model);
     }
 
     public function label(Collection $models): string

@@ -7,7 +7,7 @@
         <div class="post-body content text-md" data-controller="quotable">
             {{ $post->body_html }}
 
-            @can('post.comment', $post)
+            @can('waterhole.post.comment', $post)
                 <a
                     href="{{ route('waterhole.posts.comments.create', compact('post')) }}"
                     class="quotable-button btn bg-emphasis no-select"

@@ -16,7 +16,7 @@ class MarkAsAnswer extends Action
 
     public function authorize(?User $user, Model $model): bool
     {
-        return (bool) $user?->can('post.edit', $model->post);
+        return (bool) $user?->can('waterhole.post.edit', $model->post);
     }
 
     public function shouldRender(Collection $models, string $context = null): bool
