@@ -4,6 +4,7 @@ namespace Waterhole\Formatter;
 
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\File;
 use s9e\TextFormatter\Configurator;
 use s9e\TextFormatter\Parser;
 use s9e\TextFormatter\Renderer;
@@ -150,5 +151,7 @@ class Formatter
     {
         $configurator->rendering->engine = 'PHP';
         $configurator->rendering->engine->cacheDir = $this->cacheDir;
+
+        File::ensureDirectoryExists($this->cacheDir);
     }
 }
