@@ -34,6 +34,11 @@ class Notification extends DatabaseNotification
 {
     use QueriesExpressions;
 
+    public function getConnectionName()
+    {
+        return config('waterhole.system.database');
+    }
+
     /**
      * Relationship with the user whose action caused the notification to be
      * sent.
