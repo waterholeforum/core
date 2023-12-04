@@ -50,6 +50,8 @@ final class SsoProvider implements Provider
             abort(400, 'Invalid nonce');
         }
 
+        $this->expireNonce();
+
         if (!$this->validatePayload($payload)) {
             abort(400, 'Invalid payload');
         }
@@ -78,6 +80,11 @@ final class SsoProvider implements Provider
         $expiry = $data['expiry'] ?? null;
 
         return $storedNonce === $nonce && time() < $expiry;
+    }
+
+    private function expireNonce(): void
+    {
+        $this->request->session()->forget('sso_nonce');
     }
 
     private function validatePayload(Payload $payload): bool
