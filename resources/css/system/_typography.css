@@ -122,12 +122,17 @@ h6 {
   & code {
     font-family: var(--font-mono);
     font-size: 80%;
+    background: var(--color-fill-soft);
+    color: var(--color-accent-text);
+    padding: 3px;
+    border-radius: 4px;
   }
 
   & pre code {
     display: block;
     overflow: auto;
     background: var(--color-fill);
+    color: inherit;
     border-radius: var(--radius);
     padding: var(--space-md) !important;
   }
