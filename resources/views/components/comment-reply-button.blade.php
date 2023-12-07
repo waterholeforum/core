@@ -5,7 +5,7 @@
             'comment' => $comment->id,
         ]) }}#reply"
         data-turbo-frame="@domid($comment->post, 'comment_parent')"
-    @else
+    @elseif (Route::has('waterhole.login'))
         href="{{ route('waterhole.login', ['return' => $comment->post_url]) }}"
         data-turbo-frame="_top"
     @endcan

@@ -18,6 +18,14 @@ class RouteServiceProvider extends ServiceProvider
         );
 
         Route::middlewareGroup('waterhole.web', [
+            \App\Http\Middleware\EncryptCookies::class,
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \App\Http\Middleware\VerifyCsrfToken::class,
+            \Waterhole\Http\Middleware\AuthenticateWaterhole::class,
+            \Waterhole\Http\Middleware\AuthGuard::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \Tonysm\TurboLaravel\Http\Middleware\TurboMiddleware::class,
             \Waterhole\Http\Middleware\ContactOutpost::class,
             \Waterhole\Http\Middleware\ActorSeen::class,
@@ -34,12 +42,12 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
-            Route::middleware(['web', 'waterhole.web'])
+            Route::middleware(['waterhole.web'])
                 ->name('waterhole.')
                 ->prefix(config('waterhole.forum.path'))
                 ->group(__DIR__ . '/../../routes/forum.php');
 
-            Route::middleware(['web', 'waterhole.web', 'waterhole.cp'])
+            Route::middleware(['waterhole.web', 'waterhole.cp'])
                 ->name('waterhole.cp.')
                 ->prefix(config('waterhole.cp.path'))
                 ->group(__DIR__ . '/../../routes/cp.php');

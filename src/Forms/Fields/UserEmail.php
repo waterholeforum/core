@@ -5,16 +5,16 @@ namespace Waterhole\Forms\Fields;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
-use Waterhole\Auth\RegistrationPayload;
+use Waterhole\Auth\SsoPayload;
 use Waterhole\Forms\Field;
 use Waterhole\Models\User;
 
 class UserEmail extends Field
 {
-    public function __construct(public ?User $model, public ?RegistrationPayload $payload = null)
+    public function __construct(public ?User $model, public ?SsoPayload $payload = null)
     {
         if ($payload) {
-            $model->email = $payload->email;
+            $model->email = $payload->user->email;
         }
     }
 

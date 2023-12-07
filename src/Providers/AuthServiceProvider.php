@@ -18,7 +18,7 @@ use Waterhole\Waterhole;
 
 class AuthServiceProvider extends ServiceProvider
 {
-    public function boot()
+    public function register()
     {
         $this->app->singleton(
             Providers::class,
@@ -37,18 +37,21 @@ class AuthServiceProvider extends ServiceProvider
             fn() => new WaterholeSso(config('waterhole.auth.sso.secret')),
         );
 
-        Socialite::extend(
-            'waterhole_sso',
-            fn() => $this->app->make(SsoProvider::class, [
-                'url' => config('waterhole.auth.sso.url'),
-            ]),
-        );
-
         // Make our policies singletons, to improve performance when we do a lot
         // of auth checks in a single page load.
         $this->app->singleton(Policies\ChannelPolicy::class);
         $this->app->singleton(Policies\CommentPolicy::class);
         $this->app->singleton(Policies\PostPolicy::class);
+    }
+
+    public function boot()
+    {
+        Socialite::extend(
+            'sso',
+            fn() => $this->app->make(SsoProvider::class, [
+                'url' => config('waterhole.auth.sso.url'),
+            ]),
+        );
 
         Gate::before(function (User $user, $ability, $arguments) {
             if (!str_starts_with($ability, 'waterhole.')) {

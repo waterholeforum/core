@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use Waterhole\Auth\Providers;
-use Waterhole\Auth\RegistrationPayload;
+use Waterhole\Auth\SsoPayload;
 use Waterhole\Forms\RegistrationForm;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\User;
@@ -29,37 +29,40 @@ class RegisterController extends Controller
 
         $form = $this->form(new User());
 
-        if (
-            !$form->payload &&
-            !config('waterhole.auth.password_enabled', true) &&
-            ($provider = $providers->sole())
-        ) {
+        if (!config('waterhole.auth.password_enabled', true) && ($provider = $providers->sole())) {
             return redirect()->route('waterhole.sso.login', ['provider' => $provider['name']]);
         }
 
         return view('waterhole::auth.register', compact('form'));
     }
 
+    public function registerWithPayload(string $payload)
+    {
+        $form = $this->form(new User(), $payload);
+
+        return view('waterhole::auth.register', compact('form'));
+    }
+
     public function register(Request $request)
     {
-        $form = $this->form($user = new User());
+        $form = $this->form($user = new User(), $request->input('payload'));
 
         $form->submit($request);
 
         if ($form->payload) {
             $user->markEmailAsVerified();
 
-            if ($form->payload->avatar) {
-                $user->uploadAvatar(Image::make($form->payload->avatar));
+            if ($form->payload->user->avatar) {
+                $user->uploadAvatar(Image::make($form->payload->user->avatar));
             }
 
-            if ($form->payload->groups) {
-                $user->groups()->sync($form->payload->groups);
+            if ($form->payload->user->groups) {
+                $user->groups()->sync($form->payload->user->groups);
             }
 
             $user->authProviders()->create([
                 'provider' => $form->payload->provider,
-                'identifier' => $form->payload->identifier,
+                'identifier' => $form->payload->user->identifier,
                 'last_login_at' => now(),
             ]);
         } elseif (!config('waterhole.auth.password_enabled', true)) {
@@ -77,8 +80,8 @@ class RegisterController extends Controller
             ->withoutFragment();
     }
 
-    private function form(User $user)
+    private function form(User $user, string $payload = null)
     {
-        return new RegistrationForm($user, RegistrationPayload::decrypt(request('payload')));
+        return new RegistrationForm($user, $payload ? SsoPayload::decrypt($payload) : null);
     }
 }

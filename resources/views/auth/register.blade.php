@@ -5,8 +5,9 @@
                 Opt-out of Turbo so that any fragment that may be present in the
                 redirect URL will be followed. Also, redirect URL may be external.
             --}}
-            <form action="{{ route('waterhole.register') }}" data-turbo="false" method="POST">
+            <form action="{{ route('waterhole.register.submit') }}" data-turbo="false" method="POST">
                 @csrf
+
                 @if (request('payload'))
                     <input type="hidden" name="payload" value="{{ request('payload') }}" />
                 @endif
@@ -15,7 +16,7 @@
                     <x-waterhole::validation-errors />
 
                     @unless ($form->payload)
-                        <x-waterhole::o-auth-buttons />
+                        <x-waterhole::auth-buttons />
                     @endunless
 
                     @if ($form->payload || config('waterhole.auth.password_enabled'))
@@ -25,12 +26,14 @@
                             {{ __('waterhole::auth.register-submit') }}
                         </button>
 
-                        <p class="text-center">
-                            {{ __('waterhole::auth.register-login-prompt') }}
-                            <a href="{{ route('waterhole.login') }}">
-                                {{ __('waterhole::auth.register-login-link') }}
-                            </a>
-                        </p>
+                        @unless ($form->payload)
+                            <p class="text-center">
+                                {{ __('waterhole::auth.register-login-prompt') }}
+                                <a href="{{ route('waterhole.login') }}">
+                                    {{ __('waterhole::auth.register-login-link') }}
+                                </a>
+                            </p>
+                        @endunless
                     @endif
                 </div>
             </form>

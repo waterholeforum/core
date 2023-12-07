@@ -1,6 +1,20 @@
 <?php
 
 return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Authentication Guard
+    |--------------------------------------------------------------------------
+    |
+    | By default, Waterhole will use the `web` authentication guard. However,
+    | if you want to run Waterhole alongside the default Laravel auth
+    | guard, you can configure that below.
+    |
+    */
+
+    'guard' => 'web',
+
     /*
     |--------------------------------------------------------------------------
     | Allow Registration
@@ -26,7 +40,7 @@ return [
     |
     */
 
-    'password_enabled' => false,
+    'password_enabled' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -37,6 +51,7 @@ return [
     | show buttons for these providers on the login and registration pages.
     |
     | Learn more: https://waterhole.dev/docs/authentication
+    |
     */
 
     'providers' => [
@@ -48,13 +63,18 @@ return [
     | Single Sign-On
     |--------------------------------------------------------------------------
     |
-    |
+    | These settings are to configure the "sso" auth provider. The "url" is
+    | your website's URL where Waterhole will send users when they attempt to
+    | log in. "secret" is a secret string that will be used to sign payloads
+    | used in the process and ensure they are authentic.
     |
     | Learn more: https://waterhole.dev/docs/authentication
+    |
     */
 
     'sso' => [
         'url' => env('WATERHOLE_SSO_URL'),
         'secret' => env('WATERHOLE_SSO_SECRET'),
     ],
+
 ];

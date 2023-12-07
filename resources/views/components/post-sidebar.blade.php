@@ -3,7 +3,7 @@
         $enabled = $response === true || $response->allowed();
         $tag = $enabled ? 'a' : 'span';
         $href = $post->urlAtIndex($post->comment_count) . '#reply';
-        if (! Auth::check()) {
+        if ($enabled && ! Auth::check()) {
             $href = route('waterhole.login', ['return' => $href]);
         }
     @endphp
