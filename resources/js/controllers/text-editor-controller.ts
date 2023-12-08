@@ -1,6 +1,5 @@
 import { subscribe as pasteMarkdown } from '@github/paste-markdown';
 import { ActionEvent, Controller } from '@hotwired/stimulus';
-import { Picker } from 'emoji-picker-element';
 import { PopupElement } from 'inclusive-elements';
 import TextareaEditor from 'textarea-editor';
 
@@ -10,13 +9,7 @@ import TextareaEditor from 'textarea-editor';
  * @internal
  */
 export default class extends Controller {
-    static targets = [
-        'input',
-        'preview',
-        'previewButton',
-        'hotkeyLabel',
-        'emojiPicker',
-    ];
+    static targets = ['input', 'preview', 'previewButton', 'hotkeyLabel'];
 
     static values = {
         formatUrl: String,
@@ -92,10 +85,9 @@ export default class extends Controller {
         );
     }
 
-    emojiPickerTargetConnected(el: Picker) {
-        el.addEventListener('emoji-click', (e) => {
-            this.editor?.insert(e.detail.unicode || '');
-            el.closest<PopupElement>('ui-popup')!.open = false;
-        });
+    insertEmoji(e: CustomEvent) {
+        this.editor?.insert(e.detail.unicode || '');
+        (e.target as HTMLElement).closest<PopupElement>('ui-popup')!.open =
+            false;
     }
 }
