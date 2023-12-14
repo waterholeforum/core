@@ -29,21 +29,21 @@ use Waterhole\Notifications\VerifyEmail;
  * @property int $id
  * @property string $name
  * @property string $email
- * @property ?\Carbon\Carbon $email_verified_at
- * @property ?string $password
- * @property ?string $remember_token
- * @property ?string $locale
- * @property ?string $headline
- * @property ?string $bio
- * @property ?string $location
- * @property ?string $website
- * @property ?string $avatar
- * @property ?\Carbon\Carbon $created_at
- * @property ?\Carbon\Carbon $last_seen_at
- * @property ?\Carbon\Carbon $suspended_until
+ * @property null|\Carbon\Carbon $email_verified_at
+ * @property null|string $password
+ * @property null|string $remember_token
+ * @property null|string $locale
+ * @property null|string $headline
+ * @property null|string $bio
+ * @property null|string $location
+ * @property null|string $website
+ * @property null|string $avatar
+ * @property null|\Carbon\Carbon $created_at
+ * @property null|\Carbon\Carbon $last_seen_at
+ * @property null|\Carbon\Carbon $suspended_until
  * @property bool $show_online
- * @property ?\Illuminate\Database\Eloquent\Casts\ArrayObject $notification_channels
- * @property ?\Carbon\Carbon $notifications_read_at
+ * @property null|\Illuminate\Database\Eloquent\Casts\ArrayObject $notification_channels
+ * @property null|\Carbon\Carbon $notifications_read_at
  * @property bool $follow_on_comment
  * @property-read string $url
  * @property-read string $edit_url

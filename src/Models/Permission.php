@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Cache;
  * @property string $recipient_type
  * @property int $recipient_id
  * @property string $ability
- * @property ?Model $scope
+ * @property null|Model $scope
  * @property Model $recipient
  */
 class Permission extends Model

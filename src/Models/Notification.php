@@ -17,18 +17,18 @@ use Waterhole\Notifications\Notification as NotificationTemplate;
  * @property string $notifiable_type
  * @property int $notifiable_id
  * @property array $data
- * @property ?int $sender_id
- * @property ?string $group_type
- * @property ?int $group_id
- * @property ?string $content_type
- * @property ?int $content_id
- * @property ?\Carbon\Carbon $created_at
- * @property ?\Carbon\Carbon $updated_at
- * @property ?\Carbon\Carbon $read_at
- * @property-read ?NotificationTemplate $template
- * @property-read ?User $sender
- * @property-read ?Model $group
- * @property-read ?Model $content
+ * @property null|int $sender_id
+ * @property null|string $group_type
+ * @property null|int $group_id
+ * @property null|string $content_type
+ * @property null|int $content_id
+ * @property null|\Carbon\Carbon $created_at
+ * @property null|\Carbon\Carbon $updated_at
+ * @property null|\Carbon\Carbon $read_at
+ * @property-read null|NotificationTemplate $template
+ * @property-read null|User $sender
+ * @property-read null|Model $group
+ * @property-read null|Model $content
  */
 class Notification extends DatabaseNotification
 {

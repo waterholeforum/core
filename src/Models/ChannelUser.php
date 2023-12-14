@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property int $channel_id
  * @property int $user_id
- * @property ?string $notifications
- * @property ?\Carbon\Carbon $followed_at
+ * @property null|string $notifications
+ * @property null|\Carbon\Carbon $followed_at
  * @property-read Channel $channel
  * @property-read User $user
  */

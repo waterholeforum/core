@@ -13,7 +13,7 @@ use Waterhole\Models\Concerns\ValidatesData;
  * @property int $id
  * @property string $name
  * @property bool $is_public
- * @property ?string $color
+ * @property null|string $color
  * @property string $edit_url
  * @property-read \Illuminate\Database\Eloquent\Collection $users
  */

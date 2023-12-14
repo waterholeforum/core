@@ -27,30 +27,30 @@ use Waterhole\View\TurboStream;
 /**
  * @property int $id
  * @property int $channel_id
- * @property ?int $user_id
- * @property ?string $title
- * @property ?string $slug
- * @property ?\Carbon\Carbon $created_at
- * @property ?\Carbon\Carbon $edited_at
- * @property ?\Carbon\Carbon $deleted_at
- * @property ?\Carbon\Carbon $last_activity_at
+ * @property null|int $user_id
+ * @property null|string $title
+ * @property null|string $slug
+ * @property null|\Carbon\Carbon $created_at
+ * @property null|\Carbon\Carbon $edited_at
+ * @property null|\Carbon\Carbon $deleted_at
+ * @property null|\Carbon\Carbon $last_activity_at
  * @property int $comment_count
  * @property int $score
  * @property bool $is_locked
- * @property ?int $answer_id
+ * @property null|int $answer_id
  * @property bool $is_pinned
  * @property-read Channel $channel
- * @property-read ?User $user
+ * @property-read null|User $user
  * @property-read \Illuminate\Database\Eloquent\Collection $comments
  * @property-read \Illuminate\Database\Eloquent\Collection $unreadComments
  * @property-read \Illuminate\Database\Eloquent\Collection $tags
- * @property-read ?Comment $lastComment
- * @property-read ?PostUser $userState
- * @property-read ?Comment $answer
+ * @property-read null|Comment $lastComment
+ * @property-read null|PostUser $userState
+ * @property-read null|Comment $answer
  * @property-read string $url
  * @property-read string $edit_url
  * @property-read string $unread_url
- * @property-read ?int $unread_comments_count
+ * @property-read null|int $unread_comments_count
  */
 class Post extends Model
 {
