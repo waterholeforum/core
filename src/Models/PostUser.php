@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property int $post_id
  * @property int $user_id
- * @property ?\Carbon\Carbon $last_read_at
- * @property ?string $notifications
- * @property ?\Carbon\Carbon $followed_at
- * @property ?\Carbon\Carbon $mentioned_at
+ * @property null|\Carbon\Carbon $last_read_at
+ * @property null|string $notifications
+ * @property null|\Carbon\Carbon $followed_at
+ * @property null|\Carbon\Carbon $mentioned_at
  * @property-read Post $post
  * @property-read User $user
  */
