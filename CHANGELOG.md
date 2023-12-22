@@ -7,6 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### ⚠️ Breaking Changes
+
+-   `waterhole.auth.oauth_providers` config key renamed to `waterhole.auth.providers`
+-   `.oauth-button` class renamed to `.auth-button`
+-   `<x-waterhole::oauth-buttons>` component renamed to `<x-waterhole::auth-buttons>`
+-   `Waterhole\OAuth\Payload` class renamed to `Waterhole\Auth\SsoPayload`
+-   Gate abilities are now prefixed with `waterhole.`
+-   Waterhole routes no longer use the `web` route middleware group
+
+### Added
+
+-   New `sso` auth provider to support custom single sign-on flows
+-   Auth guard used by Waterhole requests can be configured by setting `waterhole.auth.guard`
+-   Database connection can be configured by setting `waterhole.system.database`
+-   Support implicit authentication from existing user base by implementing `Waterhole\Auth\AuthenticatesWaterhole` interface
+-   Automatically create the formatter and translation cache directories if they don't exist
+
+### Changed
+
+-   If there is a single auth provider and passwords are disabled, the login and registration pages will now automatically redirect to the provider
+-   Laravel Socialite is now included by default
+-   Add color to inline code spans
+-   Reduce size of the Create Post button
+
+### Fixed
+
+-   Fix the forum URL shown at the end of the installation command
+-   Fix emoji picker inserting emoji multiple times after navigations
+-   Fix "last reply" link to jump to the last comment instead of below it
+-   Fix CP users table pagination/sorting links
+-   Only send notifications to verified email addresses
+
 ## [0.3.2] - 2023-12-02
 
 ### Added
