@@ -157,8 +157,8 @@ Route::post('confirm-password', [ConfirmPasswordController::class, 'confirm']);
 Route::post('logout', [LogoutController::class, 'logout'])->name('logout');
 
 // SSO
-Route::get('sso/{provider}', [SsoController::class, 'login'])->name('sso.login');
-Route::get('sso/{provider}/callback', [SsoController::class, 'callback'])->name('sso.callback');
+Route::get('auth/{provider}', [SsoController::class, 'login'])->name('sso.login');
+Route::get('auth/{provider}/callback', [SsoController::class, 'callback'])->name('sso.callback');
 
 // Utils
 Route::get('user-lookup/{post?}', UserLookupController::class)->name('user-lookup');
