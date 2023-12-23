@@ -59,8 +59,12 @@ abstract class Notification extends BaseNotification implements ShouldQueue
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail($notifiable): Mailable
+    public function toMail($notifiable): ?Mailable
     {
+        if (!($to = $notifiable->routeNotificationFor('mail'))) {
+            return null;
+        }
+
         $title = $this->title();
 
         $markdown = resolve(Markdown::class);
@@ -78,7 +82,7 @@ abstract class Notification extends BaseNotification implements ShouldQueue
         ];
 
         return (new Mailable())
-            ->to($notifiable->routeNotificationFor('mail'))
+            ->to($to)
             ->subject(strip_tags($title))
             ->view($markdown->render($view, $data))
             ->text($markdown->renderText($view, $data));
