@@ -12,6 +12,13 @@ class RouteServiceProvider extends ServiceProvider
 {
     public function boot()
     {
+        Route::aliasMiddleware('waterhole.auth', \Waterhole\Http\Middleware\Authenticate::class);
+
+        Route::aliasMiddleware(
+            'waterhole.guest',
+            \Waterhole\Http\Middleware\RedirectIfAuthenticated::class,
+        );
+
         Route::aliasMiddleware(
             'waterhole.confirm-password',
             \Waterhole\Http\Middleware\MaybeRequirePassword::class,
@@ -34,8 +41,8 @@ class RouteServiceProvider extends ServiceProvider
         ]);
 
         Route::middlewareGroup('waterhole.cp', [
-            'auth',
-            'can:waterhole.administrate',
+            'waterhole.auth',
+            \Illuminate\Auth\Middleware\Authorize::using('waterhole.administrate'),
             \Waterhole\Http\Middleware\MaybeRequirePassword::class,
         ]);
 

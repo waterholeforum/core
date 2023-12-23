@@ -10,7 +10,7 @@ class LogoutController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('waterhole.auth');
     }
 
     public function logout(Request $request)

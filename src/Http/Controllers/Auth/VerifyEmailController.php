@@ -5,14 +5,17 @@ namespace Waterhole\Http\Controllers\Auth;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Middleware\ThrottleRequests;
+use Illuminate\Routing\Middleware\ValidateSignature;
 use Waterhole\Http\Controllers\Controller;
 
 class VerifyEmailController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth', 'throttle:6,1']);
-        $this->middleware('signed')->only('verify');
+        $this->middleware('waterhole.auth');
+        $this->middleware(ThrottleRequests::with(maxAttempts: 6));
+        $this->middleware(ValidateSignature::class)->only('verify');
     }
 
     public function verify(Request $request)

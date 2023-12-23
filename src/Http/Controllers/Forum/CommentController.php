@@ -3,6 +3,7 @@
 namespace Waterhole\Http\Controllers\Forum;
 
 use Illuminate\Http\Request;
+use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Notification;
 use Tonysm\TurboLaravel\Http\TurboResponseFactory;
 use Waterhole\Http\Controllers\Controller;
@@ -27,8 +28,8 @@ class CommentController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->only('create', 'store', 'edit', 'update');
-        $this->middleware('throttle:waterhole.create')->only('store');
+        $this->middleware('waterhole.auth')->only('create', 'store', 'edit', 'update');
+        $this->middleware(ThrottleRequests::using('waterhole.create'))->only('store');
     }
 
     public function show(Post $post, Comment $comment, Request $request)

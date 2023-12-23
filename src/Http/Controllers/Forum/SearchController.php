@@ -5,6 +5,7 @@ namespace Waterhole\Http\Controllers\Forum;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Routing\Middleware\ThrottleRequests;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Post;
@@ -19,7 +20,7 @@ class SearchController extends Controller
 
     public function __construct()
     {
-        $this->middleware('throttle:waterhole.search');
+        $this->middleware(ThrottleRequests::using('waterhole.search'));
     }
 
     public function __invoke(Request $request, Searcher $searcher)

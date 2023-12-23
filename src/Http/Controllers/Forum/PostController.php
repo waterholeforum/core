@@ -3,6 +3,7 @@
 namespace Waterhole\Http\Controllers\Forum;
 
 use Illuminate\Http\Request;
+use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Notification;
@@ -24,8 +25,8 @@ class PostController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->only('create', 'store', 'edit', 'update');
-        $this->middleware('throttle:waterhole.create')->only('store');
+        $this->middleware('waterhole.auth')->only('create', 'store', 'edit', 'update');
+        $this->middleware(ThrottleRequests::using('waterhole.create'))->only('store');
     }
 
     public function show(Post $post, Request $request)

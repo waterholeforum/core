@@ -16,7 +16,7 @@ class PreferencesController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('waterhole.auth');
         $this->middleware('waterhole.confirm-password')->only([
             'account',
             'changeEmail',
