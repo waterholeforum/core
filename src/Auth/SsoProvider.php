@@ -89,6 +89,6 @@ final class SsoProvider implements Provider
 
     private function validatePayload(Payload $payload): bool
     {
-        return $payload->get('externalId') && $payload->get('email') && $payload->get('username');
+        return $payload->get('identifier') && $payload->get('email') && $payload->get('name');
     }
 }

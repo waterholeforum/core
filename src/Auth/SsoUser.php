@@ -13,12 +13,12 @@ class SsoUser implements User
 
     public function getId()
     {
-        return $this->payload->get('externalId');
+        return $this->payload->get('identifier');
     }
 
     public function getNickname()
     {
-        return $this->payload->get('username');
+        return $this->payload->get('name');
     }
 
     public function getName()
@@ -33,7 +33,7 @@ class SsoUser implements User
 
     public function getAvatar()
     {
-        return $this->payload->get('avatarUrl');
+        return $this->payload->get('avatar');
     }
 
     public function getGroups(): array
