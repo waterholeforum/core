@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+-   Fix auth routes using incorrect path ([#51](https://github.com/waterholeforum/core/issues/51))
+-   Fix reactions not working due to incorrect permission check
+-   Fix error when sending notification to unverified email
+
 ## [0.4.0] - 2023-12-23
 
 ### ⚠️ Breaking Changes
