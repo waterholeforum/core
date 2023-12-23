@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Support implicit authentication from existing user base by implementing `Waterhole\Auth\AuthenticatesWaterhole` interface
 -   Automatically create the formatter and translation cache directories if they don't exist
 -   Laravel Socialite is now included by default
+-   Update Traditional Chinese (zh-Hant) translation ([#48](https://github.com/waterholeforum/core/pull/48) by @efast1568)
 
 ### Changed
 
