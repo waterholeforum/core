@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   If there is a single auth provider and passwords are disabled, the login and registration pages will now automatically redirect to the provider
 -   Add color to inline code spans
 -   Reduce size of the Create Post button
+-   Waterhole routes no longer rely on app-aliased middleware
 
 ### Fixed
 
