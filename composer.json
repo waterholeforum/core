@@ -22,7 +22,7 @@
         "secondnetwork/blade-tabler-icons": "^2.6",
         "staudenmeir/laravel-adjacency-list": "^1.7",
         "staudenmeir/laravel-cte": "^1.0",
-        "waterhole/sso": "dev-main"
+        "waterhole/sso": "^0.1"
     },
     "require-dev": {
         "nunomaduro/larastan": "^2.0",
