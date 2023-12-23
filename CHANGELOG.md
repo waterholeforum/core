@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.1] - 2023-12-24
+
 ### Fixed
 
 -   Fix auth routes using incorrect path ([#51](https://github.com/waterholeforum/core/issues/51))
@@ -206,7 +208,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release.
 
-[unreleased]: https://github.com/waterholeforum/core/compare/v0.4.0...HEAD
+[unreleased]: https://github.com/waterholeforum/core/compare/v0.4.1...HEAD
+[0.4.1]: https://github.com/waterholeforum/core/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/waterholeforum/core/compare/v0.3.2...v0.4.0
 [0.3.2]: https://github.com/waterholeforum/core/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/waterholeforum/core/compare/v0.3.0...v0.3.1
