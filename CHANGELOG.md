@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   `.oauth-button` class renamed to `.auth-button`
 -   `<x-waterhole::oauth-buttons>` component renamed to `<x-waterhole::auth-buttons>`
 -   `Waterhole\OAuth\Payload` class renamed to `Waterhole\Auth\SsoPayload`
--   Gate abilities are now prefixed with `waterhole.`
+-   Waterhole Gate abilities are now prefixed with `waterhole.`
 -   Waterhole routes no longer use the `web` route middleware group
 
 ### Added
@@ -23,11 +23,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Database connection can be configured by setting `waterhole.system.database`
 -   Support implicit authentication from existing user base by implementing `Waterhole\Auth\AuthenticatesWaterhole` interface
 -   Automatically create the formatter and translation cache directories if they don't exist
+-   Laravel Socialite is now included by default
 
 ### Changed
 
 -   If there is a single auth provider and passwords are disabled, the login and registration pages will now automatically redirect to the provider
--   Laravel Socialite is now included by default
 -   Add color to inline code spans
 -   Reduce size of the Create Post button
 
