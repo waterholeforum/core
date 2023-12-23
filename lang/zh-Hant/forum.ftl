@@ -9,11 +9,11 @@ register = 註冊
 
 ## Search
 
-search-placeholder = 搜尋文章
+search-placeholder = 站內文章搜尋
 search-results-title = "{ $query }" 的搜尋結果
 search-button = 搜尋
 
-search-filter-button = 過濾器
+search-filter-button = 篩選
 
 search-showing-results-title = 顯示 { $total } { $total ->
     [one] 個結果
@@ -97,7 +97,7 @@ unpin-button = 移除置頂
 
 post-comment-button = 發表評論
 
-move-to-trash-button = 資源回收
+move-to-trash-button = 刪除
 restore-button = 還原刪除
 delete-forever-button = 永久刪除
 
