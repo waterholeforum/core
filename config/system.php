@@ -19,7 +19,8 @@ return [
     | Database Connection
     |--------------------------------------------------------------------------
     |
-    |
+    | Here you may specify which database connection Waterhole should use
+    | for its data storage.
     |
     */
 
@@ -30,7 +31,8 @@ return [
     | Route Domain
     |--------------------------------------------------------------------------
     |
-    |
+    | If you want Waterhole to register its routes under a sub-domain, you
+    | can specify that here.
     |
     */
 

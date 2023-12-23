@@ -51,11 +51,13 @@ class RouteServiceProvider extends ServiceProvider
         $this->routes(function () {
             Route::middleware(['waterhole.web'])
                 ->name('waterhole.')
+                ->domain(config('waterhole.system.domain'))
                 ->prefix(config('waterhole.forum.path'))
                 ->group(__DIR__ . '/../../routes/forum.php');
 
             Route::middleware(['waterhole.web', 'waterhole.cp'])
                 ->name('waterhole.cp.')
+                ->domain(config('waterhole.system.domain'))
                 ->prefix(config('waterhole.cp.path'))
                 ->group(__DIR__ . '/../../routes/cp.php');
         });

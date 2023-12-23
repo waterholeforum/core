@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   New `sso` auth provider to support custom single sign-on flows
 -   Auth guard used by Waterhole requests can be configured by setting `waterhole.auth.guard`
 -   Database connection can be configured by setting `waterhole.system.database`
+-   Route domain can be configured by settings `waterhole.system.domain`
 -   Support implicit authentication from existing user base by implementing `Waterhole\Auth\AuthenticatesWaterhole` interface
 -   Automatically create the formatter and translation cache directories if they don't exist
 -   Laravel Socialite is now included by default
