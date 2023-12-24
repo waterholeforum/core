@@ -8,7 +8,6 @@ use Illuminate\Validation\Rules\Password;
 use Waterhole\Extend\NotificationTypes;
 use Waterhole\Forms\UserProfileForm;
 use Waterhole\Http\Controllers\Controller;
-use Waterhole\View\Components\UserProfileFields;
 
 /**
  * Controller for user preferences views.
@@ -17,7 +16,7 @@ class PreferencesController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('waterhole.auth');
         $this->middleware('waterhole.confirm-password')->only([
             'account',
             'changeEmail',
@@ -37,6 +36,10 @@ class PreferencesController extends Controller
 
     public function changeEmail(Request $request)
     {
+        if ($request->user()->originalUser()) {
+            abort(404);
+        }
+
         $data = $request->validate([
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
         ]);
@@ -48,10 +51,7 @@ class PreferencesController extends Controller
 
         return redirect()
             ->route('waterhole.preferences.account')
-            ->with(
-                'success',
-                __('waterhole::auth.email-verification-sent-message', ['email' => $data['email']]),
-            );
+            ->with('success', __('waterhole::auth.email-verification-sent-message', $data));
     }
 
     public function changePassword(Request $request)

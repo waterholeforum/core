@@ -1,6 +1,6 @@
 <?php
 
-namespace Waterhole\OAuth;
+namespace Waterhole\Auth;
 
 use Illuminate\Support\Collection;
 
@@ -60,5 +60,10 @@ class Providers
     public function has(string $provider): bool
     {
         return $this->providers->has($provider);
+    }
+
+    public function sole(): ?array
+    {
+        return $this->providers->count() === 1 ? $this->providers->first() : null;
     }
 }

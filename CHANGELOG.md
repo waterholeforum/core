@@ -7,6 +7,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.1] - 2023-12-24
+
+### Fixed
+
+-   Fix auth routes using incorrect path ([#51](https://github.com/waterholeforum/core/issues/51))
+-   Fix reactions not working due to incorrect permission check
+-   Fix error when sending notification to unverified email
+
+## [0.4.0] - 2023-12-23
+
+### ⚠️ Breaking Changes
+
+-   `waterhole.auth.oauth_providers` config key renamed to `waterhole.auth.providers`
+-   `.oauth-button` class renamed to `.auth-button`
+-   `<x-waterhole::oauth-buttons>` component renamed to `<x-waterhole::auth-buttons>`
+-   `Waterhole\OAuth\Payload` class renamed to `Waterhole\Auth\SsoPayload`
+-   Waterhole Gate abilities are now prefixed with `waterhole.`
+-   Waterhole routes no longer use the `web` route middleware group
+
+### Added
+
+-   New `sso` auth provider to support custom single sign-on flows
+-   Auth guard used by Waterhole requests can be configured by setting `waterhole.auth.guard`
+-   Database connection can be configured by setting `waterhole.system.database`
+-   Route domain can be configured by settings `waterhole.system.domain`
+-   Support implicit authentication from existing user base by implementing `Waterhole\Auth\AuthenticatesWaterhole` interface
+-   Automatically create the formatter and translation cache directories if they don't exist
+-   Laravel Socialite is now included by default
+-   Update Traditional Chinese (zh-Hant) translation ([#48](https://github.com/waterholeforum/core/pull/48) by @efast1568)
+
+### Changed
+
+-   If there is a single auth provider and passwords are disabled, the login and registration pages will now automatically redirect to the provider
+-   Add color to inline code spans
+-   Reduce size of the Create Post button
+-   Waterhole routes no longer rely on app-aliased middleware
+
+### Fixed
+
+-   Fix the forum URL shown at the end of the installation command
+-   Fix emoji picker inserting emoji multiple times after navigations
+-   Fix "last reply" link to jump to the last comment instead of below it
+-   Fix CP users table pagination/sorting links
+-   Only send notifications to verified email addresses
+
 ## [0.3.2] - 2023-12-02
 
 ### Added
@@ -163,7 +208,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release.
 
-[unreleased]: https://github.com/waterholeforum/core/compare/v0.3.2...HEAD
+[unreleased]: https://github.com/waterholeforum/core/compare/v0.4.1...HEAD
+[0.4.1]: https://github.com/waterholeforum/core/compare/v0.4.0...v0.4.1
+[0.4.0]: https://github.com/waterholeforum/core/compare/v0.3.2...v0.4.0
 [0.3.2]: https://github.com/waterholeforum/core/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/waterholeforum/core/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/waterholeforum/core/compare/v0.2.0...v0.3.0

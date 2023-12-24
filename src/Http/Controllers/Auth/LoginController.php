@@ -8,21 +8,26 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Waterhole\Auth\Providers;
 use Waterhole\Http\Controllers\Controller;
 
 class LoginController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('waterhole.guest');
     }
 
-    public function showLoginForm(Request $request)
+    public function showLoginForm(Request $request, Providers $providers)
     {
-        // Copy any URL passed in the `return` query parameter into the session
-        // so that after the login is complete we can redirect back to it.
         if (!redirect()->getIntendedUrl()) {
+            // Copy any URL passed in the `return` query parameter into the session
+            // so that after the login is complete we can redirect back to it.
             redirect()->setIntendedUrl($request->query('return', url()->previous()));
+        }
+
+        if (!config('waterhole.auth.password_enabled', true) && ($provider = $providers->sole())) {
+            return redirect()->route('waterhole.sso.login', ['provider' => $provider['name']]);
         }
 
         return view('waterhole::auth.login');

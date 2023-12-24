@@ -14,7 +14,7 @@ class ContactOutpost
 
     public function handle($request, Closure $next)
     {
-        if (Gate::allows('administrate')) {
+        if (Gate::allows('waterhole.administrate')) {
             $this->outpost->contact();
         }
 

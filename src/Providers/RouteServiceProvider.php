@@ -12,12 +12,27 @@ class RouteServiceProvider extends ServiceProvider
 {
     public function boot()
     {
+        Route::aliasMiddleware('waterhole.auth', \Waterhole\Http\Middleware\Authenticate::class);
+
+        Route::aliasMiddleware(
+            'waterhole.guest',
+            \Waterhole\Http\Middleware\RedirectIfAuthenticated::class,
+        );
+
         Route::aliasMiddleware(
             'waterhole.confirm-password',
             \Waterhole\Http\Middleware\MaybeRequirePassword::class,
         );
 
         Route::middlewareGroup('waterhole.web', [
+            \Illuminate\Cookie\Middleware\EncryptCookies::class,
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class,
+            \Waterhole\Http\Middleware\AuthenticateWaterhole::class,
+            \Waterhole\Http\Middleware\AuthGuard::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \Tonysm\TurboLaravel\Http\Middleware\TurboMiddleware::class,
             \Waterhole\Http\Middleware\ContactOutpost::class,
             \Waterhole\Http\Middleware\ActorSeen::class,
@@ -26,21 +41,23 @@ class RouteServiceProvider extends ServiceProvider
         ]);
 
         Route::middlewareGroup('waterhole.cp', [
-            'auth',
-            'can:administrate',
+            'waterhole.auth',
+            \Illuminate\Auth\Middleware\Authorize::using('waterhole.administrate'),
             \Waterhole\Http\Middleware\MaybeRequirePassword::class,
         ]);
 
         $this->configureRateLimiting();
 
         $this->routes(function () {
-            Route::middleware(['web', 'waterhole.web'])
+            Route::middleware(['waterhole.web'])
                 ->name('waterhole.')
+                ->domain(config('waterhole.system.domain'))
                 ->prefix(config('waterhole.forum.path'))
                 ->group(__DIR__ . '/../../routes/forum.php');
 
-            Route::middleware(['web', 'waterhole.web', 'waterhole.cp'])
+            Route::middleware(['waterhole.web', 'waterhole.cp'])
                 ->name('waterhole.cp.')
+                ->domain(config('waterhole.system.domain'))
                 ->prefix(config('waterhole.cp.path'))
                 ->group(__DIR__ . '/../../routes/cp.php');
         });

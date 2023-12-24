@@ -6,13 +6,13 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\Validator;
+use Waterhole\Auth\SsoPayload;
 use Waterhole\Forms\Field;
 use Waterhole\Models\User;
-use Waterhole\OAuth\Payload;
 
 class UserPassword extends Field
 {
-    public function __construct(public User $model, public ?Payload $payload = null)
+    public function __construct(public User $model, public ?SsoPayload $payload = null)
     {
     }
 

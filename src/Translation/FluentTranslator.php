@@ -139,6 +139,7 @@ final class FluentTranslator implements TranslatorContract
         } else {
             $body = $getBody();
             if ($cacheFile) {
+                $this->files->ensureDirectoryExists($this->cachePath);
                 $this->files->put($cacheFile, serialize($body));
             }
         }

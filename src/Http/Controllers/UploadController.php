@@ -11,7 +11,7 @@ class UploadController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('waterhole.auth');
     }
 
     public function __invoke(Request $request)

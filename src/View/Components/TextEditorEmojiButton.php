@@ -22,7 +22,7 @@ class TextEditorEmojiButton extends Component
                 </button>
 
                 <div class="menu emoji-picker" hidden>
-                    <emoji-picker data-text-editor-target="emojiPicker"></emoji-picker>
+                    <emoji-picker data-action="emoji-click->text-editor#insertEmoji"></emoji-picker>
                 </div>
             </ui-popup>
         blade;

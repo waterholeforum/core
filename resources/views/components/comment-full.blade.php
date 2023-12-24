@@ -99,7 +99,7 @@
                 </button>
             @endif
 
-            @can('post.comment', $comment->post)
+            @can('waterhole.post.comment', $comment->post)
                 <a
                     href="{{
                         route('waterhole.posts.comments.create', [

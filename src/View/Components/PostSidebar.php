@@ -5,6 +5,7 @@ namespace Waterhole\View\Components;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Route;
 use Illuminate\View\Component;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
@@ -18,9 +19,9 @@ class PostSidebar extends Component
 
     public function __construct(public Post $post)
     {
-        $gate = Gate::forUser(Auth::user() ?: new User());
+        $gate = Gate::forUser(Auth::user() ?: (Route::has('waterhole.login') ? new User() : null));
 
-        $this->response = $gate->inspect('post.comment', $post);
+        $this->response = $gate->inspect('waterhole.post.comment', $post);
     }
 
     public function render()

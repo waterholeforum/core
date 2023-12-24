@@ -26,7 +26,7 @@
 
             <x-waterhole::comment-frame :comment="$comment" with-replies class="card" />
 
-            @can('post.comment', $post)
+            @can('waterhole.post.comment', $post)
                 <x-waterhole::composer :post="$post" :parent="$comment" />
             @endcan
         </div>

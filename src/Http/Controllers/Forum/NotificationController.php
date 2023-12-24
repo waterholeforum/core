@@ -4,6 +4,7 @@ namespace Waterhole\Http\Controllers\Forum;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Middleware\ValidateSignature;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Crypt;
 use Waterhole\Http\Controllers\Controller;
@@ -17,8 +18,8 @@ class NotificationController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
-        $this->middleware('signed')->only('unsubscribe');
+        $this->middleware('waterhole.auth');
+        $this->middleware(ValidateSignature::class)->only('unsubscribe');
     }
 
     public function index(Request $request)

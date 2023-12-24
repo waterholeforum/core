@@ -16,7 +16,7 @@ class RestorePost extends Action
 
     public function authorize(?User $user, Model $model): bool
     {
-        return $user && $user->can('post.delete', $model);
+        return $user && $user->can('waterhole.post.delete', $model);
     }
 
     public function label(Collection $models): string

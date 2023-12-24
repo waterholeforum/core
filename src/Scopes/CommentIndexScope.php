@@ -20,7 +20,8 @@ class CommentIndexScope implements Scope
         }
 
         $builder->select($builder->qualifyColumn('*'))->selectSub(
-            DB::table('comments', 'ci')
+            DB::connection(config('waterhole.system.database'))
+                ->table('comments', 'ci')
                 ->selectRaw('count(*)')
                 ->whereColumn('ci.post_id', $builder->qualifyColumn('post_id'))
                 ->whereColumn('ci.id', '<', $builder->qualifyColumn('id')),

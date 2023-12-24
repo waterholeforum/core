@@ -18,8 +18,8 @@ class IndexCreatePost extends Component
         $gate = Gate::forUser(Auth::user() ?: new User());
 
         $this->response = $channel
-            ? $gate->inspect('channel.post', $channel)
-            : $gate->inspect('post.create');
+            ? $gate->inspect('waterhole.channel.post', $channel)
+            : $gate->inspect('waterhole.post.create');
     }
 
     public function render()

@@ -6,7 +6,6 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Post;
-
 use function Waterhole\remove_formatting;
 
 class MySqlEngine implements EngineInterface
@@ -44,12 +43,13 @@ class MySqlEngine implements EngineInterface
         // them. Even if we're filtering by certain channels, we still report
         // the number of hits in all channels so that they can be displayed
         // in the sidebar.
+        $tablePrefix = DB::connection(config('waterhole.system.database'))->getTablePrefix();
         $channels = Channel::query()
             ->select('id')
             ->selectSub(
                 $query
                     ->clone()
-                    ->select(DB::raw('count(distinct posts.id)'))
+                    ->select(DB::raw("count(distinct {$tablePrefix}posts.id)"))
                     ->whereColumn('posts.channel_id', 'channels.id'),
                 'hits',
             )
@@ -74,12 +74,12 @@ class MySqlEngine implements EngineInterface
 
         if (in_array('title', $in)) {
             $score[] = 'tscore';
-            $query->selectRaw('MATCH (posts.title) AGAINST (?) * 10 as tscore', [$q]);
+            $query->selectRaw("MATCH ({$tablePrefix}posts.title) AGAINST (?) * 10 as tscore", [$q]);
         }
 
         if (in_array('body', $in)) {
             $score[] = 'pscore';
-            $query->selectRaw('MATCH (posts.body) AGAINST (?) as pscore', [$q]);
+            $query->selectRaw("MATCH ({$tablePrefix}posts.body) AGAINST (?) as pscore", [$q]);
         }
 
         if (in_array('comments', $in)) {
@@ -88,10 +88,10 @@ class MySqlEngine implements EngineInterface
                 ->addSelect('comments.id as comment_id')
                 ->addSelect('comments.body as comment_body')
                 ->selectRaw(
-                    'ROW_NUMBER() OVER (PARTITION BY posts.id ORDER BY MATCH (comments.body) AGAINST (?) DESC) as r',
+                    "ROW_NUMBER() OVER (PARTITION BY {$tablePrefix}posts.id ORDER BY MATCH ({$tablePrefix}comments.body) AGAINST (?) DESC) as r",
                     [$q],
                 )
-                ->selectRaw('MATCH (comments.body) AGAINST (?) as cscore', [$q]);
+                ->selectRaw("MATCH ({$tablePrefix}comments.body) AGAINST (?) as cscore", [$q]);
         } else {
             $query->selectRaw('1 as r');
         }

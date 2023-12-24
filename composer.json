@@ -17,10 +17,12 @@
         "kirschbaum-development/eloquent-power-joins": "^3.2.1",
         "laminas/laminas-feed": "^2.20",
         "laravel/framework": "^10.0",
+        "laravel/socialite": "^v5.10.0",
         "s9e/text-formatter": "^2.13",
         "secondnetwork/blade-tabler-icons": "^2.6",
         "staudenmeir/laravel-adjacency-list": "^1.7",
-        "staudenmeir/laravel-cte": "^1.0"
+        "staudenmeir/laravel-cte": "^1.0",
+        "waterhole/sso": "^0.1"
     },
     "require-dev": {
         "nunomaduro/larastan": "^2.0",

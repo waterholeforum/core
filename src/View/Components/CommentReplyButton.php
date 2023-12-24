@@ -21,7 +21,7 @@ class CommentReplyButton extends Component
         // a normal user would be able to post a comment.
         $user = Auth::user() ?: new User();
 
-        return $user->can('post.comment', $this->comment->post);
+        return $user->can('waterhole.post.comment', $this->comment->post);
     }
 
     public function render(): View

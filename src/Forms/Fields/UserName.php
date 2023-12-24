@@ -5,16 +5,16 @@ namespace Waterhole\Forms\Fields;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
+use Waterhole\Auth\SsoPayload;
 use Waterhole\Forms\Field;
 use Waterhole\Models\User;
-use Waterhole\OAuth\Payload;
 
 class UserName extends Field
 {
-    public function __construct(public ?User $model, public ?Payload $payload = null)
+    public function __construct(public ?User $model, public ?SsoPayload $payload = null)
     {
         if ($payload) {
-            $model->name = $payload->name;
+            $model->name = $payload->user->name;
         }
     }
 
@@ -47,7 +47,7 @@ class UserName extends Field
                 // than one space in a row, or only numbers.
                 'not_regex:/@|[^\S ]|\s{2,}|^\d+$/',
                 'not_in:admin',
-                Rule::unique('users')->ignore($this->model),
+                Rule::unique(User::class)->ignore($this->model),
             ],
         ]);
     }

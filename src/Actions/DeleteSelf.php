@@ -13,7 +13,7 @@ class DeleteSelf extends Action
 
     public function appliesTo(Model $model): bool
     {
-        return $model instanceof User && !$model->isRootAdmin();
+        return $model instanceof User && !$model->isRootAdmin() && !$model->originalUser();
     }
 
     public function authorize(?User $user, Model $model): bool

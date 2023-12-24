@@ -22,7 +22,7 @@ class MoveToChannel extends Action
 
     public function authorize(?User $user, Model $model): bool
     {
-        return $user && $user->can('post.move', $model);
+        return $user && $user->can('waterhole.post.move', $model);
     }
 
     public function label(Collection $models): string
@@ -51,7 +51,7 @@ class MoveToChannel extends Action
             'channel_id' => ['required', Rule::exists('channels', 'id')],
         ]);
 
-        Gate::authorize('channel.post', Channel::findOrFail($data['channel_id']));
+        Gate::authorize('waterhole.channel.post', Channel::findOrFail($data['channel_id']));
 
         $models->each->update($data);
     }

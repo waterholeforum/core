@@ -16,6 +16,30 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Database Connection
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify which database connection Waterhole should use
+    | for its data storage.
+    |
+    */
+
+    'database' => env('DB_CONNECTION'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Route Domain
+    |--------------------------------------------------------------------------
+    |
+    | If you want Waterhole to register its routes under a sub-domain, you
+    | can specify that here.
+    |
+    */
+
+    'domain' => null,
+
+    /*
+    |--------------------------------------------------------------------------
     | Laravel Echo Configuration
     |--------------------------------------------------------------------------
     |

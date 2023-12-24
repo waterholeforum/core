@@ -22,7 +22,7 @@ class React extends Action
     {
         return $user &&
             $user->can(
-                strtolower((new ReflectionClass($model))->getShortName()) . '.react',
+                'waterhole.' . strtolower((new ReflectionClass($model))->getShortName()) . '.react',
                 $model,
             );
     }

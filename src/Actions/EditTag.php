@@ -16,7 +16,7 @@ class EditTag extends Link
 
     public function authorize(?User $user, Model $model): bool
     {
-        return $user && $user->can('tag.edit', $model);
+        return $user && $user->can('waterhole.tag.edit', $model);
     }
 
     public function label(Collection $models): string

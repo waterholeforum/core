@@ -21,8 +21,10 @@ class PostTags extends Field
         $this->taxonomies = $model->channel?->taxonomies
             ->load('tags')
             ->filter(
-                fn(Taxonomy $taxonomy) => Gate::allows('taxonomy.assign-tags', $taxonomy) &&
-                    $taxonomy->tags->count(),
+                fn(Taxonomy $taxonomy) => Gate::allows(
+                    'waterhole.taxonomy.assign-tags',
+                    $taxonomy,
+                ) && $taxonomy->tags->count(),
             );
     }
 

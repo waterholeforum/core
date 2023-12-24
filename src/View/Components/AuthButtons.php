@@ -3,9 +3,9 @@
 namespace Waterhole\View\Components;
 
 use Illuminate\View\Component;
-use Waterhole\OAuth\Providers;
+use Waterhole\Auth\Providers;
 
-class OAuthButtons extends Component
+class AuthButtons extends Component
 {
     public function __construct(public Providers $providers)
     {
@@ -22,8 +22,8 @@ class OAuthButtons extends Component
             <div class="stack gap-sm">
                 @foreach ($providers->all() as $provider => $config)
                     <a
-                        href="{{ route('waterhole.oauth.login', compact('provider')) }}"
-                        class="btn oauth-button"
+                        href="{{ route('waterhole.sso.login', compact('provider')) }}"
+                        class="btn auth-button"
                         data-provider="{{ $provider }}"
                     >
                         @icon($config['icon'])

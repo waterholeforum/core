@@ -36,7 +36,7 @@ class InstallCommand extends Command
         $this->createAdmin();
 
         $this->info('Waterhole successfully installed.');
-        $this->info('Check out your forum at: ' . config('app.url'));
+        $this->info('Check out your forum at: ' . route('waterhole.home'));
     }
 
     private function publish(): void

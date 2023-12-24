@@ -79,7 +79,11 @@
                                         <th>
                                             @if (in_array($column, $sortable))
                                                 <a
-                                                    href="{{ request()->fullUrlWithQuery(['sort' => $column, 'direction' => $sort === $column ? ($direction === 'asc' ? 'desc' : 'asc') : null]) }}"
+                                                    href="{{ request()->fullUrlWithQuery([
+                                                        'sort' => $column,
+                                                        'direction' => $sort === $column ? ($direction === 'asc' ? 'desc' : 'asc') : null,
+                                                        'page' => null,
+                                                    ]) }}"
                                                     class="with-icon color-text"
                                                 >
                                                     <span>
@@ -148,7 +152,7 @@
                 </div>
 
                 <div>
-                    {{ $users->links('waterhole::pagination.default') }}
+                    {{ $users->withQueryString()->links('waterhole::pagination.default') }}
                 </div>
             @else
                 <div class="placeholder card">

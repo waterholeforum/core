@@ -29,7 +29,7 @@ class CommentPolicy
      */
     public function moderate(User $user, Comment $comment): bool
     {
-        return $user->can('post.moderate', $comment->post);
+        return $user->can('waterhole.post.moderate', $comment->post);
     }
 
     /**

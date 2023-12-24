@@ -14,4 +14,9 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 abstract class Model extends Eloquent
 {
     protected static $unguarded = true;
+
+    public function getConnectionName()
+    {
+        return config('waterhole.system.database');
+    }
 }

@@ -22,21 +22,21 @@ use function Tonysm\TurboLaravel\dom_id;
 /**
  * @property int $id
  * @property int $post_id
- * @property ?int $parent_id
- * @property ?int $user_id
+ * @property null|int $parent_id
+ * @property null|int $user_id
  * @property string $body
  * @property \Carbon\Carbon $created_at
- * @property ?\Carbon\Carbon $edited_at
+ * @property null|\Carbon\Carbon $edited_at
  * @property int $reply_count
  * @property int $score
- * @property ?\Carbon\Carbon $hidden_at
- * @property ?int $hidden_by
- * @property ?string $hidden_reason
+ * @property null|\Carbon\Carbon $hidden_at
+ * @property null|int $hidden_by
+ * @property null|string $hidden_reason
  * @property-read Post $post
- * @property-read ?User $user
+ * @property-read null|User $user
  * @property-read \Illuminate\Database\Eloquent\Collection $replies
- * @property-read ?Comment $parent
- * @property-read ?User $hiddenBy
+ * @property-read null|Comment $parent
+ * @property-read null|User $hiddenBy
  * @property-read string $url
  * @property-read string $edit_url
  * @property-read string $post_url
