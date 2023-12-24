@@ -15,7 +15,9 @@
         <x-waterhole::validation-errors />
 
         <details class="card" open>
-            <summary class="card__header h5">Details</summary>
+            <summary class="card__header h5">
+                {{ __('waterhole::cp.reaction-details-title') }}
+                </summary>
             <form
                 method="POST"
                 action="{{
@@ -53,7 +55,9 @@
 
         @isset($reactionSet)
             <details class="card" open>
-                <summary class="card__header h5">Reaction Types</summary>
+                <summary class="card__header h5">
+                    {{ __('waterhole::cp.reaction-type-title') }}
+                    </summary>
                 <turbo-frame id="reaction-types">
                     <div class="card__body stack gap-md">
                         <x-waterhole::cp.sortable-context
