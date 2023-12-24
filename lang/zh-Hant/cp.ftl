@@ -190,7 +190,13 @@ create-reaction-set-title = 建立表情集
 reaction-set-name-label = 名稱
 reaction-set-reactions-label = 表情
 delete-reaction-set-confirm-message = 確定要刪除此表情集嗎？
-reaction-set-saved-message = 表情集已儲存。
+reaction-set-saved-message = 表情集已儲存 
+
+reaction-details-title = 詳細資訊
+reaction-usage-label = 設置
+reaction-type-title = 反應類型
+reaction-default-posts = 預設於文章使用
+reaction-default-comments = 預設於評論使用
 
 edit-reaction-type-title = 編輯表情
 create-reaction-type-title = 建立表情
@@ -198,7 +204,7 @@ reaction-type-name-label = 名稱
 reaction-type-score-label = 分數
 reaction-type-score-description = 此表情的分數值。
 delete-reaction-type-confirm-message = 確定要刪除此表情嗎？
-reaction-type-saved-message = 表情已儲存。
+reaction-type-saved-message = 表情已儲存 
 
 ## Taxonomies
 
