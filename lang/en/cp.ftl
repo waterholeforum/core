@@ -192,6 +192,13 @@ reaction-set-reactions-label = Reactions
 delete-reaction-set-confirm-message = Are you sure you want to delete this reaction set?
 reaction-set-saved-message = Reaction set saved.
 
+reaction-details-title = Details
+reaction-usage-label = Usage
+reaction-type-title = Reaction Types
+reaction-default-posts = Use as default for posts
+reaction-default-comments = Use as default for comments
+
+
 edit-reaction-type-title = Edit Reaction Type
 create-reaction-type-title = Create a Reaction Type
 reaction-type-name-label = Name
