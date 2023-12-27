@@ -3,6 +3,7 @@
 namespace Waterhole\Providers;
 
 use Illuminate\Auth\Access\Response;
+use Illuminate\Auth\SessionGuard;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
@@ -46,6 +47,11 @@ class AuthServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        SessionGuard::macro('logoutOnce', function () {
+            $this->user = null;
+            $this->loggedOut = true;
+        });
+
         Socialite::extend(
             'sso',
             fn() => $this->app->make(SsoProvider::class, [

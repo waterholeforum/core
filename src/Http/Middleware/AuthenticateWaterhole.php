@@ -33,10 +33,16 @@ class AuthenticateWaterhole
                 return redirect()->route('waterhole.register.payload', compact('payload'));
             }
 
+            $guard = Auth::guard(config('waterhole.auth.guard', 'web'));
+
             if ($user) {
                 $user->setOriginalUser($originalUser);
 
-                Auth::guard(config('waterhole.auth.guard', 'web'))->setUser($user);
+                $guard->setUser($user);
+            } else {
+                // This is a macro defined in AuthServiceProvider, pending
+                // https://github.com/laravel/framework/pull/49506
+                $guard->logoutOnce();
             }
         }
 
