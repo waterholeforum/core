@@ -15,7 +15,10 @@
         <x-waterhole::validation-errors />
 
         <details class="card" open>
-            <summary class="card__header h5">Details</summary>
+            <summary class="card__header h5">
+                {{ __('waterhole::cp.reaction-set-details-title') }}
+            </summary>
+
             <form
                 method="POST"
                 action="{{
@@ -53,7 +56,10 @@
 
         @isset($reactionSet)
             <details class="card" open>
-                <summary class="card__header h5">Reaction Types</summary>
+                <summary class="card__header h5">
+                    {{ __('waterhole::cp.reaction-types-title') }}
+                </summary>
+
                 <turbo-frame id="reaction-types">
                     <div class="card__body stack gap-md">
                         <x-waterhole::cp.sortable-context
@@ -67,7 +73,9 @@
                                 aria-label="{{ __('waterhole::cp.reaction-set-reactions-label') }}"
                             >
                                 @empty($reactionSet->reactionTypes->load('reactionSet'))
-                                    <li class="placeholder">No Reaction Types</li>
+                                    <li class="placeholder">
+                                        {{ __('waterhole::cp.reaction-types-empty-message') }}
+                                    </li>
                                 @else
                                     @foreach ($reactionSet->reactionTypes->load('reactionSet') as $reactionType)
                                         <li
@@ -118,7 +126,7 @@
                                 data-turbo-frame="modal"
                             >
                                 @icon('tabler-plus')
-                                Add
+                                {{ __('waterhole::cp.reaction-types-add-button') }}
                             </a>
                         </div>
                     </div>

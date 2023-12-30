@@ -17,18 +17,20 @@ class ReactionSetDefaults extends Field
     {
         return <<<'blade'
             <div class="field">
-                <div class="field__label">Usage</div>
+                <div class="field__label">
+                    {{ __('waterhole::cp.reaction-set-usage-label') }}
+                </div>
 
                 <div class="stack gap-sm">
                     <label class="choice">
                         <input type="hidden" name="is_default_posts" value="0">
                         <input type="checkbox" name="is_default_posts" value="1" @checked($model->is_default_posts)>
-                        Use as default for posts
+                        {{ __('waterhole::cp.reaction-set-default-posts') }}
                     </label>
                     <label class="choice">
                         <input type="hidden" name="is_default_comments" value="0">
                         <input type="checkbox" name="is_default_comments" value="1" @checked($model->is_default_comments)>
-                        Use as default for comments
+                        {{ __('waterhole::cp.reaction-set-default-comments') }}
                     </label>
                 </div>
             </div>
