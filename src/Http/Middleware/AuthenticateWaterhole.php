@@ -40,8 +40,9 @@ class AuthenticateWaterhole
 
                 $guard->setUser($user);
             } else {
-                // This is a macro defined in AuthServiceProvider, pending
-                // https://github.com/laravel/framework/pull/49506
+                // This is a macro defined in AuthServiceProvider. Unfortunately
+                // forgetUser() does not prevent the user from being re-authenticated
+                // from the session details, so we need to use this.
                 $guard->logoutOnce();
             }
         }

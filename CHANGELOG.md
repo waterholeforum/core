@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+-   Fix issues with Laravel integration ([#53](https://github.com/waterholeforum/core/issues/53))
+-   Add missing translations for CP reactions
+
 ## [0.4.1] - 2023-12-24
 
 ### Fixed
