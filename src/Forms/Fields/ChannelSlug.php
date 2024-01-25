@@ -45,7 +45,7 @@ class ChannelSlug extends Field
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('channels')->ignore($this->model),
+                Rule::unique(Channel::class)->ignore($this->model),
             ],
         ]);
     }

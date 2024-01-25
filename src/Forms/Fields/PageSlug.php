@@ -44,7 +44,7 @@ class PageSlug extends Field
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('pages')->ignore($this->model),
+                Rule::unique(Page::class)->ignore($this->model),
             ],
         ]);
     }

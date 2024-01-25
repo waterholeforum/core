@@ -230,7 +230,7 @@ class Comment extends Model
     public static function rules(Comment $instance = null): array
     {
         return [
-            'parent_id' => ['nullable', Rule::exists('comments', 'id')],
+            'parent_id' => ['nullable', Rule::exists(Comment::class, 'id')],
             'body' => ['required', 'string'],
         ];
     }
