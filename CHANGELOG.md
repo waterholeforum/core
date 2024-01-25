@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+-   Fix incorrect database connection being used in some cases ([#55](https://github.com/waterholeforum/core/issues/55))
+
 ## [0.4.2] - 2023-12-31
 
 ### Fixed
