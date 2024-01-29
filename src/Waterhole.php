@@ -9,7 +9,7 @@ use Waterhole\Models\PermissionCollection;
 
 abstract class Waterhole
 {
-    public const VERSION = '0.4.3';
+    public const VERSION = '0.4.4';
 
     public static function isForumRoute(): bool
     {
