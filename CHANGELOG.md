@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+-   Fix an issue with Laravel auth integration causing user to be logged out after registration
+
 ## [0.4.3] - 2024-01-26
 
 ### Fixed

@@ -18,6 +18,8 @@ class AuthenticateWaterhole
             $originalUser instanceof AuthenticatesWaterhole &&
             ($payload = $originalUser->toWaterholePayload())
         ) {
+            $request->attributes->set('waterhole_original_user', $originalUser);
+
             $record = [
                 'provider' => $payload->provider,
                 'identifier' => $payload->user->identifier,
