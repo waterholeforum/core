@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+-   Fix incorrect database connection being used in some cases
+-   Fix success message not appearing after change email/password
+
 ## [0.4.4] - 2024-01-30
 
 ### Fixed
