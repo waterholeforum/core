@@ -73,7 +73,14 @@ final class FluentTranslator implements TranslatorContract
         $keys = (array) $key;
 
         foreach ($keys as $k) {
-            if (!$k || !str_contains($k, '.')) {
+            if (!$k) {
+                continue;
+            }
+
+            if (!str_contains($k, '.')) {
+                if ($this->baseTranslator->has($k, $locale, $fallback)) {
+                    return $this->baseTranslator->get($k, $replace, $locale, $fallback);
+                }
                 continue;
             }
 
