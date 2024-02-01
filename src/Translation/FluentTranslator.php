@@ -183,7 +183,7 @@ final class FluentTranslator implements TranslatorContract
             }
 
             // If there is no bundle in the namespace for the locale, try to load it from the
-            // ressource directory.
+            // resource directory.
             return $this->loadPath("{$this->path}/vendor/{$namespace}/", $locale, $group);
         }
 
