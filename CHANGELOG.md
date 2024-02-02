@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+-   Fix compatibility with `Model::shouldBeStrict()` ([#56](https://github.com/waterholeforum/core/issues/56))
+-   Fall back to base translator when using translation string keys ([#57](https://github.com/waterholeforum/core/pull/57) by @dsturm)
+-   Fall back to resource directory for missing translation bundle ([#58](https://github.com/waterholeforum/core/pull/58) by @dsturm)
+
 ## [0.4.5] - 2024-01-31
 
 ### Fixed
