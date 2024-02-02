@@ -77,26 +77,21 @@ final class FluentTranslator implements TranslatorContract
                 continue;
             }
 
-            if (!str_contains($k, '.')) {
-                if ($this->baseTranslator->has($k, $locale, $fallback)) {
-                    return $this->baseTranslator->get($k, $replace, $locale, $fallback);
+            if (str_contains($k, '.')) {
+                [$namespace, $group, $item] = $this->parseKey($k);
+
+                $message = $this->getBundle($namespace, $locale, $group)?->message($item, $replace);
+
+                if ($fallback && $this->fallback !== $locale) {
+                    $message ??= $this->getBundle($namespace, $this->fallback, $group)?->message(
+                        $item,
+                        $replace,
+                    );
                 }
-                continue;
-            }
 
-            [$namespace, $group, $item] = $this->parseKey($k);
-
-            $message = $this->getBundle($namespace, $locale, $group)?->message($item, $replace);
-
-            if ($fallback && $this->fallback !== $locale) {
-                $message ??= $this->getBundle($namespace, $this->fallback, $group)?->message(
-                    $item,
-                    $replace,
-                );
-            }
-
-            if ($message) {
-                return $message;
+                if ($message) {
+                    return $message;
+                }
             }
 
             if ($this->baseTranslator->has($k, $locale, $fallback)) {
