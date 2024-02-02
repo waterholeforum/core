@@ -183,6 +183,10 @@ final class FluentTranslator implements TranslatorContract
 
                 return $bundle;
             }
+
+            if ($this->bundleOptions['allowOverrides'] ?? false) {
+                return $this->loadPath("{$this->path}/vendor/{$namespace}", $locale, $group);
+            }
         }
 
         return false;
