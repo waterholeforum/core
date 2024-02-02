@@ -33,6 +33,11 @@ class ChannelUser extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function getKey(): string
+    {
+        return $this->channel_id . ':' . $this->user_id;
+    }
+
     protected function setKeysForSaveQuery($query): Builder
     {
         return $query->where('channel_id', $this->channel_id)->where('user_id', $this->user_id);

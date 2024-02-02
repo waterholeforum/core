@@ -77,6 +77,6 @@ class ReactionsSummaryRelation extends Relation
 
     public function getResults(): ReactionsSummary
     {
-        return new ReactionsSummary($this->query->get());
+        return new ReactionsSummary($this->query->toBase()->get());
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Waterhole\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -46,7 +47,12 @@ class PostUser extends Model
         return $this->belongsTo(User::class);
     }
 
-    protected function setKeysForSaveQuery($query)
+    public function getKey(): string
+    {
+        return $this->post_id . ':' . $this->user_id;
+    }
+
+    protected function setKeysForSaveQuery($query): Builder
     {
         return $query->where('post_id', $this->post_id)->where('user_id', $this->user_id);
     }
