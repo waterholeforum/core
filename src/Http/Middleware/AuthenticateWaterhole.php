@@ -12,7 +12,7 @@ class AuthenticateWaterhole
 {
     public function handle(Request $request, Closure $next)
     {
-        $originalUser = Auth::user();
+        $originalUser = Auth::guard(config('waterhole.auth.guard', 'web'))->user();
 
         if (
             $originalUser instanceof AuthenticatesWaterhole &&
