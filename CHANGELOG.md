@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+-   Fix post slug mutation when title is highlighted in search results
+
 ## [0.4.6] - 2024-02-02
 
 ### Fixed
