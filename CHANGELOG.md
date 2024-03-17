@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.7] - 2024-03-17
+
 ### Added
 
 -   Add PHP 8.3 compatibility ([#62](https://github.com/waterholeforum/core/pull/62) by @saturnphp)
@@ -253,7 +255,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release.
 
-[unreleased]: https://github.com/waterholeforum/core/compare/v0.4.6...HEAD
+[unreleased]: https://github.com/waterholeforum/core/compare/v0.4.7...HEAD
+[0.4.7]: https://github.com/waterholeforum/core/compare/v0.4.6...v0.4.7
 [0.4.6]: https://github.com/waterholeforum/core/compare/v0.4.5...v0.4.6
 [0.4.5]: https://github.com/waterholeforum/core/compare/v0.4.4...v0.4.5
 [0.4.4]: https://github.com/waterholeforum/core/compare/v0.4.3...v0.4.4
