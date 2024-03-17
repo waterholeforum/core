@@ -7,9 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+-   Add PHP 8.3 compatibility ([#62](https://github.com/waterholeforum/core/pull/62) by @saturnphp)
+-   Add Dutch translation ([#60](https://github.com/waterholeforum/core/pull/60) by @Emmanuel71)
+
 ### Fixed
 
+-   Fix Chrome bug where textarea scrolls the viewport when selecting text
 -   Fix post slug mutation when title is highlighted in search results
+-   Fix icons displaying incorrectly with latest version of `blade-tabler-icons` ([#63](https://github.com/waterholeforum/core/issues/63))
 
 ## [0.4.6] - 2024-02-02
 
