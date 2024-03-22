@@ -7,6 +7,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.7] - 2024-03-17
+
+### Added
+
+-   Add PHP 8.3 compatibility ([#62](https://github.com/waterholeforum/core/pull/62) by @saturnphp)
+-   Add Dutch translation ([#60](https://github.com/waterholeforum/core/pull/60) by @Emmanuel71)
+
+### Fixed
+
+-   Fix Chrome bug where textarea scrolls the viewport when selecting text
+-   Fix post slug mutation when title is highlighted in search results
+-   Fix icons displaying incorrectly with latest version of `blade-tabler-icons` ([#63](https://github.com/waterholeforum/core/issues/63))
+
+## [0.4.6] - 2024-02-02
+
+### Fixed
+
+-   Fix compatibility with `Model::shouldBeStrict()` ([#56](https://github.com/waterholeforum/core/issues/56))
+-   Fall back to base translator when using translation string keys ([#57](https://github.com/waterholeforum/core/pull/57) by @dsturm)
+-   Fall back to resource directory for missing translation bundle ([#58](https://github.com/waterholeforum/core/pull/58) by @dsturm)
+
+## [0.4.5] - 2024-01-31
+
+### Fixed
+
+-   Fix incorrect database connection being used in some cases
+-   Fix success message not appearing after change email/password
+
+## [0.4.4] - 2024-01-30
+
+### Fixed
+
+-   Fix an issue with Laravel auth integration causing user to be logged out after registration
+
+## [0.4.3] - 2024-01-26
+
+### Fixed
+
+-   Fix incorrect database connection being used in some cases ([#55](https://github.com/waterholeforum/core/issues/55))
+
 ## [0.4.2] - 2023-12-31
 
 ### Fixed
@@ -215,7 +255,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release.
 
-[unreleased]: https://github.com/waterholeforum/core/compare/v0.4.2...HEAD
+[unreleased]: https://github.com/waterholeforum/core/compare/v0.4.7...HEAD
+[0.4.7]: https://github.com/waterholeforum/core/compare/v0.4.6...v0.4.7
+[0.4.6]: https://github.com/waterholeforum/core/compare/v0.4.5...v0.4.6
+[0.4.5]: https://github.com/waterholeforum/core/compare/v0.4.4...v0.4.5
+[0.4.4]: https://github.com/waterholeforum/core/compare/v0.4.3...v0.4.4
+[0.4.3]: https://github.com/waterholeforum/core/compare/v0.4.2...v0.4.3
 [0.4.2]: https://github.com/waterholeforum/core/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/waterholeforum/core/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/waterholeforum/core/compare/v0.3.2...v0.4.0

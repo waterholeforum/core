@@ -22,7 +22,7 @@ class ReactionsSummary
 
     public function userReacted(ReactionType $reactionType): bool
     {
-        return (bool) $this->row($reactionType)?->user_reacted;
+        return (bool) ($this->row($reactionType)?->user_reacted ?? false);
     }
 
     private function row(ReactionType $reactionType): object|null

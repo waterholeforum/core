@@ -48,7 +48,7 @@ class UserEmail extends Field
                 'string',
                 'email',
                 'max:255',
-                Rule::unique('users')->ignore($this->model),
+                Rule::unique(User::class)->ignore($this->model),
             ],
         ]);
     }

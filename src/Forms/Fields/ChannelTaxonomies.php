@@ -4,6 +4,7 @@ namespace Waterhole\Forms\Fields;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Exists;
 use Illuminate\Validation\Validator;
 use Waterhole\Forms\Field;
 use Waterhole\Models\Channel;
@@ -55,7 +56,7 @@ class ChannelTaxonomies extends Field
     {
         $validator->addRules([
             'taxonomy_ids' => ['array'],
-            'taxonomy_ids.*' => ['required', 'integer', 'exists:taxonomies,id'],
+            'taxonomy_ids.*' => ['required', 'integer', new Exists(Taxonomy::class, 'id')],
         ]);
     }
 

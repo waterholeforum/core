@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Str;
 use Waterhole\Events\NewPost;
 use Waterhole\Models\Concerns\Followable;
 use Waterhole\Models\Concerns\HasBody;
@@ -353,12 +352,6 @@ class Post extends Model
             'post' => $this,
             'reactionType' => $reactionType,
         ]);
-    }
-
-    public function setTitleAttribute($value)
-    {
-        $this->attributes['title'] = $value;
-        $this->attributes['slug'] = Str::slug($value);
     }
 
     public function reactionSet(): ?ReactionSet

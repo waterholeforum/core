@@ -48,7 +48,7 @@ class MoveToChannel extends Action
     public function run(Collection $models)
     {
         $data = request()->validate([
-            'channel_id' => ['required', Rule::exists('channels', 'id')],
+            'channel_id' => ['required', Rule::exists(Channel::class, 'id')],
         ]);
 
         Gate::authorize('waterhole.channel.post', Channel::findOrFail($data['channel_id']));

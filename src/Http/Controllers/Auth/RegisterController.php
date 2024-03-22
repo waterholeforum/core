@@ -71,7 +71,9 @@ class RegisterController extends Controller
 
         event(new Registered($user));
 
-        Auth::login($user);
+        if (!$request->attributes->has('waterhole_original_user')) {
+            Auth::login($user);
+        }
 
         // Remove the fragment so that the email verification notice at the top
         // of the page is visible.

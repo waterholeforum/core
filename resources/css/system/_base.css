@@ -83,7 +83,9 @@ code {
   display: flex;
   flex-direction: column;
 
-  * {
+  // Bug on Chrome 121: textarea with scroll-margin-top scrolls the
+  // viewport when selecting text
+  *:not(textarea) {
     scroll-margin-top: var(--header-height);
   }
 }

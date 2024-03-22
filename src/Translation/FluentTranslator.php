@@ -73,23 +73,25 @@ final class FluentTranslator implements TranslatorContract
         $keys = (array) $key;
 
         foreach ($keys as $k) {
-            if (!$k || !str_contains($k, '.')) {
+            if (!$k) {
                 continue;
             }
 
-            [$namespace, $group, $item] = $this->parseKey($k);
+            if (str_contains($k, '.')) {
+                [$namespace, $group, $item] = $this->parseKey($k);
 
-            $message = $this->getBundle($namespace, $locale, $group)?->message($item, $replace);
+                $message = $this->getBundle($namespace, $locale, $group)?->message($item, $replace);
 
-            if ($fallback && $this->fallback !== $locale) {
-                $message ??= $this->getBundle($namespace, $this->fallback, $group)?->message(
-                    $item,
-                    $replace,
-                );
-            }
+                if ($fallback && $this->fallback !== $locale) {
+                    $message ??= $this->getBundle($namespace, $this->fallback, $group)?->message(
+                        $item,
+                        $replace,
+                    );
+                }
 
-            if ($message) {
-                return $message;
+                if ($message) {
+                    return $message;
+                }
             }
 
             if ($this->baseTranslator->has($k, $locale, $fallback)) {
@@ -180,6 +182,10 @@ final class FluentTranslator implements TranslatorContract
                 }
 
                 return $bundle;
+            }
+
+            if ($this->bundleOptions['allowOverrides'] ?? false) {
+                return $this->loadPath("{$this->path}/vendor/{$namespace}", $locale, $group);
             }
         }
 

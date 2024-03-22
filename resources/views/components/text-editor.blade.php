@@ -35,9 +35,7 @@
                 placeholder="{{ $placeholder }}"
                 data-text-editor-target="input"
                 data-uploads-target="input"
-            >
-{{ $value }}</textarea
-            >
+            >{{ $value }}</textarea>
         </text-expander>
 
         <div

@@ -5,9 +5,11 @@ namespace Waterhole\Http\Controllers\Forum;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\Rules\Unique;
 use Waterhole\Extend\NotificationTypes;
 use Waterhole\Forms\UserProfileForm;
 use Waterhole\Http\Controllers\Controller;
+use Waterhole\Models\User;
 
 /**
  * Controller for user preferences views.
@@ -41,7 +43,7 @@ class PreferencesController extends Controller
         }
 
         $data = $request->validate([
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255', new Unique(User::class)],
         ]);
 
         // Make a copy of the user because we don't want to set the email

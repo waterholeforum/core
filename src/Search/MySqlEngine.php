@@ -114,7 +114,8 @@ class MySqlEngine implements EngineInterface
         // to the most relevant part.
         $highlighter = new Highlighter($q);
 
-        $hits = DB::table($query, 'p')
+        $hits = DB::connection(config('waterhole.system.database'))
+            ->table($query, 'p')
             ->where('r', 1)
             ->take($limit)
             ->skip($offset)
