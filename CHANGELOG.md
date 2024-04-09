@@ -9,7 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+-   Fix "show more" rendering incorrectly on Firefox ([#64](https://github.com/waterholeforum/core/issues/64))
+
+## [0.4.7] - 2024-03-17
+
+### Added
+
+-   Add PHP 8.3 compatibility ([#62](https://github.com/waterholeforum/core/pull/62) by @saturnphp)
+-   Add Dutch translation ([#60](https://github.com/waterholeforum/core/pull/60) by @Emmanuel71)
+
+### Fixed
+
+-   Fix Chrome bug where textarea scrolls the viewport when selecting text
 -   Fix post slug mutation when title is highlighted in search results
+-   Fix icons displaying incorrectly with latest version of `blade-tabler-icons` ([#63](https://github.com/waterholeforum/core/issues/63))
 
 ## [0.4.6] - 2024-02-02
 
@@ -246,7 +259,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release.
 
-[unreleased]: https://github.com/waterholeforum/core/compare/v0.4.6...HEAD
+[unreleased]: https://github.com/waterholeforum/core/compare/v0.4.7...HEAD
+[0.4.7]: https://github.com/waterholeforum/core/compare/v0.4.6...v0.4.7
 [0.4.6]: https://github.com/waterholeforum/core/compare/v0.4.5...v0.4.6
 [0.4.5]: https://github.com/waterholeforum/core/compare/v0.4.4...v0.4.5
 [0.4.4]: https://github.com/waterholeforum/core/compare/v0.4.3...v0.4.4
