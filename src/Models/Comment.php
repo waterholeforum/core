@@ -2,12 +2,12 @@
 
 namespace Waterhole\Models;
 
+use HotwiredLaravel\TurboLaravel\Models\Broadcasts;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Validation\Rule;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
-use Tonysm\TurboLaravel\Models\Broadcasts;
 use Waterhole\Events\NewComment;
 use Waterhole\Models\Concerns\HasBody;
 use Waterhole\Models\Concerns\NotificationContent;
@@ -16,8 +16,7 @@ use Waterhole\Models\Concerns\ValidatesData;
 use Waterhole\Scopes\CommentIndexScope;
 use Waterhole\View\Components;
 use Waterhole\View\TurboStream;
-
-use function Tonysm\TurboLaravel\dom_id;
+use function HotwiredLaravel\TurboLaravel\dom_id;
 
 /**
  * @property int $id

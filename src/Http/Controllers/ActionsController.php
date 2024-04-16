@@ -2,10 +2,10 @@
 
 namespace Waterhole\Http\Controllers;
 
+use HotwiredLaravel\TurboLaravel\Http\TurboResponseFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
-use Tonysm\TurboLaravel\Http\TurboResponseFactory;
 use Waterhole\Actions\Action;
 use Waterhole\Extend;
 use Waterhole\View\Components\Alert;

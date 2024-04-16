@@ -26,7 +26,7 @@
     {{-- To detect the screen size and determine whether to open the popup vs. follow the link --}}
     <div class="hide-sm" data-notifications-popup-target="sm"></div>
 
-    <x-turbo-stream-from
+    <x-turbo::stream-from
         :source="Auth::user()"
         type="private"
         data-action="message->page#incrementDocumentTitle"

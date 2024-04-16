@@ -33,7 +33,7 @@ class RouteServiceProvider extends ServiceProvider
             \Waterhole\Http\Middleware\AuthenticateWaterhole::class,
             \Waterhole\Http\Middleware\AuthGuard::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \Tonysm\TurboLaravel\Http\Middleware\TurboMiddleware::class,
+            \HotwiredLaravel\TurboLaravel\Http\Middleware\TurboMiddleware::class,
             \Waterhole\Http\Middleware\ContactOutpost::class,
             \Waterhole\Http\Middleware\ActorSeen::class,
             \Waterhole\Http\Middleware\Localize::class,
