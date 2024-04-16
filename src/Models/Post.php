@@ -105,7 +105,10 @@ class Post extends Model
         static::saving(function (self $post) {
             $sign = $post->score <=> 0;
             $seconds = ($post->created_at ?: now())->unix() - 1134028003;
-            $post->hotness = round($sign * log10(max(abs($post->score), 1)) + $seconds / 45000, 10);
+            $post->hotness = round(
+                $sign * log10(max(abs($post->score ?: 0), 1)) + $seconds / 45000,
+                10,
+            );
         });
     }
 
