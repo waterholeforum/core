@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Fix "show more" rendering incorrectly on Firefox ([#64](https://github.com/waterholeforum/core/issues/64))
+-   Fix videos having no max width
 
 ## [0.4.7] - 2024-03-17
 
