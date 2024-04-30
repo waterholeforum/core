@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+-   Fix redirecting to incorrect URL when there is a sole auth provider
+
 ## [0.4.8] - 2024-04-16
 
 ### Added

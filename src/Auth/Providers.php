@@ -62,8 +62,8 @@ class Providers
         return $this->providers->has($provider);
     }
 
-    public function sole(): ?array
+    public function sole(): ?string
     {
-        return $this->providers->count() === 1 ? $this->providers->first() : null;
+        return $this->providers->count() === 1 ? $this->providers->keys()->first() : null;
     }
 }
