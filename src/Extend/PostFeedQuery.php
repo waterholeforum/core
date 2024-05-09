@@ -17,7 +17,7 @@ PostFeedQuery::add(function (Builder $query) {
     $query->with([
         'user.groups',
         'channel.userState',
-        'channel.postsReactionSet',
+        'channel.postsReactionSet.reactionTypes',
         'lastComment.user',
         'userState',
         'tags',
