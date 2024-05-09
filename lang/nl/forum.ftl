@@ -146,10 +146,12 @@ report-reason-off-topic = Off-topic
 report-reason-inappropriate = Ongepast
 report-reason-spam = Spam
 report-reason-other = Overige
-Misc
+
+## Misc
 
 quote-button = Citeren
-Filters
+
+## Filters
 
 filter-alphabetical = Alfabetisch
 filter-following = Volgend
