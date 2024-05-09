@@ -27,7 +27,7 @@ class LoginController extends Controller
         }
 
         if (!config('waterhole.auth.password_enabled', true) && ($provider = $providers->sole())) {
-            return redirect()->route('waterhole.sso.login', ['provider' => $provider['name']]);
+            return redirect()->route('waterhole.sso.login', compact('provider'));
         }
 
         return view('waterhole::auth.login');

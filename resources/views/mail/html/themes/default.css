@@ -75,6 +75,12 @@ img {
   height: auto;
 }
 
+img.emoji {
+  height: 1.2em;
+  width: 1.2em;
+  vertical-align: -0.2em;
+}
+
 pre {
   white-space: pre-wrap;
 }

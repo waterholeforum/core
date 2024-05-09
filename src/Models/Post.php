@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Str;
 use Waterhole\Events\NewPost;
 use Waterhole\Models\Concerns\Followable;
 use Waterhole\Models\Concerns\HasBody;
@@ -106,7 +105,10 @@ class Post extends Model
         static::saving(function (self $post) {
             $sign = $post->score <=> 0;
             $seconds = ($post->created_at ?: now())->unix() - 1134028003;
-            $post->hotness = round($sign * log10(max(abs($post->score), 1)) + $seconds / 45000, 10);
+            $post->hotness = round(
+                $sign * log10(max(abs($post->score ?: 0), 1)) + $seconds / 45000,
+                10,
+            );
         });
     }
 
@@ -353,12 +355,6 @@ class Post extends Model
             'post' => $this,
             'reactionType' => $reactionType,
         ]);
-    }
-
-    public function setTitleAttribute($value)
-    {
-        $this->attributes['title'] = $value;
-        $this->attributes['slug'] = Str::slug($value);
     }
 
     public function reactionSet(): ?ReactionSet

@@ -137,7 +137,7 @@ h6 {
     padding: var(--space-md) !important;
   }
 
-  & img:not([class]) {
+  & :is(img, video):not([class]) {
     max-width: 100%;
     height: auto;
   }

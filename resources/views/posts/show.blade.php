@@ -119,7 +119,7 @@
         </div>
     </div>
 
-    <x-turbo-stream-from
+    <x-turbo::stream-from
         :source="$post"
         :type="$post->channel->isPublic() ? 'channel' : 'private'"
     />

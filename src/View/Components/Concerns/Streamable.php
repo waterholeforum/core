@@ -4,8 +4,7 @@ namespace Waterhole\View\Components\Concerns;
 
 use Illuminate\Database\Eloquent\Model;
 use ReflectionClass;
-
-use function Tonysm\TurboLaravel\dom_id;
+use function HotwiredLaravel\TurboLaravel\dom_id;
 
 trait Streamable
 {

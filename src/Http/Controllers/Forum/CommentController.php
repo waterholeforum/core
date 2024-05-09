@@ -5,7 +5,7 @@ namespace Waterhole\Http\Controllers\Forum;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Notification;
-use Tonysm\TurboLaravel\Http\TurboResponseFactory;
+use HotwiredLaravel\TurboLaravel\Http\TurboResponseFactory;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
@@ -17,7 +17,7 @@ use Waterhole\View\Components\CommentFull;
 use Waterhole\View\Components\Composer;
 use Waterhole\View\Components\FollowButton;
 use Waterhole\View\TurboStream;
-use function Tonysm\TurboLaravel\dom_id;
+use function HotwiredLaravel\TurboLaravel\dom_id;
 
 /**
  * Controller for comments (show, create, update).

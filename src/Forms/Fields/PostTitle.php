@@ -3,6 +3,7 @@
 namespace Waterhole\Forms\Fields;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Validator;
 use Waterhole\Forms\Field;
 use Waterhole\Models\Post;
@@ -80,5 +81,6 @@ class PostTitle extends Field
     public function saving(FormRequest $request): void
     {
         $this->model->title = $request->validated('title');
+        $this->model->slug = Str::slug($this->model->title);
     }
 }

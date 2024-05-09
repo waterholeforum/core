@@ -2,7 +2,8 @@
 
 return [
     'accepted' => 'Het :attribute veld moet geaccepteerd worden.',
-    'accepted_if' => 'Het :attribute veld moet geaccepteerd worden wanneer :other gelijk is aan :value.',
+    'accepted_if' =>
+        'Het :attribute veld moet geaccepteerd worden wanneer :other gelijk is aan :value.',
     'active_url' => 'Het :attribute veld moet een geldige URL zijn.',
     'after' => 'Het :attribute veld moet een datum zijn na :date.',
     'after_or_equal' => 'Het :attribute veld moet een datum zijn na of gelijk aan :date.',
@@ -29,7 +30,8 @@ return [
     'date_format' => 'Het :attribute veld komt niet overeen met het formaat :format.',
     'decimal' => 'Het :attribute veld moet :decimal decimalen hebben.',
     'declined' => 'Het :attribute veld moet afgewezen worden.',
-    'declined_if' => 'Het :attribute veld moet afgewezen worden wanneer :other gelijk is aan :value.',
+    'declined_if' =>
+        'Het :attribute veld moet afgewezen worden wanneer :other gelijk is aan :value.',
     'different' => 'Het :attribute veld en :other moeten verschillend zijn.',
     'digits' => 'Het :attribute veld moet :digits cijfers zijn.',
     'digits_between' => 'Het :attribute veld moet tussen :min en :max cijfers zijn.',
@@ -126,7 +128,8 @@ return [
     'required_with' => 'Het :attribute veld is verplicht wanneer :values aanwezig is.',
     'required_with_all' => 'Het :attribute veld is verplicht wanneer :values aanwezig zijn.',
     'required_without' => 'Het :attribute veld is verplicht wanneer :values niet aanwezig is.',
-    'required_without_all' => 'Het :attribute veld is verplicht wanneer geen van :values aanwezig zijn.',
+    'required_without_all' =>
+        'Het :attribute veld is verplicht wanneer geen van :values aanwezig zijn.',
     'same' => 'Het :attribute en :other moeten overeenkomen.',
     'size' => [
         'array' => 'Het :attribute veld moet :size items bevatten.',
