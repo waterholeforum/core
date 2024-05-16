@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.9] - 2024-05-16
+
 ### Fixed
 
 -   Fix redirecting to incorrect URL when there is a sole auth provider
@@ -274,7 +276,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release.
 
-[unreleased]: https://github.com/waterholeforum/core/compare/v0.4.8...HEAD
+[unreleased]: https://github.com/waterholeforum/core/compare/v0.4.9...HEAD
+[0.4.9]: https://github.com/waterholeforum/core/compare/v0.4.8...v0.4.9
 [0.4.8]: https://github.com/waterholeforum/core/compare/v0.4.7...v0.4.8
 [0.4.7]: https://github.com/waterholeforum/core/compare/v0.4.6...v0.4.7
 [0.4.6]: https://github.com/waterholeforum/core/compare/v0.4.5...v0.4.6
