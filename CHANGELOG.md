@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 -   Fix redirecting to incorrect URL when there is a sole auth provider
+-   Fix lazy loading error in some reaction configurations
+-   Fix broken Dutch localization ([#77](https://github.com/waterholeforum/core/pull/77) by @Emmanuel71git)
 
 ## [0.4.8] - 2024-04-16
 
