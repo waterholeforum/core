@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.10] - 2024-10-03
+
 ### Fixed
 
 -   Fix some search queries causing a server error
@@ -281,7 +283,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release.
 
-[unreleased]: https://github.com/waterholeforum/core/compare/v0.4.9...HEAD
+[unreleased]: https://github.com/waterholeforum/core/compare/v0.4.10...HEAD
+[0.4.10]: https://github.com/waterholeforum/core/compare/v0.4.9...v0.4.10
 [0.4.9]: https://github.com/waterholeforum/core/compare/v0.4.8...v0.4.9
 [0.4.8]: https://github.com/waterholeforum/core/compare/v0.4.7...v0.4.8
 [0.4.7]: https://github.com/waterholeforum/core/compare/v0.4.6...v0.4.7
