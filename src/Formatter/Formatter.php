@@ -4,7 +4,6 @@ namespace Waterhole\Formatter;
 
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Facades\File;
 use s9e\TextFormatter\Configurator;
 use s9e\TextFormatter\Parser;
 use s9e\TextFormatter\Renderer;
@@ -28,7 +27,6 @@ class Formatter
 
     public function __construct(
         protected Filesystem $files,
-        protected string $cacheDir,
         protected Repository $cache,
         protected string $cacheKey,
     ) {
@@ -100,10 +98,6 @@ class Formatter
     public function flush(): void
     {
         $this->cache->forget($this->cacheKey);
-
-        foreach ($this->files->glob("{$this->cacheDir}/*") as $file) {
-            $this->files->delete($file);
-        }
     }
 
     protected function getConfigurator(): Configurator
@@ -111,8 +105,6 @@ class Formatter
         $configurator = new Configurator();
 
         $configurator->tags->onDuplicate('replace');
-
-        $this->configureRenderingCache($configurator);
 
         foreach ($this->configurationCallbacks as $callback) {
             $callback($configurator);
@@ -123,12 +115,6 @@ class Formatter
 
     protected function getComponent(string $name)
     {
-        spl_autoload_register(function ($class) {
-            if (file_exists($file = "$this->cacheDir/$class.php")) {
-                include $file;
-            }
-        });
-
         $this->components ??= $this->cache->rememberForever(
             $this->cacheKey,
             fn() => $this->getConfigurator()->finalize(),
@@ -145,13 +131,5 @@ class Formatter
     protected function getRenderer(): Renderer
     {
         return $this->getComponent('renderer');
-    }
-
-    private function configureRenderingCache(Configurator $configurator): void
-    {
-        $configurator->rendering->engine = 'PHP';
-        $configurator->rendering->engine->cacheDir = $this->cacheDir;
-
-        File::ensureDirectoryExists($this->cacheDir);
     }
 }

@@ -23,7 +23,6 @@ class FormatterServiceProvider extends ServiceProvider
         $this->app->singleton('waterhole.formatter', function ($app) {
             $formatter = new Formatter(
                 $app->make('files'),
-                $app->storagePath('waterhole/formatter'),
                 $app->make('cache.store'),
                 'waterhole.formatter',
             );
@@ -65,7 +64,6 @@ class FormatterServiceProvider extends ServiceProvider
         $this->app->singleton('waterhole.formatter.emoji', function ($app) {
             $formatter = new Formatter(
                 $app->make('files'),
-                $app->storagePath('waterhole/formatter'),
                 $app->make('cache.store'),
                 'waterhole.formatter.emoji',
             );
