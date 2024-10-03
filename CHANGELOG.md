@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+-   Fix some search queries causing a server error
+-   Fix formatter rendering cache error when Waterhole is run across multiple servers
+
 ## [0.4.9] - 2024-05-16
 
 ### Fixed
