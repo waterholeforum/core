@@ -3,7 +3,6 @@
 namespace Waterhole\Search;
 
 use Illuminate\Support\HtmlString;
-
 use function Waterhole\emojify;
 
 class Highlighter
@@ -70,7 +69,7 @@ class Highlighter
 
         $phrases = array_map(function ($phrase) {
             $phrase = preg_replace('/^"|"$/', '', $phrase);
-            $phrase = preg_quote($phrase);
+            $phrase = preg_quote($phrase, '/');
             $phrase = preg_replace('/\s+/', '\\W+', $phrase);
             $phrase = preg_replace('/\\*/', '\\w+', $phrase);
 
