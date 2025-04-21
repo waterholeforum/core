@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.11] - 2025-04-21
+
 ### Added
 
 - Add support for Laravel 12
@@ -297,7 +299,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release.
 
-[unreleased]: https://github.com/waterholeforum/core/compare/v0.4.10...HEAD
+[unreleased]: https://github.com/waterholeforum/core/compare/v0.4.11...HEAD
+[0.4.11]: https://github.com/waterholeforum/core/compare/v0.4.10...v0.4.11
 [0.4.10]: https://github.com/waterholeforum/core/compare/v0.4.9...v0.4.10
 [0.4.9]: https://github.com/waterholeforum/core/compare/v0.4.8...v0.4.9
 [0.4.8]: https://github.com/waterholeforum/core/compare/v0.4.7...v0.4.8
