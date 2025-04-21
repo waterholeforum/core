@@ -83,7 +83,7 @@ abstract class Notification extends BaseNotification implements ShouldQueue
 
         return (new Mailable())
             ->to($to)
-            ->subject(strip_tags($title))
+            ->subject(html_entity_decode(strip_tags($title), ENT_QUOTES, 'UTF-8'))
             ->view($markdown->render($view, $data))
             ->text($markdown->renderText($view, $data));
     }
