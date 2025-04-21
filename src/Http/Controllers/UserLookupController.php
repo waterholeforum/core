@@ -58,7 +58,7 @@ class UserLookupController extends Controller
                     'comments',
                     fn($query) => $query->where('comments.post_id', $post->getKey()),
                 )
-                ->groupBy('users.id')
+                ->groupBy(['users.id', 'name', 'avatar'])
                 ->orderByRaw('MAX(comments.created_at) DESC');
 
             $postQuery = $users
