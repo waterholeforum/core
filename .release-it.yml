@@ -20,7 +20,8 @@ plugins:
 
 hooks:
   after:bump: npm run prod
-  after:release: 'curl -X POST --location "https://api.waterhole.dev/releases"
+  after:release:
+    'curl -f -X POST --location "https://api.waterhole.dev/releases"
     -H "Content-Type: application/json"
     -H "Accept: application/json"
     -H "Authorization: Bearer $WATERHOLE_TOKEN"
