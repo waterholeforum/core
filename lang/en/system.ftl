@@ -10,6 +10,7 @@ try-again-button = Try Again
 fatal-error-message = Something went wrong! Please reload the page and try again.
 too-many-requests-message = You're going a bit too fast! Take a break and try again in a moment.
 forbidden-message = You don't have permission to do this.
+session-expired-message = Your session has expired. Please reload the page and try again.
 validation-errors-message = The following errors were found:
 
 ## Generic Buttons & Links

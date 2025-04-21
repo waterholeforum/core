@@ -67,6 +67,10 @@ Waterhole.fetchError = async function (response?: Response) {
             templateId = 'forbidden-alert';
             break;
 
+        case 419:
+            templateId = 'session-expired-alert';
+            break;
+
         case 422:
             const alert = cloneFromTemplate('template-alert-danger');
             alert.querySelector('.alert__message')!.textContent = (

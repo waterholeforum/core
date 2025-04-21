@@ -96,7 +96,7 @@
             Templates for fetch error alert messages. These are cloned into the
             alerts element whenever there is a Turbo frame error in JavaScript
         --}}
-        @foreach (['forbidden', 'too-many-requests', 'fatal-error'] as $key)
+        @foreach (['forbidden', 'too-many-requests', 'fatal-error', 'session-expired'] as $key)
             <template id="{{ $key }}-alert">
                 <x-waterhole::alert type="danger">
                     {{ __("waterhole::system.$key-message") }}
