@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add support for Laravel 12
+- Add descriptive error message for CSRF token expiry ([#73](https://github.com/waterholeforum/core/issues/73))
+
+### Fixed
+
+- Fix taxonomies not being assignable by non-admins ([#75](https://github.com/waterholeforum/core/issues/75))
+- Fix error when sending non-Waterhole notifications ([#79](https://github.com/waterholeforum/core/issues/79))
+- Fix `FluentTranslator` not forwarding macros calls ([#81](https://github.com/waterholeforum/core/pull/81) by @jacksleight)
+- Prevent post page sidebar width from changing
+- Fix MariaDB `ONLY_FULL_GROUP_BY` error
+- Fix HTML entities in notification email subjects
+
 ## [0.4.10] - 2024-10-03
 
 ### Fixed
