@@ -87,7 +87,7 @@ class AuthServiceProvider extends ServiceProvider
                 return null;
             }
 
-            $ability = substr($ability, 0, strlen('waterhole.'));
+            $ability = substr($ability, strlen('waterhole.'));
             if ($result === null && strpos($ability, '.') && isset($arguments[0])) {
                 return Waterhole::permissions()->can(
                     $user,
