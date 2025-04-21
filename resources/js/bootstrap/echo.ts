@@ -5,7 +5,7 @@ import { TurboEchoStreamSourceElement } from '../elements/turbo-echo-stream-tag'
 declare global {
     interface Window {
         Pusher: typeof Pusher;
-        Echo: Echo;
+        Echo: Echo<'pusher'>;
     }
 }
 
