@@ -186,7 +186,8 @@
   --font-system: system-ui;
   --font-text: var(--font-system);
   --font-display: var(--font-text);
-  --font-mono: SFMono-Regular, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  --font-mono:
+    SFMono-Regular, Menlo, Monaco, Consolas, 'Courier New', monospace;
 
   // Font weights
   --weight-normal: 400;

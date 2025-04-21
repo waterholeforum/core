@@ -26,10 +26,10 @@ In order to ensure that the Waterhole community is welcoming to all, please revi
 
 ## Important Links
 
--   [Waterhole Website](https://waterhole.dev)
--   [Waterhole Documentation][docs]
--   [Waterhole Community][community]
--   [Waterhole Skeleton Repo][skeleton]
+- [Waterhole Website](https://waterhole.dev)
+- [Waterhole Documentation][docs]
+- [Waterhole Community][community]
+- [Waterhole Skeleton Repo][skeleton]
 
 [docs]: https://waterhole.dev/docs
 [community]: https://waterhole.dev/community

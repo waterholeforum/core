@@ -10,12 +10,10 @@ import { Controller } from '@hotwired/stimulus';
  */
 export default class extends Controller {
     connect() {
-        this.element.addEventListener(
-            'submit',
-            () =>
-                this.element
-                    .querySelector('button[type="submit"]')
-                    ?.setAttribute('disabled', ''),
+        this.element.addEventListener('submit', () =>
+            this.element
+                .querySelector('button[type="submit"]')
+                ?.setAttribute('disabled', ''),
         );
     }
 
