@@ -6,6 +6,7 @@ use Countable;
 use Illuminate\Contracts\Translation\Loader;
 use Illuminate\Contracts\Translation\Translator as TranslatorContract;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Translation\MessageSelector;
 use Illuminate\Translation\Translator as BaseTranslator;
 use Major\Fluent\Bundle\FluentBundle;
@@ -31,6 +32,8 @@ use Major\Fluent\Parser\FluentParser;
  */
 final class FluentTranslator implements TranslatorContract
 {
+    use ForwardsCalls;
+
     /** @var array<string, array<string, FluentBundle|false>> */
     private array $loaded = [];
 
@@ -293,5 +296,10 @@ final class FluentTranslator implements TranslatorContract
     {
         $this->fallback = $locale;
         $this->baseTranslator->setFallback($locale);
+    }
+
+    public function __call($method, $parameters)
+    {
+        return $this->forwardCallTo($this->baseTranslator, $method, $parameters);
     }
 }
