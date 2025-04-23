@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix incorrect RSS feed `pubDate` for unedited posts
+
 ## [0.4.11] - 2025-04-21
 
 ### Added
