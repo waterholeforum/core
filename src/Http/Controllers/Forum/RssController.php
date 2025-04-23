@@ -59,17 +59,24 @@ class RssController extends Controller
             //     'uri' => route('waterhole.rss.post', compact('post')),
             //     'type' => 'rss',
             // ]);
+
             if ($post->user) {
                 $entry->addAuthor([
                     'name' => $post->user->name,
                     'uri' => $post->user->url,
                 ]);
             }
+
             $entry->setDateCreated($post->created_at);
-            $entry->setDateModified($post->edited_at);
+
+            if ($post->edited_at) {
+                $entry->setDateModified($post->edited_at);
+            }
+
             if ($content = (string) $post->body_html) {
                 $entry->setContent($content);
             }
+
             $feed->addEntry($entry);
         }
 
