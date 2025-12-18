@@ -110,7 +110,7 @@ function resolve_all(array $names, array ...$parameters): array
     );
 }
 
-function return_field(string $default = null): string
+function return_field(?string $default = null): string
 {
     return '<input type="hidden" name="return" value="' .
         old('return', request('return', $default)) .
