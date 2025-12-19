@@ -3,14 +3,14 @@
 namespace Waterhole\View\Components;
 
 use Carbon\Carbon;
-use DateTime;
+use DateTimeInterface;
 use Illuminate\View\Component;
 
 class RelativeTime extends Component
 {
     public ?Carbon $dateTime;
 
-    public function __construct(?DateTime $datetime)
+    public function __construct(?DateTimeInterface $datetime)
     {
         $this->dateTime = $datetime ? new Carbon($datetime) : null;
     }
