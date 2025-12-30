@@ -51,7 +51,7 @@ class PostController extends Controller
                 'parent.user.groups',
                 'mentions',
                 'attachments',
-                'reactionsSummary',
+                'reactionCounts',
             ])
             ->oldest()
             ->paginate();

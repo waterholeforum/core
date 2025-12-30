@@ -1,36 +1,32 @@
 <turbo-frame
-    id="post-feed"
-    class="post-feed stack gap-lg"
-    target="_top"
-    data-controller="post-feed"
-    data-post-feed-filter-value="{{ $feed->currentFilter->handle() }}"
-    data-post-feed-public-channels-value="@json(Waterhole\Models\Channel::allPermitted(null))"
-    data-post-feed-channels-value="@json($channel ? [$channel->id] : Waterhole\Models\Channel::pluck('id'))"
+        id="post-feed"
+        class="post-feed stack gap-lg"
+        target="_top"
+        data-controller="post-feed"
+        data-post-feed-filter-value="{{ $feed->currentFilter->handle() }}"
+        data-post-feed-public-channels-value="@json($publicChannels)"
+        data-post-feed-channels-value="@json($channels)"
 >
-    @components(Waterhole\Extend\PostFeedHeader::build(), compact('feed', 'channel'))
+    @components(resolve(\Waterhole\Extend\Ui\PostFeed::class)->header, compact('feed', 'channel'))
 
     <div>
         <form
-            class="post-feed__refresh animate-appear"
-            data-post-feed-target="newActivity"
-            data-turbo-frame="post-feed"
-            hidden
+                class="post-feed__refresh animate-appear"
+                data-post-feed-target="newActivity"
+                data-turbo-frame="post-feed"
+                hidden
         >
             <div>
                 <button
-                    type="submit"
-                    class="btn btn--sm bg-activity"
-                    data-action="post-feed#scrollToTop"
+                        type="submit"
+                        class="btn btn--sm bg-activity"
+                        data-action="post-feed#scrollToTop"
                 >
                     @icon('tabler-refresh')
                     <span>{{ __('waterhole::forum.post-feed-new-activity-button') }}</span>
                 </button>
             </div>
         </form>
-
-        @php
-            $posts = $feed->items()->withQueryString();
-        @endphp
 
         @if ($posts->isNotEmpty())
             <div class="post-feed__content {{ $feed->layout->wrapperClass() }}">
@@ -47,8 +43,8 @@
                         @endif
 
                         <x-dynamic-component
-                            :component="$feed->layout->itemComponent()"
-                            :post="$post"
+                                :component="$feed->layout->itemComponent()"
+                                :post="$post"
                         />
                     @endforeach
                 </x-waterhole::infinite-scroll>

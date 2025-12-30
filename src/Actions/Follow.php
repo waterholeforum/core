@@ -9,11 +9,6 @@ use Waterhole\View\TurboStream;
 
 class Follow extends Action
 {
-    public function appliesTo(Model $model): bool
-    {
-        return method_exists($model, 'follow');
-    }
-
     public function shouldRender(Collection $models, string $context = null): bool
     {
         return $context !== 'cp' && !$models->some->isFollowed();

@@ -2,7 +2,7 @@
 
 namespace Waterhole\Search;
 
-use Waterhole\Extend\PostFeedQuery;
+use Waterhole\Extend\Query\PostFeedQuery;
 use Waterhole\Models\Post;
 
 class Searcher
@@ -33,7 +33,7 @@ class Searcher
         // we still need to retrieve and set the Post model for each hit.
         $query = Post::whereIn('id', collect($results->hits)->map->postId);
 
-        foreach (PostFeedQuery::values() as $scope) {
+        foreach (resolve(PostFeedQuery::class)->values() as $scope) {
             $scope($query);
         }
 

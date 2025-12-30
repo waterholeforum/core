@@ -8,6 +8,7 @@ use Illuminate\View\Component;
 use Waterhole\Actions\React;
 use Waterhole\Models\Model;
 use Waterhole\Models\ReactionSet;
+use Waterhole\Models\ReactionType;
 use Waterhole\View\Components\Concerns\Streamable;
 
 class Reactions extends Component
@@ -22,24 +23,35 @@ class Reactions extends Component
     {
         $this->model = $model;
         $this->reactionSet = $model->reactionSet();
+        $this->reactionTypes = new Collection();
 
         if (!$this->reactionSet) {
             return;
         }
 
-        $countReactions = fn($reactionType) => $model->reactionsSummary->count($reactionType);
-
-        $this->reactionTypes = $this->reactionSet->reactionTypes->sortByDesc($countReactions);
+        $this->reactionTypes = $this->reactionSet->reactionTypes->sortByDesc(
+            $this->reactionCount(...),
+        );
 
         if (count($this->reactionTypes) > 1) {
-            $this->reactionTypes = $this->reactionTypes->filter($countReactions);
+            $this->reactionTypes = $this->reactionTypes->filter($this->reactionCount(...));
         }
     }
 
     public function shouldRender(): bool
     {
-        return $this->model->reactionsSummary ||
+        return $this->model->reactionCounts ||
             resolve(React::class)->authorize(Auth::user(), $this->model);
+    }
+
+    public function reactionCount(ReactionType $reactionType): int
+    {
+        return $this->model->reactionCounts->find($reactionType->id)?->count ?? 0;
+    }
+
+    public function userReacted(ReactionType $reactionType): bool
+    {
+        return (bool) $this->model->reactionCounts->find($reactionType->id)?->user_reacted;
     }
 
     public function render()

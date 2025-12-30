@@ -3,7 +3,6 @@
 namespace Waterhole\Forms;
 
 use Waterhole\Auth\SsoPayload;
-use Waterhole\Extend;
 use Waterhole\Models\User;
 
 class RegistrationForm extends Form
@@ -15,7 +14,7 @@ class RegistrationForm extends Form
 
     public function fields(): array
     {
-        return Extend\RegistrationForm::components([
+        return resolve(\Waterhole\Extend\Forms\RegistrationForm::class)->components([
             'model' => $this->model,
             'payload' => $this->payload,
         ]);

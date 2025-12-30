@@ -14,11 +14,6 @@ class DeleteChannel extends Action
     public bool $confirm = true;
     public bool $destructive = true;
 
-    public function appliesTo($model): bool
-    {
-        return $model instanceof Channel;
-    }
-
     public function authorize(?User $user, Model $model): bool
     {
         return $user && $user->can('waterhole.channel.delete', $model);

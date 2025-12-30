@@ -14,11 +14,6 @@ use Waterhole\Models\User;
  */
 class CopyImpersonationUrl extends Link
 {
-    public function appliesTo($model): bool
-    {
-        return $model instanceof User;
-    }
-
     public function authorize(?User $user, Model $model): bool
     {
         return $user?->isAdmin() && $user->isNot($model);

@@ -5,8 +5,7 @@ namespace Waterhole\View\Components;
 use Illuminate\Support\Collection;
 use Illuminate\View\Component;
 use Waterhole\Actions\Action;
-use Waterhole\Extend\Actionables;
-use Waterhole\Extend\Actions;
+use Waterhole\Extend\Core\Actions;
 use Waterhole\Models\Model;
 
 class ActionButtons extends Component
@@ -21,9 +20,9 @@ class ActionButtons extends Component
         public ?int $limit = null,
         public ?string $context = null,
     ) {
-        $this->actionable = Actionables::getActionableName($for);
+        $this->actionable = get_class($for);
 
-        $actions = collect(Actions::for($for));
+        $actions = collect(resolve(Actions::class)->actionsFor($for));
 
         if (isset($only)) {
             $actions = $actions->filter(fn($action) => in_array(get_class($action), $only));
@@ -51,6 +50,6 @@ class ActionButtons extends Component
 
     public function shouldRender(): bool
     {
-        return !empty($this->actions);
+        return $this->actions->isNotEmpty();
     }
 }

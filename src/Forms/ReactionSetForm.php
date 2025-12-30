@@ -2,7 +2,6 @@
 
 namespace Waterhole\Forms;
 
-use Waterhole\Extend;
 use Waterhole\Models\ReactionSet;
 
 class ReactionSetForm extends Form
@@ -14,6 +13,6 @@ class ReactionSetForm extends Form
 
     public function fields(): array
     {
-        return Extend\ReactionSetForm::components(['model' => $this->model]);
+        return resolve(\Waterhole\Extend\Forms\ReactionSetForm::class)->components(['model' => $this->model]);
     }
 }

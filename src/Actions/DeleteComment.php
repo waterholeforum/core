@@ -3,7 +3,6 @@
 namespace Waterhole\Actions;
 
 use Illuminate\Support\Collection;
-use Waterhole\Models\Comment;
 use Waterhole\Models\Model;
 use Waterhole\Models\User;
 
@@ -11,11 +10,6 @@ class DeleteComment extends Action
 {
     public bool $confirm = true;
     public bool $destructive = true;
-
-    public function appliesTo($model): bool
-    {
-        return $model instanceof Comment;
-    }
 
     public function authorize(?User $user, Model $model): bool
     {

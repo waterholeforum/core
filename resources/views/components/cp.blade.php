@@ -5,7 +5,7 @@
         <div class="cp__sidebar sidebar sidebar--sticky">
             <x-waterhole::collapsible-nav
                 :components="Waterhole\build_components([
-                    ...Waterhole\Extend\CpNav::build(),
+                    ...resolve(\Waterhole\Extend\Ui\CpNav::class)->items(),
                     Waterhole\View\Components\Cp\Version::class,
                 ])"
             />

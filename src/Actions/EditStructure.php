@@ -11,13 +11,6 @@ use Waterhole\Models\User;
 
 class EditStructure extends Link
 {
-    public function appliesTo($model): bool
-    {
-        return $model instanceof StructureHeading ||
-            $model instanceof StructureLink ||
-            $model instanceof Page;
-    }
-
     public function authorize(?User $user, Model $model): bool
     {
         return $user && $user->can('waterhole.structure.edit', $model);

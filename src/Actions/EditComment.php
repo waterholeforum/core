@@ -9,11 +9,6 @@ use Waterhole\Models\User;
 
 class EditComment extends Link
 {
-    public function appliesTo(Model $model): bool
-    {
-        return $model instanceof Comment;
-    }
-
     public function authorize(?User $user, Model $model): bool
     {
         return $user && $user->can('waterhole.comment.edit', $model);

@@ -3,8 +3,7 @@
 namespace Waterhole\View\Components;
 
 use Illuminate\View\Component;
-use Waterhole\Actions\Action;
-use Waterhole\Extend;
+use Waterhole\Extend\Core\Actions;
 use Waterhole\Models\Model;
 
 class ActionMenu extends Component
@@ -17,7 +16,7 @@ class ActionMenu extends Component
         public array $buttonAttributes = ['class' => 'btn btn--transparent btn--icon text-xs'],
     ) {
         $this->url = route('waterhole.actions.menu', [
-            'actionable' => Extend\Actionables::getActionableName($for),
+            'actionable' => get_class($for),
             'id' => $for->getKey(),
             'context' => $context,
         ]);
@@ -25,14 +24,7 @@ class ActionMenu extends Component
 
     public function shouldRender(): bool
     {
-        $models = collect([$this->for]);
-
-        return collect(Extend\Actions::for($models))
-            ->filter(
-                fn($action) => $action instanceof Action &&
-                    $action->shouldRender($models, $this->context),
-            )
-            ->isNotEmpty();
+        return resolve(Actions::class)->hasActions($this->for, context: $this->context);
     }
 
     public function render()

@@ -7,11 +7,8 @@ use Illuminate\Validation\Validator;
 
 class FormSection extends Field
 {
-    public function __construct(
-        public string $title,
-        public array $components,
-        public bool $open = true,
-    ) {
+    public function __construct(public string $title, public array $items, public bool $open = true)
+    {
     }
 
     public function render(): string
@@ -23,7 +20,7 @@ class FormSection extends Field
                 </summary>
 
                 <div class="card__body stack dividers">
-                    @components($components)
+                    @components($items)
                 </div>
             </details>
         blade;
@@ -46,9 +43,9 @@ class FormSection extends Field
 
     private function call(string $method, ...$arguments): void
     {
-        foreach ($this->components as $component) {
-            if ($component instanceof Field) {
-                $component->$method(...$arguments);
+        foreach ($this->items as $item) {
+            if ($item instanceof Field) {
+                $item->$method(...$arguments);
             }
         }
     }

@@ -4,7 +4,7 @@ namespace Waterhole\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Waterhole\Extend\Locales;
+use Waterhole\Extend\Assets\Locales;
 
 class Localize
 {
@@ -13,7 +13,7 @@ class Localize
     public function handle(Request $request, Closure $next)
     {
         $user = $request->user();
-        $locales = Locales::keys();
+        $locales = resolve(Locales::class)->keys();
 
         // Allow the locale to be set in a query parameter. If there is a
         // logged-in user, update their preference in the database; otherwise,

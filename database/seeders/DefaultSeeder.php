@@ -19,28 +19,13 @@ use Waterhole\Models\ReactionSet;
  */
 class DefaultSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
-        // Groups
-        $guest = Group::firstOrCreate([
-            'id' => Group::GUEST_ID,
-            'name' => __('waterhole::install.group-guest'),
-        ]);
+        $this->callOnce(GroupsSeeder::class);
 
-        $member = Group::firstOrCreate([
-            'id' => Group::MEMBER_ID,
-            'name' => __('waterhole::install.group-member'),
-        ]);
-
-        $admin = Group::firstOrCreate([
-            'id' => Group::ADMIN_ID,
-            'name' => __('waterhole::install.group-admin'),
-        ]);
-
-        $mod = Group::firstOrCreate([
-            'name' => __('waterhole::install.group-moderator'),
-            'is_public' => true,
-        ]);
+        $guest = Group::guest();
+        $member = Group::member();
+        $mod = Group::custom()->firstOrFail();
 
         // Community Guide
         $guide = Page::firstOrCreate(

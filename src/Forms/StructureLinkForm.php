@@ -2,7 +2,6 @@
 
 namespace Waterhole\Forms;
 
-use Waterhole\Extend;
 use Waterhole\Models\StructureLink;
 
 class StructureLinkForm extends Form
@@ -14,6 +13,6 @@ class StructureLinkForm extends Form
 
     public function fields(): array
     {
-        return Extend\StructureLinkForm::components(['model' => $this->model]);
+        return resolve(\Waterhole\Extend\Forms\StructureLinkForm::class)->components(['model' => $this->model]);
     }
 }

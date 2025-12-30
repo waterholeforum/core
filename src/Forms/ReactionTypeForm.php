@@ -2,7 +2,6 @@
 
 namespace Waterhole\Forms;
 
-use Waterhole\Extend;
 use Waterhole\Models\ReactionType;
 
 class ReactionTypeForm extends Form
@@ -14,6 +13,6 @@ class ReactionTypeForm extends Form
 
     public function fields(): array
     {
-        return Extend\ReactionTypeForm::components(['model' => $this->model]);
+        return resolve(\Waterhole\Extend\Forms\ReactionTypeForm::class)->components(['model' => $this->model]);
     }
 }

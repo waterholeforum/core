@@ -4,16 +4,10 @@ namespace Waterhole\Actions;
 
 use Illuminate\Support\Collection;
 use Waterhole\Models\Model;
-use Waterhole\Models\Tag;
 use Waterhole\Models\User;
 
 class EditTag extends Link
 {
-    public function appliesTo(Model $model): bool
-    {
-        return $model instanceof Tag;
-    }
-
     public function authorize(?User $user, Model $model): bool
     {
         return $user && $user->can('waterhole.tag.edit', $model);

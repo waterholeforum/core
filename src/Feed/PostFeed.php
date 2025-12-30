@@ -5,7 +5,7 @@ namespace Waterhole\Feed;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Waterhole\Extend\PostFeedQuery;
+use Waterhole\Extend\Query\PostFeedQuery;
 use Waterhole\Layouts\Layout;
 use Waterhole\Models\Post;
 
@@ -17,7 +17,7 @@ class PostFeed extends Feed
         Request $request,
         array $filters,
         public Layout $layout,
-        Closure $scope = null,
+        ?Closure $scope = null,
     ) {
         $query = Post::query();
 
@@ -25,7 +25,7 @@ class PostFeed extends Feed
             $scope($query);
         }
 
-        foreach (PostFeedQuery::values() as $scope) {
+        foreach (resolve(PostFeedQuery::class)->values() as $scope) {
             $scope($query);
         }
 

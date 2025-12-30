@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\Rules\Unique;
-use Waterhole\Extend\NotificationTypes;
+use Waterhole\Extend\Core\NotificationTypes;
 use Waterhole\Forms\UserProfileForm;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\User;
@@ -93,7 +93,8 @@ class PreferencesController extends Controller
     public function saveNotifications(Request $request)
     {
         $data = $request->validate([
-            'notification_channels' => 'array:' . implode(',', NotificationTypes::build()),
+            'notification_channels' =>
+                'array:' . implode(',', resolve(NotificationTypes::class)->values()),
             'notification_channels.*' => 'array:0,1',
             'notification_channels.*.*' => 'in:database,mail',
             'follow_on_comment' => 'boolean',

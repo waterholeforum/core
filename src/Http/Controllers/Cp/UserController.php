@@ -16,8 +16,8 @@ class UserController extends Controller
      * A map of sortable columns and their initial direction.
      */
     private const SORTABLE_COLUMNS = [
-        'created_at' => 'desc',
         'name' => 'asc',
+        'created_at' => 'desc',
         'last_seen_at' => 'desc',
     ];
 

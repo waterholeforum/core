@@ -15,8 +15,10 @@ abstract class Model extends Eloquent
 {
     protected static $unguarded = true;
 
+    protected static string $connectionName;
+
     public function getConnectionName()
     {
-        return config('waterhole.system.database');
+        return static::$connectionName ??= config('waterhole.system.database');
     }
 }

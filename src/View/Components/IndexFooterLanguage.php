@@ -3,7 +3,7 @@
 namespace Waterhole\View\Components;
 
 use Illuminate\View\Component;
-use Waterhole\Extend\Locales;
+use Waterhole\Extend\Assets\Locales;
 
 class IndexFooterLanguage extends Component
 {
@@ -12,7 +12,7 @@ class IndexFooterLanguage extends Component
 
     public function __construct()
     {
-        $this->locales = Locales::build();
+        $this->locales = resolve(Locales::class)->items();
         $this->currentLocale = app()->getLocale();
     }
 

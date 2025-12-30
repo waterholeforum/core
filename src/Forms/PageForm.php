@@ -2,7 +2,6 @@
 
 namespace Waterhole\Forms;
 
-use Waterhole\Extend;
 use Waterhole\Models\Page;
 
 class PageForm extends Form
@@ -14,6 +13,6 @@ class PageForm extends Form
 
     public function fields(): array
     {
-        return Extend\PageForm::components(['model' => $this->model]);
+        return resolve(\Waterhole\Extend\Forms\PageForm::class)->components(['model' => $this->model]);
     }
 }

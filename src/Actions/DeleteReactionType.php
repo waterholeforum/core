@@ -4,18 +4,12 @@ namespace Waterhole\Actions;
 
 use Illuminate\Support\Collection;
 use Waterhole\Models\Model;
-use Waterhole\Models\ReactionType;
 use Waterhole\Models\User;
 
 class DeleteReactionType extends Action
 {
     public bool $confirm = true;
     public bool $destructive = true;
-
-    public function appliesTo(Model $model): bool
-    {
-        return $model instanceof ReactionType;
-    }
 
     public function authorize(?User $user, Model $model): bool
     {

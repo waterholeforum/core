@@ -3,7 +3,6 @@
 namespace Waterhole;
 
 use BladeUI\Icons\Exceptions\SvgNotFound;
-use Closure;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
@@ -13,6 +12,7 @@ use Illuminate\View\ComponentAttributeBag;
 use Major\Fluent\Formatters\Number\NumberFormatter;
 use Major\Fluent\Formatters\Number\Options;
 use s9e\TextFormatter\Utils;
+use Waterhole\Extend\Support\ComponentList;
 use Waterhole\Models\User;
 
 /**
@@ -106,7 +106,10 @@ function get_contrast_color(string $hex): string
 function resolve_all(array $names, array ...$parameters): array
 {
     return array_filter(
-        array_map(fn($name) => rescue(fn() => resolve($name, ...$parameters)), $names),
+        array_map(
+            fn($name) => is_object($name) ? $name : rescue(fn() => resolve($name, ...$parameters)),
+            $names,
+        ),
     );
 }
 
@@ -129,10 +132,18 @@ function user_variables(?User $user): array
     ];
 }
 
-function build_components(array $components, array $data = []): array
+function build_components(array|string|ComponentList $components, array $data = []): array
 {
+    if (is_string($components) && class_exists($components)) {
+        $components = resolve($components);
+    }
+
+    if ($components instanceof ComponentList) {
+        $components = $components->items();
+    }
+
     return array_map(function ($component) use ($data) {
-        if ($component instanceof Closure) {
+        if (is_callable($component)) {
             $component = app()->call($component, $data);
         }
         if (is_object($component)) {
@@ -142,7 +153,7 @@ function build_components(array $components, array $data = []): array
         } elseif (view()->exists($component)) {
             return new AnonymousComponent($component, $data);
         }
-    }, $components);
+    }, (array) $components);
 }
 
 function icon(?string $icon, array $attributes = []): string

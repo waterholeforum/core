@@ -3,7 +3,8 @@
 namespace Waterhole\Console;
 
 use Illuminate\Console\Command;
-use Waterhole\Extend;
+use Waterhole\Extend\Assets\Script;
+use Waterhole\Extend\Assets\Stylesheet;
 use Waterhole\Translation\FluentTranslator;
 
 class CacheClearCommand extends Command
@@ -19,8 +20,8 @@ class CacheClearCommand extends Command
 
         app(FluentTranslator::class)->flush();
 
-        Extend\Script::flush();
-        Extend\Stylesheet::flush();
+        app(Script::class)->flush();
+        app(Stylesheet::class)->flush();
 
         $this->info('Waterhole caches cleared!');
     }

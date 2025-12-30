@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Waterhole\Actions\Action;
-use Waterhole\Extend;
+use Waterhole\Extend\Core\Actions;
 use Waterhole\View\Components\Alert;
 use Waterhole\View\Components\MenuDivider;
 use Waterhole\View\TurboStream;
@@ -24,7 +24,7 @@ class ActionsController extends Controller
     {
         $models = $this->getModels($request);
 
-        $actions = collect(Extend\Actions::for($models))
+        $actions = collect(resolve(Actions::class)->actionsFor($models))
             ->filter(
                 fn($action) => !$action instanceof Action ||
                     $action->shouldRender($models, $request->input('context')),
@@ -114,18 +114,25 @@ class ActionsController extends Controller
     /**
      * Retrieve the model instances that are to be actioned.
      *
-     * The model instances are retrieved based on the "actionable" and the "id"
-     * inputs in the form submission.
+     * The model instances are retrieved based on the model class name in the
+     * "actionable" input and the "id" inputs in the form submission.
      */
     private function getModels(Request $request): Collection
     {
         $actionable = $request->input('actionable');
 
-        if (!($model = Extend\Actionables::get($actionable))) {
+        $actions = resolve(Actions::class);
+
+        if (
+            !$actionable ||
+            !class_exists($actionable) ||
+            !is_subclass_of($actionable, \Waterhole\Models\Model::class) ||
+            !$actions->hasList($actionable)
+        ) {
             abort(400, "The actionable [$actionable] does not exist");
         }
 
-        $models = $model::findMany((array) $request->input('id'));
+        $models = $actionable::findMany((array) $request->input('id'));
 
         if (!$models->count()) {
             abort(400, 'No models found.');
@@ -143,7 +150,7 @@ class ActionsController extends Controller
      */
     private function getAction(Collection $models, Request $request): Action
     {
-        $actions = Extend\Actions::for($models);
+        $actions = resolve(Actions::class)->actionsFor($models);
         $requestedAction = $request->get('action_class');
 
         foreach ($actions as $action) {

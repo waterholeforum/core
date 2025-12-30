@@ -3,17 +3,11 @@
 namespace Waterhole\Actions;
 
 use Illuminate\Support\Collection;
-use Waterhole\Models\Group;
 use Waterhole\Models\Model;
 use Waterhole\Models\User;
 
 class EditGroup extends Link
 {
-    public function appliesTo(Model $model): bool
-    {
-        return $model instanceof Group;
-    }
-
     public function authorize(?User $user, Model $model): bool
     {
         return $user && $user->can('waterhole.group.edit', $model);

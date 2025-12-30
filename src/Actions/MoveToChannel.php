@@ -8,17 +8,11 @@ use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Model;
-use Waterhole\Models\Post;
 use Waterhole\Models\User;
 
 class MoveToChannel extends Action
 {
     public bool $confirm = true;
-
-    public function appliesTo(Model $model): bool
-    {
-        return $model instanceof Post;
-    }
 
     public function authorize(?User $user, Model $model): bool
     {

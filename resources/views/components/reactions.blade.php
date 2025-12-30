@@ -9,21 +9,17 @@
     {{ $attributes->class('reactions row wrap gap-xxs') }}
 >
     @foreach ($reactionTypes as $reactionType)
-        @php
-            $count = $model->reactionsSummary->count($reactionType);
-        @endphp
-
         <{{ $component->isAuthorized ? 'button' : 'span' }}
             {{
                 (new ComponentAttributeBag([
                     'name' => 'reaction_type_id',
                     'value' => $reactionType->id,
                     'data-reaction-type' => $reactionType->id,
-                    'data-count' => $count,
+                    'data-count' => $count = $reactionCount($reactionType),
                 ]))->class([
                     'btn btn--sm btn--outline reaction',
-                    'is-active' => $model->reactionsSummary->userReacted($reactionType),
-                    'is-inert' => ! $component->isAuthorized,
+                    'is-active' => $userReacted($reactionType),
+                    'is-inert' => !$component->isAuthorized,
                 ])
             }}
         >

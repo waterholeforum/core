@@ -13,7 +13,16 @@ use Waterhole\Waterhole;
 
 class AppServiceProvider extends ServiceProvider
 {
-    protected array $configFiles = ['auth', 'cp', 'design', 'forum', 'system', 'uploads', 'users'];
+    protected array $configFiles = [
+        'api',
+        'auth',
+        'cp',
+        'design',
+        'forum',
+        'system',
+        'uploads',
+        'users',
+    ];
 
     public function register()
     {

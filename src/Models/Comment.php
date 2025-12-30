@@ -4,10 +4,12 @@ namespace Waterhole\Models;
 
 use HotwiredLaravel\TurboLaravel\Models\Broadcasts;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Validation\Rule;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
+use Waterhole\Database\Factories\CommentFactory;
 use Waterhole\Events\NewComment;
 use Waterhole\Models\Concerns\HasBody;
 use Waterhole\Models\Concerns\NotificationContent;
@@ -42,6 +44,7 @@ use function HotwiredLaravel\TurboLaravel\dom_id;
  */
 class Comment extends Model
 {
+    use HasFactory;
     use HasBody;
     use Reactable;
     use HasRecursiveRelationships;
@@ -85,6 +88,11 @@ class Comment extends Model
         // came before it) when querying comments. Since this is an expensive
         // thing to do, put it in a global scope so that it can be disabled.
         static::addGlobalScope(new CommentIndexScope());
+    }
+
+    protected static function newFactory(): CommentFactory
+    {
+        return CommentFactory::new();
     }
 
     public function post(): BelongsTo

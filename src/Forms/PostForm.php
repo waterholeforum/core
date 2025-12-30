@@ -2,7 +2,6 @@
 
 namespace Waterhole\Forms;
 
-use Waterhole\Extend;
 use Waterhole\Models\Post;
 
 class PostForm extends Form
@@ -14,6 +13,6 @@ class PostForm extends Form
 
     public function fields(): array
     {
-        return Extend\PostForm::components(['model' => $this->model]);
+        return resolve(\Waterhole\Extend\Forms\PostForm::class)->components(['model' => $this->model]);
     }
 }

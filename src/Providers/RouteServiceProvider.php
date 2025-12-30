@@ -7,6 +7,7 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Laravel\Sanctum\Http\Middleware\CheckAbilities;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -46,6 +47,13 @@ class RouteServiceProvider extends ServiceProvider
             \Waterhole\Http\Middleware\MaybeRequirePassword::class,
         ]);
 
+        Route::middlewareGroup('waterhole.api', [
+            ...!config('waterhole.api.public', false)
+                ? ['waterhole.auth:sanctum', CheckAbilities::class . ':waterhole']
+                : [\Waterhole\Http\Middleware\AuthGuard::class . ':sanctum'],
+            \Illuminate\Routing\Middleware\ThrottleRequests::using('waterhole.api'),
+        ]);
+
         $this->configureRateLimiting();
 
         $this->routes(function () {
@@ -58,8 +66,16 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware(['waterhole.web', 'waterhole.cp'])
                 ->name('waterhole.cp.')
                 ->domain(config('waterhole.system.domain'))
-                ->prefix(config('waterhole.cp.path'))
+                ->prefix(config('waterhole.cp.path', 'cp'))
                 ->group(__DIR__ . '/../../routes/cp.php');
+
+            if (config('waterhole.api.enabled', true)) {
+                Route::middleware(['waterhole.api'])
+                    ->name('waterhole.api.')
+                    ->domain(config('waterhole.system.domain'))
+                    ->prefix(config('waterhole.api.path', 'api'))
+                    ->group(__DIR__ . '/../../routes/api.php');
+            }
         });
     }
 
@@ -80,7 +96,17 @@ class RouteServiceProvider extends ServiceProvider
                 return Limit::none();
             }
 
-            return Limit::perMinute(config('waterhole.forum.search_per_minute', 10));
+            return Limit::perMinute(config('waterhole.forum.search_per_minute', 10))->by(
+                $request->user()?->id ?: $request->ip(),
+            );
+        });
+
+        RateLimiter::for('waterhole.api', function (Request $request) {
+            if ($request->user()?->isAdmin()) {
+                return Limit::none();
+            }
+
+            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
     }
 }

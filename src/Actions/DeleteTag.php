@@ -12,11 +12,6 @@ class DeleteTag extends Action
     public bool $confirm = true;
     public bool $destructive = true;
 
-    public function appliesTo(Model $model): bool
-    {
-        return $model instanceof Tag;
-    }
-
     public function authorize(?User $user, Model $model): bool
     {
         return $user && $user->can('waterhole.tag.delete', $model);

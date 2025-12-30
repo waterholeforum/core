@@ -49,7 +49,7 @@ class PostUser extends Model
 
     public function getKey(): string
     {
-        return $this->post_id . ':' . $this->user_id;
+        return $this->post_id . '-' . $this->user_id;
     }
 
     protected function setKeysForSaveQuery($query): Builder

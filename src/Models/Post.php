@@ -5,6 +5,7 @@ namespace Waterhole\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
+use Waterhole\Database\Factories\PostFactory;
 use Waterhole\Events\NewPost;
 use Waterhole\Models\Concerns\Followable;
 use Waterhole\Models\Concerns\HasBody;
@@ -53,6 +55,7 @@ use Waterhole\View\TurboStream;
  */
 class Post extends Model
 {
+    use HasFactory;
     use Followable;
     use HasBody;
     use Reactable;
@@ -69,7 +72,7 @@ class Post extends Model
         'is_pinned' => 'boolean',
     ];
 
-    public static function booting()
+    public static function booting(): void
     {
         static::addGlobalScope('visible', new PostVisibleScope(fn() => Auth::user()));
 
@@ -110,6 +113,11 @@ class Post extends Model
                 10,
             );
         });
+    }
+
+    protected static function newFactory(): PostFactory
+    {
+        return PostFactory::new();
     }
 
     /**

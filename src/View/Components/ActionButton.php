@@ -4,8 +4,7 @@ namespace Waterhole\View\Components;
 
 use Illuminate\View\Component;
 use Waterhole\Actions\Action;
-use Waterhole\Extend\Actionables;
-use Waterhole\Extend\Actions;
+use Waterhole\Extend\Core\Actions;
 
 class ActionButton extends Component
 {
@@ -19,9 +18,9 @@ class ActionButton extends Component
         public bool $icon = false,
         public array $formAttributes = [],
     ) {
-        $this->actionable = Actionables::getActionableName($for);
+        $this->actionable = get_class($for);
 
-        $this->actionInstance = collect(Actions::for([$for]))
+        $this->actionInstance = collect(resolve(Actions::class)->actionsFor([$for]))
             ->filter(fn($a) => $a instanceof $action)
             ->first();
     }

@@ -4,18 +4,12 @@ namespace Waterhole\Actions;
 
 use Illuminate\Support\Collection;
 use Waterhole\Models\Model;
-use Waterhole\Models\ReactionSet;
 use Waterhole\Models\User;
 
 class DeleteReactionSet extends Action
 {
     public bool $confirm = true;
     public bool $destructive = true;
-
-    public function appliesTo(Model $model): bool
-    {
-        return $model instanceof ReactionSet;
-    }
 
     public function authorize(?User $user, Model $model): bool
     {

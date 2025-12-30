@@ -3,7 +3,9 @@
 namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Str;
+use Waterhole\Database\Factories\PageFactory;
 use Waterhole\Models\Concerns\HasBody;
 use Waterhole\Models\Concerns\HasIcon;
 use Waterhole\Models\Concerns\HasPermissions;
@@ -18,6 +20,7 @@ use Waterhole\Models\Concerns\Structurable;
  */
 class Page extends Model
 {
+    use HasFactory;
     use HasBody;
     use HasIcon;
     use HasPermissions;
@@ -30,6 +33,11 @@ class Page extends Model
         static::creating(function (self $model) {
             $model->slug ??= Str::slug($model->name);
         });
+    }
+
+    protected static function newFactory(): PageFactory
+    {
+        return PageFactory::new();
     }
 
     protected function url(): Attribute

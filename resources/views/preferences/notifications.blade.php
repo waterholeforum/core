@@ -9,7 +9,7 @@
         @csrf
 
         <div class="stack gap-md">
-            <x-waterhole::validation-errors />
+            <x-waterhole::validation-errors/>
 
             <div class="card card__body stack dividers">
                 <div class="field">
@@ -17,7 +17,7 @@
                         {{ __('waterhole::user.notifications-label') }}
                     </h4>
                     <div class="notification-grid card">
-                        @foreach (Waterhole\Extend\NotificationTypes::build() as $type)
+                        @foreach (resolve(\Waterhole\Extend\Core\NotificationTypes::class)->values() as $type)
                             @php
                                 $channels = (array) old('notification_channels.' . $type, Auth::user()->notification_channels[$type] ?? [])
                             @endphp
@@ -29,19 +29,19 @@
                                 <div class="push-end row">
                                     <label class="choice">
                                         <input
-                                            name="notification_channels[{{ $type }}][]"
-                                            type="checkbox"
-                                            value="database"
-                                            @checked(in_array('database', $channels))
+                                                name="notification_channels[{{ $type }}][]"
+                                                type="checkbox"
+                                                value="database"
+                                                @checked(in_array('database', $channels))
                                         />
                                         {{ __('waterhole::user.notification-channel-web') }}
                                     </label>
                                     <label class="choice">
                                         <input
-                                            type="checkbox"
-                                            name="notification_channels[{{ $type }}][]"
-                                            value="mail"
-                                            @checked(in_array('mail', $channels))
+                                                type="checkbox"
+                                                name="notification_channels[{{ $type }}][]"
+                                                value="mail"
+                                                @checked(in_array('mail', $channels))
                                         />
                                         {{ __('waterhole::user.notification-channel-email') }}
                                     </label>
@@ -56,13 +56,13 @@
                         {{ __('waterhole::user.notifications-following-label') }}
                     </h4>
                     <div>
-                        <input type="hidden" name="follow_on_comment" value="0" />
+                        <input type="hidden" name="follow_on_comment" value="0"/>
                         <label class="choice">
                             <input
-                                type="checkbox"
-                                name="follow_on_comment"
-                                value="1"
-                                @checked(Auth::user()->follow_on_comment)
+                                    type="checkbox"
+                                    name="follow_on_comment"
+                                    value="1"
+                                    @checked(Auth::user()->follow_on_comment)
                             />
                             {{ __('waterhole::user.follow-on-comment-label') }}
                         </label>

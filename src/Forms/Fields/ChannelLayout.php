@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
-use Waterhole\Extend\PostLayouts;
+use Waterhole\Extend\Core\PostLayouts;
 use Waterhole\Forms\Field;
 use Waterhole\Models\Channel;
 use function Waterhole\resolve_all;
@@ -19,7 +19,7 @@ class ChannelLayout extends Field
 
     public function __construct(public ?Channel $model)
     {
-        $this->layouts = resolve_all(PostLayouts::values());
+        $this->layouts = resolve_all(resolve(PostLayouts::class)->values());
 
         $this->configFields = collect($this->layouts)
             ->mapWithKeys(function ($layout) use ($model) {
@@ -31,6 +31,7 @@ class ChannelLayout extends Field
                         ]),
                     ];
                 }
+                return [];
             })
             ->filter();
     }

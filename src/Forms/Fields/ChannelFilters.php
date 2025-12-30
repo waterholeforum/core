@@ -5,7 +5,7 @@ namespace Waterhole\Forms\Fields;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
-use Waterhole\Extend\PostFilters;
+use Waterhole\Extend\Core\PostFilters;
 use Waterhole\Forms\Field;
 use Waterhole\Models\Channel;
 
@@ -48,7 +48,7 @@ class ChannelFilters extends Field
                             @php
                                 $filters = old('filters', $model->filters ?? config('waterhole.forum.post_filters', []));
 
-                                $availableFilters = collect(Waterhole\resolve_all(Waterhole\Extend\PostFilters::values()))
+                                $availableFilters = collect(Waterhole\resolve_all(resolve(Waterhole\Extend\Core\PostFilters::class)->values()))
                                     ->sortBy(fn($filter) => ($k = array_search(get_class($filter), $filters)) === false ? INF : $k);
                             @endphp
 
@@ -83,7 +83,7 @@ class ChannelFilters extends Field
     {
         $validator->addRules([
             'filters' => ['required_with:custom_filters', 'array'],
-            'filters.*' => ['string', 'distinct', Rule::in(PostFilters::values())],
+            'filters.*' => ['string', 'distinct', Rule::in(resolve(PostFilters::class)->values())],
         ]);
     }
 

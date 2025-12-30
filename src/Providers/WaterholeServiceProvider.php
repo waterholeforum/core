@@ -7,6 +7,7 @@ use Illuminate\Support\AggregateServiceProvider;
 class WaterholeServiceProvider extends AggregateServiceProvider
 {
     protected $providers = [
+        ApiServiceProvider::class,
         AppServiceProvider::class,
         AuthServiceProvider::class,
         BroadcastServiceProvider::class,

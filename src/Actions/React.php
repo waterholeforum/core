@@ -13,11 +13,6 @@ use Waterhole\View\TurboStream;
 
 class React extends Action
 {
-    public function appliesTo(Model $model): bool
-    {
-        return $model instanceof Post || $model instanceof Comment;
-    }
-
     public function authorize(?User $user, Model $model): bool
     {
         return $user &&

@@ -77,6 +77,4 @@ Route::post('reaction-sets/{reactionSet}/reaction-types/reorder', [
     'reorder',
 ])->name('reaction-sets.reaction-types.reorder');
 
-foreach (Waterhole\Extend\CpRoutes::values() as $callback) {
-    $callback();
-}
+resolve(Waterhole\Extend\Routing\CpRoutes::class)->execute();

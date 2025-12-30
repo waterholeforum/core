@@ -4,10 +4,12 @@ namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
+use Waterhole\Database\Factories\ChannelFactory;
 use Waterhole\Models\Concerns\Followable;
 use Waterhole\Models\Concerns\HasIcon;
 use Waterhole\Models\Concerns\HasPermissions;
@@ -42,6 +44,7 @@ use Waterhole\View\TurboStream;
  */
 class Channel extends Model
 {
+    use HasFactory;
     use Followable;
     use HasIcon;
     use HasPermissions;
@@ -64,6 +67,11 @@ class Channel extends Model
         static::creating(function (self $model) {
             $model->slug ??= Str::slug($model->name);
         });
+    }
+
+    protected static function newFactory(): ChannelFactory
+    {
+        return ChannelFactory::new();
     }
 
     /**

@@ -9,11 +9,6 @@ use Waterhole\View\TurboStream;
 
 class Unignore extends Action
 {
-    public function appliesTo(Model $model): bool
-    {
-        return method_exists($model, 'unignore');
-    }
-
     public function shouldRender(Collection $models, string $context = null): bool
     {
         return $context !== 'cp' && $models->some->isIgnored();

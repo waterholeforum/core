@@ -35,7 +35,7 @@ class ChannelUser extends Model
 
     public function getKey(): string
     {
-        return $this->channel_id . ':' . $this->user_id;
+        return $this->channel_id . '-' . $this->user_id;
     }
 
     protected function setKeysForSaveQuery($query): Builder

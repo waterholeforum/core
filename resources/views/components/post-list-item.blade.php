@@ -1,17 +1,17 @@
 <article
-    {{
-        $attributes
-            ->class('post-list-item card__row row align-start gap-md')
-            ->merge(Waterhole\Extend\PostAttributes::build($post))
-    }}
-    data-controller="post"
+        {{
+            $attributes
+                ->class('post-list-item card__row row align-start gap-md')
+                ->merge(resolve(\Waterhole\Extend\Ui\PostAttributes::class)->build($post))
+        }}
+        data-controller="post"
 >
     <x-waterhole::user-link :user="$post->user" class="post-list-item__avatar">
-        <x-waterhole::avatar :user="$post->user" />
+        <x-waterhole::avatar :user="$post->user"/>
         <ui-tooltip>
             {{ Waterhole\username($post->user) }}
             {{ __('waterhole::forum.post-activity-posted') }}
-            <x-waterhole::relative-time :datetime="$post->created_at" />
+            <x-waterhole::relative-time :datetime="$post->created_at"/>
         </ui-tooltip>
     </x-waterhole::user-link>
 
@@ -20,21 +20,21 @@
             <div class="post-list-item__main grow stack gap-xxs">
                 <h3 class="post-list-item__title h4 weight-medium">
                     <a
-                        href="{{ $post->isUnread() ? $post->unread_url : $post->url }}"
-                        data-action="post#appearAsRead"
-                        class="post-title-link"
+                            href="{{ $post->isUnread() ? $post->unread_url : $post->url }}"
+                            data-action="post#appearAsRead"
+                            class="post-title-link"
                     >
                         {{ $title }}
                     </a>
                 </h3>
 
                 <div class="post-list-item__info row wrap gap-y-xxs gap-x-sm text-xs color-muted">
-                    @components(Waterhole\Extend\PostInfo::build(), compact('post'))
+                    @components(resolve(\Waterhole\Extend\Ui\PostListItem::class)->info, compact('post'))
                 </div>
             </div>
 
             <div class="post-list-item__end row wrap justify-end gap-xs align-center">
-                @components(Waterhole\Extend\PostListItem::build(), compact('post', 'config'))
+                @components(resolve(\Waterhole\Extend\Ui\PostListItem::class)->secondary, compact('post', 'config'))
             </div>
         </div>
 
@@ -46,6 +46,6 @@
     </div>
 
     <div class="post-list-item__controls hide-sm">
-        <x-waterhole::action-menu :for="$post" placement="bottom-end" />
+        <x-waterhole::action-menu :for="$post" placement="bottom-end"/>
     </div>
 </article>

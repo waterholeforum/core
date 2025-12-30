@@ -166,6 +166,4 @@ Route::post('format', FormatController::class)->name('format');
 Route::post('upload', UploadController::class)->name('upload');
 Route::get('impersonate/{user}', ImpersonateController::class)->name('impersonate');
 
-foreach (Waterhole\Extend\ForumRoutes::values() as $callback) {
-    $callback();
-}
+resolve(Waterhole\Extend\Routing\ForumRoutes::class)->execute();

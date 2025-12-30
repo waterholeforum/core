@@ -1,7 +1,7 @@
 <x-waterhole::layout :title="$post->title">
     <x-slot name="head">
         @unless ($post->channel->structure->is_listed)
-            <meta name="robots" content="noindex" />
+            <meta name="robots" content="noindex"/>
         @endunless
     </x-slot>
 
@@ -9,11 +9,11 @@
         class="post-page section container with-sidebar"
         data-controller="post-page"
         data-post-page-id-value="{{ $post->id }}"
-        {{ new Illuminate\View\ComponentAttributeBag(Waterhole\Extend\PostAttributes::build($post)) }}
+        {{ new Illuminate\View\ComponentAttributeBag(resolve(\Waterhole\Extend\Ui\PostAttributes::class)->build($post)) }}
     >
         <div class="stack gap-lg measure">
             <div data-post-page-target="post" @if (!$comments->onFirstPage()) hidden @endif>
-                <x-waterhole::post-full :post="$post" />
+                <x-waterhole::post-full :post="$post"/>
             </div>
 
             <section class="post-page__comments stack gap-md">
@@ -38,20 +38,20 @@
                             @endonce
                         @endif
 
-                        <x-waterhole::comment-frame :comment="$comment" class="card__row" />
+                        <x-waterhole::comment-frame :comment="$comment" class="card__row"/>
                     @endforeach
                 </x-waterhole::infinite-scroll>
             </section>
 
             @if (! $comments->hasMorePages())
                 <div class="stack gap-md" id="bottom" tabindex="-1">
-                    @components(Waterhole\Extend\CommentsBottom::build(), compact('post'))
+                    @components(resolve(\Waterhole\Extend\Ui\PostPage::class)->bottom, compact('post'))
                 </div>
             @endif
 
             @can('waterhole.post.comment', $post)
                 <div id="reply" tabindex="-1"></div>
-                <x-waterhole::composer :post="$post" data-turbo-permanent />
+                <x-waterhole::composer :post="$post" data-turbo-permanent/>
             @endcan
         </div>
 
@@ -59,7 +59,7 @@
             class="sidebar sidebar--sticky sidebar--bottom overflow-visible stack gap-lg justify-between"
             data-controller="watch-sticky"
         >
-            <x-waterhole::post-sidebar :post="$post" />
+            <x-waterhole::post-sidebar :post="$post"/>
 
             @if ($comments->total())
                 <a

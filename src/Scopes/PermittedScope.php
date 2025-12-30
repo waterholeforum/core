@@ -33,7 +33,7 @@ class PermittedScope implements Scope
     {
         $user = $this->user ?: Auth::user();
 
-        if (app()->runningInConsole() && !$user) {
+        if (app()->runningInConsole() && !app()->runningUnitTests() && !$user) {
             return;
         }
 

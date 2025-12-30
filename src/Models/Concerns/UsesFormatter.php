@@ -23,7 +23,7 @@ trait UsesFormatter
     public function format(string $attribute, User $user = null): HtmlString|string
     {
         $key = $attribute . ':' . ($user->id ?? 0);
-        $value = $this->attributes[$attribute];
+        $value = $this->attributes[$attribute] ?? '';
 
         if (!isset($this->renderCache[$key])) {
             $this->renderCache[$key] = rescue(
@@ -60,26 +60,32 @@ trait UsesFormatter
 
     public function getAttribute($key)
     {
-        foreach (static::$formatters as $attribute => $formatter) {
-            if ($key === $attribute) {
-                return !empty($this->attributes[$key])
-                    ? $formatter->unparse($this->attributes[$key])
-                    : null;
-            }
+        if (isset(static::$formatters[$key])) {
+            return !empty($this->attributes[$key])
+                ? static::$formatters[$key]->unparse($this->attributes[$key])
+                : null;
+        }
 
-            if (!str_contains($key, $attribute)) {
-                continue;
-            }
+        if (str_starts_with($key, 'parsed_')) {
+            $attribute = substr($key, 7);
 
-            if (str_starts_with($key, 'parsed_')) {
+            if (isset(static::$formatters[$attribute])) {
                 return $this->attributes[$attribute];
             }
+        }
 
-            if (str_ends_with($key, '_html')) {
+        if (str_ends_with($key, '_html')) {
+            $attribute = substr($key, 0, -5);
+
+            if (isset(static::$formatters[$attribute])) {
                 return $this->format($attribute);
             }
+        }
 
-            if (str_ends_with($key, '_text')) {
+        if (str_ends_with($key, '_text')) {
+            $attribute = substr($key, 0, -5);
+
+            if (isset(static::$formatters[$attribute])) {
                 return remove_formatting($this->attributes[$attribute]);
             }
         }

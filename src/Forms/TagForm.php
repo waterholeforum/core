@@ -2,7 +2,6 @@
 
 namespace Waterhole\Forms;
 
-use Waterhole\Extend;
 use Waterhole\Models\Tag;
 
 class TagForm extends Form
@@ -14,6 +13,6 @@ class TagForm extends Form
 
     public function fields(): array
     {
-        return Extend\TagForm::components(['model' => $this->model]);
+        return resolve(\Waterhole\Extend\Forms\TagForm::class)->components(['model' => $this->model]);
     }
 }

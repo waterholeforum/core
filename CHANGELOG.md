@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### ⚠️ Breaking Changes
+
+- Refresh the extension API with new namespaces and container-resolved extenders
+- Replace `reactionsSummary()` with `reactionCounts()` for reaction totals and user-reacted state
+
+### Added
+
+- Add a read-only JSON:API for forum data with includes, sorting, filtering, and pagination
+- Add API configuration for enabling, public/private access, and path in `config/waterhole/api.php`
+- Add `waterhole:openapi` commmand to generate an OpenAPI schema for the API
+
+### Changed
+
+- Rely on Laravel core for the `Registered` event email verification listener
+- Add `Waterhole::isApiRoute()` and route-name based checks for forum/CP detection
+
+### Fixed
+
+- Fix permission lookups when IDs are returned as strings in some databases
+- Avoid loading `userState` relationship for guests
+- Fix PHP 8.4 deprecation warning
+
 ## [0.4.12] - 2025-04-23
 
 ### Fixed

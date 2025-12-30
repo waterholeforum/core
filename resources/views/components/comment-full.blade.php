@@ -1,5 +1,5 @@
 <article
-    {{ $attributes->class('comment')->merge(Waterhole\Extend\CommentAttributes::build($comment)) }}
+    {{ $attributes->class('comment')->merge(resolve(\Waterhole\Extend\Ui\CommentAttributes::class)->build($comment)) }}
     data-comment-id="{{ $comment->id }}"
     data-parent-id="{{ $comment->parent?->id }}"
     data-controller="comment"
@@ -28,7 +28,7 @@
 
     <div class="comment__main stack gap-md">
         <header class="comment__header">
-            @components(Waterhole\Extend\CommentHeader::build(), compact('comment'))
+            @components(resolve(\Waterhole\Extend\Ui\CommentComponent::class)->header, compact('comment'))
 
             <x-waterhole::attribution
                 :user="$comment->user"
@@ -54,7 +54,7 @@
                         <span>
                             {{ __('waterhole::forum.comment-in-reply-to-link') }}
                             <span class="user-label">
-                                <x-waterhole::avatar :user="$comment->parent->user" />
+                                <x-waterhole::avatar :user="$comment->parent->user"/>
                                 <span>{{ Waterhole\username($comment->parent->user) }}</span>
                             </span>
                         </span>
@@ -120,12 +120,12 @@
         </div>
 
         <footer class="comment__footer row gap-xs wrap">
-            @components(Waterhole\Extend\CommentFooter::build(), compact('comment', 'withReplies'))
+            @components(resolve(\Waterhole\Extend\Ui\CommentComponent::class)->footer, compact('comment', 'withReplies'))
 
             <div class="row wrap push-end">
-                @components(Waterhole\Extend\CommentActions::build(), compact('comment', 'withReplies'))
+                @components(resolve(\Waterhole\Extend\Ui\CommentComponent::class)->buttons, compact('comment', 'withReplies'))
 
-                <x-waterhole::action-menu :for="$comment" placement="bottom-end" />
+                <x-waterhole::action-menu :for="$comment" placement="bottom-end"/>
             </div>
         </footer>
     </div>
@@ -144,7 +144,7 @@
                 >
                     @foreach ($comment->children as $child)
                         <li class="card__row">
-                            <x-waterhole::comment-frame :comment="$child" />
+                            <x-waterhole::comment-frame :comment="$child"/>
                         </li>
                     @endforeach
                 </ol>

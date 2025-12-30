@@ -21,8 +21,13 @@ class Permission extends Model
 
     protected static function booting(): void
     {
-        static::saved(fn() => Cache::forget('waterhole.permissions'));
-        static::deleted(fn() => Cache::forget('waterhole.permissions'));
+        $flushCache = function () {
+            Cache::forget('waterhole.permissions');
+            app()->forgetInstance('waterhole.permissions');
+        };
+
+        static::saved($flushCache);
+        static::deleted($flushCache);
     }
 
     /**

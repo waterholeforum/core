@@ -2,7 +2,6 @@
 
 namespace Waterhole\Forms;
 
-use Waterhole\Extend;
 use Waterhole\Models\User;
 
 class UserForm extends Form
@@ -14,6 +13,6 @@ class UserForm extends Form
 
     public function fields(): array
     {
-        return Extend\UserForm::components(['model' => $this->model]);
+        return resolve(\Waterhole\Extend\Forms\UserForm::class)->components(['model' => $this->model]);
     }
 }

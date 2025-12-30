@@ -9,11 +9,6 @@ use Waterhole\Models\User;
 
 class EditTaxonomy extends Link
 {
-    public function appliesTo(Model $model): bool
-    {
-        return $model instanceof Taxonomy;
-    }
-
     public function authorize(?User $user, Model $model): bool
     {
         return $user && $user->can('waterhole.taxonomy.edit', $model);

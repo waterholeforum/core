@@ -2,15 +2,13 @@
 
 namespace Waterhole\Providers;
 
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Waterhole\Extend;
+use Waterhole\Extend\Assets\Script;
+use Waterhole\Extend\Assets\Stylesheet;
 
 class EventServiceProvider extends ServiceProvider
 {
     protected $listen = [
-        Registered::class => [SendEmailVerificationNotification::class],
-        'cache:clearing' => [[Extend\Script::class, 'flush'], [Extend\Stylesheet::class, 'flush']],
+        'cache:clearing' => [[Script::class, 'flush'], [Stylesheet::class, 'flush']],
     ];
 }

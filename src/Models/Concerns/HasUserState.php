@@ -43,4 +43,13 @@ trait HasUserState
 
         return $this;
     }
+
+    public function getRelationValue($key)
+    {
+        if ($key === 'userState' && !Auth::check()) {
+            return null;
+        }
+
+        return parent::getRelationValue($key);
+    }
 }

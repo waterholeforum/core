@@ -77,11 +77,13 @@ class PermissionCollection extends Collection
         $scopeType = is_string($scope) ? (new $scope())->getMorphClass() : $scope->getMorphClass();
         $scopeId = is_string($scope) ? null : $scope->getKey();
 
+        // Use loose (==) comparison for IDs below, as in some environments
+        // they can be returned as strings instead of ints.
         return function ($item) use ($ability, $recipients, $scopeType, $scopeId) {
             if (
                 $item['ability'] !== $ability ||
                 $item['scope_type'] !== $scopeType ||
-                ($scopeId && $item['scope_id'] !== $scopeId)
+                ($scopeId && $item['scope_id'] != $scopeId)
             ) {
                 return false;
             }
@@ -89,7 +91,7 @@ class PermissionCollection extends Collection
             foreach ($recipients as [$recipientType, $recipientId]) {
                 if (
                     $item['recipient_type'] === $recipientType &&
-                    $item['recipient_id'] === $recipientId
+                    $item['recipient_id'] == $recipientId
                 ) {
                     return true;
                 }

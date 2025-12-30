@@ -12,6 +12,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -20,8 +21,10 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
 use Intervention\Image\Image;
+use Laravel\Sanctum\HasApiTokens;
 use Waterhole\Auth\AuthenticatesWaterhole;
-use Waterhole\Extend\NotificationTypes;
+use Waterhole\Database\Factories\UserFactory;
+use Waterhole\Extend\Core\NotificationTypes;
 use Waterhole\Models\Concerns\HasImageAttributes;
 use Waterhole\Models\Concerns\ReceivesPermissions;
 use Waterhole\Models\Concerns\UsesFormatter;
@@ -64,6 +67,7 @@ class User extends Model implements
     CanResetPasswordContract,
     HasLocalePreference
 {
+    use HasFactory;
     use Authenticatable;
     use Authorizable;
     use CanResetPassword;
@@ -72,6 +76,7 @@ class User extends Model implements
     use Notifiable;
     use ReceivesPermissions;
     use UsesFormatter;
+    use HasApiTokens;
 
     public const UPDATED_AT = null;
 
@@ -93,10 +98,15 @@ class User extends Model implements
     {
         static::creating(function (User $user) {
             $user->follow_on_comment ??= true;
-            $user->notification_channels ??= collect(NotificationTypes::build())->mapWithKeys(
-                fn($type) => [$type => ['database', 'mail']],
-            );
+            $user->notification_channels ??= collect(
+                resolve(NotificationTypes::class)->values(),
+            )->mapWithKeys(fn($type) => [$type => ['database', 'mail']]);
         });
+    }
+
+    protected static function newFactory(): UserFactory
+    {
+        return UserFactory::new();
     }
 
     /**

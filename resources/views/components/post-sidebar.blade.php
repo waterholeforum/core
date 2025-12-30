@@ -9,38 +9,41 @@
     @endphp
 
     <{{ $tag }}
-        class="btn grow {{ $enabled ? 'bg-accent' : 'is-disabled' }}"
-        @if ($enabled) href="{{ $href }}" @endif
+            class
+    ="btn grow {{ $enabled ? 'bg-accent' : 'is-disabled' }}"
+    @if ($enabled)
+        href="{{ $href }}"
+    @endif
     >
-        @icon('tabler-message-circle')
+    @icon('tabler-message-circle')
 
-        {{ __('waterhole::forum.post-comment-button') }}
+    {{ __('waterhole::forum.post-comment-button') }}
 
-        @unless ($enabled)
-            <ui-tooltip>
-                {{ $response->message() ?: __('waterhole::system.forbidden-message') }}
-            </ui-tooltip>
-        @endunless
-    </{{ $tag }}>
+    @unless ($enabled)
+        <ui-tooltip>
+            {{ $response->message() ?: __('waterhole::system.forbidden-message') }}
+        </ui-tooltip>
+    @endunless
+</{{ $tag }}>
 
-    <x-waterhole::action-menu
+<x-waterhole::action-menu
         :for="$post"
         class="grow"
         :button-attributes="['class' => 'btn full-width']"
         placement="bottom-end"
-    >
-        <x-slot name="button">
-            @icon('tabler-settings')
-            <span class="hide-sm">{{ __('waterhole::system.controls-button') }}</span>
-            @icon('tabler-chevron-down')
-        </x-slot>
-    </x-waterhole::action-menu>
+>
+    <x-slot name="button">
+        @icon('tabler-settings')
+        <span class="hide-sm">{{ __('waterhole::system.controls-button') }}</span>
+        @icon('tabler-chevron-down')
+    </x-slot>
+</x-waterhole::action-menu>
 
-    @auth
-        <div class="hide-sm grow">
-            <x-waterhole::follow-button :followable="$post" />
-        </div>
+@auth
+    <div class="hide-sm grow">
+        <x-waterhole::follow-button :followable="$post"/>
+    </div>
     @endauth
 
-    @components(Waterhole\Extend\PostSidebar::build(), compact('post'))
-</div>
+    @components(resolve(\Waterhole\Extend\Ui\PostPage::class)->sidebar, compact('post'))
+    </div>

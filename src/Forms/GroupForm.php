@@ -2,7 +2,6 @@
 
 namespace Waterhole\Forms;
 
-use Waterhole\Extend;
 use Waterhole\Models\Group;
 
 class GroupForm extends Form
@@ -14,6 +13,6 @@ class GroupForm extends Form
 
     public function fields(): array
     {
-        return Extend\GroupForm::components(['model' => $this->model]);
+        return resolve(\Waterhole\Extend\Forms\GroupForm::class)->components(['model' => $this->model]);
     }
 }

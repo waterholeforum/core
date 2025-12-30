@@ -3,7 +3,6 @@
 namespace Waterhole\Actions;
 
 use Illuminate\Support\Collection;
-use Waterhole\Models\Group;
 use Waterhole\Models\Model;
 use Waterhole\Models\User;
 
@@ -11,11 +10,6 @@ class DeleteGroup extends Action
 {
     public bool $confirm = true;
     public bool $destructive = true;
-
-    public function appliesTo(Model $model): bool
-    {
-        return $model instanceof Group;
-    }
 
     public function authorize(?User $user, Model $model): bool
     {

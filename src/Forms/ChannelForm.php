@@ -2,7 +2,6 @@
 
 namespace Waterhole\Forms;
 
-use Waterhole\Extend;
 use Waterhole\Models\Channel;
 
 class ChannelForm extends Form
@@ -14,6 +13,6 @@ class ChannelForm extends Form
 
     public function fields(): array
     {
-        return Extend\ChannelForm::components(['model' => $this->model]);
+        return resolve(\Waterhole\Extend\Forms\ChannelForm::class)->components(['model' => $this->model]);
     }
 }

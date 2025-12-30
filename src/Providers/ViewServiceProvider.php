@@ -48,6 +48,8 @@ class ViewServiceProvider extends ServiceProvider
                 '<?php if ($instance instanceof Illuminate\View\Component && $instance->shouldRender()): ?>',
                 '<?php $__env->startComponent($instance->resolveView(), $instance->data()); ?>',
                 '<?php echo $__env->renderComponent(); ?>',
+                '<?php elseif ($instance instanceof Illuminate\Support\HtmlString): ?>',
+                '<?php echo $instance; ?>',
                 '<?php endif; ?>',
                 '<?php endforeach; ?>',
             ]);

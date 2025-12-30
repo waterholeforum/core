@@ -26,7 +26,7 @@
             </x-waterhole::alert>
         @endsection
 
-        @if ($alerts = Waterhole\Extend\CpAlerts::build())
+        @if ($alerts = resolve(Waterhole\Extend\Ui\CpAlerts::class)->components())
             <div class="stack gap-sm">
                 @components($alerts)
             </div>

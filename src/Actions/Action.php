@@ -17,8 +17,8 @@ use Waterhole\Models\User;
  * made up of a list of Actions.
  *
  * To define a new action, extend this class, and override and implement methods
- * as required. Use the `Waterhole\Extend\Actions` extender to register an
- * action class.
+ * as required. Use the `Waterhole\Extend\Core\Actions` extender to register an
+ * action class for a model.
  */
 abstract class Action
 {
@@ -40,7 +40,10 @@ abstract class Action
     /**
      * Whether the action can logically be applied to the given model.
      */
-    abstract public function appliesTo(Model $model): bool;
+    public function appliesTo(Model $model): bool
+    {
+        return true;
+    }
 
     /**
      * Whether a user is allowed to apply the action to the given model.
@@ -55,7 +58,7 @@ abstract class Action
     /**
      * Whether the action should be listed in a menu for the given models.
      */
-    public function shouldRender(Collection $models, string $context = null): bool
+    public function shouldRender(Collection $models, ?string $context = null): bool
     {
         return true;
     }
@@ -105,7 +108,6 @@ abstract class Action
         }
 
         $class = e(static::class);
-        $label = e($this->label($models));
         $content = $this->renderContent($models, $tooltip);
 
         return new HtmlString(

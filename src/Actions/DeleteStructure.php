@@ -4,22 +4,12 @@ namespace Waterhole\Actions;
 
 use Illuminate\Support\Collection;
 use Waterhole\Models\Model;
-use Waterhole\Models\Page;
-use Waterhole\Models\StructureHeading;
-use Waterhole\Models\StructureLink;
 use Waterhole\Models\User;
 
 class DeleteStructure extends Action
 {
     public bool $confirm = true;
     public bool $destructive = true;
-
-    public function appliesTo($model): bool
-    {
-        return $model instanceof StructureHeading ||
-            $model instanceof StructureLink ||
-            $model instanceof Page;
-    }
 
     public function authorize(?User $user, Model $model): bool
     {

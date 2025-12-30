@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthGuard
 {
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, $guard = null)
     {
-        Auth::shouldUse(config('waterhole.auth.guard', 'web'));
+        Auth::shouldUse($guard ?? config('waterhole.auth.guard', 'web'));
 
         return $next($request);
     }
