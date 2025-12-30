@@ -13,6 +13,8 @@ class UserForm extends Form
 
     public function fields(): array
     {
-        return resolve(\Waterhole\Extend\Forms\UserForm::class)->components(['model' => $this->model]);
+        return resolve(\Waterhole\Extend\Forms\UserForm::class)->components([
+            'model' => $this->model,
+        ]);
     }
 }

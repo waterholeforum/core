@@ -20,7 +20,9 @@ class ServiceProvider extends BaseServiceProvider
         $parameters = $reflection->getParameters();
 
         if (!$parameters) {
-            throw new InvalidArgumentException('Extension callbacks must type-hint at least one extender.');
+            throw new InvalidArgumentException(
+                'Extension callbacks must type-hint at least one extender.',
+            );
         }
 
         $classes = [];
@@ -29,7 +31,9 @@ class ServiceProvider extends BaseServiceProvider
             $type = $parameter->getType();
 
             if (!$type instanceof \ReflectionNamedType || $type->isBuiltin()) {
-                throw new InvalidArgumentException('Extension callbacks must type-hint an extender class.');
+                throw new InvalidArgumentException(
+                    'Extension callbacks must type-hint an extender class.',
+                );
             }
 
             $classes[] = $type->getName();
@@ -55,7 +59,12 @@ class ServiceProvider extends BaseServiceProvider
         $executed = false;
 
         foreach ($classes as $class) {
-            $this->app->extend($class, function ($instance) use ($callback, $classes, $app, &$executed) {
+            $this->app->extend($class, function ($instance) use (
+                $callback,
+                $classes,
+                $app,
+                &$executed,
+            ) {
                 if (!$executed) {
                     $executed = true;
                     $callback(...array_map(fn($class) => $app->make($class), $classes));

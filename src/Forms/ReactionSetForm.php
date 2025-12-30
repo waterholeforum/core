@@ -13,6 +13,8 @@ class ReactionSetForm extends Form
 
     public function fields(): array
     {
-        return resolve(\Waterhole\Extend\Forms\ReactionSetForm::class)->components(['model' => $this->model]);
+        return resolve(\Waterhole\Extend\Forms\ReactionSetForm::class)->components([
+            'model' => $this->model,
+        ]);
     }
 }

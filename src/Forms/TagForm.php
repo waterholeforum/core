@@ -13,6 +13,8 @@ class TagForm extends Form
 
     public function fields(): array
     {
-        return resolve(\Waterhole\Extend\Forms\TagForm::class)->components(['model' => $this->model]);
+        return resolve(\Waterhole\Extend\Forms\TagForm::class)->components([
+            'model' => $this->model,
+        ]);
     }
 }

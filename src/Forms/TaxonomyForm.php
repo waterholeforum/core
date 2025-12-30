@@ -17,7 +17,9 @@ class TaxonomyForm extends Form
         return [
             new FormSection(
                 __('waterhole::cp.taxonomy-details-title'),
-                resolve(\Waterhole\Extend\Forms\TaxonomyForm::class)->components(['model' => $this->model]),
+                resolve(\Waterhole\Extend\Forms\TaxonomyForm::class)->components([
+                    'model' => $this->model,
+                ]),
             ),
             new FormSection(
                 __('waterhole::cp.taxonomy-permissions-title'),

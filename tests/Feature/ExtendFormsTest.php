@@ -49,25 +49,29 @@ dataset('form_extenders', [
     'channel form' => [
         Extend\Forms\ChannelForm::class,
         fn($extender, $marker) => $extender->add('extend-test', new HtmlString($marker)),
-        fn($test) => $test->actingAs(extendTestAdminUser())
+        fn($test) => $test
+            ->actingAs(extendTestAdminUser())
             ->get(URL::route('waterhole.cp.structure.channels.create')),
     ],
     'page form' => [
         Extend\Forms\PageForm::class,
         fn($extender, $marker) => $extender->add('extend-test', new HtmlString($marker)),
-        fn($test) => $test->actingAs(extendTestAdminUser())
+        fn($test) => $test
+            ->actingAs(extendTestAdminUser())
             ->get(URL::route('waterhole.cp.structure.pages.create')),
     ],
     'structure link form' => [
         Extend\Forms\StructureLinkForm::class,
         fn($extender, $marker) => $extender->add('extend-test', new HtmlString($marker)),
-        fn($test) => $test->actingAs(extendTestAdminUser())
+        fn($test) => $test
+            ->actingAs(extendTestAdminUser())
             ->get(URL::route('waterhole.cp.structure.links.create')),
     ],
     'taxonomy form' => [
         Extend\Forms\TaxonomyForm::class,
         fn($extender, $marker) => $extender->add('extend-test', new HtmlString($marker)),
-        fn($test) => $test->actingAs(extendTestAdminUser())
+        fn($test) => $test
+            ->actingAs(extendTestAdminUser())
             ->get(URL::route('waterhole.cp.taxonomies.create')),
     ],
     'tag form' => [
@@ -76,26 +80,30 @@ dataset('form_extenders', [
         function ($test) {
             $taxonomy = Taxonomy::create(['name' => 'Test Taxonomy']);
 
-            return $test->actingAs(extendTestAdminUser())
+            return $test
+                ->actingAs(extendTestAdminUser())
                 ->get(URL::route('waterhole.cp.taxonomies.tags.create', $taxonomy));
         },
     ],
     'group form' => [
         Extend\Forms\GroupForm::class,
         fn($extender, $marker) => $extender->add('extend-test', new HtmlString($marker)),
-        fn($test) => $test->actingAs(extendTestAdminUser())
+        fn($test) => $test
+            ->actingAs(extendTestAdminUser())
             ->get(URL::route('waterhole.cp.groups.create')),
     ],
     'user form' => [
         Extend\Forms\UserForm::class,
         fn($extender, $marker) => $extender->add('extend-test', new HtmlString($marker)),
-        fn($test) => $test->actingAs(extendTestAdminUser())
+        fn($test) => $test
+            ->actingAs(extendTestAdminUser())
             ->get(URL::route('waterhole.cp.users.create')),
     ],
     'reaction set form' => [
         Extend\Forms\ReactionSetForm::class,
         fn($extender, $marker) => $extender->add('extend-test', new HtmlString($marker)),
-        fn($test) => $test->actingAs(extendTestAdminUser())
+        fn($test) => $test
+            ->actingAs(extendTestAdminUser())
             ->get(URL::route('waterhole.cp.reaction-sets.create')),
     ],
     'reaction type form' => [
@@ -104,12 +112,11 @@ dataset('form_extenders', [
         function ($test) {
             $reactionSet = ReactionSet::create(['name' => 'Test Reaction Set']);
 
-            return $test->actingAs(extendTestAdminUser())
-                ->get(
-                    URL::route('waterhole.cp.reaction-sets.reaction-types.create', [
-                        'reactionSet' => $reactionSet,
-                    ]),
-                );
+            return $test->actingAs(extendTestAdminUser())->get(
+                URL::route('waterhole.cp.reaction-sets.reaction-types.create', [
+                    'reactionSet' => $reactionSet,
+                ]),
+            );
         },
     ],
     'registration form' => [
@@ -121,9 +128,12 @@ dataset('form_extenders', [
         Extend\Forms\PostForm::class,
         fn($extender, $marker) => $extender->add('extend-test', new HtmlString($marker)),
         function ($test) {
-            $channel = Channel::factory()->public()->create();
+            $channel = Channel::factory()
+                ->public()
+                ->create();
 
-            return $test->actingAs(extendTestAdminUser())
+            return $test
+                ->actingAs(extendTestAdminUser())
                 ->get(URL::route('waterhole.posts.create', ['channel_id' => $channel->id]));
         },
     ],
