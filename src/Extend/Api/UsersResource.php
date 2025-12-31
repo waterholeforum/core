@@ -30,10 +30,7 @@ class UsersResource extends Resource
             ->add(Attribute::make('name')->type(Type\Str::make()), 'name')
 
             // TODO: visibility
-            ->add(
-                Attribute::make('email')->type(Type\Str::make()->format('email')),
-                'email',
-            )
+            ->add(Attribute::make('email')->type(Type\Str::make()->format('email')), 'email')
 
             // TODO: visibility
             ->add(Attribute::make('locale')->type(Type\Str::make()), 'locale')

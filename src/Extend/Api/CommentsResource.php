@@ -71,10 +71,7 @@ class CommentsResource extends Resource
                 'bodyText',
             )
 
-            ->add(
-                Attribute::make('bodyHtml')->type(Type\Str::make()->format('html')),
-                'bodyHtml',
-            )
+            ->add(Attribute::make('bodyHtml')->type(Type\Str::make()->format('html')), 'bodyHtml')
 
             ->add(Attribute::make('createdAt')->type(Type\DateTime::make()), 'createdAt')
 
@@ -112,10 +109,7 @@ class CommentsResource extends Resource
 
             ->add(Attribute::make('url')->type(Type\Str::make()->format('uri')), 'url')
 
-            ->add(
-                Attribute::make('postUrl')->type(Type\Str::make()->format('uri')),
-                'postUrl',
-            )
+            ->add(Attribute::make('postUrl')->type(Type\Str::make()->format('uri')), 'postUrl')
 
             ->add(ToMany::make('reactionCounts')->includable(), 'reactionCounts')
 

@@ -59,10 +59,7 @@ class PostsResource extends Resource
                 'bodyText',
             )
 
-            ->add(
-                Attribute::make('bodyHtml')->type(Type\Str::make()->format('html')),
-                'bodyHtml',
-            )
+            ->add(Attribute::make('bodyHtml')->type(Type\Str::make()->format('html')), 'bodyHtml')
 
             ->add(Attribute::make('createdAt')->type(Type\DateTime::make()), 'createdAt')
 
@@ -87,10 +84,7 @@ class PostsResource extends Resource
                 'lastActivityAt',
             )
 
-            ->add(
-                Attribute::make('commentCount')->type(Type\Integer::make()),
-                'commentCount',
-            )
+            ->add(Attribute::make('commentCount')->type(Type\Integer::make()), 'commentCount')
 
             ->add(Attribute::make('viewCount')->type(Type\Integer::make()), 'viewCount')
 

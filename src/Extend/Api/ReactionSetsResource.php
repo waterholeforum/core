@@ -21,10 +21,7 @@ class ReactionSetsResource extends Resource
         $this->fields
             ->add(Attribute::make('name')->type(Type\Str::make()), 'name')
 
-            ->add(
-                Attribute::make('allowMultiple')->type(Type\Boolean::make()),
-                'allowMultiple',
-            )
+            ->add(Attribute::make('allowMultiple')->type(Type\Boolean::make()), 'allowMultiple')
 
             ->add(ToMany::make('reactionTypes')->includable(), 'reactionTypes');
     }
