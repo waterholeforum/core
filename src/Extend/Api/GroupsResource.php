@@ -23,32 +23,32 @@ class GroupsResource extends Resource
     {
         parent::__construct();
 
-        $this->scope->add('default', function (Builder $query) {
+        $this->scope->add(function (Builder $query) {
             if (!Auth::user()?->can('waterhole.user.edit')) {
                 $query->where('is_public', true);
             }
-        });
+        }, 'default');
 
         $this->endpoints
-            ->add('index', Endpoint\Index::make()->paginate())
+            ->add(Endpoint\Index::make()->paginate(), 'index')
 
-            ->add('show', Endpoint\Show::make());
+            ->add(Endpoint\Show::make(), 'show');
 
         $this->fields
-            ->add('name', Attribute::make('name')->type(Type\Str::make()))
+            ->add(Attribute::make('name')->type(Type\Str::make()), 'name')
 
-            ->add('isPublic', Attribute::make('isPublic')->type(Type\Boolean::make()))
+            ->add(Attribute::make('isPublic')->type(Type\Boolean::make()), 'isPublic')
 
-            ->add('color', Attribute::make('color')->type(Type\Str::make()))
+            ->add(Attribute::make('color')->type(Type\Str::make()), 'color')
 
             ->add(
-                'iconHtml',
                 Attribute::make('iconHtml')
                     ->type(Type\Str::make()->format('html'))
                     ->nullable()
                     ->get(fn(Group $group) => icon($group->icon)),
+                'iconHtml',
             )
 
-            ->add('users', ToMany::make('users'));
+            ->add(ToMany::make('users'), 'users');
     }
 }

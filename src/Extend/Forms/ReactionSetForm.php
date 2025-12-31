@@ -15,7 +15,7 @@ class ReactionSetForm extends ComponentList
 {
     public function __construct()
     {
-        $this->add('name', ReactionSetName::class);
-        $this->add('defaults', ReactionSetDefaults::class);
+        $this->add(ReactionSetName::class, 'name');
+        $this->add(ReactionSetDefaults::class, 'defaults');
     }
 }

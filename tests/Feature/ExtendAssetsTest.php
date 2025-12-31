@@ -57,7 +57,7 @@ describe('Assets extenders', function () {
             ->create();
 
         extend(function (Extend\Assets\Locales $locales) {
-            $locales->add('fr', 'French');
+            $locales->add('French', 'fr');
         });
 
         $this->get('/')->assertSeeText('French');

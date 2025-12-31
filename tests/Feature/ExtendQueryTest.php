@@ -40,9 +40,9 @@ describe('Query extenders', function () {
 
     test('add post scope', function () {
         extend(function (Extend\Query\PostScopes $scopes) {
-            $scopes->add('extend-test', function (Builder $query) {
+            $scopes->add(function (Builder $query) {
                 $query->where('posts.title', '!=', 'Extend Test Hidden');
-            });
+            }, 'extend-test');
         });
 
         $channel = Channel::factory()

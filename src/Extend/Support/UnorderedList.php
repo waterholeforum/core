@@ -14,7 +14,7 @@ class UnorderedList
     /**
      * Add an item to the list.
      */
-    public function add(?string $key = null, $content = null): static
+    public function add($content = null, ?string $key = null): static
     {
         $this->items[$key ?? uniqid()] = $content;
 

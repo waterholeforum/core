@@ -22,26 +22,26 @@ class PageForm extends ComponentList
     public function __construct()
     {
         $this->add(
-            'details',
             fn($model) => new FormSection(
                 __('waterhole::cp.page-details-title'),
                 $this->details->components(compact('model')),
             ),
+            'details',
         );
 
         $this->details = (new ComponentList())
-            ->add('name', PageName::class)
-            ->add('slug', PageSlug::class)
-            ->add('icon', Icon::class)
-            ->add('body', PageBody::class);
+            ->add(PageName::class, 'name')
+            ->add(PageSlug::class, 'slug')
+            ->add(Icon::class, 'icon')
+            ->add(PageBody::class, 'body');
 
         $this->add(
-            'permissions',
             fn($model) => new FormSection(
                 __('waterhole::cp.page-permissions-title'),
                 [new Permissions($model)],
                 open: false,
             ),
+            'permissions',
         );
     }
 }

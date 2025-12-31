@@ -16,8 +16,8 @@ class PostForm extends ComponentList
 {
     public function __construct()
     {
-        $this->add('title', PostTitle::class);
-        $this->add('tags', PostTags::class);
-        $this->add('body', PostBody::class);
+        $this->add(PostTitle::class, 'title');
+        $this->add(PostTags::class, 'tags');
+        $this->add(PostBody::class, 'body');
     }
 }

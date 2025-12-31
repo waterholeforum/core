@@ -15,7 +15,7 @@ class OrderedList
     /**
      * Add an item to the list.
      */
-    public function add(?string $key = null, $content = null, int $position = 0): static
+    public function add($content = null, ?string $key = null, int $position = 0): static
     {
         $this->items[$key ?? uniqid()] = compact('content', 'position');
         $this->sortedItems = null;

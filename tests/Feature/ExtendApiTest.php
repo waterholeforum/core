@@ -61,10 +61,10 @@ describe('API extenders', function () {
     ) {
         app()->extend($extenderClass, function ($resource) {
             $resource->fields->add(
-                'extendTest',
                 Attribute::make('extendTest')
                     ->type(Type\Str::make())
                     ->get(fn($model) => (string) $model->getKey()),
+                'extendTest',
             );
 
             return $resource;
@@ -82,10 +82,10 @@ describe('API extenders', function () {
     ) {
         app()->extend($extenderClass, function ($resource) {
             $resource->fields->add(
-                'extendTest',
                 Attribute::make('extendTest')
                     ->type(Type\Str::make())
                     ->get(fn($model) => (string) $model->getKey()),
+                'extendTest',
             );
 
             return $resource;

@@ -19,36 +19,36 @@ class PostUsersResource extends Resource
         parent::__construct();
 
         $this->fields
-            ->add('post', ToOne::make('post'))
+            ->add(ToOne::make('post'), 'post')
 
-            ->add('user', ToOne::make('user'))
+            ->add(ToOne::make('user'), 'user')
 
             ->add(
-                'notifications',
                 Attribute::make('notifications')
                     ->type(Type\Str::make()->enum(['normal', 'follow', 'ignore']))
                     ->nullable(),
+                'notifications',
             )
 
             ->add(
-                'lastReadAt',
                 Attribute::make('lastReadAt')
                     ->type(Type\DateTime::make())
                     ->nullable(),
+                'lastReadAt',
             )
 
             ->add(
-                'followedAt',
                 Attribute::make('followedAt')
                     ->type(Type\DateTime::make())
                     ->nullable(),
+                'followedAt',
             )
 
             ->add(
-                'mentionedAt',
                 Attribute::make('mentionedAt')
                     ->type(Type\DateTime::make())
                     ->nullable(),
+                'mentionedAt',
             );
     }
 }

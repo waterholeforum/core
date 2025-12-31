@@ -21,25 +21,25 @@ class StructureLinkForm extends ComponentList
     public function __construct()
     {
         $this->add(
-            'details',
             fn($model) => new FormSection(
                 __('waterhole::cp.link-details-title'),
                 $this->details->components(compact('model')),
             ),
+            'details',
         );
 
         $this->details = (new ComponentList())
-            ->add('name', StructureLinkName::class)
-            ->add('icon', Icon::class)
-            ->add('url', StructureLinkUrl::class);
+            ->add(StructureLinkName::class, 'name')
+            ->add(Icon::class, 'icon')
+            ->add(StructureLinkUrl::class, 'url');
 
         $this->add(
-            'permissions',
             fn($model) => new FormSection(
                 __('waterhole::cp.link-permissions-title'),
                 [new Permissions($model)],
                 open: false,
             ),
+            'permissions',
         );
     }
 }

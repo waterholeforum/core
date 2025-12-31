@@ -24,105 +24,111 @@ class CommentsResource extends Resource
     {
         parent::__construct();
 
-        $this->scope->add('default', function (Builder $query) {
+        $this->scope->add(function (Builder $query) {
             // Required to generate URLs
             $query->with('post');
-        });
+        }, 'default');
 
         $this->endpoints
             ->add(
-                'index',
                 Endpoint\Index::make()
                     ->paginate()
                     ->defaultSort('-createdAt'),
+                'index',
             )
 
-            ->add('show', Endpoint\Show::make());
+            ->add(Endpoint\Show::make(), 'show');
 
         $this->fields
-            ->add('post', ToOne::make('post')->includable())
+            ->add(ToOne::make('post')->includable(), 'post')
 
             ->add(
-                'parent',
                 ToOne::make('parent')
                     ->type('comments')
                     ->nullable()
                     ->includable(),
+                'parent',
             )
 
             ->add(
-                'user',
                 ToOne::make('user')
                     ->nullable()
                     ->includable(),
+                'user',
             )
 
             ->add(
-                'body',
                 Attribute::make('body')
                     ->type(Type\Str::make())
                     ->sparse(),
+                'body',
             )
 
             ->add(
-                'bodyText',
                 Attribute::make('bodyText')
                     ->type(Type\Str::make())
                     ->sparse(),
+                'bodyText',
             )
 
-            ->add('bodyHtml', Attribute::make('bodyHtml')->type(Type\Str::make()->format('html')))
+            ->add(
+                Attribute::make('bodyHtml')->type(Type\Str::make()->format('html')),
+                'bodyHtml',
+            )
 
-            ->add('createdAt', Attribute::make('createdAt')->type(Type\DateTime::make()))
+            ->add(Attribute::make('createdAt')->type(Type\DateTime::make()), 'createdAt')
 
             ->add(
-                'editedAt',
                 Attribute::make('editedAt')
                     ->type(Type\DateTime::make())
                     ->nullable(),
+                'editedAt',
             )
 
-            ->add('replyCount', Attribute::make('replyCount')->type(Type\Integer::make()))
+            ->add(Attribute::make('replyCount')->type(Type\Integer::make()), 'replyCount')
 
             ->add(
-                'hiddenAt',
                 Attribute::make('hiddenAt')
                     ->type(Type\DateTime::make())
                     ->nullable(),
+                'hiddenAt',
             )
 
             ->add(
-                'hiddenBy',
                 ToOne::make('hiddenBy')
                     ->type('users')
                     ->nullable(),
+                'hiddenBy',
             )
 
             ->add(
-                'hiddenReason',
                 Attribute::make('hiddenReason')
                     ->type(Type\Str::make())
                     ->nullable(),
+                'hiddenReason',
             )
 
-            ->add('replies', ToMany::make('replies')->type('comments'))
+            ->add(ToMany::make('replies')->type('comments'), 'replies')
 
-            ->add('url', Attribute::make('url')->type(Type\Str::make()->format('uri')))
+            ->add(Attribute::make('url')->type(Type\Str::make()->format('uri')), 'url')
 
-            ->add('postUrl', Attribute::make('postUrl')->type(Type\Str::make()->format('uri')))
+            ->add(
+                Attribute::make('postUrl')->type(Type\Str::make()->format('uri')),
+                'postUrl',
+            )
 
-            ->add('reactionCounts', ToMany::make('reactionCounts')->includable())
+            ->add(ToMany::make('reactionCounts')->includable(), 'reactionCounts')
 
-            ->add('reactions', ToMany::make('reactions')->includable());
+            ->add(ToMany::make('reactions')->includable(), 'reactions');
 
         $this->sorts
-            ->add('createdAt', SortColumn::make('createdAt'))
-            ->add('score', SortColumn::make('score'));
+            ->add(SortColumn::make('createdAt'), 'createdAt')
+            ->add(SortColumn::make('score'), 'score');
 
         $this->filters
-            ->add('post', WhereBelongsTo::make('post'))
-            ->add('parent', WhereBelongsTo::make('parent'))
-            ->add('user', WhereBelongsTo::make('user'))
-            ->add('isHidden', WhereNotNull::make('isHidden')->column('hidden_at'));
+            ->add(WhereBelongsTo::make('post'), 'post')
+            ->add(WhereBelongsTo::make('parent'), 'parent')
+            ->add(WhereBelongsTo::make('user'), 'user')
+            ->add(WhereNotNull::make('isHidden')->column('hidden_at'), 'isHidden');
     }
 }

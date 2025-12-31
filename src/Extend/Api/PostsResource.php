@@ -28,134 +28,140 @@ class PostsResource extends Resource
     {
         parent::__construct();
 
-        $this->scope->add('default', function ($query) {
+        $this->scope->add(function ($query) {
             $query->with('mentions', 'attachments');
-        });
+        }, 'default');
 
         $this->endpoints
             ->add(
-                'index',
                 Endpoint\Index::make()
                     ->paginate()
                     ->defaultSort('-createdAt'),
+                'index',
             )
 
-            ->add('show', Endpoint\Show::make());
+            ->add(Endpoint\Show::make(), 'show');
 
         $this->fields
-            ->add('title', Attribute::make('title')->type(Type\Str::make()))
+            ->add(Attribute::make('title')->type(Type\Str::make()), 'title')
 
             ->add(
-                'body',
                 Attribute::make('body')
                     ->type(Type\Str::make())
                     ->sparse(),
+                'body',
             )
 
             ->add(
-                'bodyText',
                 Attribute::make('bodyText')
                     ->type(Type\Str::make())
                     ->sparse(),
+                'bodyText',
             )
 
-            ->add('bodyHtml', Attribute::make('bodyHtml')->type(Type\Str::make()->format('html')))
+            ->add(
+                Attribute::make('bodyHtml')->type(Type\Str::make()->format('html')),
+                'bodyHtml',
+            )
 
-            ->add('createdAt', Attribute::make('createdAt')->type(Type\DateTime::make()))
+            ->add(Attribute::make('createdAt')->type(Type\DateTime::make()), 'createdAt')
 
             ->add(
-                'editedAt',
                 Attribute::make('editedAt')
                     ->type(Type\DateTime::make())
                     ->nullable(),
+                'editedAt',
             )
 
             ->add(
-                'deletedAt',
                 Attribute::make('deletedAt')
                     ->type(Type\DateTime::make())
                     ->nullable(),
+                'deletedAt',
             )
 
             ->add(
-                'lastActivityAt',
                 Attribute::make('lastActivityAt')
                     ->type(Type\DateTime::make())
                     ->nullable(),
+                'lastActivityAt',
             )
 
-            ->add('commentCount', Attribute::make('commentCount')->type(Type\Integer::make()))
+            ->add(
+                Attribute::make('commentCount')->type(Type\Integer::make()),
+                'commentCount',
+            )
 
-            ->add('viewCount', Attribute::make('viewCount')->type(Type\Integer::make()))
+            ->add(Attribute::make('viewCount')->type(Type\Integer::make()), 'viewCount')
 
-            ->add('isLocked', Attribute::make('isLocked')->type(Type\Boolean::make()))
+            ->add(Attribute::make('isLocked')->type(Type\Boolean::make()), 'isLocked')
 
-            ->add('isPinned', Attribute::make('isPinned')->type(Type\Boolean::make()))
+            ->add(Attribute::make('isPinned')->type(Type\Boolean::make()), 'isPinned')
 
-            ->add('url', Attribute::make('url')->type(Type\Str::make()->format('uri')))
+            ->add(Attribute::make('url')->type(Type\Str::make()->format('uri')), 'url')
 
-            ->add('channel', ToOne::make('channel')->includable())
+            ->add(ToOne::make('channel')->includable(), 'channel')
 
             ->add(
-                'user',
                 ToOne::make('user')
                     ->includable()
                     ->nullable(),
+                'user',
             )
 
-            ->add('comments', ToMany::make('comments'))
+            ->add(ToMany::make('comments'), 'comments')
 
             ->add(
-                'lastComment',
                 ToOne::make('lastComment')
                     ->type('comments')
                     ->nullable()
                     ->withoutLinkage()
                     ->includable(),
+                'lastComment',
             )
 
             ->add(
-                'answer',
                 ToOne::make('answer')
                     ->type('comments')
                     ->nullable()
                     ->includable(),
+                'answer',
             )
 
-            ->add('tags', ToMany::make('tags')->includable())
+            ->add(ToMany::make('tags')->includable(), 'tags')
 
-            ->add('reactionCounts', ToMany::make('reactionCounts')->includable())
+            ->add(ToMany::make('reactionCounts')->includable(), 'reactionCounts')
 
-            ->add('reactions', ToMany::make('reactions')->includable())
+            ->add(ToMany::make('reactions')->includable(), 'reactions')
 
             ->add(
-                'userState',
                 ToOne::make('userState')
                     ->type('postUsers')
                     ->nullable()
                     ->visible(fn() => Auth::check())
                     ->includable(),
+                'userState',
             );
 
         $this->sorts
-            ->add('title', SortColumn::make('title'))
-            ->add('createdAt', SortColumn::make('createdAt'))
-            ->add('lastActivityAt', SortColumn::make('lastActivityAt'))
-            ->add('commentCount', SortColumn::make('commentCount'))
-            ->add('viewCount', SortColumn::make('viewCount'))
-            ->add('score', SortColumn::make('score'))
-            ->add('hotness', SortColumn::make('hotness'));
+            ->add(SortColumn::make('title'), 'title')
+            ->add(SortColumn::make('createdAt'), 'createdAt')
+            ->add(SortColumn::make('lastActivityAt'), 'lastActivityAt')
+            ->add(SortColumn::make('commentCount'), 'commentCount')
+            ->add(SortColumn::make('viewCount'), 'viewCount')
+            ->add(SortColumn::make('score'), 'score')
+            ->add(SortColumn::make('hotness'), 'hotness');
 
         $this->filters
-            ->add('unread', Scope::make('unread'))
-            ->add('following', Scope::make('following'))
-            ->add('ignoring', Scope::make('ignoring'))
-            ->add('isLocked', Where::make('isLocked')->asBoolean())
-            ->add('isPinned', Where::make('isPinned')->asBoolean())
-            ->add('isTrashed', WhereNull::make('isTrashed')->column('deleted_at'))
-            ->add('channel', WhereBelongsTo::make('channel'))
-            ->add('user', WhereBelongsTo::make('user'))
-            ->add('tags', WhereHas::make('tags'))
-            ->add('answer', WhereExists::make('answer'));
+            ->add(Scope::make('unread'), 'unread')
+            ->add(Scope::make('following'), 'following')
+            ->add(Scope::make('ignoring'), 'ignoring')
+            ->add(Where::make('isLocked')->asBoolean(), 'isLocked')
+            ->add(Where::make('isPinned')->asBoolean(), 'isPinned')
+            ->add(WhereNull::make('isTrashed')->column('deleted_at'), 'isTrashed')
+            ->add(WhereBelongsTo::make('channel'), 'channel')
+            ->add(WhereBelongsTo::make('user'), 'user')
+            ->add(WhereHas::make('tags'), 'tags')
+            ->add(WhereExists::make('answer'), 'answer');
     }
 }

@@ -20,18 +20,18 @@ beforeEach(function () {
 describe('Ui extenders', function () {
     test('extend index page components', function () {
         extend(function (Extend\Ui\IndexPage $index) {
-            $index->sidebar->add(content: new HtmlString('Extend Index Sidebar'));
-            $index->footer->add(content: new HtmlString('Extend Index Footer'));
+            $index->sidebar->add(new HtmlString('Extend Index Sidebar'));
+            $index->footer->add(new HtmlString('Extend Index Footer'));
         });
 
         extend(function (Extend\Ui\PostFeed $feed) {
-            $feed->header->add(content: new HtmlString('Extend Feed Header'));
-            $feed->toolbar->add(content: new HtmlString('Extend Feed Toolbar'));
+            $feed->header->add(new HtmlString('Extend Feed Header'));
+            $feed->toolbar->add(new HtmlString('Extend Feed Toolbar'));
         });
 
         extend(function (Extend\Ui\PostListItem $items) {
-            $items->info->add(content: new HtmlString('Extend List Info'));
-            $items->secondary->add(content: new HtmlString('Extend List Secondary'));
+            $items->info->add(new HtmlString('Extend List Info'));
+            $items->secondary->add(new HtmlString('Extend List Secondary'));
         });
 
         extend(function (Extend\Ui\PostAttributes $attributes) {
@@ -39,11 +39,11 @@ describe('Ui extenders', function () {
         });
 
         extend(function (Extend\Ui\DocumentHead $head) {
-            $head->add(content: new HtmlString('<meta name="extend-test" content="1">'));
+            $head->add(new HtmlString('<meta name="extend-test" content="1">'));
         });
 
         extend(function (Extend\Ui\UserMenu $menu) {
-            $menu->add(content: new HtmlString('Extend User Menu'));
+            $menu->add(new HtmlString('Extend User Menu'));
         });
 
         $channel = Channel::factory()
@@ -71,20 +71,20 @@ describe('Ui extenders', function () {
 
     test('extend post page components', function () {
         extend(function (Extend\Ui\PostPage $page) {
-            $page->header->add(content: new HtmlString('Extend Post Header'));
-            $page->sidebar->add(content: new HtmlString('Extend Post Sidebar'));
-            $page->middle->add(content: new HtmlString('Extend Post Middle'));
-            $page->bottom->add(content: new HtmlString('Extend Post Bottom'));
+            $page->header->add(new HtmlString('Extend Post Header'));
+            $page->sidebar->add(new HtmlString('Extend Post Sidebar'));
+            $page->middle->add(new HtmlString('Extend Post Middle'));
+            $page->bottom->add(new HtmlString('Extend Post Bottom'));
         });
 
         extend(function (Extend\Ui\PostFooter $footer) {
-            $footer->add(content: new HtmlString('Extend Post Footer'));
+            $footer->add(new HtmlString('Extend Post Footer'));
         });
 
         extend(function (Extend\Ui\CommentComponent $comments) {
-            $comments->header->add(content: new HtmlString('Extend Comment Header'));
-            $comments->footer->add(content: new HtmlString('Extend Comment Footer'));
-            $comments->buttons->add(content: new HtmlString('Extend Comment Buttons'));
+            $comments->header->add(new HtmlString('Extend Comment Header'));
+            $comments->footer->add(new HtmlString('Extend Comment Footer'));
+            $comments->buttons->add(new HtmlString('Extend Comment Buttons'));
         });
 
         extend(function (Extend\Ui\CommentAttributes $attributes) {
@@ -117,11 +117,11 @@ describe('Ui extenders', function () {
 
     test('extend user profile components', function () {
         extend(function (Extend\Ui\UserNav $nav) {
-            $nav->add(content: new HtmlString('Extend User Nav'));
+            $nav->add(new HtmlString('Extend User Nav'));
         });
 
         extend(function (Extend\Ui\UserInfo $info) {
-            $info->add(content: new HtmlString('Extend User Info'));
+            $info->add(new HtmlString('Extend User Info'));
         });
 
         $user = User::factory()->create();
@@ -133,7 +133,7 @@ describe('Ui extenders', function () {
 
     test('extend text editor components', function () {
         extend(function (Extend\Ui\TextEditor $editor) {
-            $editor->add(content: new HtmlString('Extend Text Editor'));
+            $editor->add(new HtmlString('Extend Text Editor'));
         });
 
         $channel = Channel::factory()
@@ -150,11 +150,11 @@ describe('Ui extenders', function () {
 
     test('extend cp components', function () {
         extend(function (Extend\Ui\CpNav $nav) {
-            $nav->add(content: new HtmlString('Extend Cp Nav'));
+            $nav->add(new HtmlString('Extend Cp Nav'));
         });
 
         extend(function (Extend\Ui\CpAlerts $alerts) {
-            $alerts->add(content: new HtmlString('Extend Cp Alert'));
+            $alerts->add(new HtmlString('Extend Cp Alert'));
         });
 
         $admin = User::factory()->create();
@@ -168,7 +168,7 @@ describe('Ui extenders', function () {
 
     test('extend login page components', function () {
         extend(function (Extend\Ui\LoginPage $login) {
-            $login->add(content: new HtmlString('Extend Login Page'));
+            $login->add(new HtmlString('Extend Login Page'));
         });
 
         $this->get('login')->assertSeeText('Extend Login Page');
@@ -178,7 +178,7 @@ describe('Ui extenders', function () {
         $marker = 'Extend Test Preference';
 
         extend(function (Extend\Ui\Preferences $preferences) use ($marker) {
-            $preferences->account->add('extend-test', new HtmlString($marker));
+            $preferences->account->add(new HtmlString($marker), 'extend-test');
         });
 
         $this->actingAs(User::factory()->create())
@@ -190,7 +190,7 @@ describe('Ui extenders', function () {
 describe('Layout extender', function () {
     test('add header component', function () {
         extend(function (Extend\Ui\Layout $layout) {
-            $layout->header->add(content: new HtmlString('hello world'));
+            $layout->header->add(new HtmlString('hello world'));
         });
 
         $this->get('login')->assertSeeText('hello world');
@@ -198,7 +198,7 @@ describe('Layout extender', function () {
 
     test('add before component', function () {
         extend(function (Extend\Ui\Layout $layout) {
-            $layout->before->add(content: new HtmlString('hello world'));
+            $layout->before->add(new HtmlString('hello world'));
         });
 
         $this->get('login')->assertSeeText('hello world');
@@ -206,7 +206,7 @@ describe('Layout extender', function () {
 
     test('add after component', function () {
         extend(function (Extend\Ui\Layout $layout) {
-            $layout->after->add(content: new HtmlString('hello world'));
+            $layout->after->add(new HtmlString('hello world'));
         });
 
         $this->get('login')->assertSeeText('hello world');

@@ -13,6 +13,6 @@ class Locales extends UnorderedList
 {
     public function __construct()
     {
-        $this->add('en', 'English');
+        $this->add('English', 'en');
     }
 }

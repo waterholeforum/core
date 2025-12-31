@@ -19,8 +19,8 @@ class IndexPage
 
     public function __construct()
     {
-        $this->sidebar = (new ComponentList())->add('nav', IndexNav::class);
+        $this->sidebar = (new ComponentList())->add(IndexNav::class, 'nav');
 
-        $this->footer = (new ComponentList())->add('language', IndexFooterLanguage::class);
+        $this->footer = (new ComponentList())->add(IndexFooterLanguage::class, 'language');
     }
 }

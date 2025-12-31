@@ -15,11 +15,11 @@ class CpAlerts extends ComponentList
     public function __construct()
     {
         if (config('app.debug')) {
-            $this->add('debug');
+            $this->add(null, 'debug');
         }
 
         if (!config('mail.from.address')) {
-            $this->add('mail');
+            $this->add(null, 'mail');
         }
     }
 }

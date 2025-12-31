@@ -18,7 +18,7 @@ class Script extends Assets
         $this->add(__DIR__ . '/../../../resources/dist/highlight.js');
         $this->add(__DIR__ . '/../../../resources/dist/emoji.js');
 
-        $this->add(__DIR__ . '/../../../resources/dist/cp.js', bundle: 'cp');
+        $this->add(__DIR__ . '/../../../resources/dist/cp.js', 'cp');
     }
 
     protected function cacheKey(string $bundle): string

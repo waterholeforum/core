@@ -17,8 +17,8 @@ class NotificationTypes extends UnorderedList
 {
     public function __construct()
     {
-        $this->add('new-post', NewPost::class);
-        $this->add('new-comment', NewComment::class);
-        $this->add('mention', Mention::class);
+        $this->add(NewPost::class, 'new-post');
+        $this->add(NewComment::class, 'new-comment');
+        $this->add(Mention::class, 'mention');
     }
 }

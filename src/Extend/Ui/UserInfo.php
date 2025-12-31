@@ -19,10 +19,10 @@ class UserInfo extends ComponentList
 {
     public function __construct()
     {
-        $this->add('groups', UserGroups::class);
-        $this->add('location', UserLocation::class);
-        $this->add('website', UserWebsite::class);
-        $this->add('joined', UserJoined::class);
-        $this->add('lastSeen', UserLastSeen::class);
+        $this->add(UserGroups::class, 'groups');
+        $this->add(UserLocation::class, 'location');
+        $this->add(UserWebsite::class, 'website');
+        $this->add(UserJoined::class, 'joined');
+        $this->add(UserLastSeen::class, 'lastSeen');
     }
 }

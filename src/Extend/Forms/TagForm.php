@@ -14,6 +14,6 @@ class TagForm extends ComponentList
 {
     public function __construct()
     {
-        $this->add('name', TagName::class);
+        $this->add(TagName::class, 'name');
     }
 }

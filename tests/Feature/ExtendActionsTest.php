@@ -39,7 +39,7 @@ class ExtendTestAction extends Action
 describe('Actions extenders', function () {
     test('add action', function (string $actionable, callable $makeModel) {
         extend(function (Extend\Core\Actions $actions) use ($actionable) {
-            $actions->for($actionable)->add('extend-test', ExtendTestAction::class);
+            $actions->for($actionable)->add(ExtendTestAction::class, 'extend-test');
         });
 
         $model = $makeModel();

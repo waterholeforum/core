@@ -16,7 +16,7 @@ class PostFooter extends ComponentList
 {
     public function __construct()
     {
-        $this->add('reactions', PostReactions::class);
-        $this->add('replies', PostReplies::class);
+        $this->add(PostReactions::class, 'reactions');
+        $this->add(PostReplies::class, 'replies');
     }
 }

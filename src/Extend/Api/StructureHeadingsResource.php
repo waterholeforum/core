@@ -19,8 +19,8 @@ class StructureHeadingsResource extends Resource
     {
         parent::__construct();
 
-        $this->endpoints->add('show', Endpoint\Show::make());
+        $this->endpoints->add(Endpoint\Show::make(), 'show');
 
-        $this->fields->add('name', Attribute::make('name')->type(Type\Str::make()));
+        $this->fields->add(Attribute::make('name')->type(Type\Str::make()), 'name');
     }
 }

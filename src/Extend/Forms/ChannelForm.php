@@ -33,67 +33,67 @@ class ChannelForm extends ComponentList
     public function __construct()
     {
         $this->add(
-            'details',
             fn($model) => new FormSection(
                 __('waterhole::cp.channel-details-title'),
                 $this->details->components(compact('model')),
             ),
+            'details',
         );
 
         $this->details = (new ComponentList())
-            ->add('name', ChannelName::class)
-            ->add('slug', ChannelSlug::class)
-            ->add('icon', Icon::class)
-            ->add('description', ChannelDescription::class)
-            ->add('ignore', ChannelIgnore::class);
+            ->add(ChannelName::class, 'name')
+            ->add(ChannelSlug::class, 'slug')
+            ->add(Icon::class, 'icon')
+            ->add(ChannelDescription::class, 'description')
+            ->add(ChannelIgnore::class, 'ignore');
 
         $this->add(
-            'features',
             fn(...$args) => new FormSection(
                 __('waterhole::cp.channel-features-title'),
                 $this->features->components($args),
                 open: false,
             ),
+            'features',
         );
 
         $this->features = (new ComponentList())
-            ->add('taxonomies', ChannelTaxonomies::class)
-            ->add('answers', ChannelAnswers::class)
-            ->add('reactions', ChannelReactions::class);
+            ->add(ChannelTaxonomies::class, 'taxonomies')
+            ->add(ChannelAnswers::class, 'answers')
+            ->add(ChannelReactions::class, 'reactions');
 
         $this->add(
-            'layout',
             fn($model) => new FormSection(
                 __('waterhole::cp.channel-layout-title'),
                 $this->layout->components(compact('model')),
                 open: false,
             ),
+            'layout',
         );
 
         $this->layout = (new ComponentList())
-            ->add('layout', ChannelLayout::class)
-            ->add('filters', ChannelFilters::class);
+            ->add(ChannelLayout::class, 'layout')
+            ->add(ChannelFilters::class, 'filters');
 
         $this->add(
-            'posting',
             fn($model) => new FormSection(
                 __('waterhole::cp.channel-posting-title'),
                 $this->posting->components(compact('model')),
                 open: false,
             ),
+            'posting',
         );
 
         $this->posting = (new ComponentList())
-            ->add('instructions', ChannelInstructions::class)
-            ->add('similar-posts', ChannelSimilarPosts::class);
+            ->add(ChannelInstructions::class, 'instructions')
+            ->add(ChannelSimilarPosts::class, 'similar-posts');
 
         $this->add(
-            'permissions',
             fn($model) => new FormSection(
                 __('waterhole::cp.channel-permissions-title'),
                 [new Permissions($model)],
                 open: false,
             ),
+            'permissions',
         );
     }
 }

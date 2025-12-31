@@ -18,27 +18,26 @@ class UserMenu extends ComponentList
     public function __construct()
     {
         $this->add(
-            'profile',
             fn() => new MenuItem(
                 icon: 'tabler-user',
                 label: __('waterhole::user.profile-link'),
                 href: Auth::user()->url,
             ),
+            'profile',
         );
 
         $this->add(
-            'preferences',
             fn() => new MenuItem(
                 icon: 'tabler-settings',
                 label: __('waterhole::user.preferences-link'),
                 href: route('waterhole.preferences'),
             ),
+            'preferences',
         );
 
-        $this->add('divider', MenuDivider::class);
+        $this->add(MenuDivider::class, 'divider');
 
         $this->add(
-            'administration',
             fn() => Auth::user()->can('waterhole.administrate')
                 ? (new MenuItem(
                     icon: 'tabler-tool',
@@ -46,6 +45,7 @@ class UserMenu extends ComponentList
                     href: route('waterhole.cp.dashboard'),
                 ))->withAttributes(['data-turbo' => 'false'])
                 : null,
+            'administration',
         );
     }
 }

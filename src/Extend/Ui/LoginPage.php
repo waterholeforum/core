@@ -15,13 +15,13 @@ class LoginPage extends ComponentList
 {
     public function __construct()
     {
-        $this->add('auth-buttons', AuthButtons::class);
+        $this->add(AuthButtons::class, 'auth-buttons');
 
         if (config('waterhole.auth.password_enabled', true)) {
-            $this->add('email');
-            $this->add('password');
-            $this->add('submit');
-            $this->add('sign-up-link');
+            $this->add(null, 'email');
+            $this->add(null, 'password');
+            $this->add(null, 'submit');
+            $this->add(null, 'sign-up-link');
         }
     }
 }

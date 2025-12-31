@@ -28,17 +28,17 @@ class PostListItem
     public function __construct()
     {
         $this->info = (new ComponentList())
-            ->add('unread', PostUnread::class)
-            ->add('trash', PostTrash::class)
-            ->add('channel', PostChannel::class)
-            ->add('answered', PostAnswered::class)
-            ->add('locked', PostLocked::class)
-            ->add('notifications', PostNotifications::class)
-            ->add('activity', PostActivity::class);
+            ->add(PostUnread::class, 'unread')
+            ->add(PostTrash::class, 'trash')
+            ->add(PostChannel::class, 'channel')
+            ->add(PostAnswered::class, 'answered')
+            ->add(PostLocked::class, 'locked')
+            ->add(PostNotifications::class, 'notifications')
+            ->add(PostActivity::class, 'activity');
 
         $this->secondary = (new ComponentList())
-            ->add('tags', PostTagsSummary::class)
-            ->add('reactions', PostReactionsCondensed::class)
-            ->add('replies', PostReplies::class);
+            ->add(PostTagsSummary::class, 'tags')
+            ->add(PostReactionsCondensed::class, 'reactions')
+            ->add(PostReplies::class, 'replies');
     }
 }

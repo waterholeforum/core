@@ -15,7 +15,7 @@ class TaxonomyForm extends ComponentList
 {
     public function __construct()
     {
-        $this->add('name', TaxonomyName::class);
-        $this->add('options', TaxonomyOptions::class);
+        $this->add(TaxonomyName::class, 'name');
+        $this->add(TaxonomyOptions::class, 'options');
     }
 }

@@ -16,9 +16,9 @@ class Preferences
     public function __construct()
     {
         $this->account = (new ComponentList())
-            ->add('name')
-            ->add('email')
-            ->add('password')
-            ->add('delete');
+            ->add(null, 'name')
+            ->add(null, 'email')
+            ->add(null, 'password')
+            ->add(null, 'delete');
     }
 }

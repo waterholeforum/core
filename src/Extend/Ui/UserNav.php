@@ -19,7 +19,6 @@ class UserNav extends ComponentList
     public function __construct()
     {
         $this->add(
-            'posts',
             fn(User $user) => new NavLink(
                 label: __('waterhole::user.posts-link'),
                 icon: 'tabler-layout-list',
@@ -27,10 +26,10 @@ class UserNav extends ComponentList
                 href: route('waterhole.user.posts', compact('user')),
                 active: request()->routeIs('waterhole.user.posts'),
             ),
+            'posts',
         );
 
         $this->add(
-            'comments',
             fn(User $user) => new NavLink(
                 label: __('waterhole::user.comments-link'),
                 icon: 'tabler-messages',
@@ -38,17 +37,17 @@ class UserNav extends ComponentList
                 href: route('waterhole.user.comments', compact('user')),
                 active: request()->routeIs('waterhole.user.comments'),
             ),
+            'comments',
         );
 
         $this->add(
-            'preferences',
             fn(User $user) => $user->is(Auth::user())
                 ? new NavHeading(__('waterhole::user.preferences-heading'))
                 : null,
+            'preferences',
         );
 
         $this->add(
-            'account',
             fn(User $user) => $user->is(Auth::user())
                 ? new NavLink(
                     label: __('waterhole::user.account-settings-link'),
@@ -56,10 +55,10 @@ class UserNav extends ComponentList
                     route: 'waterhole.preferences.account',
                 )
                 : null,
+            'account',
         );
 
         $this->add(
-            'profile',
             fn(User $user) => $user->is(Auth::user())
                 ? new NavLink(
                     label: __('waterhole::user.edit-profile-link'),
@@ -67,10 +66,10 @@ class UserNav extends ComponentList
                     route: 'waterhole.preferences.profile',
                 )
                 : null,
+            'profile',
         );
 
         $this->add(
-            'notifications',
             fn(User $user) => $user->is(Auth::user())
                 ? new NavLink(
                     label: __('waterhole::user.notification-preferences-link'),
@@ -78,6 +77,7 @@ class UserNav extends ComponentList
                     route: 'waterhole.preferences.notifications',
                 )
                 : null,
+            'notifications',
         );
     }
 }

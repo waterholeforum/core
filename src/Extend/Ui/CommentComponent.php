@@ -23,14 +23,14 @@ class CommentComponent
 
     public function __construct()
     {
-        $this->header = (new ComponentList())->add('answer', CommentAnswerBadge::class);
+        $this->header = (new ComponentList())->add(CommentAnswerBadge::class, 'answer');
 
         $this->footer = (new ComponentList())
-            ->add('reactions', CommentReactions::class)
-            ->add('replies', CommentReplies::class);
+            ->add(CommentReactions::class, 'reactions')
+            ->add(CommentReplies::class, 'replies');
 
         $this->buttons = (new ComponentList())
-            ->add('answer', CommentMarkAsAnswer::class)
-            ->add('reply', CommentReplyButton::class);
+            ->add(CommentMarkAsAnswer::class, 'answer')
+            ->add(CommentReplyButton::class, 'reply');
     }
 }

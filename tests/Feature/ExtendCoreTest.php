@@ -132,7 +132,7 @@ describe('Core extenders', function () {
 
     test('add notification type', function () {
         extend(function (Extend\Core\NotificationTypes $types) {
-            $types->add('extend-test', ExtendTestNotification::class);
+            $types->add(ExtendTestNotification::class, 'extend-test');
         });
 
         $user = User::factory()->create();

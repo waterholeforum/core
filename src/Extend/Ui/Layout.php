@@ -29,18 +29,18 @@ class Layout
     public function __construct()
     {
         $this->header = (new ComponentList())
-            ->add('title', HeaderTitle::class)
-            ->add('breadcrumb', HeaderBreadcrumb::class)
-            ->add('spacer', Spacer::class)
-            ->add('search', HeaderSearch::class)
-            ->add('theme', ThemeSelector::class)
-            ->add('notifications', HeaderNotifications::class)
-            ->add('guest', HeaderGuest::class)
-            ->add('user', HeaderUser::class);
+            ->add(HeaderTitle::class, 'title')
+            ->add(HeaderBreadcrumb::class, 'breadcrumb')
+            ->add(Spacer::class, 'spacer')
+            ->add(HeaderSearch::class, 'search')
+            ->add(ThemeSelector::class, 'theme')
+            ->add(HeaderNotifications::class, 'notifications')
+            ->add(HeaderGuest::class, 'guest')
+            ->add(HeaderUser::class, 'user');
 
         $this->before = (new ComponentList())
-            ->add('header', Header::class)
-            ->add('email-verification', EmailVerification::class);
+            ->add(Header::class, 'header')
+            ->add(EmailVerification::class, 'email-verification');
 
         $this->after = new ComponentList();
     }

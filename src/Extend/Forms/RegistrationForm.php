@@ -17,8 +17,8 @@ class RegistrationForm extends ComponentList
 {
     public function __construct()
     {
-        $this->add('name', UserName::class);
-        $this->add('email', UserEmail::class);
-        $this->add('password', UserPassword::class);
+        $this->add(UserName::class, 'name');
+        $this->add(UserEmail::class, 'email');
+        $this->add(UserPassword::class, 'password');
     }
 }

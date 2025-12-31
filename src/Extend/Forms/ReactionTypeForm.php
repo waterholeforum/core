@@ -16,8 +16,8 @@ class ReactionTypeForm extends ComponentList
 {
     public function __construct()
     {
-        $this->add('name', ReactionTypeName::class);
-        $this->add('icon', Icon::class);
-        $this->add('score', ReactionTypeScore::class);
+        $this->add(ReactionTypeName::class, 'name');
+        $this->add(Icon::class, 'icon');
+        $this->add(ReactionTypeScore::class, 'score');
     }
 }

@@ -26,15 +26,15 @@ class PostFeed
     public function __construct()
     {
         $this->header = (new ComponentList())
-            ->add('channel', PostFeedChannel::class)
-            ->add('pinned', PostFeedPinned::class)
-            ->add('toolbar', PostFeedToolbar::class);
+            ->add(PostFeedChannel::class, 'channel')
+            ->add(PostFeedPinned::class, 'pinned')
+            ->add(PostFeedToolbar::class, 'toolbar');
 
         $this->toolbar = (new ComponentList())
-            ->add('filters', FeedFilters::class)
-            ->add('top-period', FeedTopPeriod::class)
-            ->add('spacer', Spacer::class)
-            ->add('tags', TagsFilter::class)
-            ->add('create-post', IndexCreatePost::class);
+            ->add(FeedFilters::class, 'filters')
+            ->add(FeedTopPeriod::class, 'top-period')
+            ->add(Spacer::class, 'spacer')
+            ->add(TagsFilter::class, 'tags')
+            ->add(IndexCreatePost::class, 'create-post');
     }
 }

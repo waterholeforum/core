@@ -27,16 +27,16 @@ class PostPage
     public function __construct()
     {
         $this->header = (new ComponentList())
-            ->add('trash', PostTrash::class)
-            ->add('channel', PostChannel::class)
-            ->add('tags', PostTagsSummary::class)
-            ->add('attribution', PostAttribution::class)
-            ->add('title', PostTitle::class);
+            ->add(PostTrash::class, 'trash')
+            ->add(PostChannel::class, 'channel')
+            ->add(PostTagsSummary::class, 'tags')
+            ->add(PostAttribution::class, 'attribution')
+            ->add(PostTitle::class, 'title');
 
         $this->sidebar = new ComponentList();
 
-        $this->middle = (new ComponentList())->add('answer', PostAnswer::class);
+        $this->middle = (new ComponentList())->add(PostAnswer::class, 'answer');
 
-        $this->bottom = (new ComponentList())->add('locked', CommentsLocked::class);
+        $this->bottom = (new ComponentList())->add(CommentsLocked::class, 'locked');
     }
 }

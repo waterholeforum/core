@@ -28,34 +28,34 @@ class UserForm extends ComponentList
     public function __construct()
     {
         $this->add(
-            'account',
             fn($model) => new FormSection(
                 __('waterhole::cp.user-account-title'),
                 $this->account->components(compact('model')),
             ),
+            'account',
         );
 
         $this->account = (new ComponentList())
-            ->add('name', UserName::class)
-            ->add('email', UserEmail::class)
-            ->add('password', UserPassword::class)
-            ->add('groups', UserGroups::class);
+            ->add(UserName::class, 'name')
+            ->add(UserEmail::class, 'email')
+            ->add(UserPassword::class, 'password')
+            ->add(UserGroups::class, 'groups');
 
         $this->add(
-            'profile',
             fn($model) => new FormSection(
                 __('waterhole::cp.user-profile-title'),
                 $this->profile->components(compact('model')),
                 open: false,
             ),
+            'profile',
         );
 
         $this->profile = (new ComponentList())
-            ->add('avatar', UserAvatar::class)
-            ->add('headline', UserHeadline::class)
-            ->add('bio', UserBio::class)
-            ->add('location', UserLocation::class)
-            ->add('website', UserWebsite::class)
-            ->add('showOnline', UserShowOnline::class);
+            ->add(UserAvatar::class, 'avatar')
+            ->add(UserHeadline::class, 'headline')
+            ->add(UserBio::class, 'bio')
+            ->add(UserLocation::class, 'location')
+            ->add(UserWebsite::class, 'website')
+            ->add(UserShowOnline::class, 'showOnline');
     }
 }

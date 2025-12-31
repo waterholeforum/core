@@ -48,35 +48,35 @@ describe('Form extenders', function () {
 dataset('form_extenders', [
     'channel form' => [
         Extend\Forms\ChannelForm::class,
-        fn($extender, $marker) => $extender->add('extend-test', new HtmlString($marker)),
+        fn($extender, $marker) => $extender->add(new HtmlString($marker), 'extend-test'),
         fn($test) => $test
             ->actingAs(extendTestAdminUser())
             ->get(URL::route('waterhole.cp.structure.channels.create')),
     ],
     'page form' => [
         Extend\Forms\PageForm::class,
-        fn($extender, $marker) => $extender->add('extend-test', new HtmlString($marker)),
+        fn($extender, $marker) => $extender->add(new HtmlString($marker), 'extend-test'),
         fn($test) => $test
             ->actingAs(extendTestAdminUser())
             ->get(URL::route('waterhole.cp.structure.pages.create')),
     ],
     'structure link form' => [
         Extend\Forms\StructureLinkForm::class,
-        fn($extender, $marker) => $extender->add('extend-test', new HtmlString($marker)),
+        fn($extender, $marker) => $extender->add(new HtmlString($marker), 'extend-test'),
         fn($test) => $test
             ->actingAs(extendTestAdminUser())
             ->get(URL::route('waterhole.cp.structure.links.create')),
     ],
     'taxonomy form' => [
         Extend\Forms\TaxonomyForm::class,
-        fn($extender, $marker) => $extender->add('extend-test', new HtmlString($marker)),
+        fn($extender, $marker) => $extender->add(new HtmlString($marker), 'extend-test'),
         fn($test) => $test
             ->actingAs(extendTestAdminUser())
             ->get(URL::route('waterhole.cp.taxonomies.create')),
     ],
     'tag form' => [
         Extend\Forms\TagForm::class,
-        fn($extender, $marker) => $extender->add('extend-test', new HtmlString($marker)),
+        fn($extender, $marker) => $extender->add(new HtmlString($marker), 'extend-test'),
         function ($test) {
             $taxonomy = Taxonomy::create(['name' => 'Test Taxonomy']);
 
@@ -87,28 +87,28 @@ dataset('form_extenders', [
     ],
     'group form' => [
         Extend\Forms\GroupForm::class,
-        fn($extender, $marker) => $extender->add('extend-test', new HtmlString($marker)),
+        fn($extender, $marker) => $extender->add(new HtmlString($marker), 'extend-test'),
         fn($test) => $test
             ->actingAs(extendTestAdminUser())
             ->get(URL::route('waterhole.cp.groups.create')),
     ],
     'user form' => [
         Extend\Forms\UserForm::class,
-        fn($extender, $marker) => $extender->add('extend-test', new HtmlString($marker)),
+        fn($extender, $marker) => $extender->add(new HtmlString($marker), 'extend-test'),
         fn($test) => $test
             ->actingAs(extendTestAdminUser())
             ->get(URL::route('waterhole.cp.users.create')),
     ],
     'reaction set form' => [
         Extend\Forms\ReactionSetForm::class,
-        fn($extender, $marker) => $extender->add('extend-test', new HtmlString($marker)),
+        fn($extender, $marker) => $extender->add(new HtmlString($marker), 'extend-test'),
         fn($test) => $test
             ->actingAs(extendTestAdminUser())
             ->get(URL::route('waterhole.cp.reaction-sets.create')),
     ],
     'reaction type form' => [
         Extend\Forms\ReactionTypeForm::class,
-        fn($extender, $marker) => $extender->add('extend-test', new HtmlString($marker)),
+        fn($extender, $marker) => $extender->add(new HtmlString($marker), 'extend-test'),
         function ($test) {
             $reactionSet = ReactionSet::create(['name' => 'Test Reaction Set']);
 
@@ -121,12 +121,12 @@ dataset('form_extenders', [
     ],
     'registration form' => [
         Extend\Forms\RegistrationForm::class,
-        fn($extender, $marker) => $extender->add('extend-test', new HtmlString($marker)),
+        fn($extender, $marker) => $extender->add(new HtmlString($marker), 'extend-test'),
         fn($test) => $test->get(URL::route('waterhole.register')),
     ],
     'post form' => [
         Extend\Forms\PostForm::class,
-        fn($extender, $marker) => $extender->add('extend-test', new HtmlString($marker)),
+        fn($extender, $marker) => $extender->add(new HtmlString($marker), 'extend-test'),
         function ($test) {
             $channel = Channel::factory()
                 ->public()

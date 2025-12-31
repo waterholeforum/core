@@ -22,60 +22,60 @@ class ChannelsResource extends Resource
     {
         parent::__construct();
 
-        $this->endpoints->add('show', Endpoint\Show::make());
+        $this->endpoints->add(Endpoint\Show::make(), 'show');
 
         $this->fields
-            ->add('name', Attribute::make('name')->type(Type\Str::make()))
+            ->add(Attribute::make('name')->type(Type\Str::make()), 'name')
 
             ->add(
-                'iconHtml',
                 Attribute::make('iconHtml')
                     ->type(Type\Str::make()->format('html'))
                     ->nullable()
                     ->get(fn(Channel $channel) => icon($channel->icon)),
+                'iconHtml',
             )
 
             ->add(
-                'descriptionHtml',
                 Attribute::make('descriptionHtml')
                     ->type(Type\Str::make()->format('html'))
                     ->nullable(),
+                'descriptionHtml',
             )
 
             ->add(
-                'instructionsHtml',
                 Attribute::make('instructionsHtml')
                     ->type(Type\Str::make()->format('html'))
                     ->nullable(),
+                'instructionsHtml',
             )
 
-            ->add('url', Attribute::make('url')->type(Type\Str::make()->format('uri')))
+            ->add(Attribute::make('url')->type(Type\Str::make()->format('uri')), 'url')
 
             ->add(
-                'postsReactionSet',
                 ToOne::make('postsReactionSet')
                     ->type('reactionSets')
                     ->nullable()
                     ->includable(),
+                'postsReactionSet',
             )
 
             ->add(
-                'commentsReactionSet',
                 ToOne::make('commentsReactionSet')
                     ->type('reactionSets')
                     ->nullable()
                     ->includable(),
+                'commentsReactionSet',
             )
 
-            ->add('taxonomies', ToMany::make('taxonomies')->includable())
+            ->add(ToMany::make('taxonomies')->includable(), 'taxonomies')
 
-            ->add('posts', ToMany::make('posts'))
+            ->add(ToMany::make('posts'), 'posts')
 
             ->add(
-                'userState',
                 ToOne::make('userState')
                     ->type('channelUsers')
                     ->includable(),
+                'userState',
             );
     }
 }

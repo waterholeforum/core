@@ -22,97 +22,100 @@ class UsersResource extends Resource
         parent::__construct();
 
         $this->endpoints
-            ->add('index', Endpoint\Index::make())
+            ->add(Endpoint\Index::make(), 'index')
 
-            ->add('show', Endpoint\Show::make());
+            ->add(Endpoint\Show::make(), 'show');
 
         $this->fields
-            ->add('name', Attribute::make('name')->type(Type\Str::make()))
+            ->add(Attribute::make('name')->type(Type\Str::make()), 'name')
 
             // TODO: visibility
-            ->add('email', Attribute::make('email')->type(Type\Str::make()->format('email')))
+            ->add(
+                Attribute::make('email')->type(Type\Str::make()->format('email')),
+                'email',
+            )
 
             // TODO: visibility
-            ->add('locale', Attribute::make('locale')->type(Type\Str::make()))
+            ->add(Attribute::make('locale')->type(Type\Str::make()), 'locale')
 
             ->add(
-                'headline',
                 Attribute::make('headline')
                     ->type(Type\Str::make())
                     ->nullable(),
+                'headline',
             )
 
             ->add(
-                'bio',
                 Attribute::make('bio')
                     ->type(Type\Str::make())
                     ->nullable(),
+                'bio',
             )
 
             ->add(
-                'location',
                 Attribute::make('location')
                     ->type(Type\Str::make())
                     ->nullable(),
+                'location',
             )
 
             ->add(
-                'website',
                 Attribute::make('website')
                     ->type(Type\Str::make()->format('uri'))
                     ->nullable(),
+                'website',
             )
 
             ->add(
-                'avatarUrl',
                 Attribute::make('avatarUrl')
                     ->type(Type\Str::make()->format('uri'))
                     ->nullable(),
+                'avatarUrl',
             )
 
             ->add(
-                'createdAt',
                 Attribute::make('createdAt')
                     ->type(Type\DateTime::make())
                     ->nullable(),
+                'createdAt',
             )
 
             // TODO: visibility
             ->add(
-                'lastSeenAt',
                 Attribute::make('lastSeenAt')
                     ->type(Type\DateTime::make())
                     ->nullable(),
+                'lastSeenAt',
             )
 
             // TODO: visibility
             ->add(
-                'suspendedUntil',
                 Attribute::make('suspendedUntil')
                     ->type(Type\DateTime::make())
                     ->nullable(),
+                'suspendedUntil',
             )
 
-            ->add('url', Attribute::make('url')->type(Type\Str::make()->format('uri')))
+            ->add(Attribute::make('url')->type(Type\Str::make()->format('uri')), 'url')
 
-            ->add('posts', ToMany::make('posts'))
+            ->add(ToMany::make('posts'), 'posts')
 
-            ->add('comments', ToMany::make('comments'))
+            ->add(ToMany::make('comments'), 'comments')
 
-            ->add('groups', ToMany::make('groups')->includable());
+            ->add(ToMany::make('groups')->includable(), 'groups');
 
         $this->sorts
-            ->add('name', SortColumn::make('name'))
+            ->add(SortColumn::make('name'), 'name')
 
-            ->add('createdAt', SortColumn::make('createdAt'))
+            ->add(SortColumn::make('createdAt'), 'createdAt')
 
             // TODO: visibility
-            ->add('lastSeenAt', SortColumn::make('lastSeenAt'));
+            ->add(SortColumn::make('lastSeenAt'), 'lastSeenAt');
 
         $this->filters
-            ->add('id', Where::make('id'))
+            ->add(Where::make('id'), 'id')
 
-            ->add('email', Where::make('email'));
+            ->add(Where::make('email'), 'email');
 
         // name LIKE
         // isSuspended

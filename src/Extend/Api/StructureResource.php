@@ -20,20 +20,20 @@ class StructureResource extends Resource
     {
         parent::__construct();
 
-        $this->endpoints->add('index', Endpoint\Index::make()->defaultSort('position'));
+        $this->endpoints->add(Endpoint\Index::make()->defaultSort('position'), 'index');
 
         $this->fields
-            ->add('position', Attribute::make('position')->type(Type\Integer::make()))
+            ->add(Attribute::make('position')->type(Type\Integer::make()), 'position')
 
-            ->add('isListed', Attribute::make('isListed')->type(Type\Boolean::make()))
+            ->add(Attribute::make('isListed')->type(Type\Boolean::make()), 'isListed')
 
             ->add(
-                'content',
                 ToOne::make('content')
                     ->collection('structureContent')
                     ->includable(),
+                'content',
             );
 
-        $this->sorts->add('position', SortColumn::make('position'));
+        $this->sorts->add(SortColumn::make('position'), 'position');
     }
 }

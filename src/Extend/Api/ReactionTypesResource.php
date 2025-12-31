@@ -21,18 +21,18 @@ class ReactionTypesResource extends Resource
         parent::__construct();
 
         $this->fields
-            ->add('reactionSet', ToOne::make('reactionSet'))
+            ->add(ToOne::make('reactionSet'), 'reactionSet')
 
-            ->add('name', Attribute::make('name')->type(Type\Str::make()))
+            ->add(Attribute::make('name')->type(Type\Str::make()), 'name')
 
             ->add(
-                'iconHtml',
                 Attribute::make('iconHtml')
                     ->type(Type\Str::make()->format('html'))
                     ->nullable()
                     ->get(fn(ReactionType $reactionType) => icon($reactionType->icon)),
+                'iconHtml',
             )
 
-            ->add('score', Attribute::make('score')->type(Type\Integer::make()));
+            ->add(Attribute::make('score')->type(Type\Integer::make()), 'score');
     }
 }

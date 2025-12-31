@@ -20,24 +20,24 @@ class GroupForm extends ComponentList
     public function __construct()
     {
         $this->add(
-            'details',
             fn($model) => new FormSection(
                 __('waterhole::cp.group-details-title'),
                 $this->details->components(compact('model')),
             ),
+            'details',
         );
 
         $this->details = (new ComponentList())
-            ->add('name', GroupName::class)
-            ->add('appearance', GroupAppearance::class);
+            ->add(GroupName::class, 'name')
+            ->add(GroupAppearance::class, 'appearance');
 
         $this->add(
-            'permissions',
             fn($model) => new FormSection(
                 __('waterhole::cp.group-permissions-title'),
                 [new GroupPermissions($model)],
                 open: false,
             ),
+            'permissions',
         );
     }
 }

@@ -16,7 +16,7 @@ class Stylesheet extends Assets
     {
         $this->add(__DIR__ . '/../../../resources/dist/global.css');
 
-        $this->add(__DIR__ . '/../../../resources/dist/cp.css', bundle: 'cp');
+        $this->add(__DIR__ . '/../../../resources/dist/cp.css', 'cp');
     }
 
     protected function cacheKey(string $bundle): string

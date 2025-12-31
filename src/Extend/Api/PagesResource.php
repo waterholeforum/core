@@ -20,26 +20,26 @@ class PagesResource extends Resource
     {
         parent::__construct();
 
-        $this->endpoints->add('show', Endpoint\Show::make());
+        $this->endpoints->add(Endpoint\Show::make(), 'show');
 
         $this->fields
-            ->add('name', Attribute::make('name')->type(Type\Str::make()))
+            ->add(Attribute::make('name')->type(Type\Str::make()), 'name')
 
             ->add(
-                'iconHtml',
                 Attribute::make('iconHtml')
                     ->type(Type\Str::make()->format('html'))
                     ->nullable()
                     ->get(fn(Page $page) => icon($page->icon)),
+                'iconHtml',
             )
 
             ->add(
-                'bodyHtml',
                 Attribute::make('bodyHtml')
                     ->type(Type\Str::make()->format('html'))
                     ->nullable(),
+                'bodyHtml',
             )
 
-            ->add('url', Attribute::make('url')->type(Type\Str::make()->format('uri')));
+            ->add(Attribute::make('url')->type(Type\Str::make()->format('uri')), 'url');
     }
 }

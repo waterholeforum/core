@@ -16,13 +16,13 @@ class PostScopes extends UnorderedList
 {
     public function __construct()
     {
-        $this->add('channel', function (Builder $query, ?User $user) {
+        $this->add(function (Builder $query, ?User $user) {
             if (!is_null($ids = Channel::allPermitted($user))) {
                 $query->whereIn('channel_id', $ids);
             }
-        });
+        }, 'channel');
 
-        $this->add('trashed', function (Builder $query, ?User $user) {
+        $this->add(function (Builder $query, ?User $user) {
             $query->withTrashed();
 
             if (!$user?->isAdmin()) {
@@ -32,6 +32,6 @@ class PostScopes extends UnorderedList
                     $query->orWhereIn('channel_id', $ids);
                 }
             }
-        });
+        }, 'trashed');
     }
 }

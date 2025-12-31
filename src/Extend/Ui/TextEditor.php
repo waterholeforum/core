@@ -18,17 +18,16 @@ class TextEditor extends ComponentList
     public function __construct()
     {
         $this->add(
-            'heading',
             fn(string $id) => new TextEditorButton(
                 icon: 'tabler-heading',
                 label: __('waterhole::system.text-editor-heading'),
                 id: $id,
                 format: 'header2',
             ),
+            'heading',
         );
 
         $this->add(
-            'bold',
             fn(string $id) => new TextEditorButton(
                 icon: 'tabler-bold',
                 label: __('waterhole::system.text-editor-bold'),
@@ -36,10 +35,10 @@ class TextEditor extends ComponentList
                 format: 'bold',
                 hotkey: 'Meta+b',
             ),
+            'bold',
         );
 
         $this->add(
-            'italic',
             fn(string $id) => new TextEditorButton(
                 icon: 'tabler-italic',
                 label: __('waterhole::system.text-editor-italic'),
@@ -47,10 +46,10 @@ class TextEditor extends ComponentList
                 format: 'italic',
                 hotkey: 'Meta+i',
             ),
+            'italic',
         );
 
         $this->add(
-            'quote',
             fn(string $id) => new TextEditorButton(
                 icon: 'tabler-quote',
                 label: __('waterhole::system.text-editor-quote'),
@@ -58,10 +57,10 @@ class TextEditor extends ComponentList
                 format: 'blockquote',
                 hotkey: 'Meta+Shift+.',
             ),
+            'quote',
         );
 
         $this->add(
-            'code',
             fn(string $id) => new TextEditorButton(
                 icon: 'tabler-code',
                 label: __('waterhole::system.text-editor-code'),
@@ -69,10 +68,10 @@ class TextEditor extends ComponentList
                 format: 'code',
                 hotkey: 'Meta+e',
             ),
+            'code',
         );
 
         $this->add(
-            'link',
             fn(string $id) => new TextEditorButton(
                 icon: 'tabler-link',
                 label: __('waterhole::system.text-editor-link'),
@@ -80,10 +79,10 @@ class TextEditor extends ComponentList
                 format: 'link',
                 hotkey: 'Meta+k',
             ),
+            'link',
         );
 
         $this->add(
-            'bulletedList',
             fn(string $id) => new TextEditorButton(
                 icon: 'tabler-list',
                 label: __('waterhole::system.text-editor-bulleted-list'),
@@ -91,10 +90,10 @@ class TextEditor extends ComponentList
                 format: 'unorderedList',
                 hotkey: 'Meta+Shift+8',
             ),
+            'bulletedList',
         );
 
         $this->add(
-            'numberedList',
             fn(string $id) => new TextEditorButton(
                 icon: 'tabler-list-numbers',
                 label: __('waterhole::system.text-editor-numbered-list'),
@@ -102,28 +101,29 @@ class TextEditor extends ComponentList
                 format: 'orderedList',
                 hotkey: 'Meta+Shift+7',
             ),
+            'numberedList',
         );
 
         $this->add(
-            'mention',
             fn(string $id) => new TextEditorButton(
                 icon: 'tabler-at',
                 label: __('waterhole::system.text-editor-mention'),
                 id: $id,
                 format: '{"prefix":"@"}',
             ),
+            'mention',
         );
 
-        $this->add('emoji', fn() => new TextEditorEmojiButton());
+        $this->add(fn() => new TextEditorEmojiButton(), 'emoji');
 
         $this->add(
-            'attachment',
             fn(string $id) => Auth::check()
                 ? (new TextEditorButton(
                     icon: 'tabler-paperclip',
                     label: __('waterhole::system.text-editor-attachment'),
                 ))->withAttributes(['data-action' => 'uploads#chooseFiles'])
                 : null,
+            'attachment',
         );
     }
 }

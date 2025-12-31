@@ -130,81 +130,81 @@ class Actions
     private function registerDefaults(): void
     {
         $this->for(Models\Channel::class)
-            ->add('follow', CoreActions\Follow::class)
-            ->add('unfollow', CoreActions\Unfollow::class)
-            ->add('ignore', CoreActions\Ignore::class)
-            ->add('unignore', CoreActions\Unignore::class)
-            ->add('divider', MenuDivider::class)
-            ->add('edit-channel', CoreActions\EditChannel::class)
-            ->add('delete-channel', CoreActions\DeleteChannel::class);
+            ->add(CoreActions\Follow::class, 'follow')
+            ->add(CoreActions\Unfollow::class, 'unfollow')
+            ->add(CoreActions\Ignore::class, 'ignore')
+            ->add(CoreActions\Unignore::class, 'unignore')
+            ->add(MenuDivider::class, 'divider')
+            ->add(CoreActions\EditChannel::class, 'edit-channel')
+            ->add(CoreActions\DeleteChannel::class, 'delete-channel');
 
         $this->for(Models\Comment::class)
-            ->add('copy-link', CoreActions\CopyLink::class)
-            ->add('divider', MenuDivider::class)
-            ->add('edit-comment', CoreActions\EditComment::class)
-            ->add('hide-comment', CoreActions\HideComment::class)
-            ->add('unhide-comment', CoreActions\UnhideComment::class)
-            ->add('delete-comment', CoreActions\DeleteComment::class)
-            ->add('mark-as-answer', CoreActions\MarkAsAnswer::class)
-            ->add('react', CoreActions\React::class);
+            ->add(CoreActions\CopyLink::class, 'copy-link')
+            ->add(MenuDivider::class, 'divider')
+            ->add(CoreActions\EditComment::class, 'edit-comment')
+            ->add(CoreActions\HideComment::class, 'hide-comment')
+            ->add(CoreActions\UnhideComment::class, 'unhide-comment')
+            ->add(CoreActions\DeleteComment::class, 'delete-comment')
+            ->add(CoreActions\MarkAsAnswer::class, 'mark-as-answer')
+            ->add(CoreActions\React::class, 'react');
 
         $this->for(Models\Group::class)
-            ->add('edit-group', CoreActions\EditGroup::class)
-            ->add('delete-group', CoreActions\DeleteGroup::class);
+            ->add(CoreActions\EditGroup::class, 'edit-group')
+            ->add(CoreActions\DeleteGroup::class, 'delete-group');
 
         $this->for(Models\Page::class)
-            ->add('edit-structure', CoreActions\EditStructure::class)
-            ->add('delete-structure', CoreActions\DeleteStructure::class);
+            ->add(CoreActions\EditStructure::class, 'edit-structure')
+            ->add(CoreActions\DeleteStructure::class, 'delete-structure');
 
         $this->for(Models\Post::class)
-            ->add('copy-link', CoreActions\CopyLink::class)
-            ->add('mark-as-read', CoreActions\MarkAsRead::class)
-            ->add('follow', CoreActions\Follow::class)
-            ->add('unfollow', CoreActions\Unfollow::class)
-            ->add('ignore', CoreActions\Ignore::class)
-            ->add('unignore', CoreActions\Unignore::class)
-            ->add('divider', MenuDivider::class)
-            ->add('edit-post', CoreActions\EditPost::class)
-            ->add('pin', CoreActions\Pin::class)
-            ->add('unpin', CoreActions\Unpin::class)
-            ->add('lock', CoreActions\Lock::class)
-            ->add('unlock', CoreActions\Unlock::class)
-            ->add('move-to-channel', CoreActions\MoveToChannel::class)
-            ->add('restore-post', CoreActions\RestorePost::class)
-            ->add('trash-post', CoreActions\TrashPost::class)
-            ->add('delete-post', CoreActions\DeletePost::class)
-            ->add('react', CoreActions\React::class);
+            ->add(CoreActions\CopyLink::class, 'copy-link')
+            ->add(CoreActions\MarkAsRead::class, 'mark-as-read')
+            ->add(CoreActions\Follow::class, 'follow')
+            ->add(CoreActions\Unfollow::class, 'unfollow')
+            ->add(CoreActions\Ignore::class, 'ignore')
+            ->add(CoreActions\Unignore::class, 'unignore')
+            ->add(MenuDivider::class, 'divider')
+            ->add(CoreActions\EditPost::class, 'edit-post')
+            ->add(CoreActions\Pin::class, 'pin')
+            ->add(CoreActions\Unpin::class, 'unpin')
+            ->add(CoreActions\Lock::class, 'lock')
+            ->add(CoreActions\Unlock::class, 'unlock')
+            ->add(CoreActions\MoveToChannel::class, 'move-to-channel')
+            ->add(CoreActions\RestorePost::class, 'restore-post')
+            ->add(CoreActions\TrashPost::class, 'trash-post')
+            ->add(CoreActions\DeletePost::class, 'delete-post')
+            ->add(CoreActions\React::class, 'react');
 
         $this->for(Models\ReactionSet::class)
-            ->add('edit-reaction-set', CoreActions\EditReactionSet::class)
-            ->add('delete-reaction-set', CoreActions\DeleteReactionSet::class);
+            ->add(CoreActions\EditReactionSet::class, 'edit-reaction-set')
+            ->add(CoreActions\DeleteReactionSet::class, 'delete-reaction-set');
 
         $this->for(Models\ReactionType::class)
-            ->add('edit-reaction-type', CoreActions\EditReactionType::class)
-            ->add('delete-reaction-type', CoreActions\DeleteReactionType::class);
+            ->add(CoreActions\EditReactionType::class, 'edit-reaction-type')
+            ->add(CoreActions\DeleteReactionType::class, 'delete-reaction-type');
 
         $this->for(Models\StructureHeading::class)
-            ->add('edit-structure', CoreActions\EditStructure::class)
-            ->add('delete-structure', CoreActions\DeleteStructure::class);
+            ->add(CoreActions\EditStructure::class, 'edit-structure')
+            ->add(CoreActions\DeleteStructure::class, 'delete-structure');
 
         $this->for(Models\StructureLink::class)
-            ->add('edit-structure', CoreActions\EditStructure::class)
-            ->add('delete-structure', CoreActions\DeleteStructure::class);
+            ->add(CoreActions\EditStructure::class, 'edit-structure')
+            ->add(CoreActions\DeleteStructure::class, 'delete-structure');
 
         $this->for(Models\Tag::class)
-            ->add('edit-tag', CoreActions\EditTag::class)
-            ->add('delete-tag', CoreActions\DeleteTag::class);
+            ->add(CoreActions\EditTag::class, 'edit-tag')
+            ->add(CoreActions\DeleteTag::class, 'delete-tag');
 
         $this->for(Models\Taxonomy::class)
-            ->add('edit-taxonomy', CoreActions\EditTaxonomy::class)
-            ->add('delete-taxonomy', CoreActions\DeleteTaxonomy::class);
+            ->add(CoreActions\EditTaxonomy::class, 'edit-taxonomy')
+            ->add(CoreActions\DeleteTaxonomy::class, 'delete-taxonomy');
 
         $this->for(Models\User::class)
-            ->add('delete-self', CoreActions\DeleteSelf::class)
-            ->add('divider', MenuDivider::class)
-            ->add('edit-user', CoreActions\EditUser::class)
-            ->add('copy-impersonation-url', CoreActions\CopyImpersonationUrl::class)
-            ->add('suspend-user', CoreActions\SuspendUser::class)
-            ->add('delete-user', CoreActions\DeleteUser::class);
+            ->add(CoreActions\DeleteSelf::class, 'delete-self')
+            ->add(MenuDivider::class, 'divider')
+            ->add(CoreActions\EditUser::class, 'edit-user')
+            ->add(CoreActions\CopyImpersonationUrl::class, 'copy-impersonation-url')
+            ->add(CoreActions\SuspendUser::class, 'suspend-user')
+            ->add(CoreActions\DeleteUser::class, 'delete-user');
     }
 }
