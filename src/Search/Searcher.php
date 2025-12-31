@@ -15,7 +15,7 @@ class Searcher
         string $q,
         int $limit,
         int $offset = 0,
-        string $sort = null,
+        ?string $sort = null,
         array $channelIds = [],
         array $in = ['title', 'body', 'comments'],
     ): Results {

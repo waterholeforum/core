@@ -20,7 +20,7 @@ trait UsesFormatter
     /**
      * Render an attribute as HTML for the given user.
      */
-    public function format(string $attribute, User $user = null): HtmlString|string
+    public function format(string $attribute, ?User $user = null): HtmlString|string
     {
         $key = $attribute . ':' . ($user->id ?? 0);
         $value = $this->attributes[$attribute] ?? '';

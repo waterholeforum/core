@@ -8,7 +8,7 @@ class LicenseManager
     {
     }
 
-    public function response(string $key = null, $default = null)
+    public function response(?string $key = null, $default = null)
     {
         $response = $this->outpost->contact();
 

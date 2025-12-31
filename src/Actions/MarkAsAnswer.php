@@ -13,7 +13,7 @@ class MarkAsAnswer extends Action
         return (bool) $user?->can('waterhole.post.edit', $model->post);
     }
 
-    public function shouldRender(Collection $models, string $context = null): bool
+    public function shouldRender(Collection $models, ?string $context = null): bool
     {
         return false;
     }

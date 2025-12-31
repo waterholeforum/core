@@ -25,7 +25,7 @@ class StructureHeading extends Model
         )->shouldCache();
     }
 
-    public static function rules(StructureHeading $instance = null): array
+    public static function rules(?StructureHeading $instance = null): array
     {
         return [
             'name' => ['nullable', 'string', 'max:255'],

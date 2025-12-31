@@ -82,7 +82,7 @@ class RegisterController extends Controller
             ->withoutFragment();
     }
 
-    private function form(User $user, string $payload = null)
+    private function form(User $user, ?string $payload = null)
     {
         return new RegistrationForm($user, $payload ? SsoPayload::decrypt($payload) : null);
     }

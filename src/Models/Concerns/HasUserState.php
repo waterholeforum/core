@@ -21,7 +21,7 @@ trait HasUserState
      * `User` to the parent model name (eg. `PostUser`). Alternatively, it can
      * be specified by setting the `userStateModel` property.
      */
-    public function userState(User $user = null): HasOne
+    public function userState(?User $user = null): HasOne
     {
         $relation = $this->hasOne($this->userStateModel ?? get_class($this) . 'User');
 

@@ -19,7 +19,7 @@ class DeleteChannel extends Action
         return $user && $user->can('waterhole.channel.delete', $model);
     }
 
-    public function shouldRender(Collection $models, string $context = null): bool
+    public function shouldRender(Collection $models, ?string $context = null): bool
     {
         return $context === 'cp';
     }

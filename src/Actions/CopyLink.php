@@ -20,7 +20,7 @@ class CopyLink extends Link
         return true;
     }
 
-    public function shouldRender(Collection $models, string $context = null): bool
+    public function shouldRender(Collection $models, ?string $context = null): bool
     {
         return $context !== 'cp';
     }

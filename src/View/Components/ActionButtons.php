@@ -15,8 +15,8 @@ class ActionButtons extends Component
 
     public function __construct(
         public Model $for,
-        array $only = null,
-        array $exclude = null,
+        ?array $only = null,
+        ?array $exclude = null,
         public ?int $limit = null,
         public ?string $context = null,
     ) {

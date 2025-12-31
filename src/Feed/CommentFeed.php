@@ -8,7 +8,7 @@ use Waterhole\Models\Comment;
 
 class CommentFeed extends Feed
 {
-    public function __construct(Request $request, array $filters, Closure $scope = null)
+    public function __construct(Request $request, array $filters, ?Closure $scope = null)
     {
         $query = Comment::with([
             'post.userState',

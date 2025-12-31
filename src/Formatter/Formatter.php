@@ -43,7 +43,7 @@ class Formatter
     /**
      * Parse plain text into an XML document for storage in the database.
      */
-    public function parse(string $text, Context $context = null): string
+    public function parse(string $text, ?Context $context = null): string
     {
         $parser = $this->getParser();
 
@@ -65,7 +65,7 @@ class Formatter
     /**
      * Transform a parsed XML document into HTML.
      */
-    public function render(string $xml, Context $context = null): string
+    public function render(string $xml, ?Context $context = null): string
     {
         $renderer = $this->getRenderer();
 
