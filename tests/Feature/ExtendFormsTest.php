@@ -55,8 +55,7 @@ describe('Form extenders', function () {
             return $extender;
         });
 
-        $this->get(URL::route('waterhole.register'))
-            ->assertSeeText(ExtendTestPersistField::MARKER);
+        $this->get(URL::route('waterhole.register'))->assertSeeText(ExtendTestPersistField::MARKER);
 
         $this->post(URL::route('waterhole.register.submit'), [
             'name' => 'Test User',
