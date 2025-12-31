@@ -46,7 +46,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Post Layouts
+    | Post Layout
     |--------------------------------------------------------------------------
     |
     | Here you can specify which post layout is used on the forum index. This
