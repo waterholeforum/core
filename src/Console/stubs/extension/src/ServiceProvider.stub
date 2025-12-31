@@ -6,7 +6,7 @@ use Waterhole\Extend;
 
 class {{ prefix }}ServiceProvider extends Extend\ServiceProvider
 {
-    public function extend()
+    public function register()
     {
         //
     }
