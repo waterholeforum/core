@@ -21,9 +21,7 @@ describe('Routing extenders', function () {
 
         try {
             extend(function (Extend\Routing\ApiRoutes $routes) {
-                $routes->register(function () {
-                    Route::get('extend-test', fn() => response()->json(['ok' => true]));
-                });
+                Route::get('extend-test', fn() => response()->json(['ok' => true]));
             });
 
             Route::setRoutes(new RouteCollection());
@@ -42,9 +40,7 @@ describe('Routing extenders', function () {
 
         try {
             extend(function (Extend\Routing\ForumRoutes $routes) {
-                $routes->register(function () {
-                    Route::get('extend-test', fn() => 'ok');
-                });
+                Route::get('extend-test', fn() => 'ok');
             });
 
             Route::setRoutes(new RouteCollection());
@@ -61,9 +57,7 @@ describe('Routing extenders', function () {
 
         try {
             extend(function (Extend\Routing\CpRoutes $routes) {
-                $routes->register(function () {
-                    Route::get('extend-test', fn() => 'ok');
-                });
+                Route::get('extend-test', fn() => 'ok');
             });
 
             Route::setRoutes(new RouteCollection());

@@ -8,7 +8,7 @@ use Waterhole\Http\Controllers;
 // Route::post('users/{id}/avatar', [Controllers\Api\AvatarController::class, 'upload']);
 // Route::delete('users/{id}/avatar', [Controllers\Api\AvatarController::class, 'remove']);
 
-resolve(Waterhole\Extend\Routing\ApiRoutes::class)->execute();
+resolve(Waterhole\Extend\Routing\ApiRoutes::class);
 
 Route::any('{uri?}', Controllers\Api\ApiController::class)
     ->where('uri', '.*')

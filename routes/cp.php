@@ -77,4 +77,4 @@ Route::post('reaction-sets/{reactionSet}/reaction-types/reorder', [
     'reorder',
 ])->name('reaction-sets.reaction-types.reorder');
 
-resolve(Waterhole\Extend\Routing\CpRoutes::class)->execute();
+resolve(Waterhole\Extend\Routing\CpRoutes::class);
