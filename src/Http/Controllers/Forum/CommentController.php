@@ -2,10 +2,10 @@
 
 namespace Waterhole\Http\Controllers\Forum;
 
+use HotwiredLaravel\TurboLaravel\Http\TurboResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Notification;
-use HotwiredLaravel\TurboLaravel\Http\TurboResponseFactory;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
@@ -38,7 +38,7 @@ class CommentController extends Controller
         // relationships, and pre-fill the `post` relationship for each comment.
         $comment = $comment
             ->childrenAndSelf()
-            ->with(['user.groups', 'parent.user.groups', 'mentions', 'reactionsSummary'])
+            ->with(['user.groups', 'parent.user.groups', 'mentions', 'reactionCounts'])
             ->get()
             ->each(function ($comment) use ($post) {
                 $comment->setRelation('post', $post);
