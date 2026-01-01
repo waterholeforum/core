@@ -3,6 +3,7 @@
 namespace Waterhole;
 
 use BladeUI\Icons\Exceptions\SvgNotFound;
+use Closure;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
@@ -143,7 +144,7 @@ function build_components(array|string|ComponentList $components, array $data = 
     }
 
     return array_map(function ($component) use ($data) {
-        if (is_callable($component)) {
+        if ($component instanceof Closure) {
             $component = app()->call($component, $data);
         }
         if (is_object($component)) {
