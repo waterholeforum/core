@@ -8,7 +8,7 @@ use Waterhole\Models\PermissionCollection;
 
 abstract class Waterhole
 {
-    public const VERSION = '0.4.12';
+    public const VERSION = '0.5.0';
 
     public static function isWaterholeRoute(): bool
     {

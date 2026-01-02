@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-01-02
+
 ### ⚠️ Breaking Changes
 
 - Refresh the extension API with new namespaces and container-resolved extenders
@@ -327,7 +329,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release.
 
-[unreleased]: https://github.com/waterholeforum/core/compare/v0.4.12...HEAD
+[unreleased]: https://github.com/waterholeforum/core/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/waterholeforum/core/compare/v0.4.12...v0.5.0
 [0.4.12]: https://github.com/waterholeforum/core/compare/v0.4.11...v0.4.12
 [0.4.11]: https://github.com/waterholeforum/core/compare/v0.4.10...v0.4.11
 [0.4.10]: https://github.com/waterholeforum/core/compare/v0.4.9...v0.4.10
