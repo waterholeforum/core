@@ -1,5 +1,27 @@
+@inject('license', Waterhole\Licensing\LicenseManager::class)
+
 <x-waterhole::cp :title="__('waterhole::cp.dashboard-title')">
     <div class="cp-dashboard stack gap-lg">
+        @if ($license->invalid() && $license->production())
+            <x-waterhole::alert type="danger" data-key="license" data-duration="-1">
+                {{
+                    $license->status() === 200
+                        ? __([
+                            'waterhole::cp.license-' . Str::kebab($license->error()) . '-message',
+                            'waterhole::cp.license-invalid-message',
+                        ])
+                        : __('waterhole::cp.license-error-message', ['status' => $license->status()])
+                }}
+                <a
+                    href="https://waterhole.dev/docs/licensing"
+                    target="_blank"
+                    class="color-inherit nowrap weight-bold"
+                >
+                    {{ __('waterhole::system.learn-more-link') }}
+                </a>
+            </x-waterhole::alert>
+        @endif
+
         @section('debug')
             <x-waterhole::alert type="warning" icon="tabler-bug">
                 {{ __('waterhole::cp.debug-mode-on-message') }}

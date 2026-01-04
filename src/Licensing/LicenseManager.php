@@ -35,6 +35,11 @@ class LicenseManager
         return $this->status() === 200 && !$this->public();
     }
 
+    public function production(): bool
+    {
+        return !$this->test();
+    }
+
     public function valid(): bool
     {
         return (bool) $this->response('waterhole.valid');
