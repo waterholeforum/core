@@ -6,47 +6,47 @@
                 redirect URL will be followed. Also, redirect URL may be external.
             --}}
             <form
-                    action="{{ route('waterhole.login') }}"
-                    data-controller="login"
-                    data-turbo="false"
-                    method="POST"
+                action="{{ route('waterhole.login') }}"
+                data-controller="login"
+                data-turbo="false"
+                method="POST"
             >
                 @csrf
 
                 <div class="stack gap-xl">
                     @section('email')
                         <x-waterhole::field
-                                name="email"
-                                :label="__('waterhole::auth.email-label')"
+                            name="email"
+                            :label="__('waterhole::auth.email-label')"
                         >
                             <input
-                                    type="email"
-                                    id="{{ $component->id }}"
-                                    name="email"
-                                    value="{{ old('email') }}"
-                                    required
-                                    autofocus
+                                type="email"
+                                id="{{ $component->id }}"
+                                name="email"
+                                value="{{ old('email') }}"
+                                required
+                                autofocus
                             />
                         </x-waterhole::field>
                     @endsection
 
                     @section('password')
                         <x-waterhole::field
-                                name="password"
-                                :label="__('waterhole::auth.password-label')"
+                            name="password"
+                            :label="__('waterhole::auth.password-label')"
                         >
                             <input
-                                    type="password"
-                                    id="{{ $component->id }}"
-                                    name="password"
-                                    required
-                                    autocomplete="current-password"
+                                type="password"
+                                id="{{ $component->id }}"
+                                name="password"
+                                required
+                                autocomplete="current-password"
                             />
                         </x-waterhole::field>
 
                         <div class="row justify-between gap-sm wrap">
                             <label for="remember_me" class="choice">
-                                <input id="remember_me" type="checkbox" name="remember"/>
+                                <input id="remember_me" type="checkbox" name="remember" />
                                 {{ __('waterhole::auth.remember-me-label') }}
                             </label>
 

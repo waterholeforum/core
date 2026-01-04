@@ -15,11 +15,11 @@
                     'name' => 'reaction_type_id',
                     'value' => $reactionType->id,
                     'data-reaction-type' => $reactionType->id,
-                    'data-count' => $count = $reactionCount($reactionType),
+                    'data-count' => ($count = $reactionCount($reactionType)),
                 ]))->class([
                     'btn btn--sm btn--outline reaction',
                     'is-active' => $userReacted($reactionType),
-                    'is-inert' => !$component->isAuthorized,
+                    'is-inert' => ! $component->isAuthorized,
                 ])
             }}
         >

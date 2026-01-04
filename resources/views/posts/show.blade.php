@@ -1,7 +1,7 @@
 <x-waterhole::layout :title="$post->title">
     <x-slot name="head">
         @unless ($post->channel->structure->is_listed)
-            <meta name="robots" content="noindex"/>
+            <meta name="robots" content="noindex" />
         @endunless
     </x-slot>
 
@@ -13,7 +13,7 @@
     >
         <div class="stack gap-lg measure">
             <div data-post-page-target="post" @if (!$comments->onFirstPage()) hidden @endif>
-                <x-waterhole::post-full :post="$post"/>
+                <x-waterhole::post-full :post="$post" />
             </div>
 
             <section class="post-page__comments stack gap-md">
@@ -38,7 +38,7 @@
                             @endonce
                         @endif
 
-                        <x-waterhole::comment-frame :comment="$comment" class="card__row"/>
+                        <x-waterhole::comment-frame :comment="$comment" class="card__row" />
                     @endforeach
                 </x-waterhole::infinite-scroll>
             </section>
@@ -51,7 +51,7 @@
 
             @can('waterhole.post.comment', $post)
                 <div id="reply" tabindex="-1"></div>
-                <x-waterhole::composer :post="$post" data-turbo-permanent/>
+                <x-waterhole::composer :post="$post" data-turbo-permanent />
             @endcan
         </div>
 
@@ -59,7 +59,7 @@
             class="sidebar sidebar--sticky sidebar--bottom overflow-visible stack gap-lg justify-between"
             data-controller="watch-sticky"
         >
-            <x-waterhole::post-sidebar :post="$post"/>
+            <x-waterhole::post-sidebar :post="$post" />
 
             @if ($comments->total())
                 <a

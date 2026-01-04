@@ -44,7 +44,7 @@
                                     href: $selectedChannels->contains($channel) ? request()->fullUrlWithoutQuery(['channels', 'page']) : request()->fullUrlWithQuery(['channels' => $channel->id, 'page' => null]),
                                     active: $selectedChannels->contains($channel)
                                 ))
-                                ->all()"
+                            ->all()"
                         >
                             <x-slot name="empty">
                                 @icon('tabler-filter')

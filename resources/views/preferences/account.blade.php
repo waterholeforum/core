@@ -18,7 +18,7 @@
         @endsection
 
         @section('email')
-            @if (!Auth::user()->originalUser())
+            @if (! Auth::user()->originalUser())
                 <div class="field">
                     <h4 class="field__label">
                         {{ __('waterhole::auth.email-label') }}
@@ -28,10 +28,10 @@
                         <x-waterhole::field name="email">
                             <div class="row gap-xs">
                                 <input
-                                        class="grow"
-                                        name="email"
-                                        type="email"
-                                        value="{{ old('email', Auth::user()->email) }}"
+                                    class="grow"
+                                    name="email"
+                                    type="email"
+                                    value="{{ old('email', Auth::user()->email) }}"
                                 />
                                 <button class="btn">
                                     {{ __('waterhole::system.change-button') }}
@@ -54,11 +54,11 @@
                         <x-waterhole::field name="password">
                             <div class="row gap-xs">
                                 <input
-                                        autocomplete="new-password"
-                                        class="grow"
-                                        name="password"
-                                        placeholder="{{ __('waterhole::auth.new-password-label') }}"
-                                        type="password"
+                                    autocomplete="new-password"
+                                    class="grow"
+                                    name="password"
+                                    placeholder="{{ __('waterhole::auth.new-password-label') }}"
+                                    type="password"
                                 />
                                 <button class="btn">
                                     {{ __('waterhole::system.change-button') }}

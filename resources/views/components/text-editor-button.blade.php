@@ -8,7 +8,7 @@
         data-hotkey-scope="{{ $id }}"
         data-hotkey="{{ $hotkey }}"
     @endif
-    {{ $attributes->class('btn btn--transparent btn--icon') }}
+    {{ $attributes->class("btn btn--transparent btn--icon") }}
 >
     @icon($icon)
     <ui-tooltip>

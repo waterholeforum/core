@@ -1,7 +1,7 @@
 @php
     $title = isset($taxonomy)
-    ? __('waterhole::cp.edit-taxonomy-title')
-    : __('waterhole::cp.create-taxonomy-title');
+        ? __('waterhole::cp.edit-taxonomy-title')
+        : __('waterhole::cp.create-taxonomy-title');
 @endphp
 
 <x-waterhole::cp :title="$title">

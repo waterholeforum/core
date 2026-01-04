@@ -54,7 +54,7 @@
                         <span>
                             {{ __('waterhole::forum.comment-in-reply-to-link') }}
                             <span class="user-label">
-                                <x-waterhole::avatar :user="$comment->parent->user"/>
+                                <x-waterhole::avatar :user="$comment->parent->user" />
                                 <span>{{ Waterhole\username($comment->parent->user) }}</span>
                             </span>
                         </span>
@@ -125,7 +125,7 @@
             <div class="row wrap push-end">
                 @components(resolve(\Waterhole\Extend\Ui\CommentComponent::class)->buttons, compact('comment', 'withReplies'))
 
-                <x-waterhole::action-menu :for="$comment" placement="bottom-end"/>
+                <x-waterhole::action-menu :for="$comment" placement="bottom-end" />
             </div>
         </footer>
     </div>
@@ -144,7 +144,7 @@
                 >
                     @foreach ($comment->children as $child)
                         <li class="card__row">
-                            <x-waterhole::comment-frame :comment="$child"/>
+                            <x-waterhole::comment-frame :comment="$child" />
                         </li>
                     @endforeach
                 </ol>

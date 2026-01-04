@@ -1,7 +1,7 @@
 @php
     $title = isset($heading)
-    ? __('waterhole::cp.edit-heading-title')
-    : __('waterhole::cp.create-heading-title');
+        ? __('waterhole::cp.edit-heading-title')
+        : __('waterhole::cp.create-heading-title');
 @endphp
 
 <x-waterhole::cp :title="$title">

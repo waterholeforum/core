@@ -1,7 +1,7 @@
 @php
     $title = isset($user)
-    ? __('waterhole::cp.edit-user-title')
-    : __('waterhole::cp.create-user-title');
+        ? __('waterhole::cp.edit-user-title')
+        : __('waterhole::cp.create-user-title');
 @endphp
 
 <x-waterhole::cp :title="$title">

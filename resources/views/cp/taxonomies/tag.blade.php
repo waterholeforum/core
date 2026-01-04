@@ -1,7 +1,7 @@
 @php
     $title = isset($tag)
-    ? __('waterhole::cp.edit-tag-title')
-    : __('waterhole::cp.create-tag-title');
+        ? __('waterhole::cp.edit-tag-title')
+        : __('waterhole::cp.create-tag-title');
 @endphp
 
 <x-waterhole::cp :title="$title">

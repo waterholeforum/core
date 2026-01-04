@@ -1,7 +1,7 @@
 @php
     $title = isset($group)
-    ? __('waterhole::cp.edit-group-title')
-    : __('waterhole::cp.create-group-title');
+        ? __('waterhole::cp.edit-group-title')
+        : __('waterhole::cp.create-group-title');
 @endphp
 
 <x-waterhole::cp :title="$title">

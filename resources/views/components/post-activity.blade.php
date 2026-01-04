@@ -7,7 +7,10 @@
             {{ Waterhole\username($post->lastComment->user) }}
         </x-waterhole::user-link>
         {{ __('waterhole::forum.post-activity-replied') }}
-        <a href="{{ $post->urlAtIndex($post->comment_count) }}#{{ dom_id($post->lastComment) }}" class="color-inherit">
+        <a
+            href="{{ $post->urlAtIndex($post->comment_count) }}#{{ dom_id($post->lastComment) }}"
+            class="color-inherit"
+        >
             <x-waterhole::relative-time :datetime="$post->last_activity_at" />
         </a>
     </span>

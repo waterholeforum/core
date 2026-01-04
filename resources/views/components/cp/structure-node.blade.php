@@ -57,13 +57,15 @@
 
         <div class="grow"></div>
 
-        @if (method_exists($node->content, 'permissions') &&
+        @if (
+
+            method_exists($node->content, 'permissions') &&
             ($recipients = Waterhole::permissions()
                 ->scope($node->content)
                 ->where('ability', 'view')
                 ->load('recipient')
                 ->filter(fn ($permission) => $permission->recipient instanceof Waterhole\Models\Group)->map
-                ->recipient))
+                ->recipient)        )
             @if ($recipients->contains(Waterhole\Models\Group::GUEST_ID))
                 <span class="with-icon text-xs color-muted hide-sm">
                     @icon('tabler-world')

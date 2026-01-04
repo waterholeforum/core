@@ -1,7 +1,7 @@
 @php
     $title = isset($link)
-    ? __('waterhole::cp.edit-link-title')
-    : __('waterhole::cp.create-link-title');
+        ? __('waterhole::cp.edit-link-title')
+        : __('waterhole::cp.create-link-title');
 @endphp
 
 <x-waterhole::cp :title="$title">

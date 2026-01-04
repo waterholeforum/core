@@ -9,12 +9,12 @@
 
             @can('waterhole.post.comment', $post)
                 <a
-                        href="{{ route('waterhole.posts.comments.create', compact('post')) }}"
-                        class="quotable-button btn bg-emphasis no-select"
-                        data-turbo-frame="@domid($post, 'comment_parent')"
-                        data-quotable-target="button"
-                        data-action="quotable#quoteSelectedText"
-                        hidden
+                    href="{{ route('waterhole.posts.comments.create', compact('post')) }}"
+                    class="quotable-button btn bg-emphasis no-select"
+                    data-turbo-frame="@domid($post, 'comment_parent')"
+                    data-quotable-target="button"
+                    data-action="quotable#quoteSelectedText"
+                    hidden
                 >
                     @icon('tabler-quote')
                     <span>{{ __('waterhole::forum.quote-button') }}</span>

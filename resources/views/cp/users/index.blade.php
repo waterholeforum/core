@@ -79,11 +79,13 @@
                                         <th>
                                             @if (in_array($column, $sortable))
                                                 <a
-                                                    href="{{ request()->fullUrlWithQuery([
-                                                        'sort' => $column,
-                                                        'direction' => $sort === $column ? ($direction === 'asc' ? 'desc' : 'asc') : null,
-                                                        'page' => null,
-                                                    ]) }}"
+                                                    href="{{
+                                                        request()->fullUrlWithQuery([
+                                                            'sort' => $column,
+                                                            'direction' => $sort === $column ? ($direction === 'asc' ? 'desc' : 'asc') : null,
+                                                            'page' => null,
+                                                        ])
+                                                    }}"
                                                     class="with-icon color-text"
                                                 >
                                                     <span>

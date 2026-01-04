@@ -5,7 +5,7 @@
         <input type="hidden" name="id[]" value="{{ $for->getKey() }}" />
 
         @php
-            $menu = $limit !== null && $actions->count() > $limit
+            $menu = $limit !== null && $actions->count() > $limit;
         @endphp
 
         @foreach ($menu ? $actions->take($limit ? $limit - 1 : 0) : $actions as $action)

@@ -1,7 +1,7 @@
 @php
     $title = isset($reactionSet)
-    ? __('waterhole::cp.edit-reaction-set-title')
-    : __('waterhole::cp.create-reaction-set-title');
+        ? __('waterhole::cp.edit-reaction-set-title')
+        : __('waterhole::cp.create-reaction-set-title');
 @endphp
 
 <x-waterhole::cp :title="$title">

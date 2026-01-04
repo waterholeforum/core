@@ -1,7 +1,7 @@
 @php
     $title = isset($channel)
-    ? __('waterhole::cp.edit-channel-title')
-    : __('waterhole::cp.create-channel-title');
+        ? __('waterhole::cp.edit-channel-title')
+        : __('waterhole::cp.create-channel-title');
 @endphp
 
 <x-waterhole::cp :title="$title">

@@ -5,7 +5,11 @@
                 Opt-out of Turbo so that any fragment that may be present in the
                 redirect URL will be followed. Also, redirect URL may be external.
             --}}
-            <form action="{{ route('waterhole.register.submit') }}" data-turbo="false" method="POST">
+            <form
+                action="{{ route('waterhole.register.submit') }}"
+                data-turbo="false"
+                method="POST"
+            >
                 @csrf
 
                 @if (request('payload'))
