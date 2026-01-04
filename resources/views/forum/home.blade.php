@@ -8,6 +8,8 @@
     </x-slot>
 
     <x-waterhole::index>
+        <h1 class="visually-hidden">{{ config('waterhole.forum.name') }}</h1>
+
         <x-waterhole::post-feed :feed="$feed" />
     </x-waterhole::index>
 </x-waterhole::layout>

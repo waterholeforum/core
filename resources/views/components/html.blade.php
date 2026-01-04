@@ -11,7 +11,82 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
+        @php
+            $pageTitle = implode(' - ', array_filter([$title, $titleSuffix]));
+            $seoTitle = $seo['title'] ?? $pageTitle;
+            $description = str($seo['description'] ?? config('waterhole.seo.default_description'))
+                ->stripTags()
+                ->trim()
+                ->limit(160);
+            $url = $seo['url'] ?? request()->fullUrl();
+            $type = $seo['type'] ?? 'website';
+            $image = $seo['image'] ?? config('waterhole.seo.default_og_image');
+            $siteName = $seo['site_name'] ?? config('waterhole.forum.name');
+            $twitterCard = $seo['twitter_card'] ?? ($image ? 'summary_large_image' : 'summary');
+            $robots = $seo['robots'] ?? (! empty($seo['noindex']) ? 'noindex' : null);
+            $schemaOverride = $seo['schema'] ?? null;
+            $schema = null;
+            if ($schemaOverride !== false) {
+                $schemaDefaults = [
+                    '@context' => 'https://schema.org',
+                    '@type' => match ($type) {
+                        'article' => 'Article',
+                        'profile' => 'ProfilePage',
+                        'website' => 'WebSite',
+                        default => 'WebPage',
+                    },
+                    'name' => $seoTitle,
+                    'description' => $description,
+                    'url' => $url,
+                    'image' => $image,
+                ];
+                $pruneSchema = function ($value) use (&$pruneSchema) {
+                    return is_array($value) ? array_filter(array_map($pruneSchema, $value)) : $value;
+                };
+                $schema = $pruneSchema(is_array($schemaOverride) ? array_replace_recursive($schemaDefaults, $schemaOverride) : $schemaDefaults);
+            }
+        @endphp
+
         <title>{{ implode(' - ', array_filter([$title, $titleSuffix])) }}</title>
+
+        @if ($description)
+            <meta name="description" content="{{ $description }}" />
+        @endif
+
+        @if ($robots)
+            <meta name="robots" content="{{ $robots }}" />
+        @endif
+
+        <meta property="og:title" content="{{ $seoTitle }}" />
+        @if ($description)
+            <meta property="og:description" content="{{ $description }}" />
+        @endif
+
+        <meta property="og:type" content="{{ $type }}" />
+        <meta property="og:url" content="{{ $url }}" />
+        @if ($siteName)
+            <meta property="og:site_name" content="{{ $siteName }}" />
+        @endif
+
+        @if ($image)
+            <meta property="og:image" content="{{ $image }}" />
+        @endif
+
+        <meta name="twitter:card" content="{{ $twitterCard }}" />
+        <meta name="twitter:title" content="{{ $seoTitle }}" />
+        @if ($description)
+            <meta name="twitter:description" content="{{ $description }}" />
+        @endif
+
+        @if ($image)
+            <meta name="twitter:image" content="{{ $image }}" />
+        @endif
+
+        @if ($schema)
+            <script type="application/ld+json">
+                @json($schema, JSON_UNESCAPED_SLASHES)
+            </script>
+        @endif
 
         <script>
             document.documentElement.className = document.documentElement.className.replace('no-js', 'js');

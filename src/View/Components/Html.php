@@ -13,6 +13,7 @@ class Html extends Component
         public ?string $title = null,
         public ?string $titleSuffix = null,
         public array $assets = [],
+        public array $seo = [],
     ) {
         $this->titleSuffix ??= config('waterhole.forum.name');
 

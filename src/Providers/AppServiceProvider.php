@@ -19,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
         'cp',
         'design',
         'forum',
+        'seo',
         'system',
         'uploads',
         'users',

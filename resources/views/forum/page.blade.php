@@ -1,9 +1,12 @@
-<x-waterhole::layout :title="$page->name">
-    <x-slot name="head">
-        @unless ($page->structure->is_listed)
-            <meta name="robots" content="noindex" />
-        @endunless
-    </x-slot>
+<x-waterhole::layout
+    :title="$page->name"
+    :seo="[
+        'description' => $page->body_html,
+        'url' => route('waterhole.page', compact('page')),
+        'noindex' => ! $page->structure->is_listed,
+        'schema' => ['@type' => 'WebPage'],
+    ]"
+>
 
     <x-waterhole::index>
         <div class="stack gap-xl measure card p-gutter">

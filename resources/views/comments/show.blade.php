@@ -2,12 +2,20 @@
     $title = __('waterhole::forum.comment-number-title', ['number' => $comment->index + 1]);
 @endphp
 
-<x-waterhole::layout :title="$title.' - '.$post->title">
-    <x-slot name="head">
-        @unless ($post->channel->structure->is_listed)
-            <meta name="robots" content="noindex" />
-        @endunless
-    </x-slot>
+<x-waterhole::layout
+    :title="$title.' - '.$post->title"
+    :seo="[
+        'description' => $comment->body_text,
+        'url' => $comment->post_url,
+        'type' => 'article',
+        'noindex' => ! $post->channel->structure->is_listed,
+        'schema' => [
+            '@type' => 'DiscussionForumPosting',
+            'headline' => $post->title,
+            'commentCount' => $post->comment_count,
+        ],
+    ]"
+>
 
     <div class="container section">
         <div class="measure stack gap-lg">

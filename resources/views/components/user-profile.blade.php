@@ -1,4 +1,23 @@
-<x-waterhole::layout :title="$title">
+<x-waterhole::layout
+    :title="$title"
+    :seo="[
+        'description' => $user->headline ?: $user->bio_html,
+        'url' => $user->url,
+        'type' => 'profile',
+        'image' => $user->avatar_url,
+        'schema' => [
+            '@type' => 'ProfilePage',
+            'mainEntity' => [
+                '@type' => 'Person',
+                'name' => Waterhole\username($user),
+                'url' => $user->url,
+                'image' => $user->avatar_url ?: null,
+            ],
+        ],
+    ]"
+>
+    <x-slot name="head">{{ $head ?? '' }}</x-slot>
+
     <div class="section container user-profile stack gap-gutter">
         <div class="card card__body user-profile__card">
             <div class="user-profile__controls">

@@ -1,10 +1,32 @@
-<x-waterhole::layout :title="$post->title">
-    <x-slot name="head">
-        @unless ($post->channel->structure->is_listed)
-            <meta name="robots" content="noindex" />
-        @endunless
-    </x-slot>
+@php
+    $imageUpload = $post->attachments->first(fn ($upload) => $upload->type && str_starts_with($upload->type, 'image/'));
+    $ogImage = $imageUpload ? Storage::disk('public')->url('uploads/' . $imageUpload->filename) : null;
+@endphp
 
+<x-waterhole::layout
+    :title="$post->title"
+    :seo="[
+        'description' => $post->body_text,
+        'url' => $post->url,
+        'type' => 'article',
+        'image' => $ogImage,
+        'noindex' => ! $post->channel->structure->is_listed,
+        'schema' => [
+            '@type' => 'DiscussionForumPosting',
+            'headline' => $post->title,
+            'datePublished' => $post->created_at?->toAtomString(),
+            'dateModified' => $post->edited_at?->toAtomString(),
+            'commentCount' => $post->comment_count,
+            'author' => $post->user
+                ? [
+                    '@type' => 'Person',
+                    'name' => Waterhole\username($post->user),
+                    'url' => $post->user->url,
+                ]
+                : null,
+        ],
+    ]"
+>
     <div
         class="post-page section container with-sidebar"
         data-controller="post-page"
