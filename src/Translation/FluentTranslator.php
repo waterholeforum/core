@@ -8,7 +8,6 @@ use Illuminate\Contracts\Translation\Translator as TranslatorContract;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Translation\MessageSelector;
-use Illuminate\Translation\Translator as BaseTranslator;
 use Major\Fluent\Bundle\FluentBundle;
 use Major\Fluent\Node\Syntax\FluentResource;
 use Major\Fluent\Parser\FluentParser;
@@ -38,7 +37,7 @@ final class FluentTranslator implements TranslatorContract
     private array $loaded = [];
 
     public function __construct(
-        protected BaseTranslator $baseTranslator,
+        protected TranslatorContract $baseTranslator,
         protected Filesystem $files,
         protected string $path,
         protected string $locale,

@@ -3,11 +3,11 @@
 namespace Waterhole\Providers;
 
 use Closure;
+use Illuminate\Contracts\Translation\Translator as TranslatorContract;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Translation\Translator;
 use Waterhole\Translation\FluentTranslator;
-use Waterhole\Translation\LaravelTranslator;
+use Waterhole\Translation\ValidationTranslator;
 
 class TranslationServiceProvider extends ServiceProvider
 {
@@ -19,17 +19,15 @@ class TranslationServiceProvider extends ServiceProvider
         // the `waterhole` namespace if this is a Waterhole request. This way
         // we can provide comprehensive translations in the Waterhole package
         // without the user having to manually load them into their skeleton.
-        $this->app->extend('translator', function (Translator $translator) {
-            $extended = new LaravelTranslator($translator->getLoader(), $translator->getLocale());
-            $extended->setFallback($translator->getFallback());
-            return $extended;
+        $this->app->extend('translator', function (TranslatorContract $translator) {
+            return new ValidationTranslator($translator);
         });
 
         // On top of that, extend the translator to support loading Fluent
         // translations.
         $this->app->extend(
             'translator',
-            fn(LaravelTranslator $translator, Application $app) => new FluentTranslator(
+            fn(TranslatorContract $translator, Application $app) => new FluentTranslator(
                 baseTranslator: $translator,
                 files: $app['files'],
                 path: $app['path.lang'],
