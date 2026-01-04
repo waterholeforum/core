@@ -18,6 +18,9 @@ class Trash extends Filter
 
     public function apply(Builder $query): void
     {
-        $query->withoutGlobalScope(static::EXCLUDE_TRASHED_SCOPE)->onlyTrashed();
+        $query
+            ->withoutGlobalScope(static::EXCLUDE_TRASHED_SCOPE)
+            ->onlyTrashed()
+            ->latest('deleted_at');
     }
 }
