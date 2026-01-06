@@ -58,8 +58,11 @@ class FormatExternalLinks
      */
     private static function isAllowlisted(string $url, array $allowlist): bool
     {
-        $host = parse_url($url, PHP_URL_HOST)
-            ?: (str_starts_with($url, '//') ? parse_url("https:$url", PHP_URL_HOST) : null);
+        $host =
+            parse_url($url, PHP_URL_HOST) ?:
+            (str_starts_with($url, '//')
+                ? parse_url("https:$url", PHP_URL_HOST)
+                : null);
 
         if (!$host) {
             return false;

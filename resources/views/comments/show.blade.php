@@ -16,7 +16,6 @@
         ],
     ]"
 >
-
     <div class="container section">
         <div class="measure stack gap-lg">
             <header class="stack gap-xs">

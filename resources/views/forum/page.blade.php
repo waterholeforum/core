@@ -7,7 +7,6 @@
         'schema' => ['@type' => 'WebPage'],
     ]"
 >
-
     <x-waterhole::index>
         <div class="stack gap-xl measure card p-gutter">
             <h1 data-page-target="title">{{ $page->name }}</h1>
