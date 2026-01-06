@@ -66,12 +66,12 @@
                 ->load('recipient')
                 ->filter(fn ($permission) => $permission->recipient instanceof Waterhole\Models\Group)->map
                 ->recipient)        )
-            @if ($recipients->contains(Waterhole\Models\Group::GUEST_ID))
+            @if (config('waterhole.forum.public', true) && $recipients->contains(Waterhole\Models\Group::GUEST_ID))
                 <span class="with-icon text-xs color-muted hide-sm">
                     @icon('tabler-world')
                     {{ __('waterhole::cp.structure-visibility-public-label') }}
                 </span>
-            @elseif ($recipients->contains(Waterhole\Models\Group::MEMBER_ID))
+            @elseif ($recipients->contains(Waterhole\Models\Group::GUEST_ID) || $recipients->contains(Waterhole\Models\Group::MEMBER_ID))
                 <span class="with-icon text-xs color-muted hide-sm">
                     @icon('tabler-user')
                     {{ Waterhole\Models\Group::member()->name }}
