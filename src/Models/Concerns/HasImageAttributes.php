@@ -38,8 +38,10 @@ trait HasImageAttributes
 
         $this->update([$attribute => Str::random() . '.' . $ext]);
 
-        Storage::disk(config('waterhole.uploads.disk'))
-            ->put($directory . '/' . $this->$attribute, $encodedImage);
+        Storage::disk(config('waterhole.uploads.disk'))->put(
+            $directory . '/' . $this->$attribute,
+            $encodedImage,
+        );
 
         return $this;
     }

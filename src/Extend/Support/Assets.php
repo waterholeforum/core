@@ -98,8 +98,10 @@ abstract class Assets
 
         $hash = substr(sha1($content), 0, 8);
 
-        Storage::disk(config('waterhole.system.assets_disk'))
-            ->put($compiled = $this->filePath("$bundle-$hash"), $content);
+        Storage::disk(config('waterhole.system.assets_disk'))->put(
+            $compiled = $this->filePath("$bundle-$hash"),
+            $content,
+        );
 
         return $compiled;
     }
