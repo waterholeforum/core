@@ -40,6 +40,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Assets Storage Disk
+    |--------------------------------------------------------------------------
+    |
+    | The filesystem disk used for compiled Waterhole assets. This should be a
+    | publicly accessible disk.
+    |
+    */
+
+    'assets_disk' => env('WATERHOLE_ASSETS_DISK', 'public'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Laravel Echo Configuration
     |--------------------------------------------------------------------------
     |
