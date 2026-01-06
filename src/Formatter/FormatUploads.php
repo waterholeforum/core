@@ -63,7 +63,7 @@ abstract class FormatUploads
     private static function expandUrl(string $url): string
     {
         if (str_starts_with($url, static::PROTOCOL)) {
-            return Storage::disk('public')->url(
+            return Storage::disk(config('waterhole.uploads.disk'))->url(
                 'uploads/' . substr($url, strlen(static::PROTOCOL)),
             );
         }
