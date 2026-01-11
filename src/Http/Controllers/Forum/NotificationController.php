@@ -35,7 +35,7 @@ class NotificationController extends Controller
             ->notifications()
             ->select('*')
             ->selectRaw(
-                'ROW_NUMBER() OVER(PARTITION BY type, COALESCE(group_type, id), COALESCE(group_id, id) ORDER BY created_at DESC) AS r',
+                'ROW_NUMBER() OVER(PARTITION BY type, COALESCE(CAST(group_type AS CHAR), CAST(id AS CHAR)), COALESCE(CAST(group_id AS CHAR), CAST(id AS CHAR)) ORDER BY created_at DESC) AS r',
             );
 
         $notifications = Notification::from('notifications')
