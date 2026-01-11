@@ -297,8 +297,8 @@ class User extends Model implements
                     ->distinct()
                     ->count([
                         'type',
-                        new Expression('COALESCE(group_type, id)'),
-                        new Expression('COALESCE(group_id, id)'),
+                        new Expression('COALESCE(CAST(group_type AS CHAR), CAST(id AS CHAR))'),
+                        new Expression('COALESCE(CAST(group_id AS CHAR), CAST(id AS CHAR))'),
                     ]);
             },
         )->shouldCache();
