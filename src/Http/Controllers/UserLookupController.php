@@ -37,9 +37,12 @@ class UserLookupController extends Controller
         $users = User::select(['users.id', 'name', 'avatar']);
 
         if ($search) {
+            $isPgsql = (new User)->getConnection()->getDriverName() === 'pgsql';
+            $operator = $isPgsql ? 'ilike' : 'like';
+
             $users
-                ->where('name', 'like', "$search%")
-                ->orderByRaw('name = ? desc', [$search])
+                ->where('name', $operator, "$search%")
+                ->orderByRaw('CASE WHEN name = ? THEN 1 ELSE 0 END DESC', [$search])
                 ->orderBy('name')
                 ->limit(static::LIMIT);
         }

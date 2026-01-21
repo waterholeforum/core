@@ -27,9 +27,9 @@ class Top extends Filter
         }
 
         if ($period = $this->currentPeriod()) {
-            $query->whereRaw(
-                'created_at > DATE_SUB(NOW(), INTERVAL 1 ' . strtoupper($period) . ')',
-            );
+            $method = 'sub' . ucfirst($period);
+
+            $query->where('created_at', '>', now()->$method());
         }
     }
 

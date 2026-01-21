@@ -90,27 +90,32 @@ class LineChart extends Component
             ],
         ];
 
+        $builder = $model instanceof QueryBuilder || $model instanceof EloquentBuilder ? $model : $model::query();
+        $isPgsql = $builder->getConnection()->getDriverName() === 'pgsql';
+
+        $fmt = fn($mysql, $pgsql) => $isPgsql ? $pgsql : $mysql;
+
         $this->units = [
             'hour' => [
-                'format' => '%Y-%m-%d %H:00:00',
+                'format' => $fmt('%Y-%m-%d %H:00:00', 'YYYY-MM-DD HH24:00:00'),
                 'label' => fn(CarbonImmutable $date) => $date->isoFormat('LT'),
             ],
             'day' => [
-                'format' => '%Y-%m-%d',
+                'format' => $fmt('%Y-%m-%d', 'YYYY-MM-DD'),
                 'label' => fn(CarbonImmutable $date) => $date->isoFormat('D MMM'),
             ],
             'week' => [
-                'format' => '%YW%v',
+                'format' => $fmt('%YW%v', 'YYYY"W"IW'),
                 'label' => fn(CarbonImmutable $date) => $date->isoFormat('D MMM') .
                     ' - ' .
                     $date->addDays(6)->isoFormat('D MMM'),
             ],
             'month' => [
-                'format' => '%Y-%m-01',
+                'format' => $fmt('%Y-%m-01', 'YYYY-MM-01'),
                 'label' => fn(CarbonImmutable $date) => $date->isoFormat('MMM Y'),
             ],
             'year' => [
-                'format' => '%Y',
+                'format' => $fmt('%Y', 'YYYY'),
                 'label' => fn(CarbonImmutable $date) => $date->isoFormat('Y'),
             ],
         ];
@@ -130,12 +135,15 @@ class LineChart extends Component
 
         $unit = $this->units[$this->selectedUnit];
 
-        if (!$model instanceof QueryBuilder && !$model instanceof EloquentBuilder) {
-            $model = $model::query();
+        $model = $builder;
+
+        if ($isPgsql) {
+            $model->selectRaw("to_char($column, ?) as time_group", [$unit['format']]);
+        } else {
+            $model->selectRaw("DATE_FORMAT($column, ?) as time_group", [$unit['format']]);
         }
 
         $this->results = $model
-            ->selectRaw("DATE_FORMAT($column, ?) as time_group", [$unit['format']])
             ->selectRaw('COUNT(*) as count')
             ->where($column, '>=', $this->prevPeriodStart)
             ->where($column, '<', $this->periodEnd)

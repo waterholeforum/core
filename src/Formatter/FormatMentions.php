@@ -69,7 +69,9 @@ abstract class FormatMentions
     {
         $name = str_replace("\xc2\xa0", ' ', $tag->getAttribute('name'));
 
-        if ($user = User::firstWhere('name', 'like', $name)) {
+        $operator = (new User())->getConnection()->getDriverName() === 'pgsql' ? 'ilike' : 'like';
+
+        if ($user = User::firstWhere('name', $operator, $name)) {
             $tag->setAttribute('id', $user->id);
 
             return true;
