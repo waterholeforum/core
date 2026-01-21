@@ -4,12 +4,12 @@ namespace Waterhole\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Waterhole\Search\EngineInterface;
-use Waterhole\Search\MySqlEngine;
+use Waterhole\Search\DatabaseSearchEngine;
 
 class SearchServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->bind(EngineInterface::class, MySqlEngine::class);
+        $this->app->bind(EngineInterface::class, DatabaseSearchEngine::class);
     }
 }
