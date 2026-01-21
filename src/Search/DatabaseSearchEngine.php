@@ -8,7 +8,7 @@ use Waterhole\Models\Channel;
 use Waterhole\Models\Post;
 use function Waterhole\remove_formatting;
 
-class MySqlEngine implements EngineInterface
+class DatabaseSearchEngine implements EngineInterface
 {
     public function search(
         string $q,
@@ -25,11 +25,9 @@ class MySqlEngine implements EngineInterface
             if (in_array('title', $in)) {
                 $query->orWhereFullText('posts.title', $q);
             }
-
             if (in_array('body', $in)) {
                 $query->orWhereFullText('posts.body', $q);
             }
-
             if (in_array('comments', $in)) {
                 $query->orWhereFullText('comments.body', $q);
             }
@@ -43,7 +41,10 @@ class MySqlEngine implements EngineInterface
         // them. Even if we're filtering by certain channels, we still report
         // the number of hits in all channels so that they can be displayed
         // in the sidebar.
-        $tablePrefix = DB::connection(config('waterhole.system.database'))->getTablePrefix();
+        $connection = DB::connection(config('waterhole.system.database'));
+        $tablePrefix = $connection->getTablePrefix();
+        $isPgsql = $connection->getDriverName() === 'pgsql';
+
         $channels = Channel::query()
             ->select('id')
             ->selectSub(
@@ -69,29 +70,39 @@ class MySqlEngine implements EngineInterface
         // to ensure that we only get one result per post, even if it contains
         // multiple relevant comments inside.
         $query->select('posts.id as post_id', 'posts.title', 'posts.body as post_body');
-
         $score = [];
+        $scoreExpressions = [];
+        $sortBindings = [];
 
         if (in_array('title', $in)) {
             $score[] = 'tscore';
-            $query->selectRaw("MATCH ({$tablePrefix}posts.title) AGAINST (?) * 10 as tscore", [$q]);
+            $sql = $this->getScoreSql($isPgsql, "{$tablePrefix}posts.title", '?');
+            $query->selectRaw("$sql * 10 as tscore", [$q]);
+            $scoreExpressions[] = "($sql * 10)";
+            $sortBindings[] = $q;
         }
 
         if (in_array('body', $in)) {
             $score[] = 'pscore';
-            $query->selectRaw("MATCH ({$tablePrefix}posts.body) AGAINST (?) as pscore", [$q]);
+            $sql = $this->getScoreSql($isPgsql, "{$tablePrefix}posts.body", '?');
+            $query->selectRaw("$sql as pscore", [$q]);
+            $scoreExpressions[] = "($sql)";
+            $sortBindings[] = $q;
         }
 
         if (in_array('comments', $in)) {
             $score[] = 'cscore';
+            $matchComment = $this->getScoreSql($isPgsql, "{$tablePrefix}comments.body", '?');
             $query
                 ->addSelect('comments.id as comment_id')
                 ->addSelect('comments.body as comment_body')
                 ->selectRaw(
-                    "ROW_NUMBER() OVER (PARTITION BY {$tablePrefix}posts.id ORDER BY MATCH ({$tablePrefix}comments.body) AGAINST (?) DESC) as r",
+                    "ROW_NUMBER() OVER (PARTITION BY {$tablePrefix}posts.id ORDER BY $matchComment DESC) as r",
                     [$q],
                 )
-                ->selectRaw("MATCH ({$tablePrefix}comments.body) AGAINST (?) as cscore", [$q]);
+                ->selectRaw("$matchComment as cscore", [$q]);
+            $scoreExpressions[] = "($matchComment)";
+            $sortBindings[] = $q;
         } else {
             $query->selectRaw('1 as r');
         }
@@ -100,20 +111,19 @@ class MySqlEngine implements EngineInterface
             case 'latest':
                 $query->orderByDesc('posts.created_at');
                 break;
-
             case 'top':
                 $query->orderByDesc('posts.score');
                 break;
-
             default:
-                $query->orderByRaw(implode(' + ', $score) . ' desc');
+                if (!empty($scoreExpressions)) {
+                    $query->orderByRaw(implode(' + ', $scoreExpressions) . ' desc', $sortBindings);
+                }
         }
 
         // Finally we get the query results and map them into Hit instances.
         // For each hit we highlight the relevant words and truncate the body
         // to the most relevant part.
         $highlighter = new Highlighter($q);
-
         $hits = DB::connection(config('waterhole.system.database'))
             ->table($query, 'p')
             ->where('r', 1)
@@ -122,7 +132,6 @@ class MySqlEngine implements EngineInterface
             ->get()
             ->map(function ($row) use ($highlighter) {
                 $title = $highlighter->highlight($row->title);
-
                 try {
                     $body = $highlighter->highlight(
                         $highlighter->truncate(
@@ -136,7 +145,6 @@ class MySqlEngine implements EngineInterface
                 } catch (Exception $e) {
                     $body = '';
                 }
-
                 return new Hit($row->post_id, $title, $body);
             });
 
@@ -156,7 +164,29 @@ class MySqlEngine implements EngineInterface
     private function containsShortWords(string $q): bool
     {
         preg_match_all('/\w+/', $q, $matches);
-
         return collect($matches[0])->some(fn($word) => strlen($word) < 3);
+    }
+
+    private function getScoreSql(bool $isPgsql, string $column, string $placeholder): string
+    {
+        if ($isPgsql) {
+            $dictionary = $this->getPgDictionary();
+            return "ts_rank(to_tsvector('$dictionary', $column), plainto_tsquery('$dictionary', $placeholder))";
+        }
+        return "MATCH ($column) AGAINST ($placeholder)";
+    }
+
+    private function getPgDictionary(): string
+    {
+        return match (config('app.locale')) {
+            'es' => 'spanish',
+            'fr' => 'french',
+            'de' => 'german',
+            'it' => 'italian',
+            'pt', 'pt-br' => 'portuguese',
+            'nl' => 'dutch',
+            'ru' => 'russian',
+            default => 'english',
+        };
     }
 }
