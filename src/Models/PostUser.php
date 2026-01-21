@@ -19,6 +19,8 @@ class PostUser extends Model
 {
     public $timestamps = false;
 
+    public $incrementing = false;
+
     protected $table = 'post_user';
 
     protected $casts = [

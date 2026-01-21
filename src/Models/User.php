@@ -308,12 +308,25 @@ class User extends Model implements
                     $query->where('notifications.created_at', '>', $this->notifications_read_at);
                 }
 
+                $connection = $this->getConnection();
+                $isPgsql = $connection->getDriverName() === 'pgsql';
+                $cast = $isPgsql ? 'TEXT' : 'CHAR';
+
+                $groupTypeSql = "COALESCE(CAST(group_type AS $cast), CAST(id AS $cast))";
+                $groupIdSql   = "COALESCE(CAST(group_id AS $cast), CAST(id AS $cast))";
+
+                if ($isPgsql) {
+                    return $query->count(new Expression(
+                        "DISTINCT CONCAT(type, '-', $groupTypeSql, '-', $groupIdSql)"
+                    ));
+                }
+
                 return $query
                     ->distinct()
                     ->count([
                         'type',
-                        new Expression('COALESCE(CAST(group_type AS CHAR), CAST(id AS CHAR))'),
-                        new Expression('COALESCE(CAST(group_id AS CHAR), CAST(id AS CHAR))'),
+                        new Expression($groupTypeSql),
+                        new Expression($groupIdSql),
                     ]);
             },
         )->shouldCache();

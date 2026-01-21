@@ -3,6 +3,7 @@
 namespace Waterhole\Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Waterhole\Models\Group;
 
 /**
@@ -26,6 +27,13 @@ class GroupsSeeder extends Seeder
             'id' => Group::ADMIN_ID,
             'name' => __('waterhole::install.group-admin'),
         ]);
+
+        if (DB::connection()->getDriverName() === 'pgsql') {
+            $model = new Group();
+            $table = $model->getConnection()->getTablePrefix() . $model->getTable();
+
+            DB::statement("SELECT setval(pg_get_serial_sequence('\"$table\"', 'id'), (SELECT MAX(id) FROM \"$table\"))");
+        }
 
         Group::updateOrCreate([
             'name' => __('waterhole::install.group-moderator'),

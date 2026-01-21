@@ -42,7 +42,7 @@ trait Reactable
             ->groupBy('reaction_types.id', 'reactions.content_type', 'reactions.content_id');
 
         if ($user = Auth::user()) {
-            $relation->selectRaw('cast(sum(reactions.user_id = ?) as unsigned) as user_reacted', [
+            $relation->selectRaw('count(case when reactions.user_id = ? then 1 end) as user_reacted', [
                 $user->id,
             ]);
         } else {
