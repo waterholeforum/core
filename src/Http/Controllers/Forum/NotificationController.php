@@ -43,7 +43,7 @@ class NotificationController extends Controller
             ->with('content')
             ->where('r', 1)
             ->latest()
-            ->paginate(10);
+            ->cursorPaginate(10);
 
         // Give notification types the opportunity to eager-load additional
         // relationships.
