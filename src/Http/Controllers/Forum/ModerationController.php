@@ -27,12 +27,13 @@ class ModerationController extends Controller
             ->pending()
             ->selectRaw('min(id) as id, subject_type, subject_id, min(created_at) as created_at')
             ->groupBy('subject_type', 'subject_id')
+            ->orderByRaw('count(*) desc')
             ->oldest()
             ->with([
                 'subject' => function (MorphTo $morph) {
                     $morph->morphWith([
                         Post::class => ['user', 'channel', 'pendingFlags'],
-                        Comment::class => ['user', 'post.channel', 'parent', 'pendingFlags'],
+                        Comment::class => ['user', 'channel', 'pendingFlags'],
                     ]);
                 },
             ])
