@@ -37,7 +37,7 @@
 }
 
 .badge--hidden {
-  border: 2px dotted var(--color-stroke);
+  border: 1px dashed var(--color-stroke);
   background-color: transparent;
 }
 
