@@ -1,6 +1,6 @@
 <div class="attribution">
     <span class="attribution__user">
-        <x-waterhole::user-link :user="$user" class="attribution__name">
+        <x-waterhole::user-link :user="$user" class="attribution__link">
             <x-waterhole::avatar :user="$user" />
 
             @if ($user?->isOnline())
@@ -9,7 +9,7 @@
                 </span>
             @endif
 
-            <span>{{ Waterhole\username($user) }}</span>
+            <span class="attribution__name">{{ Waterhole\username($user) }}</span>
         </x-waterhole::user-link>
 
         <x-waterhole::user-groups :user="$user" />

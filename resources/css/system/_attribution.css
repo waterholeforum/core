@@ -13,13 +13,13 @@
   }
 }
 
-.attribution__name {
+.attribution__link {
   color: inherit;
   font-weight: var(--weight-medium);
-  text-decoration: none;
+  text-decoration: none !important;
   margin-right: var(--space-xxs);
 
-  &:hover {
+  &:hover .attribution__name {
     text-decoration: underline;
   }
 }
