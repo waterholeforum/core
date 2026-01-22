@@ -159,10 +159,8 @@
         --}}
         <ui-alerts id="alerts" class="alerts" data-turbo-temporary>
             @foreach (['success', 'warning', 'danger'] as $type)
-                @if (is_string(session($type)))
-                    <x-waterhole::alert :type="$type">
-                        {!! session($type) !!}
-                    </x-waterhole::alert>
+                @if ($message = session($type))
+                    <x-waterhole::alert :type="$type" :message="$message" />
                 @endif
             @endforeach
         </ui-alerts>
