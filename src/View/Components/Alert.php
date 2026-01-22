@@ -2,7 +2,7 @@
 
 namespace Waterhole\View\Components;
 
-use Illuminate\Support\HtmlString;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\View\Component;
 
 class Alert extends Component
@@ -15,7 +15,7 @@ class Alert extends Component
 
     public function __construct(
         public ?string $type = null,
-        public null|string|HtmlString $message = null,
+        public null|string|Htmlable $message = null,
         public ?string $icon = null,
         public bool $dismissible = false,
     ) {
