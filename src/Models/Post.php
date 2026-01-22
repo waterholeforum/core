@@ -10,18 +10,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Waterhole\Database\Factories\PostFactory;
 use Waterhole\Events\NewPost;
+use Waterhole\Extend\Query\PostScopes;
+use Waterhole\Models\Concerns\Approvable;
+use Waterhole\Models\Concerns\Deletable;
+use Waterhole\Models\Concerns\Flaggable;
 use Waterhole\Models\Concerns\Followable;
 use Waterhole\Models\Concerns\HasBody;
 use Waterhole\Models\Concerns\HasUserState;
 use Waterhole\Models\Concerns\NotificationContent;
 use Waterhole\Models\Concerns\Reactable;
 use Waterhole\Notifications\Mention;
-use Waterhole\Scopes\PostVisibleScope;
+use Waterhole\Notifications\NewPost as NewPostNotification;
 use Waterhole\View\Components;
 use Waterhole\View\TurboStream;
 
@@ -33,7 +36,6 @@ use Waterhole\View\TurboStream;
  * @property null|string $slug
  * @property null|\Carbon\Carbon $created_at
  * @property null|\Carbon\Carbon $edited_at
- * @property null|\Carbon\Carbon $deleted_at
  * @property null|\Carbon\Carbon $last_activity_at
  * @property int $comment_count
  * @property int $score
@@ -42,6 +44,7 @@ use Waterhole\View\TurboStream;
  * @property bool $is_pinned
  * @property-read Channel $channel
  * @property-read null|User $user
+ * @property-read null|User $deletedBy
  * @property-read \Illuminate\Database\Eloquent\Collection $comments
  * @property-read \Illuminate\Database\Eloquent\Collection $unreadComments
  * @property-read \Illuminate\Database\Eloquent\Collection $tags
@@ -61,7 +64,9 @@ class Post extends Model
     use Reactable;
     use HasUserState;
     use NotificationContent;
-    use SoftDeletes;
+    use Deletable;
+    use Approvable;
+    use Flaggable;
 
     public const UPDATED_AT = null;
 
@@ -74,27 +79,16 @@ class Post extends Model
 
     public static function booting(): void
     {
-        static::addGlobalScope('visible', new PostVisibleScope(fn() => Auth::user()));
+        static::addGlobalScope('visible', function ($query) {
+            $query->visible(Auth::user());
+        });
 
         static::creating(function (Post $post) {
             $post->last_activity_at ??= now();
         });
 
         static::created(function (self $post) {
-            broadcast(new NewPost($post))->toOthers();
-
-            // When a new post is created, send notifications to mentioned users.
-            $users = $post->mentions
-                ->except($post->user_id)
-                ->filter(function (User $user) use ($post) {
-                    return Post::withGlobalScope('visible', new PostVisibleScope($user))
-                        ->whereKey($post->id)
-                        ->exists();
-                });
-
-            $post->usersWereMentioned($users);
-
-            Notification::send($users, new Mention($post));
+            $post->deliverCreatedEvents();
         });
 
         // Delete comments one at a time to trigger event listeners.
@@ -118,6 +112,33 @@ class Post extends Model
     protected static function newFactory(): PostFactory
     {
         return PostFactory::new();
+    }
+
+    protected function deliverCreatedEvents(): void
+    {
+        if (!$this->is_approved) {
+            return;
+        }
+
+        broadcast(new NewPost($this))->toOthers();
+
+        // When a new post is created, send notifications to mentioned users.
+        $users = $this->mentions->except($this->user_id)->filter(
+            fn(User $user) => Post::visible($user)
+                ->whereKey($this->id)
+                ->exists(),
+        );
+
+        $this->usersWereMentioned($users);
+
+        Notification::send($users, new Mention($this));
+
+        // Send out a "new post" notification to all followers of this post's
+        // channel, except for the user who created the post.
+        Notification::send(
+            $this->channel->followedBy->except($this->user_id),
+            new NewPostNotification($this),
+        );
     }
 
     /**
@@ -184,7 +205,9 @@ class Post extends Model
      */
     public function comments(): HasMany
     {
-        return $this->hasMany(Comment::class)->withoutGlobalScope('visible');
+        // If we're getting the comments for this post, we don't need to verify
+        // that the comments have a post which is visible.
+        return $this->hasMany(Comment::class)->withoutGlobalScope('hasVisiblePost');
     }
 
     /**
@@ -209,6 +232,24 @@ class Post extends Model
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
+    }
+
+    public function scopeVisible(Builder $query, ?User $user): void
+    {
+        $query->withoutGlobalScope('visible');
+
+        $moderationScope = fn(Builder $query, array $channelIds) => $query->orWhereIn(
+            'channel_id',
+            $channelIds,
+        );
+
+        $this->applyApprovalVisibility($query, $user, $moderationScope);
+
+        $this->applyDeletionVisibility($query, $user, $moderationScope);
+
+        foreach (resolve(PostScopes::class)->values() as $scope) {
+            $query->where(fn($inner) => $scope($inner, $user));
+        }
     }
 
     /**
@@ -240,12 +281,12 @@ class Post extends Model
      */
     public function refreshCommentMetadata(): static
     {
+        $publicComments = $this->comments()->visible(null);
+
         $this->last_activity_at =
-            $this->comments()
-                ->latest()
-                ->value('created_at') ?:
-            $this->created_at;
-        $this->comment_count = $this->comments()->count();
+            (clone $publicComments)->latest()->value('created_at') ?: $this->created_at;
+
+        $this->comment_count = (clone $publicComments)->count();
 
         return $this;
     }
@@ -368,5 +409,10 @@ class Post extends Model
     public function reactionSet(): ?ReactionSet
     {
         return $this->channel->postsReactionSet;
+    }
+
+    public function canModerate(?User $user): bool
+    {
+        return (bool) $user?->can('waterhole.post.moderate', $this);
     }
 }

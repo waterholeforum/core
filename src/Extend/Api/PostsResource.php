@@ -78,6 +78,20 @@ class PostsResource extends Resource
             )
 
             ->add(
+                ToOne::make('deletedBy')
+                    ->type('users')
+                    ->nullable(),
+                'deletedBy',
+            )
+
+            ->add(
+                Attribute::make('deletedReason')
+                    ->type(Type\Str::make())
+                    ->nullable(),
+                'deletedReason',
+            )
+
+            ->add(
                 Attribute::make('lastActivityAt')
                     ->type(Type\DateTime::make())
                     ->nullable(),

@@ -85,24 +85,24 @@ class CommentsResource extends Resource
             ->add(Attribute::make('replyCount')->type(Type\Integer::make()), 'replyCount')
 
             ->add(
-                Attribute::make('hiddenAt')
+                Attribute::make('deletedAt')
                     ->type(Type\DateTime::make())
                     ->nullable(),
-                'hiddenAt',
+                'deletedAt',
             )
 
             ->add(
-                ToOne::make('hiddenBy')
+                ToOne::make('deletedBy')
                     ->type('users')
                     ->nullable(),
-                'hiddenBy',
+                'deletedBy',
             )
 
             ->add(
-                Attribute::make('hiddenReason')
+                Attribute::make('deletedReason')
                     ->type(Type\Str::make())
                     ->nullable(),
-                'hiddenReason',
+                'deletedReason',
             )
 
             ->add(ToMany::make('replies')->type('comments'), 'replies')
@@ -123,6 +123,6 @@ class CommentsResource extends Resource
             ->add(WhereBelongsTo::make('post'), 'post')
             ->add(WhereBelongsTo::make('parent'), 'parent')
             ->add(WhereBelongsTo::make('user'), 'user')
-            ->add(WhereNotNull::make('isHidden')->column('hidden_at'), 'isHidden');
+            ->add(WhereNotNull::make('isRemoved')->column('deleted_at'), 'isRemoved');
     }
 }

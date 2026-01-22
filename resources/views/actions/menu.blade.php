@@ -8,7 +8,11 @@
                     <input type="hidden" name="id[]" value="{{ request('id') }}" />
 
                     @foreach ($actions as $action)
-                        {{ $action->render($models, ['class' => 'menu-item', 'role' => 'menuitem']) }}
+                        @if ($action instanceof Waterhole\Actions\Action)
+                            {{ $action->render($models, ['class' => 'menu-item', 'role' => 'menuitem'], ellipsis: true) }}
+                        @else
+                            {{ $action->render() }}
+                        @endif
                     @endforeach
                 </form>
             </turbo-frame>

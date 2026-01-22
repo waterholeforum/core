@@ -30,6 +30,11 @@ class PermissionCollection extends Collection
 
     public function can(User|Group|null $recipient, string $ability, Model|string $scope): bool
     {
+        // Admins are granted every permission.
+        if ($recipient instanceof User && $recipient->isAdmin()) {
+            return true;
+        }
+
         $recipientType = $recipient?->getMorphClass();
         $recipientId = $recipient?->getKey();
 

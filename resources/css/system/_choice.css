@@ -9,6 +9,10 @@
   }
 }
 
+.choice-indent {
+  margin-left: calc(var(--space-sm) + 1.2em);
+}
+
 input[type='checkbox'],
 input[type='radio'] {
   -webkit-appearance: none;

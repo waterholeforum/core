@@ -2,16 +2,11 @@
 
 namespace Waterhole\Policies;
 
-use Waterhole\Models\PermissionCollection;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
 
 class PostPolicy
 {
-    public function __construct(private PermissionCollection $permissions)
-    {
-    }
-
     /**
      * Any user can create a post.
      */
@@ -25,7 +20,7 @@ class PostPolicy
      */
     public function moderate(User $user, Post $post): bool
     {
-        return $this->permissions->can($user, 'moderate', $post->channel);
+        return $user->can('waterhole.channel.moderate', $post->channel);
     }
 
     /**
@@ -34,7 +29,7 @@ class PostPolicy
      */
     public function edit(?User $user, Post $post): bool
     {
-        return $post->user_id === $user->id || $this->moderate($user, $post);
+        return !$post->trashed() && ($post->user_id === $user->id || $this->moderate($user, $post));
     }
 
     /**
@@ -62,15 +57,17 @@ class PostPolicy
      */
     public function comment(User $user, Post $post): bool
     {
-        return $this->permissions->can($user, 'comment', $post->channel) &&
+        return !$post->trashed() &&
+            $post->is_approved &&
+            $user->can('waterhole.channel.comment', $post->channel) &&
             (!$post->is_locked || $this->moderate($user, $post));
     }
 
     /**
      * Any user can react to a post.
      */
-    public function react(): bool
+    public function react(User $user, Post $post): bool
     {
-        return true;
+        return !$post->trashed();
     }
 }

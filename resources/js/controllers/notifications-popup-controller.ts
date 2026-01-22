@@ -16,7 +16,9 @@ export default class extends Controller {
 
     open(e: MouseEvent) {
         if (!this.badgeTarget.hidden) {
-            this.badgeTarget.hidden = true;
+            if (!this.element.hasAttribute('data-persistent-badge')) {
+                this.badgeTarget.hidden = true;
+            }
             this.frameTarget.reload();
         }
 

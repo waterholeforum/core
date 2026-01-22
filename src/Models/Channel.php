@@ -30,6 +30,8 @@ use Waterhole\View\TurboStream;
  * @property ?array $layout_config
  * @property bool $ignore
  * @property bool $answerable
+ * @property bool $require_approval_posts
+ * @property bool $require_approval_comments
  * @property ?array $translations
  * @property ?int $posts_reaction_set_id
  * @property ?int $comments_reaction_set_id
@@ -60,6 +62,8 @@ class Channel extends Model
         'ignore' => 'bool',
         'answerable' => 'bool',
         'translations' => 'json',
+        'require_approval_posts' => 'bool',
+        'require_approval_comments' => 'bool',
     ];
 
     protected static function booting(): void

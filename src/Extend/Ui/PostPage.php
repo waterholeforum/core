@@ -9,7 +9,6 @@ use Waterhole\View\Components\PostAttribution;
 use Waterhole\View\Components\PostChannel;
 use Waterhole\View\Components\PostTagsSummary;
 use Waterhole\View\Components\PostTitle;
-use Waterhole\View\Components\PostTrash;
 
 /**
  * Components rendered on the post show page.
@@ -27,7 +26,6 @@ class PostPage
     public function __construct()
     {
         $this->header = (new ComponentList())
-            ->add(PostTrash::class, 'trash')
             ->add(PostChannel::class, 'channel')
             ->add(PostTagsSummary::class, 'tags')
             ->add(PostAttribution::class, 'attribution')

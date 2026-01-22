@@ -13,7 +13,7 @@ class CommentMarkAsAnswer extends Component
 
     public function shouldRender(): bool
     {
-        return $this->comment->post->channel->answerable;
+        return $this->comment->post->channel->answerable && !$this->comment->trashed();
     }
 
     public function render()

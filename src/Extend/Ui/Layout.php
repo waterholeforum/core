@@ -7,6 +7,7 @@ use Waterhole\View\Components\EmailVerification;
 use Waterhole\View\Components\Header;
 use Waterhole\View\Components\HeaderBreadcrumb;
 use Waterhole\View\Components\HeaderGuest;
+use Waterhole\View\Components\HeaderModeration;
 use Waterhole\View\Components\HeaderNotifications;
 use Waterhole\View\Components\HeaderSearch;
 use Waterhole\View\Components\HeaderTitle;
@@ -34,6 +35,7 @@ class Layout
             ->add(Spacer::class, 'spacer')
             ->add(HeaderSearch::class, 'search')
             ->add(ThemeSelector::class, 'theme')
+            ->add(HeaderModeration::class, 'moderation')
             ->add(HeaderNotifications::class, 'notifications')
             ->add(HeaderGuest::class, 'guest')
             ->add(HeaderUser::class, 'user');

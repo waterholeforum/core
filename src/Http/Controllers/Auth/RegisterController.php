@@ -10,6 +10,7 @@ use Waterhole\Auth\Providers;
 use Waterhole\Auth\SsoPayload;
 use Waterhole\Forms\RegistrationForm;
 use Waterhole\Http\Controllers\Controller;
+use Waterhole\Models\Group;
 use Waterhole\Models\User;
 
 class RegisterController extends Controller
@@ -68,6 +69,12 @@ class RegisterController extends Controller
         } elseif (!config('waterhole.auth.password_enabled', true)) {
             abort(400, 'Password registration is disabled');
         }
+
+        $user->groups()->syncWithoutDetaching(
+            Group::query()
+                ->where('auto_assign', true)
+                ->pluck('id'),
+        );
 
         event(new Registered($user));
 

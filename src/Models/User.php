@@ -249,6 +249,11 @@ class User extends Model implements
         return $this->id === 1;
     }
 
+    public function requiresApproval(): bool
+    {
+        return $this->groups->some(fn(Group $group) => $group->rules['requires_approval'] ?? false);
+    }
+
     /**
      * Determine whether the user is online (active in the last 5 minutes).
      */

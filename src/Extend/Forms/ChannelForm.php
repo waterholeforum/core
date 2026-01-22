@@ -4,6 +4,7 @@ namespace Waterhole\Extend\Forms;
 
 use Waterhole\Extend\Support\ComponentList;
 use Waterhole\Forms\Fields\ChannelAnswers;
+use Waterhole\Forms\Fields\ChannelApproval;
 use Waterhole\Forms\Fields\ChannelDescription;
 use Waterhole\Forms\Fields\ChannelFilters;
 use Waterhole\Forms\Fields\ChannelIgnore;
@@ -29,6 +30,7 @@ class ChannelForm extends ComponentList
     public ComponentList $features;
     public ComponentList $layout;
     public ComponentList $posting;
+    public ComponentList $permissions;
 
     public function __construct()
     {
@@ -90,10 +92,14 @@ class ChannelForm extends ComponentList
         $this->add(
             fn($model) => new FormSection(
                 __('waterhole::cp.channel-permissions-title'),
-                [new Permissions($model)],
+                $this->permissions->components(compact('model')),
                 open: false,
             ),
             'permissions',
         );
+
+        $this->permissions = (new ComponentList())
+            ->add(Permissions::class, 'permissions')
+            ->add(ChannelApproval::class, 'approval');
     }
 }

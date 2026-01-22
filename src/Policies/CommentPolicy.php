@@ -16,15 +16,6 @@ class CommentPolicy
     }
 
     /**
-     * Users can edit their own comments. Users who can moderate a post can
-     * edit its comments.
-     */
-    public function edit(User $user, Comment $comment): bool
-    {
-        return $comment->user_id === $user->id || $this->moderate($user, $comment);
-    }
-
-    /**
      * Users who can moderate a post can moderate its comments.
      */
     public function moderate(User $user, Comment $comment): bool
@@ -33,10 +24,28 @@ class CommentPolicy
     }
 
     /**
+     * Users can edit their own comments. Users who can moderate a post can
+     * edit its comments.
+     */
+    public function edit(User $user, Comment $comment): bool
+    {
+        return !$comment->trashed() &&
+            ($comment->user_id === $user->id || $this->moderate($user, $comment));
+    }
+
+    /**
+     * Users can delete their own comments.
+     */
+    public function delete(User $user, Comment $comment): bool
+    {
+        return $comment->user_id === $user->id || $this->moderate($user, $comment);
+    }
+
+    /**
      * Any user can react to a comment.
      */
-    public function react(): bool
+    public function react(User $user, Comment $comment): bool
     {
-        return true;
+        return !$comment->trashed();
     }
 }

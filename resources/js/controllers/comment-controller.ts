@@ -32,7 +32,7 @@ export default class extends Controller {
 
     connect() {
         if (expanded[this.commentId]) {
-            this.toggleHidden();
+            this.toggleExpanded();
         }
     }
 
@@ -41,7 +41,7 @@ export default class extends Controller {
             this.element.classList.contains('is-expanded');
     }
 
-    toggleHidden() {
+    toggleExpanded() {
         this.element.classList.toggle('is-expanded');
     }
 

@@ -6,6 +6,7 @@ group-guest = Guest
 group-member = Member
 group-admin = Admin
 group-moderator = Mod
+group-quarantine = Quarantine
 
 ## Reactions
 

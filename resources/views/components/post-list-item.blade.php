@@ -28,7 +28,7 @@
                     </a>
                 </h3>
 
-                <div class="post-list-item__info row wrap gap-y-xxs gap-x-sm text-xs color-muted">
+                <div class="post-list-item__info row wrap gap-y-xxs gap-x-sm text-xxs color-muted">
                     @components(resolve(\Waterhole\Extend\Ui\PostListItem::class)->info, compact('post'))
                 </div>
             </div>

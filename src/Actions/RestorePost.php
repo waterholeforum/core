@@ -31,6 +31,12 @@ class RestorePost extends Action
 
     public function run(Collection $models)
     {
-        $models->each->restore();
+        $models->each(function (Post $post) {
+            $post->update([
+                'deleted_by' => null,
+                'deleted_reason' => null,
+            ]);
+            $post->restore();
+        });
     }
 }

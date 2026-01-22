@@ -20,14 +20,41 @@
             <span>{{ $user->headline }}</span>
         @endif
 
-        @if ($date)
+        @if ($displayDate = $editDate ?: $date)
             <span>
                 @if ($permalink)
-                    <a href="{{ $permalink }}" class="color-inherit" target="_top">
-                        <x-waterhole::relative-time :datetime="$date" />
+                    <a
+                        href="{{ $permalink }}"
+                        class="color-inherit with-icon"
+                        target="_top"
+                    >
+                @else
+                    <span class="with-icon">
+                @endif
+                    @if ($editDate)
+                        @icon('tabler-pencil', ['class' => 'icon--narrow text-xxs'])
+                    @endif
+
+                    <x-waterhole::relative-time :datetime="$displayDate" title="" />
+
+                    <ui-tooltip placement="bottom" tooltip-class="tooltip tooltip--block">
+                        @if ($date)
+                            <div>
+                                <small>{{ __('waterhole::forum.attribution-timestamp-created-label') }}</small>
+                                {{ $date->toDayDateTimeString() }}
+                            </div>
+                        @endif
+                        @if ($editDate)
+                            <div>
+                                <small>{{ __('waterhole::forum.attribution-timestamp-edited-label') }}</small>
+                                {{ $editDate->toDayDateTimeString() }}
+                            </div>
+                        @endif
+                    </ui-tooltip>
+                @if ($permalink)
                     </a>
                 @else
-                    <x-waterhole::relative-time :datetime="$date" />
+                    </span>
                 @endif
             </span>
         @endif

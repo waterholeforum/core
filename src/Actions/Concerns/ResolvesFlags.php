@@ -1,0 +1,56 @@
+<?php
+
+namespace Waterhole\Actions\Concerns;
+
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Collection;
+use Waterhole\Models\Flag;
+use Waterhole\Models\Model;
+
+trait ResolvesFlags
+{
+    protected bool $resolvedFlags = false;
+
+    protected function resolveFlags(Collection $models): RedirectResponse|null
+    {
+        $user = request()->user();
+
+        foreach ($models as $model) {
+            if (
+                method_exists($model, 'canModerate') &&
+                $model->canModerate($user) &&
+                $model->pendingFlags()->exists()
+            ) {
+                $model->resolveFlags($user);
+                $this->resolvedFlags = true;
+            }
+        }
+
+        if ($this->resolvedFlags) {
+            $next = Flag::query()
+                ->pending()
+                ->with('subject')
+                ->oldest()
+                ->first();
+
+            if ($next?->subject) {
+                //            session()->flash('success', '');
+
+                return redirect($next->subject->flagUrl());
+            }
+
+            return redirect()->route('waterhole.moderation');
+        }
+
+        return null;
+    }
+
+    public function stream(Model $model): array
+    {
+        if ($this->resolvedFlags) {
+            return [];
+        }
+
+        return parent::stream($model);
+    }
+}

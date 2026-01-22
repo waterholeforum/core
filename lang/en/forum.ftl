@@ -43,6 +43,9 @@ post-locked-badge = Locked
 post-answered-badge = Answered
 post-trash-badge = Trash
 
+post-removed-message = Post removed
+post-removed-tooltip = { $user } removed { $timestamp }
+
 post-answered-by = Answered by
 post-view-answer-link = View Answer
 
@@ -87,7 +90,7 @@ post-body-label = Body
 
 channel-picker-placeholder = Select a Channel
 
-delete-post-confirm-message = Are you sure you want to delete this post?
+delete-post-confirm-message = Are you sure you want to permanently delete this post?
 delete-post-success-message = Post deleted.
 
 original-post-link = Original Post
@@ -130,26 +133,38 @@ composer-replying-to-label = Replying to
 composer-clear-reply-button = Clear
 composer-submit = Post
 
-delete-comment-confirm-message = Are you sure you want to delete this comment?
+delete-comment-confirm-message = Are you sure you want to permanently delete this comment?
 
-hide-comment-button = Hide
-unhide-comment-button = Unhide
+comment-removed-message = Comment removed
+comment-removed-tooltip = { $user } removed { $timestamp }
 
-hide-comment-title = Hide Comment
-hide-reason-label = Reason
-hide-reason-unspecified = Unspecified
+## Moderation
 
-comment-hidden-message = Comment hidden
-comment-hidden-with-reason-message = Comment marked as { $reason }
+remove-button = Remove
+remove-content-title = Remove Content
+removal-reason-label = Removal Reason
 
+approve-button = Approve
+dismiss-flags-button = Dismiss Flags
+
+report-reason-unspecified = Unspecified
 report-reason-off-topic = Off-topic
 report-reason-inappropriate = Inappropriate
 report-reason-spam = Spam
 report-reason-other = Other
+report-reason-approval = Pending approval
+
+moderation-title = Moderation
+moderation-empty-message = No Pending Flags
+
+pending-approval-title = Pending approval
 
 ## Misc
 
 quote-button = Quote
+
+attribution-timestamp-created-label = Posted
+attribution-timestamp-edited-label = Edited
 
 ## Filters
 

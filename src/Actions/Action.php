@@ -64,6 +64,14 @@ abstract class Action
     }
 
     /**
+     * Whether the action should present a confirmation step for these models.
+     */
+    public function shouldConfirm(Collection $models): bool
+    {
+        return $this->confirm;
+    }
+
+    /**
      * The label to be displayed in the action button.
      */
     abstract public function label(Collection $models): string;
@@ -89,13 +97,17 @@ abstract class Action
     /**
      * Render the action button.
      */
-    public function render(Collection $models, array $attributes, bool $tooltip = false): HtmlString
-    {
+    public function render(
+        Collection $models,
+        array $attributes,
+        bool $tooltip = false,
+        bool $ellipsis = false,
+    ): HtmlString {
         $attributes = (new ComponentAttributeBag($attributes))->merge($this->attributes($models));
 
         // If the action requires confirmation, we will override the form's
         // method and action to take the user to the confirmation route.
-        if ($this->confirm) {
+        if ($confirm = $this->shouldConfirm($models)) {
             $attributes = $attributes->merge([
                 'formmethod' => 'GET',
                 'formaction' => route('waterhole.actions.create'),
@@ -108,7 +120,7 @@ abstract class Action
         }
 
         $class = e(static::class);
-        $content = $this->renderContent($models, $tooltip);
+        $content = $this->renderContent($models, $tooltip, $ellipsis && $confirm);
 
         return new HtmlString(
             <<<html
@@ -121,14 +133,17 @@ abstract class Action
     /**
      * Render the content of the action button.
      */
-    protected function renderContent(Collection $models, bool $tooltip = false): HtmlString
-    {
+    protected function renderContent(
+        Collection $models,
+        bool $tooltip = false,
+        bool $ellipsis = false,
+    ): HtmlString {
         $label = e($this->label($models));
         $icon = ($iconName = $this->icon($models))
             ? svg($iconName, 'icon icon-' . $iconName)->toHtml()
             : '';
         $tag = $tooltip ? 'ui-tooltip' : 'span';
-        $ellipsis = !$tooltip && $this->confirm ? '...' : '';
+        $ellipsis = $ellipsis ? '...' : '';
 
         return new HtmlString("$icon <$tag>$label$ellipsis</$tag>");
     }

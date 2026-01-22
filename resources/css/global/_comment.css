@@ -1,15 +1,15 @@
 .comment {
   --comment-padding: var(--space-lg);
+  --comment-padding-left: var(--comment-padding);
 
   padding: var(--comment-padding);
+  padding-left: var(--comment-padding-left);
+  transition: background 0.2s;
 
   @media (--md-up) {
-    padding-left: calc(
+    --comment-padding-left: calc(
       var(--attribution-avatar-size) + var(--space-md) + var(--comment-padding)
     );
-    border-radius: var(--radius);
-    position: relative;
-    transition: background 0.2s;
 
     .attribution {
       padding-left: 0;
@@ -34,18 +34,22 @@
   }
 }
 
-.comment.is-hidden {
+.comment.is-removed {
   padding-top: var(--space-xs);
   background: var(--palette-fill-soft);
 
-  &.is-expanded > .comment__hidden {
+  &.is-expanded > .comment__removed {
     margin-bottom: var(--space-sm);
+
+    .icon-tabler-chevron-right {
+      transform: rotate(90deg);
+    }
   }
 
   &:not(.is-expanded) {
     padding-bottom: var(--space-xs);
 
-    > .comment__hidden ~ * {
+    > .comment__removed ~ * {
       display: none;
     }
   }
@@ -97,9 +101,5 @@
 
   #page_1 + .card__row {
     border-top: 0;
-  }
-
-  .comment {
-    border-radius: 4px;
   }
 }

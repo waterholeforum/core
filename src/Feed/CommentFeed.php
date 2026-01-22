@@ -10,6 +10,7 @@ class CommentFeed extends Feed
 {
     public function __construct(Request $request, array $filters, ?Closure $scope = null)
     {
+        // TODO: consolidate eager loading with PostController and CommentController
         $query = Comment::with([
             'post.userState',
             'post.channel',
@@ -22,6 +23,8 @@ class CommentFeed extends Feed
             'mentions',
             'attachments',
             'reactionCounts',
+            'deletedBy',
+            'pendingFlags',
         ]);
 
         if ($scope) {

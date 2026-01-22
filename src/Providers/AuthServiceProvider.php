@@ -40,7 +40,6 @@ class AuthServiceProvider extends ServiceProvider
 
         // Make our policies singletons, to improve performance when we do a lot
         // of auth checks in a single page load.
-        $this->app->singleton(Policies\ChannelPolicy::class);
         $this->app->singleton(Policies\CommentPolicy::class);
         $this->app->singleton(Policies\PostPolicy::class);
     }
@@ -62,11 +61,6 @@ class AuthServiceProvider extends ServiceProvider
         Gate::before(function ($user, $ability, $arguments) {
             if (!str_starts_with($ability, 'waterhole.') || !$user instanceof User) {
                 return null;
-            }
-
-            // Allow administrators to perform all gated actions.
-            if ($user->isAdmin()) {
-                return true;
             }
 
             // Treat users who haven't verified their email like guests.
@@ -95,16 +89,21 @@ class AuthServiceProvider extends ServiceProvider
                     $arguments[0],
                 );
             }
+
+            // Allow administrators to perform all gated actions
+            // (unless explicitly prohibited by a policy).
+            if ($result === null && $user->isAdmin()) {
+                return true;
+            }
         });
 
         // We don't want to register policies in the usual way because they are
         // too restrictive - extensions wouldn't be able to add or override
         // abilities. Instead, we define each ability absolutely.
 
-        Gate::define('waterhole.channel.post', [Policies\ChannelPolicy::class, 'post']);
-
         Gate::define('waterhole.comment.create', [Policies\CommentPolicy::class, 'create']);
         Gate::define('waterhole.comment.edit', [Policies\CommentPolicy::class, 'edit']);
+        Gate::define('waterhole.comment.delete', [Policies\CommentPolicy::class, 'delete']);
         Gate::define('waterhole.comment.moderate', [Policies\CommentPolicy::class, 'moderate']);
         Gate::define('waterhole.comment.react', [Policies\CommentPolicy::class, 'react']);
 

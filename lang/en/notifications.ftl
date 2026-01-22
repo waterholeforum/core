@@ -18,6 +18,11 @@ mention-title = Mentioned in { $post }
 mention-reason = You received this because you are subscribed to mention notifications.
 mention-unsubscribe = Unsubscribe from mention notifications
 
+## Content Approved
+
+post-approved-title = Post approved: { $post }
+comment-approved-title = Comment approved in { $post }
+
 ## New Comment
 
 new-comment-description = New comments on followed posts

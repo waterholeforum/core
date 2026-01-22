@@ -142,8 +142,9 @@ class Actions
             ->add(CoreActions\CopyLink::class, 'copy-link')
             ->add(MenuDivider::class, 'divider')
             ->add(CoreActions\EditComment::class, 'edit-comment')
-            ->add(CoreActions\HideComment::class, 'hide-comment')
-            ->add(CoreActions\UnhideComment::class, 'unhide-comment')
+            ->add(CoreActions\DismissFlags::class, 'dismiss-flags')
+            ->add(CoreActions\RemoveComment::class, 'remove-comment')
+            ->add(CoreActions\RestoreComment::class, 'restore-comment')
             ->add(CoreActions\DeleteComment::class, 'delete-comment')
             ->add(CoreActions\MarkAsAnswer::class, 'mark-as-answer')
             ->add(CoreActions\React::class, 'react');
@@ -170,8 +171,9 @@ class Actions
             ->add(CoreActions\Lock::class, 'lock')
             ->add(CoreActions\Unlock::class, 'unlock')
             ->add(CoreActions\MoveToChannel::class, 'move-to-channel')
-            ->add(CoreActions\RestorePost::class, 'restore-post')
+            ->add(CoreActions\DismissFlags::class, 'dismiss-flags')
             ->add(CoreActions\TrashPost::class, 'trash-post')
+            ->add(CoreActions\RestorePost::class, 'restore-post')
             ->add(CoreActions\DeletePost::class, 'delete-post')
             ->add(CoreActions\React::class, 'react');
 

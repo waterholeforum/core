@@ -93,4 +93,16 @@ return [
 
     'create_per_minute' => 3,
     'search_per_minute' => 10,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Report Reasons
+    |--------------------------------------------------------------------------
+    |
+    | Keys are stored in the database. Labels come from Fluent translations
+    | like `waterhole::forum.report-reason-<key>`.
+    |
+    */
+
+    'report_reasons' => ['off-topic', 'inappropriate', 'spam', 'other'],
 ];

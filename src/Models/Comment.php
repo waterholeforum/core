@@ -3,18 +3,26 @@
 namespace Waterhole\Models;
 
 use HotwiredLaravel\TurboLaravel\Models\Broadcasts;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rule;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 use Waterhole\Database\Factories\CommentFactory;
 use Waterhole\Events\NewComment;
+use Waterhole\Models\Concerns\Approvable;
+use Waterhole\Models\Concerns\Deletable;
+use Waterhole\Models\Concerns\Flaggable;
 use Waterhole\Models\Concerns\HasBody;
 use Waterhole\Models\Concerns\NotificationContent;
 use Waterhole\Models\Concerns\Reactable;
 use Waterhole\Models\Concerns\ValidatesData;
+use Waterhole\Notifications\Mention;
+use Waterhole\Notifications\NewComment as NewCommentNotification;
 use Waterhole\Scopes\CommentIndexScope;
 use Waterhole\View\Components;
 use Waterhole\View\TurboStream;
@@ -30,14 +38,10 @@ use function HotwiredLaravel\TurboLaravel\dom_id;
  * @property null|\Carbon\Carbon $edited_at
  * @property int $reply_count
  * @property int $score
- * @property null|\Carbon\Carbon $hidden_at
- * @property null|int $hidden_by
- * @property null|string $hidden_reason
  * @property-read Post $post
  * @property-read null|User $user
  * @property-read \Illuminate\Database\Eloquent\Collection $replies
  * @property-read null|Comment $parent
- * @property-read null|User $hiddenBy
  * @property-read string $url
  * @property-read string $edit_url
  * @property-read string $post_url
@@ -51,22 +55,24 @@ class Comment extends Model
     use ValidatesData;
     use Broadcasts;
     use NotificationContent;
+    use Deletable;
+    use Approvable;
+    use Flaggable;
 
     public const UPDATED_AT = null;
 
     protected $casts = [
         'edited_at' => 'datetime',
-        'hidden_at' => 'datetime',
         'is_pinned' => 'boolean',
     ];
 
     // Prevent recursion during serialization
     protected $hidden = ['parent'];
 
-    protected static function booted(): void
+    protected static function booting(): void
     {
         static::addGlobalScope('visible', function ($query) {
-            $query->whereHas('post');
+            $query->visible(auth()->user());
         });
 
         // Whenever a comment is created or deleted, we will update the metadata
@@ -79,9 +85,16 @@ class Comment extends Model
 
         static::created($refreshMetadata);
         static::deleted($refreshMetadata);
+        static::restored($refreshMetadata);
+
+        static::updated(function (self $comment) use ($refreshMetadata) {
+            if ($comment->wasChanged('is_approved') && $comment->is_approved) {
+                $refreshMetadata($comment);
+            }
+        });
 
         static::created(function (self $comment) {
-            broadcast(new NewComment($comment))->toOthers();
+            $comment->deliverCreatedEvents();
         });
 
         // By default, we calculate each comment's index (ie. how many comments
@@ -95,9 +108,51 @@ class Comment extends Model
         return CommentFactory::new();
     }
 
+    protected function deliverCreatedEvents(): void
+    {
+        if (!$this->is_approved || !$this->post->is_approved) {
+            return;
+        }
+
+        broadcast(new NewComment($this))->toOthers();
+
+        // When a new comment is created, send notifications to mentioned
+        // users as well as the user the comment is in reply to.
+        $users = $this->mentions;
+
+        if ($this->parent?->user) {
+            $users->push($this->parent->user);
+        }
+
+        $users = $users->unique()->except($this->user_id);
+
+        $this->post->usersWereMentioned($users);
+
+        Notification::send($users, new Mention($this));
+
+        // Send out a "new comment" notification to all followers of this post,
+        // except for the user who made the comment.
+        Notification::send(
+            $this->post->followedBy->diff($users)->except($this->user_id),
+            new NewCommentNotification($this),
+        );
+    }
+
     public function post(): BelongsTo
     {
         return $this->belongsTo(Post::class);
+    }
+
+    public function channel(): HasOneThrough
+    {
+        return $this->hasOneThrough(
+            Channel::class,
+            Post::class,
+            'id',
+            'id',
+            'post_id',
+            'channel_id',
+        )->withTrashedParents();
     }
 
     public function user(): BelongsTo
@@ -114,10 +169,26 @@ class Comment extends Model
     {
         return $this->belongsTo(self::class);
     }
-
-    public function hiddenBy(): BelongsTo
+    public function scopeVisible(Builder $query, ?User $user): void
     {
-        return $this->belongsTo(User::class, 'hidden_by');
+        // Remove the default visible global scope which scopes for the
+        // currently authenticated user.
+        $query->withoutGlobalScope('visible');
+
+        // Ensure comments belong to a post which is visible to this user.
+        $query->withGlobalScope(
+            'hasVisiblePost',
+            fn($query) => $query->whereHas('post', fn($query) => $query->visible($user)),
+        );
+
+        $moderationScope = fn(Builder $query, array $channelIds) => $query->orWhereHas(
+            'post',
+            fn(Builder $query) => $query->whereIn('channel_id', $channelIds),
+        );
+
+        $this->applyApprovalVisibility($query, $user, $moderationScope);
+
+        $this->applyDeletionVisibility($query, $user, $moderationScope);
     }
 
     /**
@@ -142,14 +213,6 @@ class Comment extends Model
     public function isAnswer(): bool
     {
         return $this->post->answer_id === $this->id;
-    }
-
-    /**
-     * Determine whether this comment has been hidden.
-     */
-    public function isHidden(): bool
-    {
-        return (bool) $this->hidden_at;
     }
 
     /**
@@ -245,5 +308,15 @@ class Comment extends Model
     public function reactionSet(): ?ReactionSet
     {
         return $this->post->channel->commentsReactionSet;
+    }
+
+    public function canModerate(?User $user): bool
+    {
+        return (bool) $user?->can('waterhole.comment.moderate', $this);
+    }
+
+    public function flagUrl(): string
+    {
+        return $this->post_url;
     }
 }

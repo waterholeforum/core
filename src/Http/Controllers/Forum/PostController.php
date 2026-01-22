@@ -6,13 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Notification;
 use Waterhole\Forms\PostForm;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
 use Waterhole\Models\ReactionType;
-use Waterhole\Notifications\NewPost;
 
 /**
  * Controller for a post (post page, create, and update).
@@ -44,6 +42,7 @@ class PostController extends Controller
             return redirect($comment->post_url);
         }
 
+        // TODO: consolidate eager loading with CommentController
         $comments = $post
             ->comments()
             ->with([
@@ -53,6 +52,10 @@ class PostController extends Controller
                 'attachments',
                 'reactionCounts',
             ])
+            ->when(
+                $post->canModerate(request()->user()),
+                fn($query) => $query->with(['pendingFlags', 'deletedBy']),
+            )
             ->oldest()
             ->paginate();
 
@@ -109,22 +112,21 @@ class PostController extends Controller
 
         Gate::authorize('waterhole.channel.post', $post->channel);
 
+        $user = $request->user();
+
+        $post->is_approved =
+            $user->can('waterhole.channel.moderate', $post->channel) ||
+            (!$user->requiresApproval() && !$post->channel->require_approval_posts);
+
         if (!(new PostForm($post))->submit($request)) {
             return redirect()
                 ->back()
                 ->withInput();
         }
 
-        if ($request->user()->follow_on_comment) {
+        if ($user->follow_on_comment) {
             $post->follow();
         }
-
-        // Send out a "new post" notification to all followers of this post's
-        // channel, except for the user who created the post.
-        Notification::send(
-            $post->channel->followedBy->except($request->user()->id),
-            new NewPost($post),
-        );
 
         return redirect($post->url);
     }

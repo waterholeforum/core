@@ -3,6 +3,7 @@
 namespace Waterhole\Actions;
 
 use Illuminate\Support\Collection;
+use Waterhole\Models\Comment;
 use Waterhole\Models\Model;
 use Waterhole\Models\User;
 
@@ -11,14 +12,19 @@ class DeleteComment extends Action
     public bool $confirm = true;
     public bool $destructive = true;
 
+    public function appliesTo($model): bool
+    {
+        return $model instanceof Comment && $model->trashed();
+    }
+
     public function authorize(?User $user, Model $model): bool
     {
-        return $user && $user->can('waterhole.comment.delete', $model);
+        return $user && $user->can('waterhole.comment.moderate', $model);
     }
 
     public function label(Collection $models): string
     {
-        return __('waterhole::system.delete-button');
+        return __('waterhole::forum.delete-forever-button');
     }
 
     public function icon(Collection $models): string
@@ -38,7 +44,12 @@ class DeleteComment extends Action
 
     public function run(Collection $models)
     {
-        $models->each->delete();
+        $moderator = request()->user();
+
+        $models->each(function (Comment $comment) use ($moderator) {
+            $comment->resolveFlags($moderator);
+            $comment->forceDelete();
+        });
 
         // If the action was initiated from the comment's page, we can't send
         // the user back there. Send them to the comment's post instead.

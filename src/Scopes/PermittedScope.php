@@ -42,7 +42,9 @@ class PermittedScope implements Scope
         // If the list of IDs is null, then the user must be an administrator,
         // and therefore there are no restrictions to apply.
         if (!is_null($ids = $model::allPermitted($user, $this->ability))) {
-            $builder->whereIn($this->key, $ids);
+            $qualifier = $model instanceof Model ? $model : new $model();
+
+            $builder->whereIn($qualifier->qualifyColumn($this->key), $ids);
         }
     }
 }

@@ -13,6 +13,7 @@ use Waterhole\Http\Controllers\Auth\VerifyEmailController;
 use Waterhole\Http\Controllers\FormatController;
 use Waterhole\Http\Controllers\Forum\CommentController;
 use Waterhole\Http\Controllers\Forum\IndexController;
+use Waterhole\Http\Controllers\Forum\ModerationController;
 use Waterhole\Http\Controllers\Forum\NotificationController;
 use Waterhole\Http\Controllers\Forum\PostController;
 use Waterhole\Http\Controllers\Forum\PreferencesController;
@@ -104,6 +105,9 @@ Route::get('notifications/{notification}/go', [NotificationController::class, 'g
     'notifications.go',
 );
 Route::resource('notifications', NotificationController::class)->only(['index', 'show']);
+
+// Moderation
+Route::get('moderation', ModerationController::class)->name('moderation');
 
 // Search
 Route::get('search', SearchController::class)->name('search');

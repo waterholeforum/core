@@ -20,7 +20,7 @@ class DeletePost extends Action
 
     public function authorize(?User $user, Model $model): bool
     {
-        return $user && $user->can('waterhole.post.delete', $model);
+        return $user && $user->can('waterhole.post.moderate', $model);
     }
 
     public function label(Collection $models): string
@@ -45,7 +45,12 @@ class DeletePost extends Action
 
     public function run(Collection $models)
     {
-        $models->each->forceDelete();
+        $moderator = request()->user();
+
+        $models->each(function (Post $post) use ($moderator) {
+            $post->resolveFlags($moderator);
+            $post->forceDelete();
+        });
 
         session()->flash('success', __('waterhole::forum.delete-post-success-message'));
 

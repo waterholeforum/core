@@ -16,6 +16,10 @@ class CommentReplyButton extends Component
 
     public function shouldRender(): bool
     {
+        if ($this->comment->trashed()) {
+            return false;
+        }
+
         // If the user is logged in, only render the reply button if they can
         // post a comment. If they're a guest, only render the reply button if
         // a normal user would be able to post a comment.

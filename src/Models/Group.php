@@ -29,6 +29,12 @@ class Group extends Model
 
     public $timestamps = false;
 
+    protected $casts = [
+        'is_public' => 'bool',
+        'auto_assign' => 'bool',
+        'rules' => 'array',
+    ];
+
     private static array $instances = [];
 
     /**

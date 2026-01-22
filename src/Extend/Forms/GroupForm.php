@@ -6,6 +6,7 @@ use Waterhole\Extend\Support\ComponentList;
 use Waterhole\Forms\Fields\GroupAppearance;
 use Waterhole\Forms\Fields\GroupName;
 use Waterhole\Forms\Fields\GroupPermissions;
+use Waterhole\Forms\Fields\GroupRules;
 use Waterhole\Forms\FormSection;
 
 /**
@@ -29,7 +30,8 @@ class GroupForm extends ComponentList
 
         $this->details = (new ComponentList())
             ->add(GroupName::class, 'name')
-            ->add(GroupAppearance::class, 'appearance');
+            ->add(GroupAppearance::class, 'appearance')
+            ->add(GroupRules::class, 'rules');
 
         $this->add(
             fn($model) => new FormSection(

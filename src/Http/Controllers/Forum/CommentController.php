@@ -5,13 +5,10 @@ namespace Waterhole\Http\Controllers\Forum;
 use HotwiredLaravel\TurboLaravel\Http\TurboResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Middleware\ThrottleRequests;
-use Illuminate\Support\Facades\Notification;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
 use Waterhole\Models\ReactionType;
-use Waterhole\Notifications\Mention;
-use Waterhole\Notifications\NewComment;
 use Waterhole\View\Components\CommentFrame;
 use Waterhole\View\Components\CommentFull;
 use Waterhole\View\Components\Composer;
@@ -36,9 +33,21 @@ class CommentController extends Controller
     {
         // Load the comment tree for this comment, load the necessary
         // relationships, and pre-fill the `post` relationship for each comment.
+        // TODO: consolidate eager loading with PostController
         $comment = $comment
             ->childrenAndSelf()
-            ->with(['user.groups', 'parent.user.groups', 'mentions', 'reactionCounts'])
+            ->withTrashed()
+            ->with([
+                'user.groups',
+                'parent.user.groups',
+                'mentions',
+                'attachments',
+                'reactionCounts',
+            ])
+            ->when(
+                $post->canModerate(request()->user()),
+                fn($query) => $query->with(['pendingFlags', 'deletedBy']),
+            )
             ->get()
             ->each(function ($comment) use ($post) {
                 $comment->setRelation('post', $post);
@@ -62,7 +71,10 @@ class CommentController extends Controller
         // can either be specified in a query parameter, or it may be present
         // in old POST data.
         if ($parentId = $request->get('parent', $request->old('parent_id'))) {
-            $parent = $post->comments()->find($parentId);
+            $parent = $post
+                ->comments()
+                ->withoutTrashed()
+                ->findOrFail($parentId);
         } else {
             $parent = null;
         }
@@ -84,51 +96,32 @@ class CommentController extends Controller
         $this->authorize('waterhole.comment.create', Comment::class);
         $this->authorize('waterhole.post.comment', $post);
 
+        $user = $request->user();
+
         $data = Comment::validate($request->all());
-        $data['user_id'] = $request->user()->id;
+        $data['user_id'] = $user->id;
+        $data['is_approved'] =
+            $user->can('waterhole.channel.moderate', $post->channel) ||
+            (!$user->requiresApproval() && !$post->channel->require_approval_comments);
 
         // Validation has already ensured that the parent comment exists, but
         // we still need to make sure that it's a comment on the same post as
         // we are creating a comment on.
         if ($parentId = $data['parent_id'] ?? null) {
-            $parent = Comment::find($parentId);
-
-            abort_if(
-                $parent->post_id !== $post->id,
-                400,
-                'Parent comment is from a different post.',
-            );
+            $parent = $post
+                ->comments()
+                ->withoutTrashed()
+                ->findOrFail($parentId);
         }
 
         $post->comments()->save($comment = new Comment($data));
 
         $post->userState->read()->save();
 
-        if ($request->user()->follow_on_comment && !$post->isFollowed()) {
+        if ($user->follow_on_comment && !$post->isFollowed()) {
             $post->follow();
             $wasFollowed = true;
         }
-
-        // When a new comment is created, send notifications to mentioned
-        // users as well as the user the comment is in reply to.
-        $users = $comment->mentions;
-
-        if ($comment->parent?->user) {
-            $users->push($comment->parent->user);
-        }
-
-        $users = $users->unique()->except($comment->user_id);
-
-        $comment->post->usersWereMentioned($users);
-
-        Notification::send($users, new Mention($comment));
-
-        // Send out a "new comment" notification to all followers of this post,
-        // except for the user who made the comment.
-        Notification::send(
-            $post->followedBy->diff($users)->except($comment->user_id),
-            new NewComment($comment),
-        );
 
         // If the client supports Turbo Streams, we can append the new comment
         // to the bottom of the page, and reset the comment composer. If the
