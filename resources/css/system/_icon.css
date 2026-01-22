@@ -5,14 +5,15 @@
   vertical-align: -0.2em;
   flex-shrink: 0;
   object-fit: contain;
-}
-
-.icon--thin {
   stroke-width: 1.5;
 }
 
+.icon--thin {
+  stroke-width: 1;
+}
+
 .icon--thick {
-  stroke-width: 2.5;
+  stroke-width: 2;
 }
 
 .icon--narrow {
@@ -23,6 +24,7 @@
 .with-icon {
   display: inline-flex;
   align-items: center;
+  vertical-align: text-bottom;
 
   > .icon {
     margin-right: 0.2em;
