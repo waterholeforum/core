@@ -143,16 +143,24 @@ comment-removed-tooltip = { $user } removed { $timestamp }
 remove-button = Remove
 remove-content-title = Remove Content
 removal-reason-label = Removal Reason
+removal-reason-unspecified-label = Unspecified
 
 approve-button = Approve
 dismiss-flags-button = Dismiss Flags
 
-report-reason-unspecified = Unspecified
-report-reason-off-topic = Off-topic
-report-reason-inappropriate = Inappropriate
-report-reason-spam = Spam
-report-reason-other = Other
-report-reason-approval = Pending approval
+report-reason-off-topic-label = Off-topic
+report-reason-off-topic-description = This content is not relevant to the current discussion.
+
+report-reason-inappropriate-label = Inappropriate
+report-reason-inappropriate-description = This content is offensive, abusive, or violates the community guidelines.
+
+report-reason-spam-label = Spam
+report-reason-spam-description = This content is an advertisement or vandalism.
+
+report-reason-other-label = Other
+report-reason-other-description = This content requires attention for some other reason.
+
+report-reason-approval-label = Pending approval
 
 moderation-title = Moderation
 moderation-empty-message = No Pending Flags

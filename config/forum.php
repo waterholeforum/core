@@ -100,7 +100,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | Keys are stored in the database. Labels come from Fluent translations
-    | like `waterhole::forum.report-reason-<key>`.
+    | like `waterhole::forum.report-reason-<key>-label`.
     |
     */
 

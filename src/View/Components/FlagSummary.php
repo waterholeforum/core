@@ -18,7 +18,7 @@ class FlagSummary extends Component
         return $this->subject->pendingFlags
             ->groupBy('reason')
             ->map(function ($group, $reason) {
-                $label = Lang::has($key = "waterhole::forum.report-reason-$reason")
+                $label = Lang::has($key = "waterhole::forum.report-reason-$reason-label")
                     ? __($key)
                     : Str::headline($reason);
                 $count = $group->count();

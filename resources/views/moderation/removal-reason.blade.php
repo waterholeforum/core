@@ -4,7 +4,7 @@
     <div class="field">
         <div class="field__label">{{ __('waterhole::forum.removal-reason-label') }}</div>
 
-        <div class="stack gap-xs">
+        <div class="stack gap-md">
             <label class="choice">
                 <input
                     type="radio"
@@ -12,7 +12,7 @@
                     value=""
                     @checked(! old('deleted_reason'))
                 />
-                {{ __('waterhole::forum.report-reason-unspecified') }}
+                {{ __('waterhole::forum.removal-reason-unspecified-label') }}
             </label>
 
             @foreach ($reasons as $reason)
@@ -23,11 +23,20 @@
                         value="{{ $reason }}"
                         @checked(old('deleted_reason') === $reason)
                     />
-                    {{
-                        Lang::has($key = "waterhole::forum.report-reason-$reason")
-                            ? __($key)
-                            : Str::headline($reason)
-                    }}
+                    <span class="stack gap-xxs">
+                        <span>
+                            {{
+                                Lang::has($key = "waterhole::forum.report-reason-$reason-label")
+                                    ? __($key)
+                                    : Str::headline($reason)
+                            }}
+                        </span>
+                        @if (Lang::has($key = "waterhole::forum.report-reason-$reason-description"))
+                            <small class="field__description">
+                                {{ __($key) }}
+                            </small>
+                        @endif
+                    </span>
                 </label>
             @endforeach
         </div>

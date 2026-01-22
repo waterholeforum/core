@@ -32,7 +32,7 @@
                     @if ($post->deleted_reason)
                         <span class="text-xxs">
                             {{
-                                Lang::has($key = "waterhole::forum.report-reason-$post->deleted_reason")
+                                Lang::has($key = "waterhole::forum.report-reason-$post->deleted_reason-label")
                                     ? __($key)
                                     : Str::headline($post->deleted_reason)
                             }}
