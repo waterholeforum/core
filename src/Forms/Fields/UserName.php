@@ -25,19 +25,29 @@ class UserName extends Field
                 name="name"
                 :label="__('waterhole::cp.user-name-label')"
             >
-                <input
-                    type="text"
-                    name="name"
-                    id="{{ $component->id }}"
-                    value="{{ old('name', $model->name ?? null) }}"
-                    autofocus
-                >
+                @if ($payload?->user->forceName)
+                    <span>{{ $payload->user->name }}</span>
+                @else
+                    <input
+                        type="text"
+                        name="name"
+                        id="{{ $component->id }}"
+                        value="{{ old('name', $model->name ?? null) }}"
+                        autofocus
+                    >
+                @endif
             </x-waterhole::field>
         blade;
     }
 
     public function validating(Validator $validator): void
     {
+        if ($this->payload?->user->forceName) {
+            $validator->setData(
+                array_replace($validator->getData(), ['name' => $this->payload->user->name]),
+            );
+        }
+
         $validator->addRules([
             'name' => [
                 'required',
