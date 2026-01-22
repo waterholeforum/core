@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\HtmlString;
 use Waterhole\Mail\Markdown;
 use Waterhole\Models\Model;
+use Waterhole\Models\Notification as NotificationModel;
 use Waterhole\Models\User;
 
 /**
@@ -28,6 +29,11 @@ use Waterhole\Models\User;
 abstract class Notification extends BaseNotification implements ShouldQueue
 {
     use Queueable;
+
+    public static function fromNotificationModel(NotificationModel $notification): ?self
+    {
+        return $notification->content ? new static($notification->content) : null;
+    }
 
     /**
      * Determine whether the notification should be sent to this user.

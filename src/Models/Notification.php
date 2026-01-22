@@ -89,7 +89,7 @@ class Notification extends DatabaseNotification
     protected function template(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->content ? new $this->type($this->content) : null,
+            get: fn() => $this->type::fromNotificationModel($this),
         )->shouldCache();
     }
 
