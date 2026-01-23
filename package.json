@@ -1,14 +1,12 @@
 {
+    "type": "module",
     "scripts": {
-        "dev": "npm run development",
-        "development": "mix",
-        "watch": "mix watch",
-        "watch-poll": "mix watch -- --watch-options-poll=1000",
-        "hot": "mix watch --hot",
-        "prod": "npm run production",
-        "production": "mix --production",
+        "dev": "vite build --watch --mode index",
+        "dev:cp": "vite build --watch --mode cp",
+        "build": "vite build --mode index && vite build --mode cp && vite build --mode highlight && vite build --mode emoji",
         "prettier": "prettier --write '**/*' --ignore-unknown",
-        "release": "release-it"
+        "prod": "npm run build",
+        "production": "npm run build"
     },
     "devDependencies": {
         "@babel/runtime": "^7.21.0",
@@ -17,20 +15,17 @@
         "@release-it/bumper": "^7.0.5",
         "@release-it/keep-a-changelog": "^7.0.0",
         "@types/lodash-es": "^4.17.7",
-        "@types/webpack-env": "^1.18.0",
-        "laravel-mix": "^6.0.49",
         "postcss": "^8.4.21",
         "postcss-each": "^1.1.0",
-        "postcss-mixins": "^9.0.4",
+        "postcss-import": "^16.1.1",
+        "postcss-mixins": "^12.1.2",
         "postcss-preset-env": "^8.0.1",
         "postcss-scss": "^4.0.6",
         "prettier": "^3.0.2",
         "prettier-plugin-blade": "^2.1.21",
         "release-it": "^19.0.1",
-        "ts-loader": "^9.4.2",
         "typescript": "^4.9.5",
-        "webpack": "^5.76.2",
-        "webpack-bundle-analyzer": "^4.8.0"
+        "vite": "^7.3.1"
     },
     "dependencies": {
         "@floating-ui/dom": "^1.2.4",
@@ -40,7 +35,6 @@
         "@github/relative-time-element": "^4.2.3",
         "@github/text-expander-element": "^2.3.0",
         "@hotwired/stimulus": "^3.2.1",
-        "@hotwired/stimulus-webpack-helpers": "^1.0.1",
         "@hotwired/turbo": "^7.3.0",
         "animated-scroll-to": "^2.3.0",
         "emoji-picker-element": "^1.16.0",

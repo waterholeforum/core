@@ -1,6 +1,6 @@
+import '../css/global/app.css';
 import '@github/relative-time-element';
 import { Application } from '@hotwired/stimulus';
-import { definitionsFromContext } from '@hotwired/stimulus-webpack-helpers';
 import { AlertsElement } from 'inclusive-elements';
 import ky from 'ky';
 
@@ -35,9 +35,20 @@ Object.defineProperty(Waterhole, 'alerts', {
 });
 
 window.Stimulus = Application.start();
-window.Stimulus.load(
-    definitionsFromContext(require.context('./controllers', true, /\.ts$/)),
-);
+
+const controllers = import.meta.glob('./controllers/**/*.ts', { eager: true });
+const definitions = Object.entries(controllers).map(([path, module]) => {
+    const identifier = path
+        .match(/\.\/controllers\/(.*)\.ts$/)![1]
+        .replace(/\//g, '--')
+        .replace(/_/g, '-');
+    
+    return { 
+        identifier, 
+        controllerConstructor: (module as any).default 
+    };
+});
+window.Stimulus.load(definitions);
 
 Waterhole.fetch = ky.create({
     headers: { 'X-XSRF-TOKEN': getCookie('XSRF-TOKEN') || undefined },
