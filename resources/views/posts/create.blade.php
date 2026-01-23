@@ -16,7 +16,7 @@
                     <x-slot name="header">
                         <ui-popup placement="bottom-start">
                             <button class="btn" type="button">
-                                <x-waterhole::channel-label :channel="$form->model->channel" />
+                                <x-waterhole::channel-badge :channel="$form->model->channel" />
                                 @icon('tabler-selector')
                             </button>
 

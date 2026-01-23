@@ -39,7 +39,7 @@ preiod-previous-heading = Vorige Periode
 
 structure-title = Structuur
 
-structure-channel-label = Kanaal
+structure-channel-badge = Kanaal
 structure-page-label = Pagina
 structure-link-label = Link
 structure-heading-label = Kop

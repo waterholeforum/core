@@ -22,7 +22,7 @@
                         <li class="card comment-card">
                             <ol class="color-muted text-xs card__header breadcrumb">
                                 <li>
-                                    <x-waterhole::channel-label
+                                    <x-waterhole::channel-badge
                                         :channel="$comment->post->channel"
                                     />
                                 </li>

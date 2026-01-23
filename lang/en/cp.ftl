@@ -39,7 +39,7 @@ preiod-previous-heading = Previous Period
 
 structure-title = Structure
 
-structure-channel-label = Channel
+structure-channel-badge = Channel
 structure-page-label = Page
 structure-link-label = Link
 structure-heading-label = Heading
@@ -85,6 +85,7 @@ edit-channel-title = Edit Channel
 create-channel-title = Create a Channel
 channel-details-title = Details
 channel-name-label = Name
+channel-color-label = Color
 channel-slug-label = Slug
 channel-slug-url-label = This channel will be accessible at:
 channel-description-label = Description

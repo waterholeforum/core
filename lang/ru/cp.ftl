@@ -38,7 +38,7 @@ preiod-previous-heading = Предыдущий период
 
 structure-title = Структура
 
-structure-channel-label = Канал
+structure-channel-badge = Канал
 structure-page-label = Страница
 structure-link-label = Ссылка
 structure-heading-label = Заголовок

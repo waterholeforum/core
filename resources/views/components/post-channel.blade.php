@@ -1,1 +1,1 @@
-<x-waterhole::channel-label :channel="$post->channel" link />
+<x-waterhole::channel-badge :channel="$post->channel" link />

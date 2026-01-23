@@ -39,7 +39,7 @@ preiod-previous-heading = 上一時期
 
 structure-title = 佈局
 
-structure-channel-label = 頻道
+structure-channel-badge = 頻道
 structure-page-label = 頁面
 structure-link-label = 連結
 structure-heading-label = 標題

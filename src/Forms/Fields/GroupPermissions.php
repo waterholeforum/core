@@ -58,7 +58,7 @@ class GroupPermissions extends Field
                             <tr>
                                 <th>
                                     @if ($node->content instanceof Waterhole\Models\Channel)
-                                        <x-waterhole::channel-label :channel="$node->content"/>
+                                        <x-waterhole::channel-badge :channel="$node->content"/>
                                     @else
                                         {{ $node->content->name }}
                                     @endif

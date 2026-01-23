@@ -77,7 +77,7 @@ mark-as-read-button = 標記為已讀
 
 create-post-button = 發表文章
 create-post-title = 新增文章
-post-channel-label = 頻道
+post-channel-badge = 頻道
 post-submit-button = 發表
 edit-post-title = 編輯文章
 edit-post-link = 編輯文章

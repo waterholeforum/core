@@ -77,7 +77,7 @@ mark-as-read-button = Marquer comme lu
 
 create-post-button = Créer un message
 create-post-title = Nouveau message
-post-channel-label = Canal
+post-channel-badge = Canal
 post-submit-button = Message
 edit-post-title = Modifier le message
 edit-post-link = Modifier le message

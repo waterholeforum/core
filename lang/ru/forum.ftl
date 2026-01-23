@@ -76,7 +76,7 @@ mark-as-read-button = Пометить, как прочитанное
 
 create-post-button = Создать дискуссию
 create-post-title = Новая дискуссия
-post-channel-label = Канал
+post-channel-badge = Канал
 post-submit-button = Создать
 edit-post-title = Редактировать дискуссию
 edit-post-link = Редактировать дискуссию
