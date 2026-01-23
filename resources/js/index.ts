@@ -37,17 +37,20 @@ Object.defineProperty(Waterhole, 'alerts', {
 window.Stimulus = Application.start();
 
 const controllers = import.meta.glob('./controllers/**/*.ts', { eager: true });
+
 const definitions = Object.entries(controllers).map(([path, module]) => {
     const identifier = path
         .match(/\.\/controllers\/(.*)\.ts$/)![1]
         .replace(/\//g, '--')
-        .replace(/_/g, '-');
+        .replace(/_/g, '-')
+        .replace(/-controller$/, '');
     
     return { 
         identifier, 
         controllerConstructor: (module as any).default 
     };
 });
+
 window.Stimulus.load(definitions);
 
 Waterhole.fetch = ky.create({
