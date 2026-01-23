@@ -1,7 +1,7 @@
 <div class="stack gap-lg" data-controller="reveal">
     <h1 class="h4">
         {{ __('waterhole::cp.delete-channel-title') }}
-        <x-waterhole::channel-label :channel="$channel" />
+        <x-waterhole::channel-badge :channel="$channel" />
     </h1>
 
     @if ($postCount > 0)

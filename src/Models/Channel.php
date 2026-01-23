@@ -23,6 +23,7 @@ use Waterhole\View\TurboStream;
  * @property int $id
  * @property string $name
  * @property string $slug
+ * @property ?string $color
  * @property ?string $description
  * @property ?string $instructions
  * @property ?array $filters

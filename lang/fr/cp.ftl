@@ -39,7 +39,7 @@ preiod-previous-heading = Période antérieure
 
 structure-title = Structure
 
-structure-channel-label = Canal
+structure-channel-badge = Canal
 structure-page-label = Page
 structure-link-label = Lien
 structure-heading-label = Rubrique

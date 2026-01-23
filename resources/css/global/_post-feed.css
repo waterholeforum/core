@@ -81,6 +81,6 @@
 }
 
 // Hide the channel label from posts when we're viewing a specific channel
-[data-route='waterhole.channels.show'] .post-feed__content .channel-label {
+[data-route='waterhole.channels.show'] .post-feed__content .channel-badge {
   display: none;
 }

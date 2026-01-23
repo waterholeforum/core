@@ -77,7 +77,7 @@ mark-as-read-button = Markeer als Gelezen
 
 create-post-button = Maak een Bericht
 create-post-title = Nieuw Bericht
-post-channel-label = Kanaal
+post-channel-badge = Kanaal
 post-submit-button = Plaatsen
 edit-post-title = Bewerk Bericht
 edit-post-link = Bewerk Bericht

@@ -10,7 +10,7 @@
         </button>
 
         @if ($node->content instanceof Waterhole\Models\Channel)
-            <x-waterhole::channel-label
+            <x-waterhole::channel-badge
                 :channel="$node->content"
                 class="cp-structure__label"
                 link
@@ -19,7 +19,7 @@
             />
             <span class="with-icon text-xs color-muted hide-sm">
                 @icon('tabler-message-circle-2')
-                <span>{{ __('waterhole::cp.structure-channel-label') }}</span>
+                <span>{{ __('waterhole::cp.structure-channel-badge') }}</span>
             </span>
         @elseif ($node->content instanceof Waterhole\Models\Page)
             <a

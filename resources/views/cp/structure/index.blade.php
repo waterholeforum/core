@@ -24,7 +24,7 @@
                         role="menuitem"
                     >
                         @icon('tabler-message-circle-2')
-                        <span>{{ __('waterhole::cp.structure-channel-label') }}</span>
+                        <span>{{ __('waterhole::cp.structure-channel-badge') }}</span>
                     </a>
                     <a
                         href="{{ route('waterhole.cp.structure.pages.create') }}"

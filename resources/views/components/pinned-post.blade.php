@@ -8,7 +8,7 @@
 >
     <div class="row gap-x-sm">
         <x-waterhole::post-unread :post="$post" />
-        <x-waterhole::channel-label :channel="$post->channel" link class="text-xs" />
+        <x-waterhole::channel-badge :channel="$post->channel" link class="text-xs" />
         <x-waterhole::action-menu :for="$post" placement="bottom-end" class="push-end -m-xs" />
     </div>
 

@@ -3,7 +3,7 @@
     @if ($group->is_public && $group->color)
         style="
                             --group-color: #{{ $group->color }};
-                            --group-color-constrast: {{ Waterhole\get_contrast_color($group->color) }}
+                            --group-color-contrast: {{ Waterhole\get_contrast_color($group->color) }}
                         "
     @endif
 >

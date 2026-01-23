@@ -1,4 +1,11 @@
-<div {{ $attributes->class('channel-card card card__body row align-start gap-md') }}>
+<div {{ $attributes->class('channel-card card card__body row align-start gap-md') }}
+    @if ($channel->color)
+        style="
+            background-color: #{{ $channel->color }};
+            color: {{ Waterhole\get_contrast_color($channel->color) }};
+        "
+    @endif
+>
     @icon($channel->icon, ['class' => 'channel-card__icon text-xxl'])
 
     <div class="channel-card__inner grow row wrap gap-md">

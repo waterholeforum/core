@@ -4,6 +4,7 @@ namespace Waterhole\Extend\Forms;
 
 use Waterhole\Extend\Support\ComponentList;
 use Waterhole\Forms\Fields\ChannelAnswers;
+use Waterhole\Forms\Fields\ChannelColor;
 use Waterhole\Forms\Fields\ChannelDescription;
 use Waterhole\Forms\Fields\ChannelFilters;
 use Waterhole\Forms\Fields\ChannelIgnore;
@@ -43,6 +44,7 @@ class ChannelForm extends ComponentList
         $this->details = (new ComponentList())
             ->add(ChannelName::class, 'name')
             ->add(ChannelSlug::class, 'slug')
+            ->add(ChannelColor::class, 'color')
             ->add(Icon::class, 'icon')
             ->add(ChannelDescription::class, 'description')
             ->add(ChannelIgnore::class, 'ignore');
