@@ -44,7 +44,6 @@ post-answered-badge = Answered
 post-trash-badge = Trash
 
 post-removed-message = Post removed
-post-removed-tooltip = { $user } removed { $timestamp }
 
 post-answered-by = Answered by
 post-view-answer-link = View Answer
@@ -141,9 +140,16 @@ comment-removed-tooltip = { $user } removed { $timestamp }
 ## Moderation
 
 remove-button = Remove
-remove-content-title = Remove Content
+removed-by-label = Removed by
+
 removal-reason-label = Removal Reason
 removal-reason-unspecified-label = Unspecified
+removal-message-label = Message to Author
+user-actions-label = User Actions
+user-actions-suspend-label = Suspend { $user }
+user-actions-suspend-days = Days
+user-actions-suspend-weeks = Weeks
+user-actions-suspend-indefinitely = Indefinitely
 
 approve-button = Approve
 dismiss-flags-button = Dismiss Flags

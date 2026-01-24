@@ -18,6 +18,7 @@
                     </h4>
                     <div class="notification-grid card">
                         @foreach (resolve(\Waterhole\Extend\Core\NotificationTypes::class)->values() as $type)
+                            @continue(! $type::availableFor(Auth::user()))
                             @php
                                 $channels = (array) old('notification_channels.' . $type, Auth::user()->notification_channels[$type] ?? []);
                             @endphp

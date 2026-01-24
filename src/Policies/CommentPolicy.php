@@ -42,6 +42,15 @@ class CommentPolicy
     }
 
     /**
+     * Users can restore their own deleted comments.
+     */
+    public function restore(User $user, Comment $comment): bool
+    {
+        return $this->moderate($user, $comment) ||
+            ($comment->user_id === $user->id && $comment->deleted_by === $user->id);
+    }
+
+    /**
      * Any user can react to a comment.
      */
     public function react(User $user, Comment $comment): bool

@@ -17,6 +17,7 @@
 
 .alert__message {
   min-width: 0;
+  flex-grow: 1;
 }
 
 .alert__actions {

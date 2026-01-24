@@ -35,6 +35,7 @@ class RestorePost extends Action
             $post->update([
                 'deleted_by' => null,
                 'deleted_reason' => null,
+                'deleted_message' => null,
             ]);
             $post->restore();
         });

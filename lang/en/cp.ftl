@@ -151,6 +151,9 @@ group-auto-assign-label = Auto-assign this group to new members
 group-rules-requires-approval-label = Require approval for new members' content
 group-rules-remove-after-approval-label = Remove from group after approval
 group-permissions-title = Permissions
+group-global-permissions-title = Global Permissions
+group-channel-permissions-title = Channel Permissions
+group-permission-suspend-users-label = Allow suspending users
 
 delete-group-confirm-message = Are you sure you want to delete this group?
 

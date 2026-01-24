@@ -29,6 +29,13 @@ document.addEventListener('turbo:before-stream-render', (e) => {
             stream.targetElements.forEach((el) => {
                 morph(el, stream.templateContent.firstElementChild!);
             });
+        } else if (
+            stream.action === 'append' &&
+            stream.targetElements.includes(Waterhole.alerts)
+        ) {
+            Waterhole.alerts.show(
+                stream.templateContent.firstElementChild as HTMLElement,
+            );
         } else {
             fallback(stream);
         }

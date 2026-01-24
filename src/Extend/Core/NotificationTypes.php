@@ -5,6 +5,7 @@ namespace Waterhole\Extend\Core;
 use Waterhole\Extend\Support\UnorderedList;
 use Waterhole\Notifications\Mention;
 use Waterhole\Notifications\NewComment;
+use Waterhole\Notifications\NewFlag;
 use Waterhole\Notifications\NewPost;
 
 /**
@@ -20,5 +21,6 @@ class NotificationTypes extends UnorderedList
         $this->add(NewPost::class, 'new-post');
         $this->add(NewComment::class, 'new-comment');
         $this->add(Mention::class, 'mention');
+        $this->add(NewFlag::class, 'new-flag');
     }
 }

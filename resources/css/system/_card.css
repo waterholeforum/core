@@ -4,9 +4,11 @@
   border-radius: var(--radius);
   background: var(--color-bg);
   box-shadow: var(--shadow-sm);
+  overflow: clip;
 }
 
-.card .card {
+.card .card,
+.dialog .card {
   border: 1px solid var(--color-fill);
 }
 

@@ -4,8 +4,9 @@ namespace Waterhole\Extend\Forms;
 
 use Waterhole\Extend\Support\ComponentList;
 use Waterhole\Forms\Fields\GroupAppearance;
+use Waterhole\Forms\Fields\GroupChannelPermissions;
+use Waterhole\Forms\Fields\GroupGlobalPermissions;
 use Waterhole\Forms\Fields\GroupName;
-use Waterhole\Forms\Fields\GroupPermissions;
 use Waterhole\Forms\Fields\GroupRules;
 use Waterhole\Forms\FormSection;
 
@@ -17,6 +18,7 @@ use Waterhole\Forms\FormSection;
 class GroupForm extends ComponentList
 {
     public ComponentList $details;
+    public ComponentList $permissions;
 
     public function __construct()
     {
@@ -36,10 +38,14 @@ class GroupForm extends ComponentList
         $this->add(
             fn($model) => new FormSection(
                 __('waterhole::cp.group-permissions-title'),
-                [new GroupPermissions($model)],
+                $this->permissions->components(compact('model')),
                 open: false,
             ),
             'permissions',
         );
+
+        $this->permissions = (new ComponentList())
+            ->add(GroupGlobalPermissions::class, 'global')
+            ->add(GroupChannelPermissions::class, 'channel');
     }
 }

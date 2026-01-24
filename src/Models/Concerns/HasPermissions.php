@@ -3,6 +3,9 @@
 namespace Waterhole\Models\Concerns;
 
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Waterhole\Models\Group;
 use Waterhole\Models\Permission;
 use Waterhole\Models\PermissionCollection;
 use Waterhole\Models\User;
@@ -86,6 +89,39 @@ trait HasPermissions
     public function isPublic(string $ability = 'view'): bool
     {
         return Waterhole::permissions()->can(null, $ability, $this);
+    }
+
+    public function usersWithAbility(string $ability): ?Collection
+    {
+        if (
+            $this->isPublic($ability) ||
+            Waterhole::permissions()->can(Group::member(), $ability, $this)
+        ) {
+            return null;
+        }
+
+        $permissions = Waterhole::permissions()
+            ->scope($this)
+            ->where('ability', $ability);
+
+        $groupIds = $permissions
+            ->where('recipient_type', (new Group())->getMorphClass())
+            ->pluck('recipient_id');
+
+        $userIds = $permissions
+            ->where('recipient_type', (new User())->getMorphClass())
+            ->pluck('recipient_id');
+
+        $groupUserIds = DB::table('group_user')
+            ->whereIn('group_id', [...$groupIds, Group::ADMIN_ID])
+            ->pluck('user_id');
+
+        $userIds = $groupUserIds
+            ->merge($userIds)
+            ->unique()
+            ->values();
+
+        return User::with('groups')->findMany($userIds);
     }
 
     /**

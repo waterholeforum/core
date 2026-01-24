@@ -2,14 +2,20 @@
 {{ $title }}
 
 <x-mail::panel>
+@if (!empty($name))
 <p>
-@isset($avatar)
+@if (!empty($avatar))
 <img src="{{ $avatar }}" width="32" height="32" style="border-radius: 100%; vertical-align: middle">
-@endisset
+@endif
 <strong>{{ $name }}:</strong>
 </p>
+@endif
 
+@if ($excerpt instanceof Illuminate\Contracts\Support\Htmlable)
 {!! preg_replace('/<script.*?\/script>/s', '', $excerpt) !!}
+@else
+{{ $excerpt }}
+@endif
 </x-mail::panel>
 
 @isset($button)

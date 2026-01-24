@@ -42,6 +42,7 @@ class AuthServiceProvider extends ServiceProvider
         // of auth checks in a single page load.
         $this->app->singleton(Policies\CommentPolicy::class);
         $this->app->singleton(Policies\PostPolicy::class);
+        $this->app->singleton(Policies\UserPolicy::class);
     }
 
     public function boot()
@@ -104,6 +105,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('waterhole.comment.create', [Policies\CommentPolicy::class, 'create']);
         Gate::define('waterhole.comment.edit', [Policies\CommentPolicy::class, 'edit']);
         Gate::define('waterhole.comment.delete', [Policies\CommentPolicy::class, 'delete']);
+        Gate::define('waterhole.comment.restore', [Policies\CommentPolicy::class, 'restore']);
         Gate::define('waterhole.comment.moderate', [Policies\CommentPolicy::class, 'moderate']);
         Gate::define('waterhole.comment.react', [Policies\CommentPolicy::class, 'react']);
 
@@ -114,5 +116,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('waterhole.post.comment', [Policies\PostPolicy::class, 'comment']);
         Gate::define('waterhole.post.react', [Policies\PostPolicy::class, 'react']);
         Gate::define('waterhole.post.moderate', [Policies\PostPolicy::class, 'moderate']);
+
+        Gate::define('waterhole.user.suspend', [Policies\UserPolicy::class, 'suspend']);
     }
 }

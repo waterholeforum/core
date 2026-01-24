@@ -16,8 +16,7 @@ class RestoreComment extends Action
 
     public function authorize(?User $user, Model $model): bool
     {
-        return $user?->can('waterhole.comment.moderate', $model) ||
-            ($model->user_id === $user->id && $model->deleted_by === $user->id);
+        return $user && $user->can('waterhole.comment.restore', $model);
     }
 
     public function label(Collection $models): string
@@ -36,6 +35,7 @@ class RestoreComment extends Action
             $comment->update([
                 'deleted_by' => null,
                 'deleted_reason' => null,
+                'deleted_message' => null,
             ]);
             $comment->restore();
         });

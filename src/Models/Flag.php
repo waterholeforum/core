@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Waterhole\Events\FlagReceived;
+use Waterhole\Notifications\NewFlag;
 
 /**
  * @property int $id
@@ -40,7 +42,13 @@ class Flag extends Model
         });
 
         static::created(function (self $flag) {
-            FlagReceived::dispatchForChannel($flag->subject->channel);
+            if (empty(($moderators = $flag->subject->channel->usersWithAbility('moderate')))) {
+                return;
+            }
+
+            $moderators->each(fn(User $user) => event(new FlagReceived($user)));
+
+            Notification::send($moderators, new NewFlag($flag));
         });
     }
 

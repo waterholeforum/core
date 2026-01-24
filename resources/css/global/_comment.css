@@ -35,11 +35,11 @@
 }
 
 .comment.is-removed {
-  padding-top: var(--space-xs);
-  background: var(--palette-fill-soft);
+  padding-top: var(--space-md);
+  background: var(--palette-fill);
 
-  &.is-expanded > .comment__removed {
-    margin-bottom: var(--space-sm);
+  &.is-expanded > .removed-banner {
+    margin-bottom: var(--space-lg);
 
     .icon-tabler-chevron-right {
       transform: rotate(90deg);
@@ -47,12 +47,19 @@
   }
 
   &:not(.is-expanded) {
-    padding-bottom: var(--space-xs);
+    padding-bottom: var(--space-md);
 
-    > .comment__removed ~ * {
+    > .removed-banner ~ * {
       display: none;
     }
   }
+}
+
+.comment__icon {
+  position: absolute;
+  margin-left: calc(-1 * (var(--attribution-avatar-size) + var(--space-md)));
+  width: var(--attribution-avatar-size);
+  text-align: right;
 }
 
 // The "in reply to" bit in the comment header

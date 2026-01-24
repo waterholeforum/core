@@ -10,35 +10,11 @@
     <article class="post-full__inner p-gutter stack gap-xl">
         @if ($post->trashed())
             <x-waterhole::alert class="bg-fill color-muted p-md" icon="tabler-trash">
-                <div class="alert__message row gap-sm align-center nowrap">
-                    <strong>{{ __('waterhole::forum.post-removed-message') }}</strong>
-
-                    @can('waterhole.post.moderate', $post)
-                        @if ($post->deletedBy)
-                            <span class="user-label">
-                                <x-waterhole::avatar :user="$post->deletedBy" />
-                                <ui-tooltip>
-                                    {{
-                                        __('waterhole::forum.post-removed-tooltip', [
-                                            'user' => Waterhole\username($post->deletedBy),
-                                            'timestamp' => $post->deleted_at->toDayDateTimeString(),
-                                        ])
-                                    }}
-                                </ui-tooltip>
-                            </span>
-                        @endif
-                    @endcan
-
-                    @if ($post->deleted_reason)
-                        <span class="text-xxs">
-                            {{
-                                Lang::has($key = "waterhole::forum.report-reason-$post->deleted_reason-label")
-                                    ? __($key)
-                                    : Str::headline($post->deleted_reason)
-                            }}
-                        </span>
-                    @endif
-                </div>
+                <x-waterhole::removed-banner :subject="$post">
+                    <x-slot name="lead">
+                        <strong>{{ __('waterhole::forum.post-removed-message') }}</strong>
+                    </x-slot>
+                </x-waterhole::removed-banner>
             </x-waterhole::alert>
         @endif
 

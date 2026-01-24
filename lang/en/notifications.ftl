@@ -37,6 +37,19 @@ new-post-title = New post in { $channel }: { $post }
 new-post-reason = You received this because you are following this channel.
 new-post-unsubscribe = Unfollow this channel
 
+## New Flag
+
+new-flag-description = Flags in channels I moderate
+flagged-post-title = Post flagged: { $post }
+flagged-comment-title = Comment flagged in { $post }
+new-flag-reason = You received this because you moderate a channel.
+new-flag-unsubscribe = Unsubscribe from flag notifications
+
+## Content Removed
+
+post-removed-title = Post removed: { $post }
+comment-removed-title = Comment removed in { $post }
+
 ## Common
 
 view-post-button = View Post

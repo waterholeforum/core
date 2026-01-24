@@ -4,12 +4,12 @@ namespace Waterhole\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Notification as BaseNotification;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\HtmlString;
 use Waterhole\Mail\Markdown;
 use Waterhole\Models\Model;
 use Waterhole\Models\Notification as NotificationModel;
@@ -72,13 +72,14 @@ abstract class Notification extends BaseNotification implements ShouldQueue
         }
 
         $title = $this->title();
+        $sender = $this->sender();
 
         $markdown = resolve(Markdown::class);
         $view = 'waterhole::mail.notification';
         $data = [
             'title' => $title,
-            'avatar' => $this->sender()->avatar_url,
-            'name' => $this->sender()->name,
+            'avatar' => $sender?->avatar_url,
+            'name' => $sender?->name,
             'excerpt' => $this->excerpt(),
             'button' => $this->button(),
             'url' => $this->url(),
@@ -133,12 +134,12 @@ abstract class Notification extends BaseNotification implements ShouldQueue
      * certain words in `<strong>`, for example. Just be sure to escape user-
      * generated content if returning an `HtmlString`.
      */
-    abstract public function title(): string|HtmlString;
+    abstract public function title(): string|Htmlable;
 
     /**
      * An excerpt from the notification content.
      */
-    public function excerpt(): null|string|HtmlString
+    public function excerpt(): null|string|Htmlable
     {
         return null;
     }
@@ -233,6 +234,14 @@ abstract class Notification extends BaseNotification implements ShouldQueue
     public static function description(): ?string
     {
         return null;
+    }
+
+    /**
+     * Determine whether this notification type should appear in preferences.
+     */
+    public static function availableFor(User $user): bool
+    {
+        return true;
     }
 
     /**

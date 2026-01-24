@@ -1,54 +1,39 @@
 <x-waterhole::flag-container :subject="$comment" :hide="$comment->trashed()" {{ $attributes }}>
     <article
-        {{ (new Illuminate\View\ComponentAttributeBag())->class('comment')->merge(resolve(Waterhole\Extend\Ui\CommentAttributes::class)->build($comment)) }}
+        {{
+            (new Illuminate\View\ComponentAttributeBag())
+                ->class('comment')
+                ->merge(resolve(Waterhole\Extend\Ui\CommentAttributes::class)->build($comment))
+        }}
         data-comment-id="{{ $comment->id }}"
         data-parent-id="{{ $comment->parent?->id }}"
         data-controller="comment"
         tabindex="-1"
     >
         @if ($comment->trashed())
-            <div class="comment__removed row gap-xxs color-muted">
-                <button
-                    class="btn btn--sm btn--transparent btn--start"
-                    data-action="comment#toggleExpanded"
-                >
-                    @icon('tabler-trash')
-                    {{ __('waterhole::forum.comment-removed-message') }}
-                    @icon('tabler-chevron-right', ['class' => 'icon--narrow text-xxs'])
-                </button>
+            <x-waterhole::removed-banner :subject="$comment">
+                <x-slot name="lead">
+                    <div class="comment__icon">
+                        @icon('tabler-trash')
+                    </div>
 
-                @can('waterhole.comment.moderate', $comment)
-                    @if ($comment->deletedBy)
-                        <span class="user-label">
-                            <x-waterhole::avatar :user="$comment->deletedBy" />
-                            <ui-tooltip>
-                                {{
-                                    __('waterhole::forum.comment-removed-tooltip', [
-                                        'user' => Waterhole\username($comment->deletedBy),
-                                        'timestamp' => $comment->deleted_at->toDayDateTimeString(),
-                                    ])
-                                }}
-                            </ui-tooltip>
-                        </span>
-                    @endif
-                @endcan
+                    <button
+                        class="btn btn--sm btn--transparent btn--start btn--end -my-sm"
+                        data-action="comment#toggleExpanded"
+                    >
+                        {{ __('waterhole::forum.comment-removed-message') }}
+                        @icon('tabler-chevron-right', ['class' => 'icon--narrow text-xxs'])
+                    </button>
+                </x-slot>
 
-                @if ($comment->deleted_reason)
-                    <span class="text-xxs">
-                        {{
-                            Lang::has($key = "waterhole::forum.report-reason-$comment->deleted_reason-label")
-                                ? __($key)
-                                : Str::headline($comment->deleted_reason)
-                        }}
-                    </span>
-                @endif
-
-                <x-waterhole::action-menu
-                    :for="$comment"
-                    placement="bottom-end"
-                    class="push-end"
-                />
-            </div>
+                <x-slot name="actions">
+                    <x-waterhole::action-menu
+                        :for="$comment"
+                        placement="bottom-end"
+                        class="-my-sm"
+                    />
+                </x-slot>
+            </x-waterhole::removed-banner>
         @endif
 
         <div class="comment__main stack gap-md">
