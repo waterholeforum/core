@@ -22,6 +22,7 @@
 
         @if ($displayDate = $editDate ?: $date)
             <span>
+                {{-- format-ignore-start --}}
                 @if ($permalink)
                     <a
                         href="{{ $permalink }}"
@@ -56,6 +57,7 @@
                 @else
                     </span>
                 @endif
+                {{-- format-ignore-end --}}
             </span>
         @endif
     </span>
