@@ -8,10 +8,7 @@ return new class extends Migration {
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table
-                ->float('hotness', 10, 4)
-                ->nullable()
-                ->index();
+            $table->float('hotness', 10, 4)->nullable()->index();
         });
     }
 

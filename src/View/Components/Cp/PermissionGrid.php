@@ -11,8 +11,7 @@ class PermissionGrid extends Component
         public array $abilities,
         public ?Model $scope,
         public array $defaults = [],
-    ) {
-    }
+    ) {}
 
     public function render()
     {

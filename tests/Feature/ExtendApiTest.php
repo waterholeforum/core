@@ -110,9 +110,7 @@ dataset('api resources with endpoints', [
     'channels' => [
         Extend\Api\ChannelsResource::class,
         function ($test) {
-            $channel = Channel::factory()
-                ->public()
-                ->create();
+            $channel = Channel::factory()->public()->create();
 
             return [
                 jsonApi('GET', "/api/channels/$channel->id"),
@@ -150,9 +148,7 @@ dataset('api resources with endpoints', [
     'pages' => [
         Extend\Api\PagesResource::class,
         function ($test) {
-            $page = Page::factory()
-                ->public()
-                ->create();
+            $page = Page::factory()->public()->create();
 
             return [
                 jsonApi('GET', "/api/pages/$page->id"),
@@ -232,9 +228,7 @@ dataset('api resources with relations', [
         Extend\Api\ChannelUsersResource::class,
         function ($test) {
             $user = User::factory()->create();
-            $channel = Channel::factory()
-                ->public()
-                ->create();
+            $channel = Channel::factory()->public()->create();
             $channelUser = ChannelUser::create([
                 'channel_id' => $channel->id,
                 'user_id' => $user->id,
@@ -351,9 +345,7 @@ dataset('api resources with relations', [
             $taxonomy->savePermissions(['group:1' => ['view' => true]]);
             Tag::create(['taxonomy_id' => $taxonomy->id, 'name' => 'Test Tag']);
 
-            $channel = Channel::factory()
-                ->public()
-                ->create();
+            $channel = Channel::factory()->public()->create();
             $channel->taxonomies()->attach($taxonomy);
 
             return [
@@ -370,9 +362,7 @@ dataset('api resources with relations', [
             $taxonomy->savePermissions(['group:1' => ['view' => true]]);
             $tag = Tag::create(['taxonomy_id' => $taxonomy->id, 'name' => 'Test Tag']);
 
-            $channel = Channel::factory()
-                ->public()
-                ->create();
+            $channel = Channel::factory()->public()->create();
             $channel->taxonomies()->attach($taxonomy);
 
             return [

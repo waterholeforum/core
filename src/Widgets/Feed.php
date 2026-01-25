@@ -23,9 +23,7 @@ class Feed extends Component
         $content = Cache::remember(
             'waterhole.feed.' . sha1($url),
             60 * 60 * 6,
-            fn() => Http::throw()
-                ->get($url)
-                ->body(),
+            fn() => Http::throw()->get($url)->body(),
         );
 
         $this->feed = Reader::importString($content);

@@ -15,10 +15,7 @@ class RssController extends Controller
 {
     public function posts()
     {
-        $posts = Post::whereRelation('channel', 'ignore', false)
-            ->latest()
-            ->take(20)
-            ->get();
+        $posts = Post::whereRelation('channel', 'ignore', false)->latest()->take(20)->get();
 
         $feed = new Feed();
         $feed->setTitle(config('waterhole.forum.name'));
@@ -29,10 +26,7 @@ class RssController extends Controller
 
     public function channel(Channel $channel)
     {
-        $posts = Post::whereBelongsTo($channel)
-            ->latest()
-            ->take(20)
-            ->get();
+        $posts = Post::whereBelongsTo($channel)->latest()->take(20)->get();
 
         $feed = new Feed();
         $feed->setTitle($channel->name . ' - ' . config('waterhole.forum.name'));

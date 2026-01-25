@@ -10,6 +10,4 @@ use Waterhole\Extend\Support\ComponentList;
  * Use this extender to add, remove, or reorder components rendered in this
  * region of the UI.
  */
-class DocumentHead extends ComponentList
-{
-}
+class DocumentHead extends ComponentList {}

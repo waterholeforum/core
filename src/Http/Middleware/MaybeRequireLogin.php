@@ -16,9 +16,7 @@ use Waterhole\Models\StructureLink;
  */
 class MaybeRequireLogin
 {
-    public function __construct(protected PermissionCollection $permissions)
-    {
-    }
+    public function __construct(protected PermissionCollection $permissions) {}
 
     public function handle(Request $request, Closure $next)
     {

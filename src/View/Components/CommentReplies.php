@@ -7,9 +7,7 @@ use Waterhole\Models\Comment;
 
 class CommentReplies extends Component
 {
-    public function __construct(public Comment $comment, public bool $withReplies = false)
-    {
-    }
+    public function __construct(public Comment $comment, public bool $withReplies = false) {}
 
     public function render()
     {

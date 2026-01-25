@@ -11,9 +11,7 @@ use function Waterhole\emojify;
 
 class ContentApproved extends Notification
 {
-    public function __construct(protected Post|Comment $subject)
-    {
-    }
+    public function __construct(protected Post|Comment $subject) {}
 
     public function via($notifiable): array
     {

@@ -9,9 +9,7 @@ use Waterhole\Models\StructureLink;
 
 class StructureLinkName extends Field
 {
-    public function __construct(public ?StructureLink $model)
-    {
-    }
+    public function __construct(public ?StructureLink $model) {}
 
     public function render(): string
     {

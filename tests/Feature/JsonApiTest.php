@@ -27,9 +27,7 @@ beforeEach(function () {
 
 describe('api/channels', function () {
     test('retrieve channel', function () {
-        $channel = Channel::factory()
-            ->public()
-            ->create();
+        $channel = Channel::factory()->public()->create();
 
         $response = jsonApi('GET', "/api/channels/$channel->id");
 
@@ -46,9 +44,7 @@ describe('api/channels', function () {
     test('retrieve channel user state', function () {
         $this->actingAs(User::factory()->create());
 
-        $channel = Channel::factory()
-            ->public()
-            ->create();
+        $channel = Channel::factory()->public()->create();
 
         $response = jsonApi('GET', "/api/channels/$channel->id?include=userState");
 
@@ -104,9 +100,7 @@ describe('api/groups', function () {
 
 describe('api/pages', function () {
     test('retrieve page', function () {
-        $page = Page::factory()
-            ->public()
-            ->create();
+        $page = Page::factory()->public()->create();
 
         $response = jsonApi('GET', "/api/pages/$page->id");
 
@@ -207,13 +201,9 @@ describe('api/posts', function () {
 
 describe('api/structure', function () {
     test('list structure', function () {
-        Channel::factory()
-            ->public()
-            ->create();
+        Channel::factory()->public()->create();
 
-        Page::factory()
-            ->public()
-            ->create();
+        Page::factory()->public()->create();
 
         $response = jsonApi('GET', '/api/structure?include=content');
 

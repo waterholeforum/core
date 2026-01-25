@@ -13,8 +13,7 @@ class MenuItem extends Component
         public ?string $label = null,
         public null|string|HtmlString $description = null,
         public ?string $href = null,
-    ) {
-    }
+    ) {}
 
     public function render()
     {

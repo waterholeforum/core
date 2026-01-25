@@ -14,8 +14,7 @@ class CommentFull extends Component
         public Comment $comment,
         public bool $withReplies = false,
         public bool|int $truncate = false,
-    ) {
-    }
+    ) {}
 
     public function render()
     {

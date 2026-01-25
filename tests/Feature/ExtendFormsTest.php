@@ -161,9 +161,7 @@ dataset('form_extenders', [
         Extend\Forms\PostForm::class,
         fn($extender, $marker) => $extender->add(ExtendTestRenderField::class, 'extend-test'),
         function ($test) {
-            $channel = Channel::factory()
-                ->public()
-                ->create();
+            $channel = Channel::factory()->public()->create();
 
             return $test
                 ->actingAs(extendTestAdminUser())
@@ -176,9 +174,7 @@ class ExtendTestRenderField extends Field
 {
     public const MARKER = 'Extend Test Field';
 
-    public function __construct(public ?Model $model)
-    {
-    }
+    public function __construct(public ?Model $model) {}
 
     public function render(): string
     {
@@ -199,9 +195,7 @@ class ExtendTestPersistField extends Field
         self::$savedUserId = null;
     }
 
-    public function __construct(public ?User $model)
-    {
-    }
+    public function __construct(public ?User $model) {}
 
     public function render(): string
     {

@@ -16,9 +16,7 @@ class GroupChannelPermissions extends Field
 
     public function __construct(public ?Group $model)
     {
-        $this->structure = Structure::with('content')
-            ->orderBy('position')
-            ->get();
+        $this->structure = Structure::with('content')->orderBy('position')->get();
 
         // Construct an array of all abilities that apply to the structure
         // content to use as columns for the permission grid.

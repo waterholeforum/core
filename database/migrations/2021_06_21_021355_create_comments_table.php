@@ -9,11 +9,7 @@ return new class extends Migration {
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table
-                ->foreignId('post_id')
-                ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+            $table->foreignId('post_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table
                 ->foreignId('parent_id')
                 ->nullable()
@@ -27,19 +23,10 @@ return new class extends Migration {
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
             $table->mediumText('body')->fulltext();
-            $table
-                ->timestamp('created_at')
-                ->nullable()
-                ->index();
-            $table
-                ->timestamp('edited_at')
-                ->nullable()
-                ->index();
+            $table->timestamp('created_at')->nullable()->index();
+            $table->timestamp('edited_at')->nullable()->index();
             $table->unsignedInteger('reply_count')->default(0);
-            $table
-                ->integer('score')
-                ->default(0)
-                ->index();
+            $table->integer('score')->default(0)->index();
         });
     }
 

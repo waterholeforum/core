@@ -66,9 +66,7 @@ describe('Routing extenders', function () {
             $admin = User::factory()->create();
             $admin->groups()->attach(Group::ADMIN_ID);
 
-            $this->actingAs($admin)
-                ->get('/cp/extend-test')
-                ->assertSeeText('ok');
+            $this->actingAs($admin)->get('/cp/extend-test')->assertSeeText('ok');
         } finally {
             Route::setRoutes($originalRoutes);
         }

@@ -13,8 +13,7 @@ class TextEditorButton extends Component
         public ?string $id = null,
         public ?string $format = null,
         public ?string $hotkey = null,
-    ) {
-    }
+    ) {}
 
     public function render(): View
     {

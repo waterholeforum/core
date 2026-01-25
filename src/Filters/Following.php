@@ -17,9 +17,6 @@ class Following extends Filter
 
     public function apply(Builder $query): void
     {
-        $query
-            ->following()
-            ->leftJoinRelation('userState')
-            ->latest('followed_at');
+        $query->following()->leftJoinRelation('userState')->latest('followed_at');
     }
 }

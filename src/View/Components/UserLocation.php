@@ -7,9 +7,7 @@ use Waterhole\Models\User;
 
 class UserLocation extends Component
 {
-    public function __construct(public User $user)
-    {
-    }
+    public function __construct(public User $user) {}
 
     public function shouldRender()
     {

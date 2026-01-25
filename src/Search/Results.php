@@ -10,6 +10,5 @@ class Results
         public bool $exhaustiveTotal = false,
         public array $channelHits = [],
         public ?string $error = null,
-    ) {
-    }
+    ) {}
 }

@@ -9,9 +9,7 @@ use Waterhole\Models\Channel;
 
 class ChannelSimilarPosts extends Field
 {
-    public function __construct(public ?Channel $model)
-    {
-    }
+    public function __construct(public ?Channel $model) {}
 
     public function render(): string
     {

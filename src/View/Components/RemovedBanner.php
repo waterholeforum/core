@@ -7,9 +7,7 @@ use Waterhole\Models\Model;
 
 class RemovedBanner extends Component
 {
-    public function __construct(public Model $subject)
-    {
-    }
+    public function __construct(public Model $subject) {}
 
     public function render()
     {

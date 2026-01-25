@@ -8,16 +8,8 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('post_user', function (Blueprint $table) {
-            $table
-                ->foreignId('post_id')
-                ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-            $table
-                ->foreignId('user_id')
-                ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+            $table->foreignId('post_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamp('last_read_at')->nullable();
             $table->string('notifications')->nullable();
             $table->timestamp('followed_at')->nullable();

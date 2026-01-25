@@ -9,11 +9,7 @@ return new class extends Migration {
     {
         Schema::create('mentions', function (Blueprint $table) {
             $table->morphs('content');
-            $table
-                ->foreignId('user_id')
-                ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
 
             $table->primary(['content_type', 'content_id', 'user_id']);
         });

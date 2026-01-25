@@ -14,8 +14,7 @@ class Selector extends Component
         public $value = null,
         public string $buttonClass = '',
         public ?string $placeholder = null,
-    ) {
-    }
+    ) {}
 
     public function render()
     {

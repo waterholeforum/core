@@ -7,9 +7,7 @@ use Waterhole\Sso\Payload;
 
 class SsoUser implements User
 {
-    public function __construct(private readonly Payload $payload)
-    {
-    }
+    public function __construct(private readonly Payload $payload) {}
 
     public function getId()
     {

@@ -9,9 +9,7 @@ use Waterhole\Models\ReactionSet;
 
 class ReactionSetName extends Field
 {
-    public function __construct(public ?ReactionSet $model)
-    {
-    }
+    public function __construct(public ?ReactionSet $model) {}
 
     public function render(): string
     {

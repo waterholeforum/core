@@ -12,9 +12,7 @@ use Waterhole\Models\User;
 
 class UserPassword extends Field
 {
-    public function __construct(public User $model, public ?SsoPayload $payload = null)
-    {
-    }
+    public function __construct(public User $model, public ?SsoPayload $payload = null) {}
 
     public function shouldRender(): bool
     {

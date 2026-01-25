@@ -8,9 +8,7 @@ use Waterhole\Forms\Field;
 
 class ChannelLayoutList extends Field
 {
-    public function __construct(public object $model)
-    {
-    }
+    public function __construct(public object $model) {}
 
     public function render()
     {

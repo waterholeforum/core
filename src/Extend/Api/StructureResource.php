@@ -27,12 +27,7 @@ class StructureResource extends Resource
 
             ->add(Attribute::make('isListed')->type(Type\Boolean::make()), 'isListed')
 
-            ->add(
-                ToOne::make('content')
-                    ->collection('structureContent')
-                    ->includable(),
-                'content',
-            );
+            ->add(ToOne::make('content')->collection('structureContent')->includable(), 'content');
 
         $this->sorts->add(SortColumn::make('position'), 'position');
     }

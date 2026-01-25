@@ -52,18 +52,12 @@ class ChannelsResource extends Resource
             ->add(Attribute::make('url')->type(Type\Str::make()->format('uri')), 'url')
 
             ->add(
-                ToOne::make('postsReactionSet')
-                    ->type('reactionSets')
-                    ->nullable()
-                    ->includable(),
+                ToOne::make('postsReactionSet')->type('reactionSets')->nullable()->includable(),
                 'postsReactionSet',
             )
 
             ->add(
-                ToOne::make('commentsReactionSet')
-                    ->type('reactionSets')
-                    ->nullable()
-                    ->includable(),
+                ToOne::make('commentsReactionSet')->type('reactionSets')->nullable()->includable(),
                 'commentsReactionSet',
             )
 
@@ -71,11 +65,6 @@ class ChannelsResource extends Resource
 
             ->add(ToMany::make('posts'), 'posts')
 
-            ->add(
-                ToOne::make('userState')
-                    ->type('channelUsers')
-                    ->includable(),
-                'userState',
-            );
+            ->add(ToOne::make('userState')->type('channelUsers')->includable(), 'userState');
     }
 }

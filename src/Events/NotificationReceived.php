@@ -12,9 +12,7 @@ use Waterhole\View\TurboStream;
 
 class NotificationReceived implements ShouldBroadcast, TransactionalEvent
 {
-    public function __construct(protected Notification $notification)
-    {
-    }
+    public function __construct(protected Notification $notification) {}
 
     public function broadcastOn()
     {

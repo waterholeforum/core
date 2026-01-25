@@ -70,11 +70,9 @@ class RegisterController extends Controller
             abort(400, 'Password registration is disabled');
         }
 
-        $user->groups()->syncWithoutDetaching(
-            Group::query()
-                ->where('auto_assign', true)
-                ->pluck('id'),
-        );
+        $user
+            ->groups()
+            ->syncWithoutDetaching(Group::query()->where('auto_assign', true)->pluck('id'));
 
         event(new Registered($user));
 
@@ -84,9 +82,7 @@ class RegisterController extends Controller
 
         // Remove the fragment so that the email verification notice at the top
         // of the page is visible.
-        return redirect()
-            ->intended(route('waterhole.home'))
-            ->withoutFragment();
+        return redirect()->intended(route('waterhole.home'))->withoutFragment();
     }
 
     private function form(User $user, ?string $payload = null)

@@ -31,23 +31,17 @@ class PostUsersResource extends Resource
             )
 
             ->add(
-                Attribute::make('lastReadAt')
-                    ->type(Type\DateTime::make())
-                    ->nullable(),
+                Attribute::make('lastReadAt')->type(Type\DateTime::make())->nullable(),
                 'lastReadAt',
             )
 
             ->add(
-                Attribute::make('followedAt')
-                    ->type(Type\DateTime::make())
-                    ->nullable(),
+                Attribute::make('followedAt')->type(Type\DateTime::make())->nullable(),
                 'followedAt',
             )
 
             ->add(
-                Attribute::make('mentionedAt')
-                    ->type(Type\DateTime::make())
-                    ->nullable(),
+                Attribute::make('mentionedAt')->type(Type\DateTime::make())->nullable(),
                 'mentionedAt',
             );
     }

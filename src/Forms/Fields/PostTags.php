@@ -85,10 +85,6 @@ class PostTags extends Field
                 ),
             );
 
-        $this->model->tags()->attach(
-            collect($request->validated('tag_ids'))
-                ->flatten()
-                ->filter(),
-        );
+        $this->model->tags()->attach(collect($request->validated('tag_ids'))->flatten()->filter());
     }
 }

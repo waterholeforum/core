@@ -7,9 +7,7 @@ use Waterhole\Models\Notification as NotificationModel;
 
 class Notification extends Component
 {
-    public function __construct(public NotificationModel $notification)
-    {
-    }
+    public function __construct(public NotificationModel $notification) {}
 
     public function shouldRender()
     {

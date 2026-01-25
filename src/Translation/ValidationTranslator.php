@@ -10,9 +10,7 @@ final class ValidationTranslator implements TranslatorContract
 {
     use ForwardsCalls;
 
-    public function __construct(protected TranslatorContract $baseTranslator)
-    {
-    }
+    public function __construct(protected TranslatorContract $baseTranslator) {}
 
     public function parseKey($key): array
     {

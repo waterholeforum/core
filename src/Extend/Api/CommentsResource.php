@@ -30,78 +30,38 @@ class CommentsResource extends Resource
         }, 'default');
 
         $this->endpoints
-            ->add(
-                Endpoint\Index::make()
-                    ->paginate()
-                    ->defaultSort('-createdAt'),
-                'index',
-            )
+            ->add(Endpoint\Index::make()->paginate()->defaultSort('-createdAt'), 'index')
 
             ->add(Endpoint\Show::make(), 'show');
 
         $this->fields
             ->add(ToOne::make('post')->includable(), 'post')
 
-            ->add(
-                ToOne::make('parent')
-                    ->type('comments')
-                    ->nullable()
-                    ->includable(),
-                'parent',
-            )
+            ->add(ToOne::make('parent')->type('comments')->nullable()->includable(), 'parent')
 
-            ->add(
-                ToOne::make('user')
-                    ->nullable()
-                    ->includable(),
-                'user',
-            )
+            ->add(ToOne::make('user')->nullable()->includable(), 'user')
 
-            ->add(
-                Attribute::make('body')
-                    ->type(Type\Str::make())
-                    ->sparse(),
-                'body',
-            )
+            ->add(Attribute::make('body')->type(Type\Str::make())->sparse(), 'body')
 
-            ->add(
-                Attribute::make('bodyText')
-                    ->type(Type\Str::make())
-                    ->sparse(),
-                'bodyText',
-            )
+            ->add(Attribute::make('bodyText')->type(Type\Str::make())->sparse(), 'bodyText')
 
             ->add(Attribute::make('bodyHtml')->type(Type\Str::make()->format('html')), 'bodyHtml')
 
             ->add(Attribute::make('createdAt')->type(Type\DateTime::make()), 'createdAt')
 
-            ->add(
-                Attribute::make('editedAt')
-                    ->type(Type\DateTime::make())
-                    ->nullable(),
-                'editedAt',
-            )
+            ->add(Attribute::make('editedAt')->type(Type\DateTime::make())->nullable(), 'editedAt')
 
             ->add(Attribute::make('replyCount')->type(Type\Integer::make()), 'replyCount')
 
             ->add(
-                Attribute::make('deletedAt')
-                    ->type(Type\DateTime::make())
-                    ->nullable(),
+                Attribute::make('deletedAt')->type(Type\DateTime::make())->nullable(),
                 'deletedAt',
             )
 
-            ->add(
-                ToOne::make('deletedBy')
-                    ->type('users')
-                    ->nullable(),
-                'deletedBy',
-            )
+            ->add(ToOne::make('deletedBy')->type('users')->nullable(), 'deletedBy')
 
             ->add(
-                Attribute::make('deletedReason')
-                    ->type(Type\Str::make())
-                    ->nullable(),
+                Attribute::make('deletedReason')->type(Type\Str::make())->nullable(),
                 'deletedReason',
             )
 

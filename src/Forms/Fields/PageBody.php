@@ -9,9 +9,7 @@ use Waterhole\Models\Page;
 
 class PageBody extends Field
 {
-    public function __construct(public ?Page $model)
-    {
-    }
+    public function __construct(public ?Page $model) {}
 
     public function render(): string
     {

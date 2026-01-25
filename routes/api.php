@@ -10,6 +10,4 @@ use Waterhole\Http\Controllers;
 
 resolve(Waterhole\Extend\Routing\ApiRoutes::class);
 
-Route::any('{uri?}', Controllers\Api\ApiController::class)
-    ->where('uri', '.*')
-    ->name('main');
+Route::any('{uri?}', Controllers\Api\ApiController::class)->where('uri', '.*')->name('main');

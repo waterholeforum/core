@@ -7,9 +7,11 @@ use Illuminate\Validation\Validator;
 
 class FormSection extends Field
 {
-    public function __construct(public string $title, public array $items, public bool $open = true)
-    {
-    }
+    public function __construct(
+        public string $title,
+        public array $items,
+        public bool $open = true,
+    ) {}
 
     public function render(): string
     {

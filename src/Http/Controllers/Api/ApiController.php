@@ -11,9 +11,7 @@ use Waterhole\Http\Controllers\Controller;
 
 class ApiController extends Controller
 {
-    public function __construct(private readonly JsonApi $api)
-    {
-    }
+    public function __construct(private readonly JsonApi $api) {}
 
     public function __invoke(Request $request)
     {

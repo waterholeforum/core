@@ -16,9 +16,7 @@ beforeEach(function () {
 test('guests are denied gated abilities when the forum is private', function () {
     config(['waterhole.forum.public' => false]);
 
-    $channel = Channel::factory()
-        ->public()
-        ->create();
+    $channel = Channel::factory()->public()->create();
 
     $user = User::factory()->create();
 

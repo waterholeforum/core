@@ -10,6 +10,4 @@ use Tobyz\JsonApiServer\JsonApi as BaseJsonApi;
  * Use this extender to register additional resources, collections, and
  * extensions.
  */
-class JsonApi extends BaseJsonApi
-{
-}
+class JsonApi extends BaseJsonApi {}

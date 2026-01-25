@@ -9,9 +9,7 @@ use Waterhole\Models\User;
 
 class VerifyEmail extends Notification
 {
-    public function __construct(private User $user, private string $email)
-    {
-    }
+    public function __construct(private User $user, private string $email) {}
 
     public function via(): array
     {

@@ -8,10 +8,7 @@ return new class extends Migration {
     public function up()
     {
         Schema::table('flags', function (Blueprint $table) {
-            $table
-                ->text('note')
-                ->nullable()
-                ->after('reason');
+            $table->text('note')->nullable()->after('reason');
         });
     }
 

@@ -9,9 +9,7 @@ use Waterhole\Models\Group;
 
 class GroupRules extends Field
 {
-    public function __construct(public ?Group $model)
-    {
-    }
+    public function __construct(public ?Group $model) {}
 
     public function render(): string
     {

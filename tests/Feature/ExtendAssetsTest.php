@@ -52,9 +52,7 @@ describe('Assets extenders', function () {
     });
 
     test('add locale', function () {
-        Channel::factory()
-            ->public()
-            ->create();
+        Channel::factory()->public()->create();
 
         extend(function (Extend\Assets\Locales $locales) {
             $locales->add('French', 'fr');

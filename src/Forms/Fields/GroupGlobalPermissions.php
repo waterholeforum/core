@@ -7,9 +7,7 @@ use Waterhole\Models\Group;
 
 class GroupGlobalPermissions extends Field
 {
-    public function __construct(public ?Group $model)
-    {
-    }
+    public function __construct(public ?Group $model) {}
 
     public function render(): string
     {

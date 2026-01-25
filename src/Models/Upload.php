@@ -53,10 +53,7 @@ class Upload extends Model
     public function prunable(): Builder
     {
         return static::whereNotExists(function ($query) {
-            $query
-                ->select('*')
-                ->from('attachments')
-                ->whereColumn('upload_id', 'id');
+            $query->select('*')->from('attachments')->whereColumn('upload_id', 'id');
         });
     }
 }

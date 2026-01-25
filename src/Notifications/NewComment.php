@@ -12,9 +12,7 @@ use function Waterhole\emojify;
 
 class NewComment extends Notification
 {
-    public function __construct(protected Comment $comment)
-    {
-    }
+    public function __construct(protected Comment $comment) {}
 
     public function content(): Comment
     {

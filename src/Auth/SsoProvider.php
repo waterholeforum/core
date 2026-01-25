@@ -17,8 +17,7 @@ final class SsoProvider implements Provider
         private readonly Request $request,
         private readonly string $url,
         private readonly WaterholeSso $sso,
-    ) {
-    }
+    ) {}
 
     public function redirect(): RedirectResponse
     {

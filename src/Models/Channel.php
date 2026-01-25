@@ -91,9 +91,7 @@ class Channel extends Model
      */
     public function unreadPosts(): HasMany
     {
-        return $this->posts()
-            ->following()
-            ->unread();
+        return $this->posts()->following()->unread();
     }
 
     /**

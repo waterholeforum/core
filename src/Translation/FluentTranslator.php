@@ -46,8 +46,7 @@ final class FluentTranslator implements TranslatorContract
         protected array $bundleOptions,
         protected ?string $cachePath = null,
         protected array $functions = [],
-    ) {
-    }
+    ) {}
 
     public function hasForLocale(string $key, ?string $locale = null): bool
     {

@@ -9,11 +9,7 @@ return new class extends Migration {
     {
         Schema::create('reactions', function (Blueprint $table) {
             $table->id();
-            $table
-                ->foreignId('user_id')
-                ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table
                 ->foreignId('reaction_type_id')
                 ->constrained()

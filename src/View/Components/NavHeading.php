@@ -6,9 +6,7 @@ use Illuminate\View\Component;
 
 class NavHeading extends Component
 {
-    public function __construct(public string $heading)
-    {
-    }
+    public function __construct(public string $heading) {}
 
     public function render()
     {

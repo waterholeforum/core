@@ -9,9 +9,7 @@ use Waterhole\Models\Taxonomy;
 
 class TaxonomyOptions extends Field
 {
-    public function __construct(public ?Taxonomy $model)
-    {
-    }
+    public function __construct(public ?Taxonomy $model) {}
 
     public function render(): string
     {

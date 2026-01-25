@@ -8,9 +8,7 @@ use Waterhole\Licensing\Outpost;
 
 class ContactOutpost
 {
-    public function __construct(private Outpost $outpost)
-    {
-    }
+    public function __construct(private Outpost $outpost) {}
 
     public function handle($request, Closure $next)
     {

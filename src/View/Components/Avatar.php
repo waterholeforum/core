@@ -9,9 +9,7 @@ class Avatar extends Component
 {
     protected static array $colorCache = [];
 
-    public function __construct(public ?User $user = null)
-    {
-    }
+    public function __construct(public ?User $user = null) {}
 
     public function render()
     {

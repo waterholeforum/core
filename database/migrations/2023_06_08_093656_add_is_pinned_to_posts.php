@@ -8,10 +8,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table
-                ->boolean('is_pinned')
-                ->default(0)
-                ->index();
+            $table->boolean('is_pinned')->default(0)->index();
         });
     }
 

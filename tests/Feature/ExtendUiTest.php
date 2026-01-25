@@ -46,9 +46,7 @@ describe('Ui extenders', function () {
             $menu->add(new HtmlString('Extend User Menu'));
         });
 
-        $channel = Channel::factory()
-            ->public()
-            ->create();
+        $channel = Channel::factory()->public()->create();
 
         Post::factory()
             ->for($channel)
@@ -136,9 +134,7 @@ describe('Ui extenders', function () {
             $editor->add(new HtmlString('Extend Text Editor'));
         });
 
-        $channel = Channel::factory()
-            ->public()
-            ->create();
+        $channel = Channel::factory()->public()->create();
 
         $admin = User::factory()->create();
         $admin->groups()->attach(Group::ADMIN_ID);

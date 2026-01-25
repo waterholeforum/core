@@ -9,9 +9,7 @@ use Waterhole\Models\Model;
 
 class Permissions extends Field
 {
-    public function __construct(public ?Model $model)
-    {
-    }
+    public function __construct(public ?Model $model) {}
 
     public function render(): string
     {

@@ -7,9 +7,7 @@ use Waterhole\Models\Post;
 
 class PostTrash extends Component
 {
-    public function __construct(public Post $post)
-    {
-    }
+    public function __construct(public Post $post) {}
 
     public function shouldRender(): bool
     {

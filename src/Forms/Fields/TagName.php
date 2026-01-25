@@ -9,9 +9,7 @@ use Waterhole\Models\Tag;
 
 class TagName extends Field
 {
-    public function __construct(public ?Tag $model)
-    {
-    }
+    public function __construct(public ?Tag $model) {}
 
     public function render(): string
     {

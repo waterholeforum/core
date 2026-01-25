@@ -7,9 +7,7 @@ use Waterhole\Models\Post;
 
 class PostAttribution extends Component
 {
-    public function __construct(public Post $post)
-    {
-    }
+    public function __construct(public Post $post) {}
 
     public function render()
     {

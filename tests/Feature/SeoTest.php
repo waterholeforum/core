@@ -18,9 +18,7 @@ beforeEach(function () {
 });
 
 test('home page includes seo tags', function () {
-    Channel::factory()
-        ->public()
-        ->create();
+    Channel::factory()->public()->create();
 
     $this->get('/')
         ->assertSeeHtml('<meta name="description" content="Default SEO description." />')

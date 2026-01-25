@@ -71,10 +71,7 @@ class CommentController extends Controller
         // can either be specified in a query parameter, or it may be present
         // in old POST data.
         if ($parentId = $request->get('parent', $request->old('parent_id'))) {
-            $parent = $post
-                ->comments()
-                ->withoutTrashed()
-                ->findOrFail($parentId);
+            $parent = $post->comments()->withoutTrashed()->findOrFail($parentId);
         } else {
             $parent = null;
         }
@@ -108,10 +105,7 @@ class CommentController extends Controller
         // we still need to make sure that it's a comment on the same post as
         // we are creating a comment on.
         if ($parentId = $data['parent_id'] ?? null) {
-            $parent = $post
-                ->comments()
-                ->withoutTrashed()
-                ->findOrFail($parentId);
+            $parent = $post->comments()->withoutTrashed()->findOrFail($parentId);
         }
 
         $post->comments()->save($comment = new Comment($data));

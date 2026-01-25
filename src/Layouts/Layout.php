@@ -38,9 +38,7 @@ abstract class Layout
     /**
      * Apply a scope to the post feed query when this layout is active.
      */
-    public function scope(Builder $query): void
-    {
-    }
+    public function scope(Builder $query): void {}
 
     /**
      * Name of the Waterhole\Forms\Field class for configuration of the layout.

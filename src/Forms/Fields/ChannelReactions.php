@@ -11,9 +11,7 @@ use Waterhole\Models\ReactionSet;
 
 class ChannelReactions extends Field
 {
-    public function __construct(public ?Channel $model)
-    {
-    }
+    public function __construct(public ?Channel $model) {}
 
     public function render(): string
     {

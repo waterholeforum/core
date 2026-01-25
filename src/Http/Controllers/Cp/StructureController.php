@@ -13,9 +13,7 @@ class StructureController extends Controller
 {
     public function index()
     {
-        $structure = Structure::with('content')
-            ->orderBy('position')
-            ->get();
+        $structure = Structure::with('content')->orderBy('position')->get();
 
         return view('waterhole::cp.structure.index', compact('structure'));
     }

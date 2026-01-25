@@ -16,10 +16,7 @@ class GroupController extends Controller
 {
     public function index()
     {
-        $groups = Group::custom()
-            ->withCount('users')
-            ->orderBy('name')
-            ->get();
+        $groups = Group::custom()->withCount('users')->orderBy('name')->get();
 
         return view('waterhole::cp.groups.index', compact('groups'));
     }

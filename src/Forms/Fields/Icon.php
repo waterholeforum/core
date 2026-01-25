@@ -9,9 +9,7 @@ use Waterhole\View\Components\Cp\IconPicker;
 
 class Icon extends Field
 {
-    public function __construct(public $model = null)
-    {
-    }
+    public function __construct(public $model = null) {}
 
     public function render(): string
     {

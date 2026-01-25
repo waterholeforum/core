@@ -70,12 +70,7 @@ describe('Actions extenders', function () {
 });
 
 dataset('actionables', [
-    'channel' => [
-        Channel::class,
-        fn() => Channel::factory()
-            ->public()
-            ->create(),
-    ],
+    'channel' => [Channel::class, fn() => Channel::factory()->public()->create()],
     'comment' => [
         Comment::class,
         fn() => Comment::factory()
@@ -86,12 +81,7 @@ dataset('actionables', [
         \Waterhole\Models\Group::class,
         fn() => \Waterhole\Models\Group::create(['name' => 'Test Group', 'is_public' => true]),
     ],
-    'page' => [
-        Page::class,
-        fn() => Page::factory()
-            ->public()
-            ->create(),
-    ],
+    'page' => [Page::class, fn() => Page::factory()->public()->create()],
     'post' => [
         Post::class,
         fn() => Post::factory()

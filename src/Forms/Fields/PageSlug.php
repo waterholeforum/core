@@ -10,9 +10,7 @@ use Waterhole\Models\Page;
 
 class PageSlug extends Field
 {
-    public function __construct(public ?Page $model)
-    {
-    }
+    public function __construct(public ?Page $model) {}
 
     public function render(): string
     {

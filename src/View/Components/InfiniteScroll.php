@@ -12,8 +12,7 @@ class InfiniteScroll extends Component
         public Paginator|CursorPaginator $paginator,
         public bool $divider = false,
         public bool $endless = false,
-    ) {
-    }
+    ) {}
 
     public function render()
     {

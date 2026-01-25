@@ -11,7 +11,7 @@ export default class extends Controller<HTMLDetailsElement> {
                 ':not([hidden])' +
                 ':not([disabled])' +
                 ':not([type="hidden"])' +
-                ':not([tabindex="-1"])'
+                ':not([tabindex="-1"])',
         );
 
         if (target) {

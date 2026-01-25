@@ -7,9 +7,7 @@ use Waterhole\Auth\Providers;
 
 class AuthButtons extends Component
 {
-    public function __construct(public Providers $providers)
-    {
-    }
+    public function __construct(public Providers $providers) {}
 
     public function shouldRender(): bool
     {

@@ -7,9 +7,7 @@ use Waterhole\Models\Structure;
 
 class StructureNode extends Component
 {
-    public function __construct(public Structure $node)
-    {
-    }
+    public function __construct(public Structure $node) {}
 
     public function render()
     {

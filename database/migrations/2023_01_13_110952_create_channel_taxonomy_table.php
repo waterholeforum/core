@@ -8,16 +8,8 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('channel_taxonomy', function (Blueprint $table) {
-            $table
-                ->foreignId('channel_id')
-                ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-            $table
-                ->foreignId('taxonomy_id')
-                ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+            $table->foreignId('channel_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('taxonomy_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
         });
     }
 

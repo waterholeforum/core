@@ -78,9 +78,7 @@ class InstallCommand extends Command
             'email_verified_at' => now(),
         ];
 
-        User::create($data)
-            ->groups()
-            ->attach(Group::ADMIN_ID);
+        User::create($data)->groups()->attach(Group::ADMIN_ID);
 
         $this->info('Admin user created.');
     }

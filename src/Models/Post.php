@@ -93,10 +93,7 @@ class Post extends Model
 
         // Delete comments one at a time to trigger event listeners.
         static::forceDeleting(function (self $post) {
-            $post
-                ->comments()
-                ->lazy()
-                ->each->delete();
+            $post->comments()->lazy()->each->delete();
         });
 
         static::saving(function (self $post) {
@@ -123,11 +120,9 @@ class Post extends Model
         broadcast(new NewPost($this))->toOthers();
 
         // When a new post is created, send notifications to mentioned users.
-        $users = $this->mentions->except($this->user_id)->filter(
-            fn(User $user) => Post::visible($user)
-                ->whereKey($this->id)
-                ->exists(),
-        );
+        $users = $this->mentions
+            ->except($this->user_id)
+            ->filter(fn(User $user) => Post::visible($user)->whereKey($this->id)->exists());
 
         $this->usersWereMentioned($users);
 
@@ -174,14 +169,16 @@ class Post extends Model
      */
     public function scopeWithUnreadCommentsCount(Builder $query): void
     {
-        $query->leftJoinRelation('userState')->selectSub(
-            Comment::query()
-                ->withoutGlobalScope('visible')
-                ->selectRaw('COUNT(*)')
-                ->whereColumn('comments.post_id', 'posts.id')
-                ->whereColumn('comments.created_at', '>', 'last_read_at'),
-            'unread_comments_count',
-        );
+        $query
+            ->leftJoinRelation('userState')
+            ->selectSub(
+                Comment::query()
+                    ->withoutGlobalScope('visible')
+                    ->selectRaw('COUNT(*)')
+                    ->whereColumn('comments.post_id', 'posts.id')
+                    ->whereColumn('comments.created_at', '>', 'last_read_at'),
+                'unread_comments_count',
+            );
     }
 
     /**
@@ -363,9 +360,7 @@ class Post extends Model
 
     public function resolveRouteBinding($value, $field = null)
     {
-        return $this->select('*')
-            ->whereKey(explode('-', $value)[0])
-            ->firstOrFail();
+        return $this->select('*')->whereKey(explode('-', $value)[0])->firstOrFail();
     }
 
     protected function url(): Attribute

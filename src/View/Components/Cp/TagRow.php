@@ -10,9 +10,7 @@ class TagRow extends Component
 {
     use Streamable;
 
-    public function __construct(public Tag $tag)
-    {
-    }
+    public function __construct(public Tag $tag) {}
 
     public function render(): string
     {

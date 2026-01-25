@@ -16,9 +16,7 @@ class NewPost implements ShouldBroadcast, TransactionalEvent
     use Dispatchable;
     use InteractsWithSockets;
 
-    public function __construct(protected Post $post)
-    {
-    }
+    public function __construct(protected Post $post) {}
 
     public function broadcastOn()
     {

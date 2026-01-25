@@ -11,9 +11,7 @@ use function Waterhole\emojify;
 
 class NewPost extends Notification
 {
-    public function __construct(protected Post $post)
-    {
-    }
+    public function __construct(protected Post $post) {}
 
     public function content(): Post
     {

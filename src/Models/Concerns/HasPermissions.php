@@ -100,9 +100,7 @@ trait HasPermissions
             return null;
         }
 
-        $permissions = Waterhole::permissions()
-            ->scope($this)
-            ->where('ability', $ability);
+        $permissions = Waterhole::permissions()->scope($this)->where('ability', $ability);
 
         $groupIds = $permissions
             ->where('recipient_type', (new Group())->getMorphClass())
@@ -116,10 +114,7 @@ trait HasPermissions
             ->whereIn('group_id', [...$groupIds, Group::ADMIN_ID])
             ->pluck('user_id');
 
-        $userIds = $groupUserIds
-            ->merge($userIds)
-            ->unique()
-            ->values();
+        $userIds = $groupUserIds->merge($userIds)->unique()->values();
 
         return User::with('groups')->findMany($userIds);
     }

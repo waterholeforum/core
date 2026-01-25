@@ -19,13 +19,15 @@ class CommentIndexScope implements Scope
             return;
         }
 
-        $builder->select($builder->qualifyColumn('*'))->selectSub(
-            DB::connection(config('waterhole.system.database'))
-                ->table('comments', 'ci')
-                ->selectRaw('count(*)')
-                ->whereColumn('ci.post_id', $builder->qualifyColumn('post_id'))
-                ->whereColumn('ci.id', '<', $builder->qualifyColumn('id')),
-            'index',
-        );
+        $builder
+            ->select($builder->qualifyColumn('*'))
+            ->selectSub(
+                DB::connection(config('waterhole.system.database'))
+                    ->table('comments', 'ci')
+                    ->selectRaw('count(*)')
+                    ->whereColumn('ci.post_id', $builder->qualifyColumn('post_id'))
+                    ->whereColumn('ci.id', '<', $builder->qualifyColumn('id')),
+                'index',
+            );
     }
 }

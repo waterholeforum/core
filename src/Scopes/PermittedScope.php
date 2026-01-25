@@ -26,8 +26,7 @@ class PermittedScope implements Scope
         private string $key = 'id',
         private string $ability = 'view',
         private ?User $user = null,
-    ) {
-    }
+    ) {}
 
     public function apply(Builder $builder, Model $model)
     {

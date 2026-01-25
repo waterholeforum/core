@@ -29,8 +29,7 @@ class Formatter
         protected Filesystem $files,
         protected Repository $cache,
         protected string $cacheKey,
-    ) {
-    }
+    ) {}
 
     /**
      * Add a configuration callback to the formatter.

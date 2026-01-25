@@ -35,26 +35,11 @@ class UsersResource extends Resource
             // TODO: visibility
             ->add(Attribute::make('locale')->type(Type\Str::make()), 'locale')
 
-            ->add(
-                Attribute::make('headline')
-                    ->type(Type\Str::make())
-                    ->nullable(),
-                'headline',
-            )
+            ->add(Attribute::make('headline')->type(Type\Str::make())->nullable(), 'headline')
 
-            ->add(
-                Attribute::make('bio')
-                    ->type(Type\Str::make())
-                    ->nullable(),
-                'bio',
-            )
+            ->add(Attribute::make('bio')->type(Type\Str::make())->nullable(), 'bio')
 
-            ->add(
-                Attribute::make('location')
-                    ->type(Type\Str::make())
-                    ->nullable(),
-                'location',
-            )
+            ->add(Attribute::make('location')->type(Type\Str::make())->nullable(), 'location')
 
             ->add(
                 Attribute::make('website')
@@ -71,25 +56,19 @@ class UsersResource extends Resource
             )
 
             ->add(
-                Attribute::make('createdAt')
-                    ->type(Type\DateTime::make())
-                    ->nullable(),
+                Attribute::make('createdAt')->type(Type\DateTime::make())->nullable(),
                 'createdAt',
             )
 
             // TODO: visibility
             ->add(
-                Attribute::make('lastSeenAt')
-                    ->type(Type\DateTime::make())
-                    ->nullable(),
+                Attribute::make('lastSeenAt')->type(Type\DateTime::make())->nullable(),
                 'lastSeenAt',
             )
 
             // TODO: visibility
             ->add(
-                Attribute::make('suspendedUntil')
-                    ->type(Type\DateTime::make())
-                    ->nullable(),
+                Attribute::make('suspendedUntil')->type(Type\DateTime::make())->nullable(),
                 'suspendedUntil',
             )
 

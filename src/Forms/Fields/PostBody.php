@@ -9,9 +9,7 @@ use Waterhole\Models\Post;
 
 class PostBody extends Field
 {
-    public function __construct(public ?Post $model)
-    {
-    }
+    public function __construct(public ?Post $model) {}
 
     public function render(): string
     {

@@ -10,9 +10,7 @@ use Waterhole\Models\User;
 
 class UserAvatar extends Field
 {
-    public function __construct(public User $model)
-    {
-    }
+    public function __construct(public User $model) {}
 
     public function render(): string
     {

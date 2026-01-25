@@ -4,9 +4,7 @@ namespace Waterhole\Licensing;
 
 class LicenseManager
 {
-    public function __construct(private Outpost $outpost)
-    {
-    }
+    public function __construct(private Outpost $outpost) {}
 
     public function response(?string $key = null, $default = null)
     {

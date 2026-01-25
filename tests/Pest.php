@@ -21,16 +21,11 @@ function jsonApi($method, $uri, array $data = [], array $headers = [])
 
 function extend(callable $callback): void
 {
-    $class = (new ReflectionFunction($callback))
-        ->getParameters()[0]
-        ->getType()
-        ->getName();
+    $class = (new ReflectionFunction($callback))->getParameters()[0]->getType()->getName();
 
     app()->extend($class, function ($instance) use ($callback) {
         return $callback($instance) ?: $instance;
     });
 }
 
-pest()
-    ->extend(TestCase::class)
-    ->in('Feature');
+pest()->extend(TestCase::class)->in('Feature');

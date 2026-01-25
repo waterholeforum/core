@@ -11,9 +11,7 @@ use Waterhole\View\TurboStream;
 
 class FlagReceived implements ShouldBroadcast, TransactionalEvent
 {
-    public function __construct(protected User $user)
-    {
-    }
+    public function __construct(protected User $user) {}
 
     public function broadcastOn(): PrivateChannel
     {
@@ -26,5 +24,4 @@ class FlagReceived implements ShouldBroadcast, TransactionalEvent
             'streams' => TurboStream::replace(new ModerationBadge($this->user)),
         ];
     }
-
 }

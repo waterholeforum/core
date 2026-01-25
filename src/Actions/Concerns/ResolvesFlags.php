@@ -26,11 +26,7 @@ trait ResolvesFlags
         }
 
         if ($this->resolvedFlags) {
-            $next = Flag::query()
-                ->pending()
-                ->with('subject')
-                ->oldest()
-                ->first();
+            $next = Flag::query()->pending()->with('subject')->oldest()->first();
 
             if ($next?->subject) {
                 return redirect($next->subject->flagUrl());

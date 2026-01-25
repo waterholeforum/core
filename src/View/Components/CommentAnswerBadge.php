@@ -7,9 +7,7 @@ use Waterhole\Models\Comment;
 
 class CommentAnswerBadge extends Component
 {
-    public function __construct(public Comment $comment)
-    {
-    }
+    public function __construct(public Comment $comment) {}
 
     public function shouldRender(): bool
     {

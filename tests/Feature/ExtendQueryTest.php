@@ -22,9 +22,7 @@ describe('Query extenders', function () {
             });
         });
 
-        $channel = Channel::factory()
-            ->public()
-            ->create();
+        $channel = Channel::factory()->public()->create();
 
         Post::factory()
             ->for($channel)
@@ -45,9 +43,7 @@ describe('Query extenders', function () {
             }, 'extend-test');
         });
 
-        $channel = Channel::factory()
-            ->public()
-            ->create();
+        $channel = Channel::factory()->public()->create();
 
         Post::factory()
             ->for($channel)

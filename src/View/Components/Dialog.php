@@ -6,9 +6,7 @@ use Illuminate\View\Component;
 
 class Dialog extends Component
 {
-    public function __construct(public ?string $title = null)
-    {
-    }
+    public function __construct(public ?string $title = null) {}
 
     public function render()
     {

@@ -27,10 +27,7 @@ class UploadController extends Controller
 
         $upload = Upload::fromFile($request->file('file'));
 
-        $request
-            ->user()
-            ->uploads()
-            ->save($upload);
+        $request->user()->uploads()->save($upload);
 
         return ['url' => FormatUploads::PROTOCOL . $upload->filename];
     }

@@ -9,11 +9,7 @@ return new class extends Migration {
     {
         Schema::create('auth_providers', function (Blueprint $table) {
             $table->id();
-            $table
-                ->foreignId('user_id')
-                ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('provider');
             $table->string('identifier');
             $table->timestamp('created_at');

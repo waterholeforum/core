@@ -60,10 +60,7 @@ trait RemovesContent
             $isSelf = $actor->id === $model->user_id;
 
             if ($model instanceof Comment && $model->isAnswer()) {
-                $model->post
-                    ->answer()
-                    ->dissociate()
-                    ->save();
+                $model->post->answer()->dissociate()->save();
             }
 
             $model->update([
@@ -98,12 +95,8 @@ trait RemovesContent
 
             $suspendedUntil = match ($data['suspend_unit'] ?? null) {
                 'indefinite' => '2038-01-01',
-                'days' => now()
-                    ->addDays($amount)
-                    ->toDateTimeString(),
-                'weeks' => now()
-                    ->addWeeks($amount)
-                    ->toDateTimeString(),
+                'days' => now()->addDays($amount)->toDateTimeString(),
+                'weeks' => now()->addWeeks($amount)->toDateTimeString(),
                 default => null,
             };
 

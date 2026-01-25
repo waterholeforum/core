@@ -31,9 +31,7 @@ class ChannelUsersResource extends Resource
             )
 
             ->add(
-                Attribute::make('followedAt')
-                    ->type(Type\DateTime::make())
-                    ->nullable(),
+                Attribute::make('followedAt')->type(Type\DateTime::make())->nullable(),
                 'followedAt',
             );
     }

@@ -16,9 +16,7 @@ use function Waterhole\emojify;
 
 class NewFlag extends Notification
 {
-    public function __construct(protected Flag $flag)
-    {
-    }
+    public function __construct(protected Flag $flag) {}
 
     public function content(): Flag
     {

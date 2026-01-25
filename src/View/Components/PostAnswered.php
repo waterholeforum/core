@@ -7,9 +7,7 @@ use Waterhole\Models\Post;
 
 class PostAnswered extends Component
 {
-    public function __construct(public Post $post)
-    {
-    }
+    public function __construct(public Post $post) {}
 
     public function shouldRender(): bool
     {

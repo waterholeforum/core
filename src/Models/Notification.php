@@ -81,9 +81,7 @@ class Notification extends DatabaseNotification
      */
     public function resolveRouteBinding($value, $field = null)
     {
-        return $this->whereKey($value)
-            ->whereMorphedTo('notifiable', Auth::user())
-            ->firstOrFail();
+        return $this->whereKey($value)->whereMorphedTo('notifiable', Auth::user())->firstOrFail();
     }
 
     protected function template(): Attribute

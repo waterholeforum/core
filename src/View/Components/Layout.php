@@ -10,8 +10,7 @@ class Layout extends Component
         public ?string $title = null,
         public array $assets = [],
         public array $seo = [],
-    ) {
-    }
+    ) {}
 
     public function render()
     {

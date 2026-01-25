@@ -10,9 +10,7 @@ use Waterhole\View\Components\Cp\IconPicker;
 
 class GroupAppearance extends Field
 {
-    public function __construct(public ?Group $model)
-    {
-    }
+    public function __construct(public ?Group $model) {}
 
     public function render(): string
     {

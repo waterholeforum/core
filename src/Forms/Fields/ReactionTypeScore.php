@@ -9,9 +9,7 @@ use Waterhole\Models\ReactionType;
 
 class ReactionTypeScore extends Field
 {
-    public function __construct(public ?ReactionType $model)
-    {
-    }
+    public function __construct(public ?ReactionType $model) {}
 
     public function render(): string
     {

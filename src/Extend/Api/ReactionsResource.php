@@ -20,9 +20,7 @@ class ReactionsResource extends Resource
 
         $this->fields
             ->add(
-                Attribute::make('createdAt')
-                    ->type(Type\DateTime::make())
-                    ->nullable(),
+                Attribute::make('createdAt')->type(Type\DateTime::make())->nullable(),
                 'createdAt',
             )
 

@@ -7,9 +7,7 @@ use Waterhole\Models\Group;
 
 class GroupBadge extends Component
 {
-    public function __construct(public Group $group)
-    {
-    }
+    public function __construct(public Group $group) {}
 
     public function render()
     {

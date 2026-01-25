@@ -17,9 +17,7 @@ class NewComment implements ShouldBroadcast, TransactionalEvent
     use Dispatchable;
     use InteractsWithSockets;
 
-    public function __construct(protected Comment $comment)
-    {
-    }
+    public function __construct(protected Comment $comment) {}
 
     public function broadcastOn()
     {

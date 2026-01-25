@@ -42,9 +42,7 @@ trait Flaggable
                 'resolved_by' => $moderator->getKey(),
             ]);
 
-        $this->notifications()
-            ->where('type', NewFlag::class)
-            ->delete();
+        $this->notifications()->where('type', NewFlag::class)->delete();
 
         return $resolved;
     }

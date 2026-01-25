@@ -119,9 +119,7 @@ class PostController extends Controller
             (!$user->requiresApproval() && !$post->channel->require_approval_posts);
 
         if (!(new PostForm($post))->submit($request)) {
-            return redirect()
-                ->back()
-                ->withInput();
+            return redirect()->back()->withInput();
         }
 
         if ($user->follow_on_comment) {

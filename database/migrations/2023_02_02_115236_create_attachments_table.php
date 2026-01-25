@@ -9,11 +9,7 @@ return new class extends Migration {
     {
         Schema::create('attachments', function (Blueprint $table) {
             $table->morphs('content');
-            $table
-                ->foreignId('upload_id')
-                ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+            $table->foreignId('upload_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
         });
     }
 

@@ -14,9 +14,7 @@ use function Waterhole\emojify;
  */
 class FormatController extends Controller
 {
-    public function __construct(private Formatter $formatter)
-    {
-    }
+    public function __construct(private Formatter $formatter) {}
 
     public function __invoke(Request $request): string
     {
