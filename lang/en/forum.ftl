@@ -145,6 +145,10 @@ removed-by-label = Removed by
 removal-reason-label = Removal Reason
 removal-reason-unspecified-label = Unspecified
 removal-message-label = Message to Author
+report-button = Report
+report-confirm-button = Submit Report
+report-note-placeholder = Add a note (optional)
+report-system-user = System
 user-actions-label = User Actions
 user-actions-suspend-label = Suspend { $user }
 user-actions-suspend-days = Days
@@ -152,7 +156,7 @@ user-actions-suspend-weeks = Weeks
 user-actions-suspend-indefinitely = Indefinitely
 
 approve-button = Approve
-dismiss-flags-button = Dismiss Flags
+flag-dismiss-button = Dismiss
 
 report-reason-off-topic-label = Off-topic
 report-reason-off-topic-description = This content is not relevant to the current discussion.

@@ -7,12 +7,7 @@
         </summary>
         <div class="card__body stack gap-md">
             <label class="choice">
-                <input
-                    type="radio"
-                    name="deleted_reason"
-                    value=""
-                    @checked(! old('deleted_reason'))
-                />
+                <input type="radio" name="deleted_reason" value="" @checked(! $selectedReason) />
                 {{ __('waterhole::forum.removal-reason-unspecified-label') }}
             </label>
 
@@ -22,7 +17,7 @@
                         type="radio"
                         name="deleted_reason"
                         value="{{ $reason }}"
-                        @checked(old('deleted_reason') === $reason)
+                        @checked($selectedReason === $reason)
                     />
                     <span class="stack gap-xxs">
                         <span>

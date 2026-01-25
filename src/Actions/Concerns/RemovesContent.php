@@ -5,6 +5,7 @@ namespace Waterhole\Actions\Concerns;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
+use Waterhole\Models\Comment;
 use Waterhole\Models\Model;
 use Waterhole\Models\User;
 
@@ -29,6 +30,13 @@ trait RemovesContent
             'canModerate' => $model->canModerate($actor),
             'canSuspend' => $author && ($actor?->can('waterhole.user.suspend', $author) ?? false),
             'title' => $this->confirmButton($models),
+            'selectedReason' =>
+                old('deleted_reason') ??
+                $model->pendingFlags
+                    ->groupBy('reason')
+                    ->sortByDesc(fn($group) => $group->count())
+                    ->keys()
+                    ->first(),
         ]);
     }
 
@@ -50,6 +58,13 @@ trait RemovesContent
 
         $models->each(function (Model $model) use ($actor, $data) {
             $isSelf = $actor->id === $model->user_id;
+
+            if ($model instanceof Comment && $model->isAnswer()) {
+                $model->post
+                    ->answer()
+                    ->dissociate()
+                    ->save();
+            }
 
             $model->update([
                 'deleted_by' => $actor->id,

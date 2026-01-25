@@ -5,6 +5,7 @@ namespace Waterhole\Models\Concerns;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Waterhole\Models\Flag;
 use Waterhole\Models\User;
+use Waterhole\Notifications\NewFlag;
 
 trait Flaggable
 {
@@ -32,11 +33,19 @@ trait Flaggable
         return $this->url;
     }
 
-    public function resolveFlags(User $moderator): void
+    public function resolveFlags(User $moderator): int
     {
-        $this->pendingFlags()->update([
-            'resolved_at' => now(),
-            'resolved_by' => $moderator->getKey(),
-        ]);
+        $resolved = $this->pendingFlags()
+            ->withoutGlobalScope('subjectPresent')
+            ->update([
+                'resolved_at' => now(),
+                'resolved_by' => $moderator->getKey(),
+            ]);
+
+        $this->notifications()
+            ->where('type', NewFlag::class)
+            ->delete();
+
+        return $resolved;
     }
 }

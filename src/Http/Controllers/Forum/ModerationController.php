@@ -33,7 +33,7 @@ class ModerationController extends Controller
                 'subject' => function (MorphTo $morph) {
                     $morph->morphWith([
                         Post::class => ['user', 'channel', 'pendingFlags'],
-                        Comment::class => ['user', 'channel', 'pendingFlags'],
+                        Comment::class => ['user', 'post', 'channel', 'pendingFlags'],
                     ]);
                 },
             ])

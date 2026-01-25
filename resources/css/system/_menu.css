@@ -1,8 +1,10 @@
 .menu {
   --color-bg: var(--palette-surface);
+  --color-text: var(--palette-text);
 
   display: block;
   background: var(--color-bg);
+  color: var(--color-text);
   box-shadow: var(--shadow-md);
   padding: var(--space-xs);
   border-radius: var(--radius);
@@ -36,12 +38,18 @@
 
   @mixin clickable;
 
-  &:is(:hover, .is-hovered, :focus, .is-focused, [aria-selected='true']) {
+  &:not(.is-inert):is(
+      :hover,
+      .is-hovered,
+      :focus,
+      .is-focused,
+      [aria-selected='true']
+    ) {
     background: var(--color-fill);
     outline: none;
   }
 
-  &.color-danger:is(:hover, .is-hovered) {
+  &:not(.is-inert).color-danger:is(:hover, .is-hovered) {
     background: var(--color-danger);
     color: var(--color-danger-contrast);
   }

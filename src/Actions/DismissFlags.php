@@ -27,7 +27,7 @@ class DismissFlags extends Action
             return __('waterhole::forum.approve-button');
         }
 
-        return __('waterhole::forum.dismiss-flags-button');
+        return __('waterhole::forum.flag-dismiss-button');
     }
 
     public function icon(Collection $models): ?string
@@ -36,7 +36,7 @@ class DismissFlags extends Action
             return 'tabler-check';
         }
 
-        return 'tabler-flag';
+        return 'tabler-flag-off';
     }
 
     public function run(Collection $models)

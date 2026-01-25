@@ -9,21 +9,33 @@ use Waterhole\Models\Model;
 
 class FlagSummary extends Component
 {
+    public string $summary;
+
     public function __construct(public Model $subject)
     {
-    }
+        $flags = $this->subject->pendingFlags;
+        $total = $flags->count();
 
-    public function render()
-    {
-        return $this->subject->pendingFlags
+        $this->summary = $flags
             ->groupBy('reason')
-            ->map(function ($group, $reason) {
+            ->sortByDesc(fn($group) => $group->count())
+            ->map(function ($group, $reason) use ($total) {
                 $label = Lang::has($key = "waterhole::forum.report-reason-$reason-label")
                     ? __($key)
                     : Str::headline($reason);
                 $count = $group->count();
-                return $count > 1 ? "$label x$count" : $label;
+
+                if ($total <= 1) {
+                    return $label;
+                }
+
+                return sprintf('%s (%d)', $label, $count);
             })
             ->join(', ');
+    }
+
+    public function render()
+    {
+        return $this->summary;
     }
 }

@@ -140,6 +140,7 @@ class Actions
 
         $this->for(Models\Comment::class)
             ->add(CoreActions\CopyLink::class, 'copy-link')
+            ->add(CoreActions\Report::class, 'report')
             ->add(MenuDivider::class, 'divider')
             ->add(CoreActions\EditComment::class, 'edit-comment')
             ->add(CoreActions\DismissFlags::class, 'dismiss-flags')
@@ -159,6 +160,7 @@ class Actions
 
         $this->for(Models\Post::class)
             ->add(CoreActions\CopyLink::class, 'copy-link')
+            ->add(CoreActions\Report::class, 'report')
             ->add(CoreActions\MarkAsRead::class, 'mark-as-read')
             ->add(CoreActions\Follow::class, 'follow')
             ->add(CoreActions\Unfollow::class, 'unfollow')

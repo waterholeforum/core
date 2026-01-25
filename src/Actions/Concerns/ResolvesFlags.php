@@ -19,9 +19,8 @@ trait ResolvesFlags
             if (
                 method_exists($model, 'canModerate') &&
                 $model->canModerate($user) &&
-                $model->pendingFlags()->exists()
+                $model->resolveFlags($user)
             ) {
-                $model->resolveFlags($user);
                 $this->resolvedFlags = true;
             }
         }
@@ -34,8 +33,6 @@ trait ResolvesFlags
                 ->first();
 
             if ($next?->subject) {
-                //            session()->flash('success', '');
-
                 return redirect($next->subject->flagUrl());
             }
 

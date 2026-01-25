@@ -26,7 +26,7 @@
         {{ $actions ?? '' }}
     </div>
 
-    @if ($this->subject->deleted_message && (Auth::id() === $subject->user_id || $canModerate))
+    @if ($subject->deleted_message && (Auth::id() === $subject->user_id || $canModerate))
         <div class="removed-banner__details stack gap-xs text-xxs">
             <div class="stack gap-xxs">
                 <span>{!! nl2br(e($subject->deleted_message)) !!}</span>
