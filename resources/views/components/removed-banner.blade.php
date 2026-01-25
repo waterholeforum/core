@@ -13,7 +13,7 @@
         @endif
 
         @if ($canModerate = $subject->canModerate(Auth::user()))
-            <div class="row gap-xxs text-xxs align-center push-end">
+            <div class="text-xxs push-end">
                 @if ($subject->deletedBy)
                     <span>{{ __('waterhole::forum.removed-by-label') }}</span>
                     <x-waterhole::user-label :user="$subject->deletedBy" />
