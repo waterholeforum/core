@@ -32,6 +32,7 @@ abstract class Notification extends BaseNotification implements ShouldQueue
 
     public static function fromNotificationModel(NotificationModel $notification): ?self
     {
+        // @phpstan-ignore new.static
         return $notification->content ? new static($notification->content) : null;
     }
 
