@@ -14,7 +14,7 @@ class CommentFeed extends Feed
         $query = Comment::with([
             'post.userState',
             'post.channel',
-            'post.channel.commentsReactionSet',
+            'post.channel.commentsReactionSet.reactionTypes',
             'user.groups',
             'parent.user.groups',
             'parent.post',
