@@ -1,7 +1,10 @@
-import { definitionsFromContext } from '@hotwired/stimulus-webpack-helpers';
+import '../../css/cp/app.css';
 import 'vanilla-colorful/hex-alpha-color-picker.js';
 import 'vanilla-colorful/hex-input.js';
+import { buildStimulusDefinitions } from '../utils';
 
 window.Stimulus.load(
-    definitionsFromContext(require.context('./controllers', true, /\.ts$/)),
+    buildStimulusDefinitions(
+        import.meta.glob('./controllers/**/*.ts', { eager: true }),
+    ),
 );

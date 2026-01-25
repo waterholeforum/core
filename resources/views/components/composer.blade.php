@@ -2,6 +2,7 @@
     id="composer"
     {{ $attributes->class('composer stack') }}
     data-controller="composer"
+    data-turbo-prefetch="false"
     data-action="
         turbo:before-fetch-request->composer#open
         turbo:frame-render->composer#open

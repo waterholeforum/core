@@ -10,16 +10,18 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v3
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
         with:
-          node-version: 16
+          cache: true
 
       - name: Build
         run: |
-          npm ci
-          npm run prod
+          pnpm i
+          pnpm build
 
       - name: Commit
         uses: stefanzweifel/git-auto-commit-action@v4

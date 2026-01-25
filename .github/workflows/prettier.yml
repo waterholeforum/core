@@ -16,9 +16,15 @@ jobs:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
 
-      - run: npm ci
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          cache: true
 
-      - run: npm run prettier
+      - name: Build
+        run: |
+          pnpm i
+          pnpm prettier
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4

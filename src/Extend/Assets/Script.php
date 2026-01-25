@@ -14,7 +14,7 @@ class Script extends Assets
 {
     public function __construct()
     {
-        $this->add(__DIR__ . '/../../../resources/dist/index.js');
+        $this->add(__DIR__ . '/../../../resources/dist/global.js');
         $this->add(__DIR__ . '/../../../resources/dist/highlight.js');
         $this->add(__DIR__ . '/../../../resources/dist/emoji.js');
 

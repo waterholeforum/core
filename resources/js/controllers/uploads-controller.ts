@@ -1,5 +1,8 @@
 import { Controller } from '@hotwired/stimulus';
-import TextareaEditor from 'textarea-editor';
+import TextareaEditorModule from 'textarea-editor';
+
+const TextareaEditor =
+    (TextareaEditorModule as any).default ?? TextareaEditorModule;
 
 /**
  * Controller to power file uploads in the text editor.
@@ -16,7 +19,7 @@ export default class extends Controller<HTMLElement> {
     declare readonly inputTarget: HTMLTextAreaElement;
     declare readonly urlValue: string;
 
-    private editor?: TextareaEditor;
+    private editor?: typeof TextareaEditor;
 
     connect() {
         this.editor = new TextareaEditor(this.inputTarget);

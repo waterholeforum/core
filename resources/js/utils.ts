@@ -62,3 +62,20 @@ export function getCookie(name: string): string | null {
     );
     return match ? decodeURIComponent(match[3]) : null;
 }
+
+/**
+ * Build Stimulus definitions from an eager import.meta.glob map.
+ */
+export function buildStimulusDefinitions(
+    controllers: Record<string, { default: any }>,
+): { identifier: string; controllerConstructor: any }[] {
+    return Object.entries(controllers).map(([path, module]) => {
+        const identifier = path
+            .match(/\.\/controllers\/(.*)\.ts$/)![1]
+            .replace(/\//g, '--')
+            .replace(/_/g, '-')
+            .replace(/-controller$/, '');
+
+        return { identifier, controllerConstructor: module.default };
+    });
+}

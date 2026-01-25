@@ -1,7 +1,10 @@
 import { subscribe as pasteMarkdown } from '@github/paste-markdown';
 import { ActionEvent, Controller } from '@hotwired/stimulus';
 import { PopupElement } from 'inclusive-elements';
-import TextareaEditor from 'textarea-editor';
+import TextareaEditorModule from 'textarea-editor';
+
+const TextareaEditor =
+    (TextareaEditorModule as any).default ?? TextareaEditorModule;
 
 /**
  * Controller for the <x-waterhole::text-editor> component.
@@ -21,7 +24,7 @@ export default class extends Controller {
 
     declare readonly formatUrlValue: string;
 
-    private editor?: TextareaEditor;
+    private editor?: typeof TextareaEditor;
     private pasteMarkdown?: ReturnType<typeof pasteMarkdown>;
 
     inputTargetConnected(input: HTMLInputElement) {
