@@ -1,6 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
-import { renderStreamMessage } from '@hotwired/turbo';
-import { StreamElement } from '@hotwired/turbo/dist/types/elements';
+import { renderStreamMessage, StreamElement } from '@hotwired/turbo';
 import { getHeaderHeight } from '../utils';
 
 /**

@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
-import { FrameElement } from '@hotwired/turbo/dist/types/elements';
+import { FrameElement } from '@hotwired/turbo';
 
 /**
  * Controller for some useful <turbo-frame> actions.
