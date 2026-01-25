@@ -1,13 +1,14 @@
 .user-label {
   display: inline-flex;
-  align-items: center;
+  align-items: baseline;
   gap: var(--space-xxs);
-  vertical-align: bottom;
+  vertical-align: baseline;
   color: inherit;
   text-decoration: none;
 
   .avatar {
     width: 18px;
     height: 18px;
+    align-self: center;
   }
 }
