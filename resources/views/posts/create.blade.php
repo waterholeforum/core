@@ -7,6 +7,9 @@
         <form method="POST" action="{{ route('waterhole.posts.store') }}">
             @csrf
 
+            {{-- Hidden submit button to handle Enter key --}}
+            <button name="commit" type="submit" value="1" hidden></button>
+
             @if (! $form->model->channel)
                 <x-waterhole::dialog class="measure" :title="$title">
                     <x-waterhole::channel-picker id="channel_id" name="channel_id" show-links />
