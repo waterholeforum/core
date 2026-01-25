@@ -15,11 +15,10 @@ export default class extends Controller {
     declare readonly smTarget: HTMLElement;
 
     open(e: MouseEvent) {
-        if (!this.badgeTarget.hidden) {
-            if (!this.element.hasAttribute('data-persistent-badge')) {
-                this.badgeTarget.hidden = true;
-            }
-            this.frameTarget.reload();
+        this.frameTarget.reload();
+
+        if (!this.element.hasAttribute('data-persistent-badge')) {
+            this.badgeTarget.hidden = true;
         }
 
         Waterhole.alerts.dismiss('notification');

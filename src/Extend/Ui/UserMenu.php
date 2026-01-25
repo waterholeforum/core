@@ -39,11 +39,11 @@ class UserMenu extends ComponentList
 
         $this->add(
             fn() => Auth::user()->can('waterhole.administrate')
-                ? (new MenuItem(
+                ? new MenuItem(
                     icon: 'tabler-tool',
                     label: __('waterhole::user.administration-link'),
                     href: route('waterhole.cp.dashboard'),
-                ))->withAttributes(['data-turbo' => 'false'])
+                )
                 : null,
             'administration',
         );

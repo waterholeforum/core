@@ -70,6 +70,11 @@ abstract class TurboStream
         return static::stream($component, 'after', compact('targets'));
     }
 
+    public static function refresh(): string
+    {
+        return '<turbo-stream action="refresh"></turbo-stream>';
+    }
+
     private static function stream(Component $component, string $action, array $attributes): string
     {
         $attributes = new ComponentAttributeBag($attributes);

@@ -6,6 +6,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
 use Waterhole\Models\Flag;
 use Waterhole\Models\Model;
+use Waterhole\View\TurboStream;
 
 trait ResolvesFlags
 {
@@ -32,7 +33,7 @@ trait ResolvesFlags
                 return redirect($next->subject->flagUrl());
             }
 
-            return redirect()->route('waterhole.moderation');
+            session()->flash('success', __('waterhole::forum.moderation-finished-message'));
         }
 
         return null;
@@ -41,7 +42,7 @@ trait ResolvesFlags
     public function stream(Model $model): array
     {
         if ($this->resolvedFlags) {
-            return [];
+            return [TurboStream::refresh()];
         }
 
         return parent::stream($model);

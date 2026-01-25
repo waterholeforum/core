@@ -10,6 +10,8 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <meta name="turbo-refresh-method" content="morph" />
+        <meta name="turbo-refresh-scroll" content="preserve" />
 
         @php
             $pageTitle = implode(' - ', array_filter([$title, $titleSuffix]));
@@ -98,11 +100,11 @@
         </script>
 
         @foreach (resolve(\Waterhole\Extend\Assets\Stylesheet::class)->urls(['default', 'default-' . App::getLocale(), ...$assets]) as $url)
-            <link href="{{ $url }}" rel="stylesheet" data-turbo-track="reload" />
+            <link href="{{ $url }}" rel="stylesheet" data-turbo-track="dynamic" />
         @endforeach
 
         @foreach (resolve(\Waterhole\Extend\Assets\Script::class)->urls(['default', 'default-' . App::getLocale(), ...$assets]) as $url)
-            <script src="{{ $url }}" defer data-turbo-track="reload"></script>
+            <script src="{{ $url }}" defer data-turbo-track="dynamic"></script>
         @endforeach
 
         <script>
@@ -157,7 +159,7 @@
             window.Waterhole.alerts. For API information:
             https://github.com/tobyzerner/inclusive-elements/tree/master/src/alerts
         --}}
-        <ui-alerts id="alerts" class="alerts" data-turbo-temporary>
+        <ui-alerts id="alerts" class="alerts" data-turbo-permanent>
             @foreach (['success', 'warning', 'danger'] as $type)
                 @if ($message = session($type))
                     <x-waterhole::alert :type="$type" :message="$message" />

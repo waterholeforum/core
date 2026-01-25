@@ -25,6 +25,9 @@ export default class extends Controller<FrameElement> {
 
     /**
      * Remove the <turbo-frame> so that it doesn't interfere with child actions.
+     *
+     * Potentially this could be replaced by data-turbo-frame="_parent" on child
+     * links and forms in the future.
      */
     remove() {
         this.element.replaceWith(...this.element.children);

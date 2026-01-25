@@ -1,11 +1,5 @@
 import * as Turbo from '@hotwired/turbo';
-import {
-    FrameElement,
-    StreamElement,
-    TurboFrameMissingEvent,
-} from '@hotwired/turbo';
-// @ts-ignore
-import morph from 'nanomorph';
+import { FrameElement, TurboFrameMissingEvent } from '@hotwired/turbo';
 import { cloneFromTemplate } from '../utils';
 
 declare global {
@@ -14,32 +8,14 @@ declare global {
     }
 }
 
-Turbo.start();
-
 window.Turbo = Turbo;
 
-// Use nanomorph for "replace" Turbo Streams for more fine-grained DOM patching,
-// which will hopefully preserve keyboard focus.
-document.addEventListener('turbo:before-stream-render', (e) => {
-    const { detail } = e as CustomEvent;
-    const fallback = detail.render;
-
-    detail.render = (stream: StreamElement) => {
-        if (stream.action === 'replace') {
-            stream.targetElements.forEach((el) => {
-                morph(el, stream.templateContent.firstElementChild!);
-            });
-        } else if (
-            stream.action === 'append' &&
-            stream.targetElements.includes(Waterhole.alerts)
-        ) {
-            Waterhole.alerts.show(
-                stream.templateContent.firstElementChild as HTMLElement,
-            );
-        } else {
-            fallback(stream);
-        }
-    };
+document.addEventListener('turbo:before-render', (e) => {
+    const newAlerts = e.detail.newBody.querySelector('#alerts');
+    if (!newAlerts) return;
+    [...newAlerts.children].forEach((el) =>
+        Waterhole.alerts.show(el as HTMLElement),
+    );
 });
 
 document.addEventListener('turbo:before-fetch-response', async (e) => {

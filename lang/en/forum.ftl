@@ -174,6 +174,7 @@ report-reason-approval-label = Pending approval
 
 moderation-title = Moderation
 moderation-empty-message = No Pending Flags
+moderation-finished-message = You're all caught up.
 
 pending-approval-title = Pending approval
 
