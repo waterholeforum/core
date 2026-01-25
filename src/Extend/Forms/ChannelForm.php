@@ -50,9 +50,9 @@ class ChannelForm extends ComponentList
             ->add(ChannelIgnore::class, 'ignore');
 
         $this->add(
-            fn(...$args) => new FormSection(
+            fn($model) => new FormSection(
                 __('waterhole::cp.channel-features-title'),
-                $this->features->components($args),
+                $this->features->components(compact('model')),
                 open: false,
             ),
             'features',

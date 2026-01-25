@@ -26,9 +26,11 @@
                     @if ($form->payload || config('waterhole.auth.password_enabled'))
                         @components($form->fields())
 
-                        <button type="submit" class="btn bg-accent full-width">
-                            {{ __('waterhole::auth.register-submit') }}
-                        </button>
+                        <div>
+                            <button type="submit" class="btn bg-accent full-width">
+                                {{ __('waterhole::auth.register-submit') }}
+                            </button>
+                        </div>
 
                         @unless ($form->payload)
                             <p class="text-center">

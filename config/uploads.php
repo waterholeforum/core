@@ -3,6 +3,18 @@
 return [
     /*
     |--------------------------------------------------------------------------
+    | Storage Disk
+    |--------------------------------------------------------------------------
+    |
+    | The filesystem disk used for storing user uploads (attachments, avatars,
+    | icons). This should be a publicly accessible disk.
+    |
+    */
+
+    'disk' => env('WATERHOLE_UPLOADS_DISK', 'public'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Allowed MIME Types
     |--------------------------------------------------------------------------
     |

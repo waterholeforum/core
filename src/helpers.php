@@ -176,7 +176,7 @@ function icon(?string $icon, array $attributes = []): string
     if (str_starts_with($icon, 'file:')) {
         return sprintf(
             '<img src="%s" alt="" %s>',
-            e(Storage::disk('public')->url('icons/' . substr($icon, 5))),
+            e(Storage::disk(config('waterhole.uploads.disk'))->url('icons/' . substr($icon, 5))),
             new ComponentAttributeBag($attributes),
         );
     }

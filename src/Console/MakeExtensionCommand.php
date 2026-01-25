@@ -37,7 +37,8 @@ class MakeExtensionCommand extends Command
 
         [$vendor, $project] = explode('/', $name);
 
-        $path = $this->laravel->basePath($this->input->getOption('path') . "/$vendor-$project");
+        $pathOption = $this->input->getOption('path');
+        $path = $this->laravel->basePath($pathOption . "/$vendor-$project");
 
         if ($this->files->exists($path)) {
             $this->error('Extension already exists.');
@@ -74,12 +75,32 @@ class MakeExtensionCommand extends Command
 
         $this->info(sprintf('Extension [%s] created successfully.', $path));
 
-        $this->addComposerRepository();
+        $repositoryPath = $this->composerRepositoryPath($pathOption);
 
-        $this->installExtension($name);
+        if ($this->addComposerRepository($repositoryPath)) {
+            $this->installExtension($name);
+        } else {
+            $this->warn(
+                sprintf(
+                    'Skipping install. Add a path repository and run composer require %s:dev-main.',
+                    $name,
+                ),
+            );
+        }
     }
 
-    private function addComposerRepository(): void
+    private function composerRepositoryPath(string $pathOption): string
+    {
+        $pathOption = rtrim($pathOption, '/');
+
+        if ($pathOption === '') {
+            $pathOption = 'extensions';
+        }
+
+        return Str::endsWith($pathOption, '/*') ? $pathOption : $pathOption . '/*';
+    }
+
+    private function addComposerRepository(string $repositoryPath): bool
     {
         $file = $this->laravel->basePath('composer.json');
 
@@ -87,11 +108,15 @@ class MakeExtensionCommand extends Command
 
         $repository = [
             'type' => 'path',
-            'url' => 'extensions/*',
+            'url' => $repositoryPath,
         ];
 
         if (in_array($repository, $decoded['repositories'] ?? [])) {
-            return;
+            return true;
+        }
+
+        if (!$this->confirm(sprintf('Add a Composer path repository for [%s]?', $repositoryPath))) {
+            return false;
         }
 
         $decoded['repositories'][] = $repository;
@@ -99,6 +124,8 @@ class MakeExtensionCommand extends Command
         $this->files->put($file, json_encode($decoded, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
 
         $this->info('Path repository added to composer.json.');
+
+        return true;
     }
 
     private function installExtension(string $name): void

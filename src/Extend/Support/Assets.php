@@ -51,7 +51,9 @@ abstract class Assets
             );
         }
 
-        return array_map(fn($file) => asset(Storage::disk('public')->url($file)), $files);
+        $disk = config('waterhole.system.assets_disk');
+
+        return array_map(fn($file) => asset(Storage::disk($disk)->url($file)), $files);
     }
 
     /**
@@ -72,7 +74,7 @@ abstract class Assets
         $key = $this->cacheKey($bundle);
 
         if ($files = Cache::get($key)) {
-            Storage::disk('public')->delete($files);
+            Storage::disk(config('waterhole.system.assets_disk'))->delete($files);
         }
 
         Cache::forget($key);
@@ -96,7 +98,10 @@ abstract class Assets
 
         $hash = substr(sha1($content), 0, 8);
 
-        Storage::disk('public')->put($compiled = $this->filePath("$bundle-$hash"), $content);
+        Storage::disk(config('waterhole.system.assets_disk'))->put(
+            $compiled = $this->filePath("$bundle-$hash"),
+            $content,
+        );
 
         return $compiled;
     }

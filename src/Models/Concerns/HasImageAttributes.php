@@ -38,7 +38,10 @@ trait HasImageAttributes
 
         $this->update([$attribute => Str::random() . '.' . $ext]);
 
-        Storage::disk('public')->put($directory . '/' . $this->$attribute, $encodedImage);
+        Storage::disk(config('waterhole.uploads.disk'))->put(
+            $directory . '/' . $this->$attribute,
+            $encodedImage,
+        );
 
         return $this;
     }
@@ -49,7 +52,9 @@ trait HasImageAttributes
     private function removeImage(string $attribute, string $directory): static
     {
         if ($this->$attribute) {
-            Storage::disk('public')->delete($directory . '/' . $this->$attribute);
+            Storage::disk(config('waterhole.uploads.disk'))->delete(
+                $directory . '/' . $this->$attribute,
+            );
 
             $this->update([$attribute => null]);
         }
@@ -61,7 +66,7 @@ trait HasImageAttributes
      * Resolve the public URL for a file path.
      *
      * If the file path is already an absolute URL, it will not be changed.
-     * Otherwise, it is treated as a relative path on the `public` storage disk.
+     * Otherwise, it is treated as a relative path on the configured uploads disk.
      */
     private function resolvePublicUrl(?string $value, string $directory): ?string
     {
@@ -73,6 +78,6 @@ trait HasImageAttributes
             return $value;
         }
 
-        return Storage::disk('public')->url($directory . '/' . $value);
+        return Storage::disk(config('waterhole.uploads.disk'))->url($directory . '/' . $value);
     }
 }
