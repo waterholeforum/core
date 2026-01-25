@@ -41,7 +41,7 @@
                     'image' => $image,
                 ];
                 $pruneSchema = function ($value) use (&$pruneSchema) {
-                    return is_array($value) ? array_filter(array_map($pruneSchema, $value)) : $value;
+                    return is_array($value) ? array_filter(array_map($pruneSchema, $value)) : e($value);
                 };
                 $schema = $pruneSchema(is_array($schemaOverride) ? array_replace_recursive($schemaDefaults, $schemaOverride) : $schemaDefaults);
             }
