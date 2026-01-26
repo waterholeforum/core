@@ -25,7 +25,7 @@ class Reactions extends Component
         $this->reactionSet = $model->reactionSet();
         $this->reactionTypes = new Collection();
 
-        if (!$this->reactionSet) {
+        if (!$this->reactionSet?->exists) {
             return;
         }
 
@@ -40,7 +40,7 @@ class Reactions extends Component
 
     public function shouldRender(): bool
     {
-        return $this->reactionSet &&
+        return $this->reactionSet?->exists &&
             ($this->model->reactionCounts ||
                 resolve(React::class)->authorize(Auth::user(), $this->model));
     }

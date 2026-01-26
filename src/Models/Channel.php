@@ -32,10 +32,10 @@ use Waterhole\View\TurboStream;
  * @property bool $answerable
  * @property bool $require_approval_posts
  * @property bool $require_approval_comments
- * @property bool $posts_reactions_enabled
- * @property bool $comments_reactions_enabled
  * @property ?array $translations
+ * @property bool $posts_reactions_enabled
  * @property ?int $posts_reaction_set_id
+ * @property bool $comments_reactions_enabled
  * @property ?int $comments_reaction_set_id
  * @property-read \Illuminate\Database\Eloquent\Collection $posts
  * @property-read \Illuminate\Database\Eloquent\Collection $newPosts
@@ -133,24 +133,20 @@ class Channel extends Model
 
     public function postsReactionSet(): BelongsTo
     {
-        $relation = $this->belongsTo(ReactionSet::class, 'posts_reaction_set_id');
-
-        if ($this->posts_reactions_enabled && ($default = ReactionSet::defaultPosts())) {
-            $relation->withDefault(fn() => $default);
-        }
-
-        return $relation;
+        return $this->belongsTo(ReactionSet::class, 'posts_reaction_set_id')->withDefault(
+            fn($model, $parent) => $parent->posts_reactions_enabled
+                ? ReactionSet::defaultPosts()
+                : null,
+        );
     }
 
     public function commentsReactionSet(): BelongsTo
     {
-        $relation = $this->belongsTo(ReactionSet::class, 'comments_reaction_set_id');
-
-        if ($this->comments_reactions_enabled && ($default = ReactionSet::defaultComments())) {
-            $relation->withDefault(fn() => $default);
-        }
-
-        return $relation;
+        return $this->belongsTo(ReactionSet::class, 'comments_reaction_set_id')->withDefault(
+            fn($model, $parent) => $parent->comments_reactions_enabled
+                ? ReactionSet::defaultComments()
+                : null,
+        );
     }
 
     public function taxonomies(): BelongsToMany
