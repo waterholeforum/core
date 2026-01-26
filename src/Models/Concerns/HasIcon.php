@@ -55,9 +55,7 @@ trait HasIcon
         return $this->fileAttribute(
             attribute: 'icon_file',
             directory: 'icons',
-            encodeImage: fn(Image $image) => $image
-                ->scaleDown(50, 50)
-                ->toPng(),
+            encodeImage: fn(Image $image) => $image->scaleDown(50, 50)->toPng(),
         );
     }
 
