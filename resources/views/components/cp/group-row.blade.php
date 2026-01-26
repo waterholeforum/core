@@ -1,4 +1,6 @@
-@props(['group'])
+@props([
+    'group',
+])
 
 <li class="card__row row gap-md">
     @if ($group->isMember())
@@ -23,10 +25,5 @@
         </a>
     @endunless
 
-    <x-waterhole::action-buttons
-        :for="$group"
-        :limit="2"
-        context="cp"
-        class="text-xs"
-    />
+    <x-waterhole::action-buttons :for="$group" :limit="2" context="cp" class="text-xs" />
 </li>

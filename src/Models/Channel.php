@@ -112,7 +112,9 @@ class Channel extends Model
         $query
             ->leftJoinRelation('userState')
             ->selectRaw(
-                'CASE WHEN followed_at IS NOT NULL THEN (' . $sub->toSql() . ') ELSE 0 END AS new_posts_count',
+                'CASE WHEN followed_at IS NOT NULL THEN (' .
+                    $sub->toSql() .
+                    ') ELSE 0 END AS new_posts_count',
                 $sub->getBindings(),
             );
     }
