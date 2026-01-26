@@ -39,6 +39,7 @@ layout-cards = Cards
 
 confirm-action-title = Confirm Action
 delete-confirm-button = Delete
+link-copied-message = Link copied to clipboard.
 
 ## Users
 

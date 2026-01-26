@@ -41,6 +41,7 @@ class CopyLink extends Link
             'data-turbo-frame' => '_top',
             'data-controller' => 'copy-link',
             'data-action' => 'copy-link#copy',
+            'data-copy-link-message-value' => __('waterhole::system.link-copied-message'),
         ];
     }
 
