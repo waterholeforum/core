@@ -7,6 +7,53 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### ⚠️ Breaking Changes
+
+- Replace public comment hiding with moderator-only soft-deletion
+
+### Added
+
+- Add basic SEO, including meta descriptions, Open Graph tags, Twitter card tags, JSON-LD structured data, and nofollow rules configurable in `waterhole.seo` config
+- Add user reports and moderator flag queue
+- Allow groups and channels to require moderator approval for new posts/comments
+- Allow groups to be auto-assigned to new users
+- Add comment soft-deletion with ability to select a reason and message
+- Add "Suspend users" permission for groups
+- Add configurable post/comment edit time limit (`waterhole.forum.edit_time_limit`)
+- Allow configuring permissions for the built-in Public and Member groups
+- Allow configuring the appearance of the built-in Admin group badge
+- Add support for SVG icon file uploads
+- Add MariaDB and PostgreSQL database support
+- Add support for Reverb as the broadcasting driver
+- Allow disabling reactions per-channel
+- Allow configuring uploads (`waterhole.uploads.disk`) and assets (`waterhole.system.assets_disk`) disks
+- Add support for `PendingUser::forceName` option
+- Add success message to copy link action
+- Add confirmation for Composer repository addition in `waterhole:make:extension`
+
+### Changed
+
+- Use `DateTimeInterface` to support `CarbonImmutable` dates ([#88](https://github.com/waterholeforum/core/pulls/88) by @BasilLangevin)
+- Various styling tweaks
+- Migrate asset pipeline to `tsdown`
+- Upgrade to Turbo 8
+- Replace `inclusive-sort` with `dnd-kit` for sortable UI
+- Upgrade Intervention Image to 3.x
+- Use cursor pagination for notifications list
+- Move license alert to more prominent location on CP dashboard
+
+### Fixed
+
+- Fix an XSS vulnerability
+- Improve compatibility with Statamic ([#82](https://github.com/waterholeforum/core/issues/82))
+- Fix actions dropdown for trashed posts ([#89](https://github.com/waterholeforum/core/issues/89))
+- Fix MariaDB crash due to mixed types in notification queries ([#90](https://github.com/waterholeforum/core/pulls/90) by @iamdarkle)
+- Fix crash when saving a new channel with taxonomies ([#91](https://github.com/waterholeforum/core/pulls/91) by @iamdarkle)
+- Fix crash when using table prefix ([#94](https://github.com/waterholeforum/core/issues/94))
+- Retain tags when switching filters on the post feed
+- Fix flash alerts sometimes not displaying
+- Sort trashed items by latest deleted date
+
 ## [0.5.0] - 2026-01-02
 
 ### ⚠️ Breaking Changes
