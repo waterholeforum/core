@@ -62,8 +62,13 @@ class GroupChannelPermissions extends Field
                                         <th>
                                             @if ($node->content instanceof Waterhole\Models\Channel)
                                                 <x-waterhole::channel-label :channel="$node->content"/>
+                                            @elseif ($node->content instanceof Waterhole\Models\StructureHeading)
+                                                <span class="subtitle">{{ $node->content->name }}</span>
                                             @else
-                                                {{ $node->content->name }}
+                                                <span class="with-icon">
+                                                    @icon($node->content->icon ?? null)
+                                                    {{ $node->content->name }}
+                                                </span>
                                             @endif
                                         </th>
                                         @foreach ($abilities as $ability)
