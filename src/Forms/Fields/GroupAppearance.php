@@ -12,6 +12,11 @@ class GroupAppearance extends Field
 {
     public function __construct(public ?Group $model) {}
 
+    public function shouldRender(): bool
+    {
+        return !$this->model->isGuest() && !$this->model->isMember();
+    }
+
     public function render(): string
     {
         return <<<'blade'

@@ -14,10 +14,9 @@ beforeEach(function () {
     $this->seed(GroupsSeeder::class);
 });
 
-test('guests are denied gated abilities when the forum is private', function () {
-    config(['waterhole.forum.public' => false]);
-
-    $channel = Channel::factory()->public()->create();
+test('guests are denied gated abilities without guest permissions', function () {
+    $channel = Channel::factory()->create();
+    $channel->savePermissions(['group:2' => ['view' => true]]);
 
     $user = User::factory()->create();
 

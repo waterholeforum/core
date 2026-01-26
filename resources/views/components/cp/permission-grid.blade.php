@@ -16,7 +16,6 @@
         </thead>
         <tbody>
             @foreach (Waterhole\Models\Group::where('id', '!=', Waterhole\Models\Group::ADMIN_ID)->get() as $group)
-                @continue($group->isGuest() && ! config('waterhole.forum.public', true))
                 <tr data-group-id="{{ $group->getKey() }}">
                     <th>
                         @if ($group->isCustom())

@@ -44,6 +44,7 @@ structure-page-label = Page
 structure-link-label = Link
 structure-heading-label = Heading
 structure-visibility-public-label = Public
+structure-visibility-members-label = Members
 
 structure-navigation-title = Navigation
 structure-navigation-description = Move items here to show them in the navigation menu.
@@ -154,7 +155,7 @@ group-rules-requires-approval-label = Require approval for new members' content
 group-rules-remove-after-approval-label = Remove from group after approval
 group-permissions-title = Permissions
 group-global-permissions-title = Global Permissions
-group-channel-permissions-title = Channel Permissions
+group-structure-permissions-title = Structure Permissions
 group-permission-suspend-users-label = Allow suspending users
 
 delete-group-confirm-message = Are you sure you want to delete this group?

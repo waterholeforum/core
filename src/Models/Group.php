@@ -128,9 +128,10 @@ class Group extends Model
     {
         return Attribute::make(
             get: fn() => route('waterhole.cp.users.index', [
-                'q' =>
-                    'group:' .
-                    (str_contains($this->name, ' ') ? '"' . $this->name . '"' : $this->name),
+                'q' => $this->isMember()
+                    ? null
+                    : 'group:' .
+                        (str_contains($this->name, ' ') ? '"' . $this->name . '"' : $this->name),
             ]),
         )->shouldCache();
     }

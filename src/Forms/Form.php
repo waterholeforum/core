@@ -69,6 +69,9 @@ abstract class Form
 
     private function getFields(): array
     {
-        return $this->fields ??= array_filter($this->fields());
+        return $this->fields ??= array_filter(
+            $this->fields(),
+            fn($field) => $field?->shouldRender(),
+        );
     }
 }

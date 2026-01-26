@@ -11,6 +11,11 @@ class GroupName extends Field
 {
     public function __construct(public ?Group $model) {}
 
+    public function shouldRender(): bool
+    {
+        return !$this->model->isGuest() && !$this->model->isMember();
+    }
+
     public function render(): string
     {
         return <<<'blade'
@@ -31,7 +36,7 @@ class GroupName extends Field
 
     public function validating(Validator $validator): void
     {
-        $validator->addRules(['name' => ['required', 'string', 'max:255']]);
+        $validator->appendRules(['name' => ['required', 'string', 'max:255']]);
     }
 
     public function saving(FormRequest $request): void

@@ -3,6 +3,7 @@
 namespace Waterhole\Models\Concerns;
 
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Facades\Cache;
 use Waterhole\Models\Permission;
 
 /**
@@ -37,6 +38,9 @@ trait ReceivesPermissions
     public function savePermissions(?array $grid): void
     {
         $this->permissions()->delete();
+
+        Cache::forget('waterhole.permissions');
+        app()->forgetInstance('waterhole.permissions');
 
         if (!$grid) {
             return;

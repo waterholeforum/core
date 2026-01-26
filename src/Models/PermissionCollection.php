@@ -60,12 +60,7 @@ class PermissionCollection extends Collection
         string $ability,
         Model|string $scope,
     ): Closure {
-        $recipients = [];
-
-        $isGuest = !$recipient || ($recipient instanceof Group && $recipient->isGuest());
-        if (!$isGuest || config('waterhole.forum.public', true)) {
-            $recipients[] = [(new Group())->getMorphClass(), Group::GUEST_ID];
-        }
+        $recipients = [[(new Group())->getMorphClass(), Group::GUEST_ID]];
 
         if (
             $recipient &&

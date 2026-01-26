@@ -9,6 +9,11 @@ class GroupGlobalPermissions extends Field
 {
     public function __construct(public ?Group $model) {}
 
+    public function shouldRender(): bool
+    {
+        return $this->model->isCustom();
+    }
+
     public function render(): string
     {
         return <<<'blade'

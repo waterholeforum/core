@@ -16,7 +16,7 @@ class GroupController extends Controller
 {
     public function index()
     {
-        $groups = Group::custom()->withCount('users')->orderBy('name')->get();
+        $groups = Group::withCount('users')->get();
 
         return view('waterhole::cp.groups.index', compact('groups'));
     }
@@ -37,8 +37,6 @@ class GroupController extends Controller
 
     public function edit(Group $group)
     {
-        abort_if(!$group->isCustom(), 404);
-
         $form = $this->form($group);
 
         return view('waterhole::cp.groups.form', compact('form', 'group'));

@@ -22,10 +22,9 @@ class MaybeRequireLogin
     {
         if (
             Auth::guest() &&
-            (!config('waterhole.forum.public', true) ||
-                (!$this->permissions->can(null, 'view', Channel::class) &&
-                    !$this->permissions->can(null, 'view', Page::class) &&
-                    !$this->permissions->can(null, 'view', StructureLink::class)))
+            (!$this->permissions->can(null, 'view', Channel::class) &&
+                !$this->permissions->can(null, 'view', Page::class) &&
+                !$this->permissions->can(null, 'view', StructureLink::class))
         ) {
             return redirect()->route('waterhole.login');
         }

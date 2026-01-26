@@ -9,7 +9,7 @@ use Waterhole\Forms\Field;
 use Waterhole\Models\Group;
 use Waterhole\Models\Structure;
 
-class GroupChannelPermissions extends Field
+class GroupStructurePermissions extends Field
 {
     public Collection $structure;
     public Collection $abilities;
@@ -21,12 +21,23 @@ class GroupChannelPermissions extends Field
         // Construct an array of all abilities that apply to the structure
         // content to use as columns for the permission grid.
         $this->abilities = $this->structure
-            ->flatMap(function (Structure $node) {
-                return method_exists($node->content, 'abilities')
+            ->flatMap(
+                fn(Structure $node) => method_exists($node->content, 'abilities')
                     ? $node->content->abilities()
-                    : [];
-            })
+                    : [],
+            )
             ->unique();
+
+        if ($this->model?->isGuest()) {
+            $this->abilities = $this->abilities->filter(fn($ability) => $ability === 'view');
+        } elseif ($this->model?->isMember()) {
+            $this->abilities = $this->abilities->reject(fn($ability) => $ability === 'moderate');
+        }
+    }
+
+    public function shouldRender(): bool
+    {
+        return !$this->model->isAdmin();
     }
 
     public function render(): string
@@ -34,7 +45,7 @@ class GroupChannelPermissions extends Field
         return <<<'blade'
             <div class="field">
                 <div class="field__label">
-                    {{ __('waterhole::cp.group-channel-permissions-title') }}
+                    {{ __('waterhole::cp.group-structure-permissions-title') }}
                 </div>
                 <div>
                     <div class="table-container card">
@@ -91,7 +102,8 @@ class GroupChannelPermissions extends Field
                                                                 If members are allowed, then this group *must* be allowed too,
                                                                 so disable the checkbox.
                                                             --}}
-                                                            @disabled(Waterhole::permissions()->can(Waterhole\Models\Group::member(), $ability, $node->content))
+                                                            @disabled($model?->isMember() && Waterhole::permissions()->can(Waterhole\Models\Group::guest(), $ability, $node->content))
+                                                            @disabled($model?->isCustom() && Waterhole::permissions()->can(Waterhole\Models\Group::member(), $ability, $node->content))
                                                             {{--
                                                                 Check this box if it was checked before, or if the ability is
                                                                 allowed for this group, or for members in general.

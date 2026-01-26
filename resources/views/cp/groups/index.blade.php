@@ -1,5 +1,5 @@
 <x-waterhole::cp :title="__('waterhole::cp.groups-title')">
-    <div class="stack gap-md">
+    <div class="stack gap-lg">
         <div class="row gap-md">
             <h1 class="h3">{{ __('waterhole::cp.groups-title') }}</h1>
 
@@ -15,24 +15,20 @@
             </a>
         </div>
 
+        @php
+            $systemGroups = $groups->filter(fn ($group) => ! $group->isCustom());
+            $customGroups = $groups->filter(fn ($group) => $group->isCustom())->sortBy('name');
+        @endphp
+
         <ul class="card" role="list">
-            @foreach ($groups as $group)
-                <li class="card__row row gap-md">
-                    <x-waterhole::group-badge :group="$group" class="text-xs" />
+            @foreach ($systemGroups as $group)
+                <x-waterhole::cp.group-row :group="$group" />
+            @endforeach
+        </ul>
 
-                    <div class="grow"></div>
-
-                    <a href="{{ $group->users_url }}" class="color-muted text-xs">
-                        {{ __('waterhole::cp.group-user-count', ['count' => $group->users_count]) }}
-                    </a>
-
-                    <x-waterhole::action-buttons
-                        :for="$group"
-                        :limit="2"
-                        context="cp"
-                        class="text-xs"
-                    />
-                </li>
+        <ul class="card" role="list">
+            @foreach ($customGroups as $group)
+                <x-waterhole::cp.group-row :group="$group" />
             @endforeach
         </ul>
     </div>
