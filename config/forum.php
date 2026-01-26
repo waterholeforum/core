@@ -83,6 +83,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Post Edit Time Limit
+    |--------------------------------------------------------------------------
+    |
+    | The number of minutes after creation that a post can be edited by its
+    | author. Set to null for no limit, or 0 to never allow editing. Moderators
+    | are always allowed.
+    |
+    */
+
+    'post_edit_time_limit' => null,
+
+    /*
+    |--------------------------------------------------------------------------
     | Rate Limits
     |--------------------------------------------------------------------------
     |

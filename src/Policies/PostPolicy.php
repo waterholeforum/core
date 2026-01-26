@@ -29,7 +29,25 @@ class PostPolicy
      */
     public function edit(?User $user, Post $post): bool
     {
-        return !$post->trashed() && ($post->user_id === $user->id || $this->moderate($user, $post));
+        if (!$user || $post->trashed()) {
+            return false;
+        }
+
+        if ($this->moderate($user, $post)) {
+            return true;
+        }
+
+        if ($post->user_id !== $user->id) {
+            return false;
+        }
+
+        $limitMinutes = config('waterhole.forum.post_edit_time_limit');
+
+        if ($limitMinutes === null) {
+            return true;
+        }
+
+        return $post->created_at->diffInMinutes(now()) <= $limitMinutes;
     }
 
     /**
