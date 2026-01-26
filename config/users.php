@@ -3,6 +3,19 @@
 return [
     /*
     |--------------------------------------------------------------------------
+    | Re-verify After Inactive Days
+    |--------------------------------------------------------------------------
+    |
+    | If set to a number of days, users who have been inactive longer than
+    | that will be required to re-verify their email address. Set to null
+    | to disable.
+    |
+    */
+
+    'reverify_after_inactive_days' => 365,
+
+    /*
+    |--------------------------------------------------------------------------
     | Post Filters
     |--------------------------------------------------------------------------
     |
