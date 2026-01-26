@@ -36,7 +36,7 @@ class ChannelFilters extends Field
                         </span>
                     </label>
 
-                    <x-waterhole::cp.sortable-context data-reveal-target="then">
+                    <div data-controller="sortable" data-reveal-target="then">
                         <ul
                             class="card sortable"
                             role="list"
@@ -54,6 +54,7 @@ class ChannelFilters extends Field
                                 <li
                                     class="card__row row gap-md text-xs"
                                     aria-label="{{ $filter->label() }}"
+                                    data-id="{{ $filter::class }}"
                                 >
                                     <button type="button" class="drag-handle" data-handle>
                                         @icon('tabler-grip-vertical')
@@ -71,7 +72,7 @@ class ChannelFilters extends Field
                                 </li>
                             @endforeach
                         </ul>
-                    </x-waterhole::cp.sortable-context>
+                    </div>
                 </div>
             </div>
         blade;

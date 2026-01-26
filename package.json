@@ -8,6 +8,8 @@
     },
     "devDependencies": {
         "@csstools/postcss-global-data": "^4.0.0",
+        "@dnd-kit/abstract": "^0.2.3",
+        "@dnd-kit/dom": "^0.2.3",
         "@floating-ui/dom": "^1.7.4",
         "@github/combobox-nav": "^3.0.1",
         "@github/hotkey": "^3.1.1",
@@ -26,7 +28,6 @@
         "emoji-picker-element": "^1.28.1",
         "highlight.js": "^11.11.1",
         "inclusive-elements": "^0.5.1",
-        "inclusive-sort": "0.1.0-beta.2",
         "ky": "^1.14.2",
         "laravel-echo": "^2.3.0",
         "lodash-es": "^4.17.23",

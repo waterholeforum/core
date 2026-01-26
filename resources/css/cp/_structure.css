@@ -33,14 +33,8 @@
   }
 }
 
-.drag-overlay {
-  transition: all 0.3s;
-  border: 0;
-  cursor: move;
-  z-index: var(--z-index-overlay);
-}
-
-.drag-overlay-active {
+[data-dnd-dragging='true'] {
+  border: 0 !important;
   background: var(--color-bg);
   border-radius: var(--radius);
   box-shadow: var(--shadow-md);

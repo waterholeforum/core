@@ -1,101 +1,90 @@
 import { Controller } from '@hotwired/stimulus';
-import {
-    getAccessibleLabel,
-    KeyboardSensor,
-    PointerSensor,
-    Sortable,
-    SortableContext,
-    SortableDragEvent,
-    verticalListSorting,
-} from 'inclusive-sort';
-
-function translate(
-    message: string,
-    { activeItem, overIndex, container }: SortableContext,
-) {
-    const activeLabel = getAccessibleLabel(activeItem) || '';
-    const containerLabel = getAccessibleLabel(container) || '';
-    return message
-        .replace('{$activeLabel}', activeLabel)
-        .replace('{$overPosition}', String(overIndex + 1))
-        .replace('{$containerLabel}', containerLabel);
-}
+import { DragDropManager } from '@dnd-kit/dom';
+import { Sortable } from '@dnd-kit/dom/sortable';
+import { generateUniqueId } from '@dnd-kit/dom/utilities';
+import { RestrictToVerticalAxis } from '@dnd-kit/abstract/modifiers';
 
 /**
- * A controller to hook up an inclusive-sort instance.
+ * A controller to hook up a dnd-kit sortable instance.
  */
-export default class extends Controller {
+export default class extends Controller<HTMLElement> {
     static targets = ['container', 'orderInput'];
 
-    static values = {
-        instructions: String,
-        dragStartAnnouncement: String,
-        dragOverAnnouncement: String,
-        dropAnnouncement: String,
-        dragCancelAnnouncement: String,
-    };
-
     declare readonly containerTargets: HTMLElement[];
+
+    declare readonly hasOrderInputTarget: boolean;
     declare readonly orderInputTarget: HTMLInputElement;
-    declare readonly instructionsValue: string;
-    declare readonly dragStartAnnouncementValue: string;
-    declare readonly dragOverAnnouncementValue: string;
-    declare readonly dropAnnouncementValue: string;
-    declare readonly dragCancelAnnouncementValue: string;
 
-    sortable?: Sortable;
+    private manager?: DragDropManager;
+    private sortables: Sortable[] = [];
 
-    initialize() {
-        this.sortable = new Sortable({
-            filter: (item) => !!item.querySelector('[data-handle]'),
-            activator: (item) => item.querySelector('[data-handle]'),
-            strategy: verticalListSorting,
-            sensors: [
-                new PointerSensor(),
-                new KeyboardSensor({ instructions: this.instructionsValue }),
-            ],
-            announcements: {
-                onDragStart: translate.bind(
-                    undefined,
-                    this.dragStartAnnouncementValue,
-                ),
-                onDragOver: translate.bind(
-                    undefined,
-                    this.dragOverAnnouncementValue,
-                ),
-                onDrop: translate.bind(undefined, this.dropAnnouncementValue),
-                onDragCancel: translate.bind(
-                    undefined,
-                    this.dragCancelAnnouncementValue,
-                ),
-            },
+    connect() {
+        this.manager = new DragDropManager({
+            // @ts-ignore
+            modifiers: [RestrictToVerticalAxis],
         });
+        this.manager.monitor.addEventListener('dragend', this.onDragEnd);
 
-        this.sortable.addEventListener('dragstart', this.start);
-        this.sortable.addEventListener('drop', this.beforeEnd);
-        this.sortable.addEventListener('dragcancel', this.beforeEnd);
-        this.sortable.addEventListener('dragend', this.end);
+        this.refreshSortables();
     }
 
-    containerTargetConnected(el: HTMLElement) {
-        this.sortable?.addContainer(el);
+    disconnect() {
+        this.teardownSortables();
+
+        this.manager?.monitor.removeEventListener('dragend', this.onDragEnd);
+        this.manager?.destroy?.();
+        this.manager = undefined;
     }
 
-    containerTargetDisconnected(el: HTMLElement) {
-        this.sortable?.removeContainer(el);
+    containerTargetConnected() {
+        this.refreshSortables();
     }
 
-    private start = (e: SortableDragEvent) => {
-        e.detail.activeItem.style.opacity = '0';
-        e.detail.overlay.classList.add('drag-overlay', 'drag-overlay-active');
-    };
+    containerTargetDisconnected() {
+        this.refreshSortables();
+    }
 
-    private beforeEnd = (e: SortableDragEvent) => {
-        e.detail.overlay.classList.remove('drag-overlay-active');
-    };
+    private refreshSortables() {
+        this.teardownSortables();
 
-    private end = (e: SortableDragEvent) => {
-        e.detail.activeItem.style.opacity = '';
+        if (!this.manager) return;
+
+        this.containerTargets.forEach((container, group) => {
+            const items = Array.from(
+                container.querySelectorAll<HTMLElement>('[data-id]'),
+            );
+
+            items.forEach((item, index) => {
+                const sortable = new Sortable(
+                    {
+                        id: item.dataset.id || generateUniqueId('item'),
+                        index,
+                        group,
+                        element: item,
+                        handle:
+                            item.querySelector<HTMLElement>('[data-handle]') ||
+                            undefined,
+                    },
+                    this.manager,
+                );
+
+                this.sortables.push(sortable);
+            });
+        });
+    }
+
+    private teardownSortables() {
+        this.sortables.forEach((sortable) => sortable.destroy());
+        this.sortables = [];
+    }
+
+    private onDragEnd = () => this.updateOrder();
+
+    private updateOrder() {
+        if (!this.hasOrderInputTarget) {
+            this.dispatch('update');
+            return;
+        }
 
         const result = this.containerTargets.flatMap((list, i) =>
             Array.from(list.querySelectorAll<HTMLElement>('[data-id]')).map(
@@ -109,5 +98,5 @@ export default class extends Controller {
             this.orderInputTarget.value = JSON.stringify(result);
             this.dispatch('update');
         }
-    };
+    }
 }

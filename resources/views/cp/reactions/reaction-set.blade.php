@@ -62,8 +62,8 @@
 
                 <turbo-frame id="reaction-types">
                     <div class="card__body stack gap-md">
-                        <x-waterhole::cp.sortable-context
-                            data-controller="form"
+                        <div
+                            data-controller="sortable form"
                             data-action="sortable:update->form#submit"
                         >
                             <ul
@@ -117,7 +117,7 @@
                                     data-sortable-target="orderInput"
                                 />
                             </form>
-                        </x-waterhole::cp.sortable-context>
+                        </div>
 
                         <div>
                             <a

@@ -97,18 +97,6 @@ ability-post = Post
 ability-moderate = Moderate
 ability-assign-tags = Assign Tags
 
-## Sortable Lists
-
-sortable-instructions =
-    To pick up a sortable item, press space or enter.
-    While dragging, use the arrow keys to move the item.
-    Press space or enter again to drop the item in its new position, or press escape to cancel.
-
-sortable-drag-start-announcement = Picked up { $activeLabel } in { $containerLabel }
-sortable-drag-over-announcement = { $activeLabel } was moved to position { $overPosition } in { $containerLabel }
-sortable-drop-announcement = { $activeLabel } was dropped in position { $overPosition } in { $containerLabel }
-sortable-drag-cancel-announcement = Sorting was cancelled. { $activeLabel } was dropped.
-
 ## Used in the Waterhole\compact_number() function
 
 compact-number-1000 = 0.0K

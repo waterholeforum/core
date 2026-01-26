@@ -1,7 +1,7 @@
 <x-waterhole::cp :title="__('waterhole::cp.structure-title')">
-    <x-waterhole::cp.sortable-context
+    <div
         class="stack gap-md"
-        data-controller="form"
+        data-controller="sortable form"
         data-action="sortable:update->form#submit"
     >
         <div class="row gap-xs">
@@ -99,5 +99,5 @@
                 <input type="hidden" name="order" data-sortable-target="orderInput" />
             </form>
         </turbo-frame>
-    </x-waterhole::cp.sortable-context>
+    </div>
 </x-waterhole::cp>
