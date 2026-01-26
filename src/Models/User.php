@@ -195,7 +195,7 @@ class User extends Model implements
      */
     public function uploadAvatar(Image $image): static
     {
-        $this->avatar()->uploadImage($image);
+        $this->avatarFile()->uploadImage($image);
 
         return $this;
     }
@@ -205,12 +205,12 @@ class User extends Model implements
      */
     public function removeAvatar(): static
     {
-        $this->avatar()->remove();
+        $this->avatarFile()->remove();
 
         return $this;
     }
 
-    public function avatar(): FileAttribute
+    public function avatarFile(): FileAttribute
     {
         return $this->fileAttribute(
             attribute: 'avatar',
@@ -295,7 +295,7 @@ class User extends Model implements
 
     protected function avatarUrl(): Attribute
     {
-        return Attribute::make(get: fn() => $this->avatar()->url())->shouldCache();
+        return Attribute::make(get: fn() => $this->avatarFile()->url())->shouldCache();
     }
 
     protected function unreadNotificationCount(): Attribute
