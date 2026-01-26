@@ -46,7 +46,7 @@ class CommentController extends Controller
             ])
             ->when(
                 $post->canModerate(request()->user()),
-                fn($query) => $query->with(['pendingFlags', 'deletedBy']),
+                fn($query) => $query->with(['pendingFlags.createdBy', 'deletedBy']),
             )
             ->get()
             ->each(function ($comment) use ($post) {
