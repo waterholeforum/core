@@ -29,8 +29,25 @@ class CommentPolicy
      */
     public function edit(User $user, Comment $comment): bool
     {
-        return !$comment->trashed() &&
-            ($comment->user_id === $user->id || $this->moderate($user, $comment));
+        if ($comment->trashed()) {
+            return false;
+        }
+
+        if ($this->moderate($user, $comment)) {
+            return true;
+        }
+
+        if ($comment->user_id !== $user->id) {
+            return false;
+        }
+
+        $limitMinutes = config('waterhole.forum.edit_time_limit');
+
+        if ($limitMinutes === null) {
+            return true;
+        }
+
+        return $comment->created_at->diffInMinutes(now()) <= $limitMinutes;
     }
 
     /**

@@ -41,7 +41,7 @@ class PostPolicy
             return false;
         }
 
-        $limitMinutes = config('waterhole.forum.post_edit_time_limit');
+        $limitMinutes = config('waterhole.forum.edit_time_limit');
 
         if ($limitMinutes === null) {
             return true;
