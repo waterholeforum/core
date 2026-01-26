@@ -131,16 +131,24 @@ class Channel extends Model
 
     public function postsReactionSet(): BelongsTo
     {
-        return $this->belongsTo(ReactionSet::class, 'posts_reaction_set_id')->withDefault(
-            fn() => $this->posts_reactions_enabled ? ReactionSet::defaultPosts() : null,
-        );
+        $relation = $this->belongsTo(ReactionSet::class, 'posts_reaction_set_id');
+
+        if ($this->posts_reactions_enabled && ($default = ReactionSet::defaultPosts())) {
+            $relation->withDefault(fn() => $default);
+        }
+
+        return $relation;
     }
 
     public function commentsReactionSet(): BelongsTo
     {
-        return $this->belongsTo(ReactionSet::class, 'comments_reaction_set_id')->withDefault(
-            fn() => $this->comments_reactions_enabled ? ReactionSet::defaultComments() : null,
-        );
+        $relation = $this->belongsTo(ReactionSet::class, 'comments_reaction_set_id');
+
+        if ($this->comments_reactions_enabled && ($default = ReactionSet::defaultComments())) {
+            $relation->withDefault(fn() => $default);
+        }
+
+        return $relation;
     }
 
     public function taxonomies(): BelongsToMany

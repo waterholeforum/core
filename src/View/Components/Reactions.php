@@ -40,8 +40,9 @@ class Reactions extends Component
 
     public function shouldRender(): bool
     {
-        return $this->model->reactionCounts ||
-            resolve(React::class)->authorize(Auth::user(), $this->model);
+        return $this->reactionSet &&
+            ($this->model->reactionCounts ||
+                resolve(React::class)->authorize(Auth::user(), $this->model));
     }
 
     public function reactionCount(ReactionType $reactionType): int
