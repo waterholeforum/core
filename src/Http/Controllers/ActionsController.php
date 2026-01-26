@@ -93,7 +93,7 @@ class ActionsController extends Controller
             foreach (['success', 'warning', 'danger'] as $type) {
                 if ($message = session()->get($type)) {
                     $streams[] = TurboStream::append(
-                        new Alert(type: $type, message: $message),
+                        (new Alert($type, $message))->withAttributes(['data-key' => "flash-$type"]),
                         '#alerts',
                     );
                 }
