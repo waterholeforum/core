@@ -32,7 +32,7 @@ class IconPicker extends Component
         return [
             'icon' => ['array:type,emoji,svg,file'],
             'icon.type' => ['nullable', 'in:emoji,svg,file'],
-            'icon.file' => ['nullable', 'image'],
+            'icon.file' => ['nullable', 'image:allow_svg'],
         ];
     }
 }

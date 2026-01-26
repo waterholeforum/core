@@ -5,7 +5,7 @@ namespace Waterhole\Http\Controllers\Auth;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\Laravel\Facades\Image;
 use Waterhole\Auth\Providers;
 use Waterhole\Auth\SsoPayload;
 use Waterhole\Forms\RegistrationForm;
@@ -54,7 +54,7 @@ class RegisterController extends Controller
             $user->markEmailAsVerified();
 
             if ($form->payload->user->avatar) {
-                $user->uploadAvatar(Image::make($form->payload->user->avatar));
+                $user->uploadAvatar(Image::read($form->payload->user->avatar));
             }
 
             if ($form->payload->user->groups) {

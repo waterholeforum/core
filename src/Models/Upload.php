@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Laravel\Facades\Image;
 
 class Upload extends Model
 {
@@ -21,8 +22,8 @@ class Upload extends Model
             'type' => $file->getMimeType(),
         ];
 
-        if (str_starts_with($attributes['type'], 'image/')) {
-            $image = Image::make($file);
+        if (app(ImageManager::class)->driver()->supports($attributes['type'])) {
+            $image = Image::read($file);
             $attributes['width'] = $image->width();
             $attributes['height'] = $image->height();
         }

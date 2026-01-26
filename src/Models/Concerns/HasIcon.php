@@ -2,10 +2,9 @@
 
 namespace Waterhole\Models\Concerns;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Http\UploadedFile;
-use Intervention\Image\Facades\Image;
-use Intervention\Image\Image as ImageObject;
+use Intervention\Image\Image;
+use Waterhole\Models\Attributes\FileAttribute;
 
 /**
  * Methods to manage a model's `icon` attribute.
@@ -23,7 +22,7 @@ use Intervention\Image\Image as ImageObject;
  */
 trait HasIcon
 {
-    use HasImageAttributes;
+    use HasFileAttributes;
 
     /**
      * Save the icon using input from an <x-waterhole::icon-picker> component.
@@ -31,7 +30,7 @@ trait HasIcon
     public function saveIcon(array $icon): void
     {
         if (empty($icon['type'])) {
-            $this->removeImage('icon_file', 'icons');
+            $this->iconFile()->remove();
             $this->icon = null;
             $this->save();
 
@@ -39,35 +38,36 @@ trait HasIcon
         }
 
         if ($icon['type'] === 'file') {
-            if ($icon['file'] ?? null instanceof UploadedFile) {
-                // TODO: support SVG
-                $this->uploadImage(Image::make($icon['file']), 'icon_file', 'icons', function (
-                    ImageObject $image,
-                ) {
-                    return $image
-                        ->resize(50, 50, function ($constraint) {
-                            $constraint->aspectRatio();
-                            $constraint->upsize();
-                        })
-                        ->encode('png');
-                });
+            $file = $icon['file'] ?? null;
+
+            if ($file instanceof UploadedFile) {
+                $this->iconFile()->upload($file);
             }
         } else {
+            $this->iconFile()->remove();
             $this->icon = $icon['type'] . ':' . ($icon[$icon['type']] ?? '');
             $this->save();
         }
     }
 
-    protected function iconFile(): Attribute
+    public function iconFile(): FileAttribute
     {
-        return Attribute::make(
-            get: fn($value, array $attributes) => str_starts_with(
-                $attributes['icon'] ?? '',
-                'file:',
-            )
-                ? substr($attributes['icon'], 5)
-                : null,
-            set: fn(?string $value) => ['icon' => $value ? 'file:' . $value : null],
+        return $this->fileAttribute(
+            attribute: 'icon_file',
+            directory: 'icons',
+            encodeImage: fn(Image $image) => $image
+                ->scaleDown(50, 50)
+                ->toPng(),
         );
+    }
+
+    public function getIconFileAttribute(): ?string
+    {
+        return str_starts_with($this->icon ?? '', 'file:') ? substr($this->icon, 5) : null;
+    }
+
+    public function setIconFileAttribute(?string $value): void
+    {
+        $this->attributes['icon'] = $value ? 'file:' . $value : null;
     }
 }

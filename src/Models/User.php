@@ -25,7 +25,8 @@ use Laravel\Sanctum\HasApiTokens;
 use Waterhole\Auth\AuthenticatesWaterhole;
 use Waterhole\Database\Factories\UserFactory;
 use Waterhole\Extend\Core\NotificationTypes;
-use Waterhole\Models\Concerns\HasImageAttributes;
+use Waterhole\Models\Attributes\FileAttribute;
+use Waterhole\Models\Concerns\HasFileAttributes;
 use Waterhole\Models\Concerns\ReceivesPermissions;
 use Waterhole\Models\Concerns\UsesFormatter;
 use Waterhole\Notifications\ResetPassword;
@@ -71,7 +72,7 @@ class User extends Model implements
     use Authenticatable;
     use Authorizable;
     use CanResetPassword;
-    use HasImageAttributes;
+    use HasFileAttributes;
     use MustVerifyEmail;
     use Notifiable;
     use ReceivesPermissions;
@@ -194,9 +195,9 @@ class User extends Model implements
      */
     public function uploadAvatar(Image $image): static
     {
-        return $this->uploadImage($image, 'avatar', 'avatars', function (Image $image) {
-            return $image->fit(200)->encode('png');
-        });
+        $this->avatar()->uploadImage($image);
+
+        return $this;
     }
 
     /**
@@ -204,7 +205,18 @@ class User extends Model implements
      */
     public function removeAvatar(): static
     {
-        return $this->removeImage('avatar', 'avatars');
+        $this->avatar()->remove();
+
+        return $this;
+    }
+
+    public function avatar(): FileAttribute
+    {
+        return $this->fileAttribute(
+            attribute: 'avatar',
+            directory: 'avatars',
+            encodeImage: fn(Image $image) => $image->cover(200, 200)->toPng(),
+        );
     }
 
     /**
@@ -283,9 +295,7 @@ class User extends Model implements
 
     protected function avatarUrl(): Attribute
     {
-        return Attribute::make(
-            get: fn() => $this->resolvePublicUrl($this->avatar, 'avatars'),
-        )->shouldCache();
+        return Attribute::make(get: fn() => $this->avatar()->url())->shouldCache();
     }
 
     protected function unreadNotificationCount(): Attribute

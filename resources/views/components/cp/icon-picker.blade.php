@@ -77,13 +77,6 @@
                 </a>
             </div>
 
-            {{-- <div class="field__description"> --}}
-            {{-- <a href="" class="with-icon"> --}}
-            {{-- @icon('tabler-question-mark-circle') --}}
-            {{-- Learn more about SVG icons --}}
-            {{-- </a> --}}
-            {{-- </div> --}}
-
             <datalist id="icons">
                 @foreach (app(BladeUI\Icons\IconsManifest::class)->getManifest($sets = app(BladeUI\Icons\Factory::class)->all()) as $set => $paths)
                     @foreach ($paths as $icons)
@@ -96,7 +89,11 @@
         </div>
 
         <div class="stack gap-xs full-width" data-reveal-target="then" data-reveal-value="file">
-            <input type="file" name="{{ $name }}[file]" />
+            <input
+                type="file"
+                name="{{ $name }}[file]"
+                accept=".jpg,.jpeg,.png,.bmp,.gif,.webp,.svg"
+            />
         </div>
     </div>
 </div>
