@@ -23,11 +23,12 @@
 
 .with-icon {
   display: inline-flex;
-  align-items: center;
-  vertical-align: text-bottom;
+  align-items: baseline;
+  vertical-align: baseline;
 
   > .icon {
     margin-right: 0.2em;
+    align-self: center;
 
     &:not(:first-child) {
       margin-left: 0.2em;
