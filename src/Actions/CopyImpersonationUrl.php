@@ -33,6 +33,7 @@ class CopyImpersonationUrl extends Link
     {
         return [
             'data-turbo-frame' => '_top',
+            'data-turbo-prefetch' => 'false',
             'data-controller' => 'copy-link',
             'data-action' => 'copy-link#copy',
             'data-copy-link-message-value' => __(

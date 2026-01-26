@@ -15,6 +15,7 @@ class ImpersonateController extends Controller
     {
         $this->middleware(ValidateSignature::class);
     }
+
     public function __invoke(User $user)
     {
         Auth::login($user);
