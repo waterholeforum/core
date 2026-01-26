@@ -4,7 +4,7 @@
     cursor: default;
   }
 
-  .is-inert {
+  &.is-inert {
     cursor: default;
   }
 

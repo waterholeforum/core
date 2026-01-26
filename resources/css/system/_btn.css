@@ -29,7 +29,7 @@
   background: transparent;
   color: var(--color-muted);
 
-  &:hover {
+  &:hover:not(:disabled, .is-disabled, .is-inert) {
     background: var(--color-bg);
   }
 }
