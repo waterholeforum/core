@@ -27,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add support for Reverb as the broadcasting driver
 - Allow disabling reactions per-channel
 - Allow configuring uploads (`waterhole.uploads.disk`) and assets (`waterhole.system.assets_disk`) disks
-- Add support for `PendingUser::forceName` option
+- Add support for SSO `PendingUser::forceName` option
 - Add success message to copy link action
 - Add confirmation for Composer repository addition in `waterhole:make:extension`
 
