@@ -1,10 +1,5 @@
-.color-picker {
-  position: relative;
-}
-
 .color-picker__picker {
   position: absolute;
-  top: 100%;
   z-index: var(--z-index-overlay);
   box-shadow: var(--shadow-md);
   margin-top: 6px;
