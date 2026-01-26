@@ -32,6 +32,8 @@ use Waterhole\View\TurboStream;
  * @property bool $answerable
  * @property bool $require_approval_posts
  * @property bool $require_approval_comments
+ * @property bool $posts_reactions_enabled
+ * @property bool $comments_reactions_enabled
  * @property ?array $translations
  * @property ?int $posts_reaction_set_id
  * @property ?int $comments_reaction_set_id
@@ -64,6 +66,8 @@ class Channel extends Model
         'translations' => 'json',
         'require_approval_posts' => 'bool',
         'require_approval_comments' => 'bool',
+        'posts_reactions_enabled' => 'bool',
+        'comments_reactions_enabled' => 'bool',
     ];
 
     protected static function booting(): void
@@ -128,14 +132,14 @@ class Channel extends Model
     public function postsReactionSet(): BelongsTo
     {
         return $this->belongsTo(ReactionSet::class, 'posts_reaction_set_id')->withDefault(
-            fn() => ReactionSet::defaultPosts(),
+            fn() => $this->posts_reactions_enabled ? ReactionSet::defaultPosts() : null,
         );
     }
 
     public function commentsReactionSet(): BelongsTo
     {
         return $this->belongsTo(ReactionSet::class, 'comments_reaction_set_id')->withDefault(
-            fn() => ReactionSet::defaultComments(),
+            fn() => $this->comments_reactions_enabled ? ReactionSet::defaultComments() : null,
         );
     }
 
