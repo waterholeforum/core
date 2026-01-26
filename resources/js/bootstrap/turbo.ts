@@ -1,6 +1,7 @@
 import * as Turbo from '@hotwired/turbo';
 import { FrameElement, TurboFrameMissingEvent } from '@hotwired/turbo';
 import { cloneFromTemplate } from '../utils';
+import { AlertsElement } from 'inclusive-elements';
 
 declare global {
     interface Window {
@@ -10,8 +11,13 @@ declare global {
 
 window.Turbo = Turbo;
 
+let newAlerts: AlertsElement | null = null;
+
 document.addEventListener('turbo:before-render', (e) => {
-    const newAlerts = e.detail.newBody.querySelector('#alerts');
+    newAlerts = e.detail.newBody.querySelector<AlertsElement>('#alerts');
+});
+
+document.addEventListener('turbo:load', (e) => {
     if (!newAlerts) return;
     [...newAlerts.children].forEach((el) =>
         Waterhole.alerts.show(el as HTMLElement),
