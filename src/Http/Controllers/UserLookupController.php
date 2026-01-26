@@ -53,16 +53,19 @@ class UserLookupController extends Controller
         // the above query a couple times to specifically find users who posted
         // or commented on the post.
         if ($post) {
+            $commentsCreatedAt = $users->getGrammar()->wrap('comments.created_at');
+            $commentsId = $users->getGrammar()->wrap('comments.id');
+
             $commentsQuery = $users
                 ->clone()
-                ->selectRaw('MAX(comments.created_at) as created_at')
-                ->selectRaw('MAX(comments.id) as comment_id')
+                ->selectRaw("MAX($commentsCreatedAt) as created_at")
+                ->selectRaw("MAX($commentsId) as comment_id")
                 ->joinRelationship(
                     'comments',
                     fn($query) => $query->where('comments.post_id', $post->getKey()),
                 )
                 ->groupBy(['users.id', 'name', 'avatar'])
-                ->orderByRaw('MAX(comments.created_at) DESC');
+                ->orderByRaw("MAX($commentsCreatedAt) DESC");
 
             $postQuery = $users
                 ->clone()

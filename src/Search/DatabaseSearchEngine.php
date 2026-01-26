@@ -3,7 +3,6 @@
 namespace Waterhole\Search;
 
 use Exception;
-use Illuminate\Support\Facades\DB;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Post;
 use function Waterhole\remove_formatting;
@@ -41,8 +40,8 @@ class DatabaseSearchEngine implements EngineInterface
         // them. Even if we're filtering by certain channels, we still report
         // the number of hits in all channels so that they can be displayed
         // in the sidebar.
-        $connection = DB::connection(config('waterhole.system.database'));
-        $tablePrefix = $connection->getTablePrefix();
+        $connection = $query->getConnection();
+        $grammar = $query->getGrammar();
         $isPgsql = $connection->getDriverName() === 'pgsql';
 
         $channels = Channel::query()
@@ -50,7 +49,7 @@ class DatabaseSearchEngine implements EngineInterface
             ->selectSub(
                 $query
                     ->clone()
-                    ->select(DB::raw("count(distinct {$tablePrefix}posts.id)"))
+                    ->selectRaw('count(distinct ' . $grammar->wrap('posts.id') . ')')
                     ->whereColumn('posts.channel_id', 'channels.id'),
                 'hits',
             )
@@ -69,29 +68,31 @@ class DatabaseSearchEngine implements EngineInterface
         // information we need. We will wrap a final "outer" query around this
         // to ensure that we only get one result per post, even if it contains
         // multiple relevant comments inside.
-        $query->select('posts.id as post_id', 'posts.title', 'posts.body as post_body');
+        $query->select(['posts.id as post_id', 'posts.title', 'posts.body as post_body']);
         $score = [];
 
         if (in_array('title', $in)) {
             $score[] = 'tscore';
-            $sql = $this->getScoreSql($isPgsql, "{$tablePrefix}posts.title");
+            $sql = $this->getScoreSql($isPgsql, $grammar->wrap('posts.title'));
             $query->selectRaw("$sql * 10 as tscore", [$q]);
         }
 
         if (in_array('body', $in)) {
             $score[] = 'pscore';
-            $sql = $this->getScoreSql($isPgsql, "{$tablePrefix}posts.body");
+            $sql = $this->getScoreSql($isPgsql, $grammar->wrap('posts.body'));
             $query->selectRaw("$sql as pscore", [$q]);
         }
 
         if (in_array('comments', $in)) {
             $score[] = 'cscore';
-            $sql = $this->getScoreSql($isPgsql, "{$tablePrefix}comments.body");
+            $sql = $this->getScoreSql($isPgsql, $grammar->wrap('posts.body'));
             $query
                 ->addSelect('comments.id as comment_id')
                 ->addSelect('comments.body as comment_body')
                 ->selectRaw(
-                    "ROW_NUMBER() OVER (PARTITION BY {$tablePrefix}posts.id ORDER BY $sql DESC) as r",
+                    'ROW_NUMBER() OVER (PARTITION BY ' .
+                        $grammar->wrap('posts.id') .
+                        " ORDER BY $sql DESC) as r",
                     [$q],
                 )
                 ->selectRaw("$sql as cscore", [$q]);
@@ -119,7 +120,7 @@ class DatabaseSearchEngine implements EngineInterface
         // to the most relevant part.
         $highlighter = new Highlighter($q);
 
-        $hits = DB::connection(config('waterhole.system.database'))
+        $hits = $connection
             ->table($query, 'p')
             ->where('r', 1)
             ->take($limit)
