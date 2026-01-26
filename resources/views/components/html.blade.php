@@ -162,7 +162,11 @@
         <ui-alerts id="alerts" class="alerts" data-turbo-permanent>
             @foreach (['success', 'warning', 'danger'] as $type)
                 @if ($message = session($type))
-                    <x-waterhole::alert :type="$type" :message="$message" />
+                    <x-waterhole::alert
+                        :type="$type"
+                        :message="$message"
+                        :data-key="'flash-' . $type"
+                    />
                 @endif
             @endforeach
         </ui-alerts>
