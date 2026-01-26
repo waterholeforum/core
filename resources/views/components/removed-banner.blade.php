@@ -1,5 +1,5 @@
 <div class="removed-banner color-muted stack gap-xs full-width">
-    <div class="removed-banner__summary row gap-sm align-center">
+    <div class="removed-banner__summary row wrap gap-sm align-center">
         {{ $lead ?? '' }}
 
         @if ($subject->deleted_reason)
@@ -12,8 +12,10 @@
             </span>
         @endif
 
+        <div class="grow"></div>
+
         @if ($canModerate = $subject->canModerate(Auth::user()))
-            <div class="text-xxs push-end">
+            <div class="removed-banner__attribution text-xxs push-end">
                 @if ($subject->deletedBy)
                     <span>{{ __('waterhole::forum.removed-by-label') }}</span>
                     <x-waterhole::user-label :user="$subject->deletedBy" />

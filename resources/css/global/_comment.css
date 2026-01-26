@@ -53,11 +53,19 @@
   }
 }
 
-.comment__icon {
-  position: absolute;
-  margin-left: calc(-1 * (var(--attribution-avatar-size) + var(--space-md)));
-  width: var(--attribution-avatar-size);
-  text-align: right;
+@media (--sm) {
+  .comment.is-removed:not(.is-expanded) .removed-banner__attribution {
+    display: none;
+  }
+}
+
+@media (--md-up) {
+  .comment__icon {
+    position: absolute;
+    margin-left: calc(-1 * (var(--attribution-avatar-size) + var(--space-md)));
+    width: var(--attribution-avatar-size);
+    text-align: right;
+  }
 }
 
 // The "in reply to" bit in the comment header
