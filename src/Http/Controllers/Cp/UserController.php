@@ -30,7 +30,7 @@ class UserController extends Controller
         // clause to the query.
         if ($q = $request->query('q')) {
             $isPgsql = (new User())->getConnection()->getDriverName() === 'pgsql';
-            $likeOperator = $isPgsql ? 'ILIKE' : 'LIKE';
+            $likeOperator = $isPgsql ? 'ilike' : 'like';
 
             preg_match_all('/(?:[^\s"]*)"([^"]*)(?:"|$)|[^\s"]+/i', $q, $tokens, PREG_SET_ORDER);
 

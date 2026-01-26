@@ -7,7 +7,6 @@ use s9e\TextFormatter\Parser\Tag;
 use s9e\TextFormatter\Renderer;
 use s9e\TextFormatter\Utils;
 use Waterhole\Models\User;
-
 use function Waterhole\username;
 
 /**

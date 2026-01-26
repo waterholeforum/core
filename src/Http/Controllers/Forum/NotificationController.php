@@ -28,9 +28,8 @@ class NotificationController extends Controller
 
         $user->update(['notifications_read_at' => now()]);
 
-        $connection = $user->notifications()->getRelated()->getConnection();
-
-        $cast = $connection->getDriverName() === 'pgsql' ? 'TEXT' : 'CHAR';
+        $groupType = "COALESCE(group_type, CONCAT('', id))";
+        $groupId = "COALESCE(group_id, CONCAT('', id))";
 
         // Notifications can be grouped together by their subject. When listing
         // notifications, we only show the most recent notification in each
@@ -39,7 +38,7 @@ class NotificationController extends Controller
             ->notifications()
             ->select('*')
             ->selectRaw(
-                "ROW_NUMBER() OVER(PARTITION BY type, COALESCE(CAST(group_type AS $cast), CAST(id AS $cast)), COALESCE(CAST(group_id AS $cast), CAST(id AS $cast)) ORDER BY created_at DESC) AS r"
+                "ROW_NUMBER() OVER(PARTITION BY type, $groupType, $groupId ORDER BY created_at DESC) AS r",
             );
 
         $notifications = Notification::from('notifications')

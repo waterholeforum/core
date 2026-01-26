@@ -71,38 +71,30 @@ class DatabaseSearchEngine implements EngineInterface
         // multiple relevant comments inside.
         $query->select('posts.id as post_id', 'posts.title', 'posts.body as post_body');
         $score = [];
-        $scoreExpressions = [];
-        $sortBindings = [];
 
         if (in_array('title', $in)) {
             $score[] = 'tscore';
-            $sql = $this->getScoreSql($isPgsql, "{$tablePrefix}posts.title", '?');
+            $sql = $this->getScoreSql($isPgsql, "{$tablePrefix}posts.title");
             $query->selectRaw("$sql * 10 as tscore", [$q]);
-            $scoreExpressions[] = "($sql * 10)";
-            $sortBindings[] = $q;
         }
 
         if (in_array('body', $in)) {
             $score[] = 'pscore';
-            $sql = $this->getScoreSql($isPgsql, "{$tablePrefix}posts.body", '?');
+            $sql = $this->getScoreSql($isPgsql, "{$tablePrefix}posts.body");
             $query->selectRaw("$sql as pscore", [$q]);
-            $scoreExpressions[] = "($sql)";
-            $sortBindings[] = $q;
         }
 
         if (in_array('comments', $in)) {
             $score[] = 'cscore';
-            $matchComment = $this->getScoreSql($isPgsql, "{$tablePrefix}comments.body", '?');
+            $sql = $this->getScoreSql($isPgsql, "{$tablePrefix}comments.body");
             $query
                 ->addSelect('comments.id as comment_id')
                 ->addSelect('comments.body as comment_body')
                 ->selectRaw(
-                    "ROW_NUMBER() OVER (PARTITION BY {$tablePrefix}posts.id ORDER BY $matchComment DESC) as r",
+                    "ROW_NUMBER() OVER (PARTITION BY {$tablePrefix}posts.id ORDER BY $sql DESC) as r",
                     [$q],
                 )
-                ->selectRaw("$matchComment as cscore", [$q]);
-            $scoreExpressions[] = "($matchComment)";
-            $sortBindings[] = $q;
+                ->selectRaw("$sql as cscore", [$q]);
         } else {
             $query->selectRaw('1 as r');
         }
@@ -111,12 +103,14 @@ class DatabaseSearchEngine implements EngineInterface
             case 'latest':
                 $query->orderByDesc('posts.created_at');
                 break;
+
             case 'top':
                 $query->orderByDesc('posts.score');
                 break;
+
             default:
-                if (!empty($scoreExpressions)) {
-                    $query->orderByRaw(implode(' + ', $scoreExpressions) . ' desc', $sortBindings);
+                if ($score) {
+                    $query->orderByRaw(implode(' + ', $score) . ' desc');
                 }
         }
 
@@ -124,6 +118,7 @@ class DatabaseSearchEngine implements EngineInterface
         // For each hit we highlight the relevant words and truncate the body
         // to the most relevant part.
         $highlighter = new Highlighter($q);
+
         $hits = DB::connection(config('waterhole.system.database'))
             ->table($query, 'p')
             ->where('r', 1)
@@ -132,6 +127,7 @@ class DatabaseSearchEngine implements EngineInterface
             ->get()
             ->map(function ($row) use ($highlighter) {
                 $title = $highlighter->highlight($row->title);
+
                 try {
                     $body = $highlighter->highlight(
                         $highlighter->truncate(
@@ -142,13 +138,14 @@ class DatabaseSearchEngine implements EngineInterface
                             ),
                         ),
                     );
-                } catch (Exception $e) {
+                } catch (Exception) {
                     $body = '';
                 }
+
                 return new Hit($row->post_id, $title, $body);
             });
 
-        if ($this->containsShortWords($q)) {
+        if (!$isPgsql && $this->containsShortWords($q)) {
             $error = __('waterhole::forum.search-keywords-too-short-message');
         }
 
@@ -164,29 +161,27 @@ class DatabaseSearchEngine implements EngineInterface
     private function containsShortWords(string $q): bool
     {
         preg_match_all('/\w+/', $q, $matches);
+
         return collect($matches[0])->some(fn($word) => strlen($word) < 3);
     }
 
-    private function getScoreSql(bool $isPgsql, string $column, string $placeholder): string
+    private function getScoreSql(bool $isPgsql, string $column): string
     {
         if ($isPgsql) {
-            $dictionary = $this->getPgDictionary();
-            return "ts_rank(to_tsvector('$dictionary', $column), plainto_tsquery('$dictionary', $placeholder))";
-        }
-        return "MATCH ($column) AGAINST ($placeholder)";
-    }
+            $dictionary = match (config('app.locale')) {
+                'es' => 'spanish',
+                'fr' => 'french',
+                'de' => 'german',
+                'it' => 'italian',
+                'pt', 'pt-br' => 'portuguese',
+                'nl' => 'dutch',
+                'ru' => 'russian',
+                default => 'english',
+            };
 
-    private function getPgDictionary(): string
-    {
-        return match (config('app.locale')) {
-            'es' => 'spanish',
-            'fr' => 'french',
-            'de' => 'german',
-            'it' => 'italian',
-            'pt', 'pt-br' => 'portuguese',
-            'nl' => 'dutch',
-            'ru' => 'russian',
-            default => 'english',
-        };
+            return "ts_rank(to_tsvector('$dictionary', $column), plainto_tsquery('$dictionary', ?))";
+        }
+
+        return "MATCH ($column) AGAINST (?)";
     }
 }

@@ -90,32 +90,34 @@ class LineChart extends Component
             ],
         ];
 
-        $builder = $model instanceof QueryBuilder || $model instanceof EloquentBuilder ? $model : $model::query();
-        $isPgsql = $builder->getConnection()->getDriverName() === 'pgsql';
+        $builder =
+            $model instanceof QueryBuilder || $model instanceof EloquentBuilder
+                ? $model
+                : $model::query();
 
-        $fmt = fn($mysql, $pgsql) => $isPgsql ? $pgsql : $mysql;
+        $isPgsql = $builder->getConnection()->getDriverName() === 'pgsql';
 
         $this->units = [
             'hour' => [
-                'format' => $fmt('%Y-%m-%d %H:00:00', 'YYYY-MM-DD HH24:00:00'),
+                'format' => $isPgsql ? 'YYYY-MM-DD HH24:00:00' : '%Y-%m-%d %H:00:00',
                 'label' => fn(CarbonImmutable $date) => $date->isoFormat('LT'),
             ],
             'day' => [
-                'format' => $fmt('%Y-%m-%d', 'YYYY-MM-DD'),
+                'format' => $isPgsql ? 'YYYY-MM-DD' : '%Y-%m-%d',
                 'label' => fn(CarbonImmutable $date) => $date->isoFormat('D MMM'),
             ],
             'week' => [
-                'format' => $fmt('%YW%v', 'YYYY"W"IW'),
+                'format' => $isPgsql ? 'YYYY"W"IW' : '%YW%v',
                 'label' => fn(CarbonImmutable $date) => $date->isoFormat('D MMM') .
                     ' - ' .
                     $date->addDays(6)->isoFormat('D MMM'),
             ],
             'month' => [
-                'format' => $fmt('%Y-%m-01', 'YYYY-MM-01'),
+                'format' => $isPgsql ? 'YYYY-MM-01' : '%Y-%m-01',
                 'label' => fn(CarbonImmutable $date) => $date->isoFormat('MMM Y'),
             ],
             'year' => [
-                'format' => $fmt('%Y', 'YYYY'),
+                'format' => $isPgsql ? 'YYYY' : '%Y',
                 'label' => fn(CarbonImmutable $date) => $date->isoFormat('Y'),
             ],
         ];
@@ -135,15 +137,13 @@ class LineChart extends Component
 
         $unit = $this->units[$this->selectedUnit];
 
-        $model = $builder;
-
-        if ($isPgsql) {
-            $model->selectRaw("to_char($column, ?) as time_group", [$unit['format']]);
-        } else {
-            $model->selectRaw("DATE_FORMAT($column, ?) as time_group", [$unit['format']]);
-        }
-
-        $this->results = $model
+        $this->results = $builder
+            ->selectRaw(
+                $isPgsql
+                    ? "to_char($column, ?) as time_group"
+                    : "DATE_FORMAT($column, ?) as time_group",
+                [$unit['format']],
+            )
             ->selectRaw('COUNT(*) as count')
             ->where($column, '>=', $this->prevPeriodStart)
             ->where($column, '<', $this->periodEnd)

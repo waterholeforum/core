@@ -29,7 +29,7 @@ class Top extends Filter
         if ($period = $this->currentPeriod()) {
             $method = 'sub' . ucfirst($period);
 
-            $query->where('created_at', '>', now()->$method());
+            $query->where('created_at', '>', now()->utc()->$method());
         }
     }
 

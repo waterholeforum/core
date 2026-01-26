@@ -28,11 +28,15 @@ class GroupsSeeder extends Seeder
             'name' => __('waterhole::install.group-admin'),
         ]);
 
+        // In PostgreSQL, sequences don't advance on explicit ID inserts.
+        // Manually sync to current max ID.
         if (DB::connection()->getDriverName() === 'pgsql') {
             $model = new Group();
             $table = $model->getConnection()->getTablePrefix() . $model->getTable();
 
-            DB::statement("SELECT setval(pg_get_serial_sequence('\"$table\"', 'id'), (SELECT MAX(id) FROM \"$table\"))");
+            DB::statement(
+                "SELECT setval(pg_get_serial_sequence('\"$table\"', 'id'), (SELECT MAX(id) FROM \"$table\"))",
+            );
         }
 
         Group::updateOrCreate([
