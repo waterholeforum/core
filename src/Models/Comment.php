@@ -140,7 +140,7 @@ class Comment extends Model
 
     public function post(): BelongsTo
     {
-        return $this->belongsTo(Post::class);
+        return $this->belongsTo(Post::class)->withoutGlobalScope('visible');
     }
 
     public function channel(): HasOneThrough
@@ -175,11 +175,16 @@ class Comment extends Model
         // currently authenticated user.
         $query->withoutGlobalScope('visible');
 
-        // Ensure comments belong to a post which is visible to this user.
-        $query->withGlobalScope(
-            'hasVisiblePost',
-            fn($query) => $query->whereHas('post', fn($query) => $query->visible($user)),
-        );
+        // Ensure comments belong to a post which is visible to this user,
+        // unless we are getting comments for a specific post, in which case
+        // we assume the post visibility has already been checked.
+        $hasWherePostId = collect($query->getQuery()->wheres)
+            ->where('column', 'comments.post_id')
+            ->isNotEmpty();
+
+        if (!$hasWherePostId) {
+            $query->whereHas('post', fn($query) => $query->visible($user));
+        }
 
         $moderationScope = fn(Builder $query, array $channelIds) => $query->orWhereHas(
             'post',

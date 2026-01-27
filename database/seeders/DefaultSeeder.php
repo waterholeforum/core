@@ -168,7 +168,10 @@ class DefaultSeeder extends Seeder
                         (new Permission(['ability' => 'moderate']))->recipient()->associate($mod),
                     ]);
 
-                $channel->structure->update(['is_listed' => true]);
+                $channel
+                    ->structure()
+                    ->withoutGlobalScope('hasVisibleContent')
+                    ->update(['is_listed' => true]);
             }
         }
     }

@@ -186,7 +186,7 @@ class Post extends Model
      */
     public function channel(): BelongsTo
     {
-        return $this->belongsTo(Channel::class);
+        return $this->belongsTo(Channel::class)->withoutGlobalScope('visible');
     }
 
     /**
@@ -202,9 +202,7 @@ class Post extends Model
      */
     public function comments(): HasMany
     {
-        // If we're getting the comments for this post, we don't need to verify
-        // that the comments have a post which is visible.
-        return $this->hasMany(Comment::class)->withoutGlobalScope('hasVisiblePost');
+        return $this->hasMany(Comment::class);
     }
 
     /**

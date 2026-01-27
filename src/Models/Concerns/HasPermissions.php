@@ -25,7 +25,7 @@ trait HasPermissions
 {
     public static function bootHasPermissions(): void
     {
-        static::addGlobalScope(new PermittedScope());
+        static::addGlobalScope('visible', new PermittedScope());
 
         // Ensure model deletion cascades to permission records.
         static::deleted(function (self $model) {

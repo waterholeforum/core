@@ -22,6 +22,11 @@ class Structure extends Model
         'is_listed' => 'bool',
     ];
 
+    protected static function booting()
+    {
+        static::addGlobalScope('hasVisibleContent', fn($query) => $query->has('content'));
+    }
+
     public function content(): MorphTo
     {
         return $this->morphTo();

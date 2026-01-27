@@ -59,26 +59,26 @@ class AuthServiceProvider extends ServiceProvider
             ]),
         );
 
-        Gate::before(function ($user, $ability, $arguments) {
+        Gate::before(function (null|object $user, $ability, $arguments) {
             if (!str_starts_with($ability, 'waterhole.') || !$user instanceof User) {
                 return null;
             }
 
             // Treat users who haven't verified their email like guests.
             if ($user->exists && !$user->hasVerifiedEmail()) {
-                return Gate::forUser(null)->allows($ability, ...$arguments) ?:
+                return Gate::forUser(null)->allows($ability, $arguments) ?:
                     Response::deny(__('waterhole::auth.email-verification-required-message'));
             }
 
             // Treat suspended users like guests.
             if ($user->isSuspended()) {
-                return Gate::forUser(null)->allows($ability, ...$arguments) ?:
+                return Gate::forUser(null)->allows($ability, $arguments) ?:
                     Response::deny(__('waterhole::user.suspended-message'));
             }
         });
 
-        Gate::after(function ($user, $ability, $result, $arguments) {
-            if (!str_starts_with($ability, 'waterhole.') || !$user instanceof User) {
+        Gate::after(function (null|object $user, $ability, $result, $arguments) {
+            if (!str_starts_with($ability, 'waterhole.') || ($user && !$user instanceof User)) {
                 return null;
             }
 
@@ -93,7 +93,7 @@ class AuthServiceProvider extends ServiceProvider
 
             // Allow administrators to perform all gated actions
             // (unless explicitly prohibited by a policy).
-            if ($result === null && $user->isAdmin()) {
+            if ($result === null && $user?->isAdmin()) {
                 return true;
             }
         });
