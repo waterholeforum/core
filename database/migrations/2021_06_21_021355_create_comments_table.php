@@ -1,8 +1,8 @@
 <?php
 
-use Waterhole\Database\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Waterhole\Database\Migration;
 
 return new class extends Migration {
     public function up()
@@ -22,11 +22,15 @@ return new class extends Migration {
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
-            $table->mediumText('body')->fulltext();
+            $table->mediumText('body');
             $table->timestamp('created_at')->nullable()->index();
             $table->timestamp('edited_at')->nullable()->index();
             $table->unsignedInteger('reply_count')->default(0);
             $table->integer('score')->default(0)->index();
+
+            if (Schema::getConnection()->getDriverName() !== 'sqlite') {
+                $table->fullText(['body']);
+            }
         });
     }
 

@@ -1,8 +1,8 @@
 <?php
 
-use Waterhole\Database\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Waterhole\Database\Migration;
 
 return new class extends Migration {
     public function up()
@@ -16,9 +16,9 @@ return new class extends Migration {
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
-            $table->string('title')->nullable()->fulltext();
+            $table->string('title')->nullable();
             $table->string('slug')->nullable();
-            $table->mediumText('body')->fulltext();
+            $table->mediumText('body');
             $table->timestamp('created_at')->nullable()->index();
             $table->timestamp('edited_at')->nullable()->index();
             $table->timestamp('last_activity_at')->nullable()->index();
@@ -27,6 +27,11 @@ return new class extends Migration {
             $table->boolean('is_locked')->default(0);
 
             $table->index(['channel_id', 'created_at']); // used to get new post count within each channel
+
+            if (Schema::getConnection()->getDriverName() !== 'sqlite') {
+                $table->fullText(['title']);
+                $table->fullText(['body']);
+            }
         });
     }
 
