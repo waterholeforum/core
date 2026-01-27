@@ -24,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Allow configuring permissions for the built-in Public and Member groups
 - Allow configuring the appearance of the built-in Admin group badge
 - Add support for SVG icon file uploads
-- Add MariaDB and PostgreSQL database support
+- Add MariaDB, PostgreSQL, and SQLite database support
 - Add support for Reverb as the broadcasting driver
 - Allow disabling reactions per-channel
 - Allow configuring uploads (`waterhole.uploads.disk`) and assets (`waterhole.system.assets_disk`) disks
@@ -55,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Retain tags when switching filters on the post feed
 - Fix flash alerts sometimes not displaying
 - Sort trashed items by latest deleted date
+- Fix crash when viewing content that mentions a deleted user
 
 ### Security
 
