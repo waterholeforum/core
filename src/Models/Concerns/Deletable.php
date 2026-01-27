@@ -24,6 +24,8 @@ trait Deletable
 
     protected static function bootDeletable(): void
     {
+        static::addGlobalScope(fn($query) => $query->withTrashed());
+
         static::deleted(function (self $model) {
             if ($model->deleted_by && $model->user && $model->deleted_by !== $model->user_id) {
                 Notification::send($model->user, new ContentRemoved($model));
@@ -48,8 +50,6 @@ trait Deletable
         ?User $user,
         callable $moderationScope,
     ): void {
-        $query->withTrashed();
-
         if ($user?->isAdmin()) {
             return;
         }
