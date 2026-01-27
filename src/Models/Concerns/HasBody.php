@@ -42,8 +42,16 @@ trait HasBody
         // and `updated` handlers instead of using the `saved` event, because we
         // want this to run as early as possible.
 
-        $sync = function (Model $model) {
-            $model->mentions()->sync(FormatMentions::getMentionedUsers($model->parsed_body));
+        $onSave = function (Model $model) {
+            if (!$model->wasChanged('parsed_body')) {
+                return;
+            }
+
+            $model->mentions()->sync(
+                User::query()
+                    ->whereKey(FormatMentions::getMentionedUsers($model->parsed_body))
+                    ->pluck('id'),
+            );
 
             $model->attachments()->sync(
                 Upload::query()
@@ -52,13 +60,19 @@ trait HasBody
             );
         };
 
-        static::created($sync);
-        static::updated($sync);
+        static::created($onSave);
+        static::updated($onSave);
 
-        static::deleted(function (Model $model) {
+        $onDelete = function (Model $model) {
             $model->mentions()->detach();
             $model->attachments()->detach();
-        });
+        };
+
+        if (method_exists(static::class, 'forceDeleted')) {
+            static::forceDeleted($onDelete);
+        } else {
+            static::deleted($onDelete);
+        }
     }
 
     /**
