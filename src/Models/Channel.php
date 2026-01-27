@@ -181,14 +181,12 @@ class Channel extends Model
     public function scopeIgnoring(Builder $query): void
     {
         $query
-            ->whereHas('userState', fn($query) => $query->where('notifications', 'ignore'))
+            ->leftJoinRelation('userState')
+            ->where('channel_user.notifications', 'ignore')
             ->orWhere(
                 fn($query) => $query
                     ->where('ignore', true)
-                    ->whereDoesntHave(
-                        'userState',
-                        fn($query) => $query->whereNotNull('notifications'),
-                    ),
+                    ->whereNull('channel_user.notifications'),
             );
     }
 
