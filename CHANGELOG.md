@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add success message to copy link action
 - Add confirmation for Composer repository addition in `waterhole:make:extension`
 - Add `CommentQuery` extender for comment list queries
+- Allow configuring search engine via `waterhole.system.search_engine`
 
 ### Changed
 
