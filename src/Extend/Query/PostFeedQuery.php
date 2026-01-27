@@ -21,8 +21,6 @@ class PostFeedQuery extends Set
                 'channel.postsReactionSet.reactionTypes',
                 'lastComment.user',
                 'tags',
-                'mentions',
-                'attachments',
                 'reactionCounts',
             ]);
 

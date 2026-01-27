@@ -13,7 +13,7 @@ class DismissFlags extends Action
 
     public function appliesTo($model): bool
     {
-        return method_exists($model, 'pendingFlags') && $model->pendingFlags()->exists();
+        return method_exists($model, 'pendingFlags') && $model->pendingFlags->isNotEmpty();
     }
 
     public function authorize(?User $user, Model $model): bool

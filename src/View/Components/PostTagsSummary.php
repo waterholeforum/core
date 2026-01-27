@@ -27,7 +27,7 @@ class PostTagsSummary extends Component
             <div class="post-tags-summary row gap-xxs">
                 @foreach ($tags->take($limit) as $tag)
                     <a
-                        href="{{ route('waterhole.channels.show', ['channel' => $post->channel]) . '?'. Arr::query(['tags' => [$tag->taxonomy->id => $tag->id]]) }}"
+                        href="{{ route('waterhole.channels.show', ['channel' => $post->channel]) . '?'. Arr::query(['tags' => [$tag->taxonomy_id => $tag->id]]) }}"
                         class="tag"
                         data-tag-id="{{ $tag->id }}"
                     >{{ Waterhole\emojify($tag->name) }}</a>

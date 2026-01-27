@@ -9,8 +9,6 @@ use Waterhole\View\TurboStream;
 
 class Tag extends Model
 {
-    protected $with = ['taxonomy'];
-
     protected static function booted(): void
     {
         static::addGlobalScope(function ($query) {
@@ -27,7 +25,7 @@ class Tag extends Model
     {
         return Attribute::make(
             get: fn() => route('waterhole.cp.taxonomies.tags.edit', [
-                'taxonomy' => $this->taxonomy,
+                'taxonomy' => $this->taxonomy_id,
                 'tag' => $this,
             ]),
         )->shouldCache();
