@@ -69,7 +69,7 @@ trait Approvable
         }
 
         $query->where(function (Builder $query) use ($user, $moderationScope) {
-            $query->where('is_approved', true);
+            $query->where($query->qualifyColumn('is_approved'), true);
 
             if (!$user) {
                 return;

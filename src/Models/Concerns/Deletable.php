@@ -55,7 +55,7 @@ trait Deletable
         }
 
         $query->where(function (Builder $query) use ($user, $moderationScope) {
-            $query->whereNull('deleted_at');
+            $query->whereNull($query->qualifyColumn('deleted_at'));
 
             if (!$user) {
                 return;
