@@ -3,6 +3,7 @@
 namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Waterhole\Models\Support\MorphTypeCache;
 
 /**
  * @property int $id
@@ -24,7 +25,12 @@ class Structure extends Model
 
     protected static function booting()
     {
-        static::addGlobalScope('hasVisibleContent', fn($query) => $query->has('content'));
+        static::addGlobalScope('hasVisibleContent', function ($query) {
+            $query->whereHasMorph(
+                'content',
+                MorphTypeCache::forTrait(Concerns\Structurable::class),
+            );
+        });
     }
 
     public function content(): MorphTo

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Waterhole\Events\FlagReceived;
 use Waterhole\Notifications\NewFlag;
+use Waterhole\Models\Support\MorphTypeCache;
 
 /**
  * @property int $id
@@ -34,7 +35,11 @@ class Flag extends Model
     protected static function booting(): void
     {
         static::addGlobalScope('subjectPresent', function ($query) {
-            $query->whereHasMorph('subject', '*', fn($query) => $query->withoutTrashed());
+            $query->whereHasMorph(
+                'subject',
+                MorphTypeCache::forTrait(Concerns\Flaggable::class),
+                fn($query) => $query->withoutTrashed(),
+            );
         });
 
         static::addGlobalScope('visible', function ($query) {
