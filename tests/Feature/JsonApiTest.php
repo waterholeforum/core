@@ -78,6 +78,53 @@ describe('api/comments', function () {
         $response->assertOk();
         $response->assertJson(['data' => ['type' => 'comments', 'id' => $comment->id]]);
     });
+
+    test('hides deletedBy for comments from author', function () {
+        $author = User::factory()->create();
+        $moderator = User::factory()->create();
+        $channel = Channel::factory()->public()->create();
+        $channel->savePermissions([
+            'group:1' => ['view' => true],
+            "user:{$moderator->id}" => ['moderate' => true],
+        ]);
+
+        $post = Post::factory()->for($channel)->create();
+        $comment = Comment::factory()->for($author)->for($post)->create();
+        $comment->update([
+            'deleted_by' => $moderator->id,
+            'deleted_at' => now(),
+        ]);
+
+        $this->actingAs($author);
+
+        $response = jsonApi('GET', "/api/comments/$comment->id");
+
+        $response->assertOk();
+        $response->assertJsonMissingPath('data.relationships.deletedBy');
+    });
+
+    test('shows deletedBy for comments to moderators', function () {
+        $moderator = User::factory()->create();
+        $channel = Channel::factory()->public()->create();
+        $channel->savePermissions([
+            'group:1' => ['view' => true],
+            "user:{$moderator->id}" => ['moderate' => true],
+        ]);
+
+        $post = Post::factory()->for($channel)->create();
+        $comment = Comment::factory()->for($post)->create();
+        $comment->update([
+            'deleted_by' => $moderator->id,
+            'deleted_at' => now(),
+        ]);
+
+        $this->actingAs($moderator);
+
+        $response = jsonApi('GET', "/api/comments/$comment->id");
+
+        $response->assertOk();
+        $response->assertJsonPath('data.relationships.deletedBy.data.id', (string) $moderator->id);
+    });
 });
 
 describe('api/groups', function () {
@@ -131,6 +178,51 @@ describe('api/posts', function () {
 
         $response->assertOk();
         $response->assertJson(['data' => ['type' => 'posts', 'id' => $post->id]]);
+    });
+
+    test('hides deletedBy for posts from author', function () {
+        $author = User::factory()->create();
+        $moderator = User::factory()->create();
+        $channel = Channel::factory()->create();
+        $channel->savePermissions([
+            'group:1' => ['view' => true],
+            "user:{$moderator->id}" => ['moderate' => true],
+        ]);
+
+        $post = Post::factory()->for($author)->for($channel)->create();
+        $post->update([
+            'deleted_by' => $moderator->id,
+            'deleted_at' => now(),
+        ]);
+
+        $this->actingAs($author);
+
+        $response = jsonApi('GET', "/api/posts/$post->id");
+
+        $response->assertOk();
+        $response->assertJsonMissingPath('data.relationships.deletedBy');
+    });
+
+    test('shows deletedBy for posts to moderators', function () {
+        $moderator = User::factory()->create();
+        $channel = Channel::factory()->public()->create();
+        $channel->savePermissions([
+            'group:1' => ['view' => true],
+            "user:{$moderator->id}" => ['moderate' => true],
+        ]);
+
+        $post = Post::factory()->for($channel)->create();
+        $post->update([
+            'deleted_by' => $moderator->id,
+            'deleted_at' => now(),
+        ]);
+
+        $this->actingAs($moderator);
+
+        $response = jsonApi('GET', "/api/posts/$post->id");
+
+        $response->assertOk();
+        $response->assertJsonPath('data.relationships.deletedBy.data.id', (string) $moderator->id);
     });
 
     test('retrieve post user state', function () {
@@ -250,7 +342,9 @@ describe('api/structure headings and links', function () {
 
 describe('api/users', function () {
     test('list users', function () {
-        User::factory(2)->create();
+        User::factory()->create();
+
+        $this->actingAs(User::factory()->admin()->create());
 
         $response = jsonApi('GET', '/api/users');
 
@@ -265,6 +359,76 @@ describe('api/users', function () {
 
         $response->assertOk();
         $response->assertJson(['data' => ['type' => 'users', 'id' => $user->id]]);
+    });
+
+    test('hides private user fields from guests', function () {
+        $user = User::factory()->create([
+            'locale' => 'fr',
+            'show_online' => false,
+            'last_seen_at' => now()->subHour(),
+            'suspended_until' => now()->addDay(),
+        ]);
+
+        $response = jsonApi('GET', "/api/users/$user->id");
+
+        $response->assertOk();
+        $response->assertJsonMissingPath('data.attributes.email');
+        $response->assertJsonMissingPath('data.attributes.locale');
+        $response->assertJsonMissingPath('data.attributes.lastSeenAt');
+        $response->assertJsonMissingPath('data.attributes.suspendedUntil');
+    });
+
+    test('shows private user fields to the user', function () {
+        $user = User::factory()->create([
+            'locale' => 'fr',
+            'show_online' => false,
+            'last_seen_at' => now()->subHour(),
+            'suspended_until' => now()->addDay(),
+        ]);
+
+        $this->actingAs($user);
+
+        $response = jsonApi('GET', "/api/users/$user->id");
+
+        $response->assertOk();
+        $response->assertJsonPath('data.attributes.email', $user->email);
+        $response->assertJsonPath('data.attributes.locale', $user->locale);
+        $response->assertJsonPath(
+            'data.attributes.lastSeenAt',
+            $user->last_seen_at->toIso8601String(),
+        );
+        $response->assertJsonPath(
+            'data.attributes.suspendedUntil',
+            $user->suspended_until->toIso8601String(),
+        );
+    });
+
+    test('shows private user fields to admins', function () {
+        $admin = User::factory()->create();
+        $admin->groups()->attach(Group::ADMIN_ID);
+
+        $user = User::factory()->create([
+            'locale' => 'fr',
+            'show_online' => false,
+            'last_seen_at' => now()->subHour(),
+            'suspended_until' => now()->addDay(),
+        ]);
+
+        $this->actingAs($admin);
+
+        $response = jsonApi('GET', "/api/users/$user->id");
+
+        $response->assertOk();
+        $response->assertJsonPath('data.attributes.email', $user->email);
+        $response->assertJsonPath('data.attributes.locale', $user->locale);
+        $response->assertJsonPath(
+            'data.attributes.lastSeenAt',
+            $user->last_seen_at->toIso8601String(),
+        );
+        $response->assertJsonPath(
+            'data.attributes.suspendedUntil',
+            $user->suspended_until->toIso8601String(),
+        );
     });
 });
 

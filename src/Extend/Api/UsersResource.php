@@ -2,6 +2,7 @@
 
 namespace Waterhole\Extend\Api;
 
+use Illuminate\Support\Facades\Auth;
 use Tobyz\JsonApiServer\Endpoint;
 use Tobyz\JsonApiServer\Laravel\Filter\Where;
 use Tobyz\JsonApiServer\Laravel\Sort\SortColumn;
@@ -9,6 +10,7 @@ use Tobyz\JsonApiServer\Schema\Field\Attribute;
 use Tobyz\JsonApiServer\Schema\Field\ToMany;
 use Tobyz\JsonApiServer\Schema\Type;
 use Waterhole\Extend\Support\Resource;
+use Waterhole\Models\User;
 
 /**
  * Users JSON:API resource.
@@ -22,18 +24,27 @@ class UsersResource extends Resource
         parent::__construct();
 
         $this->endpoints
-            ->add(Endpoint\Index::make(), 'index')
+            ->add(Endpoint\Index::make()->visible(fn() => Auth::user()?->isAdmin()), 'index')
 
             ->add(Endpoint\Show::make(), 'show');
+
+        $canViewPrivate = fn(User $user) => ($actor = Auth::user()) &&
+            ($actor->isAdmin() || $actor->is($user));
 
         $this->fields
             ->add(Attribute::make('name')->type(Type\Str::make()), 'name')
 
-            // TODO: visibility
-            ->add(Attribute::make('email')->type(Type\Str::make()->format('email')), 'email')
+            ->add(
+                Attribute::make('email')
+                    ->type(Type\Str::make()->format('email'))
+                    ->visible($canViewPrivate),
+                'email',
+            )
 
-            // TODO: visibility
-            ->add(Attribute::make('locale')->type(Type\Str::make()), 'locale')
+            ->add(
+                Attribute::make('locale')->type(Type\Str::make())->visible($canViewPrivate),
+                'locale',
+            )
 
             ->add(Attribute::make('headline')->type(Type\Str::make())->nullable(), 'headline')
 
@@ -60,15 +71,19 @@ class UsersResource extends Resource
                 'createdAt',
             )
 
-            // TODO: visibility
             ->add(
-                Attribute::make('lastSeenAt')->type(Type\DateTime::make())->nullable(),
+                Attribute::make('lastSeenAt')
+                    ->type(Type\DateTime::make())
+                    ->nullable()
+                    ->visible(fn(User $user) => $user->show_online || $canViewPrivate($user)),
                 'lastSeenAt',
             )
 
-            // TODO: visibility
             ->add(
-                Attribute::make('suspendedUntil')->type(Type\DateTime::make())->nullable(),
+                Attribute::make('suspendedUntil')
+                    ->type(Type\DateTime::make())
+                    ->nullable()
+                    ->visible($canViewPrivate),
                 'suspendedUntil',
             )
 
@@ -85,7 +100,6 @@ class UsersResource extends Resource
 
             ->add(SortColumn::make('createdAt'), 'createdAt')
 
-            // TODO: visibility
             ->add(SortColumn::make('lastSeenAt'), 'lastSeenAt');
 
         $this->filters

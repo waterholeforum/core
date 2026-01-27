@@ -3,6 +3,7 @@
 namespace Waterhole\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Waterhole\Models\Group;
 use Waterhole\Models\User;
 
 class UserFactory extends Factory
@@ -16,5 +17,12 @@ class UserFactory extends Factory
             'email' => fake()->email,
             'email_verified_at' => now(),
         ];
+    }
+
+    public function admin(): UserFactory
+    {
+        return $this->afterCreating(function (User $user) {
+            $user->groups()->attach(Group::ADMIN_ID);
+        });
     }
 }

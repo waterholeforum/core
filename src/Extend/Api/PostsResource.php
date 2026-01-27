@@ -16,6 +16,7 @@ use Tobyz\JsonApiServer\Schema\Field\ToMany;
 use Tobyz\JsonApiServer\Schema\Field\ToOne;
 use Tobyz\JsonApiServer\Schema\Type;
 use Waterhole\Extend\Support\Resource;
+use function Tobyz\JsonApiServer\Laravel\can;
 
 /**
  * Posts JSON:API resource.
@@ -55,7 +56,13 @@ class PostsResource extends Resource
                 'deletedAt',
             )
 
-            ->add(ToOne::make('deletedBy')->type('users')->nullable(), 'deletedBy')
+            ->add(
+                ToOne::make('deletedBy')
+                    ->type('users')
+                    ->nullable()
+                    ->visible(can('waterhole.post.moderate')),
+                'deletedBy',
+            )
 
             ->add(
                 Attribute::make('deletedReason')->type(Type\Str::make())->nullable(),
