@@ -30,6 +30,8 @@ class PostController extends Controller
 
     public function show(Post $post, Request $request)
     {
+        $user = $request->user();
+
         // If we've come here with reference to a particular comment, we will
         // mark any notifications about that comment as read, and then redirect
         // to the page on which that comment will be found. This allows comment
@@ -38,7 +40,7 @@ class PostController extends Controller
         if ($commentId = $request->query('comment')) {
             $comment = $post->comments()->findOrFail($commentId);
 
-            $request->user()?->markNotificationsRead($comment);
+            $user?->markNotificationsRead($comment);
 
             return redirect($comment->post_url);
         }
@@ -64,12 +66,11 @@ class PostController extends Controller
 
         $post->userState?->read()->save();
 
-        $request->user()?->markNotificationsRead($post);
+        $user?->markNotificationsRead($post);
 
         // Only increase the view count once per day per user/IP.
         Cache::remember(
-            "view:$post->id:" .
-                ($request->user() ? 'user:' . $request->user()->id : 'ip:' . $request->ip()),
+            "view:$post->id:" . ($user ? "user:$user->id" : 'ip:' . $request->ip()),
             60 * 60 * 24,
             fn() => $post->increment('view_count'),
         );
