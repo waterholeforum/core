@@ -17,58 +17,40 @@ beforeEach(function () {
 
 describe('Routing extenders', function () {
     test('add api route', function () {
-        $originalRoutes = Route::getRoutes();
+        extend(function (Extend\Routing\ApiRoutes $routes) {
+            Route::get('extend-test', fn() => response()->json(['ok' => true]));
+        });
 
-        try {
-            extend(function (Extend\Routing\ApiRoutes $routes) {
-                Route::get('extend-test', fn() => response()->json(['ok' => true]));
-            });
+        Route::setRoutes(new RouteCollection());
+        app()->register(RouteServiceProvider::class, true);
 
-            Route::setRoutes(new RouteCollection());
-            app()->register(RouteServiceProvider::class, true);
-
-            $this->get('/api/extend-test')
-                ->assertOk()
-                ->assertJson(['ok' => true]);
-        } finally {
-            Route::setRoutes($originalRoutes);
-        }
+        $this->get('/api/extend-test')
+            ->assertOk()
+            ->assertJson(['ok' => true]);
     });
 
     test('add forum route', function () {
-        $originalRoutes = Route::getRoutes();
+        extend(function (Extend\Routing\ForumRoutes $routes) {
+            Route::get('extend-test', fn() => 'ok');
+        });
 
-        try {
-            extend(function (Extend\Routing\ForumRoutes $routes) {
-                Route::get('extend-test', fn() => 'ok');
-            });
+        Route::setRoutes(new RouteCollection());
+        app()->register(RouteServiceProvider::class, true);
 
-            Route::setRoutes(new RouteCollection());
-            app()->register(RouteServiceProvider::class, true);
-
-            $this->get('/extend-test')->assertSeeText('ok');
-        } finally {
-            Route::setRoutes($originalRoutes);
-        }
+        $this->get('/extend-test')->assertSeeText('ok');
     });
 
     test('add cp route', function () {
-        $originalRoutes = Route::getRoutes();
+        extend(function (Extend\Routing\CpRoutes $routes) {
+            Route::get('extend-test', fn() => 'ok');
+        });
 
-        try {
-            extend(function (Extend\Routing\CpRoutes $routes) {
-                Route::get('extend-test', fn() => 'ok');
-            });
+        Route::setRoutes(new RouteCollection());
+        app()->register(RouteServiceProvider::class, true);
 
-            Route::setRoutes(new RouteCollection());
-            app()->register(RouteServiceProvider::class, true);
+        $admin = User::factory()->create();
+        $admin->groups()->attach(Group::ADMIN_ID);
 
-            $admin = User::factory()->create();
-            $admin->groups()->attach(Group::ADMIN_ID);
-
-            $this->actingAs($admin)->get('/cp/extend-test')->assertSeeText('ok');
-        } finally {
-            Route::setRoutes($originalRoutes);
-        }
+        $this->actingAs($admin)->get('/cp/extend-test')->assertSeeText('ok');
     });
 });

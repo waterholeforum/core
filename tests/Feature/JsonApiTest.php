@@ -434,84 +434,52 @@ describe('api/users', function () {
 
 describe('api config', function () {
     test('disables api routes when disabled', function () {
-        $originalRoutes = Route::getRoutes();
-        $originalConfig = config()->get('waterhole.api');
+        config(['waterhole.api.enabled' => false]);
 
-        try {
-            config(['waterhole.api.enabled' => false]);
+        Route::setRoutes(new RouteCollection());
+        app()->register(RouteServiceProvider::class, true);
 
-            Route::setRoutes(new RouteCollection());
-            app()->register(RouteServiceProvider::class, true);
-
-            $this->get('/api/posts')->assertNotFound();
-        } finally {
-            Route::setRoutes($originalRoutes);
-            config(['waterhole.api' => $originalConfig]);
-        }
+        $this->get('/api/posts')->assertNotFound();
     });
 
     test('uses configured api path', function () {
-        $originalRoutes = Route::getRoutes();
-        $originalConfig = config()->get('waterhole.api');
+        config([
+            'waterhole.api.enabled' => true,
+            'waterhole.api.path' => 'v2',
+        ]);
 
-        try {
-            config([
-                'waterhole.api.enabled' => true,
-                'waterhole.api.path' => 'v2',
-            ]);
+        Route::setRoutes(new RouteCollection());
+        app()->register(RouteServiceProvider::class, true);
 
-            Route::setRoutes(new RouteCollection());
-            app()->register(RouteServiceProvider::class, true);
-
-            jsonApi('GET', '/api/posts')->assertNotFound();
-            jsonApi('GET', '/v2/posts')->assertOk();
-        } finally {
-            Route::setRoutes($originalRoutes);
-            config(['waterhole.api' => $originalConfig]);
-        }
+        jsonApi('GET', '/api/posts')->assertNotFound();
+        jsonApi('GET', '/v2/posts')->assertOk();
     });
 
     test('applies public api middleware settings', function () {
-        $originalRoutes = Route::getRoutes();
-        $originalConfig = config()->get('waterhole.api');
+        config([
+            'waterhole.api.enabled' => true,
+            'waterhole.api.public' => false,
+        ]);
 
-        try {
-            config([
-                'waterhole.api.enabled' => true,
-                'waterhole.api.public' => false,
-            ]);
+        Route::setRoutes(new RouteCollection());
+        app()->register(RouteServiceProvider::class, true);
 
-            Route::setRoutes(new RouteCollection());
-            app()->register(RouteServiceProvider::class, true);
+        $response = jsonApi('GET', '/api/posts');
 
-            $response = jsonApi('GET', '/api/posts');
-
-            expect($response->getStatusCode())->toBeIn([401, 403]);
-        } finally {
-            Route::setRoutes($originalRoutes);
-            config(['waterhole.api' => $originalConfig]);
-        }
+        expect($response->getStatusCode())->toBeIn([401, 403]);
     });
 
     test('supports sanctum token auth', function () {
-        $originalRoutes = Route::getRoutes();
-        $originalConfig = config()->get('waterhole.api');
+        config([
+            'waterhole.api.enabled' => true,
+            'waterhole.api.public' => false,
+        ]);
 
-        try {
-            config([
-                'waterhole.api.enabled' => true,
-                'waterhole.api.public' => false,
-            ]);
+        Route::setRoutes(new RouteCollection());
+        app()->register(RouteServiceProvider::class, true);
 
-            Route::setRoutes(new RouteCollection());
-            app()->register(RouteServiceProvider::class, true);
+        Sanctum::actingAs(User::factory()->create(), ['waterhole']);
 
-            Sanctum::actingAs(User::factory()->create(), ['waterhole']);
-
-            jsonApi('GET', '/api/posts')->assertOk();
-        } finally {
-            Route::setRoutes($originalRoutes);
-            config(['waterhole.api' => $originalConfig]);
-        }
+        jsonApi('GET', '/api/posts')->assertOk();
     });
 });
