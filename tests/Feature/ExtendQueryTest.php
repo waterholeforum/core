@@ -36,8 +36,8 @@ describe('Query extenders', function () {
             ->assertDontSeeText('Other Post');
     });
 
-    test('add post scope', function () {
-        extend(function (Extend\Query\PostScopes $scopes) {
+    test('add post visibility scope', function () {
+        extend(function (Extend\Query\PostVisibilityScopes $scopes) {
             $scopes->add(function (Builder $query) {
                 $query->where('posts.title', '!=', 'Extend Test Hidden');
             }, 'extend-test');

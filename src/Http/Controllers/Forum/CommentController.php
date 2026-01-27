@@ -5,6 +5,7 @@ namespace Waterhole\Http\Controllers\Forum;
 use HotwiredLaravel\TurboLaravel\Http\TurboResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Middleware\ThrottleRequests;
+use Waterhole\Extend;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
@@ -33,21 +34,15 @@ class CommentController extends Controller
     {
         // Load the comment tree for this comment, load the necessary
         // relationships, and pre-fill the `post` relationship for each comment.
-        // TODO: consolidate eager loading with PostController
-        $comment = $comment
-            ->childrenAndSelf()
-            ->withTrashed()
-            ->with([
-                'user.groups',
-                'parent.user.groups',
-                'mentions',
-                'attachments',
-                'reactionCounts',
-            ])
-            ->when(
-                $post->canModerate(request()->user()),
-                fn($query) => $query->with(['pendingFlags.createdBy', 'deletedBy']),
-            )
+        $query = $comment->childrenAndSelf();
+
+        $extender = resolve(Extend\Query\CommentQuery::class);
+
+        foreach ([...$extender->values(), ...$extender->thread->values()] as $scope) {
+            $scope($query, $post);
+        }
+
+        $comment = $query
             ->get()
             ->each(function ($comment) use ($post) {
                 $comment->setRelation('post', $post);

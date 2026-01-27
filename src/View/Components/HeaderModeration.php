@@ -9,9 +9,7 @@ class HeaderModeration extends Component
 {
     public function shouldRender()
     {
-        $channelIds = Channel::allPermitted(auth()->user(), 'moderate');
-
-        return $channelIds === null || !empty($channelIds);
+        return Channel::allPermitted(auth()->user(), 'moderate') !== [];
     }
 
     public function render()

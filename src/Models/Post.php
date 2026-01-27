@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Waterhole\Database\Factories\PostFactory;
 use Waterhole\Events\NewPost;
-use Waterhole\Extend\Query\PostScopes;
+use Waterhole\Extend;
 use Waterhole\Models\Concerns\Approvable;
 use Waterhole\Models\Concerns\Deletable;
 use Waterhole\Models\Concerns\Flaggable;
@@ -242,7 +242,7 @@ class Post extends Model
 
         $this->applyDeletionVisibility($query, $user, $moderationScope);
 
-        foreach (resolve(PostScopes::class)->values() as $scope) {
+        foreach (resolve(Extend\Query\PostVisibilityScopes::class)->values() as $scope) {
             $query->where(fn($inner) => $scope($inner, $user));
         }
     }

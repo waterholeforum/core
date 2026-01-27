@@ -8,11 +8,11 @@ use Waterhole\Models\Channel;
 use Waterhole\Models\User;
 
 /**
- * Post visibility scopes.
+ * Post visibility query callbacks.
  *
- * Use this extender to restrict channels or control trashed visibility rules.
+ * Use this extender to apply additional visibility constraints for posts.
  */
-class PostScopes extends UnorderedList
+class PostVisibilityScopes extends UnorderedList
 {
     public function __construct()
     {

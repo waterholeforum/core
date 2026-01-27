@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
+use Waterhole\Extend;
 use Waterhole\Forms\PostForm;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Comment;
@@ -42,22 +43,15 @@ class PostController extends Controller
             return redirect($comment->post_url);
         }
 
-        // TODO: consolidate eager loading with CommentController
-        $comments = $post
-            ->comments()
-            ->with([
-                'user.groups',
-                'parent.user.groups',
-                'mentions',
-                'attachments',
-                'reactionCounts',
-            ])
-            ->when(
-                $post->canModerate(request()->user()),
-                fn($query) => $query->with(['pendingFlags.createdBy', 'deletedBy']),
-            )
-            ->oldest()
-            ->paginate();
+        $query = $post->comments()->getQuery();
+
+        $extender = resolve(Extend\Query\CommentQuery::class);
+
+        foreach ([...$extender->values(), ...$extender->thread->values()] as $scope) {
+            $scope($query, $post);
+        }
+
+        $comments = $query->oldest()->paginate();
 
         // We already have an instance of the `post` relation for each comment,
         // since we are on the post page!
