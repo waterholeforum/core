@@ -26,7 +26,7 @@ class AuthServiceProvider extends ServiceProvider
             fn() => new Providers(config('waterhole.auth.providers')),
         );
 
-        $this->app->singleton(
+        $this->app->scoped(
             'waterhole.permissions',
             fn() => Cache::rememberForever('waterhole.permissions', fn() => Permission::all()),
         );

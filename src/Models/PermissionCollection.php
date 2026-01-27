@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Collection;
 
 class PermissionCollection extends Collection
 {
-    private static array $resultCache = [];
+    private array $resultCache = [];
+    private array $idsCache = [];
 
     /**
      * Get the permission records pertaining to a specific model.
@@ -35,22 +36,20 @@ class PermissionCollection extends Collection
             return true;
         }
 
-        $recipientType = $recipient?->getMorphClass();
-        $recipientId = $recipient?->getKey();
+        $cacheKey = $this->cacheKey($recipient, $ability, $scope);
 
-        $scopeType = is_string($scope) ? (new $scope())->getMorphClass() : $scope->getMorphClass();
-        $scopeId = is_string($scope) ? null : $scope->getKey();
-
-        $resultKey = "$recipientType|$recipientId|$ability|$scopeType|$scopeId";
-
-        return static::$resultCache[$resultKey] ??= $this->some(
+        return $this->resultCache[$cacheKey] ??= $this->some(
             $this->callback($recipient, $ability, $scope),
         );
     }
 
     public function ids(User|Group|null $recipient, string $ability, string $scope): array
     {
-        return $this->filter($this->callback($recipient, $ability, $scope))
+        $cacheKey = $this->cacheKey($recipient, $ability, $scope);
+
+        return $this->idsCache[$cacheKey] ??= $this->filter(
+            $this->callback($recipient, $ability, $scope),
+        )
             ->pluck('scope_id')
             ->all();
     }
@@ -104,5 +103,19 @@ class PermissionCollection extends Collection
 
             return false;
         };
+    }
+
+    private function cacheKey(
+        User|Group|null $recipient,
+        string $ability,
+        Model|string $scope,
+    ): string {
+        $recipientType = $recipient?->getMorphClass();
+        $recipientId = $recipient?->getKey();
+
+        $scopeType = is_string($scope) ? (new $scope())->getMorphClass() : $scope->getMorphClass();
+        $scopeId = is_string($scope) ? null : $scope->getKey();
+
+        return "$recipientType|$recipientId|$ability|$scopeType|$scopeId";
     }
 }
