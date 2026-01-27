@@ -7,7 +7,7 @@ use Waterhole\Models\Channel;
 use Waterhole\Models\Post;
 use function Waterhole\remove_formatting;
 
-class DatabaseSearchEngine implements EngineInterface
+class FullTextSearchEngine implements EngineInterface
 {
     public function search(
         string $q,

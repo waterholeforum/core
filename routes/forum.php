@@ -110,7 +110,9 @@ Route::resource('notifications', NotificationController::class)->only(['index', 
 Route::get('moderation', ModerationController::class)->name('moderation');
 
 // Search
-Route::get('search', SearchController::class)->name('search');
+if (config('waterhole.system.search_engine')) {
+    Route::get('search', SearchController::class)->name('search');
+}
 
 $authAvailable =
     count(config('waterhole.auth.providers', [])) ||

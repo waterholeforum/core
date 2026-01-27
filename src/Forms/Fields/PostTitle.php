@@ -17,6 +17,7 @@ class PostTitle extends Field
     public function __construct(public ?Post $model)
     {
         if (
+            config('waterhole.system.search_engine') &&
             !$model->exists &&
             $model->channel->show_similar_posts &&
             ($title = old('title')) &&

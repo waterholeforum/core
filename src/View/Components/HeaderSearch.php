@@ -11,6 +11,10 @@ class HeaderSearch extends Component
 {
     public function shouldRender(): bool
     {
+        if (!config('waterhole.system.search_engine')) {
+            return false;
+        }
+
         return Auth::check() || Waterhole::permissions()->can(null, 'view', Channel::class);
     }
 

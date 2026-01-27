@@ -28,6 +28,25 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Search Engine
+    |--------------------------------------------------------------------------
+    |
+    | The search engine used for forum search. Set to null to disable search
+    | entirely (routes and UI will be hidden). The default is determined from
+    | the database driver.
+    |
+    */
+
+    'search_engine' => env(
+        'WATERHOLE_SEARCH_ENGINE',
+        match (env('DB_CONNECTION')) {
+            'mysql', 'mariadb', 'pgsql' => 'full_text',
+            default => null,
+        },
+    ),
+
+    /*
+    |--------------------------------------------------------------------------
     | Route Domain
     |--------------------------------------------------------------------------
     |
