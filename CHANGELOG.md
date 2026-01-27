@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### ⚠️ Breaking Changes
 
 - Replace public comment hiding with moderator-only soft-deletion
+- Rename `PostScopes` extender to `PostVisibilityScopes`
 
 ### Added
 
@@ -30,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add support for SSO `PendingUser::forceName` option
 - Add success message to copy link action
 - Add confirmation for Composer repository addition in `waterhole:make:extension`
+- Add `CommentQuery` extender for comment list queries
 
 ### Changed
 
@@ -41,10 +43,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade Intervention Image to 3.x
 - Use cursor pagination for notifications list
 - Move license alert to more prominent location on CP dashboard
+- Rename `PostScopes` extender to `PostVisibilityScopes`
 
 ### Fixed
 
-- Fix an XSS vulnerability
 - Improve compatibility with Statamic ([#82](https://github.com/waterholeforum/core/issues/82))
 - Fix actions dropdown for trashed posts ([#89](https://github.com/waterholeforum/core/issues/89))
 - Fix MariaDB crash due to mixed types in notification queries ([#90](https://github.com/waterholeforum/core/pulls/90) by @iamdarkle)
@@ -53,6 +55,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Retain tags when switching filters on the post feed
 - Fix flash alerts sometimes not displaying
 - Sort trashed items by latest deleted date
+
+### Security
+
+- Fix an XSS vulnerability
+- Fix JSON:API exposing sensitive user information
 
 ## [0.5.0] - 2026-01-02
 
