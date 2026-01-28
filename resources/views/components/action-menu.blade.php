@@ -18,8 +18,6 @@
             id="actions"
             loading="lazy"
             src="{{ $url }}"
-            data-controller="turbo-frame"
-            data-action="turbo:frame-load->turbo-frame#remove"
             data-action-menu-target="frame"
             class="busy-spinner"
         ></turbo-frame>

@@ -9,7 +9,17 @@
 
                     @foreach ($actions as $action)
                         @if ($action instanceof Waterhole\Actions\Action)
-                            {{ $action->render($models, ['class' => 'menu-item', 'role' => 'menuitem'], ellipsis: true) }}
+                            {{
+                                $action->render(
+                                    $models,
+                                    [
+                                        'class' => 'menu-item',
+                                        'role' => 'menuitem',
+                                        'data-turbo-frame' => '_parent',
+                                    ],
+                                    ellipsis: true,
+                                )
+                            }}
                         @else
                             {{ $action->render() }}
                         @endif
