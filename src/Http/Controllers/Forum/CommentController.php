@@ -34,7 +34,7 @@ class CommentController extends Controller
     {
         // Load the comment tree for this comment, load the necessary
         // relationships, and pre-fill the `post` relationship for each comment.
-        $query = $comment->childrenAndSelf();
+        $query = $comment->childrenAndSelf()->getQuery();
 
         $extender = resolve(Extend\Query\CommentQuery::class);
 
