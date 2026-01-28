@@ -103,17 +103,19 @@ abstract class Action
         bool $tooltip = false,
         bool $ellipsis = false,
     ): HtmlString {
-        $attributes = (new ComponentAttributeBag($attributes))->merge($this->attributes($models));
-
         // If the action requires confirmation, we will override the form's
         // method and action to take the user to the confirmation route.
         if ($confirm = $this->shouldConfirm($models)) {
-            $attributes = $attributes->merge([
+            $defaultAttributes = [
                 'formmethod' => 'GET',
                 'formaction' => route('waterhole.actions.create'),
                 'data-turbo-frame' => 'modal',
-            ]);
+            ];
         }
+
+        $attributes = (new ComponentAttributeBag($this->attributes($models)))
+            ->merge($defaultAttributes ?? [])
+            ->merge($attributes);
 
         if ($this->destructive) {
             $attributes = $attributes->class('color-danger');
