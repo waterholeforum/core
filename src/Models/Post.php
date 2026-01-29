@@ -87,10 +87,6 @@ class Post extends Model
             $post->last_activity_at ??= now();
         });
 
-        static::created(function (self $post) {
-            $post->deliverCreatedEvents();
-        });
-
         // Delete comments one at a time to trigger event listeners.
         static::forceDeleting(function (self $post) {
             $post->comments()->lazy()->each->delete();
@@ -103,6 +99,16 @@ class Post extends Model
                 $sign * log10(max(abs($post->score ?: 0), 1)) + $seconds / 45000,
                 10,
             );
+        });
+    }
+
+    protected static function booted(): void
+    {
+        // Register the listener to deliver created events after the HasBody
+        // trait has been booted and has registered its listeners, to ensure
+        // the body is processed before delivering @mention notifications etc.
+        static::created(function (self $post) {
+            $post->deliverCreatedEvents();
         });
     }
 

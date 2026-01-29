@@ -7,7 +7,6 @@ use Waterhole\Console\ReformatCommand;
 use Waterhole\Formatter\Context;
 use Waterhole\Formatter\Formatter;
 use Waterhole\Models\User;
-
 use function Waterhole\remove_formatting;
 
 trait UsesFormatter

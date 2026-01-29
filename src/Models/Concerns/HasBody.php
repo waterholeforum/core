@@ -43,7 +43,7 @@ trait HasBody
         // want this to run as early as possible.
 
         $onSave = function (Model $model) {
-            if (!$model->wasChanged('parsed_body')) {
+            if (!$model->wasRecentlyCreated && !$model->wasChanged('body')) {
                 return;
             }
 

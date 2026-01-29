@@ -93,14 +93,20 @@ class Comment extends Model
             }
         });
 
-        static::created(function (self $comment) {
-            $comment->deliverCreatedEvents();
-        });
-
         // By default, we calculate each comment's index (ie. how many comments
         // came before it) when querying comments. Since this is an expensive
         // thing to do, put it in a global scope so that it can be disabled.
         static::addGlobalScope(new CommentIndexScope());
+    }
+
+    protected static function booted(): void
+    {
+        // Register the listener to deliver created events after the HasBody
+        // trait has been booted and has registered its listeners, to ensure
+        // the body is processed before delivering @mention notifications etc.
+        static::created(function (self $comment) {
+            $comment->deliverCreatedEvents();
+        });
     }
 
     protected static function newFactory(): CommentFactory

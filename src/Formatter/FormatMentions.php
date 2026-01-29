@@ -90,15 +90,11 @@ abstract class FormatMentions
      */
     public static function rendering(Renderer $renderer, string &$xml, ?Context $context): void
     {
-        if (!$context?->model?->relationLoaded('mentions')) {
-            return;
-        }
-
-        $mentions = $context->model->getRelation('mentions');
-
-        $xml = Utils::replaceAttributes($xml, 'MENTION', function ($attributes) use ($mentions) {
+        $xml = Utils::replaceAttributes($xml, 'MENTION', function ($attributes) use ($context) {
             if (isset($attributes['id'])) {
-                $attributes['name'] = username($user = $mentions->find($attributes['id']));
+                $attributes['name'] = username(
+                    $user = $context?->model?->mentions->find($attributes['id']),
+                );
 
                 if (!$user) {
                     unset($attributes['id']);
