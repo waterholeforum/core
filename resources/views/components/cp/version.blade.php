@@ -2,7 +2,7 @@
 
 <div class="cp__version text-xs row gap-xs mt-lg">
     <a href="https://waterhole.dev" class="color-muted" target="_blank">
-        Waterhole {{ Waterhole::VERSION }}
+        Waterhole {{ Waterhole::version() }}
     </a>
 
     @if ($license->valid())

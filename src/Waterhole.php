@@ -2,13 +2,24 @@
 
 namespace Waterhole;
 
+use Composer\InstalledVersions;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
+use Throwable;
 use Waterhole\Models\PermissionCollection;
 
 abstract class Waterhole
 {
     public const VERSION = '0.5.0';
+
+    public static function version(): string
+    {
+        try {
+            return InstalledVersions::getPrettyVersion('waterhole/core');
+        } catch (Throwable) {
+            return static::VERSION;
+        }
+    }
 
     public static function isWaterholeRoute(): bool
     {

@@ -76,7 +76,7 @@ class AppServiceProvider extends ServiceProvider
     private function addAboutCommandInfo(): void
     {
         AboutCommand::add('Environment', [
-            'Waterhole Version' => Waterhole::VERSION,
+            'Waterhole Version' => Waterhole::version(),
         ]);
     }
 }
