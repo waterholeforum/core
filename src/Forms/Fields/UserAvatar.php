@@ -41,7 +41,7 @@ class UserAvatar extends Field
 
     public function validating(Validator $validator): void
     {
-        $validator->appendRules(['avatar' => ['nullable', 'image']]);
+        $validator->addRules(['avatar' => ['nullable', 'image']]);
     }
 
     public function saved(FormRequest $request): void

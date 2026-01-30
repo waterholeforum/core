@@ -132,7 +132,7 @@ class GroupStructurePermissions extends Field
 
     public function validating(Validator $validator): void
     {
-        $validator->appendRules(['permissions' => ['array']]);
+        $validator->addRules(['permissions' => ['array']]);
     }
 
     public function saved(FormRequest $request): void

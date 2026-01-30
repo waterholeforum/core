@@ -36,7 +36,7 @@ class GroupName extends Field
 
     public function validating(Validator $validator): void
     {
-        $validator->appendRules(['name' => ['required', 'string', 'max:255']]);
+        $validator->addRules(['name' => ['required', 'string', 'max:255']]);
     }
 
     public function saving(FormRequest $request): void

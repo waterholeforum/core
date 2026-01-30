@@ -60,7 +60,7 @@ class ChannelReactions extends Field
 
     public function validating(Validator $validator): void
     {
-        $validator->appendRules([
+        $validator->addRules([
             'posts_reaction_set' => ['nullable', ReactionSetPicker::rule()],
             'comments_reaction_set' => ['nullable', ReactionSetPicker::rule()],
         ]);
