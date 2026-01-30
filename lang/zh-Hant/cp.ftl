@@ -93,8 +93,8 @@ channel-options-title = 選項
 channel-visibility-label = 可見性
 channel-ignore-label = 預設為"忽略"
 channel-ignore-description = 對於所有使用者，在動態消息中隱藏此頻道的帖子，除非他們明確追蹤該頻道。
-channel-layout-title = 佈局
-channel-layout-label = 佈局
+channel-layout-title = 顯示式樣
+channel-layout-label = 格式
 channel-layout-show-author-label = 顯示發帖者
 channel-layout-show-excerpt-label = 顯示摘要
 channel-filters-label = 篩選器
@@ -187,18 +187,24 @@ reaction-sets-title = 表情集
 create-reaction-set-button = 建立表情集
 edit-reaction-set-title = 編輯表情集
 create-reaction-set-title = 建立表情集
+reaction-set-details-title = 詳細資訊
 reaction-set-name-label = 名稱
-reaction-set-reactions-label = 表情
+reaction-set-usage-label = 設置
+reaction-set-default-posts = 預設於文章使用
+reaction-set-default-comments = 預設於評論使用
 delete-reaction-set-confirm-message = 確定要刪除此表情集嗎？
-reaction-set-saved-message = 表情集已儲存。
+reaction-set-saved-message = 表情集已儲存
 
+reaction-types-title = 反應類型
+reaction-types-empty-message = 沒有設置表情集
+reaction-types-add-button = 建立
 edit-reaction-type-title = 編輯表情
 create-reaction-type-title = 建立表情
 reaction-type-name-label = 名稱
 reaction-type-score-label = 分數
-reaction-type-score-description = 此表情的分數值。
+reaction-type-score-description = 此表情的分數值
 delete-reaction-type-confirm-message = 確定要刪除此表情嗎？
-reaction-type-saved-message = 表情已儲存。
+reaction-type-saved-message = 表情已儲存
 
 ## Taxonomies
 

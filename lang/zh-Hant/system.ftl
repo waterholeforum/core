@@ -10,6 +10,7 @@ try-again-button = 重試
 fatal-error-message = 發生錯誤！請重新載入頁面並重試。
 too-many-requests-message = 您的操作速度有點快！請稍作休息，然後再試一次。
 forbidden-message = 您無權執行此操作。
+session-expired-message = 您的登入已逾時，請重新載入頁面並再試一次。
 validation-errors-message = 發生以下錯誤：
 
 ## Generic Buttons & Links

@@ -66,8 +66,8 @@ post-comments-link = { $count } { $count ->
 add-reaction-button = 表達心情
 
 move-post-title = 移動 { $count ->
-    [one] 個帖子：
-    *[other] { $count } 個帖子
+    [one] 個貼文：
+    *[other] { $count } 個貼文
 }
 
 move-to-channel-button = 移動頻道
@@ -92,13 +92,13 @@ delete-post-success-message = 文章已刪除。
 
 original-post-link = 原始主題
 
-pin-to-top-button = 全局置頂
-unpin-button = 移除置頂
+pin-to-top-button = 置頂
+unpin-button = 取消置頂
 
 post-comment-button = 發表評論
 
-move-to-trash-button = 刪除
-restore-button = 還原刪除
+move-to-trash-button = 移至回收桶
+restore-button = 還原
 delete-forever-button = 永久刪除
 
 ## Comments
@@ -116,7 +116,7 @@ comment-show-replies-button = 顯示 { $count } { $count ->
     *[other] 個回覆
 }
 comment-reply-button = 回覆
-mark-as-answer-button = 最佳答案
+mark-as-answer-button = 標記為最佳答案
 unmark-as-answer-button = 取消最佳答案
 comment-answer-badge = 最佳答案
 
@@ -124,8 +124,8 @@ comments-locked-message = 評論已鎖定。
 lock-comments-button = 鎖定評論
 unlock-comments-button = 解鎖評論
 
-composer-placeholder = 撰寫評論...
-composer-reply-to-placeholder = 回覆 { $userName }...
+composer-placeholder = 撰寫評論…
+composer-reply-to-placeholder = 回覆 { $userName }…
 composer-replying-to-label = 正在回覆
 composer-clear-reply-button = 清除
 composer-submit = 發表
@@ -167,30 +167,30 @@ filter-top-month = 本月
 filter-top-week = 當週
 filter-top-day = 今日
 filter-trending = 流行趨勢
-filter-trash = 資源回收筒
+filter-trash = 回收筒
 
 ## Followables
 
 follow-button = 追蹤
-follow-button-following = 已追蹤
+follow-button-following = 追蹤中
 follow-button-ignored = 已忽略
 
 ignore-button = 忽略
 unfollow-button = 取消追蹤
 unignore-button = 取消忽略
 
-channel-follow-description = 在此頻道有新貼文時接收通知。
-post-follow-description = 在此貼文有新留言時接收通知。
+channel-follow-description = 此頻道有新貼文時通知我。
+post-follow-description = 此貼文有新留言時通知我。
 
 post-following-badge = 追蹤中
 post-ignored-badge = 已忽略
 
 ## Index
 
-menu-button = 論壇導覽
+menu-button = 選單
 navigation-title = 論壇導覽
 
-post-feed-new-activity-button = 新動態
-post-feed-new-activity-heading = 新動態
+post-feed-new-activity-button = 新活動
+post-feed-new-activity-heading = 新活動
 post-feed-empty-message = 沒有貼文
 post-feed-controls-layout-heading = 顯示方式
