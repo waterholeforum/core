@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add confirmation for Composer repository addition in `waterhole:make:extension`
 - Add `CommentQuery` extender for comment list queries
 - Allow configuring search engine via `waterhole.system.search_engine`
+- Improve version number display in CP
 
 ### Changed
 
@@ -57,6 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix flash alerts sometimes not displaying
 - Sort trashed items by latest deleted date
 - Fix crash when viewing content that mentions a deleted user
+- Fix edit user submission returning to actions menu route
 
 ### Security
 
