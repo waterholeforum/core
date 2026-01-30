@@ -10,6 +10,7 @@ try-again-button = Réessayer
 fatal-error-message = Une erreur s'est produite ! Veuillez recharger la page puis réessayer
 too-many-requests-message = Vous allez un peu trop vite ! Faites une pause et réessayez dans un instant.
 forbidden-message = Vous n'avez pas la permission de faire cela.
+session-expired-message = Votre session a expiré. Veuillez recharger la page et réessayer.
 validation-errors-message = Les erreurs suivantes ont été détectées :
 
 ## Generic Buttons & Links
@@ -38,6 +39,7 @@ layout-cards = Cartes
 
 confirm-action-title = Confirmer l'action
 delete-confirm-button = Supprimer
+link-copied-message = Lien copié dans le presse-papiers.
 
 ## Users
 
@@ -95,18 +97,6 @@ ability-comment = Commenter
 ability-post = Publier
 ability-moderate = Modérer
 ability-assign-tags = Étiqueter
-
-## Sortable Lists
-
-sortable-instructions =
-    Pour sélectionner un élément à trier, appuyez sur la touche « Espace » ou « Entrée ».
-    Tout en faisant glisser l'élément, utilisez les touches fléchées pour le déplacer.
-    Appuyez à nouveau sur la touche « Espace » ou « Entrée » pour déposer l'élément dans sa nouvelle position, ou appuyez sur la touche « Échap » pour annuler.
-
-sortable-drag-start-announcement = { $activeLabel } a été sélectionné dans { $containerLabel }
-sortable-drag-over-announcement = { $activeLabel } a été déplacé dans la position { $overPosition } dans { $containerLabel }
-sortable-drop-announcement = { $activeLabel } a été déposé en position { $overPosition } dans { $containerLabel }
-sortable-drag-cancel-announcement = Le tri a été annulé. { $activeLabel } a été abandonné.
 
 ## Used in the Waterhole\compact_number() function
 

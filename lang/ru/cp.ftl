@@ -8,6 +8,7 @@ dashboard-title = Панель управления
 
 configure-mail-message = Для того, чтобы Waterhole мог отправлять письма с подтверждением, вам необходимо настроить почтовый драйвер.
 debug-mode-on-message = Режим отладки включен. Чувствительные значения конфигурации могут быть видны.
+
 getting-started-title = Начало работы с Waterhole
 getting-started-strategy-title = Документация
 getting-started-strategy-description = Узнайте, как построить успешное сообщество с помощью Waterhole.
@@ -43,6 +44,7 @@ structure-page-label = Страница
 structure-link-label = Ссылка
 structure-heading-label = Заголовок
 structure-visibility-public-label = Публичный
+structure-visibility-members-label = Участники
 
 structure-navigation-title = Навигация
 structure-navigation-description = Переместите элементы сюда, чтобы отображать их в меню навигации.
@@ -64,7 +66,7 @@ edit-link-title = Редактировать ссылку
 create-link-title = Создать ссылку
 link-details-title = Детали
 link-name-label = Название
-link-url-label = URL
+link-url-label = URL-адрес
 link-permissions-title = Разрешения
 
 ## Structure - Page
@@ -100,10 +102,16 @@ channel-filters-label = Фильтры
 channel-custom-filters-label = Использовать пользовательские фильтры для этого канала
 channel-custom-filters-description = Переопределите глобальные фильтры для этого канала.
 channel-permissions-title = Разрешения
+channel-approval-label = Одобрение
+channel-approval-moderators-exempt = Модераторы освобождены от одобрения.
+channel-require-approval-posts-label = Требовать одобрения для сообщений
+channel-require-approval-comments-label = Требовать одобрения для комментариев
 channel-features-title = Возможности
 channel-reactions-label = Реакции
 channel-reactions-posts-label = Сообщения
 channel-reactions-comments-label = Комментарии
+reaction-set-picker-default = По умолчанию ({ $name })
+reaction-set-picker-none = Нет
 channel-taxonomies-label = Таксономии
 channel-answers-label = Ответы
 channel-enable-answers-label = Включить ответы в этом канале
@@ -144,7 +152,14 @@ group-appearance-label = Внешний вид
 group-show-as-badge-label = Отображать эту группу как значок пользователя
 group-color-label = Цвет
 group-icon-label = Иконка
+group-rules-title = Участие
+group-auto-assign-label = Автоматически назначать эту группу новым участникам
+group-rules-requires-approval-label = Требовать одобрения контента новых участников
+group-rules-remove-after-approval-label = Удалять из группы после одобрения
 group-permissions-title = Разрешения
+group-global-permissions-title = Глобальные разрешения
+group-structure-permissions-title = Разрешения структуры
+group-permission-suspend-users-label = Разрешить приостанавливать пользователей
 
 delete-group-confirm-message = Вы уверены, что хотите удалить эту группу?
 
@@ -156,7 +171,7 @@ users-filter-group-description = Фильтр по группе
 create-user-button = Создать пользователя
 
 users-name-column = Имя
-users-email-column = Email
+users-email-column = Эл. почта
 users-groups-column = Группы
 users-created-at-column = Создан
 users-last-seen-at-column = Последний визит
@@ -166,7 +181,7 @@ edit-user-title = Редактировать пользователя
 create-user-title = Создать пользователя
 user-account-title = Аккаунт
 user-name-label = Имя
-user-email-label = Email
+user-email-label = Эл. почта
 user-password-label = Пароль
 user-set-password-label = Установить новый пароль
 user-groups-label = Группы
@@ -190,11 +205,17 @@ reaction-sets-title = Наборы реакций
 create-reaction-set-button = Создать набор реакций
 edit-reaction-set-title = Редактировать набор реакций
 create-reaction-set-title = Создать набор реакций
+reaction-set-details-title = Детали
 reaction-set-name-label = Название
-reaction-set-reactions-label = Реакции
+reaction-set-usage-label = Использование
+reaction-set-default-posts = Использовать по умолчанию для сообщений
+reaction-set-default-comments = Использовать по умолчанию для комментариев
 delete-reaction-set-confirm-message = Вы уверены, что хотите удалить этот набор реакций?
 reaction-set-saved-message = Набор реакций сохранен.
 
+reaction-types-title = Типы реакций
+reaction-types-empty-message = Нет типов реакций
+reaction-types-add-button = Добавить
 edit-reaction-type-title = Редактировать тип реакции
 create-reaction-type-title = Создать тип реакции
 reaction-type-name-label = Название
@@ -213,6 +234,9 @@ taxonomy-details-title = Детали
 taxonomy-permissions-title = Разрешения
 taxonomy-tags-title = Теги
 taxonomy-name-label = Название
+taxonomy-options-title = Параметры
+taxonomy-required-label = Требовать выбор тега при создании сообщения
+taxonomy-allow-multiple-label = Разрешить выбор нескольких тегов
 taxonomy-saved-message = Таксономия сохранена.
 delete-taxonomy-confirm-message = Вы уверены, что хотите удалить эту таксономию?
 

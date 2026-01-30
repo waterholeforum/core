@@ -1,6 +1,6 @@
-### Gebruiker
+### User
 
-## Accountinstellingen
+## Account Settings
 
 account-settings-title = Accountinstellingen
 
@@ -9,7 +9,7 @@ delete-account-confirmation-title = Weet je zeker dat je je account wilt verwijd
 delete-account-confirmation-description = Je accountgegevens zullen worden verwijderd. Je bijdragen blijven bewaard maar worden gemarkeerd als anoniem. Dit kan niet ongedaan worden gemaakt.
 delete-account-success-message = Je account is verwijderd.
 
-## Notificatievoorkeuren
+## Notification Preferences
 
 notification-preferences-title = Notificatievoorkeuren
 notifications-label = Notificaties
@@ -19,7 +19,7 @@ notifications-following-label = Volgende
 follow-on-comment-label = Automatisch berichten volgen waarop ik reageer
 notification-preferences-saved-message = Notificatievoorkeuren opgeslagen.
 
-## Profiel Bewerken
+## Edit Profile
 
 edit-profile-title = Bewerk Profiel
 profile-saved-message = Profiel opgeslagen.
@@ -35,30 +35,30 @@ website-label = Website
 privacy-title = Privacy
 show-online-label = Laat zien wanneer ik voor het laatst online was
 
-## Reacties
+## Comments
 
 user-comments-title = Reacties van { $userName }
 comments-empty-message = Geen Reacties
 
-## Berichten
+## Posts
 
 user-posts-title = Berichten van { $userName }
 posts-empty-message = Geen Berichten
 
-## Gebruikersmenu
+## User Menu
 
 profile-link = Profiel
 preferences-link = Voorkeuren
 administration-link = Beheer
 log-out-link = Uitloggen
 
-## Profiel
+## Profile
 
 user-joined-text = Lid sinds
 user-last-seen-text = Laatst gezien
 online-label = Online
 
-## Zijbalk
+## Sidebar
 
 posts-link = Berichten
 comments-link = Reacties

@@ -43,6 +43,8 @@ post-locked-badge = 已鎖定
 post-answered-badge = 已回答
 post-trash-badge = 已刪除
 
+post-removed-message = 貼文已移除
+
 post-answered-by = 最佳答案
 post-view-answer-link = 查看答案
 
@@ -132,24 +134,56 @@ composer-submit = 發表
 
 delete-comment-confirm-message = 您確定要刪除此評論嗎？
 
-hide-comment-button = 隱藏
-unhide-comment-button = 取消隱藏
+comment-removed-message = 評論已移除
+comment-removed-tooltip = { $user } 已移除 { $timestamp }
 
-hide-comment-title = 隱藏評論
-hide-reason-label = 原因
-hide-reason-unspecified = 未指定
+## Moderation
 
-comment-hidden-message = 評論已隱藏
-comment-hidden-with-reason-message = 評論標記為 { $reason }
+remove-button = 移除
+removed-by-label = 移除者
 
-report-reason-off-topic = 與主題無關
-report-reason-inappropriate = 不適當
-report-reason-spam = 垃圾訊息
-report-reason-other = 其他
+removal-reason-label = 移除原因
+removal-reason-unspecified-label = 未指定
+removal-message-label = 給作者的訊息
+report-button = 檢舉
+report-confirm-button = 提交檢舉
+report-note-placeholder = 新增備註（選填）
+report-system-user = 系統
+user-actions-label = 使用者動作
+user-actions-suspend-label = 停權 { $user }
+user-actions-suspend-days = 天
+user-actions-suspend-weeks = 週
+user-actions-suspend-indefinitely = 永久
+
+approve-button = 核准
+flag-dismiss-button = 忽略
+
+report-reason-off-topic-label = 離題
+report-reason-off-topic-description = 此內容與目前討論無關。
+
+report-reason-inappropriate-label = 不當
+report-reason-inappropriate-description = 此內容具冒犯性、辱罵或違反社群規範。
+
+report-reason-spam-label = 垃圾訊息
+report-reason-spam-description = 此內容為廣告或惡意破壞。
+
+report-reason-other-label = 其他
+report-reason-other-description = 此內容因其他原因需要注意。
+
+report-reason-approval-label = 等待核准
+
+moderation-title = 審核
+moderation-empty-message = 沒有待處理的檢舉
+moderation-finished-message = 都處理完了。
+
+pending-approval-title = 等待核准
 
 ## Misc
 
 quote-button = 引用
+
+attribution-timestamp-created-label = 發佈
+attribution-timestamp-edited-label = 已編輯
 
 ## Filters
 

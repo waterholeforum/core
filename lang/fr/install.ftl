@@ -6,6 +6,7 @@ group-guest = Invité
 group-member = Membre
 group-admin = Administrateur
 group-moderator = Modérateur
+group-quarantine = Quarantaine
 
 ## Reactions
 
@@ -25,7 +26,7 @@ reaction-type-upvote = Voter pour
 announcements-name = Annonces
 announcements-description = Actualités et autres annonces de l'équipe.
 
-introductions-name = Introductions
+introductions-name = Présentations
 introductions-description = Nouveau dans la communauté ? Présentez-vous !
 
 support-name = Assistance

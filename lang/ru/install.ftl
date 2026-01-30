@@ -6,19 +6,20 @@ group-guest = Гость
 group-member = Участник
 group-admin = Администратор
 group-moderator = Модератор
+group-quarantine = Карантин
 
 ## Reactions
 
-reaction-set-emoji = Emoji
-reaction-type-like = Like
-reaction-type-love = Love
-reaction-type-laugh = Laugh
-reaction-type-wow = Wow
-reaction-type-sad = Sad
-reaction-type-angry = Angry
+reaction-set-emoji = Эмодзи
+reaction-type-like = Нравится
+reaction-type-love = Любовь
+reaction-type-laugh = Смех
+reaction-type-wow = Вау
+reaction-type-sad = Грусть
+reaction-type-angry = Злость
 
-reaction-set-votes = Votes
-reaction-type-upvote = Upvote
+reaction-set-votes = Голоса
+reaction-type-upvote = Голос вверх
 
 ## Structure
 

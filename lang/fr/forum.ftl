@@ -1,6 +1,6 @@
 ### Forum
 
-home = Accueil
+feed-link = Flux
 
 ## Header
 
@@ -42,6 +42,8 @@ post-new-badge-tooltip = Nouveau message
 post-locked-badge = Verrouillé
 post-answered-badge = Répondu
 post-trash-badge = Corbeille
+
+post-removed-message = Message supprimé
 
 post-answered-by = Répondu par
 post-view-answer-link = Voir la réponse
@@ -132,24 +134,56 @@ composer-submit = Publier
 
 delete-comment-confirm-message = Êtes-vous sûr de vouloir supprimer ce commentaire ?
 
-hide-comment-button = Masquer
-unhide-comment-button = Ne plus masquer
+comment-removed-message = Commentaire supprimé
+comment-removed-tooltip = { $user } a supprimé { $timestamp }
 
-hide-comment-title = Masquer le commentaire
-hide-reason-label = Motif
-hide-reason-unspecified = Non spécifié
+## Moderation
 
-comment-hidden-message = Commentaire masqué
-comment-hidden-with-reason-message = Commentaire marqué comme { $reason }
+remove-button = Retirer
+removed-by-label = Retiré par
 
-report-reason-off-topic = hors-sujet
-report-reason-inappropriate = inapproprié
-report-reason-spam = indésirable
-report-reason-other = autre
+removal-reason-label = Raison du retrait
+removal-reason-unspecified-label = Non précisée
+removal-message-label = Message à l'auteur
+report-button = Signaler
+report-confirm-button = Envoyer le signalement
+report-note-placeholder = Ajouter une note (facultatif)
+report-system-user = Système
+user-actions-label = Actions utilisateur
+user-actions-suspend-label = Suspendre { $user }
+user-actions-suspend-days = Jours
+user-actions-suspend-weeks = Semaines
+user-actions-suspend-indefinitely = Indéfiniment
+
+approve-button = Approuver
+flag-dismiss-button = Ignorer
+
+report-reason-off-topic-label = Hors sujet
+report-reason-off-topic-description = Ce contenu n'est pas pertinent pour la discussion en cours.
+
+report-reason-inappropriate-label = Inapproprié
+report-reason-inappropriate-description = Ce contenu est offensant, abusif ou enfreint les règles de la communauté.
+
+report-reason-spam-label = Spam
+report-reason-spam-description = Ce contenu est une publicité ou du vandalisme.
+
+report-reason-other-label = Autre
+report-reason-other-description = Ce contenu nécessite une attention pour une autre raison.
+
+report-reason-approval-label = En attente d'approbation
+
+moderation-title = Modération
+moderation-empty-message = Aucun signalement en attente
+moderation-finished-message = Tout est à jour.
+
+pending-approval-title = En attente d'approbation
 
 ## Misc
 
 quote-button = Citer
+
+attribution-timestamp-created-label = Publié
+attribution-timestamp-edited-label = Modifié
 
 ## Filters
 

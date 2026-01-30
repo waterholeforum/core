@@ -10,6 +10,7 @@ try-again-button = Попробуйте еще раз
 fatal-error-message = Что-то пошло не так! Пожалуйста, обновите страницу и попробуйте еще раз.
 too-many-requests-message = Сделайте перерыв и повторите попытку через мгновение.
 forbidden-message = У вас нет на это разрешения.
+session-expired-message = Сессия истекла. Пожалуйста, перезагрузите страницу и попробуйте снова.
 validation-errors-message = Были обнаружены следующие ошибки:
 
 ## Generic Buttons & Links
@@ -38,6 +39,7 @@ layout-cards = Карточки
 
 confirm-action-title = Подтвердить действие
 delete-confirm-button = Удалить
+link-copied-message = Ссылка скопирована в буфер обмена.
 
 ## Users
 
@@ -95,19 +97,6 @@ ability-comment = Комментирование
 ability-post = Опубликование
 ability-moderate = Модерация
 ability-assign-tags = Назначение тегов
-
-## Sortable Lists
-
-sortable-instructions =
-    Чтобы взять элемент для сортировки, нажмите пробел или Enter.
-    При перетаскивании используйте клавиши со стрелками для перемещения элемента.
-    Нажмите пробел или Enter еще раз, чтобы отпустить элемент на новую позицию, или нажмите Escape, чтобы отменить.
-
-sortable-drag-start-announcement = Взят элемент { $activeLabel } в { $containerLabel }
-sortable-drag-over-announcement = Элемент { $activeLabel } перемещен на позицию { $overPosition } в { $containerLabel }
-sortable-drop-announcement = Элемент { $activeLabel } помещен на позицию { $overPosition } в { $containerLabel }
-sortable-drag-cancel-announcement = Сортировка отменена. Элемент { $activeLabel } был отпущен.
-
 
 ## Used in the Waterhole\compact_number() function
 

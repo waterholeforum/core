@@ -1,6 +1,6 @@
 ### Forum
 
-feed-link = Feed
+feed-link = Nieuwsfeed
 
 ## Header
 
@@ -13,7 +13,7 @@ search-placeholder = Zoek in alle discussies
 search-results-title = Zoekresultaten voor "{ $query }"
 search-button = Zoeken
 
-search-filter-button = Filter
+search-filter-button = Filteren
 
 search-showing-results-title = Toont { $total } { $total ->
     [one] resultaat
@@ -42,6 +42,8 @@ post-new-badge-tooltip = Nieuw bericht
 post-locked-badge = Vergrendeld
 post-answered-badge = Beantwoord
 post-trash-badge = Prullenbak
+
+post-removed-message = Bericht verwijderd
 
 post-answered-by = Beantwoord door
 post-view-answer-link = Bekijk Antwoord
@@ -132,24 +134,56 @@ composer-submit = Plaatsen
 
 delete-comment-confirm-message = Weet u zeker dat u deze reactie wilt verwijderen?
 
-hide-comment-button = Verbergen
-unhide-comment-button = Tonen
+comment-removed-message = Reactie verwijderd
+comment-removed-tooltip = { $user } heeft { $timestamp } verwijderd
 
-hide-comment-title = Reactie Verbergen
-hide-reason-label = Reden
-hide-reason-unspecified = Niet gespecificeerd
+## Moderation
 
-comment-hidden-message = Reactie verborgen
-comment-hidden-with-reason-message = Reactie gemarkeerd als { $reason }
+remove-button = Verwijderen
+removed-by-label = Verwijderd door
 
-report-reason-off-topic = Off-topic
-report-reason-inappropriate = Ongepast
-report-reason-spam = Spam
-report-reason-other = Overige
+removal-reason-label = Reden van verwijdering
+removal-reason-unspecified-label = Niet opgegeven
+removal-message-label = Bericht aan auteur
+report-button = Melden
+report-confirm-button = Melding indienen
+report-note-placeholder = Voeg een notitie toe (optioneel)
+report-system-user = Systeem
+user-actions-label = Gebruikersacties
+user-actions-suspend-label = Schors { $user }
+user-actions-suspend-days = Dagen
+user-actions-suspend-weeks = Weken
+user-actions-suspend-indefinitely = Onbepaald
+
+approve-button = Goedkeuren
+flag-dismiss-button = Afwijzen
+
+report-reason-off-topic-label = Buiten onderwerp
+report-reason-off-topic-description = Deze inhoud is niet relevant voor de huidige discussie.
+
+report-reason-inappropriate-label = Ongepast
+report-reason-inappropriate-description = Deze inhoud is beledigend, grof of in strijd met de gemeenschapsrichtlijnen.
+
+report-reason-spam-label = Spam
+report-reason-spam-description = Deze inhoud is reclame of vandalisme.
+
+report-reason-other-label = Overig
+report-reason-other-description = Deze inhoud vereist om een andere reden aandacht.
+
+report-reason-approval-label = In afwachting van goedkeuring
+
+moderation-title = Moderatie
+moderation-empty-message = Geen meldingen in afwachting
+moderation-finished-message = Je bent helemaal bij.
+
+pending-approval-title = In afwachting van goedkeuring
 
 ## Misc
 
 quote-button = Citeren
+
+attribution-timestamp-created-label = Geplaatst
+attribution-timestamp-edited-label = Bewerkt
 
 ## Filters
 
@@ -166,7 +200,7 @@ filter-top-quarter = Kwartaal
 filter-top-month = Maand
 filter-top-week = Week
 filter-top-day = Dag
-filter-trending = Trending
+filter-trending = Populair
 filter-trash = Prullenbak
 
 ## Followables

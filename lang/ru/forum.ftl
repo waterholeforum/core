@@ -1,6 +1,6 @@
 ### Forum
 
-home = Главная
+feed-link = Лента
 
 ## Header
 
@@ -41,6 +41,9 @@ post-new-badge = Новый
 post-new-badge-tooltip = Новая дискуссия
 post-locked-badge = Заблокировано
 post-answered-badge = Ответил
+post-trash-badge = Корзина
+
+post-removed-message = Сообщение удалено
 
 post-answered-by = Ответил
 post-view-answer-link = Посмотреть ответ
@@ -91,6 +94,15 @@ delete-post-success-message = Дискуссия удалено.
 
 original-post-link = Оригинальная дискуссия
 
+pin-to-top-button = Закрепить сверху
+unpin-button = Открепить
+
+post-comment-button = Комментировать
+
+move-to-trash-button = Переместить в корзину
+restore-button = Восстановить
+delete-forever-button = Удалить навсегда
+
 ## Comments
 
 comments-unread-heading = Не прочитано
@@ -122,9 +134,56 @@ composer-submit = Опубликовать
 
 delete-comment-confirm-message = Вы уверенны, что хотите удалить этот комментарий?
 
+comment-removed-message = Комментарий удален
+comment-removed-tooltip = { $user } удалил { $timestamp }
+
+## Moderation
+
+remove-button = Удалить
+removed-by-label = Удалено пользователем
+
+removal-reason-label = Причина удаления
+removal-reason-unspecified-label = Не указана
+removal-message-label = Сообщение автору
+report-button = Пожаловаться
+report-confirm-button = Отправить жалобу
+report-note-placeholder = Добавьте заметку (необязательно)
+report-system-user = Система
+user-actions-label = Действия пользователя
+user-actions-suspend-label = Приостановить { $user }
+user-actions-suspend-days = Дни
+user-actions-suspend-weeks = Недели
+user-actions-suspend-indefinitely = Бессрочно
+
+approve-button = Одобрить
+flag-dismiss-button = Отклонить
+
+report-reason-off-topic-label = Не по теме
+report-reason-off-topic-description = Этот контент не относится к текущему обсуждению.
+
+report-reason-inappropriate-label = Неприемлемо
+report-reason-inappropriate-description = Этот контент оскорбителен, содержит злоупотребления или нарушает правила сообщества.
+
+report-reason-spam-label = Спам
+report-reason-spam-description = Этот контент является рекламой или вандализмом.
+
+report-reason-other-label = Другое
+report-reason-other-description = Этот контент требует внимания по другой причине.
+
+report-reason-approval-label = Ожидает одобрения
+
+moderation-title = Модерация
+moderation-empty-message = Нет ожидающих жалоб
+moderation-finished-message = Вы все просмотрели.
+
+pending-approval-title = Ожидает одобрения
+
 ## Misc
 
 quote-button = Цитировать
+
+attribution-timestamp-created-label = Опубликовано
+attribution-timestamp-edited-label = Отредактировано
 
 ## Filters
 
@@ -132,7 +191,7 @@ filter-alphabetical = Алфавитный
 filter-following = Подписка
 filter-ignoring = Игнорирование 
 filter-newest = Новые
-filter-lastest = Последние
+filter-latest = Последние
 filter-oldest = Старые
 filter-top = Топ
 filter-top-all-time = За все время
@@ -142,6 +201,7 @@ filter-top-month = Месяц
 filter-top-week = Неделя
 filter-top-day = День
 filter-trending = Популярые
+filter-trash = Корзина
 
 ## Followables
 

@@ -39,6 +39,7 @@ layout-cards = 卡片
 
 confirm-action-title = 確認操作
 delete-confirm-button = 刪除
+link-copied-message = 連結已複製到剪貼簿。
 
 ## Users
 
@@ -96,18 +97,6 @@ ability-comment = 評論
 ability-post = 張貼
 ability-moderate = 審核
 ability-assign-tags = 指定標籤
-
-## Sortable Lists
-
-sortable-instructions =    
-    要選取可排序的項目，請按空格鍵或 Enter 鍵。
-    拖曳時，使用方向鍵移動項目。
-    再次按空格鍵或 Enter 鍵將項目放置到新位置，或按 Esc 鍵取消。
-
-sortable-drag-start-announcement = 在 { $containerLabel } 中選取了 { $activeLabel }
-sortable-drag-over-announcement = { $activeLabel } 移動到了 { $containerLabel } 的第 { $overPosition } 位置
-sortable-drop-announcement = { $activeLabel } 放置在了 { $containerLabel } 的第 { $overPosition } 位置
-sortable-drag-cancel-announcement = 排序被取消。{ $activeLabel } 被放置。
 
 ## Used in the Waterhole\compact_number() function
 

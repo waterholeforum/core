@@ -6,6 +6,7 @@ group-guest = 訪客
 group-member = 會員
 group-admin = 管理員
 group-moderator = 版主
+group-quarantine = 隔離
 
 ## Reactions
 

@@ -44,6 +44,7 @@ structure-page-label = Pagina
 structure-link-label = Link
 structure-heading-label = Kop
 structure-visibility-public-label = Openbaar
+structure-visibility-members-label = Leden
 
 structure-navigation-title = Navigatie
 structure-navigation-description = Verplaats items hierheen om ze in het navigatiemenu te tonen.
@@ -101,10 +102,16 @@ channel-filters-label = Filters
 channel-custom-filters-label = Gebruik aangepaste filters voor dit kanaal
 channel-custom-filters-description = Overschrijf de globale filters voor dit kanaal.
 channel-permissions-title = Permissies
+channel-approval-label = Goedkeuring
+channel-approval-moderators-exempt = Moderators zijn vrijgesteld van goedkeuring.
+channel-require-approval-posts-label = Goedkeuring vereisen voor berichten
+channel-require-approval-comments-label = Goedkeuring vereisen voor reacties
 channel-features-title = Functies
 channel-reactions-label = Reacties
 channel-reactions-posts-label = Berichten
 channel-reactions-comments-label = Reacties
+reaction-set-picker-default = Standaard ({ $name })
+reaction-set-picker-none = Geen
 channel-taxonomies-label = Taxonomieën
 channel-answers-label = Antwoorden
 channel-enable-answers-label = Sta antwoorden toe op dit kanaal
@@ -114,6 +121,7 @@ channel-instructions-label = Instructies voor het toevoegen van berichten
 channel-instructions-description = Geef instructies die aan gebruikers worden getoond terwijl ze berichten in dit kanaal maken.
 channel-similar-posts-title = Vergelijkbare Berichten
 channel-show-similar-posts-label = Toon vergelijkbare berichten uit dit kanaal op basis van de titel
+
 delete-channel-title = Verwijder Kanaal:
 delete-channel-posts-label = Verwijder { $count } { $count ->
     [one] bericht
@@ -141,7 +149,14 @@ group-appearance-label = Uiterlijk
 group-show-as-badge-label = Toon deze groep als een gebruikersbadge
 group-color-label = Kleur
 group-icon-label = Icoon
+group-rules-title = Deelname
+group-auto-assign-label = Deze groep automatisch toewijzen aan nieuwe leden
+group-rules-requires-approval-label = Goedkeuring vereisen voor inhoud van nieuwe leden
+group-rules-remove-after-approval-label = Na goedkeuring uit de groep verwijderen
 group-permissions-title = Permissies
+group-global-permissions-title = Globale permissies
+group-structure-permissions-title = Structuurpermissies
+group-permission-suspend-users-label = Toestaan om gebruikers te schorsen
 
 delete-group-confirm-message = Weet u zeker dat u deze groep wilt verwijderen?
 
@@ -237,4 +252,3 @@ license-suspended-message = Uw Waterhole licentie is geschorst. Neem contact met
 trial-badge = Proefversie
 licensed-badge = Gelicenseerd
 unlicensed-badge = Ongelicenseerd
-

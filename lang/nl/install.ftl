@@ -1,26 +1,27 @@
-### Installatie
+### Installation
 
-## Groepen
+## Groups
 
 group-guest = Gast
 group-member = Lid
 group-admin = Beheerder
 group-moderator = Moderator
+group-quarantine = Quarantaine
 
-## Reacties
+## Reactions
 
 reaction-set-emoji = Emoji
 reaction-type-like = Vind ik leuk
-reaction-type-love = Love
+reaction-type-love = Liefde
 reaction-type-laugh = Lachen
-reaction-type-wow = Wow
+reaction-type-wow = Wauw
 reaction-type-sad = Verdrietig
 reaction-type-angry = Boos
 
 reaction-set-votes = Stemmen
-reaction-type-upvote = Upvote
+reaction-type-upvote = Stem omhoog
 
-## Structuur
+## Structure
 
 announcements-name = Aankondigingen
 announcements-description = Nieuws en andere updates van het team.

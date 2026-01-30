@@ -1,6 +1,7 @@
 ### Auth
 
 ## Laravel strings
+## https://github.com/laravel/framework/blob/master/src/Illuminate/Translation/lang/en/auth.php
 
 failed = Deze inloggegevens komen niet overeen met onze gegevens.
 password = Het opgegeven wachtwoord is foutief.
