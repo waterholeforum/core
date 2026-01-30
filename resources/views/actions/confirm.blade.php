@@ -13,7 +13,7 @@
                     <input
                         type="hidden"
                         name="return"
-                        value="{{ old('return', url()->previous()) }}"
+                        value="{{ old('return', request('return', url()->previous())) }}"
                     />
 
                     @foreach ($models as $model)
@@ -35,7 +35,7 @@
 
                         <div class="row gap-xs wrap justify-end">
                             <a
-                                href="{{ old('return', url()->previous()) }}"
+                                href="{{ old('return', request('return', url()->previous())) }}"
                                 class="btn"
                                 data-action="modal#hide"
                             >

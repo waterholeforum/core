@@ -15,10 +15,13 @@ class ActionMenu extends Component
         protected ?string $context = null,
         public array $buttonAttributes = ['class' => 'btn btn--transparent btn--icon text-xs'],
     ) {
+        $return = request('return', request()->fullUrl());
+
         $this->url = route('waterhole.actions.menu', [
             'actionable' => get_class($for),
             'id' => $for->getKey(),
             'context' => $context,
+            'return' => $return,
         ]);
     }
 

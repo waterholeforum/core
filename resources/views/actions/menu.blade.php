@@ -6,6 +6,9 @@
                     @csrf
                     <input type="hidden" name="actionable" value="{{ request('actionable') }}" />
                     <input type="hidden" name="id[]" value="{{ request('id') }}" />
+                    @if ($return = request('return'))
+                        <input type="hidden" name="return" value="{{ $return }}" />
+                    @endif
 
                     @foreach ($actions as $action)
                         @if ($action instanceof Waterhole\Actions\Action)

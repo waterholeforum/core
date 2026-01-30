@@ -116,9 +116,11 @@ function resolve_all(array $names, array ...$parameters): array
 
 function return_field(?string $default = null): string
 {
-    return '<input type="hidden" name="return" value="' .
-        e(old('return', request('return', $default))) .
-        '">';
+    if ($return = old('return', request('return', $default))) {
+        return '<input type="hidden" name="return" value="' . e($return) . '">';
+    }
+
+    return '';
 }
 
 function username(?User $user): string
