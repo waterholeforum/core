@@ -6,6 +6,17 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property bool $is_default_posts
+ * @property bool $is_default_comments
+ * @property bool $allow_multiple
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection $reactionTypes
+ * @property-read string $edit_url
+ */
 class ReactionSet extends Model
 {
     private static Collection $defaults;

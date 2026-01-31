@@ -10,6 +10,18 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Laravel\Facades\Image;
 
+/**
+ * @property int $id
+ * @property null|int $user_id
+ * @property string $filename
+ * @property null|string $type
+ * @property null|int $width
+ * @property null|int $height
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection $posts
+ * @property-read \Illuminate\Database\Eloquent\Collection $comments
+ */
 class Upload extends Model
 {
     use Prunable;

@@ -7,6 +7,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Waterhole\View\Components\Cp\TagRow;
 use Waterhole\View\TurboStream;
 
+/**
+ * @property int $id
+ * @property int $taxonomy_id
+ * @property string $name
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read Taxonomy $taxonomy
+ * @property-read string $edit_url
+ */
 class Tag extends Model
 {
     protected static function booted(): void

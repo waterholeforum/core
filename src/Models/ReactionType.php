@@ -6,6 +6,17 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Waterhole\Models\Concerns\HasIcon;
 
+/**
+ * @property int $id
+ * @property int $reaction_set_id
+ * @property string $name
+ * @property int $score
+ * @property int $position
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read ReactionSet $reactionSet
+ * @property-read string $edit_url
+ */
 class ReactionType extends Model
 {
     use HasIcon;
