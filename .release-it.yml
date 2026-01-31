@@ -19,7 +19,7 @@ plugins:
     addUnreleased: true
 
 hooks:
-  after:bump: npm run prod
+  after:bump: pnpm build
   after:release:
     'curl -f -X POST --location "https://api.waterhole.dev/releases"
     -H "Content-Type: application/json"
