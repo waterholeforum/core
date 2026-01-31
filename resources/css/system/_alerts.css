@@ -13,40 +13,18 @@
 
   > * {
     pointer-events: auto;
-    transition: all 0.3s;
     box-shadow: var(--shadow-md);
-  }
-
-  > .enter-from,
-  > .leave-to {
-    opacity: 0;
-  }
-
-  > .leave-active {
-    position: absolute;
-  }
-
-  > .leave-to {
-    filter: blur(4px);
   }
 
   @media (--sm) {
     align-items: stretch;
     top: auto;
     bottom: 0;
-
-    > .enter-from {
-      transform: translateY(100%);
-    }
   }
 
   @media (--md-up) {
     > * {
       max-width: 50ch;
-    }
-
-    > .enter-from {
-      transform: translateY(-100%);
     }
   }
 }
