@@ -25,7 +25,7 @@ class UserName extends Field
                 name="name"
                 :label="__('waterhole::cp.user-name-label')"
             >
-                @if ($payload?->user->forceName)
+                @if ($payload?->user->forceName ?? false)
                     <span>{{ $payload->user->name }}</span>
                 @else
                     <input
@@ -42,7 +42,7 @@ class UserName extends Field
 
     public function validating(Validator $validator): void
     {
-        if ($this->payload?->user->forceName) {
+        if ($this->payload?->user->forceName ?? false) {
             $validator->setData(
                 array_replace($validator->getData(), ['name' => $this->payload->user->name]),
             );
