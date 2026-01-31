@@ -4,7 +4,8 @@
     "scripts": {
         "dev": "DEV=1 tsdown",
         "build": "tsdown",
-        "prettier": "prettier --write '**/*' --ignore-unknown"
+        "prettier": "prettier --write '**/*' --ignore-unknown",
+        "release": "release-it"
     },
     "devDependencies": {
         "@csstools/postcss-global-data": "^4.0.0",
