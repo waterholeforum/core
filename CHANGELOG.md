@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add `CommentQuery` extender for comment list queries
 - Allow configuring search engine via `waterhole.system.search_engine`
 - Improve version number display in CP
+- Add a "last" pagination link in sidebar while reading post
 
 ### Changed
 
@@ -59,6 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Sort trashed items by latest deleted date
 - Fix crash when viewing content that mentions a deleted user
 - Fix edit user submission returning to actions menu route
+- Fix modal backdrop persisting when `prefers-reduced-motion` is enabled
 
 ### Security
 
