@@ -11,7 +11,7 @@ export default class extends Controller {
     static targets = [
         'post',
         'currentPage',
-        'commentsLink',
+        'commentsLinks',
         'commentsPagination',
     ];
 
@@ -22,8 +22,8 @@ export default class extends Controller {
     declare readonly postTarget: HTMLElement;
     declare readonly hasCurrentPageTarget: boolean;
     declare readonly currentPageTarget: HTMLElement;
-    declare readonly hasCommentsLinkTarget: boolean;
-    declare readonly commentsLinkTarget: HTMLElement;
+    declare readonly hasCommentsLinksTarget: boolean;
+    declare readonly commentsLinksTarget: HTMLElement;
     declare readonly hasCommentsPaginationTarget: boolean;
     declare readonly commentsPaginationTarget: HTMLElement;
     declare readonly idValue: number;
@@ -96,12 +96,12 @@ export default class extends Controller {
             }
         });
 
-        if (this.hasCommentsLinkTarget && this.hasCommentsPaginationTarget) {
-            this.commentsLinkTarget.hidden =
+        if (this.hasCommentsLinksTarget && this.hasCommentsPaginationTarget) {
+            this.commentsLinksTarget.hidden =
                 this.postTarget.getBoundingClientRect().bottom <
                 getHeaderHeight() + 10;
             this.commentsPaginationTarget.hidden =
-                !this.commentsLinkTarget.hidden;
+                !this.commentsLinksTarget.hidden;
         }
     };
 }

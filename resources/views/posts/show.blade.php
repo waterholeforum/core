@@ -84,15 +84,21 @@
             <x-waterhole::post-sidebar :post="$post" />
 
             @if ($comments->total())
-                <a
-                    href="#comments"
-                    class="with-icon color-muted text-xs weight-medium"
-                    data-post-page-target="commentsLink"
-                    hidden
-                >
-                    @icon('tabler-message-circle-2')
-                    {{ __('waterhole::forum.post-comments-link', ['count' => $comments->total()]) }}
-                </a>
+                <div class="tabs tabs--vertical" data-post-page-target="commentsLinks" hidden>
+                    <a href="#comments" class="tab with-icon">
+                        @icon('tabler-message-circle-2')
+                        {{ __('waterhole::forum.post-comments-link', ['count' => $comments->total()]) }}
+                    </a>
+
+                    <a
+                        {{-- Exclude ?page=1 from the URL so that the page isn't needlessly reloaded. --}}
+                        href="{{ $lastLink = ($comments->lastPage() === 1 ? $post->url : $comments->url($comments->lastPage())) . '#bottom' }}"
+                        class="tab with-icon hide-md-down"
+                    >
+                        @icon('tabler-chevrons-down')
+                        {{ __('waterhole::system.pagination-last-link') }}
+                    </a>
+                </div>
 
                 <ui-popup class="collapsible-nav stack" data-post-page-target="commentsPagination">
                     <button class="btn btn--transparent">
@@ -126,11 +132,7 @@
                                 @endfor
                             </div>
 
-                            <a
-                                class="tab with-icon"
-                                {{-- Exclude ?page=1 from the URL so that the page isn't needlessly reloaded. --}}
-                                href="{{ $comments->lastPage() === 1 ? $post->url : $comments->url($comments->lastPage()) }}#bottom"
-                            >
+                            <a class="tab with-icon" href="{{ $lastLink }}">
                                 @icon('tabler-chevrons-down', ['class' => 'icon--narrow'])
                                 {{ __('waterhole::system.pagination-last-link') }}
                             </a>
