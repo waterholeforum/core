@@ -90,22 +90,24 @@ code {
   }
 }
 
-ui-popup > .enter-active,
-ui-popup > .leave-active {
-  transition:
-    transform 0.15s,
-    opacity 0.15s;
-}
+@media (prefers-reduced-motion: no-preference) {
+  ui-popup > .enter-active,
+  ui-popup > .leave-active {
+    transition:
+      transform 0.15s,
+      opacity 0.15s;
+  }
 
-ui-popup > .enter-from,
-ui-popup > .leave-to {
-  transform: scale(0);
-  opacity: 0;
-}
+  ui-popup > .enter-from,
+  ui-popup > .leave-to {
+    transform: scale(0);
+    opacity: 0;
+  }
 
-ui-popup::part(backdrop),
-ui-popup > :nth-child(2) {
-  z-index: var(--z-index-overlay);
+  ui-popup::part(backdrop),
+  ui-popup > :nth-child(2) {
+    z-index: var(--z-index-overlay);
+  }
 }
 
 [data-placement='bottom'] {
