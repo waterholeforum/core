@@ -4,16 +4,13 @@ namespace Waterhole\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Waterhole\Search\EngineInterface;
-use Waterhole\Search\FullTextSearchEngine;
 
 class SearchServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
-        $engine = config('waterhole.system.search_engine');
-
-        if ($engine === 'full_text') {
-            $this->app->bind(EngineInterface::class, FullTextSearchEngine::class);
+        if ($engine = config('waterhole.system.search_engine')) {
+            $this->app->bind(EngineInterface::class, $engine);
         }
     }
 }

@@ -40,7 +40,8 @@ return [
     'search_engine' => env(
         'WATERHOLE_SEARCH_ENGINE',
         match (env('DB_CONNECTION')) {
-            'mysql', 'mariadb', 'pgsql' => 'full_text',
+            'mysql', 'mariadb', 'pgsql' => Waterhole\Search\FullTextSearchEngine::class,
+            'sqlite' => Waterhole\Search\LikeSearchEngine::class,
             default => null,
         },
     ),
