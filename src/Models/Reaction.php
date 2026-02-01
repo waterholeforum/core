@@ -4,6 +4,9 @@ namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Facades\Notification;
+use Waterhole\Models\Concerns\NotificationContent;
+use Waterhole\Notifications\Reaction as ReactionNotification;
 
 /**
  * @property int $id
@@ -13,6 +16,24 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  */
 class Reaction extends Model
 {
+    use NotificationContent;
+
+    protected static function booted(): void
+    {
+        static::created(function (self $reaction) {
+            $reaction->deliverCreatedNotification();
+        });
+    }
+
+    protected function deliverCreatedNotification(): void
+    {
+        $recipient = $this->content?->user;
+
+        if ($recipient?->isNot($this->user)) {
+            Notification::send($recipient, new ReactionNotification($this));
+        }
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

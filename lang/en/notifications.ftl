@@ -45,6 +45,20 @@ flagged-comment-title = Comment flagged in { $post }
 new-flag-reason = You received this because you moderate a channel.
 new-flag-unsubscribe = Unsubscribe from flag notifications
 
+## Reactions
+
+reaction-description = Reactions on my posts and comments
+reaction-post-title =
+    { $count ->
+        [one] 1 reaction on { $post }
+       *[other] { $count } reactions on { $post }
+    }
+reaction-comment-title =
+    { $count ->
+        [one] 1 reaction on your comment in { $post }
+       *[other] { $count } reactions on your comment in { $post }
+    }
+
 ## Content Removed
 
 post-removed-title = Post removed: { $post }

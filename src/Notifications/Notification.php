@@ -52,7 +52,12 @@ abstract class Notification extends BaseNotification implements ShouldQueue
      */
     public function via($notifiable): array
     {
-        return $notifiable->notification_channels[get_class($this)] ?? [];
+        return array_values(
+            array_intersect(
+                $notifiable->notification_channels[get_class($this)] ?? [],
+                static::channels(),
+            ),
+        );
     }
 
     /**
@@ -243,6 +248,14 @@ abstract class Notification extends BaseNotification implements ShouldQueue
     public static function availableFor(User $user): bool
     {
         return true;
+    }
+
+    /**
+     * Available channels for this notification type.
+     */
+    public static function channels(): array
+    {
+        return ['database', 'mail'];
     }
 
     /**

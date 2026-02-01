@@ -7,6 +7,7 @@ use Waterhole\Notifications\Mention;
 use Waterhole\Notifications\NewComment;
 use Waterhole\Notifications\NewFlag;
 use Waterhole\Notifications\NewPost;
+use Waterhole\Notifications\Reaction;
 
 /**
  * List of notification classes shown in user notification preferences.
@@ -21,6 +22,7 @@ class NotificationTypes extends UnorderedList
         $this->add(NewPost::class, 'new-post');
         $this->add(NewComment::class, 'new-comment');
         $this->add(Mention::class, 'mention');
+        $this->add(Reaction::class, 'reaction');
         $this->add(NewFlag::class, 'new-flag');
     }
 }

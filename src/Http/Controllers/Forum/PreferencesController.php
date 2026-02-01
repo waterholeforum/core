@@ -100,6 +100,18 @@ class PreferencesController extends Controller
             'follow_on_comment' => 'boolean',
         ]);
 
+        if (isset($data['notification_channels'])) {
+            $data['notification_channels'] = collect($data['notification_channels'])
+                ->mapWithKeys(
+                    fn(array $channels, string $type) => [
+                        $type => array_values(
+                            array_intersect($channels, $type::channels()),
+                        ),
+                    ],
+                )
+                ->all();
+        }
+
         $request->user()->update($data);
 
         return redirect()

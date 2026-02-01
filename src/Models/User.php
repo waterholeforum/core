@@ -101,7 +101,7 @@ class User extends Model implements
             $user->follow_on_comment ??= true;
             $user->notification_channels ??= collect(
                 resolve(NotificationTypes::class)->values(),
-            )->mapWithKeys(fn($type) => [$type => ['database', 'mail']]);
+            )->mapWithKeys(fn($type) => [$type => $type::channels()]);
         });
     }
 
