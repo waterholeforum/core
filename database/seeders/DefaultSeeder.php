@@ -21,7 +21,7 @@ class DefaultSeeder extends Seeder
 {
     public function run(): void
     {
-        $this->callOnce(GroupsSeeder::class);
+        $this->call(GroupsSeeder::class);
 
         $guest = Group::guest();
         $member = Group::member();
