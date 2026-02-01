@@ -37,9 +37,11 @@ class Searcher
 
         $postsById = $query->get()->keyBy('id');
 
-        foreach ($results->hits as $hit) {
+        foreach ($results->hits as $k => $hit) {
             if ($hit->post = $postsById[$hit->postId] ?? null) {
                 $hit->post->title = $hit->title;
+            } else {
+                unset($results->hits[$k]);
             }
         }
 
