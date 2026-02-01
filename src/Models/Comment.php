@@ -96,7 +96,7 @@ class Comment extends Model
         // By default, we calculate each comment's index (ie. how many comments
         // came before it) when querying comments. Since this is an expensive
         // thing to do, put it in a global scope so that it can be disabled.
-        static::addGlobalScope(new CommentIndexScope());
+        static::addGlobalScope('index', new CommentIndexScope());
     }
 
     protected static function booted(): void

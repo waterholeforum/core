@@ -17,7 +17,7 @@ beforeEach(function () {
     ]);
 });
 
-test('home page includes seo tags', function () {
+test('home page includes default seo tags', function () {
     Channel::factory()->public()->create();
 
     $this->get('/')
@@ -26,7 +26,7 @@ test('home page includes seo tags', function () {
         ->assertSeeHtml('"@type":"WebSite"');
 });
 
-test('post page includes seo tags', function () {
+test('post page includes og tags and json-ld', function () {
     $post = Post::factory()
         ->for(Channel::factory()->public())
         ->create([
@@ -41,4 +41,18 @@ test('post page includes seo tags', function () {
         ->assertSeeHtml('<meta name="description" content="' . e($description) . '" />')
         ->assertSeeHtml('<meta property="og:image" content="https://example.com/default-og.png" />')
         ->assertSeeHtml('"@type":"DiscussionForumPosting"');
+});
+
+test('channel page includes seo tags', function () {
+    $channel = Channel::factory()
+        ->public()
+        ->create([
+            'name' => 'SEO Channel',
+            'description' => '<p>Channel description.</p>',
+        ]);
+
+    $this->get($channel->url)
+        ->assertSeeHtml('<meta property="og:title" content="SEO Channel - Waterhole" />')
+        ->assertSeeHtml('<meta name="description" content="Channel description." />')
+        ->assertSeeHtml('"@type":"CollectionPage"');
 });

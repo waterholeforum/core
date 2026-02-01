@@ -101,5 +101,7 @@ trait UsesFormatter
         } else {
             return parent::setAttribute($key, $value);
         }
+
+        return $this;
     }
 }

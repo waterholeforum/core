@@ -17,6 +17,16 @@ class ChannelFactory extends Factory
     public function public(): static
     {
         return $this->afterCreating(function (Channel $channel) {
+            $channel->savePermissions([
+                'group:1' => ['view' => true],
+                'group:2' => ['view' => true, 'post' => true, 'comment' => true],
+            ]);
+        });
+    }
+
+    public function readOnly(): static
+    {
+        return $this->afterCreating(function (Channel $channel) {
             $channel->savePermissions(['group:1' => ['view' => true]]);
         });
     }
