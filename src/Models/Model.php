@@ -19,6 +19,7 @@ abstract class Model extends Eloquent
 
     public function getConnectionName()
     {
-        return static::$connectionName ??= config('waterhole.system.database');
+        return static::$connectionName ??=
+            config('waterhole.system.database') ?: config('database.default');
     }
 }

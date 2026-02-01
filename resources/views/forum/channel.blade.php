@@ -2,7 +2,7 @@
     :title="$channel->name"
     :data-channel="$channel->slug"
     :seo="[
-        'description' => $channel->description_html,
+        'description' => $channel->description_text,
         'url' => route('waterhole.channels.show', compact('channel')),
         'noindex' => !$channel->structure->is_listed,
         'schema' => ['@type' => 'CollectionPage'],
