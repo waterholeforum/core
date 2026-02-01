@@ -104,9 +104,7 @@ class PreferencesController extends Controller
             $data['notification_channels'] = collect($data['notification_channels'])
                 ->mapWithKeys(
                     fn(array $channels, string $type) => [
-                        $type => array_values(
-                            array_intersect($channels, $type::channels()),
-                        ),
+                        $type => array_values(array_intersect($channels, $type::channels())),
                     ],
                 )
                 ->all();
