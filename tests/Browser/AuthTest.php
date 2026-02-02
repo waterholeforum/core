@@ -29,6 +29,17 @@ describe('auth', function () {
     });
 
     test('debug assets', function () {
+        dump([
+            'app_url' => config('app.url'),
+            'assets_disk' => config('waterhole.system.assets_disk'),
+            'public_disk' => config('filesystems.disks.public'),
+            'public_path' => public_path(),
+            'storage_path' => storage_path(),
+            'public_storage_link' => file_exists(public_path('storage'))
+                ? realpath(public_path('storage'))
+                : null,
+        ]);
+
         visit(route('waterhole.home'))->dd();
     })->only();
 
