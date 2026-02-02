@@ -6,6 +6,7 @@
     ],
     "license": "proprietary",
     "require": {
+        "php": "^8.3",
         "ext-json": "*",
         "composer/composer": "^2.4",
         "fntneves/laravel-transactional-events": "^2.0",

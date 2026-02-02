@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [8.2, 8.3, 8.4]
+        php: [8.3, 8.4, 8.5]
 
     name: PHP ${{ matrix.php }}
 
@@ -36,7 +36,7 @@ jobs:
         run: composer update --prefer-dist --no-interaction --no-progress
 
       - name: Install Playwright
-        run: pnpm install playwright@latest && pnpm playwright install
+        run: npm install playwright@latest && npx playwright install
 
       - name: Run tests
         run: vendor/bin/pest
