@@ -29,3 +29,4 @@ function extend(callable $callback): void
 }
 
 pest()->extend(TestCase::class)->in('Feature');
+pest()->extend(TestCase::class)->in('Browser');

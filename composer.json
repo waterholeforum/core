@@ -31,7 +31,8 @@
     "require-dev": {
         "larastan/larastan": "^3.4",
         "orchestra/testbench": "^10.2",
-        "pestphp/pest": "^3.8"
+        "pestphp/pest": "^4.0",
+        "pestphp/pest-plugin-browser": "^4.0"
     },
     "autoload": {
         "psr-4": {
