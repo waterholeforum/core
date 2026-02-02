@@ -43,3 +43,10 @@ jobs:
         env:
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
           DB_USERNAME: root
+
+      - name: Upload screenshots on failure
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-screenshots
+          path: test-results/
