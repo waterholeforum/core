@@ -8,3 +8,4 @@ Thumbs.db
 .fleet
 .vscode
 .phpunit.result.cache
+tests/Browser/Screenshots

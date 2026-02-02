@@ -22,9 +22,6 @@ workbench:
         views: false
     build:
         - asset-publish
-        - create-sqlite-db
-        - db-wipe
-        - migrate-fresh
     assets:
         - laravel-assets
     sync:

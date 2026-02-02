@@ -39,7 +39,7 @@ jobs:
         run: npm install playwright@latest && npx playwright install
 
       - name: Run tests
-        run: vendor/bin/pest
+        run: composer run build && vendor/bin/pest
         env:
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
           DB_USERNAME: root
