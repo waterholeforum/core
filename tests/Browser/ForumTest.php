@@ -14,7 +14,10 @@ uses(RefreshDatabase::class)->group('browser');
 beforeEach(function () {
     $this->seed(GroupsSeeder::class);
 
-    config(['filesystems.disks.public.url' => '/storage']);
+    config([
+        'filesystems.disks.public.root' => public_path('storage'),
+        'filesystems.disks.public.url' => '/storage',
+    ]);
 });
 
 describe('forum', function () {
@@ -33,7 +36,8 @@ describe('forum', function () {
         visit(route('waterhole.posts.create', ['channel_id' => $channel->id]))
             ->fill('title', 'Browser smoke post')
             ->fill('body', 'Post body from browser smoke test.')
-            ->click('Post');
+            ->click('Post')
+            ->assertSee('Browser smoke post');
 
         $post = Post::query()->where('title', 'Browser smoke post')->firstOrFail();
 
@@ -83,7 +87,7 @@ describe('forum', function () {
             ->fill('password', 'Password123!')
             ->click('button[type="submit"]');
 
-        visit($post->url)->click(
+        visit($post->url)->pressAndWaitFor(
             'button[name="reaction_type_id"][value="' . $reactionType->id . '"]',
         );
 

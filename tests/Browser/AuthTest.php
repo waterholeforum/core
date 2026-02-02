@@ -10,7 +10,10 @@ uses(RefreshDatabase::class)->group('browser');
 beforeEach(function () {
     $this->seed(GroupsSeeder::class);
 
-    config(['filesystems.disks.public.url' => '/storage']);
+    config([
+        'filesystems.disks.public.root' => public_path('storage'),
+        'filesystems.disks.public.url' => '/storage',
+    ]);
 });
 
 describe('auth', function () {
@@ -27,21 +30,6 @@ describe('auth', function () {
         $this->assertDatabaseHas('users', ['email' => $email]);
         $this->assertAuthenticated();
     });
-
-    test('debug assets', function () {
-        dump([
-            'app_url' => config('app.url'),
-            'assets_disk' => config('waterhole.system.assets_disk'),
-            'public_disk' => config('filesystems.disks.public'),
-            'public_path' => public_path(),
-            'storage_path' => storage_path(),
-            'public_storage_link' => file_exists(public_path('storage'))
-                ? realpath(public_path('storage'))
-                : null,
-        ]);
-
-        visit(route('waterhole.home'))->dd();
-    })->only();
 
     test('logs in and logs out', function () {
         $user = User::factory()->create([
