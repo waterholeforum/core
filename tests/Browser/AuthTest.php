@@ -9,6 +9,8 @@ uses(RefreshDatabase::class)->group('browser');
 
 beforeEach(function () {
     $this->seed(GroupsSeeder::class);
+
+    config(['filesystems.disks.public.url' => null]);
 });
 
 describe('auth', function () {
