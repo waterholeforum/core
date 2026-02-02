@@ -28,6 +28,10 @@ describe('auth', function () {
         $this->assertAuthenticated();
     });
 
+    test('debug assets', function () {
+        visit(route('waterhole.home'))->dd();
+    })->only();
+
     test('logs in and logs out', function () {
         $user = User::factory()->create([
             'email' => 'browser-login@example.com',
