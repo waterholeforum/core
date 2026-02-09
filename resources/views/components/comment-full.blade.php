@@ -3,6 +3,15 @@
         {{
             (new Illuminate\View\ComponentAttributeBag())
                 ->class('comment')
+                ->merge(
+                    $withStructuredData
+                        ? [
+                            'itemprop' => 'comment',
+                            'itemscope' => true,
+                            'itemtype' => 'https://schema.org/Comment',
+                        ]
+                        : [],
+                )
                 ->merge(resolve(Waterhole\Extend\Ui\CommentAttributes::class)->build($comment))
         }}
         data-comment-id="{{ $comment->id }}"
@@ -10,6 +19,24 @@
         data-controller="comment"
         tabindex="-1"
     >
+        @if ($withStructuredData)
+            <meta itemprop="datePublished" content="{{ $comment->created_at?->toAtomString() }}" />
+            @if ($comment->edited_at)
+                <meta
+                    itemprop="dateModified"
+                    content="{{ $comment->edited_at?->toAtomString() }}"
+                />
+            @endif
+
+            <meta itemprop="url" content="{{ $comment->url }}" />
+            <span itemprop="author" itemscope itemtype="https://schema.org/Person" hidden>
+                <meta itemprop="name" content="{{ Waterhole\username($comment->user) }}" />
+                @if ($comment->user)
+                    <meta itemprop="url" content="{{ $comment->user->url }}" />
+                @endif
+            </span>
+        @endif
+
         @if ($comment->trashed())
             <x-waterhole::removed-banner :subject="$comment">
                 <x-slot name="lead">
@@ -99,6 +126,7 @@
             <div
                 class="comment__body content @if ($truncate) content--compact truncated @endif"
                 data-controller="quotable @if ($truncate) truncated @endif"
+                @if ($withStructuredData) itemprop="text" @endif
             >
                 {{ $comment->body_html }}
 
@@ -163,7 +191,10 @@
                     >
                         @foreach ($comment->children as $child)
                             <li class="card__row">
-                                <x-waterhole::comment-frame :comment="$child" />
+                                <x-waterhole::comment-frame
+                                    :comment="$child"
+                                    :with-structured-data="$withStructuredData"
+                                />
                             </li>
                         @endforeach
                     </ol>
