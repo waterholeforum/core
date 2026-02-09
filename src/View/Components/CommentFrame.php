@@ -14,6 +14,7 @@ class CommentFrame extends Component
         public Comment $comment,
         public bool $withReplies = false,
         public bool $lazy = false,
+        public bool $withStructuredData = false,
     ) {}
 
     public function render()

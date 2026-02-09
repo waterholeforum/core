@@ -11,28 +11,20 @@
         'type' => 'article',
         'image' => $ogImage,
         'noindex' => ! $post->channel->structure->is_listed,
-        'schema' => [
-            '@type' => 'DiscussionForumPosting',
-            'headline' => $post->title,
-            'datePublished' => $post->created_at?->toAtomString(),
-            'dateModified' => $post->edited_at?->toAtomString(),
-            'commentCount' => $post->comment_count,
-            'author' => $post->user
-                ? [
-                    '@type' => 'Person',
-                    'name' => Waterhole\username($post->user),
-                    'url' => $post->user->url,
-                ]
-                : null,
-        ],
+        'schema' => false,
     ]"
 >
     <div
         class="post-page section container with-sidebar"
         data-controller="post-page"
         data-post-page-id-value="{{ $post->id }}"
+        itemscope
+        itemtype="https://schema.org/DiscussionForumPosting"
+        itemid="{{ $post->url }}"
         {{ new Illuminate\View\ComponentAttributeBag(resolve(\Waterhole\Extend\Ui\PostAttributes::class)->build($post)) }}
     >
+        <meta itemprop="commentCount" content="{{ $post->comment_count }}" />
+
         <div class="stack gap-lg measure">
             <div data-post-page-target="post" @if (!$comments->onFirstPage()) hidden @endif>
                 <x-waterhole::post-full :post="$post" />
@@ -60,7 +52,11 @@
                             @endonce
                         @endif
 
-                        <x-waterhole::comment-frame :comment="$comment" class="card__row" />
+                        <x-waterhole::comment-frame
+                            :comment="$comment"
+                            class="card__row"
+                            with-structured-data
+                        />
                     @endforeach
                 </x-waterhole::infinite-scroll>
             </section>

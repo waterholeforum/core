@@ -9,14 +9,29 @@
         'url' => $comment->post_url,
         'type' => 'article',
         'noindex' => ! $post->channel->structure->is_listed,
-        'schema' => [
-            '@type' => 'DiscussionForumPosting',
-            'headline' => $post->title,
-            'commentCount' => $post->comment_count,
-        ],
+        'schema' => false,
     ]"
 >
-    <div class="container section">
+    <div
+        class="container section"
+        itemscope
+        itemtype="https://schema.org/DiscussionForumPosting"
+        itemid="{{ $post->url }}"
+    >
+        <meta itemprop="headline" content="{{ $post->title }}" />
+        <meta itemprop="datePublished" content="{{ $post->created_at?->toAtomString() }}" />
+        @if ($post->edited_at)
+            <meta itemprop="dateModified" content="{{ $post->edited_at?->toAtomString() }}" />
+        @endif
+        <meta itemprop="url" content="{{ $post->url }}" />
+        <meta itemprop="commentCount" content="{{ $post->comment_count }}" />
+        <span itemprop="author" itemscope itemtype="https://schema.org/Person" hidden>
+            <meta itemprop="name" content="{{ Waterhole\username($post->user) }}" />
+            @if ($post->user)
+                <meta itemprop="url" content="{{ $post->user->url }}" />
+            @endif
+        </span>
+
         <div class="measure stack gap-lg">
             <header class="stack gap-xs">
                 <ol class="breadcrumb">
@@ -31,7 +46,12 @@
                 <h1 class="h3">{{ $title }}</h1>
             </header>
 
-            <x-waterhole::comment-frame :comment="$comment" with-replies class="card" />
+            <x-waterhole::comment-frame
+                :comment="$comment"
+                with-replies
+                class="card"
+                with-structured-data
+            />
 
             @can('waterhole.post.comment', $post)
                 <x-waterhole::composer :post="$post" :parent="$comment" />

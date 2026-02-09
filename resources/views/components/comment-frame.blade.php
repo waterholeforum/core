@@ -4,6 +4,10 @@
     {{ $attributes }}
 >
     @unless ($lazy)
-        <x-waterhole::comment-full :comment="$comment" :with-replies="$withReplies" />
+        <x-waterhole::comment-full
+            :comment="$comment"
+            :with-replies="$withReplies"
+            :with-structured-data="$withStructuredData"
+        />
     @endunless
 </turbo-frame>
