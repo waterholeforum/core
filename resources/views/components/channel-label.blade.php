@@ -1,6 +1,6 @@
 @php
     $tag = 'span';
-    $attributes = $attributes->class('channel-label');
+    $attributes = $attributes->class('channel-label')->merge(['data-channel' => $channel->slug]);
 
     if ($link) {
         $tag = 'a';

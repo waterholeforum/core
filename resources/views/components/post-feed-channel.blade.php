@@ -1,4 +1,10 @@
-<div {{ $attributes->class('channel-card card card__body row align-start gap-md') }}>
+<div
+    {{
+        $attributes
+            ->class('channel-card card card__body row align-start gap-md')
+            ->merge(['data-channel' => $channel->slug])
+    }}
+>
     @icon($channel->icon, ['class' => 'channel-card__icon text-xxl'])
 
     <div class="channel-card__inner grow row wrap gap-md">
