@@ -18,7 +18,10 @@
 >
     <x-slot name="head">{{ $head ?? '' }}</x-slot>
 
-    <div class="section container user-profile stack gap-gutter">
+    <div
+        class="section container user-profile stack gap-gutter"
+        data-group="{{ $user->groups->where('is_public', true)->pluck('id')->join(' ') }}"
+    >
         <div class="card card__body user-profile__card">
             <div class="user-profile__controls">
                 <x-waterhole::action-menu

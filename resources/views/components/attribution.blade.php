@@ -1,4 +1,13 @@
-<div class="attribution">
+<div
+    {{
+        $attributes->class('attribution')->merge([
+            'data-group' => $user?->groups
+                ->where('is_public', true)
+                ->pluck('id')
+                ->join(' '),
+        ])
+    }}
+>
     <span class="attribution__user">
         <x-waterhole::user-link :user="$user" class="attribution__link">
             <x-waterhole::avatar :user="$user" />
