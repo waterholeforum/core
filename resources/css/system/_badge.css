@@ -33,7 +33,7 @@
 
 .group-badge {
   background-color: var(--group-color, var(--color-fill));
-  color: var(--group-color-constrast, var(--color-muted));
+  color: var(--group-color-contrast, var(--color-muted));
 }
 
 .badge--hidden {
