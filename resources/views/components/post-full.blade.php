@@ -13,6 +13,7 @@
         @if ($post->edited_at)
             <meta itemprop="dateModified" content="{{ $post->edited_at?->toAtomString() }}" />
         @endif
+
         <meta itemprop="url" content="{{ $post->url }}" />
         <span itemprop="author" itemscope itemtype="https://schema.org/Person" hidden>
             <meta itemprop="name" content="{{ Waterhole\username($post->user) }}" />

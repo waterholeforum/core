@@ -23,6 +23,7 @@
         @if ($post->edited_at)
             <meta itemprop="dateModified" content="{{ $post->edited_at?->toAtomString() }}" />
         @endif
+
         <meta itemprop="url" content="{{ $post->url }}" />
         <meta itemprop="commentCount" content="{{ $post->comment_count }}" />
         <span itemprop="author" itemscope itemtype="https://schema.org/Person" hidden>
