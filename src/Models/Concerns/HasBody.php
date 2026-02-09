@@ -2,11 +2,17 @@
 
 namespace Waterhole\Models\Concerns;
 
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 use Waterhole\Formatter\FormatMentions;
 use Waterhole\Formatter\FormatUploads;
+use Waterhole\Models\Comment;
+use Waterhole\Models\Group;
+use Waterhole\Models\Mention;
 use Waterhole\Models\Model;
+use Waterhole\Models\Post;
 use Waterhole\Models\Upload;
 use Waterhole\Models\User;
 
@@ -21,7 +27,7 @@ use Waterhole\Models\User;
  * This trait also adds a `mentions` relationship to store a list of the users
  * mentioned in the body using the @ prefix. This relationship can then be
  * loaded before the body is rendered so that the Formatter can substitute in
- * the most up-to-date usernames.
+ * the most up-to-date names.
  *
  * @property string $body The original unformatted version of the body.
  * @property-read HtmlString $body_html The formatted HTML version of the body
@@ -47,11 +53,56 @@ trait HasBody
                 return;
             }
 
-            $model->mentions()->sync(
-                User::query()
-                    ->whereKey(FormatMentions::getMentionedUsers($model->parsed_body))
-                    ->pluck('id'),
+            $mentions = collect(FormatMentions::getMentions($model->parsed_body));
+            $mentionRows = collect();
+            $channel = $model instanceof Post || $model instanceof Comment ? $model->channel : null;
+            $actor = $model instanceof Post || $model instanceof Comment ? $model->user : null;
+
+            $mentionRows->push(
+                ...User::whereKey($mentions->where('type', FormatMentions::TYPE_USER)->pluck('id'))
+                    ->pluck('id')
+                    ->map(
+                        fn($id) => [
+                            'mentionable_type' => (new User())->getMorphClass(),
+                            'mentionable_id' => $id,
+                        ],
+                    ),
             );
+
+            $mentionRows->push(
+                ...Group::whereKey(
+                    $mentions->where('type', FormatMentions::TYPE_GROUP)->pluck('id'),
+                )
+                    ->withCount('users')
+                    ->get()
+                    ->filter(
+                        fn(Group $group) => !$actor || $actor->can('mention', [$group, $channel]),
+                    )
+                    ->map(
+                        fn(Group $group) => [
+                            'mentionable_type' => $group->getMorphClass(),
+                            'mentionable_id' => $group->id,
+                        ],
+                    ),
+            );
+
+            $model->mentions()->delete();
+
+            if (count($mentionRows = $mentionRows->unique())) {
+                $contentType = $model->getMorphClass();
+                $contentId = $model->getKey();
+
+                Mention::insert(
+                    $mentionRows
+                        ->map(
+                            fn(array $row) => $row + [
+                                'content_type' => $contentType,
+                                'content_id' => $contentId,
+                            ],
+                        )
+                        ->all(),
+                );
+            }
 
             $model->attachments()->sync(
                 Upload::query()
@@ -64,7 +115,7 @@ trait HasBody
         static::updated($onSave);
 
         $onDelete = function (Model $model) {
-            $model->mentions()->detach();
+            $model->mentions()->delete();
             $model->attachments()->detach();
         };
 
@@ -76,11 +127,11 @@ trait HasBody
     }
 
     /**
-     * Relationship with the users who were mentioned in the body.
+     * Relationship with the mentionables that were mentioned in the body.
      */
-    public function mentions(): MorphToMany
+    public function mentions(): MorphMany
     {
-        return $this->morphToMany(User::class, 'content', 'mentions');
+        return $this->morphMany(Mention::class, 'content');
     }
 
     /**
@@ -89,5 +140,53 @@ trait HasBody
     public function attachments(): MorphToMany
     {
         return $this->morphToMany(Upload::class, 'content', 'attachments');
+    }
+
+    /**
+     * Resolve mentioned users.
+     */
+    protected function mentionedUsers(): Collection
+    {
+        if (!$this instanceof Post && !$this instanceof Comment) {
+            return collect();
+        }
+
+        if (!$this->user) {
+            return collect();
+        }
+
+        $actor = $this->user;
+        $channel = $this->channel;
+
+        $mentionables = $this->mentions
+            ->load('mentionable')
+            ->loadMorph('mentionable', [
+                User::class => ['groups'],
+                Group::class => ['users.groups'],
+            ])
+            ->map->mentionable->filter();
+
+        return $mentionables
+            ->filter(function ($mentionable) use ($actor, $channel) {
+                if ($mentionable instanceof User) {
+                    return $actor->can('mention', $mentionable);
+                }
+
+                return $actor->can('mention', [$mentionable, $channel]);
+            })
+            ->flatMap(
+                fn($mentionable) => $mentionable instanceof User
+                    ? [$mentionable]
+                    : $mentionable->users,
+            )
+            ->where('id', '!=', $actor->id)
+            ->unique('id')
+            ->filter(fn(User $user) => $this->isVisibleTo($user))
+            ->values();
+    }
+
+    public function isVisibleTo(User $user): bool
+    {
+        return true;
     }
 }

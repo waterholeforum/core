@@ -2,11 +2,14 @@
 
 namespace Waterhole\Formatter;
 
+use Illuminate\Support\Str;
 use s9e\TextFormatter\Configurator;
 use s9e\TextFormatter\Parser\Tag;
 use s9e\TextFormatter\Renderer;
 use s9e\TextFormatter\Utils;
+use Waterhole\Models\Group;
 use Waterhole\Models\User;
+use function Waterhole\get_contrast_color;
 use function Waterhole\username;
 
 /**
@@ -17,6 +20,10 @@ use function Waterhole\username;
 abstract class FormatMentions
 {
     public const TAG_NAME = 'MENTION';
+
+    public const TYPE_USER = 'user';
+    public const TYPE_GROUP = 'group';
+    public const TYPE_HERE = 'here';
 
     /**
      * Formatter configuration callback.
@@ -37,41 +44,101 @@ abstract class FormatMentions
 
         $tag = $config->tags->add(static::TAG_NAME);
         $tag->attributes->add('name');
-        $tag->attributes->add('id');
+        $tag->attributes->add('id', ['required' => false]);
+        $tag->attributes->add('type', ['required' => false]);
+        $tag->attributes->add('group_color', ['required' => false]);
+        $tag->attributes->add('group_contrast', ['required' => false]);
         $tag->filterChain->prepend([static::class, 'filterMention']);
 
         // data-hovercard-type="user" is necessary to make @github/paste-markdown
         // prevent mentions being converted into Markdown links when pasted.
         $tag->template = <<<'xsl'
             <xsl:choose>
+                <xsl:when test="@type = 'group'">
+                    <span data-group-id="{@id}">
+                        <xsl:attribute name="class">
+                            mention mention--group
+                            <xsl:if test="@id and contains(concat(',', $USER_GROUPS, ','), concat(',', @id, ','))">mention--self</xsl:if>
+                        </xsl:attribute>
+                        <xsl:if test="@group_color">
+                            <xsl:attribute name="style">
+                                --group-color: <xsl:value-of select="@group_color"/>;
+                                --group-color-contrast: <xsl:value-of select="@group_contrast"/>;
+                            </xsl:attribute>
+                        </xsl:if>
+                        @<xsl:value-of select="@name"/>
+                    </span>
+                </xsl:when>
+                <xsl:when test="@type = 'here'">
+                    <span>
+                        <xsl:attribute name="class">
+                            mention mention--here
+                            <xsl:if test="$USER_ID">mention--self</xsl:if>
+                        </xsl:attribute>
+                        @<xsl:value-of select="@name"/>
+                    </span>
+                </xsl:when>
                 <xsl:when test="@id">
                     <a href="{$MENTION_URL}{@id}" data-user-id="{@id}" data-hovercard-type="user">
                         <xsl:attribute name="class">
-                            mention <xsl:if test="@id and @id = $USER_ID">mention--self</xsl:if>
+                            mention mention--user
+                            <xsl:if test="@id and @id = $USER_ID">mention--self</xsl:if>
                         </xsl:attribute>
                         @<xsl:value-of select="@name"/>
                     </a>
                 </xsl:when>
                 <xsl:otherwise>
-                    <span class="mention">
-                        @<xsl:value-of select="@name"/>
-                    </span>
+                    @<xsl:value-of select="@name"/>
                 </xsl:otherwise>
             </xsl:choose>
         xsl;
     }
 
     /**
-     * Determine whether a mention tag should be kept.
+     * Determine during parsing whether a mention tag should be kept.
      */
     public static function filterMention(Tag $tag): bool
     {
         $name = str_replace("\xc2\xa0", ' ', $tag->getAttribute('name'));
+        $type = static::TYPE_USER;
+
+        $lowerName = Str::lower($name);
+
+        if (Str::startsWith($lowerName, 'group:')) {
+            $type = static::TYPE_GROUP;
+            $name = trim(substr($name, strlen('group:')));
+        } elseif ($lowerName === 'here') {
+            $type = static::TYPE_HERE;
+        }
+
+        $tag->setAttribute('type', $type);
+
+        if ($type === static::TYPE_HERE) {
+            $tag->setAttribute('name', 'here');
+
+            return true;
+        }
+
+        if (!$name) {
+            return false;
+        }
 
         $operator = (new User())->getConnection()->getDriverName() === 'pgsql' ? 'ilike' : 'like';
 
+        if ($type === static::TYPE_GROUP) {
+            if ($group = Group::where('is_public', true)->firstWhere('name', $operator, $name)) {
+                $tag->setAttribute('id', $group->id);
+                $tag->setAttribute('name', $group->name);
+
+                return true;
+            }
+
+            return false;
+        }
+
         if ($user = User::firstWhere('name', $operator, $name)) {
             $tag->setAttribute('id', $user->id);
+            $tag->setAttribute('name', $user->name);
 
             return true;
         }
@@ -91,13 +158,49 @@ abstract class FormatMentions
     public static function rendering(Renderer $renderer, string &$xml, ?Context $context): void
     {
         $xml = Utils::replaceAttributes($xml, 'MENTION', function ($attributes) use ($context) {
-            if (isset($attributes['id'])) {
-                $attributes['name'] = username(
-                    $user = $context?->model?->mentions->find($attributes['id']),
-                );
+            $type = $attributes['type'] ??= static::TYPE_USER;
+
+            if ($type === static::TYPE_HERE) {
+                // TODO: translate
+                return ['name' => 'here'] + $attributes;
+            }
+
+            if (empty($attributes['id'])) {
+                return $attributes;
+            }
+
+            if ($type === static::TYPE_USER) {
+                $user = $context?->model?->mentions
+                    ?->where('mentionable_type', (new User())->getMorphClass())
+                    ->firstWhere('mentionable_id', $attributes['id'])?->mentionable;
 
                 if (!$user) {
                     unset($attributes['id']);
+
+                    return $attributes;
+                }
+
+                $attributes['name'] = username($user);
+
+                return $attributes;
+            }
+
+            if ($type === static::TYPE_GROUP) {
+                $group = $context?->model?->mentions
+                    ?->where('mentionable_type', (new Group())->getMorphClass())
+                    ->firstWhere('mentionable_id', $attributes['id'])?->mentionable;
+
+                if (!$group) {
+                    unset($attributes['id'], $attributes['type']);
+
+                    return $attributes;
+                }
+
+                $attributes['name'] = $group->name;
+
+                if ($group->color) {
+                    $attributes['group_color'] = '#' . $group->color;
+                    $attributes['group_contrast'] = get_contrast_color($group->color);
                 }
             }
 
@@ -106,14 +209,20 @@ abstract class FormatMentions
     }
 
     /**
-     * Get all the user IDs that have been mentioned in a piece of content.
+     * Get all the mention tags in a piece of content.
      *
      * This is used in the `HasBody` model trait to populate the `mentions`
      * relationship so that it can be eager loaded when the content is
      * displayed, and the rendering function above can make use of the data.
      */
-    public static function getMentionedUsers(string $xml): array
+    public static function getMentions(string $xml): array
     {
-        return Utils::getAttributeValues($xml, static::TAG_NAME, 'id');
+        $mentions = [];
+
+        Utils::replaceAttributes($xml, static::TAG_NAME, function ($attributes) use (&$mentions) {
+            return $mentions[] = $attributes + ['type' => static::TYPE_USER];
+        });
+
+        return $mentions;
     }
 }

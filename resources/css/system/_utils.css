@@ -109,6 +109,15 @@
   }
 }
 
+.row-inline {
+  display: inline-flex;
+  align-items: center;
+
+  &.reverse {
+    flex-direction: row-reverse;
+  }
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(

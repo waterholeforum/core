@@ -3,11 +3,11 @@
 namespace Waterhole\Extend\Forms;
 
 use Waterhole\Extend\Support\ComponentList;
-use Waterhole\Forms\Fields\GroupAppearance;
 use Waterhole\Forms\Fields\GroupGlobalPermissions;
 use Waterhole\Forms\Fields\GroupName;
 use Waterhole\Forms\Fields\GroupRules;
 use Waterhole\Forms\Fields\GroupStructurePermissions;
+use Waterhole\Forms\Fields\GroupVisibility;
 use Waterhole\Forms\FormSection;
 
 /**
@@ -32,7 +32,7 @@ class GroupForm extends ComponentList
 
         $this->details = (new ComponentList())
             ->add(GroupName::class, 'name')
-            ->add(GroupAppearance::class, 'appearance')
+            ->add(GroupVisibility::class, 'visibility')
             ->add(GroupRules::class, 'rules');
 
         $this->add(

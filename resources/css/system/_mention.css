@@ -1,13 +1,12 @@
 .mention {
   color: inherit;
-  border-radius: var(--radius);
+  border-radius: 4px;
   font-weight: var(--weight-bold);
+  margin: -2px;
+  padding: 2px;
 }
 
 .mention--self {
-  background: var(--color-warning-soft);
-  color: var(--color-warning-text);
-  border-radius: 4px;
-  margin: -2px;
-  padding: 2px;
+  background: var(--color-activity-soft);
+  color: var(--color-activity-text);
 }

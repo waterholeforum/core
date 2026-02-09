@@ -5,6 +5,7 @@ import * as Turbo from '@hotwired/turbo';
 interface UserLookupResult {
     id: number;
     name: string;
+    value: string;
     html: string;
     commentUrl?: string;
     frameId?: string;
@@ -61,20 +62,22 @@ export default class extends Controller<TextExpanderElement> {
                     listbox.style.marginTop = '24px';
 
                     listbox.append(
-                        ...json.map(({ name, html, commentUrl, frameId }) => {
-                            const option = document.createElement('li');
-                            option.setAttribute('role', 'option');
-                            option.id = `suggestion-${Math.floor(
-                                Math.random() * 100000,
-                            ).toString()}`;
-                            option.className = 'menu-item';
-                            option.dataset.value = name;
-                            option.dataset.commentUrl = commentUrl || '';
-                            option.dataset.frameId = frameId || '';
-                            option.innerHTML = html;
+                        ...json.map(
+                            ({ name, value, html, commentUrl, frameId }) => {
+                                const option = document.createElement('li');
+                                option.setAttribute('role', 'option');
+                                option.id = `suggestion-${Math.floor(
+                                    Math.random() * 100000,
+                                ).toString()}`;
+                                option.className = 'menu-item';
+                                option.dataset.value = value || name;
+                                option.dataset.commentUrl = commentUrl || '';
+                                option.dataset.frameId = frameId || '';
+                                option.innerHTML = html;
 
-                            return option;
-                        }),
+                                return option;
+                            },
+                        ),
                     );
 
                     const observer = new MutationObserver(() => {

@@ -41,6 +41,7 @@ class AuthServiceProvider extends ServiceProvider
         // Make our policies singletons, to improve performance when we do a lot
         // of auth checks in a single page load.
         $this->app->singleton(Policies\CommentPolicy::class);
+        $this->app->singleton(Policies\GroupPolicy::class);
         $this->app->singleton(Policies\PostPolicy::class);
         $this->app->singleton(Policies\UserPolicy::class);
     }
@@ -109,6 +110,8 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('waterhole.comment.moderate', [Policies\CommentPolicy::class, 'moderate']);
         Gate::define('waterhole.comment.react', [Policies\CommentPolicy::class, 'react']);
 
+        Gate::define('waterhole.group.mention', [Policies\GroupPolicy::class, 'mention']);
+
         Gate::define('waterhole.post.create', [Policies\PostPolicy::class, 'create']);
         Gate::define('waterhole.post.edit', [Policies\PostPolicy::class, 'edit']);
         Gate::define('waterhole.post.delete', [Policies\PostPolicy::class, 'delete']);
@@ -117,6 +120,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('waterhole.post.react', [Policies\PostPolicy::class, 'react']);
         Gate::define('waterhole.post.moderate', [Policies\PostPolicy::class, 'moderate']);
 
+        Gate::define('waterhole.user.mention', [Policies\UserPolicy::class, 'mention']);
         Gate::define('waterhole.user.suspend', [Policies\UserPolicy::class, 'suspend']);
     }
 }

@@ -26,7 +26,7 @@ class CommentQuery extends Set
             $query->with([
                 'user.groups',
                 'parent.user.groups',
-                'mentions',
+                'mentions.mentionable',
                 'attachments',
                 'reactionCounts',
             ]);

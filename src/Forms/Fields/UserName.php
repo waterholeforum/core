@@ -56,7 +56,8 @@ class UserName extends Field
                 // Name cannot contain @, non-space whitespace characters, more
                 // than one space in a row, or only numbers.
                 'not_regex:/@|[^\S ]|\s{2,}|^\d+$/',
-                'not_in:admin',
+                'not_in:admin,here',
+                'not_regex:/^here$/i',
                 Rule::unique(User::class)->ignore($this->model),
             ],
         ]);

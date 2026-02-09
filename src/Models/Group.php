@@ -8,11 +8,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Waterhole\Models\Concerns\HasIcon;
 use Waterhole\Models\Concerns\ReceivesPermissions;
 use Waterhole\Models\Concerns\ValidatesData;
+use Waterhole\Models\Enums\Mentionable;
 
 /**
  * @property int $id
  * @property string $name
  * @property bool $is_public
+ * @property \Waterhole\Models\Enums\Mentionable $mentionable
  * @property null|string $color
  * @property string $edit_url
  * @property-read \Illuminate\Database\Eloquent\Collection $users
@@ -32,6 +34,7 @@ class Group extends Model
     protected $casts = [
         'is_public' => 'bool',
         'auto_assign' => 'bool',
+        'mentionable' => Mentionable::class,
         'rules' => 'array',
     ];
 

@@ -44,7 +44,11 @@ class FormatterServiceProvider extends ServiceProvider
             });
 
             $formatter->rendering(function (Renderer $renderer, string &$xml, ?Context $context) {
-                $renderer->setParameter('USER_ID', $context->user->id ?? null);
+                $renderer->setParameter('USER_ID', $context?->user?->id);
+                $renderer->setParameter(
+                    'USER_GROUPS',
+                    $context?->user?->groups->pluck('id')->implode(','),
+                );
             });
 
             $formatter->configure([FormatExternalLinks::class, 'configure']);

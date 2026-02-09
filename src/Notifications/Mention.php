@@ -7,7 +7,6 @@ use Illuminate\Support\HtmlString;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
-
 use function Waterhole\emojify;
 
 class Mention extends Notification
@@ -86,8 +85,8 @@ class Mention extends Notification
     public static function load(Collection $notifications): void
     {
         $notifications->loadMorph('content', [
-            Post::class => ['user'],
-            Comment::class => ['post', 'user'],
+            Post::class => ['user', 'mentions.mentionable'],
+            Comment::class => ['post', 'user', 'mentions.mentionable'],
         ]);
     }
 }

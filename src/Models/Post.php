@@ -4,12 +4,12 @@ namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Waterhole\Database\Factories\PostFactory;
@@ -126,9 +126,7 @@ class Post extends Model
         broadcast(new NewPost($this))->toOthers();
 
         // When a new post is created, send notifications to mentioned users.
-        $users = $this->mentions
-            ->except($this->user_id)
-            ->filter(fn(User $user) => Post::visible($user)->whereKey($this->id)->exists());
+        $users = $this->mentionedUsers();
 
         $this->usersWereMentioned($users);
 
@@ -251,6 +249,11 @@ class Post extends Model
         foreach (resolve(Extend\Query\PostVisibilityScopes::class)->values() as $scope) {
             $query->where(fn($inner) => $scope($inner, $user));
         }
+    }
+
+    public function isVisibleTo(?User $user): bool
+    {
+        return $this->newQuery()->visible($user)->whereKey($this->getKey())->exists();
     }
 
     /**

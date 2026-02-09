@@ -30,7 +30,7 @@ class PostsResource extends Resource
         parent::__construct();
 
         $this->scope->add(function ($query) {
-            $query->with('mentions', 'attachments');
+            $query->with('mentions.mentionable', 'attachments');
         }, 'default');
 
         $this->endpoints
@@ -106,6 +106,8 @@ class PostsResource extends Resource
             ->add(ToMany::make('reactionCounts')->includable(), 'reactionCounts')
 
             ->add(ToMany::make('reactions')->includable(), 'reactions')
+
+            ->add(ToMany::make('mentions')->includable(), 'mentions')
 
             ->add(
                 ToOne::make('userState')

@@ -28,7 +28,7 @@ class UserGroups extends Component
     public function render()
     {
         return <<<'blade'
-            <span>
+            <span class="row-inline wrap gap-xxs">
                 @foreach ($groups as $group)
                     <x-waterhole::group-badge :group="$group"/>
                 @endforeach

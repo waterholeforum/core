@@ -14,6 +14,7 @@ use Illuminate\Validation\Rule;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 use Waterhole\Database\Factories\CommentFactory;
 use Waterhole\Events\NewComment;
+use Waterhole\Formatter\FormatMentions;
 use Waterhole\Models\Concerns\Approvable;
 use Waterhole\Models\Concerns\Deletable;
 use Waterhole\Models\Concerns\Flaggable;
@@ -124,13 +125,34 @@ class Comment extends Model
 
         // When a new comment is created, send notifications to mentioned
         // users as well as the user the comment is in reply to.
-        $users = $this->mentions;
+        $users = $this->mentionedUsers();
 
         if ($this->parent?->user) {
             $users->push($this->parent->user);
         }
 
-        $users = $users->unique()->except($this->user_id);
+        $mentionTags = collect(FormatMentions::getMentions($this->parsed_body));
+
+        if (
+            $mentionTags->some('type', FormatMentions::TYPE_HERE) &&
+            $this->user->can('waterhole.channel.moderate', $this->post->channel)
+        ) {
+            $users = $users->merge(
+                User::findMany(
+                    $this->post
+                        ->comments()
+                        ->where('user_id', '!=', $this->user_id)
+                        ->select('user_id')
+                        ->distinct()
+                        ->pluck('user_id'),
+                ),
+            );
+        }
+
+        $users = $users
+            ->unique('id')
+            ->filter(fn(User $user) => $this->isVisibleTo($user))
+            ->values();
 
         $this->post->usersWereMentioned($users);
 
@@ -200,6 +222,11 @@ class Comment extends Model
         $this->applyApprovalVisibility($query, $user, $moderationScope);
 
         $this->applyDeletionVisibility($query, $user, $moderationScope);
+    }
+
+    public function isVisibleTo(?User $user): bool
+    {
+        return $this->newQuery()->visible($user)->whereKey($this->getKey())->exists();
     }
 
     /**

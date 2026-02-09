@@ -29,7 +29,7 @@ class CardsLayout extends Layout
 
     public function scope(Builder $query): void
     {
-        $query->with('mentions', 'attachments');
+        $query->with('mentions.mentionable', 'attachments');
     }
 
     public function configField(): string

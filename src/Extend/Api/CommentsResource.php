@@ -26,8 +26,7 @@ class CommentsResource extends Resource
         parent::__construct();
 
         $this->scope->add(function (Builder $query) {
-            // Required to generate URLs
-            $query->with('post');
+            $query->with('post', 'mentions.mentionable', 'attachments');
         }, 'default');
 
         $this->endpoints
@@ -80,7 +79,9 @@ class CommentsResource extends Resource
 
             ->add(ToMany::make('reactionCounts')->includable(), 'reactionCounts')
 
-            ->add(ToMany::make('reactions')->includable(), 'reactions');
+            ->add(ToMany::make('reactions')->includable(), 'reactions')
+
+            ->add(ToMany::make('mentions')->includable(), 'mentions');
 
         $this->sorts
             ->add(SortColumn::make('createdAt'), 'createdAt')

@@ -3,12 +3,14 @@
 namespace Waterhole\Forms\Fields;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 use Waterhole\Forms\Field;
+use Waterhole\Models\Enums\Mentionable;
 use Waterhole\Models\Group;
 use Waterhole\View\Components\Cp\IconPicker;
 
-class GroupAppearance extends Field
+class GroupVisibility extends Field
 {
     public function __construct(public ?Group $model) {}
 
@@ -21,7 +23,7 @@ class GroupAppearance extends Field
     {
         return <<<'blade'
             <div class="field" data-controller="reveal">
-                <div class="field__label">{{ __('waterhole::cp.group-appearance-label') }}</div>
+                <div class="field__label">{{ __('waterhole::cp.group-visibility-label') }}</div>
 
                 <div class="stack gap-lg">
                     <div>
@@ -59,6 +61,23 @@ class GroupAppearance extends Field
                                 :value="old('icon', $model->icon ?? null)"
                             />
                         </x-waterhole::field>
+
+                        <x-waterhole::field
+                            name="mentionable"
+                            :label="__('waterhole::cp.group-mentionable-label')"
+                            :description="__('waterhole::cp.group-mentionable-description', ['name' => old('name', $model->name ?? __('waterhole::cp.group-name-label'))])"
+                        >
+                            <select name="mentionable" id="{{ $component->id }}_mentionable">
+                                @foreach (Waterhole\Models\Enums\Mentionable::cases() as $option)
+                                    <option
+                                        value="{{ $option->value }}"
+                                        @selected(old('mentionable', $model->mentionable?->value ?? Waterhole\Models\Enums\Mentionable::Members->value) === $option->value)
+                                    >
+                                        {{ __("waterhole::cp.group-mentionable-$option->value-label") }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </x-waterhole::field>
                     </div>
                 </div>
             </div>
@@ -69,6 +88,7 @@ class GroupAppearance extends Field
     {
         $validator->addRules([
             'is_public' => ['boolean'],
+            'mentionable' => ['sometimes', Rule::enum(Mentionable::class)],
             'color' => [
                 'nullable',
                 'string',
@@ -82,6 +102,14 @@ class GroupAppearance extends Field
     public function saving(FormRequest $request): void
     {
         $this->model->is_public = $request->validated('is_public');
+        $mentionable = $request->validated('mentionable');
+
+        if ($mentionable) {
+            $this->model->mentionable = Mentionable::from($mentionable);
+        } elseif (!$this->model->mentionable) {
+            $this->model->mentionable = Mentionable::Members;
+        }
+
         $this->model->color = $request->validated('color');
     }
 

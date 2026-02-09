@@ -2,6 +2,7 @@
 
 namespace Waterhole\Models\Concerns;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use Waterhole\Console\ReformatCommand;
 use Waterhole\Formatter\Context;
@@ -25,14 +26,13 @@ trait UsesFormatter
         $value = $this->attributes[$attribute] ?? '';
 
         if (!isset($this->renderCache[$key])) {
-            $this->renderCache[$key] = rescue(
-                fn() => $value && str_starts_with($value, '<')
-                    ? new HtmlString(
-                        static::$formatters[$attribute]->render($value, new Context($this, $user)),
-                    )
-                    : ($value ?:
-                    ''),
-                '',
+            $this->renderCache[$key] = new HtmlString(
+                rescue(
+                    fn() => $value && str_starts_with($value, '<')
+                        ? static::$formatters[$attribute]->render($value, new Context($this, $user))
+                        : e($value ?: ''),
+                    '',
+                ),
             );
         }
 
@@ -77,7 +77,7 @@ trait UsesFormatter
             $attribute = substr($key, 0, -5);
 
             if (isset(static::$formatters[$attribute])) {
-                return $this->format($attribute);
+                return $this->format($attribute, Auth::user());
             }
         }
 
