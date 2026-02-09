@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Switch discussion structured data on post/comment pages from JSON-LD to Microdata
+
+### Fixed
+
+- Fix migration using wrong database connection ([#100](https://github.com/waterholeforum/core/pull/100))
+- Fix discussion structured data to include required forum fields (`author`, `datePublished`, `text`)
+- Fix channel page SEO description containing HTML
+- Filter out empty search results for posts that are not visible to the current user
+- Fix strict flag eager loading error for non-moderators
+- Fall back to the app default database connection when a Waterhole connection is not configured
+
 ## [0.6.0] - 2026-01-31
 
 ### ⚠️ Breaking Changes
