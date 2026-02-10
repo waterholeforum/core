@@ -42,7 +42,11 @@ trait ResolvesFlags
     public function stream(Model $model): array
     {
         if ($this->resolvedFlags) {
-            return [TurboStream::refresh()];
+            if (session()->has('success')) {
+                return [TurboStream::refresh()];
+            }
+
+            return [];
         }
 
         return parent::stream($model);

@@ -11,14 +11,11 @@ class DismissFlags extends Action
 {
     use ResolvesFlags;
 
-    public function appliesTo($model): bool
-    {
-        return $model->relationLoaded('pendingFlags') && $model->pendingFlags->isNotEmpty();
-    }
-
     public function authorize(?User $user, Model $model): bool
     {
-        return method_exists($model, 'canModerate') && $model->canModerate($user);
+        return method_exists($model, 'canModerate') &&
+            $model->canModerate($user) &&
+            $model->pendingFlags->isNotEmpty();
     }
 
     public function label(Collection $models): string

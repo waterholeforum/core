@@ -59,11 +59,13 @@ class Report extends Action
         ]);
 
         $models->each(function (Model $model) use ($actor, $data) {
-            $model->flags()->create([
+            $flag = $model->flags()->create([
                 'reason' => $data['reason'],
                 'note' => $data['note'] ?? null,
                 'created_by' => $actor?->getKey(),
             ]);
+
+            $model->pendingFlags->push($flag);
         });
     }
 }

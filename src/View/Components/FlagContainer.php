@@ -16,7 +16,7 @@ class FlagContainer extends Component
         $this->canModerate = $subject->canModerate(Auth::user());
 
         $this->showBanner = $this->canModerate
-            ? $subject->pendingFlags->isNotEmpty()
+            ? $subject->pendingFlags->loadMissing('createdBy')->isNotEmpty()
             : !$subject->is_approved && !$this->hide;
     }
 
