@@ -10,7 +10,6 @@ use Waterhole\Actions\Action;
 use Waterhole\Extend\Core\Actions;
 use Waterhole\Models\Model;
 use Waterhole\View\Components\Alert;
-use Waterhole\View\Components\MenuDivider;
 use Waterhole\View\TurboStream;
 
 /**
@@ -25,17 +24,9 @@ class ActionsController extends Controller
     {
         $models = $this->getModels($request);
 
-        $actions = collect(resolve(Actions::class)->actionsFor($models))
-            ->filter(
-                fn($action) => !$action instanceof Action ||
-                    $action->shouldRender($models, $request->input('context')),
-            )
-            ->values();
-
-        $actions = $actions->reject(
-            fn($action, $i) => $action instanceof MenuDivider &&
-                ($i === 0 || $i === $actions->count() - 1),
-        );
+        $actions = resolve(Actions::class)
+            ->actionsFor($models, context: $request->input('context'))
+            ->renderable();
 
         return view('waterhole::actions.menu', compact('actions', 'models'));
     }
@@ -66,13 +57,14 @@ class ActionsController extends Controller
     {
         $models = $this->getModels($request);
         $action = $this->getAction($models, $request);
+        $params = $request->only(['actionable', 'action_class', 'return', 'context', 'id']);
 
         // If the action requires confirmation, but it has not been confirmed
         // by pressing the submit button in the confirmation view, then we
         // will redirect the user back to the confirmation view with all the
         // same input.
         if ($action->shouldConfirm($models) && !$request->has('confirmed')) {
-            return redirect()->route('waterhole.actions.create', $request->input());
+            return redirect()->route('waterhole.actions.create', $params);
         }
 
         // Attempt to run the action. If we catch a validation exception, we
@@ -81,7 +73,7 @@ class ActionsController extends Controller
         try {
             $response = $action->run($models);
         } catch (ValidationException $exception) {
-            throw $exception->redirectTo(route('waterhole.actions.create', $request->input()));
+            throw $exception->redirectTo(route('waterhole.actions.create', $params));
         }
 
         // If the client supports Turbo Streams, we will return streams for

@@ -6,6 +6,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Waterhole\Actions as CoreActions;
 use Waterhole\Actions\Action;
+use Waterhole\Actions\ActionsCollection;
 use Waterhole\Extend\Support\OrderedList;
 use Waterhole\Models;
 use Waterhole\Models\User;
@@ -42,87 +43,40 @@ class Actions
     /**
      * Get a list of action instances that can be applied to the given model(s).
      */
-    public function actionsFor($models, ?User $user = null): array
-    {
-        $models =
-            $models instanceof Collection
-                ? $models
-                : collect(is_array($models) ? $models : [$models]);
-
-        if ($models->isEmpty()) {
-            return [];
-        }
-
-        $modelClass = get_class($models->first());
-        $list = $this->lists[$modelClass] ?? null;
-
-        if (!$list) {
-            return [];
-        }
-
-        return collect($list->items())
-            ->map(fn($action) => $this->resolveAction($action, $models, $user))
-            ->filter()
-            ->all();
-    }
-
-    /**
-     * Determine if there are any actions that should render for the models.
-     */
-    public function hasRenderableActionsFor(
+    public function actionsFor(
         $models,
         ?string $context = null,
         ?User $user = null,
-    ): bool {
-        $models =
-            $models instanceof Collection
-                ? $models
-                : collect(is_array($models) ? $models : [$models]);
+    ): ActionsCollection {
+        [$models, $list] = $this->modelsAndList($models);
 
-        if ($models->isEmpty()) {
-            return false;
-        }
-
-        $modelClass = get_class($models->first());
-        $list = $this->lists[$modelClass] ?? null;
-
-        if (!$list) {
-            return false;
-        }
-
-        foreach ($list->items() as $action) {
-            $action = $this->resolveAction($action, $models, $user);
-
-            if ($action instanceof Action) {
-                if ($action->shouldRender($models, $context)) {
-                    return true;
-                }
-            } elseif ($action && !$action instanceof MenuDivider) {
-                return true;
+        return (new ActionsCollection(function () use ($list, $models, $user) {
+            if (!$list) {
+                return;
             }
-        }
 
-        return false;
+            foreach ($list->items() as $action) {
+                if ($resolved = $this->resolveAction($action, $models, $user)) {
+                    yield $resolved;
+                }
+            }
+        }, fn(Action $action) => $this->isRenderable($action, $models, $context)))
+            ->remember()
+            ->normalizeDividers();
     }
 
     public function resolveAction($action, $models, ?User $user = null)
     {
-        $models = collect($models);
+        [$models, $list] = $this->modelsAndList($models);
 
-        if ($models->isEmpty()) {
-            return null;
-        }
-
-        $modelClass = get_class($models->first());
-        $available = $this->lists[$modelClass]?->items() ?? null;
-
-        if (!$available) {
+        if (!$list) {
             return null;
         }
 
         $action = resolve_all([$action])[0];
+        $registered = $list->items();
 
-        if (!collect($available)->some(fn($registered) => $action instanceof $registered)) {
+        if (!$this->isRegisteredAction($action, $registered)) {
             return null;
         }
 
@@ -136,15 +90,43 @@ class Actions
 
         $user ??= Auth::user();
 
-        if (
-            !$models->every(
-                fn($model) => $action->appliesTo($model) && $action->authorize($user, $model),
-            )
-        ) {
-            return null;
+        return $models->every(
+            fn($model) => $action->appliesTo($model) && $action->authorize($user, $model),
+        )
+            ? $action
+            : null;
+    }
+
+    private function modelsAndList($models): array
+    {
+        $models =
+            $models instanceof Collection
+                ? $models
+                : collect(is_array($models) ? $models : [$models]);
+
+        if ($models->isEmpty()) {
+            return [$models, null];
         }
 
-        return $action;
+        $modelClass = get_class($models->first());
+
+        return [$models, $this->lists[$modelClass] ?? null];
+    }
+
+    private function isRenderable($action, Collection $models, ?string $context): bool
+    {
+        return !$action instanceof Action || $action->shouldRender($models, $context);
+    }
+
+    private function isRegisteredAction($action, array $registered): bool
+    {
+        foreach ($registered as $class) {
+            if ($action instanceof $class) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function registerDefaults(): void

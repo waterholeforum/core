@@ -9,7 +9,6 @@ use Waterhole\Models\Model;
 class ActionMenu extends Component
 {
     public string $url;
-    protected bool $hasRenderableActions;
 
     public function __construct(
         protected Model $for,
@@ -33,6 +32,8 @@ class ActionMenu extends Component
 
     public function shouldRender(): bool
     {
-        return resolve(Actions::class)->hasRenderableActionsFor($this->for, $this->context);
+        return resolve(Actions::class)
+            ->actionsFor($this->for, context: $this->context)
+            ->hasRenderable();
     }
 }
