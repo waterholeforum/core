@@ -42,7 +42,7 @@
             @can('waterhole.post.comment', $post)
                 <a
                     href="{{ route('waterhole.posts.comments.create', compact('post')) }}"
-                    class="quotable-button btn bg-emphasis no-select"
+                    class="quotable-button btn bg-emphasis no-select text-sm"
                     data-turbo-frame="@domid($post, 'comment_parent')"
                     data-quotable-target="button"
                     data-action="quotable#quoteSelectedText"
