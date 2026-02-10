@@ -17,7 +17,7 @@ document.addEventListener('turbo:before-render', (e) => {
     newAlerts = e.detail.newBody.querySelector<AlertsElement>('#alerts');
 });
 
-document.addEventListener('turbo:load', (e) => {
+document.addEventListener('turbo:load', () => {
     if (!newAlerts) return;
     [...newAlerts.children].forEach((el) =>
         Waterhole.alerts.show(el as HTMLElement),
