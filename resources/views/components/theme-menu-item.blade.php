@@ -1,8 +1,8 @@
-<ui-popup placement="bottom-end" class="js-only" data-controller="theme">
-    <button type="button" class="btn btn--icon btn--transparent">
-        @icon('tabler-sun', ['class' => 'light-only'])
-        @icon('tabler-moon', ['class' => 'dark-only'])
-        <ui-tooltip>{{ __('waterhole::system.theme-button') }}</ui-tooltip>
+<ui-popup placement="right-start" class="js-only" data-controller="theme">
+    <button type="button" class="menu-item">
+        @icon('tabler-brightness')
+        <span>{{ __('waterhole::system.theme-button') }}</span>
+        @icon('tabler-chevron-right', ['class' => 'push-end'])
     </button>
 
     <ui-menu class="menu" hidden>

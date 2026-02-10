@@ -4,8 +4,10 @@ namespace Waterhole\Extend\Ui;
 
 use Illuminate\Support\Facades\Auth;
 use Waterhole\Extend\Support\ComponentList;
+use Waterhole\View\Components\LanguageMenuItem;
 use Waterhole\View\Components\MenuDivider;
 use Waterhole\View\Components\MenuItem;
+use Waterhole\View\Components\ThemeMenuItem;
 
 /**
  * Items rendered in the user menu dropdown.
@@ -34,6 +36,9 @@ class UserMenu extends ComponentList
             ),
             'preferences',
         );
+
+        $this->add(ThemeMenuItem::class, 'theme');
+        $this->add(LanguageMenuItem::class, 'language');
 
         $this->add(MenuDivider::class, 'divider');
 

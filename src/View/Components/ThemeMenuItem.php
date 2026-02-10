@@ -4,7 +4,7 @@ namespace Waterhole\View\Components;
 
 use Illuminate\View\Component;
 
-class ThemeSelector extends Component
+class ThemeMenuItem extends Component
 {
     public function shouldRender(): bool
     {
@@ -13,6 +13,6 @@ class ThemeSelector extends Component
 
     public function render()
     {
-        return $this->view('waterhole::components.theme-selector');
+        return $this->view('waterhole::components.theme-menu-item');
     }
 }

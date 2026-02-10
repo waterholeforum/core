@@ -5,7 +5,7 @@ namespace Waterhole\View\Components;
 use Illuminate\View\Component;
 use Waterhole\Extend\Assets\Locales;
 
-class IndexFooterLanguage extends Component
+class LanguageMenuItem extends Component
 {
     public array $locales;
     public string $currentLocale;
@@ -23,6 +23,6 @@ class IndexFooterLanguage extends Component
 
     public function render()
     {
-        return $this->view('waterhole::components.index-footer-language');
+        return $this->view('waterhole::components.language-menu-item');
     }
 }

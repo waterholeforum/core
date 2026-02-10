@@ -58,10 +58,14 @@ page-number-heading = Page { $number }
 
 ## Theme Switcher
 
-theme-button = Theme
+theme-button = Display Mode
 theme-light = Light
 theme-dark = Dark
 theme-automatic = Automatic
+
+## Language Switcher
+
+language-button = Language
 
 ## Text Editor
 

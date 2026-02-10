@@ -3,7 +3,6 @@
 namespace Waterhole\Extend\Ui;
 
 use Waterhole\Extend\Support\ComponentList;
-use Waterhole\View\Components\IndexFooterLanguage;
 use Waterhole\View\Components\IndexNav;
 
 /**
@@ -21,6 +20,6 @@ class IndexPage
     {
         $this->sidebar = (new ComponentList())->add(IndexNav::class, 'nav');
 
-        $this->footer = (new ComponentList())->add(IndexFooterLanguage::class, 'language');
+        $this->footer = new ComponentList();
     }
 }

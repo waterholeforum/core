@@ -3,7 +3,7 @@ import { Controller } from '@hotwired/stimulus';
 const STORAGE_KEY = 'theme';
 
 /**
- * Controller for the <x-waterhole::theme-selector> component.
+ * Controller for the <x-waterhole::theme-menu-item> component.
  *
  * @internal
  */

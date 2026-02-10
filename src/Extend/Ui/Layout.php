@@ -14,7 +14,6 @@ use Waterhole\View\Components\HeaderSearch;
 use Waterhole\View\Components\HeaderTitle;
 use Waterhole\View\Components\HeaderUser;
 use Waterhole\View\Components\Spacer;
-use Waterhole\View\Components\ThemeSelector;
 
 /**
  * Top-level layout slots (header, before, after) for forum pages.
@@ -35,7 +34,6 @@ class Layout
             ->add(HeaderBreadcrumb::class, 'breadcrumb')
             ->add(Spacer::class, 'spacer')
             ->add(HeaderSearch::class, 'search')
-            ->add(ThemeSelector::class, 'theme')
             ->add(HeaderModeration::class, 'moderation')
             ->add(HeaderSaved::class, 'saved')
             ->add(HeaderNotifications::class, 'notifications')
