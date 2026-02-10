@@ -2,8 +2,8 @@
 
 namespace Waterhole\Models\Concerns;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Waterhole\Models\Group;
 use Waterhole\Models\Permission;

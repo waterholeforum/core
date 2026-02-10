@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Waterhole\Events\FlagReceived;
-use Waterhole\Notifications\NewFlag;
 use Waterhole\Models\Support\MorphTypeCache;
+use Waterhole\Notifications\NewFlag;
 
 /**
  * @property int $id
@@ -53,7 +53,7 @@ class Flag extends Model
 
             $moderators->each(fn(User $user) => event(new FlagReceived($user)));
 
-            Notification::send($moderators, new NewFlag($flag));
+            Notification::send($moderators->except($flag->created_by), new NewFlag($flag));
         });
     }
 
