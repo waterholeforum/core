@@ -30,9 +30,8 @@ class ExtendTestAction extends Action
         return true;
     }
 
-    public function label(
-        \Illuminate\Support\Collection $models
-    ): string {
+    public function label(\Illuminate\Support\Collection $models): string
+    {
         return 'Extend Test Action';
     }
 }
