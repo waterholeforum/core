@@ -1,4 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
+import { clamp } from 'lodash-es';
 import { getHeaderHeight } from '../utils';
 
 /**
@@ -30,16 +31,26 @@ export default class extends Controller<HTMLElement> {
             if (el && el.getBoundingClientRect().top <= headerHeight + 100) {
                 a.setAttribute('aria-current', 'page');
 
-                if (this.current !== a && this.element) {
+                if (this.current !== a) {
+                    const container = this.element;
+                    const link = a.getBoundingClientRect();
+                    const outer = container.getBoundingClientRect();
+
                     this.element.scroll({
-                        top:
-                            a.offsetTop +
-                            a.offsetHeight / 2 -
-                            this.element.offsetHeight / 2,
-                        left:
-                            a.offsetLeft +
-                            a.offsetWidth / 2 -
-                            this.element.offsetWidth / 2,
+                        top: clamp(
+                            container.scrollTop +
+                                (link.top - outer.top) -
+                                (container.clientHeight - link.height) / 2,
+                            0,
+                            container.scrollHeight - container.clientHeight,
+                        ),
+                        left: clamp(
+                            container.scrollLeft +
+                                (link.left - outer.left) -
+                                (container.clientWidth - link.width) / 2,
+                            0,
+                            container.scrollWidth - container.clientWidth,
+                        ),
                         behavior: this.current ? 'smooth' : 'auto',
                     });
                 }
