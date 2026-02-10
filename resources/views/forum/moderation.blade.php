@@ -1,6 +1,6 @@
 <x-waterhole::layout>
     <div class="container section">
-        <turbo-frame id="moderation" class="card card__body">
+        <turbo-frame id="moderation" class="card p-md">
             <div class="row gap-xs justify-between menu-sticky">
                 <h1 class="menu-heading">{{ __('waterhole::forum.moderation-title') }}</h1>
             </div>
