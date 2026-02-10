@@ -19,6 +19,7 @@ class ApiServiceProvider extends ServiceProvider
 
             $api->resource($container->make(Resources\ChannelsResource::class));
             $api->resource($container->make(Resources\ChannelUsersResource::class));
+            $api->resource($container->make(Resources\BookmarksResource::class));
             $api->resource($container->make(Resources\CommentsResource::class));
             $api->resource($container->make(Resources\GroupsResource::class));
             $api->resource($container->make(Resources\MentionsResource::class));

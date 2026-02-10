@@ -5,6 +5,7 @@ use Tobyz\JsonApiServer\Schema\Field\Attribute;
 use Tobyz\JsonApiServer\Schema\Type;
 use Waterhole\Database\Seeders\GroupsSeeder;
 use Waterhole\Extend;
+use Waterhole\Models\Bookmark;
 use Waterhole\Models\Channel;
 use Waterhole\Models\ChannelUser;
 use Waterhole\Models\Comment;
@@ -104,6 +105,38 @@ describe('API extenders', function () {
         expect($match)->not->toBeNull();
         expect($match['attributes']['extendTest'])->toBe((string) $id);
     })->with('api resources with relations');
+
+    test('bookmarks api resource only returns current user bookmarks', function () {
+        $actor = User::factory()->create();
+        $other = User::factory()->create();
+
+        $actorPost = Post::factory()
+            ->for(Channel::factory()->public())
+            ->create();
+        $otherPost = Post::factory()
+            ->for(Channel::factory()->public())
+            ->create();
+
+        $actorBookmark = Bookmark::create([
+            'user_id' => $actor->id,
+            'content_type' => $actorPost->getMorphClass(),
+            'content_id' => $actorPost->id,
+        ]);
+
+        Bookmark::create([
+            'user_id' => $other->id,
+            'content_type' => $otherPost->getMorphClass(),
+            'content_id' => $otherPost->id,
+        ]);
+
+        $this->actingAs($actor);
+
+        $response = jsonApi('GET', '/api/bookmarks');
+
+        $response->assertOk();
+        $response->assertJsonCount(1, 'data');
+        $response->assertJsonPath('data.0.id', (string) $actorBookmark->id);
+    });
 });
 
 dataset('api resources with endpoints', [
@@ -335,6 +368,28 @@ dataset('api resources with relations', [
                 jsonApi('GET', "/api/posts/$post->id?include=reactions"),
                 'reactions',
                 $reaction->getKey(),
+            ];
+        },
+    ],
+    'bookmarks' => [
+        Extend\Api\BookmarksResource::class,
+        function ($test) {
+            $user = User::factory()->create();
+            $post = Post::factory()
+                ->for(Channel::factory()->public())
+                ->create();
+            $bookmark = Bookmark::create([
+                'user_id' => $user->id,
+                'content_type' => $post->getMorphClass(),
+                'content_id' => $post->id,
+            ]);
+
+            $test->actingAs($user);
+
+            return [
+                jsonApi('GET', "/api/users/$user->id?include=bookmarks"),
+                'bookmarks',
+                $bookmark->getKey(),
             ];
         },
     ],

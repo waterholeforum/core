@@ -60,6 +60,7 @@ use Waterhole\Notifications\VerifyEmail;
  * @property-read \Illuminate\Database\Eloquent\Collection $comments
  * @property-read \Illuminate\Database\Eloquent\Collection $groups
  * @property-read \Illuminate\Database\Eloquent\Collection $notifications
+ * @property-read \Illuminate\Database\Eloquent\Collection $bookmarks
  */
 class User extends Model implements
     AuthenticatableContract,
@@ -148,6 +149,14 @@ class User extends Model implements
     public function reactions(): HasMany
     {
         return $this->hasMany(Reaction::class);
+    }
+
+    /**
+     * Relationship with the user's bookmarks.
+     */
+    public function bookmarks(): HasMany
+    {
+        return $this->hasMany(Bookmark::class);
     }
 
     /**

@@ -41,6 +41,7 @@ post-new-badge = New
 post-new-badge-tooltip = New post
 post-locked-badge = Locked
 post-answered-badge = Answered
+post-saved-badge = Saved
 post-trash-badge = Trash
 
 post-removed-message = Post removed
@@ -184,6 +185,15 @@ quote-button = Quote
 
 attribution-timestamp-created-label = Posted
 attribution-timestamp-edited-label = Edited
+
+save-button = Save
+unsave-button = Unsave
+saved-button = Saved
+
+saved-title = Saved
+saved-empty-message = No Saved Content
+saved-empty-description = Use the { $icon } Save action to save content for future reference.
+saved-comment-title = Comment in { $post }
 
 ## Filters
 

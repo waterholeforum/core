@@ -26,6 +26,7 @@ class PostAttributes extends Attributes
                     'is-mine' => $post->user_id === Auth::id(),
                     'is-followed' => $post->isFollowed(),
                     'is-ignored' => $post->isIgnored(),
+                    'is-saved' => $post->isBookmarked(),
                     'has-replies' => $post->comment_count,
                     'is-locked' => $post->is_locked,
                 ]),

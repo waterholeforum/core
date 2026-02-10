@@ -116,6 +116,15 @@ class PostsResource extends Resource
                     ->visible(fn() => Auth::check())
                     ->includable(),
                 'userState',
+            )
+
+            ->add(
+                ToOne::make('bookmark')
+                    ->type('bookmarks')
+                    ->nullable()
+                    ->visible(fn() => Auth::check())
+                    ->includable(),
+                'bookmark',
             );
 
         $this->sorts

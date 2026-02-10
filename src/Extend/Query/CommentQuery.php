@@ -3,6 +3,7 @@
 namespace Waterhole\Extend\Query;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Waterhole\Extend\Support\Set;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Post;
@@ -30,6 +31,10 @@ class CommentQuery extends Set
                 'attachments',
                 'reactionCounts',
             ]);
+
+            if (Auth::check()) {
+                $query->with('bookmark');
+            }
         });
 
         $this->feed->add(function (Builder $query) {

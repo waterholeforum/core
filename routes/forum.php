@@ -18,6 +18,7 @@ use Waterhole\Http\Controllers\Forum\NotificationController;
 use Waterhole\Http\Controllers\Forum\PostController;
 use Waterhole\Http\Controllers\Forum\PreferencesController;
 use Waterhole\Http\Controllers\Forum\RssController;
+use Waterhole\Http\Controllers\Forum\SavedController;
 use Waterhole\Http\Controllers\Forum\SearchController;
 use Waterhole\Http\Controllers\Forum\UserController;
 use Waterhole\Http\Controllers\ImpersonateController;
@@ -108,6 +109,9 @@ Route::resource('notifications', NotificationController::class)->only(['index', 
 
 // Moderation
 Route::get('moderation', ModerationController::class)->name('moderation');
+
+// Saved
+Route::get('saved', [SavedController::class, 'index'])->name('saved.index');
 
 // Search
 if (config('waterhole.system.search_engine')) {

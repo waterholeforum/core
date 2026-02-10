@@ -13,15 +13,13 @@
                     @foreach ($actions as $action)
                         @if ($action instanceof Waterhole\Actions\Action)
                             {{
-                                $action->render(
-                                    $models,
-                                    [
+                                $action
+                                    ->withRenderType(Waterhole\Actions\Action::TYPE_MENU_ITEM)
+                                    ->render($models, [
                                         'class' => 'menu-item',
                                         'role' => 'menuitem',
                                         'data-turbo-frame' => '_parent',
-                                    ],
-                                    ellipsis: true,
-                                )
+                                    ])
                             }}
                         @else
                             {{ $action->render() }}

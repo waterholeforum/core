@@ -77,6 +77,12 @@
 .post-cards {
   .post-card {
     margin-bottom: var(--space-lg);
+
+    &.is-saved {
+      box-shadow:
+        inset 0 0 0 2px var(--color-accent),
+        inset 0 0 10px 2px var(--color-accent-soft);
+    }
   }
 }
 

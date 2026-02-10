@@ -7,6 +7,7 @@ use Waterhole\View\Components\CommentsLocked;
 use Waterhole\View\Components\PostAnswer;
 use Waterhole\View\Components\PostAttribution;
 use Waterhole\View\Components\PostChannel;
+use Waterhole\View\Components\PostNotifications;
 use Waterhole\View\Components\PostTagsSummary;
 use Waterhole\View\Components\PostTitle;
 
@@ -28,6 +29,7 @@ class PostPage
         $this->header = (new ComponentList())
             ->add(PostChannel::class, 'channel')
             ->add(PostTagsSummary::class, 'tags')
+            ->add(PostNotifications::class, 'notifications')
             ->add(PostAttribution::class, 'attribution')
             ->add(PostTitle::class, 'title');
 

@@ -20,12 +20,10 @@ class ActionButton extends Component
     ) {
         $this->actionable = get_class($for);
 
-        $this->actionInstance = collect(resolve(Actions::class)->actionsFor([$for]))
-            ->filter(fn($a) => $a instanceof $action)
-            ->first();
+        $this->actionInstance = resolve(Actions::class)->resolveAction($action, [$for]);
     }
 
-    public function shouldRender()
+    public function shouldRender(): bool
     {
         return (bool) $this->actionInstance;
     }

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Waterhole\Actions\Action;
 use Waterhole\Extend\Core\Actions;
+use Waterhole\Models\Model;
 use Waterhole\View\Components\Alert;
 use Waterhole\View\Components\MenuDivider;
 use Waterhole\View\TurboStream;
@@ -126,7 +127,7 @@ class ActionsController extends Controller
         if (
             !$actionable ||
             !class_exists($actionable) ||
-            !is_subclass_of($actionable, \Waterhole\Models\Model::class) ||
+            !is_subclass_of($actionable, Model::class) ||
             !$actions->hasList($actionable)
         ) {
             abort(400, "The actionable [$actionable] does not exist");
@@ -159,6 +160,6 @@ class ActionsController extends Controller
             }
         }
 
-        abort(403, 'This action cannot be applied.');
+        abort(403, 'This action cannot be applied to these models.');
     }
 }

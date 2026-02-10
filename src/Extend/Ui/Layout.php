@@ -9,6 +9,7 @@ use Waterhole\View\Components\HeaderBreadcrumb;
 use Waterhole\View\Components\HeaderGuest;
 use Waterhole\View\Components\HeaderModeration;
 use Waterhole\View\Components\HeaderNotifications;
+use Waterhole\View\Components\HeaderSaved;
 use Waterhole\View\Components\HeaderSearch;
 use Waterhole\View\Components\HeaderTitle;
 use Waterhole\View\Components\HeaderUser;
@@ -36,6 +37,7 @@ class Layout
             ->add(HeaderSearch::class, 'search')
             ->add(ThemeSelector::class, 'theme')
             ->add(HeaderModeration::class, 'moderation')
+            ->add(HeaderSaved::class, 'saved')
             ->add(HeaderNotifications::class, 'notifications')
             ->add(HeaderGuest::class, 'guest')
             ->add(HeaderUser::class, 'user');

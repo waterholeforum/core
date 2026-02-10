@@ -42,6 +42,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Relation::morphMap([
+            'bookmark' => Models\Bookmark::class,
             'channel' => Models\Channel::class,
             'comment' => Models\Comment::class,
             'group' => Models\Group::class,

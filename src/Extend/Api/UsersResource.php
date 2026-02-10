@@ -93,6 +93,8 @@ class UsersResource extends Resource
 
             ->add(ToMany::make('comments'), 'comments')
 
+            ->add(ToMany::make('bookmarks')->type('bookmarks')->includable(), 'bookmarks')
+
             ->add(ToMany::make('groups')->includable(), 'groups');
 
         $this->sorts

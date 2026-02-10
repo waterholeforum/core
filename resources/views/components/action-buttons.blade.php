@@ -9,7 +9,11 @@
         @endphp
 
         @foreach ($menu ? $actions->take($limit ? $limit - 1 : 0) : $actions as $action)
-            {{ $action->render(collect([$for]), ['class' => 'btn btn--transparent btn--icon'], true) }}
+            {{
+                $action
+                    ->withRenderType(Waterhole\Actions\Action::TYPE_ICON)
+                    ->render(collect([$for]), ['class' => 'btn btn--transparent btn--icon'])
+            }}
         @endforeach
     </form>
 

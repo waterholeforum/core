@@ -22,6 +22,12 @@ use Waterhole\Models\User;
  */
 abstract class Action
 {
+    public const TYPE_BUTTON = 'button';
+    public const TYPE_ICON = 'icon';
+    public const TYPE_MENU_ITEM = 'menu-item';
+
+    protected string $renderType = self::TYPE_BUTTON;
+
     /**
      * Whether the action can be applied to multiple models at once.
      */
@@ -94,15 +100,24 @@ abstract class Action
         return [];
     }
 
+    public function withRenderType(string $type): static
+    {
+        $clone = clone $this;
+        $clone->renderType = $type;
+
+        return $clone;
+    }
+
+    protected function renderType(): string
+    {
+        return $this->renderType;
+    }
+
     /**
      * Render the action button.
      */
-    public function render(
-        Collection $models,
-        array $attributes,
-        bool $tooltip = false,
-        bool $ellipsis = false,
-    ): HtmlString {
+    public function render(Collection $models, array $attributes): HtmlString
+    {
         // If the action requires confirmation, we will override the form's
         // method and action to take the user to the confirmation route.
         if ($confirm = $this->shouldConfirm($models)) {
@@ -122,7 +137,7 @@ abstract class Action
         }
 
         $class = e(static::class);
-        $content = $this->renderContent($models, $tooltip, $ellipsis && $confirm);
+        $content = $this->renderContent($models, $confirm);
 
         return new HtmlString(
             <<<html
@@ -135,17 +150,15 @@ abstract class Action
     /**
      * Render the content of the action button.
      */
-    protected function renderContent(
-        Collection $models,
-        bool $tooltip = false,
-        bool $ellipsis = false,
-    ): HtmlString {
+    protected function renderContent(Collection $models, bool $confirm = false): HtmlString
+    {
+        $type = $this->renderType();
         $label = e($this->label($models));
         $icon = ($iconName = $this->icon($models))
             ? svg($iconName, 'icon icon-' . $iconName)->toHtml()
             : '';
-        $tag = $tooltip ? 'ui-tooltip' : 'span';
-        $ellipsis = $ellipsis ? '...' : '';
+        $tag = $type === self::TYPE_ICON ? 'ui-tooltip' : 'span';
+        $ellipsis = $type === self::TYPE_MENU_ITEM && $confirm ? '...' : '';
 
         return new HtmlString("$icon <$tag>$label$ellipsis</$tag>");
     }

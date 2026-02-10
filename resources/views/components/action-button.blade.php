@@ -14,7 +14,13 @@
             <input type="hidden" name="return" value="{{ $return }}" />
         @endisset
 
-        {{ $actionInstance->render(collect([$for]), $attributes->getAttributes(), $icon) }}
+        {{
+            $actionInstance
+                ->withRenderType(
+                    $icon ? Waterhole\Actions\Action::TYPE_ICON : Waterhole\Actions\Action::TYPE_BUTTON,
+                )
+                ->render(collect([$for]), $attributes->getAttributes())
+        }}
     </form>
 
     {{ $after ?? '' }}

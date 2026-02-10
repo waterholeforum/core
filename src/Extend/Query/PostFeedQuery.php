@@ -25,7 +25,9 @@ class PostFeedQuery extends Set
             ]);
 
             if (Auth::check()) {
-                $query->with(['userState', 'channel.userState'])->withUnreadCommentsCount();
+                $query
+                    ->with(['userState', 'channel.userState', 'bookmark'])
+                    ->withUnreadCommentsCount();
             }
         });
     }

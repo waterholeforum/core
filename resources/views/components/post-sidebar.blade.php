@@ -1,4 +1,4 @@
-<div {{ $attributes->class("row wrap gap-sm") }}>
+<div {{ $attributes->class("post-sidebar text-xs") }}>
     @php
         $enabled = $response === true || $response->allowed();
         $tag = $enabled ? "a" : "span";
@@ -9,14 +9,14 @@
     @endphp
 
     <{{ $tag }}
-        class="btn grow {{ $enabled ? "bg-accent" : "is-disabled" }}"
+        class="btn btn--transparent btn--start {{ $enabled ? "" : "is-disabled" }}"
         @if ($enabled)
             href="{{ $href }}"
         @endif
     >
-        @icon("tabler-message-circle")
+        @icon("tabler-share-3", ["class" => "flip-horizontal"])
 
-        {{ __("waterhole::forum.post-comment-button") }}
+        {{ __("waterhole::forum.comment-reply-button") }}
 
         @unless ($enabled)
             <ui-tooltip>
@@ -25,24 +25,24 @@
         @endunless
     </{{ $tag }}>
 
+    @auth
+        <x-waterhole::action-button
+            :for="$post"
+            :action="Waterhole\Actions\Bookmark::class"
+            class="btn btn--transparent btn--start hide-sm"
+        />
+    @endauth
+
     <x-waterhole::action-menu
         :for="$post"
-        class="grow"
-        :button-attributes="['class' => 'btn full-width']"
-        placement="bottom-end"
+        :button-attributes="['class' => 'btn btn--transparent btn--start']"
+        placement="bottom-start"
     >
         <x-slot name="button">
-            @icon("tabler-settings")
-            <span class="hide-sm">{{ __("waterhole::system.controls-button") }}</span>
-            @icon("tabler-chevron-down")
+            @icon("tabler-dots-circle-horizontal")
+            <span>{{ __("waterhole::system.controls-button") }}</span>
         </x-slot>
     </x-waterhole::action-menu>
-
-    @auth
-        <div class="hide-sm grow">
-            <x-waterhole::follow-button :followable="$post" />
-        </div>
-    @endauth
 
     @components(resolve(\Waterhole\Extend\Ui\PostPage::class)->sidebar, compact("post"))
 </div>

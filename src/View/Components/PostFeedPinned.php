@@ -3,6 +3,7 @@
 namespace Waterhole\View\Components;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 use Waterhole\Feed\PostFeed;
 use Waterhole\Models\Channel;
@@ -26,6 +27,11 @@ class PostFeedPinned extends Component
         }
 
         $query->with(['channel.userState', 'userState']);
+
+        if (Auth::check()) {
+            $query->with('bookmark');
+        }
+
         $query->withUnreadCommentsCount();
 
         $this->posts = $query->latest()->get();

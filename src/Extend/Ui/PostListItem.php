@@ -10,6 +10,7 @@ use Waterhole\View\Components\PostLocked;
 use Waterhole\View\Components\PostNotifications;
 use Waterhole\View\Components\PostReactionsCondensed;
 use Waterhole\View\Components\PostReplies;
+use Waterhole\View\Components\PostSaved;
 use Waterhole\View\Components\PostTagsSummary;
 use Waterhole\View\Components\PostTrash;
 use Waterhole\View\Components\PostUnread;
@@ -34,6 +35,7 @@ class PostListItem
             ->add(PostAnswered::class, 'answered')
             ->add(PostLocked::class, 'locked')
             ->add(PostNotifications::class, 'notifications')
+            ->add(PostSaved::class, 'saved')
             ->add(PostActivity::class, 'activity');
 
         $this->secondary = (new ComponentList())

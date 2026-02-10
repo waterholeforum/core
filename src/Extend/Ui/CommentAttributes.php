@@ -24,6 +24,7 @@ class CommentAttributes extends Attributes
                     'is-read' => $comment->isRead(),
                     'is-mine' => $comment->user_id === Auth::id(),
                     'is-answer' => $comment->isAnswer(),
+                    'is-saved' => $comment->isBookmarked(),
                     'has-replies' => $comment->reply_count,
                     'is-removed' => $comment->trashed(),
                 ]),

@@ -3,6 +3,7 @@
 namespace Waterhole\Extend\Api;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Tobyz\JsonApiServer\Endpoint;
 use Tobyz\JsonApiServer\Laravel\Filter\WhereBelongsTo;
 use Tobyz\JsonApiServer\Laravel\Filter\WhereNotNull;
@@ -81,7 +82,16 @@ class CommentsResource extends Resource
 
             ->add(ToMany::make('reactions')->includable(), 'reactions')
 
-            ->add(ToMany::make('mentions')->includable(), 'mentions');
+            ->add(ToMany::make('mentions')->includable(), 'mentions')
+
+            ->add(
+                ToOne::make('bookmark')
+                    ->type('bookmarks')
+                    ->nullable()
+                    ->visible(fn() => Auth::check())
+                    ->includable(),
+                'bookmark',
+            );
 
         $this->sorts
             ->add(SortColumn::make('createdAt'), 'createdAt')

@@ -170,6 +170,13 @@
                 <div class="row wrap push-end">
                     @components(resolve(Waterhole\Extend\Ui\CommentComponent::class)->buttons, compact('comment', 'withReplies'))
 
+                    <x-waterhole::action-button
+                        :for="$comment"
+                        :action="Waterhole\Actions\Bookmark::class"
+                        class="btn btn--sm btn--transparent btn--icon"
+                        icon
+                    />
+
                     @if (! $comment->trashed())
                         <x-waterhole::action-menu :for="$comment" placement="bottom-end" />
                     @endif

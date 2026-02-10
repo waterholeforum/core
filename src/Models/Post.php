@@ -16,6 +16,7 @@ use Waterhole\Database\Factories\PostFactory;
 use Waterhole\Events\NewPost;
 use Waterhole\Extend;
 use Waterhole\Models\Concerns\Approvable;
+use Waterhole\Models\Concerns\Bookmarkable;
 use Waterhole\Models\Concerns\Deletable;
 use Waterhole\Models\Concerns\Flaggable;
 use Waterhole\Models\Concerns\Followable;
@@ -67,6 +68,7 @@ class Post extends Model
     use Deletable;
     use Approvable;
     use Flaggable;
+    use Bookmarkable;
 
     public const UPDATED_AT = null;
 
@@ -416,5 +418,25 @@ class Post extends Model
     public function canModerate(?User $user): bool
     {
         return (bool) $user?->can('waterhole.post.moderate', $this);
+    }
+
+    public function bookmarkUrl(): string
+    {
+        return $this->url;
+    }
+
+    public function bookmarkTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function bookmarkIcon(): ?string
+    {
+        return $this->channel->icon;
+    }
+
+    public static function bookmarkMorphWith(): array
+    {
+        return ['user', 'channel', 'bookmark'];
     }
 }

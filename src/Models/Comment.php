@@ -16,6 +16,7 @@ use Waterhole\Database\Factories\CommentFactory;
 use Waterhole\Events\NewComment;
 use Waterhole\Formatter\FormatMentions;
 use Waterhole\Models\Concerns\Approvable;
+use Waterhole\Models\Concerns\Bookmarkable;
 use Waterhole\Models\Concerns\Deletable;
 use Waterhole\Models\Concerns\Flaggable;
 use Waterhole\Models\Concerns\HasBody;
@@ -59,6 +60,7 @@ class Comment extends Model
     use Deletable;
     use Approvable;
     use Flaggable;
+    use Bookmarkable;
 
     public const UPDATED_AT = null;
 
@@ -356,5 +358,25 @@ class Comment extends Model
     public function flagUrl(): string
     {
         return $this->post_url;
+    }
+
+    public function bookmarkUrl(): string
+    {
+        return $this->post_url;
+    }
+
+    public function bookmarkTitle(): string
+    {
+        return __('waterhole::forum.saved-comment-title', ['post' => $this->post->title]);
+    }
+
+    public function bookmarkIcon(): ?string
+    {
+        return 'tabler-message-circle-2';
+    }
+
+    public static function bookmarkMorphWith(): array
+    {
+        return ['user', 'post', 'bookmark'];
     }
 }

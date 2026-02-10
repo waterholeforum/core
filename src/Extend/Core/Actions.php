@@ -53,8 +53,6 @@ class Actions
             return [];
         }
 
-        $user ??= Auth::user();
-
         $modelClass = get_class($models->first());
         $list = $this->lists[$modelClass] ?? null;
 
@@ -62,26 +60,20 @@ class Actions
             return [];
         }
 
-        $actions = collect(resolve_all($list->items()));
-        $single = $models->count() <= 1;
-
-        return $actions
-            ->filter(
-                fn($action) => !$action instanceof Action ||
-                    (($single || $action->bulk) &&
-                        $models->every(
-                            fn($model) => $action->appliesTo($model) &&
-                                $action->authorize($user, $model),
-                        )),
-            )
+        return collect($list->items())
+            ->map(fn($action) => $this->resolveAction($action, $models, $user))
+            ->filter()
             ->all();
     }
 
     /**
-     * Determine if any action is available for the given model(s).
+     * Determine if there are any actions that should render for the models.
      */
-    public function hasActions($models, ?User $user = null, ?string $context = null): bool
-    {
+    public function hasRenderableActionsFor(
+        $models,
+        ?string $context = null,
+        ?User $user = null,
+    ): bool {
         $models =
             $models instanceof Collection
                 ? $models
@@ -91,8 +83,6 @@ class Actions
             return false;
         }
 
-        $user ??= Auth::user();
-
         $modelClass = get_class($models->first());
         $list = $this->lists[$modelClass] ?? null;
 
@@ -100,31 +90,61 @@ class Actions
             return false;
         }
 
-        $single = $models->count() <= 1;
+        foreach ($list->items() as $action) {
+            $action = $this->resolveAction($action, $models, $user);
 
-        foreach (resolve_all($list->items()) as $action) {
-            if (!$action instanceof Action) {
-                continue;
-            }
-
-            if (!$single && !$action->bulk) {
-                continue;
-            }
-
-            if (
-                !$models->every(
-                    fn($model) => $action->appliesTo($model) && $action->authorize($user, $model),
-                )
-            ) {
-                continue;
-            }
-
-            if ($action->shouldRender($models, $context)) {
+            if ($action instanceof Action) {
+                if ($action->shouldRender($models, $context)) {
+                    return true;
+                }
+            } elseif ($action && !$action instanceof MenuDivider) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    public function resolveAction($action, $models, ?User $user = null)
+    {
+        $models = collect($models);
+
+        if ($models->isEmpty()) {
+            return null;
+        }
+
+        $modelClass = get_class($models->first());
+        $available = $this->lists[$modelClass]?->items() ?? null;
+
+        if (!$available) {
+            return null;
+        }
+
+        $action = resolve_all([$action])[0];
+
+        if (!collect($available)->some(fn($registered) => $action instanceof $registered)) {
+            return null;
+        }
+
+        if (!$action instanceof Action) {
+            return $action;
+        }
+
+        if ($models->count() > 1 && !$action->bulk) {
+            return null;
+        }
+
+        $user ??= Auth::user();
+
+        if (
+            !$models->every(
+                fn($model) => $action->appliesTo($model) && $action->authorize($user, $model),
+            )
+        ) {
+            return null;
+        }
+
+        return $action;
     }
 
     private function registerDefaults(): void
@@ -141,6 +161,7 @@ class Actions
         $this->for(Models\Comment::class)
             ->add(CoreActions\CopyLink::class, 'copy-link')
             ->add(CoreActions\Report::class, 'report')
+            ->add(CoreActions\Bookmark::class, 'bookmark')
             ->add(MenuDivider::class, 'divider')
             ->add(CoreActions\EditComment::class, 'edit-comment')
             ->add(CoreActions\DismissFlags::class, 'dismiss-flags')
@@ -162,6 +183,7 @@ class Actions
             ->add(CoreActions\CopyLink::class, 'copy-link')
             ->add(CoreActions\Report::class, 'report')
             ->add(CoreActions\MarkAsRead::class, 'mark-as-read')
+            ->add(CoreActions\Bookmark::class, 'bookmark')
             ->add(CoreActions\Follow::class, 'follow')
             ->add(CoreActions\Unfollow::class, 'unfollow')
             ->add(CoreActions\Ignore::class, 'ignore')

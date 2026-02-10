@@ -23,7 +23,16 @@
             </h3>
         </div>
 
-        <x-waterhole::action-menu :for="$post" placement="bottom-end" />
+        <div class="row">
+            <x-waterhole::action-button
+                :for="$post"
+                :action="Waterhole\Actions\Bookmark::class"
+                class="btn btn--icon btn--transparent"
+                icon
+            />
+
+            <x-waterhole::action-menu :for="$post" placement="bottom-end" />
+        </div>
     </header>
 
     <div

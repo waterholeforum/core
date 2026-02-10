@@ -17,6 +17,18 @@
   }
 }
 
+.post-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  @media (--md-down) {
+    flex-grow: 1;
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
 #comments {
   scroll-margin-top: calc(var(--space-lg) + var(--header-height));
 }

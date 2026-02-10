@@ -80,7 +80,11 @@
             <x-waterhole::post-sidebar :post="$post" />
 
             @if ($comments->total())
-                <div class="tabs tabs--vertical" data-post-page-target="commentsLinks" hidden>
+                <div
+                    class="tabs tabs--vertical gap-xxs"
+                    data-post-page-target="commentsLinks"
+                    hidden
+                >
                     <a href="#comments" class="tab with-icon">
                         @icon('tabler-message-circle-2')
                         {{ __('waterhole::forum.post-comments-link', ['count' => $comments->total()]) }}
@@ -97,7 +101,7 @@
                 </div>
 
                 <ui-popup class="collapsible-nav stack" data-post-page-target="commentsPagination">
-                    <button class="btn btn--transparent">
+                    <button class="btn btn--transparent text-xs">
                         {{ __('waterhole::system.page-number-prefix') }}
                         <span data-post-page-target="currentPage">
                             {{ $comments->currentPage() }}

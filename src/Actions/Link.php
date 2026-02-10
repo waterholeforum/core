@@ -27,14 +27,12 @@ abstract class Link extends Action
     public function render(
         Collection $models,
         array $attributes,
-        bool $tooltip = false,
-        bool $ellipsis = false,
     ): HtmlString {
         $link = e($this->url($models[0]));
 
         $attributes = (new ComponentAttributeBag($attributes))->merge($this->attributes($models));
 
-        $content = $this->renderContent($models, $tooltip);
+        $content = $this->renderContent($models);
 
         return new HtmlString(
             <<<html
