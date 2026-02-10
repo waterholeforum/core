@@ -79,28 +79,53 @@
         >
             <x-waterhole::post-sidebar :post="$post" />
 
+            <div class="stack gap-lg" data-post-page-target="commentsLinks">
+                @if ($comments->total())
+                    <div class="tabs tabs--vertical gap-xxs">
+                        <a href="#comments" class="tab with-icon">
+                            @icon('tabler-message-circle-2')
+                            {{ __('waterhole::forum.post-comments-link', ['count' => $comments->total()]) }}
+                        </a>
+
+                        <a
+                            {{-- Exclude ?page=1 from the URL so that the page isn't needlessly reloaded. --}}
+                            href="{{ $lastLink = ($comments->lastPage() === 1 ? $post->url : $comments->url($comments->lastPage())) . '#bottom' }}"
+                            class="tab with-icon hide-md-down"
+                        >
+                            @icon('tabler-chevrons-down')
+                            {{ __('waterhole::system.pagination-last-link') }}
+                        </a>
+                    </div>
+                @endif
+
+                @if ($headings->count() > 1)
+                    <div class="post-headings tabs tabs--vertical gap-xxs hide-md-down">
+                        <div
+                            class="post-headings__tabs scrollable-y stack"
+                            data-controller="scrollspy watch-scroll"
+                        >
+                            @foreach ($headings as $heading)
+                                <a
+                                    href="#{{ $heading['id'] }}"
+                                    @class([
+                                        'tab weight-normal text-xxs',
+                                        'post-headings__tab--h3' => $heading['level'] === 'h3',
+                                    ])
+                                >
+                                    {{ Waterhole\emojify($heading['text']) }}
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+            </div>
+
             @if ($comments->total())
-                <div
-                    class="tabs tabs--vertical gap-xxs"
-                    data-post-page-target="commentsLinks"
+                <ui-popup
+                    class="collapsible-nav stack"
+                    data-post-page-target="commentsPagination"
                     hidden
                 >
-                    <a href="#comments" class="tab with-icon">
-                        @icon('tabler-message-circle-2')
-                        {{ __('waterhole::forum.post-comments-link', ['count' => $comments->total()]) }}
-                    </a>
-
-                    <a
-                        {{-- Exclude ?page=1 from the URL so that the page isn't needlessly reloaded. --}}
-                        href="{{ $lastLink = ($comments->lastPage() === 1 ? $post->url : $comments->url($comments->lastPage())) . '#bottom' }}"
-                        class="tab with-icon hide-md-down"
-                    >
-                        @icon('tabler-chevrons-down')
-                        {{ __('waterhole::system.pagination-last-link') }}
-                    </a>
-                </div>
-
-                <ui-popup class="collapsible-nav stack" data-post-page-target="commentsPagination">
                     <button class="btn btn--transparent text-xs">
                         {{ __('waterhole::system.page-number-prefix') }}
                         <span data-post-page-target="currentPage">

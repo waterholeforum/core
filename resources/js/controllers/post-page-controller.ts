@@ -8,6 +8,8 @@ import { getHeaderHeight } from '../utils';
  * @internal
  */
 export default class extends Controller {
+    private commentsLinksVisible?: boolean;
+
     static targets = [
         'post',
         'currentPage',
@@ -97,9 +99,21 @@ export default class extends Controller {
         });
 
         if (this.hasCommentsLinksTarget && this.hasCommentsPaginationTarget) {
-            this.commentsLinksTarget.hidden =
-                this.postTarget.getBoundingClientRect().bottom <
+            const commentsLinksVisible =
+                this.postTarget.getBoundingClientRect().bottom >=
                 getHeaderHeight() + 10;
+
+            if (
+                this.commentsLinksVisible !== undefined &&
+                commentsLinksVisible !== this.commentsLinksVisible
+            ) {
+                this.commentsLinksTarget.dataset.animate = '';
+                this.commentsPaginationTarget.dataset.animate = '';
+            }
+
+            this.commentsLinksVisible = commentsLinksVisible;
+
+            this.commentsLinksTarget.hidden = !commentsLinksVisible;
             this.commentsPaginationTarget.hidden =
                 !this.commentsLinksTarget.hidden;
         }

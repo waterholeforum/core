@@ -14,6 +14,7 @@
 .post-page {
   .sidebar {
     flex-basis: 16ch;
+    min-width: 0;
   }
 }
 
@@ -33,6 +34,41 @@
   scroll-margin-top: calc(var(--space-lg) + var(--header-height));
 }
 
-.comments-pagination__pages {
+.comments-pagination__pages,
+.post-headings__tabs {
   max-height: 20rem;
+}
+
+.post-headings__tabs .tab {
+  white-space: normal;
+}
+
+.post-headings .post-headings__tab--h3 {
+  margin-left: var(--space-sm);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .post-page
+    [data-post-page-target='commentsLinks'][data-animate]:not([hidden]) {
+    animation: post-page-sidebar-links-in 0.18s ease both;
+  }
+
+  .post-page
+    [data-post-page-target='commentsPagination'][data-animate]:not([hidden]) {
+    animation: post-page-sidebar-pagination-in 0.18s ease both;
+  }
+
+  @keyframes post-page-sidebar-links-in {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+  }
+
+  @keyframes post-page-sidebar-pagination-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
 }

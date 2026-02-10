@@ -7,6 +7,7 @@ use Waterhole\Actions\TrashPost;
 use Waterhole\Actions\Unpin;
 use Waterhole\Database\Seeders\GroupsSeeder;
 use Waterhole\Models\Channel;
+use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
 
@@ -316,5 +317,41 @@ describe('move post between channels', function () {
         $this->get(route('waterhole.channels.show', $channelB))
             ->assertOk()
             ->assertSeeText('Moved Post');
+    });
+});
+
+describe('post heading sidebar', function () {
+    test('renders heading tabs for posts with at least two headings', function () {
+        $channel = Channel::factory()->public()->create();
+        $post = Post::factory()->for($channel)->create([
+            'body' => "## First Heading\n\nSome text.\n\n### Second Heading\n\nMore text.",
+        ]);
+
+        Comment::factory()->for($post)->create();
+
+        $this->get(route('waterhole.posts.show', $post))
+            ->assertOk()
+            ->assertSee('class="post-headings tabs tabs--vertical gap-xxs hide-md-down"', false)
+            ->assertSee('href="#content-first-heading"', false)
+            ->assertSee('href="#content-second-heading"', false)
+            ->assertDontSee('## First Heading')
+            ->assertDontSee('### Second Heading')
+            ->assertSee('post-headings__tab--h3', false);
+    });
+
+    test('does not render heading tabs for a single heading', function () {
+        $channel = Channel::factory()->public()->create();
+        $post = Post::factory()->for($channel)->create([
+            'body' => "## Only Heading\n\nSome text.",
+        ]);
+
+        Comment::factory()->for($post)->create();
+
+        $this->get(route('waterhole.posts.show', $post))
+            ->assertOk()
+            ->assertDontSee(
+                'class="post-headings tabs tabs--vertical gap-xxs hide-md-down"',
+                false,
+            );
     });
 });

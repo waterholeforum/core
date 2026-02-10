@@ -28,11 +28,11 @@ export default class extends Controller<HTMLElement> {
         el.classList.toggle('is-scrolled-right', el.scrollLeft > 0);
         el.classList.toggle(
             'is-scrolled-up',
-            el.scrollTop < el.scrollHeight - el.offsetHeight,
+            el.scrollTop < el.scrollHeight - el.offsetHeight - 1,
         );
         el.classList.toggle(
             'is-scrolled-left',
-            el.scrollLeft < el.scrollWidth - el.offsetWidth,
+            el.scrollLeft < el.scrollWidth - el.offsetWidth - 1,
         );
     };
 }

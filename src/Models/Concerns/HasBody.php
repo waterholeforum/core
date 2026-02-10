@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 use Waterhole\Formatter\FormatMentions;
 use Waterhole\Formatter\FormatUploads;
+use Waterhole\Formatter\HeadingSlugs;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Group;
 use Waterhole\Models\Mention;
@@ -40,6 +41,14 @@ use Waterhole\Models\User;
 trait HasBody
 {
     use UsesFormatter;
+
+    /**
+     * Extract headings from the parsed body XML.
+     */
+    public function bodyHeadings(array $levels = [2, 3]): Collection
+    {
+        return HeadingSlugs::extractHeadings($this->parsed_body, $levels);
+    }
 
     public static function bootHasBody(): void
     {

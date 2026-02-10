@@ -10,6 +10,7 @@ use Waterhole\Formatter\FormatExternalLinks;
 use Waterhole\Formatter\FormatMentions;
 use Waterhole\Formatter\Formatter;
 use Waterhole\Formatter\FormatUploads;
+use Waterhole\Formatter\HeadingSlugs;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Page;
@@ -50,6 +51,8 @@ class FormatterServiceProvider extends ServiceProvider
                     $context?->user?->groups->pluck('id')->implode(','),
                 );
             });
+
+            $formatter->configure([HeadingSlugs::class, 'configure']);
 
             $formatter->configure([FormatExternalLinks::class, 'configure']);
             $formatter->rendering([FormatExternalLinks::class, 'rendering']);

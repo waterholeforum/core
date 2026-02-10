@@ -15,6 +15,7 @@ use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 use Waterhole\Database\Factories\CommentFactory;
 use Waterhole\Events\NewComment;
 use Waterhole\Formatter\FormatMentions;
+use Waterhole\Formatter\HeadingSlugs;
 use Waterhole\Models\Concerns\Approvable;
 use Waterhole\Models\Concerns\Bookmarkable;
 use Waterhole\Models\Concerns\Deletable;
@@ -76,6 +77,12 @@ class Comment extends Model
     {
         static::addGlobalScope('visible', function ($query) {
             $query->visible(auth()->user());
+        });
+
+        static::saving(function (self $comment) {
+            if ($comment->isDirty('body') && $comment->parsed_body) {
+                $comment->parsed_body = HeadingSlugs::removeHeadingSlugs($comment->parsed_body);
+            }
         });
 
         // Whenever a comment is created or deleted, we will update the metadata

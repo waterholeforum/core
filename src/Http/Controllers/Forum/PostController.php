@@ -30,6 +30,8 @@ class PostController extends Controller
 
     public function show(Post $post, Request $request)
     {
+        $post->load('mentions.mentionable');
+
         $user = $request->user();
 
         // If we've come here with reference to a particular comment, we will
@@ -75,7 +77,9 @@ class PostController extends Controller
             fn() => $post->increment('view_count'),
         );
 
-        return view('waterhole::posts.show', compact('post', 'comments', 'lastReadAt'));
+        $headings = $post->bodyHeadings();
+
+        return view('waterhole::posts.show', compact('post', 'comments', 'lastReadAt', 'headings'));
     }
 
     public function create()

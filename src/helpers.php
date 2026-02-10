@@ -80,7 +80,7 @@ function remove_formatting(?string $xml): string
 
     try {
         return Utils::removeFormatting($xml);
-    } catch (Exception $e) {
+    } catch (Exception) {
         return '';
     }
 }
