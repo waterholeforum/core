@@ -272,6 +272,30 @@ describe('pin and unpin post', function () {
     });
 });
 
+describe('feed filters', function () {
+    test('following filter shows followed posts', function () {
+        $channel = Channel::factory()->public()->create();
+        $user = User::factory()->create();
+
+        $followed = Post::factory()
+            ->for($channel)
+            ->create(['title' => 'Followed post']);
+
+        Post::factory()
+            ->for($channel)
+            ->create(['title' => 'Other post']);
+
+        $this->actingAs($user);
+
+        $followed->follow();
+
+        $this->get(route('waterhole.home', ['filter' => 'following']))
+            ->assertOk()
+            ->assertSeeText('Followed post')
+            ->assertDontSeeText('Other post');
+    });
+});
+
 describe('move post between channels', function () {
     test('moderator can move post between channels', function () {
         $channelA = Channel::factory()->public()->create();
