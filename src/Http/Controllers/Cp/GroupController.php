@@ -10,7 +10,7 @@ use Waterhole\Models\Group;
 /**
  * Controller for CP group management (list, create, and update).
  *
- * Deletion is handled by the DeleteGroup action.
+ * Deletion is handled by the Delete action.
  */
 class GroupController extends Controller
 {

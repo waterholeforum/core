@@ -13,7 +13,7 @@ class Lock extends Action
 {
     public function appliesTo(Model $model): bool
     {
-        return $model instanceof Post && !$model->is_locked;
+        return $model instanceof Post;
     }
 
     public function authorize(?User $user, Model $model): bool
@@ -23,17 +23,20 @@ class Lock extends Action
 
     public function label(Collection $models): string
     {
-        return __('waterhole::forum.lock-comments-button');
+        return $models[0]->is_locked
+            ? __('waterhole::forum.unlock-comments-button')
+            : __('waterhole::forum.lock-comments-button');
     }
 
     public function icon(Collection $models): string
     {
-        return 'tabler-lock';
+        return $models[0]->is_locked ? 'tabler-lock-open' : 'tabler-lock';
     }
 
     public function run(Collection $models)
     {
-        $models->each->update(['is_locked' => true]);
+        $isLocked = !$models[0]->is_locked;
+        $models->each->update(['is_locked' => $isLocked]);
     }
 
     public function stream(Model $model): array

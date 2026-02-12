@@ -9,6 +9,13 @@ use Waterhole\Models\User;
 
 class GroupPolicy
 {
+    public function delete(User $user, Group $group)
+    {
+        if (!$group->isCustom()) {
+            return false;
+        }
+    }
+
     public function mention(User $user, Group $group, ?Channel $channel = null)
     {
         if (!$group->is_public) {

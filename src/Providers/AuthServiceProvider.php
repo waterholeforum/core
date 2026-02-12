@@ -110,6 +110,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('waterhole.comment.moderate', [Policies\CommentPolicy::class, 'moderate']);
         Gate::define('waterhole.comment.react', [Policies\CommentPolicy::class, 'react']);
 
+        Gate::define('waterhole.group.delete', [Policies\GroupPolicy::class, 'delete']);
         Gate::define('waterhole.group.mention', [Policies\GroupPolicy::class, 'mention']);
 
         Gate::define('waterhole.post.create', [Policies\PostPolicy::class, 'create']);

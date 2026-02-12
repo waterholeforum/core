@@ -11,22 +11,28 @@ class Ignore extends Action
 {
     public function shouldRender(Collection $models, ?string $context = null): bool
     {
-        return $context !== 'cp' && !$models->some->isIgnored();
+        return $context !== 'cp';
     }
 
     public function label(Collection $models): string
     {
-        return __('waterhole::forum.ignore-button');
+        return $models[0]->isIgnored()
+            ? __('waterhole::forum.unignore-button')
+            : __('waterhole::forum.ignore-button');
     }
 
     public function icon(Collection $models): string
     {
-        return 'tabler-eye-off';
+        return $models[0]->isIgnored() ? 'tabler-eye' : 'tabler-eye-off';
     }
 
     public function run(Collection $models)
     {
-        $models->each->ignore();
+        if ($models[0]->isIgnored()) {
+            $models->each->unignore();
+        } else {
+            $models->each->ignore();
+        }
     }
 
     public function stream(Model $model): array

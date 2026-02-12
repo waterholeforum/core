@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Waterhole\Actions\DeleteTag;
-use Waterhole\Actions\DeleteTaxonomy;
+use Waterhole\Actions\Delete;
 use Waterhole\Database\Seeders\GroupsSeeder;
 use Waterhole\Models\Tag;
 use Waterhole\Models\Taxonomy;
@@ -53,7 +52,7 @@ describe('cp taxonomies', function () {
             ->post(route('waterhole.actions.store'), [
                 'actionable' => Taxonomy::class,
                 'id' => $taxonomy->id,
-                'action_class' => DeleteTaxonomy::class,
+                'action_class' => Delete::class,
                 'confirmed' => true,
             ])
             ->assertRedirect();
@@ -94,7 +93,7 @@ describe('cp taxonomies', function () {
             ->post(route('waterhole.actions.store'), [
                 'actionable' => Tag::class,
                 'id' => $tag->id,
-                'action_class' => DeleteTag::class,
+                'action_class' => Delete::class,
                 'confirmed' => true,
             ])
             ->assertRedirect();

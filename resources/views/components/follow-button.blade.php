@@ -2,7 +2,7 @@
     <button
         type="submit"
         name="action_class"
-        value="{{ $followable->isFollowed() ? Waterhole\Actions\Unfollow::class : ($followable->isIgnored() ? Waterhole\Actions\Unignore::class : Waterhole\Actions\Follow::class) }}"
+        value="{{ $followable->isIgnored() ? Waterhole\Actions\Ignore::class : Waterhole\Actions\Follow::class }}"
         class="{{ $buttonClass }} {{ $followable->isFollowed() ? 'bg-warning-soft color-warning' : '' }}"
     >
         @if ($followable->isFollowed())

@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Waterhole\Actions\DeleteReactionSet;
-use Waterhole\Actions\DeleteReactionType;
+use Waterhole\Actions\Delete;
 use Waterhole\Database\Seeders\GroupsSeeder;
 use Waterhole\Models\ReactionSet;
 use Waterhole\Models\ReactionType;
@@ -53,7 +52,7 @@ describe('cp reactions', function () {
             ->post(route('waterhole.actions.store'), [
                 'actionable' => ReactionSet::class,
                 'id' => $set->id,
-                'action_class' => DeleteReactionSet::class,
+                'action_class' => Delete::class,
                 'confirmed' => true,
             ])
             ->assertRedirect();
@@ -111,7 +110,7 @@ describe('cp reactions', function () {
             ->post(route('waterhole.actions.store'), [
                 'actionable' => ReactionType::class,
                 'id' => $type->id,
-                'action_class' => DeleteReactionType::class,
+                'action_class' => Delete::class,
                 'confirmed' => true,
             ])
             ->assertRedirect();

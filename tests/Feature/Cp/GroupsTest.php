@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Waterhole\Actions\DeleteGroup;
+use Waterhole\Actions\Delete;
 use Waterhole\Database\Seeders\GroupsSeeder;
 use Waterhole\Models\Group;
 use Waterhole\Models\User;
@@ -61,12 +61,23 @@ describe('cp groups', function () {
             ->post(route('waterhole.actions.store'), [
                 'actionable' => Group::class,
                 'id' => $group->id,
-                'action_class' => DeleteGroup::class,
+                'action_class' => Delete::class,
                 'confirmed' => true,
             ])
             ->assertRedirect();
 
         $this->assertDatabaseMissing('groups', ['id' => $group->id]);
+    });
+
+    test('cannot delete built-in group', function () {
+        $this->actingAs(cpGroupsAdmin())
+            ->post(route('waterhole.actions.store'), [
+                'actionable' => Group::class,
+                'id' => Group::GUEST_ID,
+                'action_class' => Delete::class,
+                'confirmed' => true,
+            ])
+            ->assertForbidden();
     });
 
     test('updates group permissions', function () {

@@ -11,22 +11,28 @@ class Follow extends Action
 {
     public function shouldRender(Collection $models, ?string $context = null): bool
     {
-        return $context !== 'cp' && !$models->some->isFollowed();
+        return $context !== 'cp';
     }
 
     public function label(Collection $models): string
     {
-        return __('waterhole::forum.follow-button');
+        return $models[0]->isFollowed()
+            ? __('waterhole::forum.unfollow-button')
+            : __('waterhole::forum.follow-button');
     }
 
     public function icon(Collection $models): string
     {
-        return 'tabler-bell';
+        return $models[0]->isFollowed() ? 'tabler-bell-off' : 'tabler-bell';
     }
 
     public function run(Collection $models)
     {
-        $models->each->follow();
+        if ($models[0]->isFollowed()) {
+            $models->each->unfollow();
+        } else {
+            $models->each->follow();
+        }
     }
 
     public function stream(Model $model): array

@@ -11,7 +11,7 @@ class Pin extends Action
 {
     public function appliesTo(Model $model): bool
     {
-        return $model instanceof Post && !$model->is_pinned;
+        return $model instanceof Post;
     }
 
     public function authorize(?User $user, Model $model): bool
@@ -21,17 +21,20 @@ class Pin extends Action
 
     public function label(Collection $models): string
     {
-        return __('waterhole::forum.pin-to-top-button');
+        return $models[0]->is_pinned
+            ? __('waterhole::forum.unpin-button')
+            : __('waterhole::forum.pin-to-top-button');
     }
 
     public function icon(Collection $models): string
     {
-        return 'tabler-pin';
+        return $models[0]->is_pinned ? 'tabler-pinned-off' : 'tabler-pin';
     }
 
     public function run(Collection $models): void
     {
-        $models->each->update(['is_pinned' => true]);
+        $isPinned = !$models[0]->is_pinned;
+        $models->each->update(['is_pinned' => $isPinned]);
     }
 
     public function stream(Model $model): array

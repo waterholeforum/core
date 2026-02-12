@@ -1,10 +1,12 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Waterhole\Actions\Follow;
+use Waterhole\Actions\Ignore;
+use Waterhole\Actions\Lock;
 use Waterhole\Actions\MoveToChannel;
 use Waterhole\Actions\Pin;
 use Waterhole\Actions\TrashPost;
-use Waterhole\Actions\Unpin;
 use Waterhole\Database\Seeders\GroupsSeeder;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Comment;
@@ -385,7 +387,7 @@ describe('pin and unpin post', function () {
             ->post(route('waterhole.actions.store'), [
                 'actionable' => Post::class,
                 'id' => $post->id,
-                'action_class' => Unpin::class,
+                'action_class' => Pin::class,
             ])
             ->assertRedirect();
 
@@ -412,6 +414,104 @@ describe('pin and unpin post', function () {
         $this->get(route('waterhole.home'))
             ->assertOk()
             ->assertSeeInOrder(['Pinned Post', 'Other Post']);
+    });
+});
+
+describe('follow and ignore post', function () {
+    test('user can follow and unfollow post with same action', function () {
+        $channel = Channel::factory()->public()->create();
+        $user = User::factory()->create();
+        $post = Post::factory()->for($channel)->create();
+
+        $this->actingAs($user)
+            ->post(route('waterhole.actions.store'), [
+                'actionable' => Post::class,
+                'id' => $post->id,
+                'action_class' => Follow::class,
+            ])
+            ->assertRedirect();
+
+        $this->assertDatabaseHas('post_user', [
+            'post_id' => $post->id,
+            'user_id' => $user->id,
+            'notifications' => 'follow',
+        ]);
+
+        $this->actingAs($user)
+            ->post(route('waterhole.actions.store'), [
+                'actionable' => Post::class,
+                'id' => $post->id,
+                'action_class' => Follow::class,
+            ])
+            ->assertRedirect();
+
+        $this->assertDatabaseHas('post_user', [
+            'post_id' => $post->id,
+            'user_id' => $user->id,
+            'notifications' => 'normal',
+        ]);
+    });
+
+    test('user can ignore and unignore post with same action', function () {
+        $channel = Channel::factory()->public()->create();
+        $user = User::factory()->create();
+        $post = Post::factory()->for($channel)->create();
+
+        $this->actingAs($user)
+            ->post(route('waterhole.actions.store'), [
+                'actionable' => Post::class,
+                'id' => $post->id,
+                'action_class' => Ignore::class,
+            ])
+            ->assertRedirect();
+
+        $this->assertDatabaseHas('post_user', [
+            'post_id' => $post->id,
+            'user_id' => $user->id,
+            'notifications' => 'ignore',
+        ]);
+
+        $this->actingAs($user)
+            ->post(route('waterhole.actions.store'), [
+                'actionable' => Post::class,
+                'id' => $post->id,
+                'action_class' => Ignore::class,
+            ])
+            ->assertRedirect();
+
+        $this->assertDatabaseHas('post_user', [
+            'post_id' => $post->id,
+            'user_id' => $user->id,
+            'notifications' => 'normal',
+        ]);
+    });
+});
+
+describe('lock and unlock post', function () {
+    test('moderator can lock and unlock post with same action', function () {
+        $channel = Channel::factory()->public()->create();
+        $moderator = User::factory()->admin()->create();
+        $post = Post::factory()->for($channel)->create();
+
+        $this->actingAs($moderator)
+            ->post(route('waterhole.actions.store'), [
+                'actionable' => Post::class,
+                'id' => $post->id,
+                'action_class' => Lock::class,
+            ])
+            ->assertRedirect();
+
+        expect($post->fresh()->is_locked)->toBeTrue();
+
+        $this->actingAs($moderator)
+            ->post(route('waterhole.actions.store'), [
+                'actionable' => Post::class,
+                'id' => $post->id,
+                'action_class' => Lock::class,
+            ])
+            ->assertRedirect();
+
+        expect($post->fresh()->is_locked)->toBeFalse();
     });
 });
 
