@@ -64,6 +64,99 @@ describe('create comment', function () {
     });
 });
 
+describe('comment drafts', function () {
+    test('saves comment draft', function () {
+        $channel = Channel::factory()->public()->create();
+        $user = User::factory()->create();
+        $post = Post::factory()->for($channel)->create();
+
+        $this->actingAs($user)
+            ->from($post->url)
+            ->post(route('waterhole.posts.draft', $post), [
+                'body' => 'Draft comment body',
+            ])
+            ->assertRedirect($post->url);
+
+        $this->assertDatabaseHas('post_user', [
+            'post_id' => $post->id,
+            'user_id' => $user->id,
+            'draft_body' => 'Draft comment body',
+        ]);
+    });
+
+    test('removing parent saves comment draft', function () {
+        $channel = Channel::factory()->public()->create();
+        $user = User::factory()->create();
+        $post = Post::factory()->for($channel)->create();
+        $parent = Comment::factory()->for($post)->create();
+
+        $this->actingAs($user)->post(route('waterhole.posts.draft', $post), [
+            'body' => 'Draft comment body',
+            'parent_id' => $parent->id,
+        ]);
+
+        $this->actingAs($user)
+            ->from(route('waterhole.posts.comments.create', ['post' => $post, 'parent' => $parent]))
+            ->post(route('waterhole.posts.comments.store', $post), [
+                'body' => 'Draft comment body',
+                'parent_id' => '',
+            ])
+            ->assertRedirect(route('waterhole.posts.comments.create', $post));
+
+        $this->assertDatabaseHas('post_user', [
+            'post_id' => $post->id,
+            'user_id' => $user->id,
+            'draft_body' => 'Draft comment body',
+            'draft_parent_id' => null,
+        ]);
+    });
+
+    test('discarding a comment draft clears it', function () {
+        $channel = Channel::factory()->public()->create();
+        $user = User::factory()->create();
+        $post = Post::factory()->for($channel)->create();
+
+        $this->actingAs($user)->post(route('waterhole.posts.draft', $post), [
+            'body' => 'Draft to discard',
+        ]);
+
+        $this->actingAs($user)
+            ->delete(route('waterhole.posts.draft', $post))
+            ->assertRedirect($post->url);
+
+        $this->assertDatabaseHas('post_user', [
+            'post_id' => $post->id,
+            'user_id' => $user->id,
+            'draft_body' => null,
+            'draft_parent_id' => null,
+            'draft_saved_at' => null,
+        ]);
+    });
+
+    test('submitting a comment clears comment draft', function () {
+        $channel = Channel::factory()->public()->create();
+        $user = User::factory()->create();
+        $post = Post::factory()->for($channel)->create();
+
+        $this->actingAs($user)->post(route('waterhole.posts.draft', $post), [
+            'body' => 'Draft to clear',
+        ]);
+
+        $this->actingAs($user)->post(route('waterhole.posts.comments.store', $post), [
+            'body' => 'Published comment',
+            'commit' => true,
+        ]);
+
+        $this->assertDatabaseHas('post_user', [
+            'post_id' => $post->id,
+            'user_id' => $user->id,
+            'draft_body' => null,
+            'draft_parent_id' => null,
+            'draft_saved_at' => null,
+        ]);
+    });
+});
+
 describe('edit comment', function () {
     test('author can edit within time limit', function () {
         config(['waterhole.forum.edit_time_limit' => 10]);

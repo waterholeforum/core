@@ -80,6 +80,14 @@ class CommentController extends Controller
         // explicitly clicked. This allows the form to be submitted for other
         // purposes, such as clearing the parent comment.
         if (!$request->input('commit')) {
+            $this->authorize('waterhole.post.comment', $post);
+
+            $body = $request->string('body')->toString();
+
+            $post->userState
+                ->setDraft($body ?: null, $request->integer('parent_id') ?: null)
+                ->save();
+
             return redirect()
                 ->route('waterhole.posts.comments.create', compact('post'))
                 ->withInput();
@@ -105,7 +113,7 @@ class CommentController extends Controller
 
         $post->comments()->save($comment = new Comment($data));
 
-        $post->userState->read()->save();
+        $post->userState->read()->discardDraft()->save();
 
         if ($user->follow_on_comment && !$post->isFollowed()) {
             $post->follow();

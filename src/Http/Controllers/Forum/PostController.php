@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Gate;
 use Waterhole\Extend;
 use Waterhole\Forms\PostForm;
 use Waterhole\Http\Controllers\Controller;
+use Waterhole\Http\Controllers\Forum\Concerns\SavesPostDrafts;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
 use Waterhole\Models\ReactionType;
@@ -22,6 +23,8 @@ use Waterhole\Models\ReactionType;
  */
 class PostController extends Controller
 {
+    use SavesPostDrafts;
+
     public function __construct()
     {
         $this->middleware('waterhole.auth')->only('create', 'store', 'edit', 'update');
@@ -30,8 +33,6 @@ class PostController extends Controller
 
     public function show(Post $post, Request $request)
     {
-        $post->load('mentions.mentionable');
-
         $user = $request->user();
 
         // If we've come here with reference to a particular comment, we will
@@ -86,17 +87,27 @@ class PostController extends Controller
     {
         $this->authorize('waterhole.post.create');
 
+        $draft = request()->user()?->drafts()->first();
+
+        if ($draft?->payload && !session()->hasOldInput()) {
+            session()->flashInput($draft->payload);
+        }
+
         $form = new PostForm(new Post(['channel_id' => old('channel_id', request('channel_id'))]));
 
-        return view('waterhole::posts.create', compact('form'));
+        return view('waterhole::posts.create', compact('form', 'draft'));
     }
 
     public function store(Request $request)
     {
+        $user = $request->user();
+
         // Only proceed with post submission if the "post" button was
         // explicitly clicked. This allows the form to be submitted for other
         // purposes, such as selecting a different channel.
         if (!$request->input('commit')) {
+            $this->savePostDraft($user, $request->all());
+
             return redirect()
                 ->route('waterhole.posts.create', ['channel_id' => $request->input('channel_id')])
                 ->withInput();
@@ -105,13 +116,11 @@ class PostController extends Controller
         $this->authorize('waterhole.post.create');
 
         $post = new Post([
-            'user_id' => $request->user()->id,
+            'user_id' => $user->id,
             'channel_id' => request('channel_id'),
         ]);
 
         Gate::authorize('waterhole.channel.post', $post->channel);
-
-        $user = $request->user();
 
         $post->is_approved =
             $user->can('waterhole.channel.moderate', $post->channel) ||
@@ -124,6 +133,8 @@ class PostController extends Controller
         if ($user->follow_on_comment) {
             $post->follow();
         }
+
+        $user->drafts()->delete();
 
         return redirect($post->url);
     }

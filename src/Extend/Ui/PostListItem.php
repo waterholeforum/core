@@ -6,6 +6,7 @@ use Waterhole\Extend\Support\ComponentList;
 use Waterhole\View\Components\PostActivity;
 use Waterhole\View\Components\PostAnswered;
 use Waterhole\View\Components\PostChannel;
+use Waterhole\View\Components\PostDraft;
 use Waterhole\View\Components\PostLocked;
 use Waterhole\View\Components\PostNotifications;
 use Waterhole\View\Components\PostReactionsCondensed;
@@ -36,6 +37,7 @@ class PostListItem
             ->add(PostLocked::class, 'locked')
             ->add(PostNotifications::class, 'notifications')
             ->add(PostSaved::class, 'saved')
+            ->add(PostDraft::class, 'draft')
             ->add(PostActivity::class, 'activity');
 
         $this->secondary = (new ComponentList())

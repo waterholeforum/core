@@ -171,6 +171,7 @@ abstract class FormatMentions
 
             if ($type === static::TYPE_USER) {
                 $user = $context?->model?->mentions
+                    ->loadMissing('mentionable')
                     ?->where('mentionable_type', (new User())->getMorphClass())
                     ->firstWhere('mentionable_id', $attributes['id'])?->mentionable;
 
@@ -187,6 +188,7 @@ abstract class FormatMentions
 
             if ($type === static::TYPE_GROUP) {
                 $group = $context?->model?->mentions
+                    ->loadMissing('mentionable')
                     ?->where('mentionable_type', (new Group())->getMorphClass())
                     ->firstWhere('mentionable_id', $attributes['id'])?->mentionable;
 

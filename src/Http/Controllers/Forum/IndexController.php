@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Waterhole\Feed\PostFeed;
+use Waterhole\Filters\Drafts;
 use Waterhole\Filters\Following;
 use Waterhole\Filters\Ignoring;
 use Waterhole\Filters\Trash;
@@ -96,6 +97,7 @@ class IndexController extends Controller
         $filters = resolve_all($filters);
 
         if ($user = Auth::user()) {
+            $filters[] = new Drafts();
             $filters[] = new Following();
             $filters[] = new Ignoring();
 

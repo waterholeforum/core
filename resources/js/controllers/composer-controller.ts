@@ -30,6 +30,7 @@ export default class extends Controller<HTMLElement> {
         requestAnimationFrame(() => {
             if (window.location.hash === '#reply') {
                 this.open();
+                this.scrollToBottom();
             }
         });
     };

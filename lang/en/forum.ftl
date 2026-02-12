@@ -42,6 +42,7 @@ post-new-badge-tooltip = New post
 post-locked-badge = Locked
 post-answered-badge = Answered
 post-saved-badge = Saved
+post-draft-badge = Draft
 post-trash-badge = Trash
 
 post-removed-message = Post removed
@@ -79,6 +80,7 @@ move-to-channel-confirm-button = Move
 mark-as-read-button = Mark as Read
 
 create-post-button = Create a Post
+resume-draft-button = Resume Draft
 create-post-title = New Post
 post-channel-label = Channel
 post-submit-button = Post
@@ -132,6 +134,12 @@ composer-reply-to-placeholder = Reply to { $userName }...
 composer-replying-to-label = Replying to
 composer-clear-reply-button = Clear
 composer-submit = Post
+
+save-draft-button = Save Draft
+discard-draft-button = Discard Draft
+draft-saving-message = Saving...
+draft-saved-message = Saved
+draft-error-message = Save Failed
 
 delete-comment-confirm-message = Are you sure you want to permanently delete this comment?
 
@@ -198,6 +206,7 @@ saved-comment-title = Comment in { $post }
 ## Filters
 
 filter-alphabetical = Alphabetical
+filter-drafts = Drafts
 filter-following = Following
 filter-ignoring = Ignoring
 filter-newest = Newest

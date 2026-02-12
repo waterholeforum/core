@@ -4,7 +4,18 @@
 
 <x-waterhole::layout :title="$title">
     <div class="container section measure">
-        <form method="POST" action="{{ route('waterhole.posts.store') }}">
+        <form
+            method="POST"
+            action="{{ route('waterhole.posts.store') }}"
+            data-controller="draft"
+            data-action="
+                input->draft#queue
+                change->draft#queue
+                focusout->draft#saveNow
+                turbo:submit-start->draft#submitStart
+                turbo:submit-end->draft#submitEnd
+            "
+        >
             @csrf
 
             {{-- Hidden submit button to handle Enter key --}}
@@ -37,7 +48,7 @@
                     <div class="stack gap-xl stacked-fields">
                         <x-waterhole::validation-errors />
 
-                        @if ($instructions = $form->model->channel->instructions_html)
+                        @if (filled($instructions = $form->model->channel->instructions_html))
                             <div class="rounded p-lg bg-warning-soft content">
                                 {{ $instructions }}
                             </div>
@@ -45,7 +56,7 @@
 
                         @components($form->fields())
 
-                        <div>
+                        <div class="row gap-xs wrap">
                             <button
                                 class="btn btn--wide bg-accent"
                                 name="commit"
@@ -56,6 +67,12 @@
                             >
                                 {{ __('waterhole::forum.post-submit-button') }}
                             </button>
+
+                            <x-waterhole::draft-controls
+                                :saved="(bool) $draft"
+                                :action="route('waterhole.draft')"
+                                class="push-end"
+                            />
                         </div>
                     </div>
                 </x-waterhole::dialog>

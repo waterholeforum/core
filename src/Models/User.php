@@ -57,6 +57,7 @@ use Waterhole\Notifications\VerifyEmail;
  * @property-read string $avatar_url
  * @property-read int $unread_notification_count
  * @property-read \Illuminate\Database\Eloquent\Collection $posts
+ * @property-read \Illuminate\Database\Eloquent\Collection $drafts
  * @property-read \Illuminate\Database\Eloquent\Collection $comments
  * @property-read \Illuminate\Database\Eloquent\Collection $groups
  * @property-read \Illuminate\Database\Eloquent\Collection $notifications
@@ -117,6 +118,14 @@ class User extends Model implements
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
+    }
+
+    /**
+     * Relationship with the user's post drafts.
+     */
+    public function drafts(): HasMany
+    {
+        return $this->hasMany(PostDraft::class);
     }
 
     /**

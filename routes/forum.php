@@ -12,10 +12,12 @@ use Waterhole\Http\Controllers\Auth\SsoController;
 use Waterhole\Http\Controllers\Auth\VerifyEmailController;
 use Waterhole\Http\Controllers\FormatController;
 use Waterhole\Http\Controllers\Forum\CommentController;
+use Waterhole\Http\Controllers\Forum\CommentDraftController;
 use Waterhole\Http\Controllers\Forum\IndexController;
 use Waterhole\Http\Controllers\Forum\ModerationController;
 use Waterhole\Http\Controllers\Forum\NotificationController;
 use Waterhole\Http\Controllers\Forum\PostController;
+use Waterhole\Http\Controllers\Forum\PostDraftController;
 use Waterhole\Http\Controllers\Forum\PreferencesController;
 use Waterhole\Http\Controllers\Forum\RssController;
 use Waterhole\Http\Controllers\Forum\SavedController;
@@ -50,10 +52,18 @@ Route::resource('posts', PostController::class)->only([
     'update',
 ]);
 
+// Post Drafts
+Route::post('draft', [PostDraftController::class, 'store'])->name('draft');
+Route::delete('draft', [PostDraftController::class, 'destroy']);
+
 // Comments
 Route::resource('posts.comments', CommentController::class)
     ->only(['show', 'create', 'store', 'edit', 'update'])
     ->scoped();
+
+// Comment Drafts
+Route::post('posts/{post}/draft', [CommentDraftController::class, 'store'])->name('posts.draft');
+Route::delete('posts/{post}/draft', [CommentDraftController::class, 'destroy']);
 
 // Reactions
 Route::get('posts/{post}/reactions/{reactionType}', [PostController::class, 'reactions'])->name(

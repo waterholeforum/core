@@ -1,10 +1,9 @@
 <turbo-frame
     id="composer"
-    {{ $attributes->class('composer stack') }}
+    {{ $attributes->class(['composer stack', 'is-open' => $hasDraft]) }}
     data-controller="composer"
     data-turbo-prefetch="false"
     data-action="
-        turbo:before-fetch-request->composer#open
         turbo:frame-render->composer#open
         turbo:submit-end->composer#submitEnd
     "
@@ -29,6 +28,14 @@
         class="composer__form stack full-height"
         action="{{ route('waterhole.posts.comments.store', ['post' => $post]) }}"
         method="POST"
+        data-controller="draft"
+        data-action="
+            input->draft#queue
+            change->draft#queue
+            focusout->draft#saveNow
+            turbo:submit-start->draft#submitStart
+            turbo:submit-end->draft#submitEnd
+        "
     >
         @csrf
 
@@ -81,6 +88,11 @@
 
             <div class="grow"></div>
 
+            <x-waterhole::draft-controls
+                :saved="$hasDraft"
+                :action="route('waterhole.posts.draft', compact('post'))"
+            />
+
             @if ($errors->any())
                 <div class="color-danger weight-medium text-xs animate-shake">
                     {{ $errors->first() }}
@@ -100,7 +112,7 @@
 
         <x-waterhole::text-editor
             name="body"
-            :value="old('body')"
+            :value="$body"
             :placeholder="__('waterhole::forum.composer-placeholder')"
             id="new-comment"
             data-action="quotable:quote-text@document->text-editor#insertQuote"

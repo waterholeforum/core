@@ -12,14 +12,18 @@ use Waterhole\Models\User;
 class IndexCreatePost extends Component
 {
     public bool|Response $response;
+    public bool $hasDraft;
 
     public function __construct(public ?Channel $channel = null)
     {
+        $user = Auth::user();
         $gate = Gate::forUser(Auth::user() ?: new User());
 
         $this->response = $channel
             ? $gate->inspect('waterhole.channel.post', $channel)
             : $gate->inspect('waterhole.post.create');
+
+        $this->hasDraft = (bool) $user?->drafts()->exists();
     }
 
     public function render()

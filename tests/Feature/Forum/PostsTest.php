@@ -9,6 +9,7 @@ use Waterhole\Database\Seeders\GroupsSeeder;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
+use Waterhole\Models\PostDraft;
 use Waterhole\Models\User;
 
 uses(RefreshDatabase::class);
@@ -78,6 +79,148 @@ describe('create post', function () {
                 'commit' => true,
             ])
             ->assertForbidden();
+    });
+});
+
+describe('post drafts', function () {
+    test('saves post draft', function () {
+        $channel = Channel::factory()->public()->create();
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->from(route('waterhole.posts.create', ['channel_id' => $channel->id]))
+            ->post(route('waterhole.draft'), [
+                'channel_id' => $channel->id,
+                'title' => 'Draft title',
+                'body' => 'Draft body',
+            ])
+            ->assertRedirect(route('waterhole.posts.create', ['channel_id' => $channel->id]));
+
+        $draft = PostDraft::query()->where('user_id', $user->id)->first();
+
+        expect($draft)->not->toBeNull();
+        expect($draft->payload['title'])->toBe('Draft title');
+        expect($draft->payload['body'])->toBe('Draft body');
+    });
+
+    test('does not save empty post draft', function () {
+        $channel = Channel::factory()->public()->create();
+        $user = User::factory()->create();
+
+        PostDraft::create([
+            'user_id' => $user->id,
+            'payload' => [
+                'channel_id' => $channel->id,
+                'title' => 'Draft title',
+                'body' => 'Draft body',
+            ],
+        ]);
+
+        $this->actingAs($user)
+            ->from(route('waterhole.posts.create', ['channel_id' => $channel->id]))
+            ->post(route('waterhole.draft'), [
+                'channel_id' => $channel->id,
+                'title' => '',
+                'body' => '',
+            ])
+            ->assertRedirect(route('waterhole.posts.create', ['channel_id' => $channel->id]));
+
+        $this->assertDatabaseMissing('post_drafts', ['user_id' => $user->id]);
+    });
+
+    test('discarding post draft redirects home and clears draft', function () {
+        $channel = Channel::factory()->public()->create();
+        $user = User::factory()->create();
+
+        PostDraft::create([
+            'user_id' => $user->id,
+            'payload' => [
+                'channel_id' => $channel->id,
+                'title' => 'Draft title',
+                'body' => 'Draft body',
+            ],
+        ]);
+
+        $this->actingAs($user)
+            ->delete(route('waterhole.draft'))
+            ->assertRedirect(route('waterhole.home'));
+
+        $this->assertDatabaseMissing('post_drafts', ['user_id' => $user->id]);
+    });
+
+    test('publishing a post clears post draft', function () {
+        $channel = Channel::factory()->public()->create();
+        $user = User::factory()->create();
+
+        PostDraft::create([
+            'user_id' => $user->id,
+            'payload' => [
+                'channel_id' => $channel->id,
+                'title' => 'Draft title',
+                'body' => 'Draft body',
+            ],
+        ]);
+
+        $this->actingAs($user)->post(route('waterhole.posts.store'), [
+            'channel_id' => $channel->id,
+            'title' => 'Published title',
+            'body' => 'Published body',
+            'commit' => true,
+        ]);
+
+        $this->assertDatabaseMissing('post_drafts', ['user_id' => $user->id]);
+    });
+
+    test('changing channel without submitting updates post draft payload', function () {
+        $channelA = Channel::factory()->public()->create();
+        $channelB = Channel::factory()->public()->create();
+        $user = User::factory()->create();
+
+        PostDraft::create([
+            'user_id' => $user->id,
+            'payload' => [
+                'channel_id' => $channelA->id,
+                'title' => 'Draft title',
+                'body' => 'Draft body',
+            ],
+        ]);
+
+        $this->actingAs($user)
+            ->post(route('waterhole.posts.store'), [
+                'channel_id' => $channelB->id,
+                'title' => 'Draft title',
+                'body' => 'Draft body',
+            ])
+            ->assertRedirect(route('waterhole.posts.create', ['channel_id' => $channelB->id]));
+
+        $draft = PostDraft::query()->where('user_id', $user->id)->firstOrFail();
+
+        expect($draft->payload['channel_id'])->toBe($channelB->id);
+    });
+
+    test('changing channel without title or body clears post draft', function () {
+        $channelA = Channel::factory()->public()->create();
+        $channelB = Channel::factory()->public()->create();
+        $user = User::factory()->create();
+
+        PostDraft::create([
+            'user_id' => $user->id,
+            'payload' => [
+                'channel_id' => $channelA->id,
+                'title' => 'Draft title',
+                'body' => 'Draft body',
+            ],
+        ]);
+
+        $this->actingAs($user)
+            ->post(route('waterhole.posts.store'), [
+                'channel_id' => $channelB->id,
+                'title' => '',
+                'body' => '',
+            ])
+            ->assertRedirect(route('waterhole.posts.create', ['channel_id' => $channelB->id]));
+
+        $this->assertDatabaseMissing('post_drafts', ['user_id' => $user->id]);
     });
 });
 
@@ -347,9 +490,11 @@ describe('move post between channels', function () {
 describe('post heading sidebar', function () {
     test('renders heading tabs for posts with at least two headings', function () {
         $channel = Channel::factory()->public()->create();
-        $post = Post::factory()->for($channel)->create([
-            'body' => "## First Heading\n\nSome text.\n\n### Second Heading\n\nMore text.",
-        ]);
+        $post = Post::factory()
+            ->for($channel)
+            ->create([
+                'body' => "## First Heading\n\nSome text.\n\n### Second Heading\n\nMore text.",
+            ]);
 
         Comment::factory()->for($post)->create();
 
@@ -365,9 +510,11 @@ describe('post heading sidebar', function () {
 
     test('does not render heading tabs for a single heading', function () {
         $channel = Channel::factory()->public()->create();
-        $post = Post::factory()->for($channel)->create([
-            'body' => "## Only Heading\n\nSome text.",
-        ]);
+        $post = Post::factory()
+            ->for($channel)
+            ->create([
+                'body' => "## Only Heading\n\nSome text.",
+            ]);
 
         Comment::factory()->for($post)->create();
 
