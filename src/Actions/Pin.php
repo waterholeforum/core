@@ -6,6 +6,7 @@ use Illuminate\Support\Collection;
 use Waterhole\Models\Model;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
+use Waterhole\View\TurboStream;
 
 class Pin extends Action
 {
@@ -39,6 +40,6 @@ class Pin extends Action
 
     public function stream(Model $model): array
     {
-        return [];
+        return [TurboStream::refresh()];
     }
 }
