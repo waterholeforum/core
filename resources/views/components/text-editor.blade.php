@@ -21,6 +21,7 @@
                 aria-pressed="false"
                 data-action="text-editor#togglePreview"
                 data-text-editor-target="previewButton"
+                data-controller="hotkey"
                 data-hotkey="Meta+Shift+P"
                 data-hotkey-scope="{{ $id }}"
             >

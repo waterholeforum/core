@@ -7,7 +7,6 @@ import ky from 'ky';
 import './bootstrap/custom-elements';
 import './bootstrap/document-title';
 import './bootstrap/echo';
-import './bootstrap/hotkeys';
 import './bootstrap/turbo';
 import { buildStimulusDefinitions, getCookie } from './utils';
 

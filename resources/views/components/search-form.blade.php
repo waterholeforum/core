@@ -12,6 +12,7 @@
         placeholder="{{ __('waterhole::forum.search-placeholder') }}"
         aria-label="{{ __('waterhole::forum.search-placeholder') }}"
         required
+        data-controller="hotkey"
         data-hotkey="/"
     />
 

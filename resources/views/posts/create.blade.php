@@ -62,6 +62,7 @@
                                 name="commit"
                                 type="submit"
                                 value="1"
+                                data-controller="hotkey"
                                 data-hotkey="Mod+Enter"
                                 data-hotkey-scope="post-body"
                             >

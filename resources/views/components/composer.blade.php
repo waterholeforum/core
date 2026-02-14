@@ -13,6 +13,7 @@
             href="{{ route('waterhole.posts.comments.create', compact('post', 'parent')) }}"
             class="composer__placeholder row gap-sm color-muted grow align-center"
             data-action="composer#placeholderClick"
+            data-controller="hotkey"
             data-hotkey="r"
         >
             <x-waterhole::avatar :user="Auth::user()" class="icon text-lg" />
@@ -120,6 +121,7 @@
                     class="btn bg-accent composer__submit"
                     name="commit"
                     value="1"
+                    data-controller="hotkey"
                     data-hotkey="Mod+Enter"
                     data-hotkey-scope="new-comment"
                 >

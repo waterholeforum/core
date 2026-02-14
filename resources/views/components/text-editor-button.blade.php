@@ -5,6 +5,7 @@
         data-text-editor-format-param="{{ is_array($format) ? json_encode($format) : $format }}"
     @endif
     @if ($hotkey)
+        data-controller="hotkey"
         data-hotkey-scope="{{ $id }}"
         data-hotkey="{{ $hotkey }}"
     @endif

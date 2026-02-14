@@ -19,6 +19,7 @@
                         <button
                             type="submit"
                             class="btn bg-accent"
+                            data-controller="hotkey"
                             data-hotkey="Mod+Enter"
                             data-hotkey-scope="post-body"
                         >
