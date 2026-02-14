@@ -14,8 +14,6 @@ export default class extends Controller<HTMLElement> {
     private textarea?: HTMLTextAreaElement;
 
     connect() {
-        this.textarea = this.element.querySelector('textarea') || undefined;
-
         this.enableTextareaAutosize();
 
         this.element.addEventListener('input', this.syncDraftState);
@@ -132,6 +130,7 @@ export default class extends Controller<HTMLElement> {
 
     private enableTextareaAutosize() {
         this.disableTextareaAutosize();
+        this.refreshTextarea();
 
         if (!this.textarea) return;
 
@@ -168,11 +167,17 @@ export default class extends Controller<HTMLElement> {
     };
 
     private syncDraftState = () => {
+        this.refreshTextarea();
+
         this.element.classList.toggle(
             'has-draft',
             !!this.textarea?.value.trim(),
         );
     };
+
+    private refreshTextarea() {
+        this.textarea = this.element.querySelector('textarea') || undefined;
+    }
 
     private onKeydown = (e: KeyboardEvent) => {
         if (e.key !== 'Escape' || !this.element.classList.contains('is-open'))
