@@ -39,6 +39,7 @@ export default class extends Controller {
             'turbo:frame-render',
             this.showPostOnFirstPage,
         );
+        document.addEventListener('turbo:morph', this.onScroll);
 
         window.addEventListener('scroll', this.onScroll, { passive: true });
         this.onScroll();
@@ -53,6 +54,7 @@ export default class extends Controller {
             'turbo:frame-render',
             this.showPostOnFirstPage,
         );
+        document.removeEventListener('turbo:morph', this.onScroll);
 
         window.removeEventListener('scroll', this.onScroll);
     }

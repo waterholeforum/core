@@ -79,3 +79,11 @@ export function buildStimulusDefinitions(
         return { identifier, controllerConstructor: module.default };
     });
 }
+
+export function nextFrame() {
+    return new Promise((resolve) => requestAnimationFrame(resolve));
+}
+
+export function promiseTimeout(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}

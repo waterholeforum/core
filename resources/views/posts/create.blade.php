@@ -3,7 +3,7 @@
 @endphp
 
 <x-waterhole::layout :title="$title">
-    <div class="container section measure">
+    <div class="container section">
         <form
             method="POST"
             action="{{ route('waterhole.posts.store') }}"
@@ -26,7 +26,7 @@
                     <x-waterhole::channel-picker id="channel_id" name="channel_id" show-links />
                 </x-waterhole::dialog>
             @else
-                <x-waterhole::dialog :title="$title">
+                <x-waterhole::dialog class="measure" :title="$title">
                     <x-slot name="header">
                         <ui-popup placement="bottom-start">
                             <button class="btn" type="button">

@@ -1,0 +1,56 @@
+// High specificity
+.is-full-screen:not(#\9) {
+  --color-bg: var(--palette-surface);
+
+  position: fixed;
+  inset: var(--space-md);
+  z-index: var(--z-index-overlay);
+  background: var(--color-bg);
+  border-radius: var(--radius);
+  box-shadow:
+    var(--focus-shadow, 0 0 0 transparent),
+    var(--shadow-md),
+    0 0 50px 20px var(--palette-bg);
+
+  &,
+  * {
+    overscroll-behavior: contain;
+  }
+}
+
+.full-screen-button__exit {
+  display: none;
+}
+
+.is-full-screen {
+  .full-screen-button__enter {
+    display: none;
+  }
+
+  .full-screen-button__exit {
+    display: inline-flex;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .is-full-screen {
+    animation: full-screen-in var(--transition-duration) var(--ease-out);
+  }
+
+  .was-full-screen {
+    animation: full-screen-out var(--transition-duration) var(--ease-out);
+  }
+}
+
+@keyframes full-screen-in {
+  from {
+    transform: scale(0.5);
+  }
+}
+
+@keyframes full-screen-out {
+  from {
+    transform: scale(1.5);
+    box-shadow: var(--focus-shadow), var(--shadow-md);
+  }
+}

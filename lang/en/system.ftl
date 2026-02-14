@@ -29,6 +29,8 @@ controls-button = Controls
 more-button = More
 loading = Loading
 show-more-button = Show more
+full-screen-enter-button = Full Screen
+full-screen-exit-button = Exit Full Screen
 
 ## Post Feed Layouts
 

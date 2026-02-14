@@ -3,8 +3,8 @@
 @endphp
 
 <x-waterhole::layout :title="$title">
-    <div class="container section measure">
-        <x-waterhole::dialog :title="$title">
+    <div class="container section">
+        <x-waterhole::dialog class="measure" :title="$title">
             <form method="POST" action="{{ route('waterhole.posts.update', ['post' => $post]) }}">
                 @csrf
                 @method('PATCH')

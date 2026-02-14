@@ -1,4 +1,4 @@
-<turbo-frame id="{{ $frame }}" {{ $attributes }} data-action="">
+<turbo-frame id="{{ $frame }}" {{ $attributes }}>
     <div class="row gap-xs align-center text-xs color-muted">
         <span class="with-icon" data-draft-target="saving" hidden>
             {{ __('waterhole::forum.draft-saving-message') }}

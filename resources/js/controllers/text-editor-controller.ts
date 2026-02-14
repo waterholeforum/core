@@ -2,6 +2,7 @@ import { subscribe as pasteMarkdown } from '@github/paste-markdown';
 import { ActionEvent, Controller } from '@hotwired/stimulus';
 import { PopupElement } from 'inclusive-elements';
 import TextareaEditorModule from 'textarea-editor';
+import { promiseTimeout } from '../utils';
 
 const TextareaEditor =
     (TextareaEditorModule as any).default ?? TextareaEditorModule;
@@ -27,13 +28,28 @@ export default class extends Controller {
     private editor?: typeof TextareaEditor;
     private pasteMarkdown?: ReturnType<typeof pasteMarkdown>;
 
-    inputTargetConnected(input: HTMLInputElement) {
-        this.editor = new TextareaEditor(input);
-        this.pasteMarkdown = pasteMarkdown(input);
+    private previewTimeout?: number;
+    private previewing = false;
+    private lastPreviewValue?: string;
+    private previewRequestId = 0;
+
+    connect() {
+        this.previewing = this.element.classList.contains('is-previewing');
     }
 
-    inputTargetDisconnected() {
+    disconnect() {
+        this.clearPreviewTimeout();
+    }
+
+    inputTargetConnected(input: HTMLTextAreaElement) {
+        this.editor = new TextareaEditor(input);
+        this.pasteMarkdown = pasteMarkdown(input);
+        input.addEventListener('input', this.inputChanged);
+    }
+
+    inputTargetDisconnected(input: HTMLTextAreaElement) {
         this.pasteMarkdown?.unsubscribe();
+        input.removeEventListener('input', this.inputChanged);
     }
 
     hotkeyLabelTargetConnected(element: HTMLElement) {
@@ -55,36 +71,16 @@ export default class extends Controller {
         this.editor?.toggle(e.params.format);
     }
 
-    async togglePreview() {
-        if (!this.inputTarget || !this.previewTarget) return;
+    async insertQuote(e: CustomEvent) {
+        // Wait for composer textarea to be ready and focused
+        await promiseTimeout(200);
 
-        const previewing = !this.inputTarget.hidden;
-
-        this.inputTarget.hidden = previewing;
-        this.previewTarget.hidden = !previewing;
-        this.previewButtonTarget?.setAttribute(
-            'aria-pressed',
-            String(previewing),
-        );
-        this.element.classList.toggle('is-previewing', previewing);
-
-        if (!previewing) return;
-
-        this.previewTarget.setAttribute('aria-busy', 'true');
-        this.previewTarget.innerHTML = await Waterhole.fetch
-            .post(this.formatUrlValue, { body: this.inputTarget.value })
-            .text();
-        this.previewTarget.hidden = false;
-        this.previewTarget.setAttribute('aria-busy', 'false');
-    }
-
-    insertQuote(e: CustomEvent) {
         if (!this.inputTarget || !this.editor) return;
 
         let text = (this.inputTarget.selectionStart > 0 ? '\n\n' : '') + '> ';
 
         this.editor.insert(
-            text + e.detail.text.replace(/\n/g, '\n> ') + '\n\n',
+            text + e.detail.text.replace(/\n/g, '\n> ').trim() + '\n\n',
         );
     }
 
@@ -92,5 +88,75 @@ export default class extends Controller {
         this.editor?.insert(e.detail.unicode || '');
         (e.target as HTMLElement).closest<PopupElement>('ui-popup')!.open =
             false;
+    }
+
+    togglePreview() {
+        this.setPreviewing(!this.previewing);
+    }
+
+    fullScreenEnter() {
+        this.setPreviewing(true);
+        this.focusInput();
+    }
+
+    fullScreenExit() {
+        this.setPreviewing(false);
+        this.focusInput();
+    }
+
+    private setPreviewing(previewing: boolean) {
+        if (this.previewing === previewing) return;
+
+        this.previewing = previewing;
+
+        this.previewButtonTarget?.setAttribute(
+            'aria-pressed',
+            String(this.previewing),
+        );
+        this.element.classList.toggle('is-previewing', this.previewing);
+
+        if (!this.previewing) {
+            this.clearPreviewTimeout();
+            this.previewRequestId++;
+            return;
+        }
+
+        this.refreshPreview();
+    }
+
+    private async refreshPreview() {
+        const value = this.inputTarget.value;
+        if (value === this.lastPreviewValue) return;
+
+        const requestId = ++this.previewRequestId;
+
+        const html = await Waterhole.fetch
+            .post(this.formatUrlValue, { body: value })
+            .text();
+
+        if (requestId !== this.previewRequestId || !this.previewing) {
+            return;
+        }
+
+        this.previewTarget.innerHTML = html;
+        this.lastPreviewValue = value;
+    }
+
+    private inputChanged = () => {
+        if (!this.previewing) return;
+        this.clearPreviewTimeout();
+        this.previewTimeout = window.setTimeout(() => {
+            this.refreshPreview();
+        }, 500);
+    };
+
+    private clearPreviewTimeout() {
+        window.clearTimeout(this.previewTimeout);
+    }
+
+    private focusInput() {
+        requestAnimationFrame(() => {
+            this.inputTarget?.focus({ preventScroll: true });
+        });
     }
 }

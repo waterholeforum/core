@@ -4,11 +4,32 @@
   min-height: 15em;
 }
 
-.text-editor__toolbar {
-  margin: var(--space-xxs);
-  margin-bottom: 0;
+.text-editor__input {
+  width: 100%;
+  outline: none;
+  padding: var(--space-md);
+  padding-top: 0;
+  resize: vertical;
+  border: 0;
+  background: transparent;
+  max-height: 70vh;
+  position: relative;
+  box-shadow: none !important;
+}
 
-  .is-previewing & {
+// Preview
+.text-editor__preview {
+  overflow: auto;
+  padding: var(--space-md);
+  padding-top: calc(2 * var(--space-xxs) + 2.5 * var(--text-xxs));
+}
+
+.text-editor:not(.is-previewing) .text-editor__preview {
+  display: none;
+}
+
+.text-editor.is-previewing {
+  .text-editor__toolbar-content {
     z-index: 1;
     pointer-events: none;
 
@@ -16,35 +37,67 @@
       pointer-events: all;
     }
 
-    > :not(.text-editor__preview-button) {
-      display: none;
+    > :not(.text-editor__preview-button, .full-screen-button) {
+      visibility: hidden;
     }
   }
-}
 
-.text-editor__expander {
-  position: relative;
-}
-
-.text-editor__input {
-  width: 100%;
-  outline: none;
-  padding: var(--space-md);
-  padding-top: var(--space-xs);
-  resize: vertical;
-  border: 0;
-  background: transparent;
-  max-height: 70vh;
-  position: relative;
-  box-shadow: none !important;
-
-  &[hidden] {
-    display: initial !important;
+  .text-editor__input {
     visibility: hidden;
   }
 }
 
-.text-editor__preview {
-  overflow: auto;
-  padding: var(--space-md);
+// Full screen
+.text-editor.is-full-screen {
+  border: 0;
+  width: auto;
+
+  &:focus-within {
+    --focus-shadow: 0 0 0 2px var(--color-accent);
+  }
+
+  .text-editor__input {
+    height: 100%;
+    max-height: none;
+    resize: none;
+  }
+}
+
+// Two-pane preview in full screen
+// (Support both text editor full screen and composer full screen)
+@media (--xl-up) {
+  .text-editor.is-previewing {
+    .is-full-screen &,
+    &.is-full-screen {
+      .text-editor__toolbar {
+        border-bottom: 1px solid var(--color-stroke);
+      }
+
+      .text-editor__toolbar-content {
+        pointer-events: all !important;
+
+        > * {
+          visibility: visible !important;
+        }
+      }
+
+      .text-editor__content {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        overflow: hidden;
+      }
+
+      .text-editor__preview {
+        border-left: 1px solid var(--color-stroke);
+        overflow: auto;
+        position: static !important;
+        padding-top: var(--space-md);
+      }
+
+      .text-editor__input {
+        visibility: visible;
+        padding-top: var(--space-md);
+      }
+    }
+  }
 }

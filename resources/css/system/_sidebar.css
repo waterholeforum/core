@@ -36,21 +36,19 @@
 
   .sidebar--bottom {
     position: sticky;
-    bottom: 0;
-    margin-inline: calc(-1 * var(--space-gutter));
-    padding-inline: var(--space-gutter);
+    bottom: var(--space-lg);
+    margin-left: auto;
     background: var(--color-bg);
-    width: calc(100% + 2 * var(--space-gutter)) !important;
-    padding-block: var(--space-sm);
+    width: fit-content;
+    padding: var(--space-xxs);
     flex-wrap: nowrap !important;
     flex-direction: row !important;
     flex-basis: auto !important;
     align-items: center;
     z-index: var(--z-index-header);
-
-    &.is-stuck {
-      box-shadow: var(--shadow-sm);
-    }
+    height: var(--toolbar-height) !important;
+    border-radius: 99px;
+    box-shadow: var(--shadow-md);
   }
 }
 

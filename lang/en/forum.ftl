@@ -111,7 +111,7 @@ delete-forever-button = Delete Forever
 comments-unread-heading = Unread
 comments-unread-link = Unread
 
-create-comment-title = Write a Comment
+create-comment-title = Comment
 edit-comment-title = Edit Comment
 comment-number-title = Comment #{ $number }
 
@@ -133,6 +133,8 @@ composer-placeholder = Write a comment...
 composer-reply-to-placeholder = Reply to { $userName }...
 composer-replying-to-label = Replying to
 composer-clear-reply-button = Clear
+composer-collapse-button = Collapse
+composer-expand-button = Expand
 composer-submit = Post
 
 save-draft-button = Save Draft

@@ -27,6 +27,13 @@
     flex-grow: 1;
     flex-direction: row;
     align-items: center;
+    gap: var(--space-xxs);
+  }
+
+  @media (--lg-up) {
+    .btn {
+      margin-left: calc(-1 * var(--btn-padding));
+    }
   }
 }
 

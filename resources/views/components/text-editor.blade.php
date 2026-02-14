@@ -1,24 +1,34 @@
 <div
-    data-controller="text-editor uploads"
+    data-controller="text-editor uploads full-screen"
     data-text-editor-format-url-value="{{ route('waterhole.format') }}"
     data-uploads-url-value="{{ route('waterhole.upload') }}"
-    {{ $attributes->class('input text-editor stack overlay-container') }}
+    {{
+        $attributes->class('input text-editor stack overlay-container')->merge([
+            'data-action' => $attributes->prepends('full-screen:enter->text-editor#fullScreenEnter full-screen:exit->text-editor#fullScreenExit'),
+        ])
+    }}
 >
     <ui-toolbar
-        class="text-editor__toolbar row js-only text-xxs scrollable-x"
+        class="text-editor__toolbar row js-only text-xxs scrollable-x no-shrink"
         data-controller="watch-scroll"
     >
-        @components(\Waterhole\Extend\Ui\TextEditor::class, compact('id'))
+        <div class="text-editor__toolbar-content row grow p-xxs">
+            @components(\Waterhole\Extend\Ui\TextEditor::class, compact('id'))
 
-        <button
-            type="button"
-            class="btn btn--transparent text-editor__preview-button push-end"
-            aria-pressed="false"
-            data-action="text-editor#togglePreview"
-            data-text-editor-target="previewButton"
-        >
-            {{ __('waterhole::system.text-editor-preview') }}
-        </button>
+            <button
+                type="button"
+                class="btn btn--transparent text-editor__preview-button push-end"
+                aria-pressed="false"
+                data-action="text-editor#togglePreview"
+                data-text-editor-target="previewButton"
+                data-hotkey="Meta+Shift+P"
+                data-hotkey-scope="{{ $id }}"
+            >
+                {{ __('waterhole::system.text-editor-preview') }}
+            </button>
+
+            <x-waterhole::full-screen-button :hotkey-scope="$id" />
+        </div>
     </ui-toolbar>
 
     <div class="text-editor__content grow stack">
@@ -43,7 +53,7 @@
         <div
             class="text-editor__preview content overlay busy-spinner"
             data-text-editor-target="preview"
-            hidden
+            tabindex="-1"
         ></div>
     </div>
 </div>

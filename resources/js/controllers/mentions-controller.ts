@@ -32,6 +32,10 @@ export default class extends Controller<TextExpanderElement> {
             'text-expander-value',
             this.onTextExpanderValue,
         );
+        this.element.addEventListener(
+            'text-expander-committed',
+            this.onTextExpanderCommitted,
+        );
     }
 
     disconnect() {
@@ -42,6 +46,10 @@ export default class extends Controller<TextExpanderElement> {
         this.element.removeEventListener(
             'text-expander-value',
             this.onTextExpanderValue,
+        );
+        this.element.removeEventListener(
+            'text-expander-committed',
+            this.onTextExpanderCommitted,
         );
     }
 
@@ -112,5 +120,12 @@ export default class extends Controller<TextExpanderElement> {
         if (commentUrl) {
             Turbo.visit(commentUrl, { frame: frameId });
         }
+    }) as EventListener;
+
+    // Trigger an input event after inserting a mention, so that the text editor
+    // preview is triggered to update.
+    private onTextExpanderCommitted = ((event: CustomEvent) => {
+        const { input } = event.detail;
+        input.dispatchEvent(new CustomEvent('input'));
     }) as EventListener;
 }

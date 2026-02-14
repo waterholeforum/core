@@ -69,12 +69,12 @@
 
             @can('waterhole.post.comment', $post)
                 <div id="reply" tabindex="-1"></div>
-                <x-waterhole::composer :post="$post" data-turbo-permanent />
+                <x-waterhole::composer :post="$post" data-turbo-permanent data-turbo-temporary />
             @endcan
         </div>
 
         <div
-            class="sidebar sidebar--sticky sidebar--bottom overflow-visible stack gap-lg justify-between"
+            class="sidebar sidebar--sticky sidebar--bottom overflow-visible stack gap-y-lg gap-x-sm"
             data-controller="watch-sticky"
         >
             <x-waterhole::post-sidebar :post="$post" />
@@ -84,7 +84,10 @@
                     <div class="tabs tabs--vertical gap-xxs">
                         <a href="#comments" class="tab with-icon">
                             @icon('tabler-message-circle-2')
-                            {{ __('waterhole::forum.post-comments-link', ['count' => $comments->total()]) }}
+                            <span class="hide-md-up">{{ $comments->total() }}</span>
+                            <span class="hide-sm">
+                                {{ __('waterhole::forum.post-comments-link', ['count' => $comments->total()]) }}
+                            </span>
                         </a>
 
                         <a
@@ -124,17 +127,18 @@
                 <ui-popup
                     class="collapsible-nav stack"
                     data-post-page-target="commentsPagination"
+                    placement="top-end"
                     hidden
                 >
-                    <button class="btn btn--transparent text-xs">
+                    <button class="btn btn--transparent btn--narrow btn--start text-xs">
                         {{ __('waterhole::system.page-number-prefix') }}
                         <span data-post-page-target="currentPage">
                             {{ $comments->currentPage() }}
                         </span>
-                        @icon('tabler-selector')
+                        @icon('tabler-selector', ['class' => 'icon--narrow'])
                     </button>
 
-                    <div hidden class="drawer drawer--right">
+                    <div hidden class="menu p-md">
                         <nav class="comments-pagination tabs tabs--vertical gap-sm">
                             <a class="tab with-icon" href="{{ $post->url }}#top">
                                 @icon('tabler-chevrons-up', ['class' => 'icon--narrow'])

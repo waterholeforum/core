@@ -1,6 +1,10 @@
 import * as Turbo from '@hotwired/turbo';
-import { FrameElement, TurboFrameMissingEvent } from '@hotwired/turbo';
-import { cloneFromTemplate } from '../utils';
+import {
+    FrameElement,
+    StreamElement,
+    TurboFrameMissingEvent,
+} from '@hotwired/turbo';
+import { cloneFromTemplate, nextFrame } from '../utils';
 import { AlertsElement } from 'inclusive-elements';
 
 declare global {
@@ -22,6 +26,42 @@ document.addEventListener('turbo:load', () => {
     [...newAlerts.children].forEach((el) =>
         Waterhole.alerts.show(el as HTMLElement),
     );
+});
+
+document.addEventListener('turbo:morph', async () => {
+    await nextFrame();
+    if (!window.location.hash) return;
+    document.querySelector(window.location.hash)?.scrollIntoView();
+});
+
+document.addEventListener('turbo:before-morph-element', (e) => {
+    if (
+        e.target instanceof FrameElement &&
+        e.target.loading === 'lazy' &&
+        e.target.complete
+    ) {
+        e.preventDefault();
+    }
+});
+
+document.addEventListener('turbo:before-stream-render', (e) => {
+    const { detail } = e as CustomEvent;
+    const fallback = detail.render;
+
+    detail.render = (stream: StreamElement) => {
+        if (stream.action === 'alert') {
+            Waterhole.alerts.show(
+                stream.templateContent.firstElementChild as HTMLElement,
+            );
+        } else if (stream.action === 'redirect') {
+            console.log(String(stream.getAttribute('url')));
+            Turbo.visit(String(stream.getAttribute('url')), {
+                action: 'replace',
+            });
+        } else {
+            fallback(stream);
+        }
+    };
 });
 
 document.addEventListener('turbo:before-fetch-response', async (e) => {

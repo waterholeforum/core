@@ -1,13 +1,7 @@
 // Accessibility
 
 .visually-hidden {
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-  height: 1px;
-  overflow: hidden;
-  position: absolute;
-  white-space: nowrap;
-  width: 1px;
+  @mixin visually-hidden;
 }
 
 // Layout
@@ -545,6 +539,10 @@
     transform: none;
     opacity: 1;
   }
+}
+
+.no-transition {
+  transition: none !important;
 }
 
 // Background Color

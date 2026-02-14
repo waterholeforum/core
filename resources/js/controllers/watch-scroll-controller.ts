@@ -7,16 +7,18 @@ export default class extends Controller<HTMLElement> {
     private observer?: ResizeObserver;
 
     connect() {
-        this.element.addEventListener('scroll', this.onScroll, {
-            passive: true,
-        });
+        this.element.addEventListener('scroll', this.onScroll);
+        document.addEventListener('turbo:morph', this.onScroll);
 
         this.observer = new ResizeObserver(() => this.onScroll());
         this.observer.observe(this.element);
+
+        this.onScroll();
     }
 
     disconnect() {
         this.element.removeEventListener('scroll', this.onScroll);
+        document.removeEventListener('turbo:morph', this.onScroll);
 
         this.observer?.disconnect();
     }

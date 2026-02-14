@@ -85,6 +85,7 @@
 
     > :last-child {
       display: contents !important;
+      --color-bg: inherit;
     }
   }
 }

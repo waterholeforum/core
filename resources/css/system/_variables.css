@@ -223,6 +223,7 @@
   --control-height: 2.5em;
   --control-height-small: 2.3em;
   --control-radius: var(--radius);
+  --toolbar-height: calc(var(--control-height) + 2 * var(--space-xxs));
 
   // Header
   --header-height: 4rem;

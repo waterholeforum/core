@@ -1,95 +1,166 @@
+// Composer container
 .composer {
-  --height-transition-duration: 0s;
-
+  transform-origin: bottom;
+  max-height: calc(100vh - var(--header-height) - 2 * var(--space-md));
   border-radius: var(--radius);
-  background: var(--color-bg);
-  transition:
-    box-shadow 0.2s,
-    border 0.2s,
-    height var(--height-transition-duration),
-    bottom 0.2s;
-  max-height: calc(100vh - var(--header-height));
+}
+
+.composer:not(.is-static) {
+  background: hsl(var(--palette-bg-hsl) / 0.9);
+  box-shadow: 0 10px 30px 40px hsl(var(--palette-bg-hsl) / 0.9);
   position: sticky;
-  bottom: calc(-1 * var(--radius));
+  bottom: var(--space-lg);
+}
 
-  // The composer is "static" (cannot be opened/closed) on a standalone comment page
-  &.is-static {
-    position: static;
-    height: 70vh !important;
+.composer__inner {
+  background: var(--color-bg);
+  border-radius: inherit;
+}
 
-    .composer__close {
-      visibility: hidden;
-      width: var(--space-xs);
-    }
-  }
+.composer:is(.is-stuck, .is-open) .composer__inner {
+  box-shadow: var(--focus-shadow, 0 0 0 transparent), var(--shadow-md);
+}
 
-  &:not(.is-open) {
-    --height-transition-duration: 0.2s;
-    height: 4.75em !important; // override user resizing
-    bottom: -4.75em;
-
-    .composer__form {
-      display: none;
-    }
-  }
-
-  &.is-open {
-    --color-bg: var(--palette-surface);
-    --focus-shadow: 0 0 0 transparent;
-    height: 300px;
-    min-height: 200px;
-    box-shadow: var(--focus-shadow), var(--shadow-md);
-    padding-bottom: var(--radius);
-    z-index: calc(var(--z-index-header) + 1);
-
-    &:focus-within {
-      --focus-shadow: 0 0 0 2px var(--color-accent);
-    }
-
-    .composer__placeholder {
-      display: none;
-    }
+// Animations
+@keyframes composer-in {
+  from {
+    transform: scaleY(0.2);
   }
 }
 
-@media (--sm) {
+@keyframes composer-out {
+  from {
+    transform: scaleY(3);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
   .composer.is-open {
-    margin-inline: calc(-1 * var(--space-gutter));
-    border-radius: 0;
+    animation: composer-in var(--transition-duration) var(--ease-out);
+  }
+
+  .composer.was-open:not(.is-open) {
+    animation: composer-out var(--transition-duration) var(--ease-out);
   }
 }
 
+// Collapsed
+.composer:not(.is-open) {
+  min-height: 0;
+  height: var(--toolbar-height) !important;
+  border-radius: 99px;
+}
+
+.composer:not(.is-stuck):not(.is-open) .composer__inner {
+  box-shadow: 0 0 0 1px var(--color-stroke);
+}
+
+.composer.has-draft:not(.is-open) {
+  .composer__toolbar {
+    border-bottom: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .composer__placeholder,
+  .composer__handle,
+  .text-editor,
+  .composer__toolbar
+    > :not(
+      .composer__expand,
+      .composer__title,
+      .composer__draft-controls,
+      .grow
+    ) {
+    display: none;
+  }
+
+  .composer__expand {
+    display: inline-flex;
+    position: relative;
+    z-index: 1;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: -100vw;
+    }
+  }
+
+  .composer__draft-controls {
+    position: relative;
+    z-index: 2;
+  }
+}
+
+.composer:not(.has-draft, .is-open) .composer__form {
+  display: none;
+}
+
+// Open
+.composer.is-open .composer__inner {
+  --color-bg: var(--palette-surface);
+  --focus-shadow: 0 0 0 transparent;
+
+  &:focus-within {
+    --focus-shadow: 0 0 0 2px var(--color-accent);
+  }
+}
+
+.composer.is-open {
+  z-index: calc(var(--z-index-header) + 1);
+  min-height: 250px;
+
+  .composer__expand,
+  .composer__placeholder {
+    display: none;
+  }
+}
+
+// Static composer on a standalone comment page
+.composer.is-static {
+  height: 70vh !important;
+
+  .composer__collapse {
+    visibility: hidden;
+    width: var(--space-xs);
+  }
+}
+
+// Make a bit more room on small screens
+@media (--md-down) {
+  .composer.is-open {
+    margin-inline: calc(-1 * var(--space-xs));
+    bottom: calc(var(--space-lg) - var(--space-xs));
+  }
+
+  .composer:not(.is-open) {
+    margin-bottom: calc(-1 * var(--toolbar-height) - var(--space-md));
+  }
+
+  .composer:not(.is-open) .composer__inner {
+    width: fit-content;
+
+    .composer__draft-controls {
+      display: none;
+    }
+  }
+}
+
+// Composer contents
 .composer__placeholder {
-  border: 2px dashed var(--color-stroke);
-  border-radius: var(--radius);
-  padding: var(--space-md);
+  padding: var(--space-sm);
+  padding-right: var(--space-md);
   cursor: text;
   transition:
     box-shadow 0.2s,
     border 0.2s,
     color 0.2s;
   text-decoration: none !important;
+  border-radius: inherit;
 
   &:hover {
     box-shadow: var(--shadow-md);
-    border-color: transparent;
-    color: inherit;
-  }
-
-  .avatar {
-    width: var(--control-height);
-  }
-}
-
-.composer__form {
-  .text-editor {
-    min-height: 0;
-    border: 0;
-    box-shadow: none;
-  }
-
-  .text-editor__input {
-    resize: none;
   }
 }
 
@@ -120,7 +191,17 @@
   border-bottom: 1px solid var(--color-stroke);
 }
 
-// The "replying to" bit
-.composer__parent {
-  padding-left: var(--space-sm);
+.composer__form {
+  .text-editor {
+    min-height: 0;
+    border: 0;
+    box-shadow: none;
+    transform-origin: bottom;
+  }
+
+  .text-editor__input {
+    resize: none;
+    max-height: calc(50vh - var(--header-height) - 2 * var(--space-md));
+    min-height: 100px;
+  }
 }

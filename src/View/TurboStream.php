@@ -70,20 +70,36 @@ abstract class TurboStream
         return static::stream($component, 'after', compact('targets'));
     }
 
-    public static function refresh(): string
+    public static function refresh(?string $requestId = null): string
     {
-        return '<turbo-stream action="refresh"></turbo-stream>';
+        return static::stream(null, 'refresh', array_filter(['request-id' => $requestId]));
     }
 
-    private static function stream(Component $component, string $action, array $attributes): string
+    public static function alert(Component $component): string
     {
+        return static::stream($component, 'alert');
+    }
+
+    public static function redirect(string $url): string
+    {
+        return <<<html
+            <turbo-stream action="redirect" url="$url"></turbo-stream>
+        html;
+    }
+
+    private static function stream(
+        ?Component $component,
+        string $action,
+        array $attributes = [],
+    ): string {
         $attributes = new ComponentAttributeBag($attributes);
-        $content = trim(Blade::renderComponent($component));
+
+        $content = $component
+            ? '<template>' . trim(Blade::renderComponent($component)) . '</template>'
+            : '';
 
         return <<<html
-            <turbo-stream action="$action" $attributes>
-                <template>$content</template>
-            </turbo-stream>
+            <turbo-stream action="$action" $attributes>$content</turbo-stream>
         html;
     }
 

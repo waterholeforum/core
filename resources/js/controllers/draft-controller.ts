@@ -1,4 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
+import { TurboSubmitEndEvent, TurboSubmitStartEvent } from '@hotwired/turbo';
 
 /**
  * Draft controller for forms.
@@ -42,22 +43,23 @@ export default class extends Controller<HTMLFormElement> {
         this.save();
     }
 
-    submitStart(e: CustomEvent) {
+    submitStart(e: TurboSubmitStartEvent) {
+        this.submitting = true;
+
         if (!this.isSaveSubmission(e)) {
             return;
         }
 
-        this.submitting = true;
         this.pendingSnapshot = this.snapshot();
         this.showState('saving');
     }
 
-    submitEnd(e: CustomEvent) {
+    submitEnd(e: TurboSubmitEndEvent) {
+        this.submitting = false;
+
         if (!this.isSaveSubmission(e)) {
             return;
         }
-
-        this.submitting = false;
 
         if (!e.detail.success) {
             this.showState('error');

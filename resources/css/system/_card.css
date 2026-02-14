@@ -66,10 +66,3 @@ details.card:not([open]) .card__header {
     }
   }
 }
-
-.card,
-.card__row {
-  &:target {
-    background: var(--color-warning-soft);
-  }
-}

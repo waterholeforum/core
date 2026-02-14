@@ -10,10 +10,6 @@ use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
 use Waterhole\Models\ReactionType;
-use Waterhole\View\Components\CommentFrame;
-use Waterhole\View\Components\CommentFull;
-use Waterhole\View\Components\Composer;
-use Waterhole\View\Components\FollowButton;
 use Waterhole\View\TurboStream;
 use function HotwiredLaravel\TurboLaravel\dom_id;
 
@@ -117,31 +113,12 @@ class CommentController extends Controller
 
         if ($user->follow_on_comment && !$post->isFollowed()) {
             $post->follow();
-            $wasFollowed = true;
         }
 
-        // If the client supports Turbo Streams, we can append the new comment
-        // to the bottom of the page, and reset the comment composer. If the
-        // comment has a parent, send back a fresh version of that too. And if
-        // the post has been followed, refresh the post controls.
         if ($request->wantsTurboStream()) {
-            $streams = [
-                TurboStream::append(
-                    (new CommentFrame($comment))->withAttributes(['class' => 'card__row']),
-                    '.comment-list',
-                ),
-                TurboStream::replace(new Composer($post)),
-            ];
-
-            if (isset($parent)) {
-                $streams[] = TurboStream::replace(new CommentFull($parent->refresh()));
-            }
-
-            if (isset($wasFollowed)) {
-                $streams[] = TurboStream::replace(new FollowButton($post));
-            }
-
-            return TurboResponseFactory::makeStream(implode($streams));
+            return TurboResponseFactory::makeStream(
+                TurboStream::redirect(Comment::find($comment->getKey())->post_url),
+            );
         }
 
         // If the comment was made in reply to another comment, then redirect
@@ -151,7 +128,7 @@ class CommentController extends Controller
             return redirect($parent->url . '#' . dom_id($parent));
         }
 
-        return redirect($comment->post_url);
+        return redirect($comment->fresh()->post_url);
     }
 
     public function edit(Post $post, Comment $comment)

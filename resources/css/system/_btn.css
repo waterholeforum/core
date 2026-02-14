@@ -72,35 +72,12 @@
 // Icon button
 
 .btn--icon {
-  width: var(--btn-height);
-  padding: 0;
-  border-radius: 100px;
-  position: relative;
+  @mixin btn--icon;
+}
 
-  .avatar {
-    width: 100%;
-    height: 100%;
-  }
-
-  .icon {
-    font-size: 120%;
-  }
-
-  .badge {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-
-  .label {
-    // .visually-hidden
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    height: 1px;
-    overflow: hidden;
-    position: absolute;
-    white-space: nowrap;
-    width: 1px;
+@media (--sm) {
+  .btn--icon-sm {
+    @mixin btn--icon;
   }
 }
 

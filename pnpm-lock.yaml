@@ -19,6 +19,9 @@ importers:
             '@floating-ui/dom':
                 specifier: ^1.7.5
                 version: 1.7.5
+            '@frsource/autoresize-textarea':
+                specifier: ^2.0.179
+                version: 2.0.179
             '@github/combobox-nav':
                 specifier: ^3.0.1
                 version: 3.0.1
@@ -706,6 +709,12 @@ packages:
         resolution:
             {
                 integrity: sha512-aGTxbpbg8/b5JfU1HXSrbH3wXZuLPJcNEcZQFMxLs3oSzgtVu6nFPkbbGGUvBcUjKV2YyB9Wxxabo+HEH9tcRQ==,
+            }
+
+    '@frsource/autoresize-textarea@2.0.179':
+        resolution:
+            {
+                integrity: sha512-U1+7NkRC7jGEdnc0PZBVIiVtZl3foyMp4x9TIk0EIb4Ag/8ju/+Y903qgEmxIvMfkOhk+vEbZIol5P7wi5LKVg==,
             }
 
     '@github/combobox-nav@2.3.1':
@@ -4733,6 +4742,8 @@ snapshots:
             '@floating-ui/utils': 0.2.10
 
     '@floating-ui/utils@0.2.10': {}
+
+    '@frsource/autoresize-textarea@2.0.179': {}
 
     '@github/combobox-nav@2.3.1': {}
 
