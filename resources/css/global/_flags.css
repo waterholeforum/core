@@ -1,6 +1,6 @@
 .flag-container {
   border: 2px solid var(--color-activity);
-  box-shadow: inset 0 0 10px 2px var(--color-activity-soft);
+  box-shadow: inset 0 0 20px 2px var(--color-activity-soft);
   border-radius: var(--radius) !important;
   overflow: clip;
 

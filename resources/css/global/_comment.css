@@ -4,7 +4,8 @@
 
   padding: var(--comment-padding);
   padding-left: var(--comment-padding-left);
-  transition: background 0.2s;
+  transition-property: background, box-shadow, border-radius;
+  transition-duration: var(--transition-duration);
 
   @media (--md-up) {
     --comment-padding-left: calc(
@@ -28,14 +29,14 @@
   &.is-answer {
     box-shadow:
       inset 0 0 0 2px var(--color-success),
-      inset 0 0 10px 2px var(--color-success-soft);
+      inset 0 0 20px 2px var(--color-success-soft);
     border-radius: var(--radius);
   }
 
   &.is-saved {
     box-shadow:
       inset 0 0 0 2px var(--color-accent),
-      inset 0 0 10px 2px var(--color-accent-soft);
+      inset 0 0 20px 2px var(--color-accent-soft);
     border-radius: var(--radius);
   }
 }
