@@ -21,7 +21,7 @@ abstract class Assets
      * that uses the Waterhole layout. The `cp` and `cp-{locale}` bundles
      * are loaded on pages in the Control Panel.
      */
-    public function add(string $file, string $bundle = 'default'): void
+    public function add(string|callable $file, string $bundle = 'default'): void
     {
         if (!in_array($file, $this->assets[$bundle] ?? [])) {
             $this->assets[$bundle][] = $file;
