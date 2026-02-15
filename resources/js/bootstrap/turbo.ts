@@ -1,7 +1,7 @@
 import * as Turbo from '@hotwired/turbo';
 import {
     FrameElement,
-    StreamElement,
+    StreamActions,
     TurboFrameMissingEvent,
 } from '@hotwired/turbo';
 import { cloneFromTemplate, nextFrame } from '../utils';
@@ -44,25 +44,32 @@ document.addEventListener('turbo:before-morph-element', (e) => {
     }
 });
 
-document.addEventListener('turbo:before-stream-render', (e) => {
-    const { detail } = e as CustomEvent;
-    const fallback = detail.render;
+StreamActions.alert = function () {
+    Waterhole.alerts.show(
+        this.templateContent.firstElementChild as HTMLElement,
+    );
+};
 
-    detail.render = (stream: StreamElement) => {
-        if (stream.action === 'alert') {
-            Waterhole.alerts.show(
-                stream.templateContent.firstElementChild as HTMLElement,
-            );
-        } else if (stream.action === 'redirect') {
-            console.log(String(stream.getAttribute('url')));
-            Turbo.visit(String(stream.getAttribute('url')), {
-                action: 'replace',
-            });
-        } else {
-            fallback(stream);
-        }
-    };
-});
+StreamActions.redirect = function () {
+    Turbo.visit(String(this.getAttribute('url')), { action: 'replace' });
+};
+
+StreamActions.dispatch = function () {
+    const event = this.getAttribute('event');
+    if (!event) return;
+
+    const elements = this.target
+        ? [document.getElementById(this.target)]
+        : this.targets
+          ? Array.from(document.querySelectorAll(this.targets))
+          : [document.documentElement];
+
+    elements
+        .filter((element) => !!element)
+        .forEach((element) => {
+            element.dispatchEvent(new CustomEvent(event, { bubbles: true }));
+        });
+};
 
 document.addEventListener('turbo:before-fetch-response', async (e) => {
     const response = (e as CustomEvent).detail.fetchResponse.response;

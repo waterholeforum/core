@@ -6,6 +6,7 @@
     data-turbo-permanent
     data-action="
         turbo:frame-render->composer#frameRender
+        composer:reset->composer#reset
         quotable:quote-text@document->composer#open
     "
 >

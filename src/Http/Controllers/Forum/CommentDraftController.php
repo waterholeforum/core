@@ -6,7 +6,6 @@ use HotwiredLaravel\TurboLaravel\Http\TurboResponseFactory;
 use Illuminate\Http\Request;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Post;
-use Waterhole\View\Components\Composer;
 use Waterhole\View\TurboStream;
 
 class CommentDraftController extends Controller
@@ -37,7 +36,9 @@ class CommentDraftController extends Controller
         $post->userState->discardDraft()->save();
 
         if ($request->wantsTurboStream()) {
-            return TurboResponseFactory::makeStream(TurboStream::replace(new Composer($post)));
+            return TurboResponseFactory::makeStream(
+                TurboStream::dispatch('composer:reset', '#composer'),
+            );
         }
 
         return redirect($post->url);

@@ -117,7 +117,10 @@ class CommentController extends Controller
 
         if ($request->wantsTurboStream()) {
             return TurboResponseFactory::makeStream(
-                TurboStream::redirect(Comment::find($comment->getKey())->post_url),
+                implode([
+                    TurboStream::dispatch('composer:reset', '#composer'),
+                    TurboStream::redirect(Comment::find($comment->getKey())->post_url),
+                ]),
             );
         }
 

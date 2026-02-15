@@ -24,6 +24,10 @@ export default class extends Controller<HTMLElement> {
         this.onHashChange();
 
         this.element.addEventListener('keydown', this.onKeydown);
+
+        this.element.addEventListener('animationend', () =>
+            this.element.classList.remove('was-closed', 'was-open'),
+        );
     }
 
     disconnect() {
@@ -47,7 +51,7 @@ export default class extends Controller<HTMLElement> {
     async open() {
         const oldHeight = this.element.offsetHeight;
 
-        this.element.classList.add('is-open');
+        this.element.classList.add('is-open', 'was-closed');
         this.enableTextareaAutosize();
         this.textarea?.focus({ preventScroll: true });
 
@@ -82,6 +86,15 @@ export default class extends Controller<HTMLElement> {
         }
 
         this.open();
+    }
+
+    reset() {
+        if (this.textarea) {
+            this.textarea.value = '';
+            this.syncDraftState();
+        }
+
+        this.close();
     }
 
     startResize(e: PointerEvent) {
@@ -176,7 +189,8 @@ export default class extends Controller<HTMLElement> {
     };
 
     private refreshTextarea() {
-        this.textarea = this.element.querySelector('textarea') || undefined;
+        return (this.textarea =
+            this.element.querySelector('textarea') || undefined);
     }
 
     private onKeydown = (e: KeyboardEvent) => {

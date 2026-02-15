@@ -87,6 +87,11 @@ abstract class TurboStream
         html;
     }
 
+    public static function dispatch(string $event, ?string $targets = null): string
+    {
+        return static::stream(null, 'dispatch', array_filter(compact('event', 'targets')));
+    }
+
     private static function stream(
         ?Component $component,
         string $action,
