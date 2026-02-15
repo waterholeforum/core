@@ -5,7 +5,7 @@ namespace Waterhole\Extend\Forms;
 use Waterhole\Extend\Support\ComponentList;
 use Waterhole\Forms\Fields\UserAvatar;
 use Waterhole\Forms\Fields\UserBio;
-use Waterhole\Forms\Fields\UserEmail;
+use Waterhole\Forms\Fields\UserEmailVerified;
 use Waterhole\Forms\Fields\UserGroups;
 use Waterhole\Forms\Fields\UserHeadline;
 use Waterhole\Forms\Fields\UserLocation;
@@ -37,7 +37,7 @@ class UserForm extends ComponentList
 
         $this->account = (new ComponentList())
             ->add(UserName::class, 'name')
-            ->add(UserEmail::class, 'email')
+            ->add(UserEmailVerified::class, 'email')
             ->add(UserPassword::class, 'password')
             ->add(UserGroups::class, 'groups');
 

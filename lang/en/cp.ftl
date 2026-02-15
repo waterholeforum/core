@@ -184,10 +184,12 @@ create-user-title = Create a User
 user-account-title = Account
 user-name-label = Name
 user-email-label = Email
+user-email-verified-label = Verified
 user-password-label = Password
 user-set-password-label = Set new password
 user-groups-label = Groups
 user-profile-title = Profile
+users-email-unverified-tooltip = Unverified
 user-created-message = User created.
 user-saved-message = User saved.
 

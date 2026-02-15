@@ -84,9 +84,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $this->form($user = new User())->submit($request);
-
-        $user->markEmailAsVerified();
+        $this->form(new User())->submit($request);
 
         return redirect()
             ->route('waterhole.cp.users.index', ['sort' => 'created_at'])

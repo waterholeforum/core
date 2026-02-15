@@ -118,9 +118,23 @@
                                         </td>
 
                                         <td>
-                                            <a href="mailto:{{ $user->email }}">
-                                                {{ Str::limit($user->email, 20) }}
-                                            </a>
+                                            <span class="row gap-xxs align-center">
+                                                <a href="mailto:{{ $user->email }}">
+                                                    {{ Str::limit($user->email, 30) }}
+                                                </a>
+
+                                                @unless ($user->hasVerifiedEmail())
+                                                    <span
+                                                        class="text-xxs"
+                                                        style="color: var(--color-warning)"
+                                                    >
+                                                        <span class="dot"></span>
+                                                        <ui-tooltip>
+                                                            {{ __('waterhole::cp.users-email-unverified-tooltip') }}
+                                                        </ui-tooltip>
+                                                    </span>
+                                                @endunless
+                                            </span>
                                         </td>
 
                                         <td>
