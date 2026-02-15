@@ -1,13 +1,20 @@
 import { Controller } from '@hotwired/stimulus';
 import { TurboSubmitEndEvent, TurboSubmitStartEvent } from '@hotwired/turbo';
 
+type DraftState = {
+    lastSnapshot: string;
+    pendingSnapshot?: string;
+    submitting: boolean;
+};
+
 /**
  * Draft controller for forms.
  *
  * @internal
  */
-export default class extends Controller<HTMLFormElement> {
+export default class DraftController extends Controller<HTMLFormElement> {
     static targets = ['saveButton', 'saving', 'saved', 'error'];
+    private static states = new WeakMap<HTMLFormElement, DraftState>();
 
     declare readonly saveButtonTarget: HTMLButtonElement;
     declare readonly savingTarget: HTMLElement;
@@ -15,12 +22,13 @@ export default class extends Controller<HTMLFormElement> {
     declare readonly errorTarget: HTMLElement;
 
     private timeout?: number;
-    private lastSnapshot = '';
-    private pendingSnapshot?: string;
-    private submitting = false;
 
     connect() {
-        this.lastSnapshot = this.snapshot();
+        const state = this.getState();
+
+        if (this.snapshot() !== state.lastSnapshot && !state.submitting) {
+            this.queue();
+        }
     }
 
     disconnect() {
@@ -32,7 +40,7 @@ export default class extends Controller<HTMLFormElement> {
 
         this.timeout = window.setTimeout(() => void this.save(), 1500);
 
-        if (this.snapshot() !== this.lastSnapshot) {
+        if (this.snapshot() !== this.getState().lastSnapshot) {
             this.showState(null);
         }
     }
@@ -44,18 +52,20 @@ export default class extends Controller<HTMLFormElement> {
     }
 
     submitStart(e: TurboSubmitStartEvent) {
-        this.submitting = true;
+        const state = this.getState();
+        state.submitting = true;
 
         if (!this.isSaveSubmission(e)) {
             return;
         }
 
-        this.pendingSnapshot = this.snapshot();
+        state.pendingSnapshot = this.snapshot();
         this.showState('saving');
     }
 
     submitEnd(e: TurboSubmitEndEvent) {
-        this.submitting = false;
+        const state = this.getState();
+        state.submitting = false;
 
         if (!this.isSaveSubmission(e)) {
             return;
@@ -66,27 +76,29 @@ export default class extends Controller<HTMLFormElement> {
             return;
         }
 
-        this.lastSnapshot = this.pendingSnapshot ?? this.snapshot();
-        this.pendingSnapshot = undefined;
+        state.lastSnapshot = state.pendingSnapshot ?? this.snapshot();
+        state.pendingSnapshot = undefined;
         this.showState('saved');
 
         const snapshot = this.snapshot();
-        if (snapshot !== this.lastSnapshot) {
+        if (snapshot !== state.lastSnapshot) {
             this.queue();
         }
     }
 
     private save() {
-        if (this.submitting) {
+        const state = this.getState();
+
+        if (state.submitting) {
             return;
         }
 
         const snapshot = this.snapshot();
-        if (snapshot === this.lastSnapshot) {
+        if (snapshot === state.lastSnapshot) {
             return;
         }
 
-        this.pendingSnapshot = snapshot;
+        state.pendingSnapshot = snapshot;
         this.showState('saving');
         this.saveButtonTarget.click();
     }
@@ -124,5 +136,22 @@ export default class extends Controller<HTMLFormElement> {
         this.savingTarget.hidden = state !== 'saving';
         this.savedTarget.hidden = state !== 'saved';
         this.errorTarget.hidden = state !== 'error';
+    }
+
+    private getState(): DraftState {
+        const existing = DraftController.states.get(this.element);
+
+        if (existing) {
+            return existing;
+        }
+
+        const state = {
+            lastSnapshot: this.snapshot(),
+            submitting: false,
+        };
+
+        DraftController.states.set(this.element, state);
+
+        return state;
     }
 }
