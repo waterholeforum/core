@@ -3,7 +3,7 @@
         type="submit"
         name="action_class"
         value="{{ $followable->isIgnored() ? Waterhole\Actions\Ignore::class : Waterhole\Actions\Follow::class }}"
-        class="{{ $buttonClass }} {{ $followable->isFollowed() ? 'bg-warning-soft color-warning' : '' }}"
+        class="{{ $buttonClass }} {{ $followable->isFollowed() ? 'bg-warning-soft' : '' }}"
     >
         @if ($followable->isFollowed())
             @icon('tabler-bell')
