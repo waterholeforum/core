@@ -130,6 +130,7 @@ lock-comments-button = Lock Comments
 unlock-comments-button = Unlock Comments
 
 composer-placeholder = Write a comment...
+composer-guest-placeholder = Log in to comment
 composer-reply-to-placeholder = Reply to { $userName }...
 composer-replying-to-label = Replying to
 composer-clear-reply-button = Clear

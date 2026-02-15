@@ -1,8 +1,9 @@
 <turbo-frame
     id="composer"
-    {{ $attributes->class(['composer stack', 'is-open has-draft' => $hasDraft]) }}
+    {{ $attributes->class(["composer stack", $hasDraft ? "is-open has-draft" : "was-closed", "is-guest" => Auth::guest()]) }}
     data-controller="composer watch-sticky"
     data-turbo-prefetch="false"
+    data-turbo-permanent
     data-action="
         turbo:frame-render->composer#frameRender
         quotable:quote-text@document->composer#open
@@ -10,25 +11,35 @@
 >
     <div class="composer__inner grow stack">
         <a
-            href="{{ route('waterhole.posts.comments.create', compact('post', 'parent')) }}"
+            @auth
+                href="{{ route("waterhole.posts.comments.create", compact("post", "parent")) }}"
+                data-action="composer#placeholderClick"
+            @else
+                href="{{ route("waterhole.login", ["return" => $post->urlAtIndex($post->comment_count) . "#reply"]) }}"
+                data-turbo-frame="_top"
+            @endauth
             class="composer__placeholder row gap-sm color-muted grow align-center"
-            data-action="composer#placeholderClick"
             data-controller="hotkey"
             data-hotkey="r"
         >
-            <x-waterhole::avatar :user="Auth::user()" class="icon text-lg" />
-            <span>
+            @auth
+                <x-waterhole::avatar :user="Auth::user()" class="icon text-lg" />
                 {{
                     $parent
-                        ? __('waterhole::forum.composer-reply-to-placeholder', Waterhole\user_variables($parent->user))
-                        : __('waterhole::forum.composer-placeholder')
+                        ? __("waterhole::forum.composer-reply-to-placeholder", Waterhole\user_variables($parent->user))
+                        : __("waterhole::forum.composer-placeholder")
                 }}
-            </span>
+            @else
+                <span class="pl-xs">
+                    @icon("tabler-message-circle")
+                </span>
+                {{ __("waterhole::forum.composer-guest-placeholder") }}
+            @endauth
         </a>
 
         <form
             class="composer__form stack full-height"
-            action="{{ route('waterhole.posts.comments.store', ['post' => $post]) }}"
+            action="{{ route("waterhole.posts.comments.store", ["post" => $post]) }}"
             method="POST"
             data-controller="draft"
             data-action="
@@ -52,9 +63,9 @@
                     class="btn btn--transparent btn--icon composer__collapse"
                     data-action="composer#close"
                 >
-                    @icon('tabler-chevron-down')
+                    @icon("tabler-chevron-down")
                     <ui-tooltip>
-                        {{ __('waterhole::forum.composer-collapse-button') }}
+                        {{ __("waterhole::forum.composer-collapse-button") }}
                     </ui-tooltip>
                 </button>
 
@@ -63,14 +74,14 @@
                     class="btn btn--transparent btn--icon composer__expand"
                     data-action="composer#open"
                 >
-                    @icon('tabler-chevron-up')
+                    @icon("tabler-chevron-up")
                     <ui-tooltip>
-                        {{ __('waterhole::forum.composer-expand-button') }}
+                        {{ __("waterhole::forum.composer-expand-button") }}
                     </ui-tooltip>
                 </button>
 
                 <div class="h5 overflow-ellipsis composer__title px-sm">
-                    {{ __('waterhole::forum.create-comment-title') }}
+                    {{ __("waterhole::forum.create-comment-title") }}
                 </div>
 
                 {{--
@@ -79,7 +90,7 @@
                 --}}
                 <turbo-frame
                     class="composer__parent nowrap row gap-xs text-xs pill bg-warning-soft pl-xs"
-                    id="@domid($post, 'comment_parent')"
+                    id="@domid($post, "comment_parent")"
                     complete
                 >
                     @if ($parent)
@@ -91,19 +102,19 @@
                             class="color-inherit with-icon"
                         >
                             @icon(
-                                'tabler-share-3',
+                                "tabler-share-3",
                                 [
-                                    'class' => 'flip-horizontal',
-                                    'aria-label' => __('waterhole::forum.composer-replying-to-label'),
+                                    "class" => "flip-horizontal",
+                                    "aria-label" => __("waterhole::forum.composer-replying-to-label"),
                                 ]
                             )
                             <x-waterhole::user-label :user="$parent->user" />
                         </a>
 
                         <button class="btn btn--sm btn--transparent btn--icon" name="parent_id">
-                            @icon('tabler-x')
+                            @icon("tabler-x")
                             <ui-tooltip>
-                                {{ __('waterhole::forum.composer-clear-reply-button') }}
+                                {{ __("waterhole::forum.composer-clear-reply-button") }}
                             </ui-tooltip>
                         </button>
                     @endif
@@ -125,7 +136,7 @@
                     data-hotkey="Mod+Enter"
                     data-hotkey-scope="new-comment"
                 >
-                    {{ __('waterhole::forum.composer-submit') }}
+                    {{ __("waterhole::forum.composer-submit") }}
                 </button>
             </div>
 

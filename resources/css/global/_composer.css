@@ -35,7 +35,7 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .composer.is-open {
+  :root:not([data-turbo-preview]) .composer.was-closed.is-open {
     animation: composer-in var(--transition-duration) var(--ease-out);
   }
 
@@ -151,7 +151,6 @@
 .composer__placeholder {
   padding: var(--space-sm);
   padding-right: var(--space-md);
-  cursor: text;
   transition:
     box-shadow 0.2s,
     border 0.2s,
@@ -162,6 +161,10 @@
   &:hover {
     box-shadow: var(--shadow-md);
   }
+}
+
+.composer:not(.is-guest) .composer__placeholder {
+  cursor: text;
 }
 
 .composer__handle {

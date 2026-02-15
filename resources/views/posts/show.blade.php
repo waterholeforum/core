@@ -67,10 +67,9 @@
                 </div>
             @endif
 
-            @can('waterhole.post.comment', $post)
-                <div id="reply" tabindex="-1"></div>
-                <x-waterhole::composer :post="$post" data-turbo-permanent data-turbo-temporary />
-            @endcan
+            <div id="reply" tabindex="-1"></div>
+
+            <x-waterhole::composer :post="$post" />
         </div>
 
         <div
