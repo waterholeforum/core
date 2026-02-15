@@ -76,7 +76,13 @@ class Comment extends Model
     protected static function booting(): void
     {
         static::addGlobalScope('visible', function ($query) {
-            $query->visible(auth()->user());
+            $user = auth()->user();
+
+            if (app()->runningInConsole() && !app()->runningUnitTests() && !$user) {
+                return;
+            }
+
+            $query->visible($user);
         });
 
         static::saving(function (self $comment) {
