@@ -80,7 +80,13 @@ class Post extends Model
     public static function booting(): void
     {
         static::addGlobalScope('visible', function ($query) {
-            $query->visible(Auth::user());
+            $user = Auth::user();
+
+            if (app()->runningInConsole() && !app()->runningUnitTests() && !$user) {
+                return;
+            }
+
+            $query->visible($user);
         });
 
         static::creating(function (Post $post) {

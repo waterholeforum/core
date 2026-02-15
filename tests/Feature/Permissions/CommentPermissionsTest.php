@@ -57,3 +57,21 @@ describe('api', function () {
         jsonApi('GET', "/api/comments/$comment->id")->assertNotFound();
     });
 });
+
+describe('console', function () {
+    test('comments on posts in private channels are visible without an authenticated user', function () {
+        $channel = Channel::factory()->create();
+        $post = Post::factory()->for($channel)->create();
+        $comment = Comment::factory()->for($post)->create();
+
+        $env = app()['env'];
+        app()->instance('env', 'production');
+
+        try {
+            auth()->logout();
+            expect(Comment::query()->whereKey($comment)->exists())->toBeTrue();
+        } finally {
+            app()->instance('env', $env);
+        }
+    });
+});

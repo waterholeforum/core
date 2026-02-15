@@ -75,3 +75,20 @@ describe('forum', function () {
         $this->get(route('waterhole.posts.show', ['post' => $post]))->assertNotFound();
     });
 });
+
+describe('console', function () {
+    test('posts in private channels are visible without an authenticated user', function () {
+        $channel = Channel::factory()->create();
+        $post = Post::factory()->for($channel)->create();
+
+        $env = app()['env'];
+        app()->instance('env', 'production');
+
+        try {
+            auth()->logout();
+            expect(Post::query()->whereKey($post)->exists())->toBeTrue();
+        } finally {
+            app()->instance('env', $env);
+        }
+    });
+});
