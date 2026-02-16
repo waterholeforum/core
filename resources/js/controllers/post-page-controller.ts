@@ -15,6 +15,7 @@ export default class extends Controller {
         'currentPage',
         'commentsLinks',
         'commentsPagination',
+        'commentsHeading',
     ];
 
     static values = {
@@ -22,6 +23,7 @@ export default class extends Controller {
     };
 
     declare readonly postTarget: HTMLElement;
+    declare readonly commentsHeadingTarget: HTMLElement;
     declare readonly hasCurrentPageTarget: boolean;
     declare readonly currentPageTarget: HTMLElement;
     declare readonly hasCommentsLinksTarget: boolean;
@@ -62,6 +64,7 @@ export default class extends Controller {
     private showPostOnFirstPage = () => {
         if (document.getElementById('page_1')) {
             this.postTarget.hidden = false;
+            this.commentsHeadingTarget.hidden = false;
         }
     };
 

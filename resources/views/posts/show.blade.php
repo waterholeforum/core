@@ -32,7 +32,12 @@
 
             <section class="post-page__comments stack gap-md">
                 @if ($comments->count())
-                    <h2 class="h4" id="comments">
+                    <h2
+                        class="h4"
+                        id="comments"
+                        data-post-page-target="commentsHeading"
+                        @if (!$comments->onFirstPage()) hidden @endif
+                    >
                         {{ __('waterhole::forum.post-comments-heading', ['count' => $post->comment_count]) }}
                     </h2>
                 @endif
