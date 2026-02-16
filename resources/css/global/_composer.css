@@ -10,6 +10,7 @@
   box-shadow: 0 10px 30px 40px hsl(var(--palette-bg-hsl) / 0.9);
   position: sticky;
   bottom: var(--space-lg);
+  z-index: var(--z-index-header);
 }
 
 .composer__inner {
