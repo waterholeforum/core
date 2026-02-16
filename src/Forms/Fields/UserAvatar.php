@@ -41,7 +41,9 @@ class UserAvatar extends Field
 
     public function validating(Validator $validator): void
     {
-        $validator->addRules(['avatar' => ['nullable', 'image']]);
+        $validator->addRules([
+            'avatar' => ['nullable', 'image', 'max:' . config('waterhole.uploads.max_upload_size')],
+        ]);
     }
 
     public function saved(FormRequest $request): void
