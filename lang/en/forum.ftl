@@ -110,6 +110,21 @@ delete-forever-button = Delete Forever
 
 comments-unread-heading = Unread
 comments-unread-link = Unread
+comments-time-gap-heading =
+    { $unit ->
+        [year] { $count } { $count ->
+            [one] year later
+            *[other] years later
+        }
+        [month] { $count } { $count ->
+            [one] month later
+            *[other] months later
+        }
+        *[day] { $count } { $count ->
+            [one] day later
+            *[other] days later
+        }
+    }
 
 create-comment-title = Comment
 edit-comment-title = Edit Comment

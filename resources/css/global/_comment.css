@@ -117,7 +117,7 @@
 }
 
 .comment-list {
-  .card__row {
+  .card__row:not(.time-gap) {
     padding: 0;
   }
 

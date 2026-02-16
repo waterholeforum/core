@@ -12,6 +12,7 @@
     content: '';
     flex-grow: 1;
     border-bottom: 2px solid;
+    opacity: 0.2;
   }
 
   &:not(:empty) {

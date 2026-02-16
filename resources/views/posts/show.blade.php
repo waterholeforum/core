@@ -52,11 +52,40 @@
                             @endonce
                         @endif
 
+                        @php
+                            $timeGap = null;
+
+                            if ($previousCommentCreatedAt) {
+                                $interval = $previousCommentCreatedAt->diff($comment->created_at);
+
+                                if ($comment->created_at->greaterThan($previousCommentCreatedAt->copy()->addDays(4))) {
+                                    if ($interval->y) {
+                                        $timeGap = ['count' => $interval->y, 'unit' => 'year'];
+                                    } elseif ($interval->m) {
+                                        $timeGap = ['count' => $interval->m, 'unit' => 'month'];
+                                    } else {
+                                        $timeGap = ['count' => $interval->days, 'unit' => 'day'];
+                                    }
+                                }
+                            }
+                        @endphp
+
+                        @if ($timeGap)
+                            <div
+                                class="card__row time-gap row gap-xxs justify-center color-muted text-xs py-md px-lg"
+                            >
+                                @icon('tabler-clock')
+                                {{ __('waterhole::forum.comments-time-gap-heading', $timeGap) }}
+                            </div>
+                        @endif
+
                         <x-waterhole::comment-frame
                             :comment="$comment"
                             class="card__row"
                             with-structured-data
                         />
+
+                        @php($previousCommentCreatedAt = $comment->created_at)
                     @endforeach
                 </x-waterhole::infinite-scroll>
             </section>

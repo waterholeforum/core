@@ -56,7 +56,21 @@ class PostController extends Controller
             $scope($query, $post);
         }
 
-        $comments = $query->oldest()->paginate();
+        $comments = (clone $query)
+            ->oldest('comments.created_at')
+            ->orderBy('comments.id')
+            ->paginate();
+
+        $previousCommentCreatedAt = null;
+
+        if (!$comments->onFirstPage() && ($firstComment = $comments->first())) {
+            $previousCommentCreatedAt = (clone $query)
+                ->where('comments.created_at', '<', $firstComment->created_at)
+                ->where('comments.id', '<', $firstComment->id)
+                ->latest('comments.created_at')
+                ->orderByDesc('comments.id')
+                ->value('created_at');
+        }
 
         // We already have an instance of the `post` relation for each comment,
         // since we are on the post page!
@@ -80,7 +94,10 @@ class PostController extends Controller
 
         $headings = $post->bodyHeadings();
 
-        return view('waterhole::posts.show', compact('post', 'comments', 'lastReadAt', 'headings'));
+        return view(
+            'waterhole::posts.show',
+            compact('post', 'comments', 'previousCommentCreatedAt', 'lastReadAt', 'headings'),
+        );
     }
 
     public function create()
