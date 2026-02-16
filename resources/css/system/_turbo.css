@@ -23,7 +23,7 @@ turbo-frame {
   background-color: var(--color-accent);
 }
 
-.next-page {
+.page-placeholder {
   position: relative;
 
   &::before {
@@ -31,5 +31,14 @@ turbo-frame {
     position: absolute;
     top: -100px;
     bottom: -100px;
+  }
+}
+
+.page-placeholder[loading='lazy'][aria-busy='true'] {
+  height: 70vh;
+
+  &.page-placeholder--previous::after {
+    top: auto;
+    bottom: var(--space-md);
   }
 }

@@ -12,7 +12,7 @@
             id="page_{{ $isCursor ? $paginator->previousCursor()->encode() ?? "1" : $paginator->currentPage() - 1 }}_frame"
             src="{{ $paginator->appends("direction", "backwards")->previousPageUrl() }}"
             loading="lazy"
-            class="next-page busy-spinner"
+            class="page-placeholder page-placeholder--previous busy-spinner"
             target="_top"
             data-controller="load-backwards"
         ></turbo-frame>
@@ -32,7 +32,7 @@
         <turbo-frame
             id="page_{{ $isCursor ? $paginator->nextCursor()->encode() : $paginator->currentPage() + 1 }}_frame"
             target="_top"
-            class="next-page busy-spinner"
+            class="page-placeholder page-placeholder--next busy-spinner"
             @if ($paginator->onFirstPage() || $endless)
                 src="{{ $paginator->appends("direction", "forwards")->nextPageUrl() }}"
                 loading="lazy"
