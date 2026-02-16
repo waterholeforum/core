@@ -64,7 +64,7 @@ class ActionsController extends Controller
         // will redirect the user back to the confirmation view with all the
         // same input.
         if ($action->shouldConfirm($models) && !$request->has('confirmed')) {
-            return redirect()->route('waterhole.actions.create', $params);
+            return redirect()->route('waterhole.actions.create', $params)->withInput();
         }
 
         // Attempt to run the action. If we catch a validation exception, we

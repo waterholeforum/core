@@ -8,6 +8,6 @@
 
     <x-waterhole::channel-picker
         name="channel_id"
-        value="{{ request('channel_id', $posts[0]->channel_id) }}"
+        value="{{ old('channel_id', $posts[0]->channel_id) }}"
     />
 </div>
