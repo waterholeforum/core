@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Routing\RouteCollection;
+use Illuminate\Support\Facades\Route;
 use Waterhole\Actions\Follow;
 use Waterhole\Actions\Ignore;
 use Waterhole\Actions\Lock;
@@ -13,6 +15,9 @@ use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
 use Waterhole\Models\PostDraft;
 use Waterhole\Models\User;
+use Waterhole\Providers\RouteServiceProvider;
+use Waterhole\Providers\SearchServiceProvider;
+use Waterhole\Search\LikeSearchEngine;
 
 uses(RefreshDatabase::class);
 
@@ -81,6 +86,36 @@ describe('create post', function () {
                 'commit' => true,
             ])
             ->assertForbidden();
+    });
+
+    test('shows similar posts with excerpt while creating a post', function () {
+        config()->set('waterhole.system.search_engine', LikeSearchEngine::class);
+        app()->register(SearchServiceProvider::class, true);
+        Route::setRoutes(new RouteCollection());
+        app()->register(RouteServiceProvider::class, true);
+
+        $channel = Channel::factory()
+            ->public()
+            ->create(['show_similar_posts' => true]);
+        $title = 'How do I test similar posts while creating?';
+
+        Post::factory()
+            ->for($channel)
+            ->create([
+                'title' => $title,
+                'body' => 'This body excerpt should appear in the similar posts list.',
+            ]);
+
+        $this->actingAs(User::factory()->create())
+            ->followingRedirects()
+            ->post(route('waterhole.posts.store'), [
+                'channel_id' => $channel->id,
+                'title' => $title,
+                'body' => 'Draft content',
+            ])
+            ->assertOk()
+            ->assertSeeText($title)
+            ->assertSeeText('This body excerpt should appear in the similar posts list.');
     });
 });
 

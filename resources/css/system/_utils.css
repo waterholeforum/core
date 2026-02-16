@@ -30,16 +30,26 @@
     gap: var(--space-$(size));
   }
 
+  .p-$(size) {
+    padding: var(--space-$(size));
+  }
+
+  .m-$(size) {
+    margin: var(--space-$(size));
+  }
+
+  .-m-$(size) {
+    margin: calc(-1 * var(--space-$(size)));
+  }
+}
+
+@each $size in (px, xxs, xs, sm, md, lg, xl, xxl, xxxl, gutter) {
   .gap-x-$(size) {
     column-gap: var(--space-$(size));
   }
 
   .gap-y-$(size) {
     row-gap: var(--space-$(size));
-  }
-
-  .p-$(size) {
-    padding: var(--space-$(size));
   }
 
   .px-$(size) {
@@ -66,10 +76,6 @@
     padding-block-end: var(--space-$(size));
   }
 
-  .m-$(size) {
-    margin: var(--space-$(size));
-  }
-
   .mx-$(size) {
     margin-inline: var(--space-$(size));
   }
@@ -92,10 +98,6 @@
 
   .mb-$(size) {
     margin-block-end: var(--space-$(size));
-  }
-
-  .-m-$(size) {
-    margin: calc(-1 * var(--space-$(size)));
   }
 
   .-mx-$(size) {
@@ -744,7 +746,7 @@
 }
 
 .no-underline {
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
 // Responsive Hiding

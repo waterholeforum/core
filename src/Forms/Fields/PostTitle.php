@@ -20,7 +20,7 @@ class PostTitle extends Field
             config('waterhole.system.search_engine') &&
             !$model->exists &&
             $model->channel->show_similar_posts &&
-            ($title = old('title')) &&
+            ($title = old('title', $model->title)) &&
             strlen($title) >= 10
         ) {
             $this->similarPosts = resolve(Searcher::class)->search(
@@ -57,14 +57,24 @@ class PostTitle extends Field
                         data-turbo-frame="similar-posts"
                     ></button>
 
-                    <turbo-frame id="similar-posts" target="_top" hidden data-similar-posts-target="frame">
+                    <turbo-frame id="similar-posts" target="_top" data-similar-posts-target="frame" @if (empty($similarPosts->hits)) hidden @endif>
                         @if (!empty($similarPosts->hits))
-                            <div class="bg-warning-soft p-md rounded stack gap-xs text-xs">
-                                <p class="weight-bold">
+                            <div class="bg-warning-soft p-xs rounded stack">
+                                <h2 class="h6 p-sm pb-xxs">
                                     {{ __($model->channel->translations[$key = 'waterhole::forum.similar-posts-label'] ?? $key) }}
-                                </p>
+                                </h2>
                                 @foreach ($similarPosts->hits as $hit)
-                                    <p><a href="{{ $hit->post->url }}">{{ $hit->post->title }}</a></p>
+                                    @php $excerpt = strip_tags((string) $hit->body); @endphp
+                                    <div class="block-link p-sm stack gap-xxs overlay-container">
+                                        <a href="{{ $hit->post->url }}" class="has-overlay color-text no-underline text-sm">
+                                            {{ $hit->post->title }}
+                                        </a>
+                                        @if ($excerpt)
+                                            <span class="text-xxs overflow-ellipsis">
+                                                {{ $hit->body }}
+                                            </span>
+                                        @endif
+                                    </div>
                                 @endforeach
                             </div>
                         @endif

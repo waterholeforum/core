@@ -16,6 +16,8 @@ class LikeSearchEngine implements EngineInterface
         array $channelIds = [],
         array $in = ['title', 'body', 'comments'],
     ): Results {
+        $includeComments = in_array('comments', $in, true);
+
         $query = Post::query()->where(function ($query) use ($in, $q) {
             if (in_array('title', $in, true)) {
                 $query->orWhere('posts.title', 'like', "%$q%");
@@ -28,7 +30,7 @@ class LikeSearchEngine implements EngineInterface
             }
         });
 
-        if (in_array('comments', $in)) {
+        if ($includeComments) {
             $query->leftJoin('comments', 'comments.post_id', '=', 'posts.id');
         }
 
@@ -62,14 +64,19 @@ class LikeSearchEngine implements EngineInterface
                 $query->orderByDesc('posts.created_at');
         }
 
-        $rows = $query
-            ->distinct()
-            ->select([
-                'posts.id as post_id',
-                'posts.title',
-                'posts.body as post_body',
-                'comments.body as comment_body',
-            ])
+        $rows = $query->distinct()->select([
+            'posts.id as post_id',
+            'posts.title',
+            'posts.body as post_body',
+        ]);
+
+        if ($includeComments) {
+            $rows->addSelect('comments.body as comment_body');
+        } else {
+            $rows->selectRaw('null as comment_body');
+        }
+
+        $rows = $rows
             ->take($limit)
             ->skip($offset)
             ->get();
