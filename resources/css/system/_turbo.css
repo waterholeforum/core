@@ -34,8 +34,8 @@ turbo-frame {
   }
 }
 
-.page-placeholder[loading='lazy'][aria-busy='true'] {
-  height: 70vh;
+.page-placeholder[loading='lazy'] {
+  min-height: 70vh;
 
   &.page-placeholder--previous::after {
     top: auto;
