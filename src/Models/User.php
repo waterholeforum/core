@@ -233,7 +233,7 @@ class User extends Model implements
         return $this->fileAttribute(
             attribute: 'avatar',
             directory: 'avatars',
-            encodeImage: fn(Image $image) => $image->cover(200, 200)->toPng(),
+            encodeImage: fn(Image $image) => $image->cover(200, 200)->toWebp(90),
         );
     }
 
