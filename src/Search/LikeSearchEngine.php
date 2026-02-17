@@ -64,11 +64,9 @@ class LikeSearchEngine implements EngineInterface
                 $query->orderByDesc('posts.created_at');
         }
 
-        $rows = $query->distinct()->select([
-            'posts.id as post_id',
-            'posts.title',
-            'posts.body as post_body',
-        ]);
+        $rows = $query
+            ->distinct()
+            ->select(['posts.id as post_id', 'posts.title', 'posts.body as post_body']);
 
         if ($includeComments) {
             $rows->addSelect('comments.body as comment_body');
@@ -76,10 +74,7 @@ class LikeSearchEngine implements EngineInterface
             $rows->selectRaw('null as comment_body');
         }
 
-        $rows = $rows
-            ->take($limit)
-            ->skip($offset)
-            ->get();
+        $rows = $rows->take($limit)->skip($offset)->get();
 
         $highlighter = new Highlighter($q);
 
