@@ -23,6 +23,12 @@ export default class extends Controller<HTMLFormElement> {
     connect() {
         this.baselineSnapshot = this.snapshot();
 
+        // Give other controllers a chance to initialise form values
+        queueMicrotask(() => {
+            if (!this.element.isConnected) return;
+            this.markClean();
+        });
+
         this.element.addEventListener('turbo:submit-end', this.onSubmitEnd);
 
         window.addEventListener('beforeunload', this.onBeforeUnload);
