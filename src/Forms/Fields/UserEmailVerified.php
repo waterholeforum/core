@@ -26,7 +26,6 @@ class UserEmailVerified extends Field
                             name="email"
                             id="{{ $component->id }}"
                             value="{{ old('email', $model->email ?? null) }}"
-                            @disabled($payload)
                         >
 
                         <label for="email_verified" class="choice">
