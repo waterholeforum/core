@@ -21,6 +21,7 @@
             }}"
             enctype="multipart/form-data"
             class="stack gap-md"
+            data-controller="dirty-form"
         >
             @csrf
             @if (isset($taxonomy))

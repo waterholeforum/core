@@ -15,6 +15,7 @@
         method="POST"
         action="{{ isset($heading) ? route('waterhole.cp.structure.headings.update', compact('heading')) : route('waterhole.cp.structure.headings.store') }}"
         class="card card__body"
+        data-controller="dirty-form"
     >
         @csrf
         @if (isset($heading))

@@ -22,6 +22,7 @@ declare global {
 export interface Waterhole {
     userId: number;
     debug: boolean;
+    messages: Record<string, string>;
     alerts: AlertsElement;
     fetch: typeof ky;
     fetchError: (response?: Response) => void;

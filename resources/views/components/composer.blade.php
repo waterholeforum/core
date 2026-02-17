@@ -42,13 +42,14 @@
             class="composer__form stack full-height"
             action="{{ route("waterhole.posts.comments.store", ["post" => $post]) }}"
             method="POST"
-            data-controller="draft"
+            data-controller="draft dirty-form"
             data-action="
                 input->draft#queue
                 change->draft#queue
                 focusout->draft#queue
                 turbo:submit-start->draft#submitStart
                 turbo:submit-end->draft#submitEnd
+                draft:saved->dirty-form#markClean
             "
         >
             @csrf

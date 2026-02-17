@@ -15,6 +15,7 @@
         method="POST"
         action="{{ isset($page) ? route('waterhole.cp.structure.pages.update', compact('page')) : route('waterhole.cp.structure.pages.store') }}"
         enctype="multipart/form-data"
+        data-controller="dirty-form"
     >
         @csrf
         @if (isset($page))

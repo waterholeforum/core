@@ -5,7 +5,11 @@
 <x-waterhole::layout :title="$title">
     <div class="container section">
         <x-waterhole::dialog class="measure" :title="$title">
-            <form method="POST" action="{{ route('waterhole.posts.update', ['post' => $post]) }}">
+            <form
+                method="POST"
+                action="{{ route('waterhole.posts.update', ['post' => $post]) }}"
+                data-controller="dirty-form"
+            >
                 @csrf
                 @method('PATCH')
                 @return($post->url)

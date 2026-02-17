@@ -7,13 +7,14 @@
         <form
             method="POST"
             action="{{ route('waterhole.posts.store') }}"
-            data-controller="draft"
+            data-controller="draft dirty-form"
             data-action="
                 input->draft#queue
                 change->draft#queue
                 focusout->draft#saveNow
                 turbo:submit-start->draft#submitStart
                 turbo:submit-end->draft#submitEnd
+                draft:saved->dirty-form#markClean
             "
         >
             @csrf

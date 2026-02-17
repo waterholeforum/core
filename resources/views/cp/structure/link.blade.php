@@ -15,6 +15,7 @@
         method="POST"
         action="{{ isset($link) ? route('waterhole.cp.structure.links.update', compact('link')) : route('waterhole.cp.structure.links.store') }}"
         enctype="multipart/form-data"
+        data-controller="dirty-form"
     >
         @csrf
         @if (isset($link))

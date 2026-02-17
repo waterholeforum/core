@@ -144,12 +144,18 @@
                 data-action="
                     turbo:submit-start->modal#loading
                     turbo:before-fetch-request->modal#loading
+                    turbo:before-frame-render->modal#beforeFrameRender
                     turbo:frame-render->modal#loaded"
                 aria-labelledby="dialog-title"
                 disabled
             ></turbo-frame>
 
-            <div class="dialog dialog__body dialog--sm" data-modal-target="loading">
+            <div
+                class="dialog dialog__body dialog--sm"
+                data-modal-target="loading"
+                tabindex="0"
+                aria-busy="true"
+            >
                 <x-waterhole::spinner class="spinner--block" />
             </div>
         </ui-modal>

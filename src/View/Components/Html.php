@@ -7,6 +7,8 @@ use Illuminate\View\Component;
 
 class Html extends Component
 {
+    private const MESSAGE_KEYS = ['waterhole::system.unsaved-changes-confirm-message'];
+
     public array $payload;
 
     public function __construct(
@@ -21,6 +23,9 @@ class Html extends Component
             'userId' => Auth::id(),
             'debug' => config('app.debug'),
             'echoConfig' => config('waterhole.system.echo_config'),
+            'messages' => collect(self::MESSAGE_KEYS)
+                ->mapWithKeys(fn(string $key) => [$key => __($key)])
+                ->all(),
         ];
     }
 

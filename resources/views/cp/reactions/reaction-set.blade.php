@@ -28,6 +28,7 @@
                 }}"
                 enctype="multipart/form-data"
                 class="card__body"
+                data-controller="dirty-form"
             >
                 @csrf
                 @if (isset($reactionSet))

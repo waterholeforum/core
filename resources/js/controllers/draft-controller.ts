@@ -79,6 +79,9 @@ export default class DraftController extends Controller<HTMLFormElement> {
         state.lastSnapshot = state.pendingSnapshot ?? this.snapshot();
         state.pendingSnapshot = undefined;
         this.showState('saved');
+        this.element.dispatchEvent(
+            new CustomEvent('draft:saved', { bubbles: true }),
+        );
 
         const snapshot = this.snapshot();
         if (snapshot !== state.lastSnapshot) {

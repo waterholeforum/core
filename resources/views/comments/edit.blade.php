@@ -1,7 +1,12 @@
 <x-waterhole::layout :title="__('waterhole::forum.edit-comment-title')">
     <div class="container section">
         <turbo-frame id="@domid($comment)" target="_top">
-            <form method="POST" action="{{ $comment->url }}" class="comment">
+            <form
+                method="POST"
+                action="{{ $comment->url }}"
+                class="comment"
+                data-controller="dirty-form"
+            >
                 @csrf
                 @method('PATCH')
 

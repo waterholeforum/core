@@ -5,7 +5,7 @@
 @endphp
 
 <x-waterhole::cp :title="$title">
-    <turbo-frame id="modal">
+    <turbo-frame id="modal" data-modal-static>
         <x-waterhole::dialog :title="$title" class="dialog--sm">
             <form
                 method="POST"
@@ -16,6 +16,7 @@
                 }}"
                 enctype="multipart/form-data"
                 data-turbo-frame="tags"
+                data-controller="dirty-form"
             >
                 @csrf
                 @if (isset($tag))

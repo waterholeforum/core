@@ -5,7 +5,11 @@
 <x-waterhole::user-profile :user="Auth::user()" :title="$title">
     <h2 class="visually-hidden">{{ $title }}</h2>
 
-    <form action="{{ route('waterhole.preferences.notifications') }}" method="post">
+    <form
+        action="{{ route('waterhole.preferences.notifications') }}"
+        method="post"
+        data-controller="dirty-form"
+    >
         @csrf
 
         <div class="stack gap-md">

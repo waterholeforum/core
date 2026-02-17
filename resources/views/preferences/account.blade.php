@@ -23,7 +23,11 @@
                     <h4 class="field__label">
                         {{ __('waterhole::auth.email-label') }}
                     </h4>
-                    <form action="{{ route('waterhole.preferences.email') }}" method="POST">
+                    <form
+                        action="{{ route('waterhole.preferences.email') }}"
+                        method="POST"
+                        data-controller="dirty-form"
+                    >
                         @csrf
                         <x-waterhole::field name="email">
                             <div class="row gap-xs">
@@ -49,7 +53,11 @@
                     <h4 class="field__label">
                         {{ __('waterhole::auth.password-label') }}
                     </h4>
-                    <form action="{{ route('waterhole.preferences.password') }}" method="POST">
+                    <form
+                        action="{{ route('waterhole.preferences.password') }}"
+                        method="POST"
+                        data-controller="dirty-form"
+                    >
                         @csrf
                         <x-waterhole::field name="password">
                             <div class="row gap-xs">

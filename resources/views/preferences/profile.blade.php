@@ -9,6 +9,7 @@
         action="{{ route('waterhole.preferences.profile') }}"
         method="POST"
         enctype="multipart/form-data"
+        data-controller="dirty-form"
     >
         @csrf
 

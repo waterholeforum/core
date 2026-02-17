@@ -12,6 +12,7 @@ too-many-requests-message = You're going a bit too fast! Take a break and try ag
 forbidden-message = You don't have permission to do this.
 session-expired-message = Your session has expired. Please reload the page and try again.
 validation-errors-message = The following errors were found:
+unsaved-changes-confirm-message = You have unsaved changes. Are you sure you want to leave this page?
 
 ## Generic Buttons & Links
 

@@ -15,6 +15,7 @@
         method="POST"
         action="{{ isset($group) ? route('waterhole.cp.groups.update', compact('group')) : route('waterhole.cp.groups.store') }}"
         enctype="multipart/form-data"
+        data-controller="dirty-form"
     >
         @csrf
         @if (isset($group))

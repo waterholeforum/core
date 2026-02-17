@@ -15,6 +15,7 @@
         method="POST"
         action="{{ isset($channel) ? route('waterhole.cp.structure.channels.update', compact('channel')) : route('waterhole.cp.structure.channels.store') }}"
         enctype="multipart/form-data"
+        data-controller="dirty-form"
     >
         @csrf
         @if (isset($channel))

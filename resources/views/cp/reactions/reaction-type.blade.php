@@ -5,7 +5,7 @@
 @endphp
 
 <x-waterhole::cp :title="$title">
-    <turbo-frame id="modal">
+    <turbo-frame id="modal" data-modal-static>
         <x-waterhole::dialog :title="$title" class="dialog--sm">
             <form
                 method="POST"
@@ -15,6 +15,7 @@
                         : route('waterhole.cp.reaction-sets.reaction-types.store', compact('reactionSet'))
                 }}"
                 enctype="multipart/form-data"
+                data-controller="dirty-form"
             >
                 @csrf
                 @if (isset($reactionType))

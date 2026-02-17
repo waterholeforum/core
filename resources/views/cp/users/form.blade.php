@@ -15,6 +15,7 @@
         method="POST"
         action="{{ isset($user) ? route('waterhole.cp.users.update', compact('user')) : route('waterhole.cp.users.store') }}"
         enctype="multipart/form-data"
+        data-controller="dirty-form"
     >
         @csrf
         @isset($user)
