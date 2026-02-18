@@ -24,7 +24,7 @@ export default class extends Controller<HTMLFormElement> {
         this.baselineSnapshot = this.snapshot();
 
         // Give other controllers a chance to initialise form values
-        queueMicrotask(() => {
+        setTimeout(() => {
             if (!this.element.isConnected) return;
             this.markClean();
         });
