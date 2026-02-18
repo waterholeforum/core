@@ -159,7 +159,8 @@
 
 :root {
   // Shadows
-  --shadow-sm: 0 1px 4px var(--palette-fill);
+  --shadow-sm:
+    0 0 0 1px var(--palette-fill-soft), 0 1px 4px var(--palette-fill);
   --shadow-md: 0 0 0 1px var(--palette-fill), 0 5px 15px var(--palette-stroke);
 
   // Overlays
@@ -217,7 +218,7 @@
   --text-xxl: 2.5rem;
 
   // Border radius
-  --radius: 10px;
+  --radius: 12px;
 
   // Controls
   --control-height: 2.5em;
