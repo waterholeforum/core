@@ -7,11 +7,6 @@
   overflow: clip;
 }
 
-.card .card,
-.dialog .card {
-  border: 1px solid var(--color-fill);
-}
-
 .card__header {
   padding: var(--space-sm) var(--space-md);
   border-radius: var(--radius) var(--radius) 0 0;

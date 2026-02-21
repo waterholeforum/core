@@ -116,11 +116,45 @@ function resolve_all(array $names, array ...$parameters): array
 
 function return_field(?string $default = null): string
 {
-    if ($return = old('return', request('return', $default))) {
+    if ($return = internal_url(old('return', request('return')), $default)) {
         return '<input type="hidden" name="return" value="' . e($return) . '">';
     }
 
     return '';
+}
+
+function internal_url(?string $url, ?string $default = null): ?string
+{
+    $default = is_internal_url($default) ? $default : null;
+
+    return is_internal_url($url) ? $url : $default;
+}
+
+function is_internal_url(?string $url): bool
+{
+    if (!$url) {
+        return false;
+    }
+
+    if (str_starts_with($url, '/') && !str_starts_with($url, '//')) {
+        return true;
+    }
+
+    if (str_starts_with($url, '?') || str_starts_with($url, '#')) {
+        return true;
+    }
+
+    if (!filter_var($url, FILTER_VALIDATE_URL)) {
+        return false;
+    }
+
+    $parts = parse_url($url);
+
+    if (!$parts || !in_array($parts['scheme'] ?? '', ['http', 'https'])) {
+        return false;
+    }
+
+    return ($parts['host'] ?? null) === request()->getHost();
 }
 
 function username(?User $user): string

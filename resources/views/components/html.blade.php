@@ -119,6 +119,15 @@
     <body {{ $attributes->merge(['data-route' => request()->route()->getName(),]) }}>
         {{ $slot }}
 
+        <form
+            id="action-form"
+            action="{{ route('waterhole.actions.store') }}"
+            method="POST"
+            hidden
+        >
+            @csrf
+        </form>
+
         {{--
             The persistent modal element contains a Turbo Frame which can be targeted to
             display modal content. It uses a Stimulus controller such that when content

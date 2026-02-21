@@ -7,6 +7,7 @@
                 type="submit"
                 :name="$name"
                 :value="$item->id"
+                :form="$form"
                 :active="$item->id == $value"
                 :label="$item->name"
                 :description="new Illuminate\Support\HtmlString(strip_tags($item->description_html))"
@@ -26,6 +27,6 @@
     @endforeach
 
     @if ($value)
-        <input type="hidden" name="channel_id" value="{{ $value }}" />
+        <input type="hidden" name="{{ $name }}" value="{{ $value }}" @if ($form) form="{{ $form }}" @endif />
     @endif
 </div>

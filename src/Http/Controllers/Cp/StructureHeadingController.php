@@ -2,6 +2,8 @@
 
 namespace Waterhole\Http\Controllers\Cp;
 
+use function Waterhole\internal_url;
+
 use Illuminate\Http\Request;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\StructureHeading;
@@ -22,7 +24,7 @@ class StructureHeadingController extends Controller
     {
         StructureHeading::create($request->validate(StructureHeading::rules()));
 
-        return redirect()->route('waterhole.cp.structure');
+        return redirect(internal_url($request->input('return'), route('waterhole.cp.structure')));
     }
 
     public function edit(StructureHeading $heading)
@@ -34,6 +36,6 @@ class StructureHeadingController extends Controller
     {
         $heading->update($request->validate(StructureHeading::rules($heading)));
 
-        return redirect()->route('waterhole.cp.structure');
+        return redirect(internal_url($request->input('return'), route('waterhole.cp.structure')));
     }
 }

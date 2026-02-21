@@ -12,127 +12,17 @@
     />
 
     <div class="stack gap-md">
-        <x-waterhole::validation-errors />
-
-        <details class="card" open>
-            <summary class="card__header h5">
-                {{ __('waterhole::cp.reaction-set-details-title') }}
-            </summary>
-
-            <form
-                method="POST"
-                action="{{
-                    isset($reactionSet)
-                        ? route('waterhole.cp.reaction-sets.update', compact('reactionSet'))
-                        : route('waterhole.cp.reaction-sets.store')
-                }}"
-                enctype="multipart/form-data"
-                class="card__body"
-                data-controller="dirty-form"
-            >
-                @csrf
-                @if (isset($reactionSet))
-                    @method('PATCH')
-                @endif
-
-                <div class="stack dividers">
-                    @components($form->fields())
-
-                    <div class="row gap-xs wrap">
-                        <button type="submit" class="btn bg-accent btn--wide">
-                            {{
-                                isset($reactionSet)
-                                    ? __('waterhole::system.save-changes-button')
-                                    : __('waterhole::system.continue-button')
-                            }}
-                        </button>
-
-                        <a href="{{ route('waterhole.cp.reaction-sets.index') }}" class="btn">
-                            {{ __('waterhole::system.cancel-button') }}
-                        </a>
-                    </div>
-                </div>
-            </form>
-        </details>
-
-        @isset($reactionSet)
-            <details class="card" open>
-                <summary class="card__header h5">
-                    {{ __('waterhole::cp.reaction-types-title') }}
-                </summary>
-
-                <turbo-frame id="reaction-types">
-                    <div class="card__body stack gap-md">
-                        <div
-                            data-controller="sortable form"
-                            data-action="sortable:update->form#submit"
-                        >
-                            <ul
-                                class="card sortable"
-                                role="list"
-                                data-sortable-target="container"
-                                aria-label="{{ __('waterhole::cp.reaction-set-reactions-label') }}"
-                            >
-                                @empty($reactionSet->reactionTypes->load('reactionSet'))
-                                    <li class="placeholder">
-                                        {{ __('waterhole::cp.reaction-types-empty-message') }}
-                                    </li>
-                                @else
-                                    @foreach ($reactionSet->reactionTypes->load('reactionSet') as $reactionType)
-                                        <li
-                                            class="card__row row gap-sm"
-                                            aria-label="{{ $reactionType->name }}"
-                                            data-id="{{ $reactionType->id }}"
-                                        >
-                                            <button type="button" class="drag-handle" data-handle>
-                                                @icon('tabler-grip-vertical')
-                                            </button>
-
-                                            @icon($reactionType->icon)
-                                            {{ $reactionType->name }}
-                                            <span class="color-muted text-xs">
-                                                {{ $reactionType->score > 0 ? '+' : '' }}{{ $reactionType->score }}
-                                            </span>
-
-                                            <x-waterhole::action-buttons
-                                                class="row text-xs push-end -m-xxs"
-                                                :for="$reactionType"
-                                                :limit="2"
-                                                context="cp"
-                                            />
-                                        </li>
-                                    @endforeach
-                                @endempty
-                            </ul>
-
-                            <form
-                                action="{{ route('waterhole.cp.reaction-sets.reaction-types.reorder', compact('reactionSet')) }}"
-                                method="post"
-                                data-form-target="form"
-                                hidden
-                            >
-                                @csrf
-                                <input
-                                    type="hidden"
-                                    name="order"
-                                    data-sortable-target="orderInput"
-                                />
-                            </form>
-                        </div>
-
-                        <div>
-                            <a
-                                href="{{ route('waterhole.cp.reaction-sets.reaction-types.create', compact('reactionSet')) }}"
-                                class="btn"
-                                data-turbo-frame="modal"
-                            >
-                                @icon('tabler-plus')
-                                {{ __('waterhole::cp.reaction-types-add-button') }}
-                            </a>
-                        </div>
-                    </div>
-                </turbo-frame>
-            </details>
-        @endisset
+        <x-waterhole::form
+            :fields="$form->fields()"
+            :method="isset($reactionSet) ? 'PATCH' : 'POST'"
+            :submit-label="isset($reactionSet) ? null : __('waterhole::system.continue-button')"
+            action="{{
+                isset($reactionSet)
+                    ? route('waterhole.cp.reaction-sets.update', compact('reactionSet'))
+                    : route('waterhole.cp.reaction-sets.store')
+            }}"
+            enctype="multipart/form-data"
+            data-controller="dirty-form"
+        />
     </div>
 </x-waterhole::cp>

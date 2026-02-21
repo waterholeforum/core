@@ -2,6 +2,8 @@
 
 namespace Waterhole\Http\Controllers\Cp;
 
+use function Waterhole\internal_url;
+
 use Illuminate\Http\Request;
 use Waterhole\Forms\PageForm;
 use Waterhole\Http\Controllers\Controller;
@@ -25,7 +27,7 @@ class PageController extends Controller
     {
         $this->form(new Page())->submit($request);
 
-        return redirect()->route('waterhole.cp.structure');
+        return redirect(internal_url($request->input('return'), route('waterhole.cp.structure')));
     }
 
     public function edit(Page $page)
@@ -39,7 +41,7 @@ class PageController extends Controller
     {
         $this->form($page)->submit($request);
 
-        return redirect()->route('waterhole.cp.structure');
+        return redirect(internal_url($request->input('return'), route('waterhole.cp.structure')));
     }
 
     private function form(Page $page)

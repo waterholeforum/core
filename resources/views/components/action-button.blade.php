@@ -1,25 +1,26 @@
 @if ($actionInstance)
     {{ $before ?? '' }}
 
-    <form
-        action="{{ route('waterhole.actions.store') }}"
-        method="POST"
-        {{ new Illuminate\View\ComponentAttributeBag($formAttributes) }}
-    >
-        @csrf
-        <input type="hidden" name="actionable" value="{{ $actionable }}" />
-        <input type="hidden" name="id[]" value="{{ $for->id }}" />
-
-        @isset($return)
-            <input type="hidden" name="return" value="{{ $return }}" />
-        @endisset
-
-        {{
-            $actionInstance
-                ->withRenderType($icon ? Waterhole\Actions\Action::TYPE_ICON : Waterhole\Actions\Action::TYPE_BUTTON)
-                ->render(collect([$for]), $attributes->getAttributes())
-        }}
-    </form>
+    {{
+        $actionInstance->withRenderType($icon ? Waterhole\Actions\Action::TYPE_ICON : Waterhole\Actions\Action::TYPE_BUTTON)->render(
+            collect([$for]),
+            $attributes
+                ->merge(
+                    [
+                        'form' => 'action-form',
+                        'formaction' => route('waterhole.actions.store', [
+                            'actionable' => $actionable,
+                            'id' => $for->getKey(),
+                            'return' => $return,
+                        ]),
+                        'formmethod' => 'POST',
+                        'formnovalidate' => true,
+                    ],
+                    false,
+                )
+                ->getAttributes(),
+        )
+    }}
 
     {{ $after ?? '' }}
 @else

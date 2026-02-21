@@ -5,22 +5,12 @@
 <x-waterhole::user-profile :user="Auth::user()" :title="$title">
     <h2 class="visually-hidden">{{ $title }}</h2>
 
-    <form
+    <x-waterhole::form
+        :fields="$form->fields()"
+        :submit-label="__('waterhole::system.save-changes-button')"
+        :panel-attributes="['class' => 'stack dividers card card__body']"
         action="{{ route('waterhole.preferences.profile') }}"
-        method="POST"
         enctype="multipart/form-data"
         data-controller="dirty-form"
-    >
-        @csrf
-
-        <div class="card card__body stack dividers">
-            @components($form->fields())
-
-            <div>
-                <button type="submit" class="btn bg-accent btn--wide">
-                    {{ __('waterhole::system.save-changes-button') }}
-                </button>
-            </div>
-        </div>
-    </form>
+    />
 </x-waterhole::user-profile>

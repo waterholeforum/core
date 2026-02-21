@@ -28,7 +28,9 @@ abstract class Link extends Action
     {
         $link = e($this->url($models[0]));
 
-        $attributes = (new ComponentAttributeBag($attributes))->merge($this->attributes($models));
+        $attributes = (new ComponentAttributeBag($attributes))
+            ->whereDoesntStartWith('form')
+            ->merge($this->attributes($models));
 
         $content = $this->renderContent($models);
 

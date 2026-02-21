@@ -14,18 +14,16 @@ class TaxonomyForm extends Form
 
     public function fields(): array
     {
-        return [
-            new FormSection(
-                __('waterhole::cp.taxonomy-details-title'),
-                resolve(\Waterhole\Extend\Forms\TaxonomyForm::class)->components([
-                    'model' => $this->model,
-                ]),
-            ),
-            new FormSection(
-                __('waterhole::cp.taxonomy-permissions-title'),
-                [new Permissions($this->model)],
-                open: false,
-            ),
-        ];
+        $fields = resolve(\Waterhole\Extend\Forms\TaxonomyForm::class)->components([
+            'model' => $this->model,
+        ]);
+
+        $fields[] = new FormSection(
+            __('waterhole::cp.taxonomy-permissions-title'),
+            [new Permissions($this->model)],
+            open: false,
+        );
+
+        return $fields;
     }
 }

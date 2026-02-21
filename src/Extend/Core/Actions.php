@@ -204,7 +204,7 @@ class Actions
         $this->for(Models\User::class)
             ->add(CoreActions\DeleteSelf::class, 'delete-self')
             ->add(MenuDivider::class, 'divider')
-            ->add(CoreActions\EditUser::class, 'edit-user')
+            ->add(CoreActions\Edit::class, 'edit-user')
             ->add(CoreActions\CopyImpersonationUrl::class, 'copy-impersonation-url')
             ->add(CoreActions\SuspendUser::class, 'suspend-user')
             ->add(CoreActions\DeleteUser::class, 'delete-user');

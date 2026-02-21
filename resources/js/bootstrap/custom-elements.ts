@@ -6,6 +6,7 @@ import {
     MenuElement,
     ModalElement,
     PopupElement,
+    TabsElement,
     ToolbarElement,
     TooltipElement,
 } from 'inclusive-elements';
@@ -16,5 +17,6 @@ window.customElements.define('ui-disclosure', DisclosureElement);
 window.customElements.define('ui-menu', MenuElement);
 window.customElements.define('ui-modal', ModalElement);
 window.customElements.define('ui-popup', PopupElement);
+window.customElements.define('ui-tabs', TabsElement);
 window.customElements.define('ui-toolbar', ToolbarElement);
 window.customElements.define('ui-tooltip', TooltipElement);

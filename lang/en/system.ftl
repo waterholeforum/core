@@ -32,6 +32,7 @@ loading = Loading
 show-more-button = Show more
 full-screen-enter-button = Full Screen
 full-screen-exit-button = Exit Full Screen
+form-general-section-title = General
 
 ## Post Feed Layouts
 

@@ -2,6 +2,8 @@
 
 namespace Waterhole\Http\Controllers\Cp;
 
+use function Waterhole\internal_url;
+
 use Illuminate\Http\Request;
 use Waterhole\Forms\UserForm;
 use Waterhole\Http\Controllers\Controller;
@@ -86,8 +88,12 @@ class UserController extends Controller
     {
         $this->form(new User())->submit($request);
 
-        return redirect()
-            ->route('waterhole.cp.users.index', ['sort' => 'created_at'])
+        return redirect(
+            internal_url(
+                $request->input('return'),
+                route('waterhole.cp.users.index', ['sort' => 'created_at']),
+            ),
+        )
             ->with('success', __('waterhole::cp.user-created-message'));
     }
 
@@ -102,7 +108,9 @@ class UserController extends Controller
     {
         $this->form($user)->submit($request);
 
-        return redirect($request->input('return', route('waterhole.cp.users.index')))->with(
+        return redirect(
+            internal_url($request->input('return'), route('waterhole.cp.users.index')),
+        )->with(
             'success',
             __('waterhole::cp.user-saved-message'),
         );

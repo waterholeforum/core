@@ -123,7 +123,10 @@ class PostController extends Controller
         // explicitly clicked. This allows the form to be submitted for other
         // purposes, such as selecting a different channel.
         if (!$request->input('commit')) {
-            $this->savePostDraft($user, $request->all());
+            $this->savePostDraft(
+                $user,
+                array_replace($user->drafts()->first()?->payload ?? [], $request->all()),
+            );
 
             return redirect()
                 ->route('waterhole.posts.create', ['channel_id' => $request->input('channel_id')])

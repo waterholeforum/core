@@ -2,6 +2,8 @@
 
 namespace Waterhole\Http\Controllers\Cp;
 
+use function Waterhole\internal_url;
+
 use Illuminate\Http\Request;
 use Waterhole\Forms\StructureLinkForm;
 use Waterhole\Http\Controllers\Controller;
@@ -25,7 +27,7 @@ class StructureLinkController extends Controller
     {
         $this->form(new StructureLink())->submit($request);
 
-        return redirect()->route('waterhole.cp.structure');
+        return redirect(internal_url($request->input('return'), route('waterhole.cp.structure')));
     }
 
     public function edit(StructureLink $link)
@@ -39,7 +41,7 @@ class StructureLinkController extends Controller
     {
         $this->form($link)->submit($request);
 
-        return redirect()->route('waterhole.cp.structure');
+        return redirect(internal_url($request->input('return'), route('waterhole.cp.structure')));
     }
 
     private function form(StructureLink $link)

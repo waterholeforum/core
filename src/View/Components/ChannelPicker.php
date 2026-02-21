@@ -20,6 +20,7 @@ class ChannelPicker extends Component
         public ?string $value = null,
         array $exclude = [],
         bool $showLinks = false,
+        public ?string $form = null,
     ) {
         $this->items = Structure::with('content')
             ->whereMorphedTo('content', Channel::class)

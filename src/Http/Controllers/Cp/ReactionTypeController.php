@@ -2,6 +2,8 @@
 
 namespace Waterhole\Http\Controllers\Cp;
 
+use function Waterhole\internal_url;
+
 use Illuminate\Http\Request;
 use Waterhole\Forms\ReactionTypeForm;
 use Waterhole\Http\Controllers\Controller;
@@ -13,20 +15,6 @@ use Waterhole\Models\ReactionType;
  */
 class ReactionTypeController extends Controller
 {
-    public function reorder(ReactionSet $reactionSet, Request $request)
-    {
-        $request['order'] = json_decode($request->input('order'), true);
-
-        $data = $request->validate(['order' => 'array']);
-
-        if ($data['order']) {
-            foreach ($data['order'] as $position => $id) {
-                ReactionType::whereKey($id)->update(compact('position'));
-            }
-        }
-
-        return redirect($reactionSet->edit_url);
-    }
     public function create(ReactionSet $reactionSet)
     {
         $form = $this->form(new ReactionType(['icon' => 'emoji:']));
@@ -58,7 +46,9 @@ class ReactionTypeController extends Controller
     {
         $this->form($reactionType)->submit($request);
 
-        return redirect($request->input('return', $reactionType->reactionSet->edit_url))->with(
+        return redirect(
+            internal_url($request->input('return'), $reactionType->reactionSet->edit_url),
+        )->with(
             'success',
             __('waterhole::cp.reaction-type-saved-message'),
         );

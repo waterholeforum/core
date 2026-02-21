@@ -11,33 +11,11 @@
         :title="$title"
     />
 
-    <form
-        method="POST"
+    <x-waterhole::form
+        :fields="$form->fields()"
+        :method="isset($channel) ? 'PATCH' : 'POST'"
         action="{{ isset($channel) ? route('waterhole.cp.structure.channels.update', compact('channel')) : route('waterhole.cp.structure.channels.store') }}"
         enctype="multipart/form-data"
-        data-controller="dirty-form"
-    >
-        @csrf
-        @if (isset($channel))
-            @method('PATCH')
-        @endif
-
-        <div class="stack gap-lg" data-controller="slugger">
-            <x-waterhole::validation-errors />
-
-            <ui-accordion class="stack gap-md">
-                @components($form->fields())
-            </ui-accordion>
-
-            <div class="row gap-xs wrap">
-                <button type="submit" class="btn bg-accent btn--wide">
-                    {{ isset($channel) ? __('waterhole::system.save-changes-button') : __('waterhole::system.create-button') }}
-                </button>
-
-                <a href="{{ route('waterhole.cp.structure') }}" class="btn">
-                    {{ __('waterhole::system.cancel-button') }}
-                </a>
-            </div>
-        </div>
-    </form>
+        data-controller="dirty-form slugger"
+    />
 </x-waterhole::cp>

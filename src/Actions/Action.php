@@ -121,11 +121,7 @@ abstract class Action
         // If the action requires confirmation, we will override the form's
         // method and action to take the user to the confirmation route.
         if ($confirm = $this->shouldConfirm($models)) {
-            $defaultAttributes = [
-                'formmethod' => 'GET',
-                'formaction' => route('waterhole.actions.create'),
-                'data-turbo-frame' => 'modal',
-            ];
+            $defaultAttributes = ['data-turbo-frame' => 'modal'];
         }
 
         $attributes = (new ComponentAttributeBag($this->attributes($models)))
@@ -136,12 +132,15 @@ abstract class Action
             $attributes = $attributes->class('color-danger');
         }
 
-        $class = e(static::class);
+        $attributes = $attributes->except(['name', 'value'])->merge([
+            'name' => $attributes->get('name', 'action_class'),
+            'value' => (string) $attributes->get('value', static::class),
+        ]);
         $content = $this->renderContent($models, $confirm);
 
         return new HtmlString(
             <<<html
-                <button type="submit" name="action_class" value="$class" $attributes>$content</button>
+                <button type="submit" $attributes>$content</button>
             html
             ,
         );

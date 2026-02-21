@@ -2,6 +2,8 @@
 
 namespace Waterhole\Http\Controllers\Cp;
 
+use function Waterhole\internal_url;
+
 use Illuminate\Http\Request;
 use Waterhole\Forms\GroupForm;
 use Waterhole\Http\Controllers\Controller;
@@ -32,7 +34,9 @@ class GroupController extends Controller
     {
         $this->form(new Group())->submit($request);
 
-        return redirect()->route('waterhole.cp.groups.index');
+        return redirect(
+            internal_url($request->input('return'), route('waterhole.cp.groups.index')),
+        );
     }
 
     public function edit(Group $group)
@@ -46,7 +50,9 @@ class GroupController extends Controller
     {
         $this->form($group)->submit($request);
 
-        return redirect()->route('waterhole.cp.groups.index');
+        return redirect(
+            internal_url($request->input('return'), route('waterhole.cp.groups.index')),
+        );
     }
 
     private function form(Group $group)

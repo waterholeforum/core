@@ -2,6 +2,8 @@
 
 namespace Waterhole\Http\Controllers\Cp;
 
+use function Waterhole\internal_url;
+
 use Illuminate\Http\Request;
 use Waterhole\Forms\ChannelForm;
 use Waterhole\Http\Controllers\Controller;
@@ -25,7 +27,7 @@ class ChannelController extends Controller
     {
         $this->form(new Channel())->submit($request);
 
-        return redirect()->route('waterhole.cp.structure');
+        return redirect(internal_url($request->input('return'), route('waterhole.cp.structure')));
     }
 
     public function edit(Channel $channel)
@@ -39,7 +41,7 @@ class ChannelController extends Controller
     {
         $this->form($channel)->submit($request);
 
-        return redirect()->route('waterhole.cp.structure');
+        return redirect(internal_url($request->input('return'), route('waterhole.cp.structure')));
     }
 
     private function form(Channel $channel)

@@ -9,6 +9,7 @@ use Waterhole\Models\Tag;
 use Waterhole\Models\Taxonomy;
 use Waterhole\View\Components\Cp\TagRow;
 use Waterhole\View\TurboStream;
+use function Waterhole\internal_url;
 
 class TagController
 {
@@ -50,7 +51,7 @@ class TagController
             return TurboResponseFactory::makeStream(TurboStream::replace(new TagRow($tag)));
         }
 
-        return redirect($request->input('return', $taxonomy->edit_url))->with(
+        return redirect(internal_url($request->input('return'), $taxonomy->edit_url))->with(
             'success',
             __('waterhole::cp.tag-saved-message'),
         );

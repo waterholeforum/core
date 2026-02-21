@@ -1,25 +1,34 @@
-@php
-    use Illuminate\View\ComponentAttributeBag;
-@endphp
-
-<x-waterhole::action-form
-    :for="$model"
-    :action="Waterhole\Actions\React::class"
-    :return="$model->url"
-    {{ $attributes->class('reactions row wrap gap-xxs') }}
->
+<div {{ $attributes->class('reactions row wrap gap-xxs') }}>
     @foreach ($reactionTypes as $reactionType)
-        <{{ $component->isAuthorized ? 'button' : 'span' }}
-            {{
-                (new ComponentAttributeBag([
+        @php
+            $attributes = [
+                'data-reaction-type' => $reactionType->id,
+                'data-count' => ($count = $reactionCount($reactionType)),
+            ];
+
+            if ($isAuthorized) {
+                $attributes += [
                     'name' => 'reaction_type_id',
                     'value' => $reactionType->id,
-                    'data-reaction-type' => $reactionType->id,
-                    'data-count' => ($count = $reactionCount($reactionType)),
-                ]))->class([
+                    'form' => 'action-form',
+                    'formaction' => route('waterhole.actions.store', [
+                        'actionable' => get_class($model),
+                        'id' => $model->getKey(),
+                        'action_class' => Waterhole\Actions\React::class,
+                        'return' => $model->url,
+                    ]),
+                    'formmethod' => 'POST',
+                    'formnovalidate' => true,
+                ];
+            }
+        @endphp
+
+        <{{ $isAuthorized ? 'button' : 'span' }}
+            {{
+                (new Illuminate\View\ComponentAttributeBag($attributes))->class([
                     'btn btn--sm btn--outline reaction',
                     'is-active' => $userReacted($reactionType),
-                    'is-inert' => ! $component->isAuthorized,
+                    'is-inert' => ! $isAuthorized,
                 ])
             }}
         >
@@ -38,12 +47,12 @@
                     </turbo-frame>
                 @endif
             </ui-tooltip>
-        </{{ $component->isAuthorized ? 'button' : 'span' }}>
+        </{{ $isAuthorized ? 'button' : 'span' }}>
     @endforeach
 
-    @if ($component->isAuthorized && $reactionSet->reactionTypes->count() > 1)
+    @if ($isAuthorized && $reactionSet->reactionTypes->count() > 1)
         <ui-popup placement="top" class="js-only">
-            <button class="btn btn--sm btn--icon btn--transparent control">
+            <button type="button" class="btn btn--sm btn--icon btn--transparent control">
                 @icon('tabler-mood-plus')
                 <ui-tooltip>{{ __('waterhole::forum.add-reaction-button') }}</ui-tooltip>
             </button>
@@ -54,6 +63,17 @@
                         class="text-xl reaction-type-{{ $reactionType->id }}"
                         name="reaction_type_id"
                         value="{{ $reactionType->id }}"
+                        form="action-form"
+                        formaction="{{
+                            route('waterhole.actions.store', [
+                                'actionable' => get_class($model),
+                                'id' => $model->getKey(),
+                                'action_class' => Waterhole\Actions\React::class,
+                                'return' => $model->url,
+                            ])
+                        }}"
+                        formmethod="POST"
+                        formnovalidate
                         role="menuitemradio"
                     >
                         @icon($reactionType->icon)
@@ -63,4 +83,4 @@
             </ui-menu>
         </ui-popup>
     @endif
-</x-waterhole::action-form>
+</div>

@@ -72,9 +72,4 @@ Route::resource('reaction-sets.reaction-types', Cp\ReactionTypeController::class
     ->parameters(['reaction-sets' => 'reactionSet', 'reaction-types' => 'reactionType'])
     ->scoped();
 
-Route::post('reaction-sets/{reactionSet}/reaction-types/reorder', [
-    Cp\ReactionTypeController::class,
-    'reorder',
-])->name('reaction-sets.reaction-types.reorder');
-
 resolve(Waterhole\Extend\Routing\CpRoutes::class);

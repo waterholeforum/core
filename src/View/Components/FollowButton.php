@@ -14,7 +14,7 @@ class FollowButton extends Component
     public $followable;
     public string $localePrefix;
 
-    public function __construct($followable, public string $buttonClass = 'btn block')
+    public function __construct($followable)
     {
         $this->followable = $followable;
         $this->localePrefix =

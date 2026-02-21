@@ -7,8 +7,9 @@
 <x-waterhole::cp :title="$title">
     <turbo-frame id="modal" data-modal-static>
         <x-waterhole::dialog :title="$title" class="dialog--sm">
-            <form
-                method="POST"
+            <x-waterhole::form
+                :fields="$form->fields()"
+                :method="isset($tag) ? 'PATCH' : 'POST'"
                 action="{{
                     isset($tag)
                         ? route('waterhole.cp.taxonomies.tags.update', compact('taxonomy', 'tag'))
@@ -17,32 +18,7 @@
                 enctype="multipart/form-data"
                 data-turbo-frame="tags"
                 data-controller="dirty-form"
-            >
-                @csrf
-                @if (isset($tag))
-                    @method('PATCH')
-                @endif
-
-                <div class="stack gap-lg">
-                    <x-waterhole::validation-errors />
-
-                    @components($form->fields())
-
-                    <div class="row gap-xs wrap">
-                        <button type="submit" class="btn bg-accent btn--wide">
-                            {{
-                                isset($tag)
-                                    ? __('waterhole::system.save-changes-button')
-                                    : __('waterhole::system.create-button')
-                            }}
-                        </button>
-
-                        <a href="{{ url()->previous() }}" class="btn" data-action="modal#hide">
-                            {{ __('waterhole::system.cancel-button') }}
-                        </a>
-                    </div>
-                </div>
-            </form>
+            />
         </x-waterhole::dialog>
     </turbo-frame>
 </x-waterhole::cp>

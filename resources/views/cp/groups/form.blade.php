@@ -11,33 +11,12 @@
         :title="$title"
     />
 
-    <form
-        method="POST"
+    <x-waterhole::form
+        :fields="$form->fields()"
+        :method="isset($group) ? 'PATCH' : 'POST'"
         action="{{ isset($group) ? route('waterhole.cp.groups.update', compact('group')) : route('waterhole.cp.groups.store') }}"
         enctype="multipart/form-data"
         data-controller="dirty-form"
-    >
-        @csrf
-        @if (isset($group))
-            @method('PATCH')
-        @endif
-
-        <div class="stack gap-lg">
-            <x-waterhole::validation-errors />
-
-            <div class="stack gap-md">
-                @components($form->fields())
-            </div>
-
-            <div class="row gap-xs wrap">
-                <button type="submit" class="btn bg-accent btn--wide">
-                    {{ isset($group) ? __('waterhole::system.save-changes-button') : __('waterhole::system.create-button') }}
-                </button>
-
-                <a href="{{ route('waterhole.cp.groups.index') }}" class="btn">
-                    {{ __('waterhole::system.cancel-button') }}
-                </a>
-            </div>
-        </div>
-    </form>
+        :panel-attributes="['class' => 'stack dividers card card__body']"
+    />
 </x-waterhole::cp>

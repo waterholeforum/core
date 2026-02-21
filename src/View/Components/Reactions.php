@@ -17,12 +17,14 @@ class Reactions extends Component
 
     public Model $model;
     public ?ReactionSet $reactionSet;
+    public bool $isAuthorized;
     public Collection $reactionTypes;
 
     public function __construct(Model $model)
     {
         $this->model = $model;
         $this->reactionSet = $model->reactionSet();
+        $this->isAuthorized = resolve(React::class)->authorize(Auth::user(), $this->model);
         $this->reactionTypes = new Collection();
 
         if (!$this->reactionSet?->exists) {
@@ -41,8 +43,7 @@ class Reactions extends Component
     public function shouldRender(): bool
     {
         return $this->reactionSet?->exists &&
-            ($this->model->reactionCounts ||
-                resolve(React::class)->authorize(Auth::user(), $this->model));
+            ($this->model->reactionCounts || $this->isAuthorized);
     }
 
     public function reactionCount(ReactionType $reactionType): int

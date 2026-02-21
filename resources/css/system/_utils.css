@@ -792,3 +792,22 @@
 [data-theme='light'] .dark-only {
   display: none;
 }
+
+// Bottom bar
+
+.bottom-bar {
+  position: sticky;
+  bottom: var(--space-lg);
+  z-index: var(--z-index-header);
+
+  &::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: calc(-1 * var(--space-lg));
+    top: 0;
+    background: var(--color-bg);
+    box-shadow: 0 calc(-1 * var(--space-md)) var(--space-md) var(--color-bg);
+    opacity: 0.95;
+  }
+}

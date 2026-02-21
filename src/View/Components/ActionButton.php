@@ -16,9 +16,9 @@ class ActionButton extends Component
         public string $action,
         public ?string $return = null,
         public bool $icon = false,
-        public array $formAttributes = [],
     ) {
         $this->actionable = get_class($for);
+        $this->return ??= request()->fullUrl();
 
         $this->actionInstance = resolve(Actions::class)->resolveAction($action, [$for]);
     }
