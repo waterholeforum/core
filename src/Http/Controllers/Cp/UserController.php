@@ -93,8 +93,7 @@ class UserController extends Controller
                 $request->input('return'),
                 route('waterhole.cp.users.index', ['sort' => 'created_at']),
             ),
-        )
-            ->with('success', __('waterhole::cp.user-created-message'));
+        )->with('success', __('waterhole::cp.user-created-message'));
     }
 
     public function edit(User $user)
@@ -110,10 +109,7 @@ class UserController extends Controller
 
         return redirect(
             internal_url($request->input('return'), route('waterhole.cp.users.index')),
-        )->with(
-            'success',
-            __('waterhole::cp.user-saved-message'),
-        );
+        )->with('success', __('waterhole::cp.user-saved-message'));
     }
 
     private function form(User $user)

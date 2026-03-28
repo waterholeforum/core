@@ -13,6 +13,7 @@ class Attribution extends Component
         public ?DateTimeInterface $date = null,
         public ?string $permalink = null,
         public ?DateTimeInterface $editDate = null,
+        public bool $primaryTarget = false,
     ) {}
 
     public function render()

@@ -22,7 +22,11 @@
         class="section container user-profile stack gap-gutter"
         data-group="{{ $user->groups->where('is_public', true)->pluck('id')->join(' ') }}"
     >
-        <div class="card card__body user-profile__card">
+        <div
+            class="card card__body user-profile__card"
+            data-shortcut-selection-key="{{ dom_id($user) }}"
+            data-shortcut-selection-default
+        >
             <div class="user-profile__controls">
                 <x-waterhole::action-menu
                     :for="$user"
@@ -33,6 +37,10 @@
                         @icon('tabler-settings')
                         <span>{{ __('waterhole::system.controls-button') }}</span>
                         @icon('tabler-chevron-down')
+                        <ui-tooltip>
+                            {{ __('waterhole::system.controls-button') }}
+                            <x-waterhole::shortcut-label shortcut="selection.actions" />
+                        </ui-tooltip>
                     </x-slot>
                 </x-waterhole::action-menu>
             </div>

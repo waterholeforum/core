@@ -11,7 +11,7 @@ class ActionMenu extends Component
     public string $url;
 
     public function __construct(
-        protected Model $for,
+        public Model $for,
         protected ?string $context = null,
         public array $buttonAttributes = ['class' => 'btn btn--transparent btn--icon text-xs'],
     ) {

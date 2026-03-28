@@ -23,6 +23,7 @@ class TextEditor extends ComponentList
                 label: __('waterhole::system.text-editor-heading'),
                 id: $id,
                 format: 'header2',
+                hint: '#',
             ),
             'heading',
         );
@@ -33,7 +34,7 @@ class TextEditor extends ComponentList
                 label: __('waterhole::system.text-editor-bold'),
                 id: $id,
                 format: 'bold',
-                hotkey: 'Meta+b',
+                shortcut: 'editor.bold',
             ),
             'bold',
         );
@@ -44,7 +45,7 @@ class TextEditor extends ComponentList
                 label: __('waterhole::system.text-editor-italic'),
                 id: $id,
                 format: 'italic',
-                hotkey: 'Meta+i',
+                shortcut: 'editor.italic',
             ),
             'italic',
         );
@@ -55,7 +56,7 @@ class TextEditor extends ComponentList
                 label: __('waterhole::system.text-editor-quote'),
                 id: $id,
                 format: 'blockquote',
-                hotkey: 'Meta+Shift+.',
+                shortcut: 'editor.quote',
             ),
             'quote',
         );
@@ -66,7 +67,7 @@ class TextEditor extends ComponentList
                 label: __('waterhole::system.text-editor-code'),
                 id: $id,
                 format: 'code',
-                hotkey: 'Meta+e',
+                shortcut: 'editor.code',
             ),
             'code',
         );
@@ -77,7 +78,7 @@ class TextEditor extends ComponentList
                 label: __('waterhole::system.text-editor-link'),
                 id: $id,
                 format: 'link',
-                hotkey: 'Meta+k',
+                shortcut: 'editor.link',
             ),
             'link',
         );
@@ -88,7 +89,7 @@ class TextEditor extends ComponentList
                 label: __('waterhole::system.text-editor-bulleted-list'),
                 id: $id,
                 format: 'unorderedList',
-                hotkey: 'Meta+Shift+8',
+                shortcut: 'editor.bulleted-list',
             ),
             'bulletedList',
         );
@@ -99,7 +100,7 @@ class TextEditor extends ComponentList
                 label: __('waterhole::system.text-editor-numbered-list'),
                 id: $id,
                 format: 'orderedList',
-                hotkey: 'Meta+Shift+7',
+                shortcut: 'editor.numbered-list',
             ),
             'numberedList',
         );
@@ -110,6 +111,7 @@ class TextEditor extends ComponentList
                 label: __('waterhole::system.text-editor-mention'),
                 id: $id,
                 format: '{"prefix":"@"}',
+                hint: '@',
             ),
             'mention',
         );
@@ -121,6 +123,7 @@ class TextEditor extends ComponentList
                 ? (new TextEditorButton(
                     icon: 'tabler-paperclip',
                     label: __('waterhole::system.text-editor-attachment'),
+                    shortcut: 'editor.attachment',
                 ))->withAttributes(['data-action' => 'uploads#chooseFiles'])
                 : null,
             'attachment',

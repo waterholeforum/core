@@ -8,12 +8,6 @@
             <x-waterhole::form
                 :fields="$form->fields()"
                 method="PATCH"
-                :cancel-url="$post->url"
-                :submit-attributes="[
-                    'data-controller' => 'hotkey',
-                    'data-hotkey' => 'Mod+Enter',
-                    'data-hotkey-scope' => 'post-body',
-                ]"
                 action="{{ route('waterhole.posts.update', ['post' => $post]) }}"
                 class="stacked-fields"
                 :panel-attributes="['class' => 'stack gap-lg']"

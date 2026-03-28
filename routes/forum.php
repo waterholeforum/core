@@ -14,6 +14,7 @@ use Waterhole\Http\Controllers\FormatController;
 use Waterhole\Http\Controllers\Forum\CommentController;
 use Waterhole\Http\Controllers\Forum\CommentDraftController;
 use Waterhole\Http\Controllers\Forum\IndexController;
+use Waterhole\Http\Controllers\Forum\KeyboardShortcutsController;
 use Waterhole\Http\Controllers\Forum\ModerationController;
 use Waterhole\Http\Controllers\Forum\NotificationController;
 use Waterhole\Http\Controllers\Forum\PostController;
@@ -127,6 +128,9 @@ Route::get('saved', [SavedController::class, 'index'])->name('saved.index');
 if (config('waterhole.system.search_engine')) {
     Route::get('search', SearchController::class)->name('search');
 }
+
+// Keyboard Shortcuts
+Route::get('keyboard-shortcuts', KeyboardShortcutsController::class)->name('keyboard-shortcuts');
 
 $authAvailable =
     count(config('waterhole.auth.providers', [])) ||

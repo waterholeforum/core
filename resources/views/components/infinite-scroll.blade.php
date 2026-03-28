@@ -6,7 +6,13 @@
     $direction = request()->query("direction");
 @endphp
 
-<turbo-frame id="page_{{ $current }}_frame" target="_top" {{ $attributes }}>
+<turbo-frame
+    id="page_{{ $current }}_frame"
+    target="_top"
+    data-page-frame
+    @if (! $isCursor) data-page="{{ $paginator->currentPage() }}" @endif
+    {{ $attributes }}
+>
     @if (! $paginator->onFirstPage() && $direction !== "forwards")
         <turbo-frame
             id="page_{{ $isCursor ? $paginator->previousCursor()->encode() ?? "1" : $paginator->currentPage() - 1 }}_frame"
@@ -15,6 +21,9 @@
             class="page-placeholder page-placeholder--previous busy-spinner"
             target="_top"
             data-controller="load-backwards"
+            data-page-frame
+            data-page-direction="backwards"
+            @if (! $isCursor) data-page="{{ $paginator->currentPage() - 1 }}" @endif
         ></turbo-frame>
     @endif
 
@@ -33,6 +42,9 @@
             id="page_{{ $isCursor ? $paginator->nextCursor()->encode() : $paginator->currentPage() + 1 }}_frame"
             target="_top"
             class="page-placeholder page-placeholder--next busy-spinner"
+            data-page-frame
+            data-page-direction="forwards"
+            @if (! $isCursor) data-page="{{ $paginator->currentPage() + 1 }}" @endif
             @if ($paginator->onFirstPage() || $endless)
                 src="{{ $paginator->appends("direction", "forwards")->nextPageUrl() }}"
                 loading="lazy"
@@ -43,6 +55,7 @@
                     href="{{ $paginator->appends("direction", "forwards")->nextPageUrl() }}"
                     class="btn"
                     data-turbo-frame="_self"
+                    data-page-load-more
                 >
                     {{ __("waterhole::system.load-more-button") }}
                 </a>

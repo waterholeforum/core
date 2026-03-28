@@ -4,6 +4,8 @@
     {{
     $attributes
         ->class('card post-full')
+        ->merge(['data-shortcut-selection-key' => dom_id($post)])
+        ->merge(request()->routeIs('waterhole.posts.show') ? ['data-shortcut-selection-default' => ''] : [])
         ->merge(resolve(Waterhole\Extend\Ui\PostAttributes::class)->build($post))
 }}
 >
@@ -46,6 +48,7 @@
                     data-turbo-frame="@domid($post, 'comment_parent')"
                     data-quotable-target="button"
                     data-action="quotable#quoteSelectedText"
+                    data-shortcut-trigger="selection.reply"
                     hidden
                 >
                     @icon('tabler-quote')

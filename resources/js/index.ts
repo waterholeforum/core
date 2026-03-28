@@ -19,10 +19,17 @@ declare global {
     }
 }
 
+export interface ShortcutPayload {
+    id: string;
+    keys: string[];
+    scopes?: string[];
+}
+
 export interface Waterhole {
     userId: number;
     debug: boolean;
     messages: Record<string, string>;
+    shortcuts: ShortcutPayload[];
     alerts: AlertsElement;
     fetch: typeof ky;
     fetchError: (response?: Response) => void;

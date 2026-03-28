@@ -4,7 +4,6 @@
   border-radius: var(--radius);
   background: var(--color-bg);
   box-shadow: var(--shadow-sm);
-  overflow: clip;
 }
 
 .card__header {

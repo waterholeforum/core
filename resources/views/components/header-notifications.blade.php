@@ -4,13 +4,17 @@
         class="btn btn--icon btn--transparent"
         data-action="notifications-popup#open"
         data-turbo-prefetch="false"
+        data-shortcut-trigger="navigation.notifications"
         role="button"
     >
         @icon('tabler-bell')
 
         <x-waterhole::notifications-badge :user="Auth::user()" />
 
-        <ui-tooltip>{{ __('waterhole::notifications.title') }}</ui-tooltip>
+        <ui-tooltip>
+            {{ __('waterhole::notifications.title') }}
+            <x-waterhole::shortcut-label shortcut="navigation.notifications" />
+        </ui-tooltip>
     </a>
 
     @unless (request()->routeIs('waterhole.notifications.*'))

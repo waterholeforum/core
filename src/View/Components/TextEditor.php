@@ -12,6 +12,7 @@ class TextEditor extends Component
         public ?string $value = null,
         public ?string $placeholder = null,
         public ?string $userLookupUrl = null,
+        public bool $autofocus = false,
     ) {
         $this->id = $id ?: 'text-editor-' . uniqid();
         $this->userLookupUrl ??= route('waterhole.user-lookup');

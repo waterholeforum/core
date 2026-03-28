@@ -6,18 +6,17 @@
 
     @foreach ($buttons as $action)
         {{
-            $action
-                ->withRenderType(Waterhole\Actions\Action::TYPE_ICON)
-                ->render(collect([$for]), [
-                    'class' => 'btn btn--transparent btn--icon',
-                    'form' => 'action-form',
-                    'formaction' => route('waterhole.actions.store', [
-                        'actionable' => $actionable,
-                        'id' => $for->getKey(),
-                        'return' => request()->fullUrl(),
-                        'context' => $context,
-                    ]),
-                ])
+            $action->withRenderType(Waterhole\Actions\Action::TYPE_ICON)->render(collect([$for]), [
+                'class' => 'btn btn--transparent btn--icon',
+                'form' => 'action-form',
+                'data-shortcut-selection-owner' => dom_id($for),
+                'formaction' => route('waterhole.actions.store', [
+                    'actionable' => $actionable,
+                    'id' => $for->getKey(),
+                    'return' => request()->fullUrl(),
+                    'context' => $context,
+                ]),
+            ])
         }}
     @endforeach
 

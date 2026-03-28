@@ -13,7 +13,7 @@ const TextareaEditor =
  * @internal
  */
 export default class extends Controller {
-    static targets = ['input', 'preview', 'previewButton', 'hotkeyLabel'];
+    static targets = ['input', 'preview', 'previewButton'];
 
     static values = {
         formatUrl: String,
@@ -50,20 +50,6 @@ export default class extends Controller {
     inputTargetDisconnected(input: HTMLTextAreaElement) {
         this.pasteMarkdown?.unsubscribe();
         input.removeEventListener('input', this.inputChanged);
-    }
-
-    hotkeyLabelTargetConnected(element: HTMLElement) {
-        const mac = navigator.userAgent.match(/Macintosh/);
-        element.innerText = element.innerText
-            .split('+')
-            .map((part) => {
-                if (part === 'Meta') return mac ? '⌘' : 'Ctrl';
-                if (part === 'Shift' && mac) return '⇧';
-                if (part === 'Alt' && mac) return '⌥';
-                if (part.length === 1) return part.toUpperCase();
-                return part;
-            })
-            .join(mac ? '' : '-');
     }
 
     format(e: ActionEvent) {
@@ -118,9 +104,11 @@ export default class extends Controller {
         if (!this.previewing) {
             this.clearPreviewTimeout();
             this.previewRequestId++;
+            this.focusInput();
             return;
         }
 
+        this.focusPreviewButton();
         this.refreshPreview();
     }
 
@@ -157,6 +145,12 @@ export default class extends Controller {
     private focusInput() {
         requestAnimationFrame(() => {
             this.inputTarget?.focus({ preventScroll: true });
+        });
+    }
+
+    private focusPreviewButton() {
+        requestAnimationFrame(() => {
+            this.previewButtonTarget?.focus({ preventScroll: true });
         });
     }
 }

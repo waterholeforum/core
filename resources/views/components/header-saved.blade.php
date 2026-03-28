@@ -4,11 +4,15 @@
         class="btn btn--icon btn--transparent"
         data-action="notifications-popup#open"
         data-turbo-prefetch="false"
+        data-shortcut-trigger="navigation.saved"
         role="button"
     >
         @icon('tabler-bookmark')
 
-        <ui-tooltip>{{ __('waterhole::forum.saved-title') }}</ui-tooltip>
+        <ui-tooltip>
+            {{ __('waterhole::forum.saved-title') }}
+            <x-waterhole::shortcut-label shortcut="navigation.saved" />
+        </ui-tooltip>
     </a>
 
     @unless (request()->routeIs('waterhole.saved.*'))

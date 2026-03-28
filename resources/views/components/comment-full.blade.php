@@ -17,6 +17,7 @@
         data-comment-id="{{ $comment->id }}"
         data-parent-id="{{ $comment->parent?->id }}"
         data-controller="comment"
+        data-shortcut-selection-key="{{ dom_id($comment) }}"
         tabindex="-1"
     >
         @if ($withStructuredData)
@@ -47,6 +48,8 @@
                     <button
                         class="btn btn--sm btn--transparent btn--start btn--end -my-sm"
                         data-action="comment#toggleExpanded"
+                        data-shortcut-selection-primary
+                        data-shortcut-trigger="selection.open"
                     >
                         {{ __('waterhole::forum.comment-removed-message') }}
                         @icon('tabler-chevron-right', ['class' => 'icon--narrow text-xxs'])
@@ -72,6 +75,7 @@
                     :date="$comment->created_at"
                     :edit-date="$comment->edited_at"
                     :permalink="$comment->url"
+                    primary-target
                 />
 
                 @if ($comment->parent)
@@ -155,6 +159,7 @@
                             data-turbo-frame="@domid($comment->post, 'comment_parent')"
                             data-quotable-target="button"
                             data-action="quotable#quoteSelectedText"
+                            data-shortcut-trigger="selection.reply"
                             hidden
                         >
                             @icon('tabler-quote')

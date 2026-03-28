@@ -19,7 +19,8 @@
         <ui-tooltip>{{ __('waterhole::system.more-button') }}</ui-tooltip>
     </button>
 
-    <ui-menu class="menu" hidden>
+    <ui-menu class="menu" hidden data-shortcut-hidden>
+        <x-waterhole::keyboard-shortcuts-menu-item />
         <x-waterhole::theme-menu-item />
         <x-waterhole::language-menu-item />
     </ui-menu>

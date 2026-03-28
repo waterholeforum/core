@@ -4,6 +4,7 @@ namespace Waterhole\Actions;
 
 use Illuminate\Support\Collection;
 use Waterhole\Models\Model;
+use Waterhole\Ui\KeyboardShortcut;
 
 class Bookmark extends Action
 {
@@ -51,6 +52,17 @@ class Bookmark extends Action
                     ? 'color-accent'
                     : '',
         ];
+    }
+
+    public function shortcut(): ?KeyboardShortcut
+    {
+        return new KeyboardShortcut(
+            id: 'action.bookmark',
+            keys: ['s'],
+            description: __('waterhole::forum.save-button'),
+            category: 'discussion',
+            scopes: ['selection'],
+        );
     }
 
     public function run(Collection $models)

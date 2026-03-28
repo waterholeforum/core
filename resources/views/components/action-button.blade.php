@@ -8,6 +8,7 @@
                 ->merge(
                     [
                         'form' => 'action-form',
+                        'data-shortcut-selection-owner' => dom_id($for),
                         'formaction' => route('waterhole.actions.store', [
                             'actionable' => $actionable,
                             'id' => $for->getKey(),

@@ -4,13 +4,17 @@
         class="btn btn--icon btn--transparent"
         data-action="notifications-popup#open"
         data-turbo-prefetch="false"
+        data-shortcut-trigger="navigation.moderation"
         role="button"
     >
         @icon('tabler-flag')
 
         <x-waterhole::moderation-badge :user="Auth::user()" />
 
-        <ui-tooltip>{{ __('waterhole::forum.moderation-title') }}</ui-tooltip>
+        <ui-tooltip>
+            {{ __('waterhole::forum.moderation-title') }}
+            <x-waterhole::shortcut-label shortcut="navigation.moderation" />
+        </ui-tooltip>
     </a>
 
     @unless (request()->routeIs('waterhole.moderation'))

@@ -98,6 +98,10 @@
   display: none;
 }
 
+.waterhole__main:has(.composer.is-stuck) * {
+  scroll-margin-bottom: calc(var(--toolbar-height) + var(--space-lg) * 2);
+}
+
 // Open
 .composer.is-open .composer__inner {
   --color-bg: var(--palette-surface);

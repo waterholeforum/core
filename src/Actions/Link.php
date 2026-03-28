@@ -30,7 +30,8 @@ abstract class Link extends Action
 
         $attributes = (new ComponentAttributeBag($attributes))
             ->whereDoesntStartWith('form')
-            ->merge($this->attributes($models));
+            ->merge($this->attributes($models))
+            ->merge($this->shortcutAttributes());
 
         $content = $this->renderContent($models);
 

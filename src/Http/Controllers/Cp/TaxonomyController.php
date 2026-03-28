@@ -2,11 +2,10 @@
 
 namespace Waterhole\Http\Controllers\Cp;
 
-use function Waterhole\internal_url;
-
 use Illuminate\Http\Request;
 use Waterhole\Forms\TaxonomyForm;
 use Waterhole\Models\Taxonomy;
+use function Waterhole\internal_url;
 
 class TaxonomyController
 {
@@ -43,14 +42,8 @@ class TaxonomyController
         $this->form($taxonomy)->submit($request);
 
         return redirect(
-            internal_url(
-                $request->input('return'),
-                route('waterhole.cp.taxonomies.index'),
-            ),
-        )->with(
-            'success',
-            __('waterhole::cp.taxonomy-saved-message'),
-        );
+            internal_url($request->input('return'), route('waterhole.cp.taxonomies.index')),
+        )->with('success', __('waterhole::cp.taxonomy-saved-message'));
     }
 
     private function form(Taxonomy $taxonomy)

@@ -51,7 +51,10 @@ export default class extends Controller<HTMLElement> {
     async open() {
         const oldHeight = this.element.offsetHeight;
 
-        this.element.classList.add('is-open', 'was-closed');
+        if (!this.element.classList.contains('is-open')) {
+            this.element.classList.add('is-open', 'was-closed');
+        }
+
         this.enableTextareaAutosize();
         this.textarea?.focus({ preventScroll: true });
 
@@ -66,8 +69,10 @@ export default class extends Controller<HTMLElement> {
     }
 
     close() {
-        this.element.classList.remove('is-open');
-        this.element.classList.add('was-open');
+        if (this.element.classList.contains('is-open')) {
+            this.element.classList.remove('is-open');
+            this.element.classList.add('was-open');
+        }
 
         if (window.location.hash === '#reply') {
             history.replaceState(null, '', ' ');

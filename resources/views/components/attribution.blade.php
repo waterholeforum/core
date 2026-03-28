@@ -37,6 +37,10 @@
                         href="{{ $permalink }}"
                         class="color-inherit with-icon"
                         target="_top"
+                        @if ($primaryTarget)
+                            data-shortcut-selection-primary
+                            data-shortcut-trigger="selection.open"
+                        @endif
                     >
                 @else
                     <span class="with-icon">

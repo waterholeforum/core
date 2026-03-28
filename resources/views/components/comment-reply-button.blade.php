@@ -12,7 +12,12 @@
         data-turbo-frame="_top"
     @endcan
     class="btn btn--sm btn--transparent"
+    data-shortcut-trigger="selection.reply"
 >
     @icon("tabler-share-3", ["class" => "flip-horizontal"])
     <span>{{ __("waterhole::forum.comment-reply-button") }}</span>
+    <ui-tooltip>
+        {{ __("waterhole::forum.comment-reply-button") }}
+        <x-waterhole::shortcut-label shortcut="selection.reply" />
+    </ui-tooltip>
 </a>

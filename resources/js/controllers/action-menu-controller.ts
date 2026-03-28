@@ -13,9 +13,15 @@ export default class extends Controller<PopupElement> {
     declare readonly hasFrameTarget: boolean;
     declare readonly frameTarget?: FrameElement;
 
-    preload() {
-        if (this.hasFrameTarget) {
-            this.frameTarget?.setAttribute('loading', 'eager');
+    async preload() {
+        if (!this.hasFrameTarget || !this.frameTarget) {
+            return;
         }
+
+        if (this.frameTarget.getAttribute('loading') !== 'eager') {
+            this.frameTarget.setAttribute('loading', 'eager');
+        }
+
+        return this.frameTarget.loaded;
     }
 }

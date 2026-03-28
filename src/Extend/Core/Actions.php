@@ -24,6 +24,7 @@ class Actions
      * @var array<class-string, OrderedList>
      */
     private array $lists = [];
+    private ?array $shortcuts = null;
 
     public function __construct()
     {
@@ -32,6 +33,8 @@ class Actions
 
     public function for(string $modelClass): OrderedList
     {
+        $this->shortcuts = null;
+
         return $this->lists[$modelClass] ??= new OrderedList();
     }
 
@@ -95,6 +98,27 @@ class Actions
         )
             ? $action
             : null;
+    }
+
+    public function shortcuts(): array
+    {
+        if ($this->shortcuts !== null) {
+            return $this->shortcuts;
+        }
+
+        $definitions = [];
+
+        foreach ($this->lists as $list) {
+            foreach (resolve_all($list->items()) as $action) {
+                if (!$action instanceof Action || !($shortcut = $action->shortcut())) {
+                    continue;
+                }
+
+                $definitions[$shortcut->id] ??= $shortcut;
+            }
+        }
+
+        return $this->shortcuts = array_values($definitions);
     }
 
     private function modelsAndList($models): array

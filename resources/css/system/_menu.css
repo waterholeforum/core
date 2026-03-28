@@ -82,6 +82,12 @@
   }
 }
 
+.menu-item__shortcut {
+  margin-left: auto;
+  margin-top: 1px;
+  padding-left: var(--space-sm);
+}
+
 .menu-divider {
   margin: var(--space-xs);
 

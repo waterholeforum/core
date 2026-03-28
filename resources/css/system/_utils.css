@@ -558,8 +558,6 @@
   --color-fill: rgb(255 255 255 / 0.1);
   --color-stroke: rgb(255 255 255 / 0.25);
   --color-muted: var(--color-text);
-  --color-accent: var(--color-text);
-  --color-accent-text: var(--color-text);
 
   background-color: var(--color-bg);
   color: var(--color-text);

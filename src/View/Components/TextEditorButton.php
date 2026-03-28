@@ -12,7 +12,8 @@ class TextEditorButton extends Component
         public string $label,
         public ?string $id = null,
         public ?string $format = null,
-        public ?string $hotkey = null,
+        public ?string $shortcut = null,
+        public ?string $hint = null,
     ) {}
 
     public function render(): View

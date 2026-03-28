@@ -1,18 +1,22 @@
 <button
-    type="submit"
-    name="action_class"
-    value="{{ Waterhole\Actions\MarkAsRead::class }}"
-    form="action-form"
-    formaction="{{
-        route('waterhole.actions.store', [
-            'actionable' => get_class($post),
-            'id' => $post->getKey(),
-            'return' => request()->fullUrl(),
-        ])
-    }}"
-    formmethod="POST"
-    formnovalidate
-    class="post-list-item__unread badge clickable @if ($isNotifiable) bg-activity @endif"
+    {{
+        $attributes
+            ->merge([
+                'type' => 'submit',
+                'name' => 'action_class',
+                'value' => Waterhole\Actions\MarkAsRead::class,
+                'form' => 'action-form',
+                'data-shortcut-trigger' => 'action.mark-as-read',
+                'formaction' => route('waterhole.actions.store', [
+                    'actionable' => get_class($post),
+                    'id' => $post->getKey(),
+                    'return' => request()->fullUrl(),
+                ]),
+                'formmethod' => 'POST',
+                'formnovalidate' => true,
+            ])
+            ->class(['post-list-item__unread badge clickable', 'bg-activity' => $isNotifiable])
+    }}
 >
     @if ($isNotifiable)
         @icon('tabler-bell')

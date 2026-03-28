@@ -48,10 +48,7 @@ class ReactionTypeController extends Controller
 
         return redirect(
             internal_url($request->input('return'), $reactionType->reactionSet->edit_url),
-        )->with(
-            'success',
-            __('waterhole::cp.reaction-type-saved-message'),
-        );
+        )->with('success', __('waterhole::cp.reaction-type-saved-message'));
     }
 
     private function form(ReactionType $reactionType)

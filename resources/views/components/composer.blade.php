@@ -4,6 +4,7 @@
     data-controller="composer watch-sticky"
     data-turbo-prefetch="false"
     data-turbo-permanent
+    data-shortcut-scope="surface"
     data-action="
         turbo:frame-render->composer#frameRender
         composer:reset->composer#reset
@@ -20,8 +21,9 @@
                 data-turbo-frame="_top"
             @endauth
             class="composer__placeholder row gap-sm color-muted grow align-center"
-            data-controller="hotkey"
-            data-hotkey="r"
+            data-shortcut-trigger="selection.reply"
+            data-shortcut-hidden
+            data-shortcut-selection-owner="{{ dom_id($post) }}"
         >
             @auth
                 <x-waterhole::avatar :user="Auth::user()" class="icon text-lg" />
@@ -43,6 +45,7 @@
             action="{{ route("waterhole.posts.comments.store", ["post" => $post]) }}"
             method="POST"
             data-controller="draft dirty-form"
+            data-shortcut-scope="form"
             data-action="
                 input->draft#queue
                 change->draft#queue
@@ -64,10 +67,12 @@
                     type="button"
                     class="btn btn--transparent btn--icon composer__collapse"
                     data-action="composer#close"
+                    data-shortcut-trigger="navigation.close"
                 >
                     @icon("tabler-chevron-down")
                     <ui-tooltip>
                         {{ __("waterhole::forum.composer-collapse-button") }}
+                        <x-waterhole::shortcut-label shortcut="navigation.close" />
                     </ui-tooltip>
                 </button>
 
@@ -75,6 +80,7 @@
                     type="button"
                     class="btn btn--transparent btn--icon composer__expand"
                     data-action="composer#open"
+                    data-shortcut-trigger="selection.reply"
                 >
                     @icon("tabler-chevron-up")
                     <ui-tooltip>
@@ -134,11 +140,14 @@
                     class="btn bg-accent composer__submit"
                     name="commit"
                     value="1"
-                    data-controller="hotkey"
-                    data-hotkey="Mod+Enter"
-                    data-hotkey-scope="new-comment"
+                    data-shortcut-trigger="form.submit"
                 >
                     {{ __("waterhole::forum.composer-submit") }}
+
+                    <ui-tooltip>
+                        {{ __("waterhole::forum.composer-submit") }}
+                        <x-waterhole::shortcut-label shortcut="form.submit" />
+                    </ui-tooltip>
                 </button>
             </div>
 

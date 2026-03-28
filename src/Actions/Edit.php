@@ -5,6 +5,7 @@ namespace Waterhole\Actions;
 use Illuminate\Support\Collection;
 use Waterhole\Models\Model;
 use Waterhole\Models\User;
+use Waterhole\Ui\KeyboardShortcut;
 
 class Edit extends Link
 {
@@ -24,6 +25,17 @@ class Edit extends Link
     public function icon(Collection $models): string
     {
         return 'tabler-pencil';
+    }
+
+    public function shortcut(): ?KeyboardShortcut
+    {
+        return new KeyboardShortcut(
+            id: 'action.edit',
+            keys: ['e'],
+            description: __('waterhole::system.edit-link'),
+            category: 'discussion',
+            scopes: ['selection'],
+        );
     }
 
     public function url(Model $model): string

@@ -1,8 +1,10 @@
 <div
     {{
-        $attributes
-            ->class('channel-card card card__body row align-start gap-md')
-            ->merge(['data-channel' => $channel->slug])
+        $attributes->class('channel-card card card__body row align-start gap-md')->merge([
+            'data-channel' => $channel->slug,
+            'data-shortcut-selection-key' => dom_id($channel),
+            'data-shortcut-selection-default' => '',
+        ])
     }}
 >
     @icon($channel->icon, ['class' => 'channel-card__icon text-xxl'])

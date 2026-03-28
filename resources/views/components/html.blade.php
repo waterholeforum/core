@@ -107,16 +107,21 @@
             <script src="{{ $url }}" defer data-turbo-track="dynamic"></script>
         @endforeach
 
-        <script>
-            window.Waterhole = @json($payload);
-        </script>
-
         {{ $head ?? '' }}
 
         @components(\Waterhole\Extend\Ui\DocumentHead::class, compact('title', 'assets'))
     </head>
 
-    <body {{ $attributes->merge(['data-route' => request()->route()->getName(),]) }}>
+    <body
+        {{
+            $attributes->merge([
+                'data-controller' => $attributes->prepends('keyboard-shortcuts'),
+                'data-route' => request()
+                    ->route()
+                    ->getName(),
+            ])
+        }}
+    >
         {{ $slot }}
 
         <form
@@ -203,6 +208,11 @@
                 <x-waterhole::alert :$type />
             </template>
         @endforeach
+
+        <script>
+            window.Waterhole ||= {};
+            Object.assign(window.Waterhole, @json($payload));
+        </script>
 
         <template id="frame-error">
             <div class="placeholder">

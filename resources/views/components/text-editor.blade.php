@@ -4,6 +4,7 @@
     data-uploads-url-value="{{ route('waterhole.upload') }}"
     {{
         $attributes->class('input text-editor stack overlay-container')->merge([
+            'data-shortcut-scope' => 'editor',
             'data-action' => $attributes->prepends('full-screen:enter->text-editor#fullScreenEnter full-screen:exit->text-editor#fullScreenExit'),
         ])
     }}
@@ -21,14 +22,17 @@
                 aria-pressed="false"
                 data-action="text-editor#togglePreview"
                 data-text-editor-target="previewButton"
-                data-controller="hotkey"
-                data-hotkey="Meta+Shift+P"
-                data-hotkey-scope="{{ $id }}"
+                data-shortcut-trigger="editor.preview"
             >
                 {{ __('waterhole::system.text-editor-preview') }}
+
+                <ui-tooltip>
+                    {{ __('waterhole::system.text-editor-preview') }}
+                    <x-waterhole::shortcut-label shortcut="editor.preview" />
+                </ui-tooltip>
             </button>
 
-            <x-waterhole::full-screen-button :hotkey-scope="$id" />
+            <x-waterhole::full-screen-button />
         </div>
     </ui-toolbar>
 
@@ -46,6 +50,7 @@
                 placeholder="{{ $placeholder }}"
                 data-text-editor-target="input"
                 data-uploads-target="input"
+                @if ($autofocus) autofocus @endif
             >
 {{ $value }}</textarea
             >

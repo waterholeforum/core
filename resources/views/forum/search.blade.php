@@ -1,33 +1,36 @@
 @php
-    $title = __('waterhole::forum.search-results-title', ['query' => request('q')]);
+    $title = __("waterhole::forum.search-results-title", ["query" => request("q")]);
 @endphp
 
 <x-waterhole::layout :title="$title">
     <div class="container section stack gap-xl">
-        @if (request('q'))
+        @if (request("q"))
             <h1 hidden data-page-target="title">
                 <span>{{ $title }}</span>
             </h1>
         @endif
 
         <form
-            action="{{ route('waterhole.search') }}"
+            action="{{ route("waterhole.search") }}"
             class="lead row gap-xs card card__body"
             role="search"
         >
             <div class="input-container full-width">
-                @icon('tabler-search', ['class' => 'no-pointer'])
+                @icon("tabler-search", ["class" => "no-pointer"])
                 <input
                     type="search"
                     name="q"
-                    value="{{ request('q') }}"
-                    placeholder="{{ __('waterhole::forum.search-placeholder') }}"
-                    aria-label="{{ __('waterhole::forum.search-placeholder') }}"
-                    autofocus
+                    value="{{ request("q") }}"
+                    placeholder="{{ __("waterhole::forum.search-placeholder") }}"
+                    aria-label="{{ __("waterhole::forum.search-placeholder") }}"
+                    data-shortcut-trigger="navigation.search"
+                    @if (! request("q"))
+                        autofocus
+                    @endif
                 />
             </div>
             <button type="submit" class="btn bg-accent">
-                {{ __('waterhole::forum.search-button') }}
+                {{ __("waterhole::forum.search-button") }}
             </button>
         </form>
 
@@ -47,8 +50,8 @@
                             ->all()"
                         >
                             <x-slot name="empty">
-                                @icon('tabler-filter')
-                                <span>{{ __('waterhole::forum.search-filter-button') }}</span>
+                                @icon("tabler-filter")
+                                <span>{{ __("waterhole::forum.search-filter-button") }}</span>
                             </x-slot>
                         </x-waterhole::collapsible-nav>
                     </div>
@@ -56,7 +59,7 @@
                     <div class="stack gap-md">
                         <div class="row gap-xs wrap justify-between">
                             <h2 class="h4">
-                                {{ __('waterhole::forum.search-showing-results' . ($results->exhaustiveTotal ? '' : '-non-exhaustive') . '-title', ['total' => $results->total]) }}
+                                {{ __("waterhole::forum.search-showing-results" . ($results->exhaustiveTotal ? "" : "-non-exhaustive") . "-title", ["total" => $results->total]) }}
                             </h2>
 
                             <x-waterhole::selector
@@ -83,10 +86,10 @@
                 </div>
             @else
                 <div class="placeholder">
-                    @icon('tabler-search', ['class' => 'placeholder__icon'])
+                    @icon("tabler-search", ["class" => "placeholder__icon"])
 
                     <p class="h4">
-                        {{ __('waterhole::forum.search-empty-message') }}
+                        {{ __("waterhole::forum.search-empty-message") }}
                     </p>
 
                     @if ($results->error)

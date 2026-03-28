@@ -35,12 +35,16 @@
             formaction="{{ $action }}"
             formmethod="POST"
             data-turbo-frame="{{ $frame }}"
+            data-shortcut-trigger="editor.discard"
             name="_method"
             type="submit"
             value="DELETE"
         >
             @icon('tabler-trash')
-            <ui-tooltip>{{ __('waterhole::forum.discard-draft-button') }}</ui-tooltip>
+            <ui-tooltip>
+                {{ __('waterhole::forum.discard-draft-button') }}
+                <x-waterhole::shortcut-label shortcut="editor.discard" />
+            </ui-tooltip>
         </button>
     </div>
 </turbo-frame>

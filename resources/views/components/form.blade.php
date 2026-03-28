@@ -1,4 +1,4 @@
-<form method="{{ $formMethod }}" {{ $attributes }}>
+<form method="{{ $formMethod }}" {{ $attributes->merge(['data-shortcut-scope' => 'form']) }}>
     @if ($formMethod !== 'GET')
         @csrf
         @return($cancelUrl)
@@ -49,9 +49,18 @@
             @else
                 <button
                     type="submit"
-                    {{ (new Illuminate\View\ComponentAttributeBag($submitAttributes))->class('btn bg-accent') }}
+                    {{
+                        (new Illuminate\View\ComponentAttributeBag($submitAttributes))
+                            ->merge(['data-shortcut-trigger' => 'form.submit'])
+                            ->class('btn bg-accent')
+                    }}
                 >
                     {{ $submitLabel }}
+
+                    <ui-tooltip>
+                        {{ $submitLabel }}
+                        <x-waterhole::shortcut-label shortcut="form.submit" />
+                    </ui-tooltip>
                 </button>
 
                 <x-waterhole::cancel :default="$cancelUrl" class="btn" />

@@ -73,11 +73,14 @@
                             name="commit"
                             type="submit"
                             value="1"
-                            data-controller="hotkey"
-                            data-hotkey="Mod+Enter"
-                            data-hotkey-scope="post-body"
+                            data-shortcut-trigger="form.submit"
                         >
                             {{ __('waterhole::forum.post-submit-button') }}
+
+                            <ui-tooltip>
+                                {{ __('waterhole::forum.post-submit-button') }}
+                                <x-waterhole::shortcut-label shortcut="form.submit" />
+                            </ui-tooltip>
                         </button>
 
                         <x-waterhole::draft-controls

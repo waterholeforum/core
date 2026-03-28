@@ -10,10 +10,7 @@
                                 'role' => 'menuitem',
                                 'data-turbo-frame' => '_parent',
                                 'form' => 'action-form',
-                                'formaction' => route(
-                                    'waterhole.actions.store',
-                                    request()->only(['actionable', 'id', 'return', 'context']),
-                                ),
+                                'formaction' => route('waterhole.actions.store', request()->only(['actionable', 'id', 'return', 'context'])),
                                 'formmethod' => 'POST',
                                 'formnovalidate' => true,
                             ])

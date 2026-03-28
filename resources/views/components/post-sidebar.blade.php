@@ -15,6 +15,10 @@
         <x-slot name="button">
             @icon('tabler-dots-circle-horizontal')
             <span>{{ __('waterhole::system.controls-button') }}</span>
+            <ui-tooltip>
+                {{ __('waterhole::system.controls-button') }}
+                <x-waterhole::shortcut-label shortcut="selection.actions" />
+            </ui-tooltip>
         </x-slot>
     </x-waterhole::action-menu>
 

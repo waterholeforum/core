@@ -11,8 +11,10 @@
     transform-origin: bottom;
     padding: 2px;
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       transform: scale(1.2);
+      outline: none;
     }
   }
 }

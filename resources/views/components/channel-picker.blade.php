@@ -27,6 +27,11 @@
     @endforeach
 
     @if ($value)
-        <input type="hidden" name="{{ $name }}" value="{{ $value }}" @if ($form) form="{{ $form }}" @endif />
+        <input
+            type="hidden"
+            name="{{ $name }}"
+            value="{{ $value }}"
+            @if ($form) form="{{ $form }}" @endif
+        />
     @endif
 </div>

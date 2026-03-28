@@ -6,6 +6,8 @@
                 action="{{ $comment->url }}"
                 class="comment"
                 data-controller="dirty-form"
+                data-shortcut-selection-key="{{ dom_id($comment) }}"
+                data-shortcut-scope="form"
             >
                 @csrf
                 @method('PATCH')
@@ -23,19 +25,27 @@
                         name="body"
                         :value="old('body', $comment->body)"
                         style="min-height: 40vh"
+                        autofocus
                     />
 
                     <div class="row gap-xs wrap justify-end">
-                        <a href="{{ $comment->post_url }}" class="btn">
+                        <a
+                            href="{{ $comment->post_url }}"
+                            class="btn"
+                            data-shortcut-trigger="navigation.close"
+                        >
                             {{ __('waterhole::system.cancel-button') }}
+
+                            <ui-tooltip>
+                                {{ __('waterhole::system.cancel-button') }}
+                                <x-waterhole::shortcut-label shortcut="navigation.close" />
+                            </ui-tooltip>
                         </a>
 
                         <button
                             type="submit"
                             class="btn bg-accent"
-                            data-controller="hotkey"
-                            data-hotkey="Mod+Enter"
-                            data-hotkey-scope="comment-body"
+                            data-shortcut-trigger="form.submit"
                         >
                             {{ __('waterhole::system.save-changes-button') }}
                         </button>

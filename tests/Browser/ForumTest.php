@@ -36,14 +36,14 @@ describe('forum', function () {
         visit(route('waterhole.posts.create', ['channel_id' => $channel->id]))
             ->fill('title', 'Browser smoke post')
             ->fill('body', 'Post body from browser smoke test.')
-            ->click('Post')
+            ->click('button[name="commit"][value="1"]')
             ->assertSee('Browser smoke post');
 
         $post = Post::query()->where('title', 'Browser smoke post')->firstOrFail();
 
         visit($post->url . '#reply')
             ->fill('body', 'Browser smoke comment body.')
-            ->click('Post')
+            ->click('button[name="commit"][value="1"]')
             ->assertSee('Browser smoke comment body.');
 
         $this->assertDatabaseHas('comments', [

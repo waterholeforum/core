@@ -4,10 +4,13 @@ namespace Waterhole\Actions;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\HtmlString;
 use Illuminate\View\ComponentAttributeBag;
 use Waterhole\Models\Model;
 use Waterhole\Models\User;
+use Waterhole\Ui\KeyboardShortcut;
+use Waterhole\View\Components\ShortcutLabel;
 
 /**
  * Base class for an Action.
@@ -100,6 +103,11 @@ abstract class Action
         return [];
     }
 
+    public function shortcut(): ?KeyboardShortcut
+    {
+        return null;
+    }
+
     public function withRenderType(string $type): static
     {
         $clone = clone $this;
@@ -126,7 +134,8 @@ abstract class Action
 
         $attributes = (new ComponentAttributeBag($this->attributes($models)))
             ->merge($defaultAttributes ?? [])
-            ->merge($attributes);
+            ->merge($attributes)
+            ->merge($this->shortcutAttributes());
 
         if ($this->destructive) {
             $attributes = $attributes->class('color-danger');
@@ -136,6 +145,7 @@ abstract class Action
             'name' => $attributes->get('name', 'action_class'),
             'value' => (string) $attributes->get('value', static::class),
         ]);
+
         $content = $this->renderContent($models, $confirm);
 
         return new HtmlString(
@@ -156,10 +166,40 @@ abstract class Action
         $icon = ($iconName = $this->icon($models))
             ? svg($iconName, 'icon icon-' . $iconName)->toHtml()
             : '';
-        $tag = $type === self::TYPE_ICON ? 'ui-tooltip' : 'span';
-        $ellipsis = $type === self::TYPE_MENU_ITEM && $confirm ? '...' : '';
 
-        return new HtmlString("$icon <$tag>$label$ellipsis</$tag>");
+        $shortcut = $this->shortcut();
+
+        if ($type === self::TYPE_MENU_ITEM) {
+            $shortcutLabel = $shortcut
+                ? Blade::renderComponent(
+                    (new ShortcutLabel($shortcut))->withAttributes([
+                        'class' => 'menu-item__shortcut',
+                    ]),
+                )
+                : '';
+
+            $ellipsis = $confirm ? '...' : '';
+
+            return new HtmlString("$icon <span>$label$ellipsis</span> $shortcutLabel");
+        }
+
+        $shortcutLabel = $shortcut ? Blade::renderComponent(new ShortcutLabel($shortcut)) : '';
+        $tooltip = "<ui-tooltip>$label $shortcutLabel</ui-tooltip>";
+
+        if ($type === self::TYPE_ICON) {
+            return new HtmlString($icon . $tooltip);
+        }
+
+        return new HtmlString("$icon <span>$label</span>" . ($shortcut ? $tooltip : ''));
+    }
+
+    protected function shortcutAttributes(): array
+    {
+        if ($shortcut = $this->shortcut()) {
+            return ['data-shortcut-trigger' => $shortcut->id];
+        }
+
+        return [];
     }
 
     /**

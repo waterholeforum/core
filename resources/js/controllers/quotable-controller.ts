@@ -16,19 +16,41 @@ import { Controller } from '@hotwired/stimulus';
 export default class extends Controller {
     static targets = ['button'];
 
+    private suppressSelectionChange = false;
+
     declare readonly hasButtonTarget: boolean;
     declare readonly buttonTarget: HTMLButtonElement;
 
+    private handleMouseDown = () => {
+        this.suppressSelectionChange = true;
+    };
+
+    private handleMouseUp = () => {
+        this.suppressSelectionChange = false;
+        this.updateQuoteButton();
+    };
+
     private handleSelectionChange = () => {
-        setTimeout(this.updateQuoteButton.bind(this), 100);
+        if (this.suppressSelectionChange) return;
+        this.updateQuoteButton();
     };
 
     connect() {
-        document.addEventListener('mouseup', this.handleSelectionChange);
+        document.addEventListener('mousedown', this.handleMouseDown);
+        document.addEventListener('mouseup', this.handleMouseUp);
+        document.addEventListener(
+            'selectionchange',
+            this.handleSelectionChange,
+        );
     }
 
     disconnect() {
-        document.removeEventListener('mouseup', this.handleSelectionChange);
+        document.removeEventListener('mousedown', this.handleMouseDown);
+        document.removeEventListener('mouseup', this.handleMouseUp);
+        document.removeEventListener(
+            'selectionchange',
+            this.handleSelectionChange,
+        );
     }
 
     async updateQuoteButton() {

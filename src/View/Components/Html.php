@@ -4,6 +4,7 @@ namespace Waterhole\View\Components;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
+use Waterhole\Extend\Ui\KeyboardShortcuts;
 
 class Html extends Component
 {
@@ -25,6 +26,10 @@ class Html extends Component
             'echoConfig' => config('waterhole.system.echo_config'),
             'messages' => collect(self::MESSAGE_KEYS)
                 ->mapWithKeys(fn(string $key) => [$key => __($key)])
+                ->all(),
+            'shortcuts' => collect(resolve(KeyboardShortcuts::class)->shortcuts())
+                ->map(fn($shortcut) => $shortcut->toPayload())
+                ->values()
                 ->all(),
         ];
     }

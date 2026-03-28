@@ -1,6 +1,7 @@
 @php
     $imageUpload = $post->attachments->first(fn ($upload) => $upload->type && str_starts_with($upload->type, 'image/'));
     $ogImage = $imageUpload ? Storage::disk('public')->url('uploads/' . $imageUpload->filename) : null;
+    $lastLink = ($comments->lastPage() === 1 ? $post->url : $comments->url($comments->lastPage())) . '#bottom';
 @endphp
 
 <x-waterhole::layout
@@ -125,8 +126,9 @@
 
                         <a
                             {{-- Exclude ?page=1 from the URL so that the page isn't needlessly reloaded. --}}
-                            href="{{ $lastLink = ($comments->lastPage() === 1 ? $post->url : $comments->url($comments->lastPage())) . '#bottom' }}"
+                            href="{{ $lastLink }}"
                             class="tab with-icon hide-md-down"
+                            data-shortcut-trigger="selection.last"
                         >
                             @icon('tabler-chevrons-down')
                             {{ __('waterhole::system.pagination-last-link') }}
@@ -161,6 +163,7 @@
                     class="collapsible-nav stack"
                     data-post-page-target="commentsPagination"
                     placement="top-end"
+                    data-shortcut-hidden
                     hidden
                 >
                     <button class="btn btn--transparent btn--narrow btn--start text-xs">
@@ -173,7 +176,11 @@
 
                     <div hidden class="menu p-md">
                         <nav class="comments-pagination tabs tabs--vertical gap-sm">
-                            <a class="tab with-icon" href="{{ $post->url }}#top">
+                            <a
+                                class="tab with-icon"
+                                href="{{ $post->url }}#top"
+                                data-shortcut-trigger="selection.first"
+                            >
                                 @icon('tabler-chevrons-up', ['class' => 'icon--narrow'])
                                 {{ __('waterhole::forum.original-post-link') }}
                             </a>
@@ -194,7 +201,11 @@
                                 @endfor
                             </div>
 
-                            <a class="tab with-icon" href="{{ $lastLink }}">
+                            <a
+                                class="tab with-icon"
+                                href="{{ $lastLink }}"
+                                data-shortcut-trigger="selection.last"
+                            >
                                 @icon('tabler-chevrons-down', ['class' => 'icon--narrow'])
                                 {{ __('waterhole::system.pagination-last-link') }}
                             </a>

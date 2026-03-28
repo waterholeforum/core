@@ -4,6 +4,8 @@ namespace Waterhole\Extend\Ui;
 
 use Illuminate\Support\Facades\Auth;
 use Waterhole\Extend\Support\ComponentList;
+use Waterhole\View\Components\CreatePostMenuItem;
+use Waterhole\View\Components\KeyboardShortcutsMenuItem;
 use Waterhole\View\Components\LanguageMenuItem;
 use Waterhole\View\Components\MenuDivider;
 use Waterhole\View\Components\MenuItem;
@@ -36,6 +38,10 @@ class UserMenu extends ComponentList
             ),
             'preferences',
         );
+
+        $this->add(CreatePostMenuItem::class, 'create-post');
+
+        $this->add(KeyboardShortcutsMenuItem::class, 'keyboard-shortcuts');
 
         $this->add(ThemeMenuItem::class, 'theme');
         $this->add(LanguageMenuItem::class, 'language');

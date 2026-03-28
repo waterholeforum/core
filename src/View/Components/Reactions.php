@@ -42,8 +42,7 @@ class Reactions extends Component
 
     public function shouldRender(): bool
     {
-        return $this->reactionSet?->exists &&
-            ($this->model->reactionCounts || $this->isAuthorized);
+        return $this->reactionSet?->exists && ($this->model->reactionCounts || $this->isAuthorized);
     }
 
     public function reactionCount(ReactionType $reactionType): int

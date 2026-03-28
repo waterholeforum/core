@@ -2,6 +2,7 @@
     {{
         $attributes
             ->class('post-list-item card__row row align-start gap-md')
+            ->merge(['data-shortcut-selection-key' => dom_id($post)])
             ->merge(resolve(\Waterhole\Extend\Ui\PostAttributes::class)->build($post))
     }}
     data-controller="post"
@@ -23,6 +24,8 @@
                         href="{{ $post->isUnread() ? $post->unread_url : $post->url }}"
                         data-action="post#appearAsRead"
                         class="post-title-link"
+                        data-shortcut-selection-primary
+                        data-shortcut-trigger="selection.open"
                     >
                         {{ $title }}
                     </a>

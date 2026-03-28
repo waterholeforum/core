@@ -3,9 +3,9 @@
 namespace Waterhole\Extend\Ui;
 
 use Waterhole\Extend\Support\ComponentList;
+use Waterhole\View\Components\CreatePostButton;
 use Waterhole\View\Components\FeedFilters;
 use Waterhole\View\Components\FeedTopPeriod;
-use Waterhole\View\Components\IndexCreatePost;
 use Waterhole\View\Components\PostFeedChannel;
 use Waterhole\View\Components\PostFeedPinned;
 use Waterhole\View\Components\PostFeedToolbar;
@@ -35,6 +35,6 @@ class PostFeed
             ->add(FeedTopPeriod::class, 'top-period')
             ->add(Spacer::class, 'spacer')
             ->add(TagsFilter::class, 'tags')
-            ->add(IndexCreatePost::class, 'create-post');
+            ->add(CreatePostButton::class, 'create-post');
     }
 }

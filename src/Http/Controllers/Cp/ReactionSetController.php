@@ -48,10 +48,7 @@ class ReactionSetController extends Controller
 
         return redirect(
             internal_url($request->input('return'), route('waterhole.cp.reaction-sets.index')),
-        )->with(
-            'success',
-            __('waterhole::cp.reaction-set-saved-message'),
-        );
+        )->with('success', __('waterhole::cp.reaction-set-saved-message'));
     }
 
     private function form(ReactionSet $reactionSet)

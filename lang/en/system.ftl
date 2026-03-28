@@ -19,6 +19,7 @@ unsaved-changes-confirm-message = You have unsaved changes. Are you sure you wan
 save-changes-button = Save Changes
 create-button = Create
 cancel-button = Cancel
+close-button = Close
 change-button = Change
 continue-button = Continue
 actions-button = Actions
@@ -33,6 +34,36 @@ show-more-button = Show more
 full-screen-enter-button = Full Screen
 full-screen-exit-button = Exit Full Screen
 form-general-section-title = General
+
+## Keyboard Shortcuts
+
+keyboard-shortcuts-title = Keyboard Shortcuts
+keyboard-shortcuts-enabled-label = Enable keyboard shortcuts
+
+keyboard-shortcuts-category-navigation = Navigation
+keyboard-shortcuts-category-discussion = Discussion
+keyboard-shortcuts-category-editor = Editor
+
+keyboard-shortcuts-reference-description = Open keyboard shortcut reference
+keyboard-shortcuts-search-description = Go to search
+keyboard-shortcuts-user-menu-description = Open user menu
+keyboard-shortcuts-close-description = Close the current panel
+keyboard-shortcuts-home-description = Go to the forum home
+keyboard-shortcuts-top-description = Go to the top
+keyboard-shortcuts-bottom-description = Go to the bottom
+keyboard-shortcuts-create-post-description = Create a post
+keyboard-shortcuts-notifications-description = Open notifications
+keyboard-shortcuts-saved-description = Open saved content
+keyboard-shortcuts-moderation-description = Open moderation
+
+keyboard-shortcuts-next-description = Select next item
+keyboard-shortcuts-previous-description = Select previous item
+keyboard-shortcuts-next-page-description = Go to the next page
+keyboard-shortcuts-previous-page-description = Go to the previous page
+keyboard-shortcuts-open-description = Open selected item
+keyboard-shortcuts-actions-description = Open actions
+
+keyboard-shortcuts-submit-description = Submit
 
 ## Post Feed Layouts
 

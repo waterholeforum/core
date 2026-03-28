@@ -4,6 +4,7 @@ namespace Waterhole\Actions;
 
 use Illuminate\Support\Collection;
 use Waterhole\Models\Model;
+use Waterhole\Ui\KeyboardShortcut;
 use Waterhole\View\Components\FollowButton;
 use Waterhole\View\TurboStream;
 
@@ -24,6 +25,17 @@ class Follow extends Action
     public function icon(Collection $models): string
     {
         return $models[0]->isFollowed() ? 'tabler-bell-off' : 'tabler-bell';
+    }
+
+    public function shortcut(): ?KeyboardShortcut
+    {
+        return new KeyboardShortcut(
+            id: 'action.follow',
+            keys: ['f'],
+            description: __('waterhole::forum.follow-button'),
+            category: 'discussion',
+            scopes: ['selection'],
+        );
     }
 
     public function run(Collection $models)

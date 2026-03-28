@@ -32,6 +32,7 @@ class PostBody extends Field
                     :id="$component->id"
                     :value="old('body', $model->body ?? '')"
                     style="min-height: 50vh"
+                    :autofocus="$model->exists"
                 />
             </x-waterhole::field>
         blade;

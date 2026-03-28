@@ -1,0 +1,51 @@
+.shortcut-label {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-muted);
+  font-family: inherit;
+  font-size: 0.9em;
+  white-space: nowrap;
+
+  > * {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1em;
+  }
+}
+
+[data-shortcuts-enabled='false'] .shortcut-label {
+  display: none;
+}
+
+[data-shortcuts-enabled='false'] .shortcut-reference-dialog .shortcut-label {
+  display: inline-flex;
+}
+
+.shortcut-reference-dialog {
+  width: 72rem;
+}
+
+[data-shortcuts-enabled='true']
+  [data-shortcut-selection-visible]
+  [data-shortcut-selected] {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    bottom: 5px;
+    left: -10px;
+    width: 5px;
+    border-radius: var(--radius);
+    background: var(--color-accent);
+  }
+}
+
+[data-shortcuts-enabled='true']
+  [data-shortcut-selection-visible]
+  [data-shortcut-selected]
+  [data-shortcut-selection-primary]:focus-visible {
+  outline: none;
+}
