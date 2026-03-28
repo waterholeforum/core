@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add support for Laravel 13
+
+### Removed
+
+- Remove unused Workbench setup from the package Testbench configuration
+
 ## [0.6.2] - 2026-02-15
 
 ### Fixed

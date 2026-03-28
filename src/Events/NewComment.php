@@ -6,13 +6,13 @@ use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Events\ShouldDispatchAfterCommit;
 use Illuminate\Foundation\Events\Dispatchable;
-use Neves\Events\Contracts\TransactionalEvent;
 use Waterhole\Models\Comment;
 use Waterhole\View\Components\CommentFrame;
 use Waterhole\View\TurboStream;
 
-class NewComment implements ShouldBroadcast, TransactionalEvent
+class NewComment implements ShouldBroadcast, ShouldDispatchAfterCommit
 {
     use Dispatchable;
     use InteractsWithSockets;

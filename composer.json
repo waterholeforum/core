@@ -6,18 +6,16 @@
     ],
     "license": "proprietary",
     "require": {
-        "php": "^8.3",
         "ext-json": "*",
         "composer/composer": "^2.4",
-        "fntneves/laravel-transactional-events": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
-        "hotwired-laravel/turbo-laravel": "^2.0",
+        "hotwired-laravel/turbo-laravel": "^2.0.0-beta5",
         "intervention/image": "^3.0",
         "intervention/image-laravel": "^1.0",
         "jrmajor/fluent": "^1.0.1",
         "kirschbaum-development/eloquent-power-joins": "^3.2|^4.2",
         "laminas/laminas-feed": "^2.20",
-        "laravel/framework": "^11.0|^12.0",
+        "laravel/framework": "^10.0|^11.0|^12.0|^13.0",
         "laravel/sanctum": "^4.0",
         "laravel/socialite": "^v5.10.0",
         "nyholm/psr7": "^1.8",
@@ -30,10 +28,9 @@
         "waterhole/sso": "^0.1"
     },
     "require-dev": {
-        "larastan/larastan": "^3.4",
-        "orchestra/testbench": "^10.2",
-        "pestphp/pest": "^4.0",
-        "pestphp/pest-plugin-browser": "^4.0"
+        "larastan/larastan": "^3.9.3",
+        "orchestra/testbench": "^10.2|^11.0",
+        "pestphp/pest": "^3.8"
     },
     "autoload": {
         "psr-4": {
@@ -47,10 +44,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/",
-            "Workbench\\App\\": "workbench/app/",
-            "Workbench\\Database\\Factories\\": "workbench/database/factories/",
-            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
+            "Tests\\": "tests/"
         }
     },
     "config": {
@@ -62,7 +56,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-main": "0.7.x-dev"
+            "dev-main": "0.6.x-dev"
         },
         "laravel": {
             "providers": [
@@ -80,10 +74,8 @@
         ],
         "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
         "prepare": "@php vendor/bin/testbench package:discover --ansi",
-        "build": "@php vendor/bin/testbench workbench:build --ansi",
         "serve": [
             "Composer\\Config::disableProcessTimeout",
-            "@build",
             "@php vendor/bin/testbench serve --ansi"
         ],
         "lint": [

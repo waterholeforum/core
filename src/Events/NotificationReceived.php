@@ -4,13 +4,13 @@ namespace Waterhole\Events;
 
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Neves\Events\Contracts\TransactionalEvent;
+use Illuminate\Contracts\Events\ShouldDispatchAfterCommit;
 use Waterhole\Models\Notification;
 use Waterhole\View\Components\NotificationAlert;
 use Waterhole\View\Components\NotificationsBadge;
 use Waterhole\View\TurboStream;
 
-class NotificationReceived implements ShouldBroadcast, TransactionalEvent
+class NotificationReceived implements ShouldBroadcast, ShouldDispatchAfterCommit
 {
     public function __construct(protected Notification $notification) {}
 
