@@ -6,12 +6,12 @@ use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Events\ShouldDispatchAfterCommit;
 use Illuminate\Foundation\Events\Dispatchable;
-use Neves\Events\Contracts\TransactionalEvent;
 use Waterhole\Models\Channel as ChannelModel;
 use Waterhole\Models\Post;
 
-class NewPost implements ShouldBroadcast, TransactionalEvent
+class NewPost implements ShouldBroadcast, ShouldDispatchAfterCommit
 {
     use Dispatchable;
     use InteractsWithSockets;
