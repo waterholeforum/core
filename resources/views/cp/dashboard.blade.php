@@ -1,6 +1,6 @@
 @inject("license", Waterhole\Licensing\LicenseManager::class)
 
-<x-waterhole::cp :title="__('waterhole::cp.dashboard-title')">
+<x-waterhole::cp-layout :title="__('waterhole::cp.dashboard-title')">
     <div class="cp-dashboard stack gap-lg">
         @if ($license->invalid() && $license->production())
             <x-waterhole::alert type="danger" data-key="license" data-duration="-1">
@@ -92,4 +92,4 @@
             Customize the Dashboard
         </a>
     </div>
-</x-waterhole::cp>
+</x-waterhole::cp-layout>

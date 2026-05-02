@@ -4,8 +4,10 @@
     $lastLink = ($comments->lastPage() === 1 ? $post->url : $comments->url($comments->lastPage())) . '#bottom';
 @endphp
 
-<x-waterhole::layout
+<x-waterhole::forum-layout
     :title="$post->title"
+    :channel="$post->channel"
+    show-sidebar
     :seo="[
         'description' => $post->body_text,
         'url' => $post->url,
@@ -220,4 +222,4 @@
         :source="$post"
         :type="$post->channel->isPublic() ? 'channel' : 'private'"
     />
-</x-waterhole::layout>
+</x-waterhole::forum-layout>

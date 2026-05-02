@@ -16,8 +16,10 @@ class IndexNav extends Component
 {
     public Collection $nav;
 
-    public function __construct()
+    public function __construct(public ?Channel $channel = null)
     {
+        $this->channel = $channel?->exists ? $channel : null;
+
         $structure = Structure::query()
             ->where('is_listed', true)
             ->with('content')
@@ -30,6 +32,7 @@ class IndexNav extends Component
                 label: __('waterhole::forum.feed-link'),
                 icon: 'tabler-news',
                 route: 'waterhole.home',
+                active: fn() => !$this->channel && request()->routeIs('waterhole.home'),
             ),
             ...$structure
                 ->map(function (Structure $node) {
@@ -40,6 +43,7 @@ class IndexNav extends Component
                             label: $node->content->name,
                             icon: $node->content->icon,
                             href: $node->content->url,
+                            active: $this->channel?->is($node->content),
                         );
                     } elseif ($node->content instanceof StructureLink) {
                         return (new NavLink(

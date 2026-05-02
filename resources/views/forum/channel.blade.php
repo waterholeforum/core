@@ -1,6 +1,8 @@
-<x-waterhole::layout
+<x-waterhole::forum-layout
     :title="$channel->name"
+    :channel="$channel"
     :data-channel="$channel->slug"
+    show-sidebar
     :seo="[
         'description' => $channel->description_text,
         'url' => route('waterhole.channels.show', compact('channel')),
@@ -21,4 +23,4 @@
 
         <x-waterhole::post-feed :feed="$feed" :channel="$channel" />
     </x-waterhole::index>
-</x-waterhole::layout>
+</x-waterhole::forum-layout>

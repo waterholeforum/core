@@ -1,4 +1,4 @@
-<x-waterhole::cp :title="__('waterhole::cp.taxonomies-title')">
+<x-waterhole::cp-layout :title="__('waterhole::cp.taxonomies-title')">
     <div class="stack gap-md">
         <div class="row gap-md">
             <h1 class="h3">{{ __('waterhole::cp.taxonomies-title') }}</h1>
@@ -35,4 +35,4 @@
             @endif
         </ul>
     </div>
-</x-waterhole::cp>
+</x-waterhole::cp-layout>

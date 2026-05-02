@@ -1,4 +1,4 @@
-<x-waterhole::layout>
+<x-waterhole::forum-layout show-sidebar>
     <x-slot name="head">
         <link
             rel="alternate"
@@ -12,4 +12,4 @@
 
         <x-waterhole::post-feed :feed="$feed" />
     </x-waterhole::index>
-</x-waterhole::layout>
+</x-waterhole::forum-layout>

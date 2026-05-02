@@ -1,4 +1,4 @@
-import { defineConfig, UserConfig } from 'tsdown';
+import { defineConfig, type UserConfig } from 'tsdown';
 import postcss from 'rollup-plugin-postcss';
 
 const dev = process.env.DEV === '1';

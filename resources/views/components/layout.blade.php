@@ -1,4 +1,9 @@
-<x-waterhole::html :$title :$assets :$seo {{ $attributes }}>
+<x-waterhole::html
+    :$title
+    :$assets
+    :$seo
+    {{ $attributes->merge(['data-global-sidebar' => $globalSidebar ? 'true' : 'false']) }}
+>
     <x-slot name="head">{{ $head ?? '' }}</x-slot>
 
     <div class="waterhole" data-controller="page">
@@ -8,9 +13,21 @@
 
         @components(resolve(\Waterhole\Extend\Ui\Layout::class)->before)
 
-        <main id="main" class="waterhole__main" tabindex="-1">
-            {{ $slot }}
-        </main>
+        @if ($globalSidebar && isset($sidebar) && $sidebar->isNotEmpty())
+            <div class="waterhole__body with-sidebar with-sidebar--flush grow">
+                <aside class="sidebar sidebar--sticky">
+                    {{ $sidebar }}
+                </aside>
+
+                <main id="main" class="waterhole__main" tabindex="-1">
+                    {{ $slot }}
+                </main>
+            </div>
+        @else
+            <main id="main" class="waterhole__main" tabindex="-1">
+                {{ $slot }}
+            </main>
+        @endif
 
         @components(resolve(\Waterhole\Extend\Ui\Layout::class)->after)
     </div>

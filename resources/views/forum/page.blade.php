@@ -1,5 +1,6 @@
-<x-waterhole::layout
+<x-waterhole::forum-layout
     :title="$page->name"
+    show-sidebar
     :seo="[
         'description' => $page->body_html,
         'url' => route('waterhole.page', compact('page')),
@@ -16,4 +17,4 @@
             </div>
         </div>
     </x-waterhole::index>
-</x-waterhole::layout>
+</x-waterhole::forum-layout>

@@ -2,7 +2,7 @@
     $title = __("waterhole::forum.search-results-title", ["query" => request("q")]);
 @endphp
 
-<x-waterhole::layout :title="$title">
+<x-waterhole::forum-layout :title="$title">
     <div class="container section stack gap-xl">
         @if (request("q"))
             <h1 hidden data-page-target="title">
@@ -99,4 +99,4 @@
             @endif
         @endisset
     </div>
-</x-waterhole::layout>
+</x-waterhole::forum-layout>

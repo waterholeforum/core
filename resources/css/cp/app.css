@@ -2,15 +2,6 @@
 @import '_permission-grid.css';
 @import '_structure.css';
 
-.container {
-  max-width: none;
-}
-
-.cp__content {
-  max-width: 110ch;
-  margin-inline: auto;
-}
-
 .cp-title {
   margin-bottom: var(--space-lg);
 }

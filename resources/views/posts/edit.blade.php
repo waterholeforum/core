@@ -2,7 +2,7 @@
     $title = __('waterhole::forum.edit-post-title');
 @endphp
 
-<x-waterhole::layout :title="$title">
+<x-waterhole::forum-layout :title="$title" :channel="$post->channel" show-sidebar>
     <div class="container section">
         <x-waterhole::dialog class="measure" :title="$title">
             <x-waterhole::form
@@ -15,4 +15,4 @@
             />
         </x-waterhole::dialog>
     </div>
-</x-waterhole::layout>
+</x-waterhole::forum-layout>

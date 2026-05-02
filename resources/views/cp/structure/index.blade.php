@@ -1,4 +1,4 @@
-<x-waterhole::cp :title="__('waterhole::cp.structure-title')">
+<x-waterhole::cp-layout :title="__('waterhole::cp.structure-title')">
     <div
         class="stack gap-md"
         data-controller="sortable form"
@@ -100,4 +100,4 @@
             </form>
         </turbo-frame>
     </div>
-</x-waterhole::cp>
+</x-waterhole::cp-layout>

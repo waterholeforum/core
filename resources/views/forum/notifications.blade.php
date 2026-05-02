@@ -1,4 +1,4 @@
-<x-waterhole::layout>
+<x-waterhole::forum-layout show-sidebar>
     <div class="container section">
         <turbo-frame id="notifications" class="card p-md">
             <div class="row gap-xs justify-between menu-sticky">
@@ -42,4 +42,4 @@
             @endif
         </turbo-frame>
     </div>
-</x-waterhole::layout>
+</x-waterhole::forum-layout>

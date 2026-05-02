@@ -2,7 +2,7 @@
     $title = __('waterhole::forum.create-post-title');
 @endphp
 
-<x-waterhole::layout :title="$title">
+<x-waterhole::forum-layout :title="$title">
     <div class="container section">
         @if (! $form->model->channel)
             <form
@@ -93,4 +93,4 @@
             </x-waterhole::dialog>
         @endif
     </div>
-</x-waterhole::layout>
+</x-waterhole::forum-layout>

@@ -17,6 +17,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Global Sidebar
+    |--------------------------------------------------------------------------
+    |
+    | Enable a global forum navigation sidebar across forum pages. When
+    | disabled, the sidebar is only shown on the main index-style pages.
+    |
+    */
+
+    'global_sidebar' => false,
+
+    /*
+    |--------------------------------------------------------------------------
     | Emoji URL
     |--------------------------------------------------------------------------
     |

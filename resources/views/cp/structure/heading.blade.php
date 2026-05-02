@@ -4,7 +4,7 @@
         : __('waterhole::cp.create-heading-title');
 @endphp
 
-<x-waterhole::cp :title="$title">
+<x-waterhole::cp-layout :title="$title">
     <x-waterhole::cp.title
         :parent-url="route('waterhole.cp.structure')"
         :parent-title="__('waterhole::cp.structure-title')"
@@ -30,4 +30,4 @@
             </div>
         </div>
     </x-waterhole::form>
-</x-waterhole::cp>
+</x-waterhole::cp-layout>

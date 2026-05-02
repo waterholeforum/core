@@ -14,6 +14,11 @@
   min-width: 0;
 }
 
+.with-sidebar--flush {
+  justify-content: flex-start;
+  gap: 0;
+}
+
 .sidebar {
   display: flex;
 }
@@ -32,6 +37,11 @@
   .sidebar {
     flex-direction: row;
     flex-wrap: wrap;
+  }
+
+  .with-sidebar--flush > .sidebar {
+    padding-inline: var(--space-gutter);
+    padding-block-start: var(--space-gutter);
   }
 
   .sidebar--bottom {
@@ -67,6 +77,10 @@
     max-height: calc(100vh - var(--header-height) - 2 * var(--space-gutter));
     overflow: auto;
     box-sizing: content-box;
+  }
+
+  .with-sidebar--flush > .sidebar {
+    padding-inline-start: var(--space-gutter);
   }
 
   .sidebar__collapsed {

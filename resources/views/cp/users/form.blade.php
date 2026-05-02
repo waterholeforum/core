@@ -4,7 +4,7 @@
         : __('waterhole::cp.create-user-title');
 @endphp
 
-<x-waterhole::cp :title="$title">
+<x-waterhole::cp-layout :title="$title">
     <x-waterhole::cp.title
         :parent-url="route('waterhole.cp.users.index')"
         :parent-title="__('waterhole::cp.users-title')"
@@ -18,4 +18,4 @@
         enctype="multipart/form-data"
         data-controller="dirty-form"
     />
-</x-waterhole::cp>
+</x-waterhole::cp-layout>

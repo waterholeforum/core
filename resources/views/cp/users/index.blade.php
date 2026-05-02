@@ -1,4 +1,4 @@
-<x-waterhole::cp :title="__('waterhole::cp.users-title')">
+<x-waterhole::cp-layout :title="__('waterhole::cp.users-title')">
     <div class="stack gap-md">
         <div class="row gap-sm wrap">
             <h1 class="h3">
@@ -178,4 +178,4 @@
             @endif
         </turbo-frame>
     </div>
-</x-waterhole::cp>
+</x-waterhole::cp-layout>

@@ -4,7 +4,7 @@
         : __('waterhole::cp.create-reaction-set-title');
 @endphp
 
-<x-waterhole::cp :title="$title">
+<x-waterhole::cp-layout :title="$title">
     <x-waterhole::cp.title
         :parent-url="route('waterhole.cp.reaction-sets.index')"
         :parent-title="__('waterhole::cp.reactions-title')"
@@ -25,4 +25,4 @@
             data-controller="dirty-form"
         />
     </div>
-</x-waterhole::cp>
+</x-waterhole::cp-layout>

@@ -13,6 +13,10 @@
   }
 }
 
+[data-global-sidebar='true'] .header > .container {
+  max-width: none;
+}
+
 .header-breadcrumb {
   color: var(--color-muted);
   transition:

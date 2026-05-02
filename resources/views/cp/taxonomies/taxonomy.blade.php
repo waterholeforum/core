@@ -4,7 +4,7 @@
         : __('waterhole::cp.create-taxonomy-title');
 @endphp
 
-<x-waterhole::cp :title="$title">
+<x-waterhole::cp-layout :title="$title">
     <x-waterhole::cp.title
         :parent-url="route('waterhole.cp.taxonomies.index')"
         :parent-title="__('waterhole::cp.taxonomies-title')"
@@ -25,4 +25,4 @@
             data-controller="dirty-form"
         />
     </div>
-</x-waterhole::cp>
+</x-waterhole::cp-layout>

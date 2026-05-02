@@ -4,7 +4,7 @@
         : __('waterhole::cp.create-group-title');
 @endphp
 
-<x-waterhole::cp :title="$title">
+<x-waterhole::cp-layout :title="$title">
     <x-waterhole::cp.title
         :parent-url="route('waterhole.cp.groups.index')"
         :parent-title="__('waterhole::cp.groups-title')"
@@ -19,4 +19,4 @@
         data-controller="dirty-form"
         :panel-attributes="['class' => 'stack dividers card card__body']"
     />
-</x-waterhole::cp>
+</x-waterhole::cp-layout>

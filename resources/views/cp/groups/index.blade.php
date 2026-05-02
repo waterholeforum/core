@@ -1,4 +1,4 @@
-<x-waterhole::cp :title="__('waterhole::cp.groups-title')">
+<x-waterhole::cp-layout :title="__('waterhole::cp.groups-title')">
     <div class="stack gap-lg">
         <div class="row gap-md">
             <h1 class="h3">{{ __('waterhole::cp.groups-title') }}</h1>
@@ -32,4 +32,4 @@
             @endforeach
         </ul>
     </div>
-</x-waterhole::cp>
+</x-waterhole::cp-layout>

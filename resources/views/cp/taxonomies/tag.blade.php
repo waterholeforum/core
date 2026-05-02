@@ -4,7 +4,7 @@
         : __('waterhole::cp.create-tag-title');
 @endphp
 
-<x-waterhole::cp :title="$title">
+<x-waterhole::cp-layout :title="$title">
     <turbo-frame id="modal" data-modal-static>
         <x-waterhole::dialog :title="$title" class="dialog--sm">
             <x-waterhole::form
@@ -21,4 +21,4 @@
             />
         </x-waterhole::dialog>
     </turbo-frame>
-</x-waterhole::cp>
+</x-waterhole::cp-layout>
