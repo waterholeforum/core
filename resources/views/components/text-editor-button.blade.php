@@ -1,3 +1,13 @@
+@blaze
+@props([
+    'icon',
+    'label',
+    'id' => null,
+    'format' => null,
+    'shortcut' => null,
+    'hint' => null,
+])
+
 <button
     type="button"
     @if ($shortcut)

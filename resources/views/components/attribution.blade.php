@@ -1,3 +1,12 @@
+@blaze
+@props([
+    'user',
+    'date' => null,
+    'permalink' => null,
+    'editDate' => null,
+    'primaryTarget' => false,
+])
+
 <div
     {{
         $attributes->class('attribution')->merge([

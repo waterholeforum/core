@@ -4,7 +4,6 @@ namespace Waterhole\Extend\Ui;
 
 use Waterhole\Extend\Support\ComponentList;
 use Waterhole\View\Components\PostReactions;
-use Waterhole\View\Components\PostReplies;
 
 /**
  * Components rendered in a post footer.
@@ -17,6 +16,6 @@ class PostFooter extends ComponentList
     public function __construct()
     {
         $this->add(PostReactions::class, 'reactions');
-        $this->add(PostReplies::class, 'replies');
+        $this->add('waterhole::components.post-replies', 'replies');
     }
 }

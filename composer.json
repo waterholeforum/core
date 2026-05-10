@@ -18,6 +18,7 @@
         "laravel/framework": "^10.0|^11.0|^12.0|^13.0",
         "laravel/sanctum": "^4.0",
         "laravel/socialite": "^v5.10.0",
+        "livewire/blaze": "^1.0",
         "nyholm/psr7": "^1.8",
         "s9e/text-formatter": "^2.13",
         "secondnetwork/blade-tabler-icons": "^3.0",
@@ -30,7 +31,8 @@
     "require-dev": {
         "larastan/larastan": "^3.9.3",
         "orchestra/testbench": "^10.2|^11.0",
-        "pestphp/pest": "^3.8"
+        "pestphp/pest": "^3.8",
+        "phpbench/phpbench": "^1.3"
     },
     "autoload": {
         "psr-4": {
@@ -84,6 +86,14 @@
         "test": [
             "@clear",
             "@php vendor/bin/pest"
+        ],
+        "benchmark": [
+            "@clear",
+            "@php vendor/bin/phpbench run --report=default"
+        ],
+        "benchmark:profile": [
+            "@clear",
+            "@php tests/Benchmark/profile-pages.php"
         ]
     }
 }

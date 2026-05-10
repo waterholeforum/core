@@ -1,10 +1,15 @@
-<relative-time
-    {{
-        $attributes->merge([
-            'datetime' => $dateTime->toIso8601String(),
-            'tense' => 'past',
-        ])
-    }}
->
-    {{ $dateTime->toFormattedDateString() }}
-</relative-time>
+@blaze
+@props(['datetime'])
+
+@if ($dateTime = $datetime ? new Carbon\Carbon($datetime) : null)
+    <relative-time
+        {{
+            $attributes->merge([
+                'datetime' => $dateTime->toIso8601String(),
+                'tense' => 'past',
+            ])
+        }}
+    >
+        {{ $dateTime->toFormattedDateString() }}
+    </relative-time>
+@endif

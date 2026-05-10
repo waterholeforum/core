@@ -10,7 +10,6 @@ use Waterhole\View\Components\PostDraft;
 use Waterhole\View\Components\PostLocked;
 use Waterhole\View\Components\PostNotifications;
 use Waterhole\View\Components\PostReactionsCondensed;
-use Waterhole\View\Components\PostReplies;
 use Waterhole\View\Components\PostSaved;
 use Waterhole\View\Components\PostTagsSummary;
 use Waterhole\View\Components\PostTrash;
@@ -43,6 +42,6 @@ class PostListItem
         $this->secondary = (new ComponentList())
             ->add(PostTagsSummary::class, 'tags')
             ->add(PostReactionsCondensed::class, 'reactions')
-            ->add(PostReplies::class, 'replies');
+            ->add('waterhole::components.post-replies', 'replies');
     }
 }

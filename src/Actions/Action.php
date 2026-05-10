@@ -7,10 +7,10 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\HtmlString;
 use Illuminate\View\ComponentAttributeBag;
+use Illuminate\View\AnonymousComponent;
 use Waterhole\Models\Model;
 use Waterhole\Models\User;
 use Waterhole\Ui\KeyboardShortcut;
-use Waterhole\View\Components\ShortcutLabel;
 
 /**
  * Base class for an Action.
@@ -172,7 +172,9 @@ abstract class Action
         if ($type === self::TYPE_MENU_ITEM) {
             $shortcutLabel = $shortcut
                 ? Blade::renderComponent(
-                    (new ShortcutLabel($shortcut))->withAttributes([
+                    (new AnonymousComponent('waterhole::components.shortcut-label', [
+                        'shortcut' => $shortcut,
+                    ]))->withAttributes([
                         'class' => 'menu-item__shortcut',
                     ]),
                 )
@@ -183,7 +185,13 @@ abstract class Action
             return new HtmlString("$icon <span>$label$ellipsis</span> $shortcutLabel");
         }
 
-        $shortcutLabel = $shortcut ? Blade::renderComponent(new ShortcutLabel($shortcut)) : '';
+        $shortcutLabel = $shortcut
+            ? Blade::renderComponent(
+                new AnonymousComponent('waterhole::components.shortcut-label', [
+                    'shortcut' => $shortcut,
+                ]),
+            )
+            : '';
         $tooltip = "<ui-tooltip>$label $shortcutLabel</ui-tooltip>";
 
         if ($type === self::TYPE_ICON) {

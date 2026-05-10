@@ -181,6 +181,10 @@ class Post extends Model
      */
     public function scopeWithUnreadCommentsCount(Builder $query): void
     {
+        if (!$query->getQuery()->columns) {
+            $query->select($query->qualifyColumn('*'));
+        }
+
         $query
             ->leftJoinRelation('userState')
             ->selectSub(

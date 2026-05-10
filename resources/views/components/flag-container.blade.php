@@ -1,3 +1,14 @@
+@blaze
+@props(['subject', 'hide' => false, 'canModerate' => null])
+
+@php
+    $canModerate ??= $subject->canModerate(Auth::user());
+
+    $showBanner = $canModerate
+        ? $subject->pendingFlags->loadMissing('createdBy')->isNotEmpty()
+        : !$subject->is_approved && !$hide;
+@endphp
+
 <div {{ $attributes->class($showBanner ? 'flag-container' : '') }}>
     @if ($showBanner)
         <x-waterhole::alert class="bg-activity-soft p-md wrap" icon="tabler-flag">

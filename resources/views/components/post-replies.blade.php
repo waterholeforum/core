@@ -1,11 +1,25 @@
+@blaze
+@props(['post'])
+
+@php
+    $count = $post->comment_count;
+    $labelKey = app()->getLocale() . ':' . $count;
+
+    static $labels = [];
+    $label = $labels[$labelKey] ??= [
+        'count' => Waterhole\compact_number($count),
+        'tooltip' => __('waterhole::forum.post-comments-link', ['count' => $count]),
+    ];
+@endphp
+
 <a
     href="{{ $post->url }}#comments"
-    class="btn btn--sm btn--outline @if (!$post->comment_count) is-disabled @endif"
+    class="btn btn--sm btn--outline @if (!$count) is-disabled @endif"
     data-action="post#appearAsRead"
 >
     @icon('tabler-message-circle-2')
-    <span>{{ Waterhole\compact_number($post->comment_count) }}</span>
+    <span>{{ $label['count'] }}</span>
     <ui-tooltip>
-        {{ __('waterhole::forum.post-comments-link', ['count' => $post->comment_count]) }}
+        {{ $label['tooltip'] }}
     </ui-tooltip>
 </a>
