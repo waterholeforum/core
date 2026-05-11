@@ -11,6 +11,7 @@
         :for="$post"
         :button-attributes="['class' => 'btn btn--transparent btn--narrow btn--icon-sm']"
         placement="bottom-start"
+        :preflight="false"
     >
         <x-slot name="button">
             @icon('tabler-dots-circle-horizontal')

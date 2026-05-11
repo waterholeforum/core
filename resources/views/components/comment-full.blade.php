@@ -61,6 +61,7 @@
                         :for="$comment"
                         placement="bottom-end"
                         class="-my-sm"
+                        :preflight="false"
                     />
                 </x-slot>
             </x-waterhole::removed-banner>
@@ -183,7 +184,11 @@
                     />
 
                     @if (! $comment->trashed())
-                        <x-waterhole::action-menu :for="$comment" placement="bottom-end" />
+                        <x-waterhole::action-menu
+                            :for="$comment"
+                            placement="bottom-end"
+                            :preflight="false"
+                        />
                     @endif
                 </div>
             </footer>

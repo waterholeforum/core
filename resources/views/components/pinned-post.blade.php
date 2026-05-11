@@ -15,6 +15,7 @@
             placement="bottom-end"
             class="push-end -m-xs"
             data-shortcut-selection-owner=""
+            :preflight="false"
         />
     </div>
 

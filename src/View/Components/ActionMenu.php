@@ -14,6 +14,7 @@ class ActionMenu extends Component
         public Model $for,
         protected ?string $context = null,
         public array $buttonAttributes = ['class' => 'btn btn--transparent btn--icon text-xs'],
+        public bool $preflight = true,
     ) {
         $return = request('return', request()->fullUrl());
 
@@ -32,6 +33,10 @@ class ActionMenu extends Component
 
     public function shouldRender(): bool
     {
+        if (!$this->preflight) {
+            return true;
+        }
+
         return resolve(Actions::class)
             ->actionsFor($this->for, context: $this->context)
             ->hasRenderable();

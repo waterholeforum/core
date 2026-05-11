@@ -25,6 +25,7 @@
             :$for
             :$context
             :button-attributes="['class' => 'btn btn--transparent btn--icon']"
+            :preflight="false"
             placement="bottom-end"
         />
     @endif
