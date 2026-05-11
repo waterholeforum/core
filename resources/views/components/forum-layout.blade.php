@@ -7,7 +7,7 @@
 >
     <x-slot name="head">{{ $head ?? '' }}</x-slot>
 
-    @if ($showSidebar)
+    @if ($showSidebar && config('waterhole.design.global_sidebar'))
         <x-slot:sidebar>
             @components(resolve(\Waterhole\Extend\Ui\IndexPage::class)->sidebar, compact('channel'))
         </x-slot:sidebar>
