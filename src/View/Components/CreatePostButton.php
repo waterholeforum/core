@@ -23,7 +23,7 @@ class CreatePostButton extends Component
             'response' => $this->response,
         ] = static::resolveTarget($user, $this->channel);
 
-        $this->hasDraft = (bool) $user?->drafts()->exists();
+        $this->hasDraft = (bool) $user?->hasDraft();
     }
 
     public static function resolveTarget(?User $user = null, mixed $channel = null): array

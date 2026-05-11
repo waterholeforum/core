@@ -129,6 +129,22 @@ class User extends Model implements
     }
 
     /**
+     * Whether the user has a saved post draft.
+     */
+    public function hasDraft(): bool
+    {
+        if ($this->relationLoaded('drafts')) {
+            return $this->drafts->isNotEmpty();
+        }
+
+        if (!array_key_exists('drafts_exists', $this->getAttributes())) {
+            $this->loadExists('drafts');
+        }
+
+        return (bool) $this->drafts_exists;
+    }
+
+    /**
      * Relationship with the user's comments.
      */
     public function comments(): HasMany
