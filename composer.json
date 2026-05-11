@@ -90,10 +90,6 @@
         "benchmark": [
             "@clear",
             "@php vendor/bin/phpbench run --report=default"
-        ],
-        "benchmark:profile": [
-            "@clear",
-            "@php tests/Benchmark/profile-pages.php"
         ]
     }
 }
