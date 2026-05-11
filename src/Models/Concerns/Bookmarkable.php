@@ -74,11 +74,9 @@ trait Bookmarkable
             return false;
         }
 
-        if ($this->relationLoaded('bookmark')) {
-            return (bool) $this->bookmark?->exists;
-        }
+        $this->loadMissing('bookmark');
 
-        return $this->bookmark()->exists();
+        return (bool) $this->bookmark?->exists;
     }
 
     /**
