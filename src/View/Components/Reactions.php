@@ -19,6 +19,7 @@ class Reactions extends Component
     public ?ReactionSet $reactionSet;
     public bool $isAuthorized;
     public Collection $reactionTypes;
+    protected Collection $reactionCounts;
 
     public function __construct(Model $model)
     {
@@ -26,6 +27,7 @@ class Reactions extends Component
         $this->reactionSet = $model->reactionSet();
         $this->isAuthorized = resolve(React::class)->authorize(Auth::user(), $this->model);
         $this->reactionTypes = new Collection();
+        $this->reactionCounts = $model->reactionCounts->keyBy('id');
 
         if (!$this->reactionSet?->exists) {
             return;
@@ -47,12 +49,12 @@ class Reactions extends Component
 
     public function reactionCount(ReactionType $reactionType): int
     {
-        return $this->model->reactionCounts->find($reactionType->id)?->count ?? 0;
+        return $this->reactionCounts->get($reactionType->id)?->count ?? 0;
     }
 
     public function userReacted(ReactionType $reactionType): bool
     {
-        return (bool) $this->model->reactionCounts->find($reactionType->id)?->user_reacted;
+        return (bool) $this->reactionCounts->get($reactionType->id)?->user_reacted;
     }
 
     public function render()
