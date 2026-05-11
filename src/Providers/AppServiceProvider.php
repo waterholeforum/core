@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Foundation\Console\AboutCommand;
 use Illuminate\Notifications\ChannelManager;
 use Illuminate\Support\ServiceProvider;
+use Waterhole\Extend;
 use Waterhole\Models;
 use Waterhole\Notifications\DatabaseChannel;
 use Waterhole\Waterhole;
@@ -25,11 +26,81 @@ class AppServiceProvider extends ServiceProvider
         'users',
     ];
 
+    protected array $extenders = [
+        Extend\Api\BookmarksResource::class,
+        Extend\Api\ChannelUsersResource::class,
+        Extend\Api\ChannelsResource::class,
+        Extend\Api\CommentsResource::class,
+        Extend\Api\GroupsResource::class,
+        Extend\Api\JsonApi::class,
+        Extend\Api\MentionsResource::class,
+        Extend\Api\PagesResource::class,
+        Extend\Api\PostUsersResource::class,
+        Extend\Api\PostsResource::class,
+        Extend\Api\ReactionSetsResource::class,
+        Extend\Api\ReactionTypesResource::class,
+        Extend\Api\ReactionsResource::class,
+        Extend\Api\StructureHeadingsResource::class,
+        Extend\Api\StructureLinksResource::class,
+        Extend\Api\StructureResource::class,
+        Extend\Api\TagsResource::class,
+        Extend\Api\TaxonomiesResource::class,
+        Extend\Api\UsersResource::class,
+        Extend\Assets\Locales::class,
+        Extend\Assets\Script::class,
+        Extend\Assets\Stylesheet::class,
+        Extend\Core\Actions::class,
+        Extend\Core\Formatter::class,
+        Extend\Core\NotificationTypes::class,
+        Extend\Core\PostFilters::class,
+        Extend\Core\PostLayouts::class,
+        Extend\Forms\ChannelForm::class,
+        Extend\Forms\GroupForm::class,
+        Extend\Forms\PageForm::class,
+        Extend\Forms\PostForm::class,
+        Extend\Forms\ReactionSetForm::class,
+        Extend\Forms\ReactionTypeForm::class,
+        Extend\Forms\RegistrationForm::class,
+        Extend\Forms\StructureLinkForm::class,
+        Extend\Forms\TagForm::class,
+        Extend\Forms\TaxonomyForm::class,
+        Extend\Forms\UserForm::class,
+        Extend\Query\CommentQuery::class,
+        Extend\Query\PostFeedQuery::class,
+        Extend\Query\PostVisibilityScopes::class,
+        Extend\Routing\ApiRoutes::class,
+        Extend\Routing\CpRoutes::class,
+        Extend\Routing\ForumRoutes::class,
+        Extend\Ui\CommentAttributes::class,
+        Extend\Ui\CommentComponent::class,
+        Extend\Ui\CpAlerts::class,
+        Extend\Ui\CpNav::class,
+        Extend\Ui\DocumentHead::class,
+        Extend\Ui\IndexPage::class,
+        Extend\Ui\KeyboardShortcuts::class,
+        Extend\Ui\Layout::class,
+        Extend\Ui\LoginPage::class,
+        Extend\Ui\PostAttributes::class,
+        Extend\Ui\PostFeed::class,
+        Extend\Ui\PostFooter::class,
+        Extend\Ui\PostListItem::class,
+        Extend\Ui\PostPage::class,
+        Extend\Ui\Preferences::class,
+        Extend\Ui\TextEditor::class,
+        Extend\Ui\UserInfo::class,
+        Extend\Ui\UserMenu::class,
+        Extend\Ui\UserNav::class,
+    ];
+
     public function register()
     {
         collect($this->configFiles)->each(function ($config) {
             $this->mergeConfigFrom(__DIR__ . "/../../config/$config.php", "waterhole.$config");
         });
+
+        foreach ($this->extenders as $class) {
+            $this->app->scoped($class);
+        }
 
         $this->callAfterResolving(Factory::class, function (Factory $factory) {
             $factory->add('waterhole', [
