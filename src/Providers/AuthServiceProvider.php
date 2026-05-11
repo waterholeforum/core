@@ -8,6 +8,7 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Socialite\Facades\Socialite;
+use Waterhole\Auth\GateCache;
 use Waterhole\Auth\Providers;
 use Waterhole\Auth\SsoProvider;
 use Waterhole\Models\Permission;
@@ -21,6 +22,8 @@ class AuthServiceProvider extends ServiceProvider
 {
     public function register()
     {
+        $this->app->scoped(GateCache::class);
+
         $this->app->singleton(
             Providers::class,
             fn() => new Providers(config('waterhole.auth.providers')),
@@ -61,6 +64,10 @@ class AuthServiceProvider extends ServiceProvider
         );
 
         Gate::before(function (null|object $user, $ability, $arguments) {
+            return $this->app->make(GateCache::class)->remembered($user, $ability, $arguments);
+        });
+
+        Gate::before(function (null|object $user, $ability, $arguments) {
             if (!str_starts_with($ability, 'waterhole.') || !$user instanceof User) {
                 return null;
             }
@@ -97,6 +104,12 @@ class AuthServiceProvider extends ServiceProvider
             if ($result === null && $user?->isAdmin()) {
                 return true;
             }
+        });
+
+        $this->app->booted(function () {
+            Gate::after(function (null|object $user, $ability, $result, $arguments) {
+                $this->app->make(GateCache::class)->store($user, $ability, $arguments, $result);
+            });
         });
 
         // We don't want to register policies in the usual way because they are
