@@ -1,11 +1,12 @@
 @blaze
+
 @props([
-    'icon',
-    'label',
-    'id' => null,
-    'format' => null,
-    'shortcut' => null,
-    'hint' => null,
+    "icon",
+    "label",
+    "id" => null,
+    "format" => null,
+    "shortcut" => null,
+    "hint" => null,
 ])
 
 <button

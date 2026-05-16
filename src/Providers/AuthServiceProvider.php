@@ -68,7 +68,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::before(function (null|object $user, $ability, $arguments) {
-            if (!str_starts_with($ability, 'waterhole.') || !$user instanceof User) {
+            if (!str_starts_with($ability, 'waterhole.') || !($user instanceof User)) {
                 return null;
             }
 
@@ -86,7 +86,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::after(function (null|object $user, $ability, $result, $arguments) {
-            if (!str_starts_with($ability, 'waterhole.') || ($user && !$user instanceof User)) {
+            if (!str_starts_with($ability, 'waterhole.') || ($user && !($user instanceof User))) {
                 return null;
             }
 

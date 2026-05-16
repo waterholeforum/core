@@ -1,5 +1,8 @@
 @blaze
-@props(['datetime'])
+
+@props([
+    'datetime',
+])
 
 @if ($dateTime = $datetime ? new Carbon\Carbon($datetime) : null)
     <relative-time

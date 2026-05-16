@@ -18,7 +18,7 @@ class ActionsCollection extends LazyCollection
         $renderable = $this->renderable;
 
         return $this->filter(
-            fn($action) => !$action instanceof Action || !$renderable || $renderable($action),
+            fn($action) => !($action instanceof Action) || !$renderable || $renderable($action),
         );
     }
 
@@ -31,7 +31,7 @@ class ActionsCollection extends LazyCollection
                 continue;
             }
 
-            if (!$action instanceof Action || !$renderable || $renderable($action)) {
+            if (!($action instanceof Action) || !$renderable || $renderable($action)) {
                 return true;
             }
         }

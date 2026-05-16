@@ -1,4 +1,5 @@
 @blaze
+
 @props(['shortcut' => null])
 
 @php
@@ -6,12 +7,12 @@
 @endphp
 
 @if ($shortcut)
-<kbd
-    {{
-        $attributes->class(['shortcut-label js-only'])->merge([
-            'data-shortcut-label' => $shortcut,
-            'aria-hidden' => 'true',
-        ])
-    }}
-></kbd>
+    <kbd
+        {{
+            $attributes->class(['shortcut-label js-only'])->merge([
+                'data-shortcut-label' => $shortcut,
+                'aria-hidden' => 'true',
+            ])
+        }}
+    ></kbd>
 @endif

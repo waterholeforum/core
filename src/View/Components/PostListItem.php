@@ -28,7 +28,7 @@ class PostListItem extends Component
 
         $this->title = $post->title;
 
-        if (!$this->title instanceof HtmlString) {
+        if (!($this->title instanceof HtmlString)) {
             $this->title = emojify($this->title);
         }
     }

@@ -15,7 +15,7 @@ class ReverifyInactiveUser
 
         $user = $event->user;
 
-        if (!$user instanceof User || !$user->hasVerifiedEmail()) {
+        if (!($user instanceof User) || !$user->hasVerifiedEmail()) {
             return;
         }
 

@@ -1,12 +1,17 @@
 @blaze
-@props(['subject', 'hide' => false, 'canModerate' => null])
+
+@props([
+    'subject',
+    'hide' => false,
+    'canModerate' => null,
+])
 
 @php
     $canModerate ??= $subject->canModerate(Auth::user());
 
     $showBanner = $canModerate
         ? $subject->pendingFlags->loadMissing('createdBy')->isNotEmpty()
-        : !$subject->is_approved && !$hide;
+        : ! $subject->is_approved && ! $hide;
 @endphp
 
 <div {{ $attributes->class($showBanner ? 'flag-container' : '') }}>

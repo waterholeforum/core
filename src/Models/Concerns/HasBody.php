@@ -156,7 +156,7 @@ trait HasBody
      */
     protected function mentionedUsers(): Collection
     {
-        if (!$this instanceof Post && !$this instanceof Comment) {
+        if (!($this instanceof Post) && !($this instanceof Comment)) {
             return collect();
         }
 

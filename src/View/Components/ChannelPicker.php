@@ -34,7 +34,7 @@ class ChannelPicker extends Component
             ->toBase()
             ->map->content->except($exclude)
             ->filter(
-                fn($item) => !$item instanceof Channel ||
+                fn($item) => !($item instanceof Channel) ||
                     Gate::allows('waterhole.channel.post', $item),
             );
 

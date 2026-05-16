@@ -83,7 +83,7 @@ class Actions
             return null;
         }
 
-        if (!$action instanceof Action) {
+        if (!($action instanceof Action)) {
             return $action;
         }
 
@@ -110,7 +110,7 @@ class Actions
 
         foreach ($this->lists as $list) {
             foreach (resolve_all($list->items()) as $action) {
-                if (!$action instanceof Action || !($shortcut = $action->shortcut())) {
+                if (!($action instanceof Action) || !($shortcut = $action->shortcut())) {
                     continue;
                 }
 
@@ -139,7 +139,7 @@ class Actions
 
     private function isRenderable($action, Collection $models, ?string $context): bool
     {
-        return !$action instanceof Action || $action->shouldRender($models, $context);
+        return !($action instanceof Action) || $action->shouldRender($models, $context);
     }
 
     private function isRegisteredAction($action, array $registered): bool

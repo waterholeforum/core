@@ -1,4 +1,5 @@
 @blaze
+
 @props([
     'user',
     'date' => null,

@@ -1,4 +1,5 @@
 @blaze
+
 @props(['user' => null, 'link' => true])
 
 @if ($user && $link)

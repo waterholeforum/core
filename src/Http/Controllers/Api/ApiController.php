@@ -21,7 +21,7 @@ class ApiController extends Controller
             // If debug mode is on, and the exception that has occurred is not
             // JSON:API-friendly, then re-throw it so that it will bubble up
             // to the Laravel exception handler which will show full info.
-            if (!$e instanceof ErrorProvider) {
+            if (!($e instanceof ErrorProvider)) {
                 if (config('app.debug')) {
                     throw $e;
                 }

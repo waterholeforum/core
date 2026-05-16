@@ -11,7 +11,7 @@
                 Waterhole\View\Components\Cp\Version::class,
             ])"
         />
-    </x-slot:sidebar>
+    </x-slot>
 
     <div hidden data-page-target="title">{{ __('waterhole::cp.title') }}</div>
 
