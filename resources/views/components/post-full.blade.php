@@ -38,7 +38,7 @@
             @components(resolve(Waterhole\Extend\Ui\PostPage::class)->header, compact('post'))
         </header>
 
-        <div class="post-body content text-md" data-controller="quotable" itemprop="text">
+        <div class="post-body content text-md" data-controller="quotable lightbox" itemprop="text">
             {{ $post->body_html }}
 
             @can('waterhole.post.comment', $post)

@@ -1,0 +1,8 @@
+.js img[data-lightbox-image] {
+  cursor: zoom-in;
+}
+
+.js img[data-lightbox-image]:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}

@@ -130,7 +130,7 @@
 
             <div
                 class="comment__body content @if ($truncate) content--compact truncated @endif"
-                data-controller="quotable @if ($truncate) truncated @endif"
+                data-controller="quotable lightbox @if ($truncate) truncated @endif"
                 @if ($withStructuredData) itemprop="text" @endif
             >
                 {{ $comment->body_html }}

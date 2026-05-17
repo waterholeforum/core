@@ -40,7 +40,7 @@
 
     <div
         class="post-card__content content content--compact text-sm truncated"
-        data-controller="truncated"
+        data-controller="truncated lightbox"
     >
         {{ $post->body_html }}
 

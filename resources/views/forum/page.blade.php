@@ -12,7 +12,7 @@
         <div class="stack gap-xl measure card p-gutter">
             <h1 data-page-target="title">{{ $page->name }}</h1>
 
-            <div class="content text-md">
+            <div class="content text-md" data-controller="lightbox">
                 {{ $page->body_html }}
             </div>
         </div>

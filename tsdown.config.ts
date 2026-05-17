@@ -28,4 +28,5 @@ export default defineConfig([
     defineBundle('cp', 'resources/js/cp/index.ts', { watch: dev }),
     defineBundle('emoji', 'resources/js/emoji.ts'),
     defineBundle('highlight', 'resources/js/highlight.ts'),
+    defineBundle('lightbox', 'resources/js/lightbox.ts'),
 ]);

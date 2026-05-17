@@ -3,6 +3,7 @@ import '@github/relative-time-element';
 import { Application } from '@hotwired/stimulus';
 import { AlertsElement } from 'inclusive-elements';
 import ky from 'ky';
+import { type PhotoSwipeOptions } from 'photoswipe';
 
 import './bootstrap/custom-elements';
 import './bootstrap/document-title';
@@ -33,6 +34,7 @@ export interface Waterhole {
     alerts: AlertsElement;
     fetch: typeof ky;
     fetchError: (response?: Response) => void;
+    openLightbox?: (options: PhotoSwipeOptions) => void;
     documentTitle: DocumentTitle;
     echoConfig: any;
 }

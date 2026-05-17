@@ -17,6 +17,7 @@ class Script extends Assets
         $this->add(__DIR__ . '/../../../resources/dist/global.js');
         $this->add(__DIR__ . '/../../../resources/dist/highlight.js');
         $this->add(__DIR__ . '/../../../resources/dist/emoji.js');
+        $this->add(__DIR__ . '/../../../resources/dist/lightbox.js');
 
         $this->add(__DIR__ . '/../../../resources/dist/cp.js', 'cp');
     }

@@ -7,7 +7,7 @@
         </span>
     </div>
 
-    <div class="content color-text">
+    <div class="content color-text" data-controller="lightbox">
         {{ $post->answer->body_html }}
     </div>
 
