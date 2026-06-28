@@ -72,8 +72,8 @@ importers:
         specifier: ^0.5.5
         version: 0.5.5
       inclusive-shortcuts:
-        specifier: ^0.1.0
-        version: 0.1.0
+        specifier: ^0.1.1
+        version: 0.1.1
       ky:
         specifier: ^1.14.3
         version: 1.14.3
@@ -1546,8 +1546,8 @@ packages:
   inclusive-elements@0.5.5:
     resolution: {integrity: sha512-w+0DXY1PscNyiB1ThmNKBbH5L6D/u6gfuiLi68yW3GwVzqM7rxZFOGh8/9iw9eOnJGHhOkCtR59ef48ERHvqPg==}
 
-  inclusive-shortcuts@0.1.0:
-    resolution: {integrity: sha512-RyR9GtRlu8lQaaKBFOgzDbgqQEWSZ+Ai8Ng47QdegT+3gJBK+rMebniiauT5DUxpogGsi2eEAgU6CdNFftDU7Q==}
+  inclusive-shortcuts@0.1.1:
+    resolution: {integrity: sha512-AM+y9XJ/lF9keSgJ3l6oG3pU0wgcA0UFxW5hVzTDdXSpTHDUvX7SHUdEmd5F1O5eLDd1ADe1CwMsE0N7pBC5JQ==}
 
   ini@5.0.0:
     resolution: {integrity: sha512-+N0ngpO3e7cRUWOJAS7qw0IZIVc6XPrW4MlFBdD066F2L4k1L6ker3hLqSq7iXxU5tgS4WGkIUElWn5vogAEnw==}
@@ -4182,7 +4182,7 @@ snapshots:
       hello-goodbye: 0.2.2
       tabbable: 6.4.0
 
-  inclusive-shortcuts@0.1.0:
+  inclusive-shortcuts@0.1.1:
     dependencies:
       tinykeys: 3.0.0
 
