@@ -168,6 +168,7 @@ class Actions
             ->add(CoreActions\Bookmark::class, 'bookmark')
             ->add(MenuDivider::class, 'divider')
             ->add(CoreActions\Edit::class, 'edit')
+            ->add(CoreActions\HighlightComment::class, 'highlight')
             ->add(CoreActions\DismissFlags::class, 'dismiss-flags')
             ->add(CoreActions\RemoveComment::class, 'remove')
             ->add(CoreActions\RestoreComment::class, 'restore')

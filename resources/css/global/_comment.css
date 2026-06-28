@@ -4,6 +4,7 @@
 
   padding: var(--comment-padding);
   padding-left: var(--comment-padding-left);
+  position: relative;
   transition-property: background, box-shadow, border-radius;
   transition-duration: var(--transition-duration);
 
@@ -22,8 +23,15 @@
     }
   }
 
-  &.is-highlighted {
+  &.is-targeted {
     background: var(--color-warning-soft);
+  }
+
+  &.is-highlighted {
+    box-shadow:
+      inset 0 0 0 2px var(--color-warning),
+      inset 0 0 20px 2px var(--color-warning-soft);
+    border-radius: var(--radius);
   }
 
   &.is-answer {
@@ -39,6 +47,21 @@
       inset 0 0 20px 2px var(--color-accent-soft);
     border-radius: var(--radius);
   }
+}
+
+.comment__highlighted-badge {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  z-index: 1;
+}
+
+.highlighted-icon {
+  color: var(--color-warning);
+}
+
+.comment.is-highlighted .comment__header {
+  padding-right: 7rem;
 }
 
 .comment.is-removed {

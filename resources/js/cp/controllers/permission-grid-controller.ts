@@ -34,12 +34,12 @@ export default class extends Controller<HTMLElement> {
             );
             this.element
                 .querySelector('colgroup')!
-                .children[index].classList.add('is-highlighted');
+                .children[index].classList.add('is-targeted');
             this.element.style.cursor = 'pointer';
         }
 
         if (target.closest('tbody th')) {
-            target.closest('tr')!.classList.add('is-highlighted');
+            target.closest('tr')!.classList.add('is-targeted');
             this.element.style.cursor = 'pointer';
         }
     };
@@ -47,7 +47,7 @@ export default class extends Controller<HTMLElement> {
     private reset = () => {
         this.element
             .querySelectorAll('col, tr')
-            .forEach((el) => el.classList.remove('is-highlighted'));
+            .forEach((el) => el.classList.remove('is-targeted'));
         this.element.style.cursor = '';
     };
 

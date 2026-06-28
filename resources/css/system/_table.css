@@ -75,12 +75,13 @@ td.choice-cell {
     cursor: pointer;
 
     &:not(.is-disabled):hover,
-    &.is-highlighted {
+    &.is-targeted {
       background: var(--color-fill);
     }
   }
 }
 
-.is-highlighted {
+col.is-targeted,
+tr.is-targeted {
   background: var(--color-fill);
 }

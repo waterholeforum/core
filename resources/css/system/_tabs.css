@@ -6,6 +6,8 @@
 }
 
 .tab {
+  display: flex;
+  gap: var(--space-xxs);
   color: var(--color-muted);
   font-weight: var(--weight-medium);
   text-decoration: none !important;
@@ -59,7 +61,6 @@
   font-size: var(--text-xs);
 
   .tab {
-    display: block;
     text-align: left;
     padding-block: var(--space-xxs);
     padding-inline: var(--space-sm);

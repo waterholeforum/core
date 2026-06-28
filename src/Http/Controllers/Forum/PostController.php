@@ -56,6 +56,17 @@ class PostController extends Controller
             $scope($query, $post);
         }
 
+        $highlightedComments = (clone $query)
+            ->withOnly('user')
+            ->where('comments.is_highlighted', true)
+            ->oldest('comments.created_at')
+            ->orderBy('comments.id')
+            ->get();
+
+        $highlightedCommentsByPage = $highlightedComments->groupBy(
+            fn(Comment $comment) => intdiv((int) $comment->index, $comment->getPerPage()) + 1,
+        );
+
         $comments = (clone $query)
             ->oldest('comments.created_at')
             ->orderBy('comments.id')
@@ -74,10 +85,23 @@ class PostController extends Controller
 
         // We already have an instance of the `post` relation for each comment,
         // since we are on the post page!
-        $comments->getCollection()->each(function (Comment $comment) use ($post) {
+        $setCommentPostRelation = function (Comment $comment) use (
+            $post,
+            &$setCommentPostRelation,
+        ) {
             $comment->setRelation('post', $post);
-            $comment->parent?->setRelation('post', $post);
-        });
+
+            if ($comment->relationLoaded('parent')) {
+                $comment->parent?->setRelation('post', $post);
+            }
+
+            if ($comment->relationLoaded('children')) {
+                $comment->children->each($setCommentPostRelation);
+            }
+        };
+
+        $comments->getCollection()->each($setCommentPostRelation);
+        $highlightedComments->each($setCommentPostRelation);
 
         $lastReadAt = $post->userState?->last_read_at;
 
@@ -96,7 +120,14 @@ class PostController extends Controller
 
         return view(
             'waterhole::posts.show',
-            compact('post', 'comments', 'previousCommentCreatedAt', 'lastReadAt', 'headings'),
+            compact(
+                'post',
+                'comments',
+                'highlightedCommentsByPage',
+                'previousCommentCreatedAt',
+                'lastReadAt',
+                'headings',
+            ),
         );
     }
 

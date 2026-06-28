@@ -115,10 +115,13 @@
         >
             <x-waterhole::post-sidebar :post="$post" />
 
-            <div class="stack gap-lg" data-post-page-target="commentsLinks">
+            <div
+                class="post-page__links stack gap-lg"
+                data-post-page-target="commentsLinks"
+            >
                 @if ($comments->total())
                     <div class="tabs tabs--vertical gap-xxs">
-                        <a href="#comments" class="tab with-icon">
+                        <a href="#comments" class="tab">
                             @icon('tabler-message-circle-2')
                             <span class="hide-md-up">{{ $comments->total() }}</span>
                             <span class="hide-sm">
@@ -129,7 +132,7 @@
                         <a
                             {{-- Exclude ?page=1 from the URL so that the page isn't needlessly reloaded. --}}
                             href="{{ $lastLink }}"
-                            class="tab with-icon hide-md-down"
+                            class="tab hide-md-down"
                             data-shortcut-trigger="selection.last"
                         >
                             @icon('tabler-chevrons-down')
@@ -179,7 +182,7 @@
                     <div hidden class="menu p-md">
                         <nav class="comments-pagination tabs tabs--vertical gap-sm">
                             <a
-                                class="tab with-icon"
+                                class="tab"
                                 href="{{ $post->url }}#top"
                                 data-shortcut-trigger="selection.first"
                             >
@@ -190,21 +193,61 @@
                             <div
                                 class="scrollable-y stack comments-pagination__pages"
                                 data-controller="scrollspy watch-scroll"
+                                data-scrollspy-selector-value=".comments-pagination__page-link"
                             >
                                 @for ($page = 1; $page <= $comments->lastPage(); $page++)
-                                    <a
-                                        class="tab"
-                                        {{-- Exclude ?page=1 from the URL so that the page isn't needlessly reloaded. --}}
-                                        href="{{ $page === 1 ? $post->url : $comments->url($page) }}#page_{{ $page }}"
-                                        @if ($page == $comments->currentPage()) aria-current="page" @endif
-                                    >
-                                        {{ $page }}
-                                    </a>
+                                    @php($pageHighlightedComments = $highlightedCommentsByPage->get($page, collect()))
+
+                                    <div class="comments-pagination__page stack shrink">
+                                        <a
+                                            class="tab comments-pagination__page-link justify-between"
+                                            {{-- Exclude ?page=1 from the URL so that the page isn't needlessly reloaded. --}}
+                                            href="{{ $page === 1 ? $post->url : $comments->url($page) }}#page_{{ $page }}"
+                                            data-page-number="{{ $page }}"
+                                            @if ($page == $comments->currentPage()) aria-current="page" @endif
+                                        >
+                                            <span class="row gap-xs">
+                                                {{ $page }}
+                                                @if ($pageHighlightedComments->isNotEmpty())
+                                                    <span>
+                                                        @icon('tabler-star-filled', ['class' => 'highlighted-icon'])
+                                                        <ui-tooltip>
+                                                            {{ __('waterhole::forum.highlighted-comments-tooltip', ['count' => $pageHighlightedComments->count()]) }}
+                                                        </ui-tooltip>
+                                                    </span>
+                                                @endif
+                                            </span>
+                                        </a>
+
+                                        @if ($pageHighlightedComments->isNotEmpty())
+                                            <div
+                                                class="comments-pagination__highlights tabs tabs--vertical"
+                                                data-controller="scrollspy"
+                                                data-scrollspy-persist-value="false"
+                                                @if ($page != $comments->currentPage()) hidden @endif
+                                            >
+                                                @foreach ($pageHighlightedComments as $highlightedComment)
+                                                    <a
+                                                        href="{{ $highlightedComment->post_url }}"
+                                                        class="tab align-start color-muted text-xxxs px-xs"
+                                                    >
+                                                        @icon('tabler-star-filled', ['class' => 'highlighted-icon'])
+                                                        <span class="weight-normal line-clamp-3">
+                                                            <strong>
+                                                                {{ Waterhole\username($highlightedComment->user) }}
+                                                            </strong>
+                                                            {{ Waterhole\emojify(Str::limit($highlightedComment->body_text, 60)) }}
+                                                        </span>
+                                                    </a>
+                                                @endforeach
+                                            </div>
+                                        @endif
+                                    </div>
                                 @endfor
                             </div>
 
                             <a
-                                class="tab with-icon"
+                                class="tab"
                                 href="{{ $lastLink }}"
                                 data-shortcut-trigger="selection.last"
                             >

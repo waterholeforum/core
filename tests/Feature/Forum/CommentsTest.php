@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Waterhole\Actions\HighlightComment;
 use Waterhole\Actions\RemoveComment;
 use Waterhole\Database\Seeders\GroupsSeeder;
 use Waterhole\Models\Channel;
@@ -291,5 +292,52 @@ describe('delete comment', function () {
             ->get(route('waterhole.posts.show', $post))
             ->assertOk()
             ->assertDontSeeText('Hidden comment');
+    });
+});
+
+describe('highlight comment', function () {
+    test('moderator can highlight and unhighlight comment', function () {
+        $channel = Channel::factory()->public()->create();
+        $post = Post::factory()->for($channel)->create();
+        $moderator = User::factory()->admin()->create();
+        $comment = Comment::factory()->for($post)->create();
+
+        $this->actingAs($moderator)
+            ->post(route('waterhole.actions.store'), [
+                'actionable' => Comment::class,
+                'id' => $comment->id,
+                'action_class' => HighlightComment::class,
+                'return' => $comment->post_url,
+            ])
+            ->assertRedirect();
+
+        expect($comment->fresh()->is_highlighted)->toBeTrue();
+
+        $this->actingAs($moderator)
+            ->post(route('waterhole.actions.store'), [
+                'actionable' => Comment::class,
+                'id' => $comment->id,
+                'action_class' => HighlightComment::class,
+                'return' => $comment->post_url,
+            ])
+            ->assertRedirect();
+
+        expect($comment->fresh()->is_highlighted)->toBeFalse();
+    });
+
+    test('non-moderator cannot highlight comment', function () {
+        $channel = Channel::factory()->public()->create();
+        $post = Post::factory()->for($channel)->create();
+        $user = User::factory()->create();
+        $comment = Comment::factory()->for($post)->create();
+
+        $this->actingAs($user)
+            ->post(route('waterhole.actions.store'), [
+                'actionable' => Comment::class,
+                'id' => $comment->id,
+                'action_class' => HighlightComment::class,
+                'return' => $comment->post_url,
+            ])
+            ->assertForbidden();
     });
 });

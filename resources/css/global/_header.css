@@ -18,27 +18,15 @@
 }
 
 .header-breadcrumb {
+  --transition-hidden-y: 10px;
+
   color: var(--color-muted);
-  transition:
-    opacity 0.2s,
-    transform 0.2s;
   margin-left: var(--space-xs);
   flex-shrink: 99;
 
   &::before {
     content: '\203A';
     margin: 0 var(--space-xs);
-  }
-
-  &[hidden] {
-    display: block !important;
-    visibility: hidden;
-    transform: translateY(10px);
-    opacity: 0;
-    transition:
-      opacity 0.2s,
-      transform 0.2s,
-      visibility 0s 0.2s;
   }
 }
 

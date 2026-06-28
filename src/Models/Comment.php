@@ -41,6 +41,7 @@ use function HotwiredLaravel\TurboLaravel\dom_id;
  * @property null|\Carbon\Carbon $edited_at
  * @property int $reply_count
  * @property int $score
+ * @property bool $is_highlighted
  * @property-read Post $post
  * @property-read null|User $user
  * @property-read \Illuminate\Database\Eloquent\Collection $replies
@@ -67,6 +68,7 @@ class Comment extends Model
 
     protected $casts = [
         'edited_at' => 'datetime',
+        'is_highlighted' => 'boolean',
         'is_pinned' => 'boolean',
     ];
 

@@ -47,7 +47,7 @@ export default class extends Controller {
 
     highlightParent() {
         this.parentElements.forEach((el) => {
-            el.classList.add('is-highlighted');
+            el.classList.add('is-targeted');
         });
 
         if (this.parentTooltipTarget) {
@@ -59,7 +59,7 @@ export default class extends Controller {
 
     stopHighlightingParent() {
         this.parentElements.forEach((el) => {
-            el.classList.remove('is-highlighted');
+            el.classList.remove('is-targeted');
         });
     }
 }

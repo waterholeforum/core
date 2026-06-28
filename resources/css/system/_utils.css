@@ -471,6 +471,10 @@
 
 // Text Size
 
+.text-xxxs {
+  font-size: var(--text-xxxs);
+}
+
 .text-xxs {
   font-size: var(--text-xxs);
 }
@@ -497,6 +501,20 @@
 
 .text-xxl {
   font-size: var(--text-xxl);
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
 }
 
 // Animation
@@ -545,6 +563,17 @@
 
 .no-transition {
   transition: none !important;
+}
+
+.transition-hidden {
+  transition:
+    opacity var(--transition-duration) var(--ease-out),
+    transform var(--transition-duration) var(--ease-out);
+
+  @starting-style {
+    opacity: 0;
+    transform: translateY(var(--transition-hidden-y, 0.25rem));
+  }
 }
 
 // Background Color

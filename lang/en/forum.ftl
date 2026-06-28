@@ -139,6 +139,14 @@ comment-reply-button = Reply
 mark-as-answer-button = Mark as Answer
 unmark-as-answer-button = Unmark as Answer
 comment-answer-badge = Answer
+highlight-comment-button = Highlight Comment
+unhighlight-comment-button = Remove Highlight
+comment-highlighted-badge = Highlighted
+comment-highlighted-tooltip = Highlighted Comment
+highlighted-comments-tooltip = { $count } highlighted { $count ->
+    [one] comment
+    *[other] comments
+}
 
 comments-locked-message = Comments are locked.
 lock-comments-button = Lock Comments

@@ -36,6 +36,7 @@ export default class extends Controller {
         this.hideBreadcrumb = requestAnimationFrame(() => {
             if (!this.hasBreadcrumbTarget) return;
             this.breadcrumbTarget.hidden = true;
+            this.breadcrumbTarget.classList.add('transition-hidden');
         });
     }
 

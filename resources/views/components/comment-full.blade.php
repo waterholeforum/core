@@ -20,6 +20,15 @@
         data-shortcut-selection-key="{{ dom_id($comment) }}"
         tabindex="-1"
     >
+        @if ($comment->is_highlighted)
+            <span class="comment__highlighted-badge">
+                @icon('tabler-star-filled', ['class' => 'highlighted-icon'])
+                <ui-tooltip>
+                    {{ __('waterhole::forum.comment-highlighted-tooltip') }}
+                </ui-tooltip>
+            </span>
+        @endif
+
         @if ($withStructuredData)
             <meta itemprop="datePublished" content="{{ $comment->created_at?->toAtomString() }}" />
             @if ($comment->edited_at)

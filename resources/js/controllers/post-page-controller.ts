@@ -8,8 +8,6 @@ import { getHeaderHeight } from '../utils';
  * @internal
  */
 export default class extends Controller {
-    private commentsLinksVisible?: boolean;
-
     static targets = [
         'post',
         'currentPage',
@@ -42,6 +40,10 @@ export default class extends Controller {
             this.showPostOnFirstPage,
         );
         document.addEventListener('turbo:morph', this.onScroll);
+        this.element.addEventListener(
+            'scrollspy:change',
+            this.onScrollspyChange,
+        );
 
         window.addEventListener('scroll', this.onScroll, { passive: true });
         this.onScroll();
@@ -57,6 +59,10 @@ export default class extends Controller {
             this.showPostOnFirstPage,
         );
         document.removeEventListener('turbo:morph', this.onScroll);
+        this.element.removeEventListener(
+            'scrollspy:change',
+            this.onScrollspyChange,
+        );
 
         window.removeEventListener('scroll', this.onScroll);
     }
@@ -91,36 +97,44 @@ export default class extends Controller {
         }
     };
 
-    private onScroll = () => {
-        // Wait for the scrollspy controller to update which page
-        // is currently selected.
-        setTimeout(() => {
-            if (this.hasCurrentPageTarget) {
-                this.currentPageTarget.textContent =
-                    this.element.querySelector(
-                        '.comments-pagination [aria-current="page"]',
-                    )?.textContent || '1';
-            }
-        });
+    private onScrollspyChange = (event: Event) => {
+        const active = (event as CustomEvent).detail?.active as
+            | HTMLElement
+            | undefined;
 
+        if (!active?.classList.contains('comments-pagination__page-link')) {
+            return;
+        }
+
+        const currentPage = active.closest('.comments-pagination__page');
+
+        if (this.hasCurrentPageTarget) {
+            this.currentPageTarget.textContent =
+                active.dataset.pageNumber || '1';
+        }
+
+        this.element
+            .querySelectorAll<HTMLElement>('.comments-pagination__highlights')
+            .forEach((highlights) => {
+                const hidden =
+                    highlights.closest('.comments-pagination__page') !==
+                    currentPage;
+
+                highlights.hidden = hidden;
+                highlights.classList.add('transition-hidden');
+            });
+    };
+
+    private onScroll = () => {
         if (this.hasCommentsLinksTarget && this.hasCommentsPaginationTarget) {
             const commentsLinksVisible =
                 this.postTarget.getBoundingClientRect().bottom >=
                 getHeaderHeight() + 10;
 
-            if (
-                this.commentsLinksVisible !== undefined &&
-                commentsLinksVisible !== this.commentsLinksVisible
-            ) {
-                this.commentsLinksTarget.dataset.animate = '';
-                this.commentsPaginationTarget.dataset.animate = '';
-            }
-
-            this.commentsLinksVisible = commentsLinksVisible;
-
             this.commentsLinksTarget.hidden = !commentsLinksVisible;
-            this.commentsPaginationTarget.hidden =
-                !this.commentsLinksTarget.hidden;
+            this.commentsPaginationTarget.hidden = commentsLinksVisible;
+            this.commentsLinksTarget.classList.add('transition-hidden');
+            this.commentsPaginationTarget.classList.add('transition-hidden');
         }
     };
 }
