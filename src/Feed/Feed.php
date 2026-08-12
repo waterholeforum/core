@@ -53,6 +53,9 @@ class Feed
 
         $this->currentFilter->apply($query);
 
+        // Cursor pagination requires a unique order to avoid skipping tied items.
+        $query->orderByDesc($query->getModel()->getQualifiedKeyName());
+
         // Crawlers can sometimes end up remembering an invalid pagination
         // cursor, which will cause a 500 error - make it a 400 error instead.
         try {
