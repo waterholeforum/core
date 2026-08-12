@@ -32,12 +32,10 @@ class Tag extends Model
 
     protected function editUrl(): Attribute
     {
-        return Attribute::make(
-            get: fn() => route('waterhole.cp.taxonomies.tags.edit', [
-                'taxonomy' => $this->taxonomy_id,
-                'tag' => $this,
-            ]),
-        )->shouldCache();
+        return Attribute::make(get: fn() => route('waterhole.cp.taxonomies.tags.edit', [
+            'taxonomy' => $this->taxonomy_id,
+            'tag' => $this,
+        ]))->shouldCache();
     }
 
     /**

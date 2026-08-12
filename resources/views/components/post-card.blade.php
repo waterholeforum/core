@@ -34,7 +34,11 @@
                 icon
             />
 
-            <x-waterhole::action-menu :for="$post" placement="bottom-end" :preflight="false" />
+            <x-waterhole::action-menu
+                :for="$post"
+                placement="bottom-end"
+                :preflight="false"
+            />
         </div>
     </header>
 

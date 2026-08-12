@@ -101,9 +101,8 @@ class User extends Model implements
     {
         static::creating(function (User $user) {
             $user->follow_on_comment ??= true;
-            $user->notification_channels ??= collect(
-                resolve(NotificationTypes::class)->values(),
-            )->mapWithKeys(fn($type) => [$type => $type::channels()]);
+            $user->notification_channels ??= collect(resolve(NotificationTypes::class)->values())
+                ->mapWithKeys(fn($type) => [$type => $type::channels()]);
         });
     }
 
@@ -205,11 +204,13 @@ class User extends Model implements
      */
     public function markNotificationsRead(Model $model): static
     {
-        $this->unreadNotifications()
+        $this
+            ->unreadNotifications()
             ->where(
-                fn($query) => $query
-                    ->whereMorphedTo('group', $model)
-                    ->orWhereMorphedTo('content', $model),
+                fn($query) => $query->whereMorphedTo('group', $model)->orWhereMorphedTo(
+                    'content',
+                    $model,
+                ),
             )
             ->update(['read_at' => now()]);
 
@@ -315,16 +316,16 @@ class User extends Model implements
 
     protected function url(): Attribute
     {
-        return Attribute::make(
-            get: fn() => route('waterhole.users.show', ['user' => $this]),
-        )->shouldCache();
+        return Attribute::make(get: fn() => route('waterhole.users.show', [
+            'user' => $this,
+        ]))->shouldCache();
     }
 
     protected function editUrl(): Attribute
     {
-        return Attribute::make(
-            get: fn() => route('waterhole.cp.users.edit', ['user' => $this]),
-        )->shouldCache();
+        return Attribute::make(get: fn() => route('waterhole.cp.users.edit', [
+            'user' => $this,
+        ]))->shouldCache();
     }
 
     protected function avatarUrl(): Attribute
@@ -334,22 +335,20 @@ class User extends Model implements
 
     protected function unreadNotificationCount(): Attribute
     {
-        return Attribute::make(
-            get: function () {
-                $query = $this->unreadNotifications();
+        return Attribute::make(get: function () {
+            $query = $this->unreadNotifications();
 
-                if ($this->notifications_read_at) {
-                    $query->where('notifications.created_at', '>', $this->notifications_read_at);
-                }
+            if ($this->notifications_read_at) {
+                $query->where('notifications.created_at', '>', $this->notifications_read_at);
+            }
 
-                $groupType = "COALESCE(group_type, CONCAT('', id))";
-                $groupId = "COALESCE(group_id, CONCAT('', id))";
+            $groupType = "COALESCE(group_type, CONCAT('', id))";
+            $groupId = "COALESCE(group_id, CONCAT('', id))";
 
-                return $query
-                    ->distinct()
-                    ->count(new Expression("CONCAT(type, '\x1f', $groupType, '\x1f', $groupId)"));
-            },
-        )->shouldCache();
+            return $query
+                ->distinct()
+                ->count(new Expression("CONCAT(type, '\x1f', $groupType, '\x1f', $groupId)"));
+        })->shouldCache();
     }
 
     public function broadcastChannelRoute(): string

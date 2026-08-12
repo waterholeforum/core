@@ -30,13 +30,12 @@ trait RemovesContent
             'canModerate' => $model->canModerate($actor),
             'canSuspend' => $author && ($actor?->can('waterhole.user.suspend', $author) ?? false),
             'title' => $this->confirmButton($models),
-            'selectedReason' =>
-                old('deleted_reason') ??
-                $model->pendingFlags
-                    ->groupBy('reason')
-                    ->sortByDesc(fn($group) => $group->count())
-                    ->keys()
-                    ->first(),
+            'selectedReason' => old('deleted_reason') ?? $model
+                ->pendingFlags
+                ->groupBy('reason')
+                ->sortByDesc(fn($group) => $group->count())
+                ->keys()
+                ->first(),
         ]);
     }
 

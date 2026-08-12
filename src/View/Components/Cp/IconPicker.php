@@ -12,7 +12,7 @@ class IconPicker extends Component
     public function __construct(
         public ?string $name = null,
         public ?string $id = null,
-        public null|string|array $value = null,
+        public string|array|null $value = null,
     ) {
         if (is_array($value)) {
             $this->type = $value['type'] ?? null;

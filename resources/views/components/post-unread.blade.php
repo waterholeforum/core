@@ -27,14 +27,18 @@
         <ui-tooltip placement="bottom">
             {{ __('waterhole::forum.post-new-badge-tooltip') }}
             <br />
-            <small>{{ __('waterhole::forum.mark-as-read-instruction') }}</small>
+            <small>
+                {{ __('waterhole::forum.mark-as-read-instruction') }}
+            </small>
         </ui-tooltip>
     @else
         <span>{{ $post->unread_comments_count }}</span>
         <ui-tooltip placement="bottom">
             {{ __('waterhole::forum.post-unread-comments-badge-tooltip', ['count' => $post->unread_comments_count]) }}
             <br />
-            <small>{{ __('waterhole::forum.mark-as-read-instruction') }}</small>
+            <small>
+                {{ __('waterhole::forum.mark-as-read-instruction') }}
+            </small>
         </ui-tooltip>
     @endif
 </button>

@@ -9,23 +9,25 @@ use Waterhole\Models\StructureLink;
 
 class StructureLinkUrl extends Field
 {
-    public function __construct(public ?StructureLink $model) {}
+    public function __construct(
+        public ?StructureLink $model,
+    ) {}
 
     public function render(): string
     {
         return <<<'blade'
-            <x-waterhole::field
-                name="url"
-                :label="__('waterhole::cp.link-url-label')"
-            >
-                <input
-                    type="text"
+                <x-waterhole::field
                     name="url"
-                    id="{{ $component->id }}"
-                    value="{{ old('url', $model->href ?? null) }}"
+                    :label="__('waterhole::cp.link-url-label')"
                 >
-            </x-waterhole::field>
-        blade;
+                    <input
+                        type="text"
+                        name="url"
+                        id="{{ $component->id }}"
+                        value="{{ old('url', $model->href ?? null) }}"
+                    >
+                </x-waterhole::field>
+            blade;
     }
 
     public function validating(Validator $validator): void

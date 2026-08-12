@@ -5,11 +5,22 @@
                 :aria-label="__('waterhole::system.confirm-action-title')"
                 class="dialog--sm confirm-action"
             >
-                <form action="{{ route('waterhole.actions.store') }}" method="POST">
+                <form
+                    action="{{ route('waterhole.actions.store') }}"
+                    method="POST"
+                >
                     @csrf
 
-                    <input type="hidden" name="action_class" value="{{ get_class($action) }}" />
-                    <input type="hidden" name="actionable" value="{{ $actionable }}" />
+                    <input
+                        type="hidden"
+                        name="action_class"
+                        value="{{ get_class($action) }}"
+                    />
+                    <input
+                        type="hidden"
+                        name="actionable"
+                        value="{{ $actionable }}"
+                    />
                     <input
                         type="hidden"
                         name="return"
@@ -17,7 +28,11 @@
                     />
 
                     @foreach ($models as $model)
-                        <input type="hidden" name="id[]" value="{{ $model->getKey() }}" />
+                        <input
+                            type="hidden"
+                            name="id[]"
+                            value="{{ $model->getKey() }}"
+                        />
                     @endforeach
 
                     <div class="stack gap-xl">
@@ -26,7 +41,9 @@
                         @if ($isSimpleContent = is_string($content = $action->confirm($models)) || is_array($content))
                             <div class="content">
                                 @foreach (Arr::wrap($content) as $paragraph)
-                                    <p @if ($loop->first) class="h4" @endif>{{ $paragraph }}</p>
+                                    <p @if ($loop->first) class="h4" @endif>
+                                        {{ $paragraph }}
+                                    </p>
                                 @endforeach
                             </div>
                         @else
@@ -44,7 +61,9 @@
 
                                 <ui-tooltip>
                                     {{ __('waterhole::system.cancel-button') }}
-                                    <x-waterhole::shortcut-label shortcut="navigation.close" />
+                                    <x-waterhole::shortcut-label
+                                        shortcut="navigation.close"
+                                    />
                                 </ui-tooltip>
                             </a>
 

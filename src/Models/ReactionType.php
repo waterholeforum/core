@@ -24,8 +24,8 @@ class ReactionType extends Model
     public static function booting(): void
     {
         static::creating(function (ReactionType $reactionType) {
-            $reactionType->position =
-                $reactionType->reactionSet->reactionTypes()->max('position') + 1;
+            $reactionType->position = $reactionType->reactionSet->reactionTypes()->max('position')
+            + 1;
         });
     }
 
@@ -36,11 +36,9 @@ class ReactionType extends Model
 
     protected function editUrl(): Attribute
     {
-        return Attribute::make(
-            get: fn() => route('waterhole.cp.reaction-sets.reaction-types.edit', [
-                'reactionSet' => $this->reactionSet,
-                'reactionType' => $this,
-            ]),
-        )->shouldCache();
+        return Attribute::make(get: fn() => route('waterhole.cp.reaction-sets.reaction-types.edit', [
+            'reactionSet' => $this->reactionSet,
+            'reactionType' => $this,
+        ]))->shouldCache();
     }
 }

@@ -2,7 +2,9 @@
     <div class="container section">
         <turbo-frame id="moderation" class="card p-md">
             <div class="row gap-xs justify-between menu-sticky">
-                <h1 class="menu-heading">{{ __('waterhole::forum.moderation-title') }}</h1>
+                <h1 class="menu-heading">
+                    {{ __('waterhole::forum.moderation-title') }}
+                </h1>
             </div>
 
             @if ($pendingFlags->isNotEmpty())
@@ -21,10 +23,16 @@
                             )
 
                             <span class="shrink">
-                                <x-waterhole::flag-summary :subject="$flag->subject" />
+                                <x-waterhole::flag-summary
+                                    :subject="$flag->subject"
+                                />
 
-                                <span class="menu-item__description overflow-ellipsis">
-                                    <x-waterhole::user-label :user="$flag->subject->user" />
+                                <span
+                                    class="menu-item__description overflow-ellipsis"
+                                >
+                                    <x-waterhole::user-label
+                                        :user="$flag->subject->user"
+                                    />
                                     ·
                                     {{
                                         Str::limit(
@@ -47,7 +55,9 @@
             @else
                 <div class="placeholder">
                     @icon('tabler-flag-check', ['class' => 'placeholder__icon'])
-                    <p class="h4">{{ __('waterhole::forum.moderation-empty-message') }}</p>
+                    <p class="h4">
+                        {{ __('waterhole::forum.moderation-empty-message') }}
+                    </p>
                 </div>
             @endif
         </turbo-frame>

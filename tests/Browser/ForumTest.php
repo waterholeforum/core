@@ -87,9 +87,8 @@ describe('forum', function () {
             ->fill('password', 'Password123!')
             ->click('button[type="submit"]');
 
-        visit($post->url)->pressAndWaitFor(
-            'button[name="reaction_type_id"][value="' . $reactionType->id . '"]',
-        );
+        visit($post->url)
+            ->pressAndWaitFor('button[name="reaction_type_id"][value="' . $reactionType->id . '"]');
 
         $this->assertDatabaseHas('reactions', [
             'user_id' => $user->id,

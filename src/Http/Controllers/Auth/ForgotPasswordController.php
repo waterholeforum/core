@@ -29,10 +29,12 @@ class ForgotPasswordController extends Controller
         // need to show to the user. Finally, we'll send out a proper response.
         $status = Password::sendResetLink($request->only('email'));
 
-        return $status == Password::RESET_LINK_SENT
-            ? back()->with('status', __("waterhole::$status"))
-            : back()
-                ->withInput($request->only('email'))
-                ->withErrors(['email' => __("waterhole::$status")]);
+        return (
+            $status == Password::RESET_LINK_SENT
+                ? back()->with('status', __("waterhole::$status"))
+                : back()
+                    ->withInput($request->only('email'))
+                    ->withErrors(['email' => __("waterhole::$status")])
+        );
     }
 }

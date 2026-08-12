@@ -12,10 +12,7 @@ test('cursor pagination returns every item when filter values are duplicated', f
     config(['waterhole.forum.posts_per_page' => 2]);
 
     $channel = Channel::factory()->create();
-    $posts = Post::factory()
-        ->count(5)
-        ->for($channel)
-        ->create(['last_activity_at' => now()]);
+    $posts = Post::factory()->count(5)->for($channel)->create(['last_activity_at' => now()]);
 
     $feed = new Feed(request(), Post::withoutGlobalScopes(), [new Latest()]);
     $ids = collect();

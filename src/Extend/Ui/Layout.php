@@ -40,9 +40,10 @@ class Layout
             ->add(HeaderGuest::class, 'guest')
             ->add(HeaderUser::class, 'user');
 
-        $this->before = (new ComponentList())
-            ->add(Header::class, 'header')
-            ->add(EmailVerification::class, 'email-verification');
+        $this->before = (new ComponentList())->add(Header::class, 'header')->add(
+            EmailVerification::class,
+            'email-verification',
+        );
 
         $this->after = new ComponentList();
     }

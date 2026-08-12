@@ -1,4 +1,8 @@
-<x-waterhole::flag-container :subject="$comment" :hide="$comment->trashed()" {{ $attributes }}>
+<x-waterhole::flag-container
+    :subject="$comment"
+    :hide="$comment->trashed()"
+    {{ $attributes }}
+>
     <article
         {{
             (new Illuminate\View\ComponentAttributeBag())
@@ -30,7 +34,10 @@
         @endif
 
         @if ($withStructuredData)
-            <meta itemprop="datePublished" content="{{ $comment->created_at?->toAtomString() }}" />
+            <meta
+                itemprop="datePublished"
+                content="{{ $comment->created_at?->toAtomString() }}"
+            />
             @if ($comment->edited_at)
                 <meta
                     itemprop="dateModified"
@@ -39,8 +46,16 @@
             @endif
 
             <meta itemprop="url" content="{{ $comment->url }}" />
-            <span itemprop="author" itemscope itemtype="https://schema.org/Person" hidden>
-                <meta itemprop="name" content="{{ Waterhole\username($comment->user) }}" />
+            <span
+                itemprop="author"
+                itemscope
+                itemtype="https://schema.org/Person"
+                hidden
+            >
+                <meta
+                    itemprop="name"
+                    content="{{ Waterhole\username($comment->user) }}"
+                />
                 @if ($comment->user)
                     <meta itemprop="url" content="{{ $comment->user->url }}" />
                 @endif
@@ -106,7 +121,9 @@
                             <span>
                                 {{ __('waterhole::forum.comment-in-reply-to-link') }}
                                 <span class="user-label">
-                                    <x-waterhole::avatar :user="$comment->parent->user" />
+                                    <x-waterhole::avatar
+                                        :user="$comment->parent->user"
+                                    />
                                     <span>
                                         {{ Waterhole\username($comment->parent->user) }}
                                     </span>
@@ -173,7 +190,9 @@
                             hidden
                         >
                             @icon('tabler-quote')
-                            <span>{{ __('waterhole::forum.quote-button') }}</span>
+                            <span>
+                                {{ __('waterhole::forum.quote-button') }}
+                            </span>
                         </a>
                     @endcan
                 @endif

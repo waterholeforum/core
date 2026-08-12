@@ -46,21 +46,17 @@ trait ReceivesPermissions
             return;
         }
 
-        $this->permissions()->createMany(
-            collect($grid)->flatMap(function ($abilities, $scope) {
-                [$type, $id] = explode(':', $scope) + [null, null];
+        $this->permissions()->createMany(collect($grid)->flatMap(function ($abilities, $scope) {
+            [$type, $id] = explode(':', $scope) + [null, null];
 
-                return collect($abilities)
-                    ->filter()
-                    ->map(
-                        fn($v, $ability) => [
-                            'scope_type' => $type,
-                            'scope_id' => $id,
-                            'ability' => $ability,
-                        ],
-                    )
-                    ->values();
-            }),
-        );
+            return collect($abilities)
+                ->filter()
+                ->map(fn($v, $ability) => [
+                    'scope_type' => $type,
+                    'scope_id' => $id,
+                    'ability' => $ability,
+                ])
+                ->values();
+        }));
     }
 }

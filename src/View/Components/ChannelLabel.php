@@ -7,7 +7,10 @@ use Waterhole\Models\Channel;
 
 class ChannelLabel extends Component
 {
-    public function __construct(public ?Channel $channel, public bool $link = false) {}
+    public function __construct(
+        public ?Channel $channel,
+        public bool $link = false,
+    ) {}
 
     public function render()
     {

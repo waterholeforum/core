@@ -12,11 +12,14 @@ use Waterhole\Models\Flag;
 use Waterhole\Models\Model;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
+
 use function Waterhole\emojify;
 
 class NewFlag extends Notification
 {
-    public function __construct(protected Flag $flag) {}
+    public function __construct(
+        protected Flag $flag,
+    ) {}
 
     public function content(): Flag
     {
@@ -35,19 +38,17 @@ class NewFlag extends Notification
 
     public function title(): HtmlString
     {
-        $post =
-            $this->flag->subject instanceof Post
-                ? $this->flag->subject
-                : $this->flag->subject->post;
+        $post = $this->flag->subject instanceof Post
+            ? $this->flag->subject
+            : $this->flag->subject->post;
 
-        $key =
-            $this->flag->subject instanceof Comment
-                ? 'waterhole::notifications.flagged-comment-title'
-                : 'waterhole::notifications.flagged-post-title';
+        $key = $this->flag->subject instanceof Comment
+            ? 'waterhole::notifications.flagged-comment-title'
+            : 'waterhole::notifications.flagged-post-title';
 
-        return new HtmlString(
-            __($key, ['post' => '<strong>' . emojify($post->title) . '</strong>']),
-        );
+        return new HtmlString(__($key, [
+            'post' => '<strong>' . emojify($post->title) . '</strong>',
+        ]));
     }
 
     public function excerpt(): string

@@ -24,12 +24,10 @@ test('user mentions notify mentioned users except for author', function () {
     $author = User::factory()->create(['name' => 'Author']);
     $recipient = User::factory()->create(['name' => 'Mentionable']);
 
-    $post = Post::factory()
-        ->for($channel)
-        ->create([
-            'user_id' => $author->id,
-            'body' => '@Mentionable @Author',
-        ]);
+    $post = Post::factory()->for($channel)->create([
+        'user_id' => $author->id,
+        'body' => '@Mentionable @Author',
+    ]);
 
     $this->assertDatabaseHas('mentions', [
         'content_type' => $post->getMorphClass(),
@@ -58,12 +56,10 @@ test('group mentions notify group members except for author', function () {
     $author->groups()->attach($group);
     $recipient->groups()->attach($group);
 
-    $post = Post::factory()
-        ->for($channel)
-        ->create([
-            'user_id' => $author->id,
-            'body' => "@group:Support\xc2\xa0Team",
-        ]);
+    $post = Post::factory()->for($channel)->create([
+        'user_id' => $author->id,
+        'body' => "@group:Support\xc2\xa0Team",
+    ]);
 
     $this->assertDatabaseHas('mentions', [
         'content_type' => $post->getMorphClass(),
@@ -105,12 +101,10 @@ test('group mentions allow channel moderators even when not members', function (
     $author->groups()->attach($moderators);
     $recipient->groups()->attach($group);
 
-    Post::factory()
-        ->for($channel)
-        ->create([
-            'user_id' => $author->id,
-            'body' => "@group:Support\xc2\xa0Team",
-        ]);
+    Post::factory()->for($channel)->create([
+        'user_id' => $author->id,
+        'body' => "@group:Support\xc2\xa0Team",
+    ]);
 
     NotificationFacade::assertSentTo($recipient, Mention::class);
 });
@@ -144,12 +138,10 @@ test('moderators-only groups cannot be mentioned by non-moderators', function ()
     $author->groups()->attach($group);
     $recipient->groups()->attach($group);
 
-    Post::factory()
-        ->for($channel)
-        ->create([
-            'user_id' => $author->id,
-            'body' => '@group:Staff',
-        ]);
+    Post::factory()->for($channel)->create([
+        'user_id' => $author->id,
+        'body' => '@group:Staff',
+    ]);
 
     NotificationFacade::assertNotSentTo($recipient, Mention::class);
 });
@@ -171,12 +163,10 @@ test('group mentions do not notify users who cannot view the content', function 
     $author->groups()->attach($group);
     $recipient->groups()->attach($group);
 
-    Post::factory()
-        ->for($channel)
-        ->create([
-            'user_id' => $author->id,
-            'body' => '@group:Foo',
-        ]);
+    Post::factory()->for($channel)->create([
+        'user_id' => $author->id,
+        'body' => '@group:Foo',
+    ]);
 
     NotificationFacade::assertNotSentTo($recipient, Mention::class);
 });
@@ -198,37 +188,29 @@ test('here mentions notify commenters when used by a moderator', function () {
         ],
     ]);
 
-    $post = Post::factory()
-        ->for($channel)
-        ->create([
-            'user_id' => User::factory()->create()->id,
-        ]);
+    $post = Post::factory()->for($channel)->create([
+        'user_id' => User::factory()->create()->id,
+    ]);
 
     $commenterA = User::factory()->create();
     $commenterB = User::factory()->create();
     $moderator = User::factory()->create();
     $moderator->groups()->attach($moderators);
 
-    Comment::factory()
-        ->for($post)
-        ->create([
-            'user_id' => $commenterA->id,
-            'body' => 'First comment',
-        ]);
+    Comment::factory()->for($post)->create([
+        'user_id' => $commenterA->id,
+        'body' => 'First comment',
+    ]);
 
-    Comment::factory()
-        ->for($post)
-        ->create([
-            'user_id' => $commenterB->id,
-            'body' => 'Second comment',
-        ]);
+    Comment::factory()->for($post)->create([
+        'user_id' => $commenterB->id,
+        'body' => 'Second comment',
+    ]);
 
-    Comment::factory()
-        ->for($post)
-        ->create([
-            'user_id' => $moderator->id,
-            'body' => '@here',
-        ]);
+    Comment::factory()->for($post)->create([
+        'user_id' => $moderator->id,
+        'body' => '@here',
+    ]);
 
     NotificationFacade::assertSentTo([$commenterA, $commenterB], Mention::class);
     NotificationFacade::assertNotSentTo($moderator, Mention::class);
@@ -284,7 +266,8 @@ test('user lookup returns matching groups and users', function () {
         'mentionable' => Mentionable::Anyone,
     ]);
 
-    $this->actingAs($actor)
+    $this
+        ->actingAs($actor)
         ->getJson(route('waterhole.user-lookup', ['q' => 'Look']))
         ->assertOk()
         ->assertJsonFragment([

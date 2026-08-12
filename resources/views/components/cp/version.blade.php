@@ -14,11 +14,19 @@
             {{ __('waterhole::cp.licensed-badge') }}
         </a>
     @elseif ($license->test())
-        <a href="https://waterhole.dev/docs/licensing" target="_blank" class="badge bg-warning">
+        <a
+            href="https://waterhole.dev/docs/licensing"
+            target="_blank"
+            class="badge bg-warning"
+        >
             {{ __('waterhole::cp.trial-badge') }}
         </a>
     @else
-        <a href="https://waterhole.dev/docs/licensing" target="_blank" class="badge bg-danger">
+        <a
+            href="https://waterhole.dev/docs/licensing"
+            target="_blank"
+            class="badge bg-danger"
+        >
             {{ __('waterhole::cp.unlicensed-badge') }}
         </a>
     @endif

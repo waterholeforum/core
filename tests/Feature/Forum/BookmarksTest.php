@@ -72,20 +72,17 @@ describe('bookmarks', function () {
     });
 
     test('shows saved header icon for authenticated users', function () {
-        $post = Post::factory()
-            ->for(Channel::factory()->public())
-            ->create();
+        $post = Post::factory()->for(Channel::factory()->public())->create();
         $user = User::factory()->create();
 
-        $this->actingAs($user)
-            ->get(route('waterhole.posts.show', $post))
-            ->assertSee('class="menu saved-menu"', false);
+        $this->actingAs($user)->get(route('waterhole.posts.show', $post))->assertSee(
+            'class="menu saved-menu"',
+            false,
+        );
     });
 
     test('hides saved header icon for guests', function () {
-        $post = Post::factory()
-            ->for(Channel::factory()->public())
-            ->create();
+        $post = Post::factory()->for(Channel::factory()->public())->create();
 
         $this->get(route('waterhole.posts.show', $post))->assertDontSee(
             'class="menu saved-menu"',
@@ -98,24 +95,18 @@ describe('bookmarks', function () {
         $user = User::factory()->create();
         $otherUser = User::factory()->create();
 
-        $post = Post::factory()
-            ->for($channel)
-            ->create([
-                'title' => 'Saved Post Title',
-                'is_approved' => true,
-            ]);
-        $comment = Comment::factory()
-            ->for($post)
-            ->create([
-                'body' => 'Saved comment text',
-                'is_approved' => true,
-            ]);
+        $post = Post::factory()->for($channel)->create([
+            'title' => 'Saved Post Title',
+            'is_approved' => true,
+        ]);
+        $comment = Comment::factory()->for($post)->create([
+            'body' => 'Saved comment text',
+            'is_approved' => true,
+        ]);
 
-        $hiddenPost = Post::factory()
-            ->for($channel)
-            ->create([
-                'title' => 'Not My Saved Post',
-            ]);
+        $hiddenPost = Post::factory()->for($channel)->create([
+            'title' => 'Not My Saved Post',
+        ]);
 
         Bookmark::create([
             'user_id' => $user->id,
@@ -134,7 +125,8 @@ describe('bookmarks', function () {
             'content_id' => $hiddenPost->id,
         ]);
 
-        $this->actingAs($user)
+        $this
+            ->actingAs($user)
             ->get(route('waterhole.saved.index'))
             ->assertOk()
             ->assertSeeText('Saved')

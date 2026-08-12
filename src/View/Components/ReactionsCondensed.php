@@ -17,8 +17,9 @@ class ReactionsCondensed extends Component
     public Collection $reactionTypes;
     protected Collection $reactionCounts;
 
-    public function __construct(public Model $model)
-    {
+    public function __construct(
+        public Model $model,
+    ) {
         $this->reactionSet = $model->reactionSet();
         $this->reactionTypes = new Collection();
         $this->reactionCounts = $model->reactionCounts->keyBy('id');
@@ -27,7 +28,8 @@ class ReactionsCondensed extends Component
             return;
         }
 
-        $this->reactionTypes = $this->reactionSet->reactionTypes
+        $this->reactionTypes = $this->reactionSet
+            ->reactionTypes
             ->sortByDesc($this->reactionCount(...))
             ->filter($this->reactionCount(...));
     }

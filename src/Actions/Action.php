@@ -6,8 +6,8 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\HtmlString;
-use Illuminate\View\ComponentAttributeBag;
 use Illuminate\View\AnonymousComponent;
+use Illuminate\View\ComponentAttributeBag;
 use Waterhole\Models\Model;
 use Waterhole\Models\User;
 use Waterhole\Ui\KeyboardShortcut;
@@ -148,12 +148,9 @@ abstract class Action
 
         $content = $this->renderContent($models, $confirm);
 
-        return new HtmlString(
-            <<<html
+        return new HtmlString(<<<html
                 <button type="submit" $attributes>$content</button>
-            html
-            ,
-        );
+            html);
     }
 
     /**
@@ -171,13 +168,11 @@ abstract class Action
 
         if ($type === self::TYPE_MENU_ITEM) {
             $shortcutLabel = $shortcut
-                ? Blade::renderComponent(
-                    (new AnonymousComponent('waterhole::components.shortcut-label', [
-                        'shortcut' => $shortcut,
-                    ]))->withAttributes([
-                        'class' => 'menu-item__shortcut',
-                    ]),
-                )
+                ? Blade::renderComponent((new AnonymousComponent('waterhole::components.shortcut-label', [
+                    'shortcut' => $shortcut,
+                ]))->withAttributes([
+                    'class' => 'menu-item__shortcut',
+                ]))
                 : '';
 
             $ellipsis = $confirm ? '...' : '';
@@ -214,7 +209,7 @@ abstract class Action
      * Confirmation message or view to prompt the user with before the action
      * is run.
      */
-    public function confirm(Collection $models): null|string|array|HtmlString|View
+    public function confirm(Collection $models): string|array|HtmlString|View|null
     {
         return null;
     }

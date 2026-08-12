@@ -25,7 +25,9 @@
             </a>
 
             <p class="color-muted text-xxs">
-                <x-waterhole::relative-time :datetime="$item->getDateCreated()" />
+                <x-waterhole::relative-time
+                    :datetime="$item->getDateCreated()"
+                />
                 —
                 {{ Str::limit(htmlspecialchars_decode(strip_tags($item->getDescription() ?: $item->getContent()), 200)) }}
             </p>

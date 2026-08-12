@@ -79,17 +79,14 @@ describe('Core extenders', function () {
         $admin = User::factory()->create();
         $admin->groups()->attach(Group::ADMIN_ID);
 
-        $this->actingAs($admin)
+        $this
+            ->actingAs($admin)
             ->get(URL::route('waterhole.cp.structure.channels.create'))
             ->assertSeeText('Extend Test Layout');
 
-        $channel = Channel::factory()
-            ->public()
-            ->create(['layout' => ExtendTestPostLayout::class]);
+        $channel = Channel::factory()->public()->create(['layout' => ExtendTestPostLayout::class]);
 
-        Post::factory()
-            ->for($channel)
-            ->create(['title' => 'Layout Post']);
+        Post::factory()->for($channel)->create(['title' => 'Layout Post']);
 
         $this->get(URL::route('waterhole.channels.show', $channel))->assertSee(
             'extend-test-layout',
@@ -104,7 +101,8 @@ describe('Core extenders', function () {
         $admin = User::factory()->create();
         $admin->groups()->attach(Group::ADMIN_ID);
 
-        $this->actingAs($admin)
+        $this
+            ->actingAs($admin)
             ->get(URL::route('waterhole.cp.structure.channels.create'))
             ->assertSeeText('Extend Test Filter');
 
@@ -112,18 +110,13 @@ describe('Core extenders', function () {
             ->public()
             ->create(['filters' => [ExtendTestPostFilter::class]]);
 
-        Post::factory()
-            ->for($channel)
-            ->create(['title' => ExtendTestPostFilter::TITLE]);
+        Post::factory()->for($channel)->create(['title' => ExtendTestPostFilter::TITLE]);
 
-        Post::factory()
-            ->for($channel)
-            ->create(['title' => 'Other Post']);
+        Post::factory()->for($channel)->create(['title' => 'Other Post']);
 
         $response = $this->get(
-            URL::route('waterhole.channels.show', $channel) .
-                '?filter=' .
-                (new ExtendTestPostFilter())->handle(),
+            URL::route('waterhole.channels.show', $channel) . '?filter='
+                . (new ExtendTestPostFilter())->handle(),
         );
 
         $response->assertSeeText(ExtendTestPostFilter::TITLE);
@@ -137,7 +130,8 @@ describe('Core extenders', function () {
 
         $user = User::factory()->create();
 
-        $this->actingAs($user)
+        $this
+            ->actingAs($user)
             ->get(URL::route('waterhole.preferences.notifications'))
             ->assertSeeText('Extend Test Notification');
     });

@@ -3,7 +3,11 @@
 <x-waterhole::cp-layout :title="__('waterhole::cp.dashboard-title')">
     <div class="cp-dashboard stack gap-lg">
         @if ($license->invalid() && $license->production())
-            <x-waterhole::alert type="danger" data-key="license" data-duration="-1">
+            <x-waterhole::alert
+                type="danger"
+                data-key="license"
+                data-duration="-1"
+            >
                 {{
                     $license->status() === 200
                         ? __([

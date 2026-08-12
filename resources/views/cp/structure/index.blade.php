@@ -24,7 +24,9 @@
                         role="menuitem"
                     >
                         @icon('tabler-message-circle-2')
-                        <span>{{ __('waterhole::cp.structure-channel-label') }}</span>
+                        <span>
+                            {{ __('waterhole::cp.structure-channel-label') }}
+                        </span>
                     </a>
                     <a
                         href="{{ route('waterhole.cp.structure.pages.create') }}"
@@ -33,7 +35,9 @@
                         role="menuitem"
                     >
                         @icon('tabler-file-text')
-                        <span>{{ __('waterhole::cp.structure-page-label') }}</span>
+                        <span>
+                            {{ __('waterhole::cp.structure-page-label') }}
+                        </span>
                     </a>
                     <a
                         href="{{ route('waterhole.cp.structure.links.create') }}"
@@ -41,7 +45,9 @@
                         role="menuitem"
                     >
                         @icon('tabler-link')
-                        <span>{{ __('waterhole::cp.structure-link-label') }}</span>
+                        <span>
+                            {{ __('waterhole::cp.structure-link-label') }}
+                        </span>
                     </a>
                     <a
                         href="{{ route('waterhole.cp.structure.headings.create') }}"
@@ -49,7 +55,9 @@
                         role="menuitem"
                     >
                         @icon('tabler-hash')
-                        <span>{{ __('waterhole::cp.structure-heading-label') }}</span>
+                        <span>
+                            {{ __('waterhole::cp.structure-heading-label') }}
+                        </span>
                     </a>
                 </ui-menu>
             </ui-popup>
@@ -71,7 +79,9 @@
         </ul>
 
         <div class="stack gap-md" style="margin-top: var(--space-xl)">
-            <h2 class="h4">{{ __('waterhole::cp.structure-unlisted-title') }}</h2>
+            <h2 class="h4">
+                {{ __('waterhole::cp.structure-unlisted-title') }}
+            </h2>
 
             <ul
                 class="card sortable"
@@ -96,7 +106,11 @@
                 data-form-target="form"
             >
                 @csrf
-                <input type="hidden" name="order" data-sortable-target="orderInput" />
+                <input
+                    type="hidden"
+                    name="order"
+                    data-sortable-target="orderInput"
+                />
             </form>
         </turbo-frame>
     </div>

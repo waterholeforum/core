@@ -28,7 +28,8 @@ describe('licensing', function () {
         $mock->shouldReceive('error')->andReturn(null);
         app()->instance(LicenseManager::class, $mock);
 
-        $this->actingAs(cpLicensingAdmin())
+        $this
+            ->actingAs(cpLicensingAdmin())
             ->get(route('waterhole.cp.dashboard'))
             ->assertOk()
             ->assertDontSee('data-key="license"', false);
@@ -45,7 +46,8 @@ describe('licensing', function () {
         $mock->shouldReceive('error')->andReturn('invalid');
         app()->instance(LicenseManager::class, $mock);
 
-        $this->actingAs(cpLicensingAdmin())
+        $this
+            ->actingAs(cpLicensingAdmin())
             ->get(route('waterhole.cp.dashboard'))
             ->assertOk()
             ->assertSee('data-key="license"', false);
@@ -62,7 +64,8 @@ describe('licensing', function () {
         $mock->shouldReceive('error')->andReturn('missing');
         app()->instance(LicenseManager::class, $mock);
 
-        $this->actingAs(cpLicensingAdmin())
+        $this
+            ->actingAs(cpLicensingAdmin())
             ->get(route('waterhole.cp.dashboard'))
             ->assertOk()
             ->assertSee('data-key="license"', false);

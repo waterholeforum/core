@@ -7,12 +7,14 @@ use Waterhole\Models\Post;
 
 class PostReactions extends Component
 {
-    public function __construct(public Post $post) {}
+    public function __construct(
+        public Post $post,
+    ) {}
 
     public function render()
     {
         return <<<'blade'
-            <x-waterhole::reactions :model="$post"/>
-        blade;
+                <x-waterhole::reactions :model="$post"/>
+            blade;
     }
 }

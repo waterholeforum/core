@@ -4,14 +4,18 @@ namespace Waterhole\Forms;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
+
 use function Waterhole\build_components;
 
 class FormSection extends Field
 {
     public array $components;
 
-    public function __construct(public string $title, public array $items, public bool $open = true)
-    {
+    public function __construct(
+        public string $title,
+        public array $items,
+        public bool $open = true,
+    ) {
         $this->components = build_components($items);
     }
 
@@ -23,16 +27,16 @@ class FormSection extends Field
     public function render(): string
     {
         return <<<'blade'
-            <details class="card" {{ $attributes->merge(['open' => $open]) }}>
-                <summary class="card__header h5">
-                    {{ $title }}
-                </summary>
+                <details class="card" {{ $attributes->merge(['open' => $open]) }}>
+                    <summary class="card__header h5">
+                        {{ $title }}
+                    </summary>
 
-                <div class="card__body stack dividers">
-                    @components($components)
-                </div>
-            </details>
-        blade;
+                    <div class="card__body stack dividers">
+                        @components($components)
+                    </div>
+                </details>
+            blade;
     }
 
     public function validating(Validator $validator): void

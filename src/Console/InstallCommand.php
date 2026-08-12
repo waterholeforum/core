@@ -67,14 +67,12 @@ class InstallCommand extends Command
                 'email',
                 'max:255',
             ]),
-            'password' => Hash::make(
-                $this->askValid(
-                    'Admin password',
-                    'password',
-                    ['required', Password::defaults()],
-                    secret: true,
-                ),
-            ),
+            'password' => Hash::make($this->askValid(
+                'Admin password',
+                'password',
+                ['required', Password::defaults()],
+                secret: true,
+            )),
             'email_verified_at' => now(),
         ];
 

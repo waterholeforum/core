@@ -11,8 +11,10 @@ use Waterhole\Models\User;
 
 class UserName extends Field
 {
-    public function __construct(public ?User $model, public ?SsoPayload $payload = null)
-    {
+    public function __construct(
+        public ?User $model,
+        public ?SsoPayload $payload = null,
+    ) {
         if ($payload) {
             $model->name = $payload->user->name;
         }
@@ -21,31 +23,31 @@ class UserName extends Field
     public function render(): string
     {
         return <<<'blade'
-            <x-waterhole::field
-                name="name"
-                :label="__('waterhole::cp.user-name-label')"
-            >
-                @if ($payload?->user->forceName ?? false)
-                    <span>{{ $payload->user->name }}</span>
-                @else
-                    <input
-                        type="text"
-                        name="name"
-                        id="{{ $component->id }}"
-                        value="{{ old('name', $model->name ?? null) }}"
-                        autofocus
-                    >
-                @endif
-            </x-waterhole::field>
-        blade;
+                <x-waterhole::field
+                    name="name"
+                    :label="__('waterhole::cp.user-name-label')"
+                >
+                    @if ($payload?->user->forceName ?? false)
+                        <span>{{ $payload->user->name }}</span>
+                    @else
+                        <input
+                            type="text"
+                            name="name"
+                            id="{{ $component->id }}"
+                            value="{{ old('name', $model->name ?? null) }}"
+                            autofocus
+                        >
+                    @endif
+                </x-waterhole::field>
+            blade;
     }
 
     public function validating(Validator $validator): void
     {
         if ($this->payload?->user->forceName ?? false) {
-            $validator->setData(
-                array_replace($validator->getData(), ['name' => $this->payload->user->name]),
-            );
+            $validator->setData(array_replace($validator->getData(), [
+                'name' => $this->payload->user->name,
+            ]));
         }
 
         $validator->addRules([

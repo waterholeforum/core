@@ -47,10 +47,9 @@ class Bookmark extends Action
     public function attributes(Collection $models): array
     {
         return [
-            'class' =>
-                $models[0]->isBookmarked() && $this->renderType() !== self::TYPE_MENU_ITEM
-                    ? 'color-accent'
-                    : '',
+            'class' => $models[0]->isBookmarked() && $this->renderType() !== self::TYPE_MENU_ITEM
+                ? 'color-accent'
+                : '',
         ];
     }
 

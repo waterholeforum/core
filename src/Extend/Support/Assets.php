@@ -42,13 +42,10 @@ abstract class Assets
 
             $key = $this->cacheKey($bundle);
 
-            $files = array_merge(
-                $files,
-                Cache::rememberForever($key, function () use ($bundle) {
-                    $assets = $this->assets[$bundle] ?? [];
-                    return $assets ? [$this->compile($assets, $bundle)] : [];
-                }),
-            );
+            $files = array_merge($files, Cache::rememberForever($key, function () use ($bundle) {
+                $assets = $this->assets[$bundle] ?? [];
+                return $assets ? [$this->compile($assets, $bundle)] : [];
+            }));
         }
 
         $disk = config('waterhole.system.assets_disk');

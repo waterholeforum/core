@@ -36,7 +36,10 @@
                 <span>{{ __('waterhole::cp.structure-page-label') }}</span>
             </span>
         @elseif ($node->content instanceof Waterhole\Models\StructureHeading)
-            <span class="cp-structure__label color-muted" id="label_{{ $node->id }}">
+            <span
+                class="cp-structure__label color-muted"
+                id="label_{{ $node->id }}"
+            >
                 {{ $node->content->name ?? __('waterhole::cp.structure-heading-label') }}
             </span>
         @elseif ($node->content instanceof Waterhole\Models\StructureLink)
@@ -64,8 +67,10 @@
                 ->scope($node->content)
                 ->where('ability', 'view')
                 ->load('recipient')
-                ->filter(fn ($permission) => $permission->recipient instanceof Waterhole\Models\Group)->map
-                ->recipient)        )
+                ->filter(
+                    fn ($permission) => $permission->recipient instanceof
+                        Waterhole\Models\Group
+                )->map->recipient)        )
             @if ($recipients->contains(Waterhole\Models\Group::GUEST_ID))
                 <span class="with-icon text-xs color-muted hide-sm">
                     @icon('tabler-world')
@@ -81,7 +86,9 @@
                     @forelse ($recipients as $group)
                         <x-waterhole::group-badge :group="$group" />
                     @empty
-                        <x-waterhole::group-badge :group="Waterhole\Models\Group::admin()" />
+                        <x-waterhole::group-badge
+                            :group="Waterhole\Models\Group::admin()"
+                        />
                     @endforelse
                 </span>
             @endif

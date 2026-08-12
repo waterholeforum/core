@@ -38,18 +38,19 @@ class PermissionCollection extends Collection
 
         $cacheKey = $this->cacheKey($recipient, $ability, $scope);
 
-        return $this->resultCache[$cacheKey] ??= $this->some(
-            $this->callback($recipient, $ability, $scope),
-        );
+        return $this->resultCache[$cacheKey] ??= $this->some($this->callback(
+            $recipient,
+            $ability,
+            $scope,
+        ));
     }
 
     public function ids(User|Group|null $recipient, string $ability, string $scope): array
     {
         $cacheKey = $this->cacheKey($recipient, $ability, $scope);
 
-        return $this->idsCache[$cacheKey] ??= $this->filter(
-            $this->callback($recipient, $ability, $scope),
-        )
+        return $this->idsCache[$cacheKey] ??= $this
+            ->filter($this->callback($recipient, $ability, $scope))
             ->pluck('scope_id')
             ->all();
     }
@@ -62,8 +63,8 @@ class PermissionCollection extends Collection
         $recipients = [[(new Group())->getMorphClass(), Group::GUEST_ID]];
 
         if (
-            $recipient &&
-            ($recipient instanceof User || $recipient->getKey() !== Group::GUEST_ID)
+            $recipient
+            && ($recipient instanceof User || $recipient->getKey() !== Group::GUEST_ID)
         ) {
             $recipients[] = [(new Group())->getMorphClass(), Group::MEMBER_ID];
             $recipients[] = [$recipient->getMorphClass(), $recipient->getKey()];
@@ -71,9 +72,10 @@ class PermissionCollection extends Collection
             if ($recipient instanceof User) {
                 $recipients = array_merge(
                     $recipients,
-                    $recipient->groups
-                        ->map(fn($group) => [$group->getMorphClass(), $group->getKey()])
-                        ->all(),
+                    $recipient->groups->map(fn($group) => [
+                        $group->getMorphClass(),
+                        $group->getKey(),
+                    ])->all(),
                 );
             }
         }
@@ -85,17 +87,17 @@ class PermissionCollection extends Collection
         // they can be returned as strings instead of ints.
         return function ($item) use ($ability, $recipients, $scopeType, $scopeId) {
             if (
-                $item['ability'] !== $ability ||
-                $item['scope_type'] !== $scopeType ||
-                ($scopeId && $item['scope_id'] != $scopeId)
+                $item['ability'] !== $ability
+                || $item['scope_type'] !== $scopeType
+                || $scopeId && $item['scope_id'] != $scopeId
             ) {
                 return false;
             }
 
             foreach ($recipients as [$recipientType, $recipientId]) {
                 if (
-                    $item['recipient_type'] === $recipientType &&
-                    $item['recipient_id'] == $recipientId
+                    $item['recipient_type'] === $recipientType
+                    && $item['recipient_id'] == $recipientId
                 ) {
                     return true;
                 }

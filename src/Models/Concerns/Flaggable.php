@@ -35,7 +35,8 @@ trait Flaggable
 
     public function resolveFlags(User $moderator): int
     {
-        $resolved = $this->pendingFlags()
+        $resolved = $this
+            ->pendingFlags()
             ->withoutGlobalScope('subjectPresent')
             ->update([
                 'resolved_at' => now(),

@@ -9,31 +9,33 @@ use Waterhole\Models\Channel;
 
 class ChannelSimilarPosts extends Field
 {
-    public function __construct(public ?Channel $model) {}
+    public function __construct(
+        public ?Channel $model,
+    ) {}
 
     public function render(): string
     {
         return <<<'blade'
-            <div role="group" class="field">
-                <div class="field__label">
-                    {{ __('waterhole::cp.channel-similar-posts-title') }}
+                <div role="group" class="field">
+                    <div class="field__label">
+                        {{ __('waterhole::cp.channel-similar-posts-title') }}
+                    </div>
+                    <div>
+                        <input type="hidden" name="show_similar_posts" value="0">
+                        <label class="choice">
+                            <input
+                                type="checkbox"
+                                name="show_similar_posts"
+                                value="1"
+                                @checked(old('show_similar_posts', $model->show_similar_posts ?? false))
+                            >
+                            <span class="stack gap-xxs">
+                                <span>{{ __('waterhole::cp.channel-show-similar-posts-label') }}</span>
+                            </span>
+                        </label>
+                    </div>
                 </div>
-                <div>
-                    <input type="hidden" name="show_similar_posts" value="0">
-                    <label class="choice">
-                        <input
-                            type="checkbox"
-                            name="show_similar_posts"
-                            value="1"
-                            @checked(old('show_similar_posts', $model->show_similar_posts ?? false))
-                        >
-                        <span class="stack gap-xxs">
-                            <span>{{ __('waterhole::cp.channel-show-similar-posts-label') }}</span>
-                        </span>
-                    </label>
-                </div>
-            </div>
-        blade;
+            blade;
     }
 
     public function validating(Validator $validator): void

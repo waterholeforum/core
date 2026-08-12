@@ -35,14 +35,11 @@ describe('search interface', function () {
 
         $channel = Channel::factory()->public()->create();
 
-        Post::factory()
-            ->for($channel)
-            ->create(['title' => 'Waterhole search term']);
-        Post::factory()
-            ->for($channel)
-            ->create(['title' => 'Other post']);
+        Post::factory()->for($channel)->create(['title' => 'Waterhole search term']);
+        Post::factory()->for($channel)->create(['title' => 'Other post']);
 
-        $this->get('/search?q=waterhole')
+        $this
+            ->get('/search?q=waterhole')
             ->assertOk()
             ->assertSeeText('Waterhole search term')
             ->assertDontSeeText('Other post');
@@ -54,14 +51,11 @@ describe('search interface', function () {
         $publicChannel = Channel::factory()->public()->create();
         $privateChannel = Channel::factory()->create();
 
-        Post::factory()
-            ->for($publicChannel)
-            ->create(['title' => 'Waterhole search term']);
-        Post::factory()
-            ->for($privateChannel)
-            ->create(['title' => 'Hidden search term']);
+        Post::factory()->for($publicChannel)->create(['title' => 'Waterhole search term']);
+        Post::factory()->for($privateChannel)->create(['title' => 'Hidden search term']);
 
-        $this->get('/search?q=term')
+        $this
+            ->get('/search?q=term')
             ->assertOk()
             ->assertSeeText('Waterhole search term')
             ->assertDontSeeText('Hidden search term');
@@ -78,14 +72,11 @@ describe('search interface', function () {
 
         $channel = Channel::factory()->public()->create();
 
-        Post::factory()
-            ->for($channel)
-            ->create(['title' => 'Scoped search term']);
-        Post::factory()
-            ->for($channel)
-            ->create(['title' => 'Other search term']);
+        Post::factory()->for($channel)->create(['title' => 'Scoped search term']);
+        Post::factory()->for($channel)->create(['title' => 'Other search term']);
 
-        $this->get('/search?q=term')
+        $this
+            ->get('/search?q=term')
             ->assertOk()
             ->assertSeeText('Scoped search term')
             ->assertDontSeeText('Other search term');
@@ -101,7 +92,8 @@ describe('search interface', function () {
 
         Channel::factory()->public()->create();
 
-        $this->get('/')
+        $this
+            ->get('/')
             ->assertOk()
             ->assertDontSeeHtml('role="search"')
             ->assertDontSee('header-search__button');
@@ -118,12 +110,10 @@ describe('search engines', function () {
 
         configureSearchEngine(FullTextSearchEngine::class);
 
-        Post::factory()
-            ->for(Channel::factory()->public()->create())
-            ->create([
-                'title' => 'Waterhole search term',
-                'body' => 'Other content',
-            ]);
+        Post::factory()->for(Channel::factory()->public()->create())->create([
+            'title' => 'Waterhole search term',
+            'body' => 'Other content',
+        ]);
 
         $this->get('/search?q=waterhole')->assertOk()->assertSeeText('Waterhole');
     });

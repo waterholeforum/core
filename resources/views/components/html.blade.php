@@ -9,7 +9,10 @@
 >
     <head>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1"
+        />
         <meta name="turbo-refresh-method" content="morph" />
         <meta name="turbo-refresh-scroll" content="preserve" />
 
@@ -49,7 +52,9 @@
             }
         @endphp
 
-        <title>{{ implode(' - ', array_filter([$title, $titleSuffix])) }}</title>
+        <title>
+            {{ implode(' - ', array_filter([$title, $titleSuffix])) }}
+        </title>
 
         @if ($description)
             <meta name="description" content="{{ $description }}" />
@@ -100,7 +105,11 @@
         </script>
 
         @foreach (resolve(\Waterhole\Extend\Assets\Stylesheet::class)->urls(['default', 'default-' . App::getLocale(), ...$assets]) as $url)
-            <link href="{{ $url }}" rel="stylesheet" data-turbo-track="dynamic" />
+            <link
+                href="{{ $url }}"
+                rel="stylesheet"
+                data-turbo-track="dynamic"
+            />
         @endforeach
 
         @foreach (resolve(\Waterhole\Extend\Assets\Script::class)->urls(['default', 'default-' . App::getLocale(), ...$assets]) as $url)
@@ -217,7 +226,9 @@
         <template id="frame-error">
             <div class="placeholder">
                 @icon('tabler-alert-circle', ['class' => 'placeholder__icon'])
-                <p class="h4">{{ __('waterhole::system.fatal-error-heading') }}</p>
+                <p class="h4">
+                    {{ __('waterhole::system.fatal-error-heading') }}
+                </p>
                 <button class="btn btn--transparent color-accent">
                     {{ __('waterhole::system.try-again-button') }}
                 </button>

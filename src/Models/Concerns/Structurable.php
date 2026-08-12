@@ -22,9 +22,11 @@ trait Structurable
         // When a structurable model is created or deleted, create or delete
         // its corresponding "node" within the structure table.
         static::created(function (Model $model) {
-            $model->structure()->create([
-                'position' => ($pos = Structure::max('position')) ? $pos + 1 : 0,
-            ]);
+            $model
+                ->structure()
+                ->create([
+                    'position' => ($pos = Structure::max('position')) ? $pos + 1 : 0,
+                ]);
         });
 
         static::deleted(function (Model $model) {

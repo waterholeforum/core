@@ -9,9 +9,9 @@ class Spinner extends Component
     public function render(): string
     {
         return <<<'blade'
-            <div {{ $attributes
-                ->class('spinner')
-                ->merge(['role' => 'status', 'aria-label' => __('waterhole::system.loading')]) }}></div>
-        blade;
+                <div {{ $attributes
+                    ->class('spinner')
+                    ->merge(['role' => 'status', 'aria-label' => __('waterhole::system.loading')]) }}></div>
+            blade;
     }
 }

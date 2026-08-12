@@ -102,12 +102,9 @@ class PreferencesController extends Controller
 
         if (isset($data['notification_channels'])) {
             $data['notification_channels'] = collect($data['notification_channels'])
-                ->mapWithKeys(
-                    fn(array $channels, string $type) => [
-                        $type => array_values(array_intersect($channels, $type::channels())),
-                    ],
-                )
-                ->all();
+                ->mapWithKeys(fn(array $channels, string $type) => [
+                    $type => array_values(array_intersect($channels, $type::channels())),
+                ])->all();
         }
 
         $request->user()->update($data);

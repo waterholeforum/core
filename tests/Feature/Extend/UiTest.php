@@ -48,13 +48,12 @@ describe('Ui extenders', function () {
 
         $channel = Channel::factory()->public()->create();
 
-        Post::factory()
-            ->for($channel)
-            ->create(['title' => 'Index Post']);
+        Post::factory()->for($channel)->create(['title' => 'Index Post']);
 
         $user = User::factory()->create();
 
-        $this->actingAs($user)
+        $this
+            ->actingAs($user)
             ->get('/')
             ->assertSeeText('Extend Index Sidebar')
             ->assertSeeText('Extend Index Footer')
@@ -86,9 +85,9 @@ describe('Ui extenders', function () {
         });
 
         extend(function (Extend\Ui\CommentAttributes $attributes) {
-            $attributes->add(
-                fn(Comment $comment) => ['data-comment-marker' => 'extend-comment-attr'],
-            );
+            $attributes->add(fn(Comment $comment) => [
+                'data-comment-marker' => 'extend-comment-attr',
+            ]);
         });
 
         extend(function (Extend\Ui\PostAttributes $attributes) {
@@ -100,7 +99,8 @@ describe('Ui extenders', function () {
             ->has(Comment::factory())
             ->create();
 
-        $this->get(URL::route('waterhole.posts.show', $post))
+        $this
+            ->get(URL::route('waterhole.posts.show', $post))
             ->assertSeeText('Extend Post Header')
             ->assertSeeText('Extend Post Sidebar')
             ->assertSeeText('Extend Post Middle')
@@ -124,7 +124,8 @@ describe('Ui extenders', function () {
 
         $user = User::factory()->create();
 
-        $this->get(URL::route('waterhole.user.posts', $user))
+        $this
+            ->get(URL::route('waterhole.user.posts', $user))
             ->assertSeeText('Extend User Nav')
             ->assertSeeText('Extend User Info');
     });
@@ -139,7 +140,8 @@ describe('Ui extenders', function () {
         $admin = User::factory()->create();
         $admin->groups()->attach(Group::ADMIN_ID);
 
-        $this->actingAs($admin)
+        $this
+            ->actingAs($admin)
             ->get(URL::route('waterhole.posts.create', ['channel_id' => $channel->id]))
             ->assertSeeText('Extend Text Editor');
     });
@@ -156,7 +158,8 @@ describe('Ui extenders', function () {
         $admin = User::factory()->create();
         $admin->groups()->attach(Group::ADMIN_ID);
 
-        $this->actingAs($admin)
+        $this
+            ->actingAs($admin)
             ->get(URL::route('waterhole.cp.dashboard'))
             ->assertSeeText('Extend Cp Nav')
             ->assertSeeText('Extend Cp Alert');
@@ -177,7 +180,8 @@ describe('Ui extenders', function () {
             $preferences->account->add(new HtmlString($marker), 'extend-test');
         });
 
-        $this->actingAs(User::factory()->create())
+        $this
+            ->actingAs(User::factory()->create())
             ->get(URL::route('waterhole.preferences.account'))
             ->assertSeeText($marker);
     });

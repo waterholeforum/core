@@ -9,21 +9,23 @@ use Waterhole\View\Components\Cp\IconPicker;
 
 class Icon extends Field
 {
-    public function __construct(public $model = null) {}
+    public function __construct(
+        public $model = null,
+    ) {}
 
     public function render(): string
     {
         return <<<'blade'
-            <x-waterhole::field
-                name="icon"
-                :label="__('waterhole::system.icon-field-label')"
-            >
-                <x-waterhole::cp.icon-picker
+                <x-waterhole::field
                     name="icon"
-                    :value="old('icon', $model->icon ?? null)"
-                />
-            </x-waterhole::field>
-        blade;
+                    :label="__('waterhole::system.icon-field-label')"
+                >
+                    <x-waterhole::cp.icon-picker
+                        name="icon"
+                        :value="old('icon', $model->icon ?? null)"
+                    />
+                </x-waterhole::field>
+            blade;
     }
 
     public function validating(Validator $validator): void

@@ -16,7 +16,9 @@
 
                     <ui-tooltip>
                         {{ __('waterhole::system.close-button') }}
-                        <x-waterhole::shortcut-label shortcut="navigation.close" />
+                        <x-waterhole::shortcut-label
+                            shortcut="navigation.close"
+                        />
                     </ui-tooltip>
                 </a>
             </x-slot>
@@ -40,7 +42,9 @@
 
                             <div class="card">
                                 @foreach ($items as $shortcut)
-                                    <div class="card__row row gap-sm justify-between align-center">
+                                    <div
+                                        class="card__row row gap-sm justify-between align-center"
+                                    >
                                         <div>{{ $shortcut->description }}</div>
                                         <x-waterhole::shortcut-label
                                             :shortcut="$shortcut"

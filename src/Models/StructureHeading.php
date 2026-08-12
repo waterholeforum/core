@@ -20,9 +20,9 @@ class StructureHeading extends Model
 
     protected function editUrl(): Attribute
     {
-        return Attribute::make(
-            get: fn() => route('waterhole.cp.structure.headings.edit', ['heading' => $this]),
-        )->shouldCache();
+        return Attribute::make(get: fn() => route('waterhole.cp.structure.headings.edit', [
+            'heading' => $this,
+        ]))->shouldCache();
     }
 
     public static function rules(?StructureHeading $instance = null): array

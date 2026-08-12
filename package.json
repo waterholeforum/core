@@ -4,7 +4,8 @@
     "scripts": {
         "dev": "DEV=1 tsdown",
         "build": "tsdown",
-        "prettier": "prettier --write '**/*' --ignore-unknown",
+        "check": "prettier --check 'resources/**/*' --ignore-unknown",
+        "fix": "prettier --write 'resources/**/*' --ignore-unknown",
         "release": "release-it"
     },
     "devDependencies": {
@@ -19,7 +20,6 @@
         "@github/text-expander-element": "^2.9.4",
         "@hotwired/stimulus": "^3.2.2",
         "@hotwired/turbo": "^8.0.23",
-        "@prettier/plugin-php": "^0.24.0",
         "@release-it/bumper": "^7.0.5",
         "@release-it/keep-a-changelog": "^7.0.1",
         "@types/hotwired__turbo": "^8.0.9",

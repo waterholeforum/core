@@ -10,52 +10,54 @@ use Waterhole\View\Components\ReactionSetPicker;
 
 class ChannelReactions extends Field
 {
-    public function __construct(public ?Channel $model) {}
+    public function __construct(
+        public ?Channel $model,
+    ) {}
 
     public function render(): string
     {
         return <<<'blade'
-            <div class="field">
-                <div class="field__label with-icon">
-                    @icon('tabler-mood-smile', ['class' => 'text-md'])
-                    {{ __('waterhole::cp.channel-reactions-label') }}
-                </div>
+                <div class="field">
+                    <div class="field__label with-icon">
+                        @icon('tabler-mood-smile', ['class' => 'text-md'])
+                        {{ __('waterhole::cp.channel-reactions-label') }}
+                    </div>
 
-                <div class="stack gap-md">
-                    <x-waterhole::field
-                        name="posts_reaction_set"
-                        :label="__('waterhole::cp.channel-reactions-posts-label')"
-                        class="grow color-muted align-center"
-                    >
-                        @php $id = $component->id @endphp
-                        <x-waterhole::reaction-set-picker
-                            :id="$id"
+                    <div class="stack gap-md">
+                        <x-waterhole::field
                             name="posts_reaction_set"
-                            :value="old('posts_reaction_set')"
-                            :default="Waterhole\Models\ReactionSet::defaultPosts()"
-                            :enabled="$model->posts_reactions_enabled"
-                            :selected-id="$model->posts_reaction_set_id"
-                        />
-                    </x-waterhole::field>
+                            :label="__('waterhole::cp.channel-reactions-posts-label')"
+                            class="grow color-muted align-center"
+                        >
+                            @php $id = $component->id @endphp
+                            <x-waterhole::reaction-set-picker
+                                :id="$id"
+                                name="posts_reaction_set"
+                                :value="old('posts_reaction_set')"
+                                :default="Waterhole\Models\ReactionSet::defaultPosts()"
+                                :enabled="$model->posts_reactions_enabled"
+                                :selected-id="$model->posts_reaction_set_id"
+                            />
+                        </x-waterhole::field>
 
-                    <x-waterhole::field
-                        name="comments_reaction_set"
-                        :label="__('waterhole::cp.channel-reactions-comments-label')"
-                        class="grow color-muted align-center"
-                    >
-                        @php $id = $component->id @endphp
-                        <x-waterhole::reaction-set-picker
-                            :id="$id"
+                        <x-waterhole::field
                             name="comments_reaction_set"
-                            :value="old('comments_reaction_set')"
-                            :default="Waterhole\Models\ReactionSet::defaultComments()"
-                            :enabled="$model->comments_reactions_enabled"
-                            :selected-id="$model->comments_reaction_set_id"
-                        />
-                    </x-waterhole::field>
+                            :label="__('waterhole::cp.channel-reactions-comments-label')"
+                            class="grow color-muted align-center"
+                        >
+                            @php $id = $component->id @endphp
+                            <x-waterhole::reaction-set-picker
+                                :id="$id"
+                                name="comments_reaction_set"
+                                :value="old('comments_reaction_set')"
+                                :default="Waterhole\Models\ReactionSet::defaultComments()"
+                                :enabled="$model->comments_reactions_enabled"
+                                :selected-id="$model->comments_reaction_set_id"
+                            />
+                        </x-waterhole::field>
+                    </div>
                 </div>
-            </div>
-        blade;
+            blade;
     }
 
     public function validating(Validator $validator): void

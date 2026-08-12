@@ -15,11 +15,11 @@ class Alert extends Component
 
     public function __construct(
         public ?string $type = null,
-        public null|string|Htmlable $message = null,
+        public string|Htmlable|null $message = null,
         public ?string $icon = null,
         public bool $dismissible = false,
     ) {
-        $this->icon = $icon ?? (static::ICONS[explode('-', $type)[0]] ?? null);
+        $this->icon = $icon ?? static::ICONS[explode('-', $type)[0]] ?? null;
     }
 
     public function render()

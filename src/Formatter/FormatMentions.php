@@ -9,6 +9,7 @@ use s9e\TextFormatter\Renderer;
 use s9e\TextFormatter\Utils;
 use Waterhole\Models\Group;
 use Waterhole\Models\User;
+
 use function Waterhole\get_contrast_color;
 use function Waterhole\username;
 
@@ -35,10 +36,9 @@ abstract class FormatMentions
      */
     public static function configure(Configurator $config): void
     {
-        $config->rendering->parameters['MENTION_URL'] = rtrim(
-            route('waterhole.users.show', ['user' => '_']),
-            '_',
-        );
+        $config->rendering->parameters['MENTION_URL'] = rtrim(route('waterhole.users.show', [
+            'user' => '_',
+        ]), '_');
 
         $config->Preg->match('/\B@(?<name>[^\s]*[^\s\.,!?:;)"\'])/i', static::TAG_NAME);
 
@@ -53,45 +53,45 @@ abstract class FormatMentions
         // data-hovercard-type="user" is necessary to make @github/paste-markdown
         // prevent mentions being converted into Markdown links when pasted.
         $tag->template = <<<'xsl'
-            <xsl:choose>
-                <xsl:when test="@type = 'group'">
-                    <span data-group-id="{@id}">
-                        <xsl:attribute name="class">
-                            mention mention--group
-                            <xsl:if test="@id and contains(concat(',', $USER_GROUPS, ','), concat(',', @id, ','))">mention--self</xsl:if>
-                        </xsl:attribute>
-                        <xsl:if test="@group_color">
-                            <xsl:attribute name="style">
-                                --group-color: <xsl:value-of select="@group_color"/>;
-                                --group-color-contrast: <xsl:value-of select="@group_contrast"/>;
+                <xsl:choose>
+                    <xsl:when test="@type = 'group'">
+                        <span data-group-id="{@id}">
+                            <xsl:attribute name="class">
+                                mention mention--group
+                                <xsl:if test="@id and contains(concat(',', $USER_GROUPS, ','), concat(',', @id, ','))">mention--self</xsl:if>
                             </xsl:attribute>
-                        </xsl:if>
+                            <xsl:if test="@group_color">
+                                <xsl:attribute name="style">
+                                    --group-color: <xsl:value-of select="@group_color"/>;
+                                    --group-color-contrast: <xsl:value-of select="@group_contrast"/>;
+                                </xsl:attribute>
+                            </xsl:if>
+                            @<xsl:value-of select="@name"/>
+                        </span>
+                    </xsl:when>
+                    <xsl:when test="@type = 'here'">
+                        <span>
+                            <xsl:attribute name="class">
+                                mention mention--here
+                                <xsl:if test="$USER_ID">mention--self</xsl:if>
+                            </xsl:attribute>
+                            @<xsl:value-of select="@name"/>
+                        </span>
+                    </xsl:when>
+                    <xsl:when test="@id">
+                        <a href="{$MENTION_URL}{@id}" data-user-id="{@id}" data-hovercard-type="user">
+                            <xsl:attribute name="class">
+                                mention mention--user
+                                <xsl:if test="@id and @id = $USER_ID">mention--self</xsl:if>
+                            </xsl:attribute>
+                            @<xsl:value-of select="@name"/>
+                        </a>
+                    </xsl:when>
+                    <xsl:otherwise>
                         @<xsl:value-of select="@name"/>
-                    </span>
-                </xsl:when>
-                <xsl:when test="@type = 'here'">
-                    <span>
-                        <xsl:attribute name="class">
-                            mention mention--here
-                            <xsl:if test="$USER_ID">mention--self</xsl:if>
-                        </xsl:attribute>
-                        @<xsl:value-of select="@name"/>
-                    </span>
-                </xsl:when>
-                <xsl:when test="@id">
-                    <a href="{$MENTION_URL}{@id}" data-user-id="{@id}" data-hovercard-type="user">
-                        <xsl:attribute name="class">
-                            mention mention--user
-                            <xsl:if test="@id and @id = $USER_ID">mention--self</xsl:if>
-                        </xsl:attribute>
-                        @<xsl:value-of select="@name"/>
-                    </a>
-                </xsl:when>
-                <xsl:otherwise>
-                    @<xsl:value-of select="@name"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        xsl;
+                    </xsl:otherwise>
+                </xsl:choose>
+            xsl;
     }
 
     /**
@@ -170,10 +170,13 @@ abstract class FormatMentions
             }
 
             if ($type === static::TYPE_USER) {
-                $user = $context?->model?->mentions
+                $user = $context
+                    ?->model
+                    ?->mentions
                     ->loadMissing('mentionable')
                     ?->where('mentionable_type', (new User())->getMorphClass())
-                    ->firstWhere('mentionable_id', $attributes['id'])?->mentionable;
+                    ->firstWhere('mentionable_id', $attributes['id'])
+                    ?->mentionable;
 
                 if (!$user) {
                     unset($attributes['id']);
@@ -187,10 +190,13 @@ abstract class FormatMentions
             }
 
             if ($type === static::TYPE_GROUP) {
-                $group = $context?->model?->mentions
+                $group = $context
+                    ?->model
+                    ?->mentions
                     ->loadMissing('mentionable')
                     ?->where('mentionable_type', (new Group())->getMorphClass())
-                    ->firstWhere('mentionable_id', $attributes['id'])?->mentionable;
+                    ->firstWhere('mentionable_id', $attributes['id'])
+                    ?->mentionable;
 
                 if (!$group) {
                     unset($attributes['id'], $attributes['type']);

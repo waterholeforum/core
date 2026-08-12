@@ -36,11 +36,15 @@
                 >
                     <x-slot name="button">
                         @icon('tabler-settings')
-                        <span>{{ __('waterhole::system.controls-button') }}</span>
+                        <span>
+                            {{ __('waterhole::system.controls-button') }}
+                        </span>
                         @icon('tabler-chevron-down')
                         <ui-tooltip>
                             {{ __('waterhole::system.controls-button') }}
-                            <x-waterhole::shortcut-label shortcut="selection.actions" />
+                            <x-waterhole::shortcut-label
+                                shortcut="selection.actions"
+                            />
                         </ui-tooltip>
                     </x-slot>
                 </x-waterhole::action-menu>
@@ -61,7 +65,9 @@
                     @endif
 
                     @if ($user->bio_html)
-                        <div class="content user-profile__bio">{{ $user->bio_html }}</div>
+                        <div class="content user-profile__bio">
+                            {{ $user->bio_html }}
+                        </div>
                     @endif
 
                     <div

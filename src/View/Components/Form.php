@@ -28,13 +28,11 @@ class Form extends Component
         $this->formMethod = $method === 'GET' ? 'GET' : 'POST';
         $this->spoofMethod = in_array($method, ['GET', 'POST']) ? null : $method;
 
-        $this->submitLabel =
-            $submitLabel ??
-            match ($method) {
-                'POST' => __('waterhole::system.create-button'),
-                'DELETE' => __('waterhole::system.delete-button'),
-                default => __('waterhole::system.save-changes-button'),
-            };
+        $this->submitLabel = $submitLabel ?? match ($method) {
+            'POST' => __('waterhole::system.create-button'),
+            'DELETE' => __('waterhole::system.delete-button'),
+            default => __('waterhole::system.save-changes-button'),
+        };
 
         $this->cancelUrl = $cancelUrl ?: url()->previous();
 

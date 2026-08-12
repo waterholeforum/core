@@ -31,9 +31,9 @@ class ReactionCountsResource extends AbstractResource
                 ->type(Type\Boolean::make())
                 ->visible(fn() => Auth::check()),
 
-            ToOne::make('reactionType')
-                ->get(fn(ReactionType $reactionType) => $reactionType)
-                ->includable(),
+            ToOne::make('reactionType')->get(
+                fn(ReactionType $reactionType) => $reactionType,
+            )->includable(),
         ];
     }
 }

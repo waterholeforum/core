@@ -16,8 +16,10 @@ class PostFeedPinned extends Component
 
     public Collection $posts;
 
-    public function __construct(public PostFeed $feed, public ?Channel $channel = null)
-    {
+    public function __construct(
+        public PostFeed $feed,
+        public ?Channel $channel = null,
+    ) {
         $query = Post::withoutTrashed()->where('is_pinned', true)->whereNot->ignoring();
 
         if ($channel) {

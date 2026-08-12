@@ -10,7 +10,9 @@ class PostFeedChannel extends Component
 {
     use Streamable;
 
-    public function __construct(public ?Channel $channel = null) {}
+    public function __construct(
+        public ?Channel $channel = null,
+    ) {}
 
     public function shouldRender(): bool
     {

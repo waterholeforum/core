@@ -40,44 +40,32 @@ class UserNav extends ComponentList
             'comments',
         );
 
-        $this->add(
-            fn(User $user) => $user->is(Auth::user())
-                ? new NavHeading(__('waterhole::user.preferences-heading'))
-                : null,
-            'preferences',
-        );
+        $this->add(fn(User $user) => $user->is(Auth::user())
+            ? new NavHeading(__('waterhole::user.preferences-heading'))
+            : null, 'preferences');
 
-        $this->add(
-            fn(User $user) => $user->is(Auth::user())
-                ? new NavLink(
-                    label: __('waterhole::user.account-settings-link'),
-                    icon: 'tabler-fingerprint',
-                    route: 'waterhole.preferences.account',
-                )
-                : null,
-            'account',
-        );
+        $this->add(fn(User $user) => $user->is(Auth::user())
+            ? new NavLink(
+                label: __('waterhole::user.account-settings-link'),
+                icon: 'tabler-fingerprint',
+                route: 'waterhole.preferences.account',
+            )
+            : null, 'account');
 
-        $this->add(
-            fn(User $user) => $user->is(Auth::user())
-                ? new NavLink(
-                    label: __('waterhole::user.edit-profile-link'),
-                    icon: 'tabler-user-circle',
-                    route: 'waterhole.preferences.profile',
-                )
-                : null,
-            'profile',
-        );
+        $this->add(fn(User $user) => $user->is(Auth::user())
+            ? new NavLink(
+                label: __('waterhole::user.edit-profile-link'),
+                icon: 'tabler-user-circle',
+                route: 'waterhole.preferences.profile',
+            )
+            : null, 'profile');
 
-        $this->add(
-            fn(User $user) => $user->is(Auth::user())
-                ? new NavLink(
-                    label: __('waterhole::user.notification-preferences-link'),
-                    icon: 'tabler-bell',
-                    route: 'waterhole.preferences.notifications',
-                )
-                : null,
-            'notifications',
-        );
+        $this->add(fn(User $user) => $user->is(Auth::user())
+            ? new NavLink(
+                label: __('waterhole::user.notification-preferences-link'),
+                icon: 'tabler-bell',
+                route: 'waterhole.preferences.notifications',
+            )
+            : null, 'notifications');
     }
 }

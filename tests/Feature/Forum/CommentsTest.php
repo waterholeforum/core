@@ -41,7 +41,8 @@ describe('create comment', function () {
         $user = User::factory()->create();
         $post = Post::factory()->for($channel)->create();
 
-        $this->actingAs($user)
+        $this
+            ->actingAs($user)
             ->from(route('waterhole.posts.comments.create', $post))
             ->post(route('waterhole.posts.comments.store', $post), [
                 'body' => '',
@@ -56,12 +57,10 @@ describe('create comment', function () {
         $user = User::factory()->create();
         $post = Post::factory()->for($channel)->create();
 
-        $this->actingAs($user)
-            ->post(route('waterhole.posts.comments.store', $post), [
-                'body' => 'Not allowed',
-                'commit' => true,
-            ])
-            ->assertForbidden();
+        $this->actingAs($user)->post(route('waterhole.posts.comments.store', $post), [
+            'body' => 'Not allowed',
+            'commit' => true,
+        ])->assertForbidden();
     });
 });
 
@@ -71,12 +70,9 @@ describe('comment drafts', function () {
         $user = User::factory()->create();
         $post = Post::factory()->for($channel)->create();
 
-        $this->actingAs($user)
-            ->from($post->url)
-            ->post(route('waterhole.posts.draft', $post), [
-                'body' => 'Draft comment body',
-            ])
-            ->assertRedirect($post->url);
+        $this->actingAs($user)->from($post->url)->post(route('waterhole.posts.draft', $post), [
+            'body' => 'Draft comment body',
+        ])->assertRedirect($post->url);
 
         $this->assertDatabaseHas('post_user', [
             'post_id' => $post->id,
@@ -96,7 +92,8 @@ describe('comment drafts', function () {
             'parent_id' => $parent->id,
         ]);
 
-        $this->actingAs($user)
+        $this
+            ->actingAs($user)
             ->from(route('waterhole.posts.comments.create', ['post' => $post, 'parent' => $parent]))
             ->post(route('waterhole.posts.comments.store', $post), [
                 'body' => 'Draft comment body',
@@ -121,7 +118,8 @@ describe('comment drafts', function () {
             'body' => 'Draft to discard',
         ]);
 
-        $this->actingAs($user)
+        $this
+            ->actingAs($user)
             ->delete(route('waterhole.posts.draft', $post))
             ->assertRedirect($post->url);
 
@@ -166,14 +164,13 @@ describe('edit comment', function () {
         $user = User::factory()->create();
         $post = Post::factory()->for($channel)->create();
 
-        $comment = Comment::factory()
-            ->for($post)
-            ->create([
-                'user_id' => $user->id,
-                'created_at' => now()->subMinutes(5),
-            ]);
+        $comment = Comment::factory()->for($post)->create([
+            'user_id' => $user->id,
+            'created_at' => now()->subMinutes(5),
+        ]);
 
-        $this->actingAs($user)
+        $this
+            ->actingAs($user)
             ->patch(route('waterhole.posts.comments.update', [$post, $comment]), [
                 'body' => 'Updated comment body',
             ])
@@ -192,14 +189,13 @@ describe('edit comment', function () {
         $user = User::factory()->create();
         $post = Post::factory()->for($channel)->create();
 
-        $comment = Comment::factory()
-            ->for($post)
-            ->create([
-                'user_id' => $user->id,
-                'created_at' => now()->subMinutes(20),
-            ]);
+        $comment = Comment::factory()->for($post)->create([
+            'user_id' => $user->id,
+            'created_at' => now()->subMinutes(20),
+        ]);
 
-        $this->actingAs($user)
+        $this
+            ->actingAs($user)
             ->get(route('waterhole.posts.comments.edit', [$post, $comment]))
             ->assertForbidden();
     });
@@ -210,15 +206,14 @@ describe('edit comment', function () {
         $channel = Channel::factory()->public()->create();
         $post = Post::factory()->for($channel)->create();
 
-        $comment = Comment::factory()
-            ->for($post)
-            ->create([
-                'created_at' => now()->subMinutes(20),
-            ]);
+        $comment = Comment::factory()->for($post)->create([
+            'created_at' => now()->subMinutes(20),
+        ]);
 
         $moderator = User::factory()->admin()->create();
 
-        $this->actingAs($moderator)
+        $this
+            ->actingAs($moderator)
             ->get(route('waterhole.posts.comments.edit', [$post, $comment]))
             ->assertOk();
     });
@@ -230,20 +225,16 @@ describe('delete comment', function () {
         $user = User::factory()->create();
         $post = Post::factory()->for($channel)->create();
 
-        $comment = Comment::factory()
-            ->for($post)
-            ->create([
-                'user_id' => $user->id,
-            ]);
+        $comment = Comment::factory()->for($post)->create([
+            'user_id' => $user->id,
+        ]);
 
-        $this->actingAs($user)
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => Comment::class,
-                'id' => $comment->id,
-                'action_class' => RemoveComment::class,
-                'return' => $comment->post_url,
-            ])
-            ->assertRedirect();
+        $this->actingAs($user)->post(route('waterhole.actions.store'), [
+            'actionable' => Comment::class,
+            'id' => $comment->id,
+            'action_class' => RemoveComment::class,
+            'return' => $comment->post_url,
+        ])->assertRedirect();
 
         expect($comment->fresh()->trashed())->toBeTrue();
     });
@@ -255,15 +246,13 @@ describe('delete comment', function () {
 
         $comment = Comment::factory()->for($post)->create();
 
-        $this->actingAs($moderator)
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => Comment::class,
-                'id' => $comment->id,
-                'action_class' => RemoveComment::class,
-                'return' => $comment->post_url,
-                'confirmed' => true,
-            ])
-            ->assertRedirect();
+        $this->actingAs($moderator)->post(route('waterhole.actions.store'), [
+            'actionable' => Comment::class,
+            'id' => $comment->id,
+            'action_class' => RemoveComment::class,
+            'return' => $comment->post_url,
+            'confirmed' => true,
+        ])->assertRedirect();
 
         expect($comment->fresh()->trashed())->toBeTrue();
     });
@@ -274,12 +263,10 @@ describe('delete comment', function () {
         $viewer = User::factory()->create();
         $post = Post::factory()->for($channel)->create();
 
-        $comment = Comment::factory()
-            ->for($post)
-            ->create([
-                'user_id' => $user->id,
-                'body' => 'Hidden comment',
-            ]);
+        $comment = Comment::factory()->for($post)->create([
+            'user_id' => $user->id,
+            'body' => 'Hidden comment',
+        ]);
 
         $this->actingAs($user)->post(route('waterhole.actions.store'), [
             'actionable' => Comment::class,
@@ -288,7 +275,8 @@ describe('delete comment', function () {
             'return' => $comment->post_url,
         ]);
 
-        $this->actingAs($viewer)
+        $this
+            ->actingAs($viewer)
             ->get(route('waterhole.posts.show', $post))
             ->assertOk()
             ->assertDontSeeText('Hidden comment');
@@ -302,25 +290,21 @@ describe('highlight comment', function () {
         $moderator = User::factory()->admin()->create();
         $comment = Comment::factory()->for($post)->create();
 
-        $this->actingAs($moderator)
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => Comment::class,
-                'id' => $comment->id,
-                'action_class' => HighlightComment::class,
-                'return' => $comment->post_url,
-            ])
-            ->assertRedirect();
+        $this->actingAs($moderator)->post(route('waterhole.actions.store'), [
+            'actionable' => Comment::class,
+            'id' => $comment->id,
+            'action_class' => HighlightComment::class,
+            'return' => $comment->post_url,
+        ])->assertRedirect();
 
         expect($comment->fresh()->is_highlighted)->toBeTrue();
 
-        $this->actingAs($moderator)
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => Comment::class,
-                'id' => $comment->id,
-                'action_class' => HighlightComment::class,
-                'return' => $comment->post_url,
-            ])
-            ->assertRedirect();
+        $this->actingAs($moderator)->post(route('waterhole.actions.store'), [
+            'actionable' => Comment::class,
+            'id' => $comment->id,
+            'action_class' => HighlightComment::class,
+            'return' => $comment->post_url,
+        ])->assertRedirect();
 
         expect($comment->fresh()->is_highlighted)->toBeFalse();
     });
@@ -331,13 +315,11 @@ describe('highlight comment', function () {
         $user = User::factory()->create();
         $comment = Comment::factory()->for($post)->create();
 
-        $this->actingAs($user)
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => Comment::class,
-                'id' => $comment->id,
-                'action_class' => HighlightComment::class,
-                'return' => $comment->post_url,
-            ])
-            ->assertForbidden();
+        $this->actingAs($user)->post(route('waterhole.actions.store'), [
+            'actionable' => Comment::class,
+            'id' => $comment->id,
+            'action_class' => HighlightComment::class,
+            'return' => $comment->post_url,
+        ])->assertForbidden();
     });
 });

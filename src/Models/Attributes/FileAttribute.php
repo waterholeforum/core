@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use Intervention\Image\Image as ImageObject;
 use Intervention\Image\Interfaces\EncodedImageInterface;
 use Intervention\Image\Laravel\Facades\Image;
+
 use function Waterhole\is_absolute_url;
 
 class FileAttribute

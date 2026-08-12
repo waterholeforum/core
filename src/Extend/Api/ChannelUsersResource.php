@@ -18,21 +18,19 @@ class ChannelUsersResource extends Resource
     {
         parent::__construct();
 
-        $this->fields
-            ->add(ToOne::make('channel'), 'channel')
-
-            ->add(ToOne::make('user'), 'user')
-
-            ->add(
-                Attribute::make('notifications')
-                    ->type(Type\Str::make()->enum(['normal', 'follow', 'ignore']))
-                    ->nullable(),
-                'notifications',
-            )
-
-            ->add(
-                Attribute::make('followedAt')->type(Type\DateTime::make())->nullable(),
-                'followedAt',
-            );
+        $this->fields->add(ToOne::make('channel'), 'channel')->add(
+            ToOne::make('user'),
+            'user',
+        )->add(
+            Attribute::make('notifications')
+                ->type(Type\Str::make()->enum(['normal', 'follow', 'ignore']))
+                ->nullable(),
+            'notifications',
+        )->add(
+            Attribute::make('followedAt')
+                ->type(Type\DateTime::make())
+                ->nullable(),
+            'followedAt',
+        );
     }
 }

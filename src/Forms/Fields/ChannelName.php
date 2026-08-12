@@ -9,25 +9,27 @@ use Waterhole\Models\Channel;
 
 class ChannelName extends Field
 {
-    public function __construct(public ?Channel $model) {}
+    public function __construct(
+        public ?Channel $model,
+    ) {}
 
     public function render(): string
     {
         return <<<'blade'
-            <x-waterhole::field
-                name="name"
-                :label="__('waterhole::cp.channel-name-label')"
-            >
-                <input
-                    id="{{ $component->id }}"
+                <x-waterhole::field
                     name="name"
-                    type="text"
-                    value="{{ old('name', $model->name ?? '') }}"
-                    data-action="slugger#updateName"
-                    autofocus
+                    :label="__('waterhole::cp.channel-name-label')"
                 >
-            </x-waterhole::field>
-        blade;
+                    <input
+                        id="{{ $component->id }}"
+                        name="name"
+                        type="text"
+                        value="{{ old('name', $model->name ?? '') }}"
+                        data-action="slugger#updateName"
+                        autofocus
+                    >
+                </x-waterhole::field>
+            blade;
     }
 
     public function validating(Validator $validator): void

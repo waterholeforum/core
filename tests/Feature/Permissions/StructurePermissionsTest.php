@@ -116,19 +116,15 @@ describe('forum', function () {
         $public = Channel::factory()->public()->create();
         $private = Channel::factory()->create();
 
-        Post::factory()
-            ->for($public)
-            ->create([
-                'title' => 'Public Post',
-                'body' => 'Public body',
-            ]);
+        Post::factory()->for($public)->create([
+            'title' => 'Public Post',
+            'body' => 'Public body',
+        ]);
 
-        Post::factory()
-            ->for($private)
-            ->create([
-                'title' => 'Private Post',
-                'body' => 'Private body',
-            ]);
+        Post::factory()->for($private)->create([
+            'title' => 'Private Post',
+            'body' => 'Private body',
+        ]);
 
         $response = $this->get(route('waterhole.home'));
 

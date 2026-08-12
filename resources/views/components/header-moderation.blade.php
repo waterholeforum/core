@@ -1,4 +1,8 @@
-<ui-popup placement="bottom-end" data-controller="notifications-popup" data-persistent-badge>
+<ui-popup
+    placement="bottom-end"
+    data-controller="notifications-popup"
+    data-persistent-badge
+>
     <a
         href="{{ route('waterhole.moderation') }}"
         class="btn btn--icon btn--transparent"

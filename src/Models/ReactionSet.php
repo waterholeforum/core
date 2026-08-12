@@ -35,9 +35,9 @@ class ReactionSet extends Model
 
     protected function editUrl(): Attribute
     {
-        return Attribute::make(
-            get: fn() => route('waterhole.cp.reaction-sets.edit', ['reactionSet' => $this]),
-        )->shouldCache();
+        return Attribute::make(get: fn() => route('waterhole.cp.reaction-sets.edit', [
+            'reactionSet' => $this,
+        ]))->shouldCache();
     }
 
     private static function defaults(): Collection

@@ -16,14 +16,9 @@ class MentionsResource extends Resource
     {
         parent::__construct();
 
-        $this->fields
-            ->add(ToOne::make('content')->type(['posts', 'comments']), 'content')
-
-            ->add(
-                ToOne::make('mentionable')
-                    ->type(['users', 'groups'])
-                    ->includable(),
-                'mentionable',
-            );
+        $this->fields->add(ToOne::make('content')->type(['posts', 'comments']), 'content')->add(
+            ToOne::make('mentionable')->type(['users', 'groups'])->includable(),
+            'mentionable',
+        );
     }
 }

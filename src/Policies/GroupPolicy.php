@@ -31,8 +31,8 @@ class GroupPolicy
         }
 
         if (
-            $group->mentionable === Mentionable::Members &&
-            $user->groups->contains($group->getKey())
+            $group->mentionable === Mentionable::Members
+            && $user->groups->contains($group->getKey())
         ) {
             return $user->groups->contains($group->getKey());
         }

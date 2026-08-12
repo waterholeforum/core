@@ -18,9 +18,9 @@ class TagsResource extends Resource
     {
         parent::__construct();
 
-        $this->fields
-            ->add(Attribute::make('name')->type(Type\Str::make()), 'name')
-
-            ->add(ToOne::make('taxonomy')->includable(), 'taxonomy');
+        $this->fields->add(Attribute::make('name')->type(Type\Str::make()), 'name')->add(
+            ToOne::make('taxonomy')->includable(),
+            'taxonomy',
+        );
     }
 }

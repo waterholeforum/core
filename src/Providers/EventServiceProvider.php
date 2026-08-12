@@ -11,7 +11,10 @@ use Waterhole\Listeners\ReverifyInactiveUser;
 class EventServiceProvider extends ServiceProvider
 {
     protected $listen = [
-        'cache:clearing' => [[Script::class, 'flush'], [Stylesheet::class, 'flush']],
+        'cache:clearing' => [
+            [Script::class,     'flush'],
+            [Stylesheet::class, 'flush'],
+        ],
         Login::class => [ReverifyInactiveUser::class],
     ];
 }

@@ -40,7 +40,11 @@
             {{ __('waterhole::user.suspended-until-label') }}
         </label>
 
-        <span class="choice" data-reveal-target="then" data-reveal-value="custom">
+        <span
+            class="choice"
+            data-reveal-target="then"
+            data-reveal-value="custom"
+        >
             <input
                 type="datetime-local"
                 name="suspended_until"

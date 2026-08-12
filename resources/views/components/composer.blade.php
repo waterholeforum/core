@@ -26,7 +26,10 @@
             data-shortcut-selection-owner="{{ dom_id($post) }}"
         >
             @auth
-                <x-waterhole::avatar :user="Auth::user()" class="icon text-lg" />
+                <x-waterhole::avatar
+                    :user="Auth::user()"
+                    class="icon text-lg"
+                />
                 {{
                     $parent
                         ? __("waterhole::forum.composer-reply-to-placeholder", Waterhole\user_variables($parent->user))
@@ -72,7 +75,9 @@
                     @icon("tabler-chevron-down")
                     <ui-tooltip>
                         {{ __("waterhole::forum.composer-collapse-button") }}
-                        <x-waterhole::shortcut-label shortcut="navigation.close" />
+                        <x-waterhole::shortcut-label
+                            shortcut="navigation.close"
+                        />
                     </ui-tooltip>
                 </button>
 
@@ -102,7 +107,11 @@
                     complete
                 >
                     @if ($parent)
-                        <input type="hidden" name="parent_id" value="{{ $parent->id }}" />
+                        <input
+                            type="hidden"
+                            name="parent_id"
+                            value="{{ $parent->id }}"
+                        />
 
                         <a
                             href="{{ $parent->post_url }}"
@@ -119,7 +128,10 @@
                             <x-waterhole::user-label :user="$parent->user" />
                         </a>
 
-                        <button class="btn btn--sm btn--transparent btn--icon" name="parent_id">
+                        <button
+                            class="btn btn--sm btn--transparent btn--icon"
+                            name="parent_id"
+                        >
                             @icon("tabler-x")
                             <ui-tooltip>
                                 {{ __("waterhole::forum.composer-clear-reply-button") }}

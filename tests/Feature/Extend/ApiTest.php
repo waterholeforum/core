@@ -31,8 +31,7 @@ beforeEach(function () {
 describe('API extenders', function () {
     test('add resource', function () {
         $resource = new class extends Tobyz\JsonApiServer\Resource\AbstractResource implements
-            Tobyz\JsonApiServer\Resource\Findable
-        {
+            Tobyz\JsonApiServer\Resource\Findable {
             public function type(): string
             {
                 return 'test';
@@ -62,9 +61,9 @@ describe('API extenders', function () {
     ) {
         app()->extend($extenderClass, function ($resource) {
             $resource->fields->add(
-                Attribute::make('extendTest')
-                    ->type(Type\Str::make())
-                    ->get(fn($model) => (string) $model->getKey()),
+                Attribute::make('extendTest')->type(Type\Str::make())->get(
+                    fn($model) => (string) $model->getKey(),
+                ),
                 'extendTest',
             );
 
@@ -83,9 +82,9 @@ describe('API extenders', function () {
     ) {
         app()->extend($extenderClass, function ($resource) {
             $resource->fields->add(
-                Attribute::make('extendTest')
-                    ->type(Type\Str::make())
-                    ->get(fn($model) => (string) $model->getKey()),
+                Attribute::make('extendTest')->type(Type\Str::make())->get(
+                    fn($model) => (string) $model->getKey(),
+                ),
                 'extendTest',
             );
 
@@ -110,12 +109,8 @@ describe('API extenders', function () {
         $actor = User::factory()->create();
         $other = User::factory()->create();
 
-        $actorPost = Post::factory()
-            ->for(Channel::factory()->public())
-            ->create();
-        $otherPost = Post::factory()
-            ->for(Channel::factory()->public())
-            ->create();
+        $actorPost = Post::factory()->for(Channel::factory()->public())->create();
+        $otherPost = Post::factory()->for(Channel::factory()->public())->create();
 
         $actorBookmark = Bookmark::create([
             'user_id' => $actor->id,
@@ -155,9 +150,9 @@ dataset('api resources with endpoints', [
     'comments' => [
         Extend\Api\CommentsResource::class,
         function ($test) {
-            $comment = Comment::factory()
-                ->for(Post::factory()->for(Channel::factory()->public()))
-                ->create();
+            $comment = Comment::factory()->for(
+                Post::factory()->for(Channel::factory()->public()),
+            )->create();
 
             return [
                 jsonApi('GET', "/api/comments/$comment->id"),
@@ -193,9 +188,7 @@ dataset('api resources with endpoints', [
     'posts' => [
         Extend\Api\PostsResource::class,
         function ($test) {
-            $post = Post::factory()
-                ->for(Channel::factory()->public())
-                ->create();
+            $post = Post::factory()->for(Channel::factory()->public())->create();
 
             return [
                 jsonApi('GET', "/api/posts/$post->id"),
@@ -281,9 +274,7 @@ dataset('api resources with relations', [
         Extend\Api\PostUsersResource::class,
         function ($test) {
             $user = User::factory()->create();
-            $post = Post::factory()
-                ->for(Channel::factory()->public())
-                ->create();
+            $post = Post::factory()->for(Channel::factory()->public())->create();
             $postUser = PostUser::create([
                 'post_id' => $post->id,
                 'user_id' => $user->id,
@@ -347,9 +338,7 @@ dataset('api resources with relations', [
         Extend\Api\ReactionsResource::class,
         function ($test) {
             $user = User::factory()->create();
-            $post = Post::factory()
-                ->for(Channel::factory()->public())
-                ->create();
+            $post = Post::factory()->for(Channel::factory()->public())->create();
             $reactionSet = ReactionSet::create(['name' => 'Test Reaction Set']);
             $reactionType = ReactionType::create([
                 'reaction_set_id' => $reactionSet->id,
@@ -375,9 +364,7 @@ dataset('api resources with relations', [
         Extend\Api\BookmarksResource::class,
         function ($test) {
             $user = User::factory()->create();
-            $post = Post::factory()
-                ->for(Channel::factory()->public())
-                ->create();
+            $post = Post::factory()->for(Channel::factory()->public())->create();
             $bookmark = Bookmark::create([
                 'user_id' => $user->id,
                 'content_type' => $post->getMorphClass(),

@@ -11,6 +11,7 @@ use Waterhole\Extend\Support\OrderedList;
 use Waterhole\Models;
 use Waterhole\Models\User;
 use Waterhole\View\Components\MenuDivider;
+
 use function Waterhole\resolve_all;
 
 /**
@@ -53,17 +54,20 @@ class Actions
     ): ActionsCollection {
         [$models, $list] = $this->modelsAndList($models);
 
-        return (new ActionsCollection(function () use ($list, $models, $user) {
-            if (!$list) {
-                return;
-            }
-
-            foreach ($list->items() as $action) {
-                if ($resolved = $this->resolveAction($action, $models, $user)) {
-                    yield $resolved;
+        return (new ActionsCollection(
+            function () use ($list, $models, $user) {
+                if (!$list) {
+                    return;
                 }
-            }
-        }, fn(Action $action) => $this->isRenderable($action, $models, $context)))
+
+                foreach ($list->items() as $action) {
+                    if ($resolved = $this->resolveAction($action, $models, $user)) {
+                        yield $resolved;
+                    }
+                }
+            },
+            fn(Action $action) => $this->isRenderable($action, $models, $context),
+        ))
             ->remember()
             ->normalizeDividers();
     }
@@ -83,7 +87,7 @@ class Actions
             return null;
         }
 
-        if (!($action instanceof Action)) {
+        if (!$action instanceof Action) {
             return $action;
         }
 
@@ -110,7 +114,7 @@ class Actions
 
         foreach ($this->lists as $list) {
             foreach (resolve_all($list->items()) as $action) {
-                if (!($action instanceof Action) || !($shortcut = $action->shortcut())) {
+                if (!$action instanceof Action || !($shortcut = $action->shortcut())) {
                     continue;
                 }
 
@@ -123,10 +127,9 @@ class Actions
 
     private function modelsAndList($models): array
     {
-        $models =
-            $models instanceof Collection
-                ? $models
-                : collect(is_array($models) ? $models : [$models]);
+        $models = $models instanceof Collection
+            ? $models
+            : collect(is_array($models) ? $models : [$models]);
 
         if ($models->isEmpty()) {
             return [$models, null];
@@ -139,7 +142,7 @@ class Actions
 
     private function isRenderable($action, Collection $models, ?string $context): bool
     {
-        return !($action instanceof Action) || $action->shouldRender($models, $context);
+        return !$action instanceof Action || $action->shouldRender($models, $context);
     }
 
     private function isRegisteredAction($action, array $registered): bool
@@ -155,14 +158,16 @@ class Actions
 
     private function registerDefaults(): void
     {
-        $this->for(Models\Channel::class)
+        $this
+            ->for(Models\Channel::class)
             ->add(CoreActions\Follow::class, 'follow')
             ->add(CoreActions\Ignore::class, 'ignore')
             ->add(MenuDivider::class, 'divider')
             ->add(CoreActions\Edit::class, 'edit')
             ->add(CoreActions\DeleteChannel::class, 'delete');
 
-        $this->for(Models\Comment::class)
+        $this
+            ->for(Models\Comment::class)
             ->add(CoreActions\CopyLink::class, 'copy-link')
             ->add(CoreActions\Report::class, 'report')
             ->add(CoreActions\Bookmark::class, 'bookmark')
@@ -176,15 +181,18 @@ class Actions
             ->add(CoreActions\MarkAsAnswer::class, 'mark-as-answer')
             ->add(CoreActions\React::class, 'react');
 
-        $this->for(Models\Group::class)
-            ->add(CoreActions\Edit::class, 'edit')
-            ->add(CoreActions\Delete::class, 'delete');
+        $this->for(Models\Group::class)->add(CoreActions\Edit::class, 'edit')->add(
+            CoreActions\Delete::class,
+            'delete',
+        );
 
-        $this->for(Models\Page::class)
-            ->add(CoreActions\EditStructure::class, 'edit')
-            ->add(CoreActions\DeleteStructure::class, 'delete');
+        $this->for(Models\Page::class)->add(CoreActions\EditStructure::class, 'edit')->add(
+            CoreActions\DeleteStructure::class,
+            'delete',
+        );
 
-        $this->for(Models\Post::class)
+        $this
+            ->for(Models\Post::class)
             ->add(CoreActions\CopyLink::class, 'copy-link')
             ->add(CoreActions\Report::class, 'report')
             ->add(CoreActions\MarkAsRead::class, 'mark-as-read')
@@ -202,31 +210,38 @@ class Actions
             ->add(CoreActions\DeletePost::class, 'delete')
             ->add(CoreActions\React::class, 'react');
 
-        $this->for(Models\ReactionSet::class)
-            ->add(CoreActions\Edit::class, 'edit')
-            ->add(CoreActions\Delete::class, 'delete');
+        $this->for(Models\ReactionSet::class)->add(CoreActions\Edit::class, 'edit')->add(
+            CoreActions\Delete::class,
+            'delete',
+        );
 
-        $this->for(Models\ReactionType::class)
-            ->add(CoreActions\EditReactionType::class, 'edit')
-            ->add(CoreActions\Delete::class, 'delete');
+        $this->for(Models\ReactionType::class)->add(
+            CoreActions\EditReactionType::class,
+            'edit',
+        )->add(CoreActions\Delete::class, 'delete');
 
-        $this->for(Models\StructureHeading::class)
-            ->add(CoreActions\EditStructure::class, 'edit')
-            ->add(CoreActions\DeleteStructure::class, 'delete');
+        $this->for(Models\StructureHeading::class)->add(
+            CoreActions\EditStructure::class,
+            'edit',
+        )->add(CoreActions\DeleteStructure::class, 'delete');
 
-        $this->for(Models\StructureLink::class)
-            ->add(CoreActions\EditStructure::class, 'edit')
-            ->add(CoreActions\DeleteStructure::class, 'delete');
+        $this->for(Models\StructureLink::class)->add(CoreActions\EditStructure::class, 'edit')->add(
+            CoreActions\DeleteStructure::class,
+            'delete',
+        );
 
-        $this->for(Models\Tag::class)
-            ->add(CoreActions\EditTag::class, 'edit')
-            ->add(CoreActions\Delete::class, 'delete');
+        $this->for(Models\Tag::class)->add(CoreActions\EditTag::class, 'edit')->add(
+            CoreActions\Delete::class,
+            'delete',
+        );
 
-        $this->for(Models\Taxonomy::class)
-            ->add(CoreActions\Edit::class, 'edit')
-            ->add(CoreActions\Delete::class, 'delete');
+        $this->for(Models\Taxonomy::class)->add(CoreActions\Edit::class, 'edit')->add(
+            CoreActions\Delete::class,
+            'delete',
+        );
 
-        $this->for(Models\User::class)
+        $this
+            ->for(Models\User::class)
             ->add(CoreActions\DeleteSelf::class, 'delete-self')
             ->add(MenuDivider::class, 'divider')
             ->add(CoreActions\Edit::class, 'edit-user')

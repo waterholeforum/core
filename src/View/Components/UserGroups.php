@@ -11,8 +11,9 @@ class UserGroups extends Component
 {
     public ?Collection $groups;
 
-    public function __construct(public ?User $user)
-    {
+    public function __construct(
+        public ?User $user,
+    ) {
         $this->groups = $this->user?->groups->where('is_public', true);
 
         if (Auth::user()?->can('waterhole.user.edit', $user)) {
@@ -28,18 +29,18 @@ class UserGroups extends Component
     public function render()
     {
         return <<<'blade'
-            <span class="row-inline wrap gap-xxs">
-                @foreach ($groups as $group)
-                    <x-waterhole::group-badge :group="$group"/>
-                @endforeach
+                <span class="row-inline wrap gap-xxs">
+                    @foreach ($groups as $group)
+                        <x-waterhole::group-badge :group="$group"/>
+                    @endforeach
 
-                @if ($user?->isSuspended() && Gate::allows('waterhole.user.suspend', $user))
-                    <span class="badge suspended-badge">
-                        @icon('tabler-ban')
-                        {{ __('waterhole::user.suspended-badge') }}
-                    </span>
-                @endif
-            </span>
-        blade;
+                    @if ($user?->isSuspended() && Gate::allows('waterhole.user.suspend', $user))
+                        <span class="badge suspended-badge">
+                            @icon('tabler-ban')
+                            {{ __('waterhole::user.suspended-badge') }}
+                        </span>
+                    @endif
+                </span>
+            blade;
     }
 }

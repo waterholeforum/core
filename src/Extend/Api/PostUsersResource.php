@@ -20,28 +20,29 @@ class PostUsersResource extends Resource
 
         $this->fields
             ->add(ToOne::make('post'), 'post')
-
             ->add(ToOne::make('user'), 'user')
-
             ->add(
                 Attribute::make('notifications')
                     ->type(Type\Str::make()->enum(['normal', 'follow', 'ignore']))
                     ->nullable(),
                 'notifications',
             )
-
             ->add(
-                Attribute::make('lastReadAt')->type(Type\DateTime::make())->nullable(),
+                Attribute::make('lastReadAt')
+                    ->type(Type\DateTime::make())
+                    ->nullable(),
                 'lastReadAt',
             )
-
             ->add(
-                Attribute::make('followedAt')->type(Type\DateTime::make())->nullable(),
+                Attribute::make('followedAt')
+                    ->type(Type\DateTime::make())
+                    ->nullable(),
                 'followedAt',
             )
-
             ->add(
-                Attribute::make('mentionedAt')->type(Type\DateTime::make())->nullable(),
+                Attribute::make('mentionedAt')
+                    ->type(Type\DateTime::make())
+                    ->nullable(),
                 'mentionedAt',
             );
     }

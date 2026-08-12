@@ -33,16 +33,15 @@ class ResetPasswordController extends Controller
         // will update the password on an actual user model and persist it to the
         // database. Otherwise we will parse the error and return the response.
         $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation') + [
+            $request->only('email', 'password', 'password_confirmation')
+            + [
                 'token' => $request->route('token'),
             ],
             function ($user) use ($request) {
-                $user
-                    ->forceFill([
-                        'password' => Hash::make($request->password),
-                        'remember_token' => Str::random(60),
-                    ])
-                    ->save();
+                $user->forceFill([
+                    'password' => Hash::make($request->password),
+                    'remember_token' => Str::random(60),
+                ])->save();
 
                 event(new PasswordReset($user));
             },
@@ -51,12 +50,12 @@ class ResetPasswordController extends Controller
         // If the password was successfully reset, we will redirect the user back to
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
-        return $status == Password::PASSWORD_RESET
-            ? redirect()
-                ->route('waterhole.login')
-                ->with('success', __("waterhole::$status"))
-            : back()
-                ->withInput($request->only('email'))
-                ->withErrors(['token' => __("waterhole::$status")]);
+        return (
+            $status == Password::PASSWORD_RESET
+                ? redirect()->route('waterhole.login')->with('success', __("waterhole::$status"))
+                : back()
+                    ->withInput($request->only('email'))
+                    ->withErrors(['token' => __("waterhole::$status")])
+        );
     }
 }

@@ -52,12 +52,10 @@ abstract class Notification extends BaseNotification implements ShouldQueue
      */
     public function via($notifiable): array
     {
-        return array_values(
-            array_intersect(
-                $notifiable->notification_channels[get_class($this)] ?? [],
-                static::channels(),
-            ),
-        );
+        return array_values(array_intersect(
+            $notifiable->notification_channels[get_class($this)] ?? [],
+            static::channels(),
+        ));
     }
 
     /**
@@ -145,7 +143,7 @@ abstract class Notification extends BaseNotification implements ShouldQueue
     /**
      * An excerpt from the notification content.
      */
-    public function excerpt(): null|string|Htmlable
+    public function excerpt(): string|Htmlable|null
     {
         return null;
     }

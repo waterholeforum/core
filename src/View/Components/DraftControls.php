@@ -10,7 +10,10 @@ class DraftControls extends Component
 
     public string $frame = self::FRAME;
 
-    public function __construct(public bool $saved = false, public string $action = '') {}
+    public function __construct(
+        public bool $saved = false,
+        public string $action = '',
+    ) {}
 
     public function render()
     {

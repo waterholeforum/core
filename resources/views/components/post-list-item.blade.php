@@ -31,12 +31,16 @@
                     </a>
                 </h3>
 
-                <div class="post-list-item__info row wrap gap-y-xxs gap-x-sm text-xxs color-muted">
+                <div
+                    class="post-list-item__info row wrap gap-y-xxs gap-x-sm text-xxs color-muted"
+                >
                     @components(resolve(\Waterhole\Extend\Ui\PostListItem::class)->info, compact('post'))
                 </div>
             </div>
 
-            <div class="post-list-item__end row wrap justify-end gap-xs align-center">
+            <div
+                class="post-list-item__end row wrap justify-end gap-xs align-center"
+            >
                 @components(resolve(\Waterhole\Extend\Ui\PostListItem::class)->secondary, compact('post', 'config'))
             </div>
         </div>
@@ -49,6 +53,10 @@
     </div>
 
     <div class="post-list-item__controls hide-sm">
-        <x-waterhole::action-menu :for="$post" placement="bottom-end" :preflight="false" />
+        <x-waterhole::action-menu
+            :for="$post"
+            placement="bottom-end"
+            :preflight="false"
+        />
     </div>
 </article>

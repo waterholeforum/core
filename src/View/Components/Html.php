@@ -24,9 +24,9 @@ class Html extends Component
             'userId' => Auth::id(),
             'debug' => config('app.debug'),
             'echoConfig' => config('waterhole.system.echo_config'),
-            'messages' => collect(self::MESSAGE_KEYS)
-                ->mapWithKeys(fn(string $key) => [$key => __($key)])
-                ->all(),
+            'messages' => collect(self::MESSAGE_KEYS)->mapWithKeys(fn(string $key) => [
+                $key => __($key),
+            ])->all(),
             'shortcuts' => collect(resolve(KeyboardShortcuts::class)->shortcuts())
                 ->map(fn($shortcut) => $shortcut->toPayload())
                 ->values()

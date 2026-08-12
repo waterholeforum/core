@@ -121,9 +121,7 @@ export default class extends Controller<HTMLElement> {
     private closestImage(target: EventTarget | null) {
         if (!(target instanceof Element)) return null;
 
-        return target.closest<HTMLImageElement>(
-            'img[data-lightbox-image]',
-        );
+        return target.closest<HTMLImageElement>('img[data-lightbox-image]');
     }
 
     private getSlideData(image: HTMLImageElement): SlideData {

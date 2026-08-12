@@ -71,10 +71,7 @@ class NotificationController extends Controller
 
     public function read(Request $request)
     {
-        $request
-            ->user()
-            ->unreadNotifications()
-            ->update(['read_at' => now()]);
+        $request->user()->unreadNotifications()->update(['read_at' => now()]);
 
         return redirect()->route('waterhole.notifications.index');
     }
@@ -87,9 +84,13 @@ class NotificationController extends Controller
         // its user, and content. Find the matching notification in the database
         // so we can reconstruct its template and call its unsubscribe method.
         $notification = Notification::where(
-            $payload
-                ->only('type', 'notifiable_type', 'notifiable_id', 'content_type', 'content_id')
-                ->all(),
+            $payload->only(
+                'type',
+                'notifiable_type',
+                'notifiable_id',
+                'content_type',
+                'content_id',
+            )->all(),
         )->firstOrFail();
 
         $notification->template->unsubscribe($notification->notifiable);

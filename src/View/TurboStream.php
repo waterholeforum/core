@@ -34,8 +34,8 @@ abstract class TurboStream
         }
 
         return <<<html
-            <turbo-stream action="remove" targets=".$class"></turbo-stream>
-        html;
+                <turbo-stream action="remove" targets=".$class"></turbo-stream>
+            html;
     }
 
     /**
@@ -83,8 +83,8 @@ abstract class TurboStream
     public static function redirect(string $url): string
     {
         return <<<html
-            <turbo-stream action="redirect" url="$url"></turbo-stream>
-        html;
+                <turbo-stream action="redirect" url="$url"></turbo-stream>
+            html;
     }
 
     public static function dispatch(string $event, ?string $targets = null): string
@@ -104,8 +104,8 @@ abstract class TurboStream
             : '';
 
         return <<<html
-            <turbo-stream action="$action" $attributes>$content</turbo-stream>
-        html;
+                <turbo-stream action="$action" $attributes>$content</turbo-stream>
+            html;
     }
 
     private static function getClassName(Component $component)

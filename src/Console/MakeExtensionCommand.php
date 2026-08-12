@@ -18,8 +18,9 @@ class MakeExtensionCommand extends Command
 
     protected $description = 'Create a new Waterhole extension';
 
-    public function __construct(protected Filesystem $files)
-    {
+    public function __construct(
+        protected Filesystem $files,
+    ) {
         parent::__construct();
     }
 
@@ -27,9 +28,10 @@ class MakeExtensionCommand extends Command
     {
         $name = $this->input->getArgument('name');
 
-        if (
-            !preg_match('~^[a-z0-9]([_.-]?[a-z0-9]+)*/[a-z0-9](([_.]?|-{0,2})[a-z0-9]+)*$~', $name)
-        ) {
+        if (!preg_match(
+            '~^[a-z0-9]([_.-]?[a-z0-9]+)*/[a-z0-9](([_.]?|-{0,2})[a-z0-9]+)*$~',
+            $name,
+        )) {
             $this->error('The name must be a valid Composer package name.');
 
             return false;
@@ -53,9 +55,9 @@ class MakeExtensionCommand extends Command
         $this->files->copyDirectory(__DIR__ . '/stubs/extension', $path);
 
         $replacements = [
-            '{{ namespace }}' => ($namespace = Str::studly($vendor) . '\\' . Str::studly($project)),
+            '{{ namespace }}' => $namespace = Str::studly($vendor) . '\\' . Str::studly($project),
             '{{ namespace_escaped }}' => addslashes($namespace),
-            '{{ prefix }}' => ($prefix = Str::studly($project)),
+            '{{ prefix }}' => $prefix = Str::studly($project),
             '{{ name }}' => $name,
             '{{ waterhole_version }}' => Waterhole::VERSION,
         ];
@@ -80,12 +82,10 @@ class MakeExtensionCommand extends Command
         if ($this->addComposerRepository($repositoryPath)) {
             $this->installExtension($name);
         } else {
-            $this->warn(
-                sprintf(
-                    'Skipping install. Add a path repository and run composer require %s:dev-main.',
-                    $name,
-                ),
-            );
+            $this->warn(sprintf(
+                'Skipping install. Add a path repository and run composer require %s:dev-main.',
+                $name,
+            ));
         }
     }
 

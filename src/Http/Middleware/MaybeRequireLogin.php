@@ -16,15 +16,19 @@ use Waterhole\Models\StructureLink;
  */
 class MaybeRequireLogin
 {
-    public function __construct(protected PermissionCollection $permissions) {}
+    public function __construct(
+        protected PermissionCollection $permissions,
+    ) {}
 
     public function handle(Request $request, Closure $next)
     {
         if (
-            Auth::guest() &&
-            (!$this->permissions->can(null, 'view', Channel::class) &&
-                !$this->permissions->can(null, 'view', Page::class) &&
-                !$this->permissions->can(null, 'view', StructureLink::class))
+            Auth::guest()
+            && (
+                !$this->permissions->can(null, 'view', Channel::class)
+                && !$this->permissions->can(null, 'view', Page::class)
+                && !$this->permissions->can(null, 'view', StructureLink::class)
+            )
         ) {
             return redirect()->route('waterhole.login');
         }

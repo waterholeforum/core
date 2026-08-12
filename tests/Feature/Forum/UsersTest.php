@@ -15,9 +15,10 @@ describe('user profile', function () {
     test('shows user profile page', function () {
         $user = User::factory()->create();
 
-        $this->get(route('waterhole.users.show', $user))->assertRedirect(
-            route('waterhole.user.posts', $user),
-        );
+        $this->get(route('waterhole.users.show', $user))->assertRedirect(route(
+            'waterhole.user.posts',
+            $user,
+        ));
 
         $this->get(route('waterhole.user.posts', $user))->assertOk()->assertSeeText($user->name);
     });
@@ -30,15 +31,13 @@ describe('suspension', function () {
 
         $moderator->savePermissions(['user' => ['suspend' => true]]);
 
-        $this->actingAs($moderator)
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => User::class,
-                'id' => $target->id,
-                'action_class' => SuspendUser::class,
-                'confirmed' => true,
-                'status' => 'indefinite',
-            ])
-            ->assertRedirect();
+        $this->actingAs($moderator)->post(route('waterhole.actions.store'), [
+            'actionable' => User::class,
+            'id' => $target->id,
+            'action_class' => SuspendUser::class,
+            'confirmed' => true,
+            'status' => 'indefinite',
+        ])->assertRedirect();
 
         expect($target->fresh()->suspended_until?->toDateString())->toBe('2038-01-01');
     });
@@ -51,15 +50,13 @@ describe('suspension', function () {
 
         $moderator->savePermissions(['user' => ['suspend' => true]]);
 
-        $this->actingAs($moderator)
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => User::class,
-                'id' => $target->id,
-                'action_class' => SuspendUser::class,
-                'confirmed' => true,
-                'status' => 'none',
-            ])
-            ->assertRedirect();
+        $this->actingAs($moderator)->post(route('waterhole.actions.store'), [
+            'actionable' => User::class,
+            'id' => $target->id,
+            'action_class' => SuspendUser::class,
+            'confirmed' => true,
+            'status' => 'none',
+        ])->assertRedirect();
 
         expect($target->fresh()->suspended_until)->toBeNull();
     });

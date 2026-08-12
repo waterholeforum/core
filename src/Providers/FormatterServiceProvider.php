@@ -102,8 +102,8 @@ class FormatterServiceProvider extends ServiceProvider
 
         if ($url = config('waterhole.design.emoji_url')) {
             $tag->template = <<<html
-                <img alt="{.}" class="emoji" draggable="false" src="$url"/>
-            html;
+                    <img alt="{.}" class="emoji" draggable="false" src="$url"/>
+                html;
         } else {
             $tag->template = '<span class="emoji"><xsl:value-of select="."/></span>';
         }

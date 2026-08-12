@@ -4,6 +4,7 @@ namespace Waterhole\Search;
 
 use Waterhole\Models\Channel;
 use Waterhole\Models\Post;
+
 use function Waterhole\remove_formatting;
 
 class LikeSearchEngine implements EngineInterface
@@ -78,23 +79,17 @@ class LikeSearchEngine implements EngineInterface
 
         $highlighter = new Highlighter($q);
 
-        $hits = $rows
-            ->map(
-                fn($row) => new Hit(
-                    $row->post_id,
-                    $highlighter->highlight($row->title ?? ''),
-                    $highlighter->highlight(
-                        $highlighter->truncate(
-                            remove_formatting(
-                                $row->comment_body && in_array('comments', $in, true)
-                                    ? $row->comment_body
-                                    : $row->post_body ?? '',
-                            ),
-                        ),
-                    ),
-                ),
-            )
-            ->all();
+        $hits = $rows->map(
+            fn($row) => new Hit(
+                $row->post_id,
+                $highlighter->highlight($row->title ?? ''),
+                $highlighter->highlight($highlighter->truncate(remove_formatting(
+                    $row->comment_body && in_array('comments', $in, true)
+                        ? $row->comment_body
+                        : $row->post_body ?? '',
+                ))),
+            ),
+        )->all();
 
         return new Results(
             hits: $hits,

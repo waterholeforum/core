@@ -29,10 +29,7 @@ class AuthServiceProvider extends ServiceProvider
             fn() => new Providers(config('waterhole.auth.providers')),
         );
 
-        $this->app->scoped(
-            'waterhole.permissions',
-            fn() => Cache::rememberForever('waterhole.permissions', fn() => Permission::all()),
-        );
+        $this->app->scoped('waterhole.permissions', fn() => Cache::rememberForever('waterhole.permissions', fn() => Permission::all()));
 
         $this->app->alias('waterhole.permissions', PermissionCollection::class);
 
@@ -56,37 +53,40 @@ class AuthServiceProvider extends ServiceProvider
             $this->loggedOut = true; // @phpstan-ignore-line
         });
 
-        Socialite::extend(
-            'sso',
-            fn() => $this->app->make(SsoProvider::class, [
-                'url' => config('waterhole.auth.sso.url'),
-            ]),
-        );
+        Socialite::extend('sso', fn() => $this->app->make(SsoProvider::class, [
+            'url' => config('waterhole.auth.sso.url'),
+        ]));
 
-        Gate::before(function (null|object $user, $ability, $arguments) {
+        Gate::before(function (?object $user, $ability, $arguments) {
             return $this->app->make(GateCache::class)->remembered($user, $ability, $arguments);
         });
 
-        Gate::before(function (null|object $user, $ability, $arguments) {
-            if (!str_starts_with($ability, 'waterhole.') || !($user instanceof User)) {
+        Gate::before(function (?object $user, $ability, $arguments) {
+            if (!str_starts_with($ability, 'waterhole.') || !$user instanceof User) {
                 return null;
             }
 
             // Treat users who haven't verified their email like guests.
             if ($user->exists && !$user->hasVerifiedEmail()) {
-                return Gate::forUser(null)->allows($ability, $arguments) ?:
-                    Response::deny(__('waterhole::auth.email-verification-required-message'));
+                return (
+                    Gate::forUser(null)->allows($ability, $arguments) ?: Response::deny(__(
+                        'waterhole::auth.email-verification-required-message',
+                    ))
+                );
             }
 
             // Treat suspended users like guests.
             if ($user->isSuspended()) {
-                return Gate::forUser(null)->allows($ability, $arguments) ?:
-                    Response::deny(__('waterhole::user.suspended-message'));
+                return (
+                    Gate::forUser(null)->allows($ability, $arguments) ?: Response::deny(__(
+                        'waterhole::user.suspended-message',
+                    ))
+                );
             }
         });
 
-        Gate::after(function (null|object $user, $ability, $result, $arguments) {
-            if (!str_starts_with($ability, 'waterhole.') || ($user && !($user instanceof User))) {
+        Gate::after(function (?object $user, $ability, $result, $arguments) {
+            if (!str_starts_with($ability, 'waterhole.') || $user && !$user instanceof User) {
                 return null;
             }
 
@@ -107,7 +107,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         $this->app->booted(function () {
-            Gate::after(function (null|object $user, $ability, $result, $arguments) {
+            Gate::after(function (?object $user, $ability, $result, $arguments) {
                 $this->app->make(GateCache::class)->store($user, $ability, $arguments, $result);
             });
         });

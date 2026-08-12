@@ -15,10 +15,7 @@ beforeEach(function () {
 
 describe('api/comments', function () {
     test('list comments', function () {
-        Post::factory()
-            ->for(Channel::factory()->public())
-            ->has(Comment::factory(2))
-            ->create();
+        Post::factory()->for(Channel::factory()->public())->has(Comment::factory(2))->create();
 
         $response = jsonApi('GET', '/api/comments');
 
@@ -27,9 +24,9 @@ describe('api/comments', function () {
     });
 
     test('retrieve comment', function () {
-        $comment = Comment::factory()
-            ->for(Post::factory()->for(Channel::factory()->public()))
-            ->create();
+        $comment = Comment::factory()->for(
+            Post::factory()->for(Channel::factory()->public()),
+        )->create();
 
         $response = jsonApi('GET', "/api/comments/$comment->id");
 

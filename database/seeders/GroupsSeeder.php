@@ -44,16 +44,13 @@ class GroupsSeeder extends Seeder
             'is_public' => true,
         ]);
 
-        Group::updateOrCreate(
-            ['name' => __('waterhole::install.group-quarantine')],
-            [
-                'is_public' => false,
-                'auto_assign' => true,
-                'rules' => [
-                    'requires_approval' => true,
-                    'remove_after_approval' => true,
-                ],
+        Group::updateOrCreate(['name' => __('waterhole::install.group-quarantine')], [
+            'is_public' => false,
+            'auto_assign' => true,
+            'rules' => [
+                'requires_approval' => true,
+                'remove_after_approval' => true,
             ],
-        );
+        ]);
     }
 }

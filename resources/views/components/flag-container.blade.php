@@ -16,7 +16,10 @@
 
 <div {{ $attributes->class($showBanner ? 'flag-container' : '') }}>
     @if ($showBanner)
-        <x-waterhole::alert class="bg-activity-soft p-md wrap" icon="tabler-flag">
+        <x-waterhole::alert
+            class="bg-activity-soft p-md wrap"
+            icon="tabler-flag"
+        >
             @if ($canModerate)
                 <ui-popup placement="bottom-start" class="row">
                     <button

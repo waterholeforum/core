@@ -1,4 +1,6 @@
-<div {{ $attributes->class('dialog')->merge(['data-shortcut-scope' => 'surface']) }}>
+<div
+    {{ $attributes->class('dialog')->merge(['data-shortcut-scope' => 'surface']) }}
+>
     @if ($title || isset($header))
         <header class="dialog__header">
             @if ($title)

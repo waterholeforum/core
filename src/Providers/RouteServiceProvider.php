@@ -48,9 +48,11 @@ class RouteServiceProvider extends ServiceProvider
         ]);
 
         Route::middlewareGroup('waterhole.api', [
-            ...!config('waterhole.api.public', false)
-                ? ['waterhole.auth:sanctum', CheckAbilities::class . ':waterhole']
-                : [\Waterhole\Http\Middleware\AuthGuard::class . ':sanctum'],
+            ...(
+                !config('waterhole.api.public', false)
+                    ? ['waterhole.auth:sanctum', CheckAbilities::class . ':waterhole']
+                    : [\Waterhole\Http\Middleware\AuthGuard::class . ':sanctum']
+            ),
             \Illuminate\Routing\Middleware\ThrottleRequests::using('waterhole.api'),
         ]);
 
@@ -86,9 +88,10 @@ class RouteServiceProvider extends ServiceProvider
                 return Limit::none();
             }
 
-            return Limit::perMinute(config('waterhole.forum.create_per_minute', 3))->by(
-                $request->user()->id,
-            );
+            return Limit::perMinute(config(
+                'waterhole.forum.create_per_minute',
+                3,
+            ))->by($request->user()->id);
         });
 
         RateLimiter::for('waterhole.search', function (Request $request) {

@@ -18,16 +18,14 @@ class ReactionsResource extends Resource
     {
         parent::__construct();
 
-        $this->fields
-            ->add(
-                Attribute::make('createdAt')->type(Type\DateTime::make())->nullable(),
-                'createdAt',
-            )
-
-            ->add(ToOne::make('reactionType'), 'reactionType')
-
-            ->add(ToOne::make('user'), 'user')
-
-            ->add(ToOne::make('content')->type(['posts', 'comments']), 'content');
+        $this->fields->add(
+            Attribute::make('createdAt')
+                ->type(Type\DateTime::make())
+                ->nullable(),
+            'createdAt',
+        )->add(ToOne::make('reactionType'), 'reactionType')->add(ToOne::make('user'), 'user')->add(
+            ToOne::make('content')->type(['posts', 'comments']),
+            'content',
+        );
     }
 }

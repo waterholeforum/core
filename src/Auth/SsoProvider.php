@@ -67,7 +67,7 @@ final class SsoProvider implements Provider
     {
         $this->request->session()->put('sso_nonce', [
             'nonce' => $nonce,
-            'expiry' => time() + 10 * 60,
+            'expiry' => time() + (10 * 60),
         ]);
     }
 

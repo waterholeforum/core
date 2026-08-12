@@ -26,7 +26,10 @@
     @endempty
 
     @if ($shortcut)
-        <x-waterhole::shortcut-label :shortcut="$shortcut" class="menu-item__shortcut" />
+        <x-waterhole::shortcut-label
+            :shortcut="$shortcut"
+            class="menu-item__shortcut"
+        />
     @endif
 
     @if ($active)

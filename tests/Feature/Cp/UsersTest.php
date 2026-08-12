@@ -20,7 +20,8 @@ describe('cp users', function () {
     test('set email verification state on user create', function (bool $emailVerified) {
         $admin = cpUsersAdmin();
 
-        $this->actingAs($admin)
+        $this
+            ->actingAs($admin)
             ->post(route('waterhole.cp.users.store'), [
                 'name' => fake()->userName(),
                 'email' => fake()->safeEmail(),
@@ -47,7 +48,8 @@ describe('cp users', function () {
             'email_verified_at' => $initiallyVerified ? now()->subDay() : null,
         ]);
 
-        $this->actingAs($admin)
+        $this
+            ->actingAs($admin)
             ->put(route('waterhole.cp.users.update', $user), [
                 'name' => $user->name,
                 'email' => $user->email,
@@ -68,13 +70,11 @@ describe('cp users', function () {
         $admin = cpUsersAdmin();
         $user = User::factory()->create(['name' => 'Old Name']);
 
-        $this->actingAs($admin)
-            ->put(route('waterhole.cp.users.update', $user), [
-                'name' => 'New Name',
-                'email' => $user->email,
-                'show_online' => 1,
-            ])
-            ->assertRedirect(route('waterhole.cp.users.index'));
+        $this->actingAs($admin)->put(route('waterhole.cp.users.update', $user), [
+            'name' => 'New Name',
+            'email' => $user->email,
+            'show_online' => 1,
+        ])->assertRedirect(route('waterhole.cp.users.index'));
 
         $this->assertDatabaseHas('users', ['id' => $user->id, 'name' => 'New Name']);
     });

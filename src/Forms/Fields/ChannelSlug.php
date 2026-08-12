@@ -10,30 +10,32 @@ use Waterhole\Models\Channel;
 
 class ChannelSlug extends Field
 {
-    public function __construct(public ?Channel $model) {}
+    public function __construct(
+        public ?Channel $model,
+    ) {}
 
     public function render(): string
     {
         return <<<'blade'
-            <x-waterhole::field
-                name="slug"
-                :label="__('waterhole::cp.channel-slug-label')"
-            >
-                <input
-                    id="{{ $component->id }}"
+                <x-waterhole::field
                     name="slug"
-                    type="text"
-                    value="{{ old('slug', $model->slug ?? '') }}"
-                    data-action="slugger#updateSlug"
-                    data-slugger-target="slug"
+                    :label="__('waterhole::cp.channel-slug-label')"
                 >
+                    <input
+                        id="{{ $component->id }}"
+                        name="slug"
+                        type="text"
+                        value="{{ old('slug', $model->slug ?? '') }}"
+                        data-action="slugger#updateSlug"
+                        data-slugger-target="slug"
+                    >
 
-                <x-slot:description>
-                    {{ __('waterhole::cp.channel-slug-url-label') }}
-                    {!! preg_replace('~^https?://~', '', str_replace('*', '<span data-slugger-target="mirror">'.old('slug', $model->slug ?? '').'</span>', route('waterhole.channels.show', ['channel' => '*']))) !!}
-                </x-slot:description>
-            </x-waterhole::field>
-        blade;
+                    <x-slot:description>
+                        {{ __('waterhole::cp.channel-slug-url-label') }}
+                        {!! preg_replace('~^https?://~', '', str_replace('*', '<span data-slugger-target="mirror">'.old('slug', $model->slug ?? '').'</span>', route('waterhole.channels.show', ['channel' => '*']))) !!}
+                    </x-slot:description>
+                </x-waterhole::field>
+            blade;
     }
 
     public function validating(Validator $validator): void

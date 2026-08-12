@@ -17,12 +17,10 @@ class ReformatCommand extends Command
     {
         $this->info('The following content will be reformatted:');
 
-        $this->table(
-            ['Model', 'Attributes'],
-            collect(static::$modelAttributes)->map(
-                fn($attributes, $model) => [$model, implode(', ', $attributes)],
-            ),
-        );
+        $this->table(['Model', 'Attributes'], collect(static::$modelAttributes)->map(fn(
+            $attributes,
+            $model,
+        ) => [$model, implode(', ', $attributes)]));
 
         if (!$this->confirm('Proceed?')) {
             return;

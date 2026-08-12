@@ -7,7 +7,9 @@ use Illuminate\Notifications\Notification;
 
 class ResetPassword extends Notification
 {
-    public function __construct(public string $token) {}
+    public function __construct(
+        public string $token,
+    ) {}
 
     public function via(): array
     {
@@ -22,26 +24,22 @@ class ResetPassword extends Notification
         return (new MailMessage())
             ->markdown('waterhole::mail.email')
             ->subject(__('waterhole::auth.reset-password-mail-subject'))
-            ->line(
-                __('waterhole::auth.reset-password-mail-body', [
-                    'forum' => config('waterhole.forum.name'),
-                    'minutes' => $minutes,
-                ]),
-            )
+            ->line(__('waterhole::auth.reset-password-mail-body', [
+                'forum' => config('waterhole.forum.name'),
+                'minutes' => $minutes,
+            ]))
             ->action(__('waterhole::auth.reset-password-mail-button'), $resetUrl);
     }
 
     protected function resetUrl($notifiable): string
     {
-        return url(
-            route(
-                'waterhole.reset-password',
-                [
-                    'token' => $this->token,
-                    'email' => $notifiable->getEmailForPasswordReset(),
-                ],
-                false,
-            ),
-        );
+        return url(route(
+            'waterhole.reset-password',
+            [
+                'token' => $this->token,
+                'email' => $notifiable->getEmailForPasswordReset(),
+            ],
+            false,
+        ));
     }
 }

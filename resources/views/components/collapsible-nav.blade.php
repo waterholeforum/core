@@ -4,7 +4,9 @@
             {{ $button }}
         @elseif ($activeComponent)
             @icon($activeComponent->icon)
-            <span class="overflow-ellipsis">{{ $activeComponent->label }}</span>
+            <span class="overflow-ellipsis">
+                {{ $activeComponent->label }}
+            </span>
             @icon('tabler-selector')
         @elseif (isset($empty))
             {{ $empty }}

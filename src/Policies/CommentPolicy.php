@@ -63,8 +63,11 @@ class CommentPolicy
      */
     public function restore(User $user, Comment $comment): bool
     {
-        return $this->moderate($user, $comment) ||
-            ($comment->user_id === $user->id && $comment->deleted_by === $user->id);
+        return (
+            $this->moderate($user, $comment)
+            || $comment->user_id === $user->id
+            && $comment->deleted_by === $user->id
+        );
     }
 
     /**

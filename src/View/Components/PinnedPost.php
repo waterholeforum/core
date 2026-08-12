@@ -10,7 +10,9 @@ class PinnedPost extends Component
 {
     use Streamable;
 
-    public function __construct(public Post $post) {}
+    public function __construct(
+        public Post $post,
+    ) {}
 
     public function render()
     {

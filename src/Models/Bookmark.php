@@ -47,15 +47,13 @@ class Bookmark extends Model
      */
     public static function bookmarkableMorphWith(): array
     {
-        return collect(self::bookmarkableClasses())
-            ->mapWithKeys(function (string $class) {
-                if (method_exists($class, 'bookmarkMorphWith')) {
-                    return [$class => $class::bookmarkMorphWith()];
-                }
+        return collect(self::bookmarkableClasses())->mapWithKeys(function (string $class) {
+            if (method_exists($class, 'bookmarkMorphWith')) {
+                return [$class => $class::bookmarkMorphWith()];
+            }
 
-                return [$class => []];
-            })
-            ->all();
+            return [$class => []];
+        })->all();
     }
 
     /**
@@ -71,7 +69,7 @@ class Bookmark extends Model
 
         $query->whereBelongsTo($user);
 
-        if (empty(($classes = self::bookmarkableClasses()))) {
+        if (empty($classes = self::bookmarkableClasses())) {
             $query->whereRaw('1 = 0');
 
             return;

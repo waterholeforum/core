@@ -18,8 +18,10 @@ class PostListItem extends Component
     public array $config;
     public HtmlString|string $title;
 
-    public function __construct(public Post $post, public string|HtmlString|null $excerpt = null)
-    {
+    public function __construct(
+        public Post $post,
+        public string|HtmlString|null $excerpt = null,
+    ) {
         $this->config = $post->channel->layout_config[ListLayout::class] ?? [];
 
         if ($this->config['show_excerpt'] ?? false) {
@@ -28,7 +30,7 @@ class PostListItem extends Component
 
         $this->title = $post->title;
 
-        if (!($this->title instanceof HtmlString)) {
+        if (!$this->title instanceof HtmlString) {
             $this->title = emojify($this->title);
         }
     }

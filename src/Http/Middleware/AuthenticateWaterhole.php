@@ -15,8 +15,8 @@ class AuthenticateWaterhole
         $originalUser = Auth::user();
 
         if (
-            $originalUser instanceof AuthenticatesWaterhole &&
-            ($payload = $originalUser->toWaterholePayload())
+            $originalUser instanceof AuthenticatesWaterhole && ($payload =
+                $originalUser->toWaterholePayload())
         ) {
             $request->attributes->set('waterhole_original_user', $originalUser);
 

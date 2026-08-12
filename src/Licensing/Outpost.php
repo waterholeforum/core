@@ -17,7 +17,9 @@ class Outpost
 
     private array $response;
 
-    public function __construct(private Repository $cache) {}
+    public function __construct(
+        private Repository $cache,
+    ) {}
 
     public function contact(): array
     {

@@ -30,7 +30,8 @@ describe('create post', function () {
         $channel = Channel::factory()->public()->create();
         $user = User::factory()->create();
 
-        $this->actingAs($user)
+        $this
+            ->actingAs($user)
             ->get(route('waterhole.posts.create', ['channel_id' => $channel->id]))
             ->assertOk()
             ->assertSee('name="title"', false)
@@ -62,7 +63,8 @@ describe('create post', function () {
         $channel = Channel::factory()->public()->create();
         $user = User::factory()->create();
 
-        $this->actingAs($user)
+        $this
+            ->actingAs($user)
             ->from(route('waterhole.posts.create', ['channel_id' => $channel->id]))
             ->post(route('waterhole.posts.store'), [
                 'channel_id' => $channel->id,
@@ -78,14 +80,12 @@ describe('create post', function () {
         $channel = Channel::factory()->readOnly()->create();
         $user = User::factory()->create();
 
-        $this->actingAs($user)
-            ->post(route('waterhole.posts.store'), [
-                'channel_id' => $channel->id,
-                'title' => 'Unauthorized post',
-                'body' => 'Should not be created.',
-                'commit' => true,
-            ])
-            ->assertForbidden();
+        $this->actingAs($user)->post(route('waterhole.posts.store'), [
+            'channel_id' => $channel->id,
+            'title' => 'Unauthorized post',
+            'body' => 'Should not be created.',
+            'commit' => true,
+        ])->assertForbidden();
     });
 
     test('shows similar posts with excerpt while creating a post', function () {
@@ -94,19 +94,16 @@ describe('create post', function () {
         Route::setRoutes(new RouteCollection());
         app()->register(RouteServiceProvider::class, true);
 
-        $channel = Channel::factory()
-            ->public()
-            ->create(['show_similar_posts' => true]);
+        $channel = Channel::factory()->public()->create(['show_similar_posts' => true]);
         $title = 'How do I test similar posts while creating?';
 
-        Post::factory()
-            ->for($channel)
-            ->create([
-                'title' => $title,
-                'body' => 'This body excerpt should appear in the similar posts list.',
-            ]);
+        Post::factory()->for($channel)->create([
+            'title' => $title,
+            'body' => 'This body excerpt should appear in the similar posts list.',
+        ]);
 
-        $this->actingAs(User::factory()->create())
+        $this
+            ->actingAs(User::factory()->create())
             ->followingRedirects()
             ->post(route('waterhole.posts.store'), [
                 'channel_id' => $channel->id,
@@ -124,7 +121,8 @@ describe('post drafts', function () {
         $channel = Channel::factory()->public()->create();
         $user = User::factory()->create();
 
-        $this->actingAs($user)
+        $this
+            ->actingAs($user)
             ->from(route('waterhole.posts.create', ['channel_id' => $channel->id]))
             ->post(route('waterhole.draft'), [
                 'channel_id' => $channel->id,
@@ -153,7 +151,8 @@ describe('post drafts', function () {
             ],
         ]);
 
-        $this->actingAs($user)
+        $this
+            ->actingAs($user)
             ->from(route('waterhole.posts.create', ['channel_id' => $channel->id]))
             ->post(route('waterhole.draft'), [
                 'channel_id' => $channel->id,
@@ -178,7 +177,8 @@ describe('post drafts', function () {
             ],
         ]);
 
-        $this->actingAs($user)
+        $this
+            ->actingAs($user)
             ->delete(route('waterhole.draft'))
             ->assertRedirect(route('waterhole.home'));
 
@@ -222,7 +222,8 @@ describe('post drafts', function () {
             ],
         ]);
 
-        $this->actingAs($user)
+        $this
+            ->actingAs($user)
             ->post(route('waterhole.posts.store'), [
                 'channel_id' => $channelB->id,
                 'title' => 'Draft title',
@@ -249,7 +250,8 @@ describe('post drafts', function () {
             ],
         ]);
 
-        $this->actingAs($user)
+        $this
+            ->actingAs($user)
             ->post(route('waterhole.posts.store'), [
                 'channel_id' => $channelB->id,
                 'title' => '',
@@ -266,11 +268,10 @@ describe('edit post', function () {
         $channel = Channel::factory()->public()->create();
         $user = User::factory()->create();
 
-        $post = Post::factory()
-            ->for($channel)
-            ->create(['user_id' => $user->id]);
+        $post = Post::factory()->for($channel)->create(['user_id' => $user->id]);
 
-        $this->actingAs($user)
+        $this
+            ->actingAs($user)
             ->get(route('waterhole.posts.edit', $post))
             ->assertOk()
             ->assertSee('value="' . e($post->title) . '"', false);
@@ -280,16 +281,12 @@ describe('edit post', function () {
         $channel = Channel::factory()->public()->create();
         $user = User::factory()->create();
 
-        $post = Post::factory()
-            ->for($channel)
-            ->create(['user_id' => $user->id]);
+        $post = Post::factory()->for($channel)->create(['user_id' => $user->id]);
 
-        $this->actingAs($user)
-            ->patch(route('waterhole.posts.update', $post), [
-                'title' => 'Updated title',
-                'body' => 'Updated body',
-            ])
-            ->assertRedirect($post->fresh()->url);
+        $this->actingAs($user)->patch(route('waterhole.posts.update', $post), [
+            'title' => 'Updated title',
+            'body' => 'Updated body',
+        ])->assertRedirect($post->fresh()->url);
 
         $this->assertDatabaseHas('posts', [
             'id' => $post->id,
@@ -303,12 +300,10 @@ describe('edit post', function () {
         $channel = Channel::factory()->public()->create();
         $user = User::factory()->create();
 
-        $post = Post::factory()
-            ->for($channel)
-            ->create([
-                'user_id' => $user->id,
-                'created_at' => now()->subMinutes(20),
-            ]);
+        $post = Post::factory()->for($channel)->create([
+            'user_id' => $user->id,
+            'created_at' => now()->subMinutes(20),
+        ]);
 
         $this->actingAs($user)->get(route('waterhole.posts.edit', $post))->assertForbidden();
     });
@@ -318,11 +313,9 @@ describe('edit post', function () {
 
         $channel = Channel::factory()->public()->create();
 
-        $post = Post::factory()
-            ->for($channel)
-            ->create([
-                'created_at' => now()->subMinutes(20),
-            ]);
+        $post = Post::factory()->for($channel)->create([
+            'created_at' => now()->subMinutes(20),
+        ]);
 
         $moderator = User::factory()->admin()->create();
 
@@ -335,21 +328,17 @@ describe('delete post', function () {
         $channel = Channel::factory()->public()->create();
         $user = User::factory()->create();
 
-        $post = Post::factory()
-            ->for($channel)
-            ->create([
-                'user_id' => $user->id,
-                'comment_count' => 0,
-            ]);
+        $post = Post::factory()->for($channel)->create([
+            'user_id' => $user->id,
+            'comment_count' => 0,
+        ]);
 
-        $this->actingAs($user)
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => Post::class,
-                'id' => $post->id,
-                'action_class' => TrashPost::class,
-                'return' => $post->url,
-            ])
-            ->assertRedirect();
+        $this->actingAs($user)->post(route('waterhole.actions.store'), [
+            'actionable' => Post::class,
+            'id' => $post->id,
+            'action_class' => TrashPost::class,
+            'return' => $post->url,
+        ])->assertRedirect();
 
         expect($post->fresh()->trashed())->toBeTrue();
     });
@@ -358,19 +347,15 @@ describe('delete post', function () {
         $channel = Channel::factory()->public()->create();
         $moderator = User::factory()->admin()->create();
 
-        $post = Post::factory()
-            ->for($channel)
-            ->create(['comment_count' => 2]);
+        $post = Post::factory()->for($channel)->create(['comment_count' => 2]);
 
-        $this->actingAs($moderator)
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => Post::class,
-                'id' => $post->id,
-                'action_class' => TrashPost::class,
-                'return' => $post->url,
-                'confirmed' => true,
-            ])
-            ->assertRedirect();
+        $this->actingAs($moderator)->post(route('waterhole.actions.store'), [
+            'actionable' => Post::class,
+            'id' => $post->id,
+            'action_class' => TrashPost::class,
+            'return' => $post->url,
+            'confirmed' => true,
+        ])->assertRedirect();
 
         expect($post->fresh()->trashed())->toBeTrue();
     });
@@ -380,12 +365,10 @@ describe('delete post', function () {
         $user = User::factory()->create();
         $viewer = User::factory()->create();
 
-        $post = Post::factory()
-            ->for($channel)
-            ->create([
-                'user_id' => $user->id,
-                'comment_count' => 0,
-            ]);
+        $post = Post::factory()->for($channel)->create([
+            'user_id' => $user->id,
+            'comment_count' => 0,
+        ]);
 
         $this->actingAs($user)->post(route('waterhole.actions.store'), [
             'actionable' => Post::class,
@@ -394,7 +377,8 @@ describe('delete post', function () {
             'return' => $post->url,
         ]);
 
-        $this->actingAs($viewer)
+        $this
+            ->actingAs($viewer)
             ->get(route('waterhole.home'))
             ->assertOk()
             ->assertDontSeeText($post->title);
@@ -408,23 +392,19 @@ describe('pin and unpin post', function () {
 
         $post = Post::factory()->for($channel)->create();
 
-        $this->actingAs($moderator)
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => Post::class,
-                'id' => $post->id,
-                'action_class' => Pin::class,
-            ])
-            ->assertRedirect();
+        $this->actingAs($moderator)->post(route('waterhole.actions.store'), [
+            'actionable' => Post::class,
+            'id' => $post->id,
+            'action_class' => Pin::class,
+        ])->assertRedirect();
 
         expect($post->fresh()->is_pinned)->toBeTrue();
 
-        $this->actingAs($moderator)
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => Post::class,
-                'id' => $post->id,
-                'action_class' => Pin::class,
-            ])
-            ->assertRedirect();
+        $this->actingAs($moderator)->post(route('waterhole.actions.store'), [
+            'actionable' => Post::class,
+            'id' => $post->id,
+            'action_class' => Pin::class,
+        ])->assertRedirect();
 
         expect($post->fresh()->is_pinned)->toBeFalse();
     });
@@ -433,12 +413,8 @@ describe('pin and unpin post', function () {
         $channel = Channel::factory()->public()->create();
         $moderator = User::factory()->admin()->create();
 
-        $pinned = Post::factory()
-            ->for($channel)
-            ->create(['title' => 'Pinned Post']);
-        $other = Post::factory()
-            ->for($channel)
-            ->create(['title' => 'Other Post']);
+        $pinned = Post::factory()->for($channel)->create(['title' => 'Pinned Post']);
+        $other = Post::factory()->for($channel)->create(['title' => 'Other Post']);
 
         $this->actingAs($moderator)->post(route('waterhole.actions.store'), [
             'actionable' => Post::class,
@@ -446,7 +422,8 @@ describe('pin and unpin post', function () {
             'action_class' => Pin::class,
         ]);
 
-        $this->get(route('waterhole.home'))
+        $this
+            ->get(route('waterhole.home'))
             ->assertOk()
             ->assertSeeInOrder(['Pinned Post', 'Other Post']);
     });
@@ -458,13 +435,11 @@ describe('follow and ignore post', function () {
         $user = User::factory()->create();
         $post = Post::factory()->for($channel)->create();
 
-        $this->actingAs($user)
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => Post::class,
-                'id' => $post->id,
-                'action_class' => Follow::class,
-            ])
-            ->assertRedirect();
+        $this->actingAs($user)->post(route('waterhole.actions.store'), [
+            'actionable' => Post::class,
+            'id' => $post->id,
+            'action_class' => Follow::class,
+        ])->assertRedirect();
 
         $this->assertDatabaseHas('post_user', [
             'post_id' => $post->id,
@@ -472,13 +447,11 @@ describe('follow and ignore post', function () {
             'notifications' => 'follow',
         ]);
 
-        $this->actingAs($user)
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => Post::class,
-                'id' => $post->id,
-                'action_class' => Follow::class,
-            ])
-            ->assertRedirect();
+        $this->actingAs($user)->post(route('waterhole.actions.store'), [
+            'actionable' => Post::class,
+            'id' => $post->id,
+            'action_class' => Follow::class,
+        ])->assertRedirect();
 
         $this->assertDatabaseHas('post_user', [
             'post_id' => $post->id,
@@ -492,13 +465,11 @@ describe('follow and ignore post', function () {
         $user = User::factory()->create();
         $post = Post::factory()->for($channel)->create();
 
-        $this->actingAs($user)
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => Post::class,
-                'id' => $post->id,
-                'action_class' => Ignore::class,
-            ])
-            ->assertRedirect();
+        $this->actingAs($user)->post(route('waterhole.actions.store'), [
+            'actionable' => Post::class,
+            'id' => $post->id,
+            'action_class' => Ignore::class,
+        ])->assertRedirect();
 
         $this->assertDatabaseHas('post_user', [
             'post_id' => $post->id,
@@ -506,13 +477,11 @@ describe('follow and ignore post', function () {
             'notifications' => 'ignore',
         ]);
 
-        $this->actingAs($user)
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => Post::class,
-                'id' => $post->id,
-                'action_class' => Ignore::class,
-            ])
-            ->assertRedirect();
+        $this->actingAs($user)->post(route('waterhole.actions.store'), [
+            'actionable' => Post::class,
+            'id' => $post->id,
+            'action_class' => Ignore::class,
+        ])->assertRedirect();
 
         $this->assertDatabaseHas('post_user', [
             'post_id' => $post->id,
@@ -528,23 +497,19 @@ describe('lock and unlock post', function () {
         $moderator = User::factory()->admin()->create();
         $post = Post::factory()->for($channel)->create();
 
-        $this->actingAs($moderator)
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => Post::class,
-                'id' => $post->id,
-                'action_class' => Lock::class,
-            ])
-            ->assertRedirect();
+        $this->actingAs($moderator)->post(route('waterhole.actions.store'), [
+            'actionable' => Post::class,
+            'id' => $post->id,
+            'action_class' => Lock::class,
+        ])->assertRedirect();
 
         expect($post->fresh()->is_locked)->toBeTrue();
 
-        $this->actingAs($moderator)
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => Post::class,
-                'id' => $post->id,
-                'action_class' => Lock::class,
-            ])
-            ->assertRedirect();
+        $this->actingAs($moderator)->post(route('waterhole.actions.store'), [
+            'actionable' => Post::class,
+            'id' => $post->id,
+            'action_class' => Lock::class,
+        ])->assertRedirect();
 
         expect($post->fresh()->is_locked)->toBeFalse();
     });
@@ -555,19 +520,16 @@ describe('feed filters', function () {
         $channel = Channel::factory()->public()->create();
         $user = User::factory()->create();
 
-        $followed = Post::factory()
-            ->for($channel)
-            ->create(['title' => 'Followed post']);
+        $followed = Post::factory()->for($channel)->create(['title' => 'Followed post']);
 
-        Post::factory()
-            ->for($channel)
-            ->create(['title' => 'Other post']);
+        Post::factory()->for($channel)->create(['title' => 'Other post']);
 
         $this->actingAs($user);
 
         $followed->follow();
 
-        $this->get(route('waterhole.home', ['filter' => 'following']))
+        $this
+            ->get(route('waterhole.home', ['filter' => 'following']))
             ->assertOk()
             ->assertSeeText('Followed post')
             ->assertDontSeeText('Other post');
@@ -582,15 +544,13 @@ describe('move post between channels', function () {
 
         $post = Post::factory()->for($channelA)->create();
 
-        $this->actingAs($moderator)
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => Post::class,
-                'id' => $post->id,
-                'action_class' => MoveToChannel::class,
-                'channel_id' => $channelB->id,
-                'confirmed' => true,
-            ])
-            ->assertRedirect();
+        $this->actingAs($moderator)->post(route('waterhole.actions.store'), [
+            'actionable' => Post::class,
+            'id' => $post->id,
+            'action_class' => MoveToChannel::class,
+            'channel_id' => $channelB->id,
+            'confirmed' => true,
+        ])->assertRedirect();
 
         expect($post->fresh()->channel_id)->toBe($channelB->id);
     });
@@ -600,9 +560,7 @@ describe('move post between channels', function () {
         $channelB = Channel::factory()->public()->create();
         $moderator = User::factory()->admin()->create();
 
-        $post = Post::factory()
-            ->for($channelA)
-            ->create(['title' => 'Moved Post']);
+        $post = Post::factory()->for($channelA)->create(['title' => 'Moved Post']);
 
         $this->actingAs($moderator)->post(route('waterhole.actions.store'), [
             'actionable' => Post::class,
@@ -612,11 +570,13 @@ describe('move post between channels', function () {
             'confirmed' => true,
         ]);
 
-        $this->get(route('waterhole.channels.show', $channelA))
+        $this
+            ->get(route('waterhole.channels.show', $channelA))
             ->assertOk()
             ->assertDontSeeText('Moved Post');
 
-        $this->get(route('waterhole.channels.show', $channelB))
+        $this
+            ->get(route('waterhole.channels.show', $channelB))
             ->assertOk()
             ->assertSeeText('Moved Post');
     });
@@ -625,15 +585,14 @@ describe('move post between channels', function () {
 describe('post heading sidebar', function () {
     test('renders heading tabs for posts with at least two headings', function () {
         $channel = Channel::factory()->public()->create();
-        $post = Post::factory()
-            ->for($channel)
-            ->create([
-                'body' => "## First Heading\n\nSome text.\n\n### Second Heading\n\nMore text.",
-            ]);
+        $post = Post::factory()->for($channel)->create([
+            'body' => "## First Heading\n\nSome text.\n\n### Second Heading\n\nMore text.",
+        ]);
 
         Comment::factory()->for($post)->create();
 
-        $this->get(route('waterhole.posts.show', $post))
+        $this
+            ->get(route('waterhole.posts.show', $post))
             ->assertOk()
             ->assertSee('class="post-headings tabs tabs--vertical gap-xxs hide-md-down"', false)
             ->assertSee('href="#content-first-heading"', false)
@@ -645,19 +604,15 @@ describe('post heading sidebar', function () {
 
     test('does not render heading tabs for a single heading', function () {
         $channel = Channel::factory()->public()->create();
-        $post = Post::factory()
-            ->for($channel)
-            ->create([
-                'body' => "## Only Heading\n\nSome text.",
-            ]);
+        $post = Post::factory()->for($channel)->create([
+            'body' => "## Only Heading\n\nSome text.",
+        ]);
 
         Comment::factory()->for($post)->create();
 
-        $this->get(route('waterhole.posts.show', $post))
-            ->assertOk()
-            ->assertDontSee(
-                'class="post-headings tabs tabs--vertical gap-xxs hide-md-down"',
-                false,
-            );
+        $this->get(route('waterhole.posts.show', $post))->assertOk()->assertDontSee(
+            'class="post-headings tabs tabs--vertical gap-xxs hide-md-down"',
+            false,
+        );
     });
 });

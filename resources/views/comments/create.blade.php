@@ -17,6 +17,10 @@
             <h1 class="h3">{{ $title }}</h1>
         </header>
 
-        <x-waterhole::composer :post="$post" :parent="$parent" class="is-open is-static" />
+        <x-waterhole::composer
+            :post="$post"
+            :parent="$parent"
+            class="is-open is-static"
+        />
     </div>
 </x-waterhole::layout>

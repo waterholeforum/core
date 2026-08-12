@@ -26,10 +26,12 @@ return new class extends Migration {
         });
 
         Schema::table('mentions', function (Blueprint $table) {
-            $table->unique(
-                ['content_type', 'content_id', 'mentionable_type', 'mentionable_id'],
-                'mentionable_unique_index',
-            );
+            $table->unique([
+                'content_type',
+                'content_id',
+                'mentionable_type',
+                'mentionable_id',
+            ], 'mentionable_unique_index');
         });
     }
 

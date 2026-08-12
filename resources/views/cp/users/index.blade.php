@@ -42,27 +42,44 @@
                     id="filter-suggestions"
                     role="listbox"
                 >
-                    <li id="filter-group" role="option" class="menu-item" data-value="group:">
+                    <li
+                        id="filter-group"
+                        role="option"
+                        class="menu-item"
+                        data-value="group:"
+                    >
                         <span class="menu-item__title">group:</span>
                         <span class="color-muted">
                             {{ __('waterhole::cp.users-filter-group-description') }}
                         </span>
                     </li>
                     @foreach (Waterhole\Models\Group::selectable()->get() as $group)
-                        <li id="filter-group-{{ $group->id }}" role="option" class="menu-item">
+                        <li
+                            id="filter-group-{{ $group->id }}"
+                            role="option"
+                            class="menu-item"
+                        >
                             <span class="menu-item__title">
                                 group:{{ str_contains($group->name, ' ') ? '"' . $group->name . '"' : $group->name }}
                             </span>
                         </li>
                     @endforeach
 
-                    <li role="option" class="menu-item" data-value="is:suspended">
+                    <li
+                        role="option"
+                        class="menu-item"
+                        data-value="is:suspended"
+                    >
                         <span class="menu-item__title">is:suspended</span>
                     </li>
                 </ul>
             </form>
 
-            <a href="{{ route('waterhole.cp.users.create') }}" type="button" class="btn bg-accent">
+            <a
+                href="{{ route('waterhole.cp.users.create') }}"
+                type="button"
+                class="btn bg-accent"
+            >
                 @icon('tabler-plus')
                 <span>{{ __('waterhole::cp.create-user-button') }}</span>
             </a>
@@ -118,17 +135,27 @@
                                         </td>
 
                                         <td>
-                                            <span class="row gap-xxs align-center">
-                                                <a href="mailto:{{ $user->email }}">
+                                            <span
+                                                class="row gap-xxs align-center"
+                                            >
+                                                <a
+                                                    href="mailto:{{ $user->email }}"
+                                                >
                                                     {{ Str::limit($user->email, 30) }}
                                                 </a>
 
                                                 @unless ($user->hasVerifiedEmail())
                                                     <span
                                                         class="text-xxs"
-                                                        style="color: var(--color-warning)"
+                                                        style="
+                                                            color: var(
+                                                                --color-warning
+                                                            );
+                                                        "
                                                     >
-                                                        <span class="dot"></span>
+                                                        <span
+                                                            class="dot"
+                                                        ></span>
                                                         <ui-tooltip>
                                                             {{ __('waterhole::cp.users-email-unverified-tooltip') }}
                                                         </ui-tooltip>
@@ -138,7 +165,9 @@
                                         </td>
 
                                         <td>
-                                            <x-waterhole::user-groups :user="$user" />
+                                            <x-waterhole::user-groups
+                                                :user="$user"
+                                            />
                                         </td>
 
                                         <td>

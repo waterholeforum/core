@@ -9,9 +9,11 @@ class SsoPayload
 {
     private int $expiry;
 
-    public function __construct(public string $provider, public PendingUser $user)
-    {
-        $this->expiry = time() + 10 * 60;
+    public function __construct(
+        public string $provider,
+        public PendingUser $user,
+    ) {
+        $this->expiry = time() + (10 * 60);
     }
 
     public static function decrypt(string $value): static

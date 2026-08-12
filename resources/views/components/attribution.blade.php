@@ -24,11 +24,15 @@
 
             @if ($user?->isOnline())
                 <span class="dot color-success">
-                    <ui-tooltip>{{ __('waterhole::user.online-label') }}</ui-tooltip>
+                    <ui-tooltip>
+                        {{ __('waterhole::user.online-label') }}
+                    </ui-tooltip>
                 </span>
             @endif
 
-            <span class="attribution__name">{{ Waterhole\username($user) }}</span>
+            <span class="attribution__name">
+                {{ Waterhole\username($user) }}
+            </span>
         </x-waterhole::user-link>
 
         <x-waterhole::user-groups :user="$user" />

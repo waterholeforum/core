@@ -15,7 +15,11 @@
                 role=""
             />
         @elseif ($item instanceof Waterhole\Models\StructureLink)
-            <x-waterhole::menu-item :icon="$item->icon" :href="$item->href" target="_blank">
+            <x-waterhole::menu-item
+                :icon="$item->icon"
+                :href="$item->href"
+                target="_blank"
+            >
                 <x-slot name="label">
                     <span class="menu-item__title row gap-xs align-self-center">
                         {{ $item->name }}

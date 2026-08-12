@@ -11,8 +11,9 @@ class FlagSummary extends Component
 {
     public string $summary;
 
-    public function __construct(public Model $subject)
-    {
+    public function __construct(
+        public Model $subject,
+    ) {
         $flags = $this->subject->pendingFlags;
         $total = $flags->count();
 

@@ -9,24 +9,26 @@ use Waterhole\Models\User;
 
 class UserLocation extends Field
 {
-    public function __construct(public ?User $model) {}
+    public function __construct(
+        public ?User $model,
+    ) {}
 
     public function render(): string
     {
         return <<<'blade'
-            <x-waterhole::field
-                name="location"
-                :label="__('waterhole::user.location-label')"
-            >
-                <input
-                    id="{{ $component->id }}"
-                    type="text"
+                <x-waterhole::field
                     name="location"
-                    value="{{ old('location', $model?->location) }}"
-                    maxlength="30"
+                    :label="__('waterhole::user.location-label')"
                 >
-            </x-waterhole::field>
-        blade;
+                    <input
+                        id="{{ $component->id }}"
+                        type="text"
+                        name="location"
+                        value="{{ old('location', $model?->location) }}"
+                        maxlength="30"
+                    >
+                </x-waterhole::field>
+            blade;
     }
 
     public function validating(Validator $validator): void

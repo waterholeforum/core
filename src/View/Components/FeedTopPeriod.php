@@ -11,8 +11,9 @@ class FeedTopPeriod extends Component
     public ?array $periods = null;
     public ?string $currentPeriod = null;
 
-    public function __construct(public Feed $feed)
-    {
+    public function __construct(
+        public Feed $feed,
+    ) {
         $filter = $feed->currentFilter;
 
         if ($filter instanceof Top) {

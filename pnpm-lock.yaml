@@ -41,9 +41,6 @@ importers:
       '@hotwired/turbo':
         specifier: ^8.0.23
         version: 8.0.23
-      '@prettier/plugin-php':
-        specifier: ^0.24.0
-        version: 0.24.0(prettier@3.8.1)
       '@release-it/bumper':
         specifier: ^7.0.5
         version: 7.0.5(release-it@19.2.4(@types/node@25.5.0))
@@ -781,11 +778,6 @@ packages:
 
   '@preact/signals-core@1.14.0':
     resolution: {integrity: sha512-AowtCcCU/33lFlh1zRFf/u+12rfrhtNakj7UpaGEsmMwUKpKWMVvcktOGcwBBNiB4lWrZWc01LhiyyzVklJyaQ==}
-
-  '@prettier/plugin-php@0.24.0':
-    resolution: {integrity: sha512-x9l65fCE/pgoET6RQowgdgG8Xmzs44z6j6Hhg3coINCyCw9JBGJ5ZzMR2XHAM2jmAdbJAIgqB6cUn4/3W3XLTA==}
-    peerDependencies:
-      prettier: ^3.0.0
 
   '@quansync/fs@1.0.0':
     resolution: {integrity: sha512-4TJ3DFtlf1L5LDMaM6CanJ/0lckGNtJcMjQ1NAV6zDmA0tEHKZtxNKin8EgPaVX1YzljbxckyT2tJrpQKAtngQ==}
@@ -1723,9 +1715,6 @@ packages:
     resolution: {integrity: sha512-utWOt/GHzuUxnLKxB6dk81RoOeoNeHgbrXiuGk4yyF5qlRz+iIVWu56E2fqGHFrXz0QNUhLB/8nKqvRH66JKGQ==}
     engines: {node: '>=10'}
 
-  linguist-languages@8.2.0:
-    resolution: {integrity: sha512-KCUUH9x97QWYU0SXOCGxUrZR6cSfuQrMhABB7L/0I8N0LXOeaKe7+RZs7FAwvWCV2qKfZ4Wv1luLq4OfMezSJg==}
-
   loader-utils@3.3.1:
     resolution: {integrity: sha512-FMJTLMXfCLMLfJxcX9PFqX5qD88Z5MRGaZCVzfuqeZSPsyiBzs+pahDQjbIWz2QIzPZz0NX9Zy4FX3lmK6YHIg==}
     engines: {node: '>= 12.13.0'}
@@ -1929,9 +1918,6 @@ packages:
   photoswipe@5.4.4:
     resolution: {integrity: sha512-WNFHoKrkZNnvFFhbHL93WDkW3ifwVOXSW3w1UuZZelSmgXpIGiZSNlZJq37rR8YejqME2rHs9EhH9ZvlvFH2NA==}
     engines: {node: '>= 0.12.0'}
-
-  php-parser@3.5.0:
-    resolution: {integrity: sha512-EHdzSckQNP86jQRCEsMYhs+YzS4BfvfxnyhvzHVhVRoRUGEMFi8f3xKfuS9xdChBazZSyvb10SZbqhYQLGBcQg==}
 
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
@@ -3478,12 +3464,6 @@ snapshots:
 
   '@preact/signals-core@1.14.0': {}
 
-  '@prettier/plugin-php@0.24.0(prettier@3.8.1)':
-    dependencies:
-      linguist-languages: 8.2.0
-      php-parser: 3.5.0
-      prettier: 3.8.1
-
   '@quansync/fs@1.0.0':
     dependencies:
       quansync: 1.0.0
@@ -4315,8 +4295,6 @@ snapshots:
 
   lilconfig@2.1.0: {}
 
-  linguist-languages@8.2.0: {}
-
   loader-utils@3.3.1: {}
 
   lodash-es@4.17.23: {}
@@ -4501,8 +4479,6 @@ snapshots:
   perfect-debounce@2.1.0: {}
 
   photoswipe@5.4.4: {}
-
-  php-parser@3.5.0: {}
 
   picocolors@1.1.1: {}
 

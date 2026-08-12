@@ -3,6 +3,7 @@
 namespace Waterhole\Search;
 
 use Illuminate\Support\HtmlString;
+
 use function Waterhole\emojify;
 
 class Highlighter
@@ -23,15 +24,11 @@ class Highlighter
             return new HtmlString(e($text));
         }
 
-        return new HtmlString(
-            emojify(
-                preg_replace_callback(
-                    $this->re,
-                    fn(array $matches) => "<mark>$matches[0]</mark>",
-                    $text,
-                ),
-            ),
-        );
+        return new HtmlString(emojify(preg_replace_callback(
+            $this->re,
+            fn(array $matches) => "<mark>$matches[0]</mark>",
+            $text,
+        )));
     }
 
     /**
@@ -52,7 +49,7 @@ class Highlighter
             $text = '...' . substr($text, strpos($text, ' ', $start) + 1);
         }
 
-        if (strlen($text) > $chars * 2) {
+        if (strlen($text) > ($chars * 2)) {
             $text = substr($text, 0, strrpos(substr($text, 0, $chars * 2), ' ')) . '...';
         }
 

@@ -39,9 +39,9 @@ class PostListItem
             ->add(PostDraft::class, 'draft')
             ->add(PostActivity::class, 'activity');
 
-        $this->secondary = (new ComponentList())
-            ->add(PostTagsSummary::class, 'tags')
-            ->add(PostReactionsCondensed::class, 'reactions')
-            ->add('waterhole::components.post-replies', 'replies');
+        $this->secondary = (new ComponentList())->add(PostTagsSummary::class, 'tags')->add(
+            PostReactionsCondensed::class,
+            'reactions',
+        )->add('waterhole::components.post-replies', 'replies');
     }
 }

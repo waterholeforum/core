@@ -6,12 +6,16 @@
     @if ($group->isMember())
         <span class="row gap-xxs text-xs color-muted">
             @icon('tabler-user')
-            <span>{{ __('waterhole::cp.structure-visibility-members-label') }}</span>
+            <span>
+                {{ __('waterhole::cp.structure-visibility-members-label') }}
+            </span>
         </span>
     @elseif ($group->isGuest())
         <span class="row gap-xxs text-xs color-muted">
             @icon('tabler-world')
-            <span>{{ __('waterhole::cp.structure-visibility-public-label') }}</span>
+            <span>
+                {{ __('waterhole::cp.structure-visibility-public-label') }}
+            </span>
         </span>
     @else
         <x-waterhole::group-badge :group="$group" class="text-xs" />
@@ -25,5 +29,10 @@
         </a>
     @endunless
 
-    <x-waterhole::action-buttons :for="$group" :limit="2" context="cp" class="text-xs" />
+    <x-waterhole::action-buttons
+        :for="$group"
+        :limit="2"
+        context="cp"
+        class="text-xs"
+    />
 </li>

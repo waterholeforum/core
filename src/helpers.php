@@ -94,7 +94,7 @@ function get_contrast_color(string $hex): string
     $r = hexdec(substr($hex, 0, 2));
     $g = hexdec(substr($hex, 2, 2));
     $b = hexdec(substr($hex, 4, 2));
-    $yiq = ($r * 299 + $g * 587 + $b * 114) / 1000;
+    $yiq = (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
 
     return $yiq >= 128 ? '#000' : '#fff';
 }
@@ -106,12 +106,9 @@ function get_contrast_color(string $hex): string
  */
 function resolve_all(array $names, array ...$parameters): array
 {
-    return array_filter(
-        array_map(
-            fn($name) => is_object($name) ? $name : rescue(fn() => resolve($name, ...$parameters)),
-            $names,
-        ),
-    );
+    return array_filter(array_map(fn($name) => is_object($name)
+        ? $name
+        : rescue(fn() => resolve($name, ...$parameters)), $names));
 }
 
 function return_field(?string $default = null): string
@@ -179,18 +176,21 @@ function build_components(array|string|ComponentList $components, array $data = 
         $components = $components->items();
     }
 
-    return array_map(function ($component) use ($data) {
-        if ($component instanceof Closure) {
-            $component = app()->call($component, $data);
-        }
-        if (is_object($component)) {
-            return $component;
-        } elseif (class_exists($component)) {
-            return $component::resolve($data);
-        } elseif (view()->exists($component)) {
-            return new AnonymousComponent($component, $data);
-        }
-    }, (array) $components);
+    return array_map(
+        function ($component) use ($data) {
+            if ($component instanceof Closure) {
+                $component = app()->call($component, $data);
+            }
+            if (is_object($component)) {
+                return $component;
+            } elseif (class_exists($component)) {
+                return $component::resolve($data);
+            } elseif (view()->exists($component)) {
+                return new AnonymousComponent($component, $data);
+            }
+        },
+        (array) $components,
+    );
 }
 
 function icon(?string $icon, array $attributes = []): string

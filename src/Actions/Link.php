@@ -35,11 +35,8 @@ abstract class Link extends Action
 
         $content = $this->renderContent($models);
 
-        return new HtmlString(
-            <<<html
+        return new HtmlString(<<<html
                 <a href="$link" $attributes>$content</a>
-            html
-            ,
-        );
+            html);
     }
 }

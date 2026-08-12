@@ -28,10 +28,10 @@ class StructureLinkForm extends ComponentList
             'details',
         );
 
-        $this->details = (new ComponentList())
-            ->add(StructureLinkName::class, 'name')
-            ->add(Icon::class, 'icon')
-            ->add(StructureLinkUrl::class, 'url');
+        $this->details = (new ComponentList())->add(StructureLinkName::class, 'name')->add(
+            Icon::class,
+            'icon',
+        )->add(StructureLinkUrl::class, 'url');
 
         $this->add(
             fn($model) => new FormSection(

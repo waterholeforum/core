@@ -10,39 +10,41 @@ use Waterhole\Models\User;
 
 class UserEmailVerified extends Field
 {
-    public function __construct(public ?User $model) {}
+    public function __construct(
+        public ?User $model,
+    ) {}
 
     public function render(): string
     {
         return <<<'blade'
-            <div class="stack gap-sm">
-                <x-waterhole::field
-                    name="email"
-                    :label="__('waterhole::cp.user-email-label')"
-                >
-                    <div class="stack gap-sm">
-                        <input
-                            type="email"
-                            name="email"
-                            id="{{ $component->id }}"
-                            value="{{ old('email', $model->email ?? null) }}"
-                        >
-
-                        <label for="email_verified" class="choice">
-                            <input type="hidden" name="email_verified" value="0">
+                <div class="stack gap-sm">
+                    <x-waterhole::field
+                        name="email"
+                        :label="__('waterhole::cp.user-email-label')"
+                    >
+                        <div class="stack gap-sm">
                             <input
-                                id="email_verified"
-                                type="checkbox"
-                                name="email_verified"
-                                value="1"
-                                @checked(old('email_verified', $model?->exists ? $model->hasVerifiedEmail() : true))
+                                type="email"
+                                name="email"
+                                id="{{ $component->id }}"
+                                value="{{ old('email', $model->email ?? null) }}"
                             >
-                            <span>{{ __('waterhole::cp.user-email-verified-label') }}</span>
-                        </label>
-                    </div>
-                </x-waterhole::field>
-            </div>
-        blade;
+
+                            <label for="email_verified" class="choice">
+                                <input type="hidden" name="email_verified" value="0">
+                                <input
+                                    id="email_verified"
+                                    type="checkbox"
+                                    name="email_verified"
+                                    value="1"
+                                    @checked(old('email_verified', $model?->exists ? $model->hasVerifiedEmail() : true))
+                                >
+                                <span>{{ __('waterhole::cp.user-email-verified-label') }}</span>
+                            </label>
+                        </div>
+                    </x-waterhole::field>
+                </div>
+            blade;
     }
 
     public function validating(Validator $validator): void

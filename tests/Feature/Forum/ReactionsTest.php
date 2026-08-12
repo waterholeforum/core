@@ -22,14 +22,12 @@ describe('react', function () {
         $user = User::factory()->create();
         $reactionType = ReactionType::query()->firstOrFail();
 
-        $this->actingAs($user)
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => Post::class,
-                'id' => $post->id,
-                'action_class' => React::class,
-                'reaction_type_id' => $reactionType->id,
-            ])
-            ->assertRedirect();
+        $this->actingAs($user)->post(route('waterhole.actions.store'), [
+            'actionable' => Post::class,
+            'id' => $post->id,
+            'action_class' => React::class,
+            'reaction_type_id' => $reactionType->id,
+        ])->assertRedirect();
 
         $this->assertDatabaseHas('reactions', [
             'content_type' => $post->getMorphClass(),
@@ -46,14 +44,12 @@ describe('react', function () {
         $user = User::factory()->create();
         $reactionType = ReactionType::query()->firstOrFail();
 
-        $this->actingAs($user)
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => Comment::class,
-                'id' => $comment->id,
-                'action_class' => React::class,
-                'reaction_type_id' => $reactionType->id,
-            ])
-            ->assertRedirect();
+        $this->actingAs($user)->post(route('waterhole.actions.store'), [
+            'actionable' => Comment::class,
+            'id' => $comment->id,
+            'action_class' => React::class,
+            'reaction_type_id' => $reactionType->id,
+        ])->assertRedirect();
 
         $this->assertDatabaseHas('reactions', [
             'content_type' => $comment->getMorphClass(),

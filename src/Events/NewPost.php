@@ -16,7 +16,9 @@ class NewPost implements ShouldBroadcast, ShouldDispatchAfterCommit
     use Dispatchable;
     use InteractsWithSockets;
 
-    public function __construct(protected Post $post) {}
+    public function __construct(
+        protected Post $post,
+    ) {}
 
     public function broadcastOn()
     {

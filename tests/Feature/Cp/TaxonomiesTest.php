@@ -20,13 +20,11 @@ function cpTaxonomiesAdmin(): User
 
 describe('cp taxonomies', function () {
     test('create taxonomy', function () {
-        $this->actingAs(cpTaxonomiesAdmin())
-            ->post(route('waterhole.cp.taxonomies.store'), [
-                'name' => 'Topics',
-                'is_required' => false,
-                'allow_multiple' => true,
-            ])
-            ->assertRedirect();
+        $this->actingAs(cpTaxonomiesAdmin())->post(route('waterhole.cp.taxonomies.store'), [
+            'name' => 'Topics',
+            'is_required' => false,
+            'allow_multiple' => true,
+        ])->assertRedirect();
 
         $this->assertDatabaseHas('taxonomies', ['name' => 'Topics']);
     });
@@ -34,7 +32,8 @@ describe('cp taxonomies', function () {
     test('update taxonomy', function () {
         $taxonomy = Taxonomy::create(['name' => 'Old']);
 
-        $this->actingAs(cpTaxonomiesAdmin())
+        $this
+            ->actingAs(cpTaxonomiesAdmin())
             ->put(route('waterhole.cp.taxonomies.update', $taxonomy), [
                 'name' => 'New',
                 'is_required' => true,
@@ -48,14 +47,12 @@ describe('cp taxonomies', function () {
     test('delete taxonomy', function () {
         $taxonomy = Taxonomy::create(['name' => 'Delete']);
 
-        $this->actingAs(cpTaxonomiesAdmin())
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => Taxonomy::class,
-                'id' => $taxonomy->id,
-                'action_class' => Delete::class,
-                'confirmed' => true,
-            ])
-            ->assertRedirect();
+        $this->actingAs(cpTaxonomiesAdmin())->post(route('waterhole.actions.store'), [
+            'actionable' => Taxonomy::class,
+            'id' => $taxonomy->id,
+            'action_class' => Delete::class,
+            'confirmed' => true,
+        ])->assertRedirect();
 
         $this->assertDatabaseMissing('taxonomies', ['id' => $taxonomy->id]);
     });
@@ -63,7 +60,8 @@ describe('cp taxonomies', function () {
     test('create tag', function () {
         $taxonomy = Taxonomy::create(['name' => 'Topics']);
 
-        $this->actingAs(cpTaxonomiesAdmin())
+        $this
+            ->actingAs(cpTaxonomiesAdmin())
             ->post(route('waterhole.cp.taxonomies.tags.store', $taxonomy), [
                 'name' => 'Feature',
             ])
@@ -76,7 +74,8 @@ describe('cp taxonomies', function () {
         $taxonomy = Taxonomy::create(['name' => 'Topics']);
         $tag = Tag::create(['taxonomy_id' => $taxonomy->id, 'name' => 'Old Tag']);
 
-        $this->actingAs(cpTaxonomiesAdmin())
+        $this
+            ->actingAs(cpTaxonomiesAdmin())
             ->put(route('waterhole.cp.taxonomies.tags.update', [$taxonomy, $tag]), [
                 'name' => 'New Tag',
             ])
@@ -89,14 +88,12 @@ describe('cp taxonomies', function () {
         $taxonomy = Taxonomy::create(['name' => 'Topics']);
         $tag = Tag::create(['taxonomy_id' => $taxonomy->id, 'name' => 'Delete Tag']);
 
-        $this->actingAs(cpTaxonomiesAdmin())
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => Tag::class,
-                'id' => $tag->id,
-                'action_class' => Delete::class,
-                'confirmed' => true,
-            ])
-            ->assertRedirect();
+        $this->actingAs(cpTaxonomiesAdmin())->post(route('waterhole.actions.store'), [
+            'actionable' => Tag::class,
+            'id' => $tag->id,
+            'action_class' => Delete::class,
+            'confirmed' => true,
+        ])->assertRedirect();
 
         $this->assertDatabaseMissing('tags', ['id' => $tag->id]);
     });

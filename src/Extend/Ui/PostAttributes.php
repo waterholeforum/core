@@ -17,21 +17,19 @@ class PostAttributes extends Attributes
 {
     public function __construct()
     {
-        $this->add(
-            fn(Post $post) => [
-                'class' => Arr::toCssClasses([
-                    'is-unread' => $post->isUnread(),
-                    'is-read' => $post->isRead(),
-                    'is-new' => $post->isNew(),
-                    'is-mine' => $post->user_id === Auth::id(),
-                    'is-followed' => $post->isFollowed(),
-                    'is-ignored' => $post->isIgnored(),
-                    'is-saved' => $post->isBookmarked(),
-                    'has-replies' => $post->comment_count,
-                    'is-locked' => $post->is_locked,
-                ]),
-                'data-channel' => $post->channel->slug,
-            ],
-        );
+        $this->add(fn(Post $post) => [
+            'class' => Arr::toCssClasses([
+                'is-unread' => $post->isUnread(),
+                'is-read' => $post->isRead(),
+                'is-new' => $post->isNew(),
+                'is-mine' => $post->user_id === Auth::id(),
+                'is-followed' => $post->isFollowed(),
+                'is-ignored' => $post->isIgnored(),
+                'is-saved' => $post->isBookmarked(),
+                'has-replies' => $post->comment_count,
+                'is-locked' => $post->is_locked,
+            ]),
+            'data-channel' => $post->channel->slug,
+        ]);
     }
 }

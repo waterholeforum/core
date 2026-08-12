@@ -12,15 +12,15 @@ trait ResolvesFlags
 {
     protected bool $resolvedFlags = false;
 
-    protected function resolveFlags(Collection $models): RedirectResponse|null
+    protected function resolveFlags(Collection $models): ?RedirectResponse
     {
         $user = request()->user();
 
         foreach ($models as $model) {
             if (
-                method_exists($model, 'canModerate') &&
-                $model->canModerate($user) &&
-                $model->resolveFlags($user)
+                method_exists($model, 'canModerate')
+                && $model->canModerate($user)
+                && $model->resolveFlags($user)
             ) {
                 $this->resolvedFlags = true;
             }

@@ -24,14 +24,11 @@ describe('Query extenders', function () {
 
         $channel = Channel::factory()->public()->create();
 
-        Post::factory()
-            ->for($channel)
-            ->create(['title' => 'Extend Test Feed Scope']);
-        Post::factory()
-            ->for($channel)
-            ->create(['title' => 'Other Post']);
+        Post::factory()->for($channel)->create(['title' => 'Extend Test Feed Scope']);
+        Post::factory()->for($channel)->create(['title' => 'Other Post']);
 
-        $this->get(URL::route('waterhole.channels.show', $channel))
+        $this
+            ->get(URL::route('waterhole.channels.show', $channel))
             ->assertSeeText('Extend Test Feed Scope')
             ->assertDontSeeText('Other Post');
     });
@@ -45,14 +42,11 @@ describe('Query extenders', function () {
 
         $channel = Channel::factory()->public()->create();
 
-        Post::factory()
-            ->for($channel)
-            ->create(['title' => 'Extend Test Hidden']);
-        Post::factory()
-            ->for($channel)
-            ->create(['title' => 'Visible Post']);
+        Post::factory()->for($channel)->create(['title' => 'Extend Test Hidden']);
+        Post::factory()->for($channel)->create(['title' => 'Visible Post']);
 
-        $this->get(URL::route('waterhole.channels.show', $channel))
+        $this
+            ->get(URL::route('waterhole.channels.show', $channel))
             ->assertSeeText('Visible Post')
             ->assertDontSeeText('Extend Test Hidden');
     });

@@ -29,7 +29,10 @@
         <meta itemprop="commentCount" content="{{ $post->comment_count }}" />
 
         <div class="stack gap-lg measure">
-            <div data-post-page-target="post" @if (!$comments->onFirstPage()) hidden @endif>
+            <div
+                data-post-page-target="post"
+                @if (!$comments->onFirstPage()) hidden @endif
+            >
                 <x-waterhole::post-full :post="$post" />
             </div>
 
@@ -54,7 +57,11 @@
                     @foreach ($comments as $i => $comment)
                         @if ($lastReadAt && $comment->created_at > $lastReadAt)
                             @once
-                                <div class="divider color-activity" id="unread" tabindex="-1">
+                                <div
+                                    class="divider color-activity"
+                                    id="unread"
+                                    tabindex="-1"
+                                >
                                     {{ __('waterhole::forum.comments-unread-heading') }}
                                 </div>
                             @endonce
@@ -123,7 +130,9 @@
                     <div class="tabs tabs--vertical gap-xxs">
                         <a href="#comments" class="tab">
                             @icon('tabler-message-circle-2')
-                            <span class="hide-md-up">{{ $comments->total() }}</span>
+                            <span class="hide-md-up">
+                                {{ $comments->total() }}
+                            </span>
                             <span class="hide-sm">
                                 {{ __('waterhole::forum.post-comments-link', ['count' => $comments->total()]) }}
                             </span>
@@ -142,7 +151,9 @@
                 @endif
 
                 @if ($headings->count() > 1)
-                    <div class="post-headings tabs tabs--vertical gap-xxs hide-md-down">
+                    <div
+                        class="post-headings tabs tabs--vertical gap-xxs hide-md-down"
+                    >
                         <div
                             class="post-headings__tabs scrollable-y stack"
                             data-controller="scrollspy watch-scroll"
@@ -171,7 +182,9 @@
                     data-shortcut-hidden
                     hidden
                 >
-                    <button class="btn btn--transparent btn--narrow btn--start text-xs">
+                    <button
+                        class="btn btn--transparent btn--narrow btn--start text-xs"
+                    >
                         {{ __('waterhole::system.page-number-prefix') }}
                         <span data-post-page-target="currentPage">
                             {{ $comments->currentPage() }}
@@ -180,7 +193,9 @@
                     </button>
 
                     <div hidden class="menu p-md">
-                        <nav class="comments-pagination tabs tabs--vertical gap-sm">
+                        <nav
+                            class="comments-pagination tabs tabs--vertical gap-sm"
+                        >
                             <a
                                 class="tab"
                                 href="{{ $post->url }}#top"
@@ -198,7 +213,9 @@
                                 @for ($page = 1; $page <= $comments->lastPage(); $page++)
                                     @php($pageHighlightedComments = $highlightedCommentsByPage->get($page, collect()))
 
-                                    <div class="comments-pagination__page stack shrink">
+                                    <div
+                                        class="comments-pagination__page stack shrink"
+                                    >
                                         <a
                                             class="tab comments-pagination__page-link justify-between"
                                             {{-- Exclude ?page=1 from the URL so that the page isn't needlessly reloaded. --}}
@@ -232,7 +249,9 @@
                                                         class="tab align-start color-muted text-xxxs px-xs"
                                                     >
                                                         @icon('tabler-star-filled', ['class' => 'highlighted-icon'])
-                                                        <span class="weight-normal line-clamp-3">
+                                                        <span
+                                                            class="weight-normal line-clamp-3"
+                                                        >
                                                             <strong>
                                                                 {{ Waterhole\username($highlightedComment->user) }}
                                                             </strong>

@@ -15,8 +15,9 @@ class CreatePostButton extends Component
     public bool $hasDraft;
     public ?Channel $targetChannel;
 
-    public function __construct(public ?Channel $channel = null)
-    {
+    public function __construct(
+        public ?Channel $channel = null,
+    ) {
         $user = Auth::user();
         [
             'targetChannel' => $this->targetChannel,
@@ -62,8 +63,8 @@ class CreatePostButton extends Component
         }
 
         return __(
-            $this->targetChannel?->translations['waterhole::forum.create-post-button'] ??
-                'waterhole::forum.create-post-button',
+            $this->targetChannel?->translations['waterhole::forum.create-post-button']
+            ?? 'waterhole::forum.create-post-button',
         );
     }
 
@@ -73,10 +74,9 @@ class CreatePostButton extends Component
             return null;
         }
 
-        return route(
-            'waterhole.posts.create',
-            array_filter(['channel_id' => $this->targetChannel?->id]),
-        );
+        return route('waterhole.posts.create', array_filter([
+            'channel_id' => $this->targetChannel?->id,
+        ]));
     }
 
     public function forbiddenMessage(): string

@@ -13,9 +13,11 @@ class DismissFlags extends Action
 
     public function authorize(?User $user, Model $model): bool
     {
-        return method_exists($model, 'canModerate') &&
-            $model->canModerate($user) &&
-            $model->pendingFlags->isNotEmpty();
+        return (
+            method_exists($model, 'canModerate')
+            && $model->canModerate($user)
+            && $model->pendingFlags->isNotEmpty()
+        );
     }
 
     public function label(Collection $models): string

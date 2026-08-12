@@ -44,21 +44,17 @@ describe('Actions extenders', function () {
 
         $model = $makeModel();
 
-        $this->get(
-            URL::route('waterhole.actions.menu', [
-                'actionable' => $actionable,
-                'id' => $model->id,
-            ]),
-        )->assertSeeText('Extend Test Action');
+        $this->get(URL::route('waterhole.actions.menu', [
+            'actionable' => $actionable,
+            'id' => $model->id,
+        ]))->assertSeeText('Extend Test Action');
 
         if ($actionable === Post::class) {
-            $this->get(
-                URL::route('waterhole.actions.create', [
-                    'actionable' => $actionable,
-                    'id' => $model->id,
-                    'action_class' => ExtendTestAction::class,
-                ]),
-            )->assertOk();
+            $this->get(URL::route('waterhole.actions.create', [
+                'actionable' => $actionable,
+                'id' => $model->id,
+                'action_class' => ExtendTestAction::class,
+            ]))->assertOk();
 
             $this->post(URL::route('waterhole.actions.store'), [
                 'actionable' => $actionable,
@@ -73,9 +69,9 @@ dataset('actionables', [
     'channel' => [Channel::class, fn() => Channel::factory()->public()->create()],
     'comment' => [
         Comment::class,
-        fn() => Comment::factory()
-            ->for(Post::factory()->for(Channel::factory()->public()))
-            ->create(),
+        fn() => Comment::factory()->for(
+            Post::factory()->for(Channel::factory()->public()),
+        )->create(),
     ],
     'group' => [
         \Waterhole\Models\Group::class,
@@ -84,9 +80,7 @@ dataset('actionables', [
     'page' => [Page::class, fn() => Page::factory()->public()->create()],
     'post' => [
         Post::class,
-        fn() => Post::factory()
-            ->for(Channel::factory()->public())
-            ->create(),
+        fn() => Post::factory()->for(Channel::factory()->public())->create(),
     ],
     'reactionSet' => [
         ReactionSet::class,

@@ -2,12 +2,12 @@
 
 namespace Waterhole\Http\Controllers\Cp;
 
-use function Waterhole\internal_url;
-
 use Illuminate\Http\Request;
 use Waterhole\Forms\UserForm;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\User;
+
+use function Waterhole\internal_url;
 
 /**
  * Controller for CP user management.
@@ -57,7 +57,7 @@ class UserController extends Controller
 
         // Apply sorting to the query. Ensure the requested sort and direction
         // is valid before doing so.
-        if (!isset(self::SORTABLE_COLUMNS[($sort = $request->query('sort'))])) {
+        if (!isset(self::SORTABLE_COLUMNS[$sort = $request->query('sort')])) {
             $sort = array_key_first(self::SORTABLE_COLUMNS);
         }
 
@@ -88,12 +88,11 @@ class UserController extends Controller
     {
         $this->form(new User())->submit($request);
 
-        return redirect(
-            internal_url(
-                $request->input('return'),
-                route('waterhole.cp.users.index', ['sort' => 'created_at']),
-            ),
-        )->with('success', __('waterhole::cp.user-created-message'));
+        return redirect(internal_url(
+            $request->input('return'),
+            route('waterhole.cp.users.index', ['sort' => 'created_at']),
+        ))
+            ->with('success', __('waterhole::cp.user-created-message'));
     }
 
     public function edit(User $user)
@@ -107,9 +106,8 @@ class UserController extends Controller
     {
         $this->form($user)->submit($request);
 
-        return redirect(
-            internal_url($request->input('return'), route('waterhole.cp.users.index')),
-        )->with('success', __('waterhole::cp.user-saved-message'));
+        return redirect(internal_url($request->input('return'), route('waterhole.cp.users.index')))
+            ->with('success', __('waterhole::cp.user-saved-message'));
     }
 
     private function form(User $user)

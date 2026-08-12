@@ -104,7 +104,7 @@ class Post extends Model
             $sign = $post->score <=> 0;
             $seconds = ($post->created_at ?: now())->unix() - 1134028003;
             $post->hotness = round(
-                $sign * log10(max(abs($post->score ?: 0), 1)) + $seconds / 45000,
+                ($sign * log10(max(abs($post->score ?: 0), 1))) + ($seconds / 45000),
                 10,
             );
         });
@@ -153,15 +153,11 @@ class Post extends Model
      */
     public function usersWereMentioned(Collection $users): void
     {
-        $postUserRows = $users
-            ->map(
-                fn(User $user) => [
-                    'post_id' => $this->getKey(),
-                    'user_id' => $user->getKey(),
-                    'mentioned_at' => now(),
-                ],
-            )
-            ->all();
+        $postUserRows = $users->map(fn(User $user) => [
+            'post_id' => $this->getKey(),
+            'user_id' => $user->getKey(),
+            'mentioned_at' => now(),
+        ])->all();
 
         PostUser::upsert($postUserRows, ['post_id', 'user_id'], ['mentioned_at']);
     }
@@ -185,16 +181,14 @@ class Post extends Model
             $query->select($query->qualifyColumn('*'));
         }
 
-        $query
-            ->leftJoinRelation('userState')
-            ->selectSub(
-                Comment::query()
-                    ->withoutGlobalScope('visible')
-                    ->selectRaw('COUNT(*)')
-                    ->whereColumn('comments.post_id', 'posts.id')
-                    ->whereColumn('comments.created_at', '>', 'last_read_at'),
-                'unread_comments_count',
-            );
+        $query->leftJoinRelation('userState')->selectSub(
+            Comment::query()
+                ->withoutGlobalScope('visible')
+                ->selectRaw('COUNT(*)')
+                ->whereColumn('comments.post_id', 'posts.id')
+                ->whereColumn('comments.created_at', '>', 'last_read_at'),
+            'unread_comments_count',
+        );
     }
 
     /**
@@ -299,8 +293,8 @@ class Post extends Model
     {
         $publicComments = $this->comments()->visible(null);
 
-        $this->last_activity_at =
-            (clone $publicComments)->latest()->value('created_at') ?: $this->created_at;
+        $this->last_activity_at = (clone $publicComments)->latest()->value('created_at')
+        ?: $this->created_at;
 
         $this->comment_count = (clone $publicComments)->count();
 
@@ -384,32 +378,32 @@ class Post extends Model
 
     protected function url(): Attribute
     {
-        return Attribute::make(
-            get: fn() => route('waterhole.posts.show', ['post' => $this]),
-        )->shouldCache();
+        return Attribute::make(get: fn() => route('waterhole.posts.show', [
+            'post' => $this,
+        ]))->shouldCache();
     }
 
     protected function editUrl(): Attribute
     {
-        return Attribute::make(
-            get: fn() => route('waterhole.posts.edit', ['post' => $this]),
-        )->shouldCache();
+        return Attribute::make(get: fn() => route('waterhole.posts.edit', [
+            'post' => $this,
+        ]))->shouldCache();
     }
 
     protected function unreadUrl(): Attribute
     {
-        return Attribute::make(
-            get: function () {
-                if ($this->isNew()) {
-                    return $this->url;
-                }
+        return Attribute::make(get: function () {
+            if ($this->isNew()) {
+                return $this->url;
+            }
 
-                $fragment = $this->unread_comments_count ? '#unread' : '#bottom';
+            $fragment = $this->unread_comments_count ? '#unread' : '#bottom';
 
-                return $this->urlAtIndex($this->comment_count - $this->unread_comments_count - 1) .
-                    $fragment;
-            },
-        )->shouldCache();
+            return (
+                $this->urlAtIndex($this->comment_count - $this->unread_comments_count - 1)
+                . $fragment
+            );
+        })->shouldCache();
     }
 
     public function reactionsUrl(ReactionType $reactionType): string

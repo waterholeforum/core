@@ -2,11 +2,11 @@
 
 namespace Waterhole\Http\Controllers\Cp;
 
-use function Waterhole\internal_url;
-
 use Illuminate\Http\Request;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\StructureHeading;
+
+use function Waterhole\internal_url;
 
 /**
  * Controller for CP structure heading management (create and update).

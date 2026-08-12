@@ -36,9 +36,10 @@ class CommentDraftController extends Controller
         $post->userState->discardDraft()->save();
 
         if ($request->wantsTurboStream()) {
-            return TurboResponseFactory::makeStream(
-                TurboStream::dispatch('composer:reset', '#composer'),
-            );
+            return TurboResponseFactory::makeStream(TurboStream::dispatch(
+                'composer:reset',
+                '#composer',
+            ));
         }
 
         return redirect($post->url);

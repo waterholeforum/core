@@ -97,14 +97,12 @@ abstract class PageBenchCase
             }
         }
 
-        $app = Testbench::create(
-            options: [
-                'enables_package_discoveries' => true,
-                'extra' => [
-                    'env' => $env,
-                ],
+        $app = Testbench::create(options: [
+            'enables_package_discoveries' => true,
+            'extra' => [
+                'env' => $env,
             ],
-        );
+        ]);
 
         $app['config']->set('auth.providers.users.model', User::class);
         $app->make(ConsoleKernel::class)->bootstrap();
@@ -132,8 +130,8 @@ abstract class PageBenchCase
 
         if ($response->getStatusCode() !== 200) {
             throw new \RuntimeException(
-                "Expected [200] status code but received [{$response->getStatusCode()}]: " .
-                    substr(strip_tags($response->getContent()), 0, 500),
+                "Expected [200] status code but received [{$response->getStatusCode()}]: "
+                    . substr(strip_tags($response->getContent()), 0, 500),
             );
         }
 
@@ -185,24 +183,22 @@ abstract class PageBenchCase
         }
 
         for ($i = 0; $i < 80; $i++) {
-            $posts->push(
-                Post::factory()
-                    ->for($channels[$i % 3])
-                    ->for($users->random())
-                    ->create([
-                        'comment_count' => $i % 5,
-                        'last_activity_at' => now()->subMinutes($i * 7),
-                    ]),
-            );
+            $posts->push(Post::factory()
+                ->for($channels[$i % 3])
+                ->for($users->random())
+                ->create([
+                    'comment_count' => $i % 5,
+                    'last_activity_at' => now()->subMinutes($i * 7),
+                ]));
         }
 
         foreach ($posts->take(30) as $index => $feedPost) {
             PostUser::create([
                 'post_id' => $feedPost->id,
                 'user_id' => $viewer->id,
-                'last_read_at' => $index % 3 === 0 ? now()->subDays(2) : now(),
-                'notifications' => $index % 17 === 0 ? 'ignore' : null,
-                'followed_at' => $index % 7 === 0 ? now()->subDay() : null,
+                'last_read_at' => ($index % 3) === 0 ? now()->subDays(2) : now(),
+                'notifications' => ($index % 17) === 0 ? 'ignore' : null,
+                'followed_at' => ($index % 7) === 0 ? now()->subDay() : null,
             ]);
         }
 
@@ -235,9 +231,9 @@ abstract class PageBenchCase
 
         if (!preg_match('/(bench|test)/i', $config['database'] ?? '')) {
             throw new \RuntimeException(
-                'Refusing to run benchmark migrations against [' .
-                    ($config['database'] ?? '') .
-                    ']. Set WATERHOLE_BENCHMARK_DB_DATABASE to a dedicated test/bench database.',
+                'Refusing to run benchmark migrations against ['
+                . ($config['database'] ?? '')
+                . ']. Set WATERHOLE_BENCHMARK_DB_DATABASE to a dedicated test/bench database.',
             );
         }
     }

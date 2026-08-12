@@ -2,13 +2,13 @@
 
 namespace Waterhole\Http\Controllers\Cp;
 
-use function Waterhole\internal_url;
-
 use Illuminate\Http\Request;
 use Waterhole\Forms\ReactionTypeForm;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\ReactionSet;
 use Waterhole\Models\ReactionType;
+
+use function Waterhole\internal_url;
 
 /**
  * Controller for CP reaction type management.
@@ -36,19 +36,22 @@ class ReactionTypeController extends Controller
     {
         $form = $this->form($reactionType);
 
-        return view(
-            'waterhole::cp.reactions.reaction-type',
-            compact('form', 'reactionSet', 'reactionType'),
-        );
+        return view('waterhole::cp.reactions.reaction-type', compact(
+            'form',
+            'reactionSet',
+            'reactionType',
+        ));
     }
 
     public function update(ReactionSet $reactionSet, ReactionType $reactionType, Request $request)
     {
         $this->form($reactionType)->submit($request);
 
-        return redirect(
-            internal_url($request->input('return'), $reactionType->reactionSet->edit_url),
-        )->with('success', __('waterhole::cp.reaction-type-saved-message'));
+        return redirect(internal_url(
+            $request->input('return'),
+            $reactionType->reactionSet->edit_url,
+        ))
+            ->with('success', __('waterhole::cp.reaction-type-saved-message'));
     }
 
     private function form(ReactionType $reactionType)

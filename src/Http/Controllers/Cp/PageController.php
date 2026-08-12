@@ -2,12 +2,12 @@
 
 namespace Waterhole\Http\Controllers\Cp;
 
-use function Waterhole\internal_url;
-
 use Illuminate\Http\Request;
 use Waterhole\Forms\PageForm;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Page;
+
+use function Waterhole\internal_url;
 
 /**
  * Controller for CP page management (create and update).

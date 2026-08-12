@@ -109,14 +109,12 @@ class Channel extends Model
             ->whereDoesntHave('userState')
             ->where('created_at', '>', 'followed_at');
 
-        $query
-            ->leftJoinRelation('userState')
-            ->selectRaw(
-                'CASE WHEN followed_at IS NOT NULL THEN (' .
-                    $sub->toSql() .
-                    ') ELSE 0 END AS new_posts_count',
-                $sub->getBindings(),
-            );
+        $query->leftJoinRelation('userState')->selectRaw(
+            'CASE WHEN followed_at IS NOT NULL THEN ('
+            . $sub->toSql()
+            . ') ELSE 0 END AS new_posts_count',
+            $sub->getBindings(),
+        );
     }
 
     /**
@@ -124,7 +122,8 @@ class Channel extends Model
      */
     public function newPosts(): HasMany
     {
-        return $this->posts()
+        return $this
+            ->posts()
             ->whereDoesntHave('userState')
             ->whereHas('channel.userState', function ($query) {
                 $query->whereColumn('posts.created_at', '>', 'followed_at');
@@ -133,20 +132,18 @@ class Channel extends Model
 
     public function postsReactionSet(): BelongsTo
     {
-        return $this->belongsTo(ReactionSet::class, 'posts_reaction_set_id')->withDefault(
-            fn($model, $parent) => $parent->posts_reactions_enabled
-                ? ReactionSet::defaultPosts()
-                : null,
-        );
+        return $this->belongsTo(ReactionSet::class, 'posts_reaction_set_id')->withDefault(fn(
+            $model,
+            $parent,
+        ) => $parent->posts_reactions_enabled ? ReactionSet::defaultPosts() : null);
     }
 
     public function commentsReactionSet(): BelongsTo
     {
-        return $this->belongsTo(ReactionSet::class, 'comments_reaction_set_id')->withDefault(
-            fn($model, $parent) => $parent->comments_reactions_enabled
-                ? ReactionSet::defaultComments()
-                : null,
-        );
+        return $this->belongsTo(ReactionSet::class, 'comments_reaction_set_id')->withDefault(fn(
+            $model,
+            $parent,
+        ) => $parent->comments_reactions_enabled ? ReactionSet::defaultComments() : null);
     }
 
     public function taxonomies(): BelongsToMany
@@ -166,16 +163,16 @@ class Channel extends Model
 
     protected function url(): Attribute
     {
-        return Attribute::make(
-            get: fn() => route('waterhole.channels.show', ['channel' => $this]),
-        )->shouldCache();
+        return Attribute::make(get: fn() => route('waterhole.channels.show', [
+            'channel' => $this,
+        ]))->shouldCache();
     }
 
     protected function editUrl(): Attribute
     {
-        return Attribute::make(
-            get: fn() => route('waterhole.cp.structure.channels.edit', ['channel' => $this]),
-        )->shouldCache();
+        return Attribute::make(get: fn() => route('waterhole.cp.structure.channels.edit', [
+            'channel' => $this,
+        ]))->shouldCache();
     }
 
     public function scopeIgnoring(Builder $query): void
@@ -192,8 +189,10 @@ class Channel extends Model
 
     public function isIgnored(): bool
     {
-        return $this->userState?->notifications === 'ignore' ||
-            (!$this->userState?->notifications && $this->ignore);
+        return (
+            $this->userState?->notifications === 'ignore'
+            || !$this->userState?->notifications && $this->ignore
+        );
     }
 
     /**

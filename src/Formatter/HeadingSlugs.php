@@ -8,6 +8,7 @@ use s9e\TextFormatter\Configurator;
 use s9e\TextFormatter\Utils;
 use s9e\TextFormatter\Utils\ParsedDOM;
 use Throwable;
+
 use function Waterhole\remove_formatting;
 
 abstract class HeadingSlugs
@@ -46,13 +47,11 @@ abstract class HeadingSlugs
         return collect($dom->query($query))
             ->map(function ($heading) {
                 $slug = trim($heading->getAttribute('slug'));
-                $text = trim(
-                    preg_replace(
-                        '/\s+/',
-                        ' ',
-                        remove_formatting('<r>' . $heading->C14N() . '</r>'),
-                    ),
-                );
+                $text = trim(preg_replace(
+                    '/\s+/',
+                    ' ',
+                    remove_formatting('<r>' . $heading->C14N() . '</r>'),
+                ));
 
                 return [
                     'level' => strtolower($heading->nodeName),
@@ -77,11 +76,10 @@ abstract class HeadingSlugs
         }
 
         foreach ($levels as $level) {
-            $xml = Utils::replaceAttributes(
-                $xml,
-                "H$level",
-                fn(array $attributes) => Arr::except($attributes, 'slug'),
-            );
+            $xml = Utils::replaceAttributes($xml, "H$level", fn(array $attributes) => Arr::except(
+                $attributes,
+                'slug',
+            ));
         }
 
         return $xml;

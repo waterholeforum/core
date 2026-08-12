@@ -24,7 +24,8 @@ describe('taxonomy assignment', function () {
 
         $user = User::factory()->create();
 
-        $this->actingAs($user)
+        $this
+            ->actingAs($user)
             ->post(route('waterhole.posts.store'), [
                 'channel_id' => $channel->id,
                 'title' => 'Tagged post',
@@ -50,7 +51,8 @@ describe('taxonomy assignment', function () {
 
         $user = User::factory()->create();
 
-        $this->actingAs($user)
+        $this
+            ->actingAs($user)
             ->post(route('waterhole.posts.store'), [
                 'channel_id' => $channel->id,
                 'title' => 'Single taxonomy post',
@@ -74,9 +76,7 @@ describe('channel visibility', function () {
         $tag = Tag::create(['taxonomy_id' => $taxonomy->id, 'name' => 'Secret']);
         $channel->taxonomies()->attach($taxonomy);
 
-        $post = Post::factory()
-            ->for($channel)
-            ->create(['title' => 'Private tags post']);
+        $post = Post::factory()->for($channel)->create(['title' => 'Private tags post']);
         $post->tags()->attach($tag);
 
         $this->get($post->url)->assertOk()->assertDontSeeText('Secret');
@@ -89,9 +89,7 @@ describe('channel visibility', function () {
         $tag = Tag::create(['taxonomy_id' => $taxonomy->id, 'name' => 'VisibleTag']);
         $channel->taxonomies()->attach($taxonomy);
 
-        $post = Post::factory()
-            ->for($channel)
-            ->create(['title' => 'Visible tags post']);
+        $post = Post::factory()->for($channel)->create(['title' => 'Visible tags post']);
         $post->tags()->attach($tag);
 
         $user = User::factory()->create();

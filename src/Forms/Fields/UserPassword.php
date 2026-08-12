@@ -12,7 +12,10 @@ use Waterhole\Models\User;
 
 class UserPassword extends Field
 {
-    public function __construct(public User $model, public ?SsoPayload $payload = null) {}
+    public function __construct(
+        public User $model,
+        public ?SsoPayload $payload = null,
+    ) {}
 
     public function shouldRender(): bool
     {
@@ -22,29 +25,29 @@ class UserPassword extends Field
     public function render(): string
     {
         return <<<'blade'
-            <x-waterhole::field
-                name="password"
-                :label="__('waterhole::cp.user-password-label')"
-            >
-                @if ($model->exists)
-                    <div data-controller="reveal" class="stack gap-sm">
-                        <label class="choice">
-                            <input type="checkbox" data-reveal-target="if">
-                            {{ __('waterhole::cp.user-set-password-label') }}
-                        </label>
-                @endif
-                        <input
-                            data-reveal-target="then"
-                            type="password"
-                            name="password"
-                            id="{{ $component->id }}"
+                <x-waterhole::field
+                    name="password"
+                    :label="__('waterhole::cp.user-password-label')"
+                >
+                    @if ($model->exists)
+                        <div data-controller="reveal" class="stack gap-sm">
+                            <label class="choice">
+                                <input type="checkbox" data-reveal-target="if">
+                                {{ __('waterhole::cp.user-set-password-label') }}
+                            </label>
+                    @endif
+                            <input
+                                data-reveal-target="then"
+                                type="password"
+                                name="password"
+                                id="{{ $component->id }}"
 
-                        >
-                @if ($model->exists)
-                    </div>
-                @endif
-            </x-waterhole::field>
-        blade;
+                            >
+                    @if ($model->exists)
+                        </div>
+                    @endif
+                </x-waterhole::field>
+            blade;
     }
 
     public function validating(Validator $validator): void

@@ -13,7 +13,10 @@
                 <div class="stack gap-xl">
                     <x-waterhole::validation-errors />
 
-                    <x-waterhole::field name="email" :label="__('waterhole::auth.email-label')">
+                    <x-waterhole::field
+                        name="email"
+                        :label="__('waterhole::auth.email-label')"
+                    >
                         <input
                             type="email"
                             id="{{ $component->id }}"

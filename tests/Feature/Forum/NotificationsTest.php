@@ -35,13 +35,11 @@ describe('notification types', function () {
         $this->actingAs($recipient);
         $channel->loadUserState($recipient)->follow();
 
-        Post::factory()
-            ->for($channel)
-            ->create([
-                'user_id' => $author->id,
-                'title' => 'Followed channel post',
-                'is_approved' => true,
-            ]);
+        Post::factory()->for($channel)->create([
+            'user_id' => $author->id,
+            'title' => 'Followed channel post',
+            'is_approved' => true,
+        ]);
 
         NotificationFacade::assertSentTo($recipient, NewPost::class);
     });
@@ -51,23 +49,19 @@ describe('notification types', function () {
         $recipient = User::factory()->create();
         $author = User::factory()->create();
 
-        $post = Post::factory()
-            ->for($channel)
-            ->create([
-                'user_id' => $recipient->id,
-                'is_approved' => true,
-            ]);
+        $post = Post::factory()->for($channel)->create([
+            'user_id' => $recipient->id,
+            'is_approved' => true,
+        ]);
 
         $this->actingAs($recipient);
         $post->loadUserState($recipient)->follow();
 
-        Comment::factory()
-            ->for($post)
-            ->create([
-                'user_id' => $author->id,
-                'body' => 'A reply comment',
-                'is_approved' => true,
-            ]);
+        Comment::factory()->for($post)->create([
+            'user_id' => $author->id,
+            'body' => 'A reply comment',
+            'is_approved' => true,
+        ]);
 
         NotificationFacade::assertSentTo($recipient, NewComment::class);
     });
@@ -75,11 +69,9 @@ describe('notification types', function () {
     test('creates notification for mention', function () {
         $recipient = User::factory()->create();
         $author = User::factory()->create();
-        $post = Post::factory()
-            ->for(Channel::factory()->public())
-            ->create([
-                'user_id' => $author->id,
-            ]);
+        $post = Post::factory()->for(Channel::factory()->public())->create([
+            'user_id' => $author->id,
+        ]);
 
         NotificationFacade::send($recipient, new Mention($post));
 
@@ -90,11 +82,9 @@ describe('notification types', function () {
         $channel = Channel::factory()->public()->create();
         $recipient = User::factory()->create();
         $reactor = User::factory()->create();
-        $post = Post::factory()
-            ->for($channel)
-            ->create([
-                'user_id' => $recipient->id,
-            ]);
+        $post = Post::factory()->for($channel)->create([
+            'user_id' => $recipient->id,
+        ]);
         $reactionType = ReactionType::query()->firstOrFail();
 
         Reaction::create([
@@ -129,17 +119,16 @@ describe('notifications ui', function () {
     test('marks notification as read', function () {
         $user = User::factory()->create();
         $sender = User::factory()->create();
-        $post = Post::factory()
-            ->for(Channel::factory()->public())
-            ->create([
-                'user_id' => $sender->id,
-            ]);
+        $post = Post::factory()->for(Channel::factory()->public())->create([
+            'user_id' => $sender->id,
+        ]);
 
         NotificationFacade::send($user, new Mention($post));
 
         expect($user->unreadNotifications()->count())->toBe(1);
 
-        $this->actingAs($user)
+        $this
+            ->actingAs($user)
             ->post(route('waterhole.notifications.read'))
             ->assertRedirect(route('waterhole.notifications.index'));
 
@@ -151,7 +140,8 @@ describe('notification preferences', function () {
     test('toggles notification preferences', function () {
         $user = User::factory()->create();
 
-        $this->actingAs($user)
+        $this
+            ->actingAs($user)
             ->post(route('waterhole.preferences.notifications'), [
                 'follow_on_comment' => false,
                 'notification_channels' => [
@@ -180,11 +170,9 @@ describe('notification preferences', function () {
         $channels[ReactionNotification::class] = [];
         $recipient->update(['notification_channels' => $channels]);
 
-        $post = Post::factory()
-            ->for($channel)
-            ->create([
-                'user_id' => $recipient->id,
-            ]);
+        $post = Post::factory()->for($channel)->create([
+            'user_id' => $recipient->id,
+        ]);
 
         Reaction::create([
             'content_type' => $post->getMorphClass(),

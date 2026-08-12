@@ -47,7 +47,7 @@ class Flag extends Model
         });
 
         static::created(function (self $flag) {
-            if (empty(($moderators = $flag->subject->channel->usersWithAbility('moderate')))) {
+            if (empty($moderators = $flag->subject->channel->usersWithAbility('moderate'))) {
                 return;
             }
 

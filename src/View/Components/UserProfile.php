@@ -7,8 +7,10 @@ use Waterhole\Models\User;
 
 class UserProfile extends Component
 {
-    public function __construct(public User $user, public ?string $title = null)
-    {
+    public function __construct(
+        public User $user,
+        public ?string $title = null,
+    ) {
         $this->title = $title ?: $user->name;
 
         $user->loadCount('posts', 'comments');

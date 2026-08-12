@@ -9,11 +9,14 @@ use Illuminate\Support\Str;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Model;
 use Waterhole\Models\Post;
+
 use function Waterhole\emojify;
 
 class ContentRemoved extends Notification
 {
-    public function __construct(protected Post|Comment $subject) {}
+    public function __construct(
+        protected Post|Comment $subject,
+    ) {}
 
     public function via($notifiable): array
     {
@@ -33,18 +36,14 @@ class ContentRemoved extends Notification
     public function title(): HtmlString
     {
         if ($this->subject instanceof Post) {
-            return new HtmlString(
-                __('waterhole::notifications.post-removed-title', [
-                    'post' => '<strong>' . emojify($this->subject->title) . '</strong>',
-                ]),
-            );
+            return new HtmlString(__('waterhole::notifications.post-removed-title', [
+                'post' => '<strong>' . emojify($this->subject->title) . '</strong>',
+            ]));
         }
 
-        return new HtmlString(
-            __('waterhole::notifications.comment-removed-title', [
-                'post' => '<strong>' . emojify($this->subject->post->title) . '</strong>',
-            ]),
-        );
+        return new HtmlString(__('waterhole::notifications.comment-removed-title', [
+            'post' => '<strong>' . emojify($this->subject->post->title) . '</strong>',
+        ]));
     }
 
     public function excerpt(): ?string

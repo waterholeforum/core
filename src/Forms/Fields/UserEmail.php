@@ -11,8 +11,10 @@ use Waterhole\Models\User;
 
 class UserEmail extends Field
 {
-    public function __construct(public ?User $model, public ?SsoPayload $payload = null)
-    {
+    public function __construct(
+        public ?User $model,
+        public ?SsoPayload $payload = null,
+    ) {
         if ($payload) {
             $model->email = $payload->user->email;
         }
@@ -21,19 +23,19 @@ class UserEmail extends Field
     public function render(): string
     {
         return <<<'blade'
-            <x-waterhole::field
-                name="email"
-                :label="__('waterhole::cp.user-email-label')"
-            >
-                <input
-                    type="email"
+                <x-waterhole::field
                     name="email"
-                    id="{{ $component->id }}"
-                    value="{{ old('email', $model->email ?? null) }}"
-                    @disabled($payload)
+                    :label="__('waterhole::cp.user-email-label')"
                 >
-            </x-waterhole::field>
-        blade;
+                    <input
+                        type="email"
+                        name="email"
+                        id="{{ $component->id }}"
+                        value="{{ old('email', $model->email ?? null) }}"
+                        @disabled($payload)
+                    >
+                </x-waterhole::field>
+            blade;
     }
 
     public function validating(Validator $validator): void

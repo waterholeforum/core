@@ -11,7 +11,9 @@ use function Waterhole\emojify;
 
 class NewPost extends Notification
 {
-    public function __construct(protected Post $post) {}
+    public function __construct(
+        protected Post $post,
+    ) {}
 
     public function content(): Post
     {
@@ -30,12 +32,10 @@ class NewPost extends Notification
 
     public function title(): HtmlString
     {
-        return new HtmlString(
-            __('waterhole::notifications.new-post-title', [
-                'channel' => emojify($this->post->channel->name),
-                'post' => '<strong>' . emojify($this->post->title) . '</strong>',
-            ]),
-        );
+        return new HtmlString(__('waterhole::notifications.new-post-title', [
+            'channel' => emojify($this->post->channel->name),
+            'post' => '<strong>' . emojify($this->post->title) . '</strong>',
+        ]));
     }
 
     public function excerpt(): string

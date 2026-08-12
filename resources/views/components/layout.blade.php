@@ -7,7 +7,11 @@
     <x-slot name="head">{{ $head ?? '' }}</x-slot>
 
     <div class="waterhole" data-controller="page">
-        <a href="#main" class="btn btn--sm bg-accent skip-link" data-turbo="false">
+        <a
+            href="#main"
+            class="btn btn--sm bg-accent skip-link"
+            data-turbo="false"
+        >
             {{ __('waterhole::system.skip-to-main-content-link') }}
         </a>
 

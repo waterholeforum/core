@@ -1,4 +1,7 @@
-<form method="{{ $formMethod }}" {{ $attributes->merge(['data-shortcut-scope' => 'form']) }}>
+<form
+    method="{{ $formMethod }}"
+    {{ $attributes->merge(['data-shortcut-scope' => 'form']) }}
+>
     @if ($formMethod !== 'GET')
         @csrf
         @return($cancelUrl)
@@ -18,7 +21,11 @@
                 <ui-tabs class="stack gap-lg" data-controller="tabs-deeplink">
                     <nav class="tabs scrollable scrollable-x" role="tablist">
                         @foreach ($sections as $section)
-                            <a href="#{{ $section['panelId'] }}" role="tab" class="tab">
+                            <a
+                                href="#{{ $section['panelId'] }}"
+                                role="tab"
+                                class="tab"
+                            >
                                 {{ $section['title'] }}
                             </a>
                         @endforeach
@@ -43,7 +50,10 @@
             @endif
         @endif
 
-        <div class="bottom-bar row gap-sm wrap text-md" data-controller="watch-sticky">
+        <div
+            class="bottom-bar row gap-sm wrap text-md"
+            data-controller="watch-sticky"
+        >
             @if (isset($actions))
                 {{ $actions }}
             @else

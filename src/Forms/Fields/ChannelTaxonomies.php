@@ -14,8 +14,9 @@ class ChannelTaxonomies extends Field
 {
     public Collection $taxonomies;
 
-    public function __construct(public ?Channel $model)
-    {
+    public function __construct(
+        public ?Channel $model,
+    ) {
         $this->taxonomies = Taxonomy::all();
     }
 
@@ -27,29 +28,29 @@ class ChannelTaxonomies extends Field
     public function render(): string
     {
         return <<<'blade'
-            <div role="group" class="field">
-                <div class="field__label with-icon">
-                    @icon('tabler-tags', ['class' => 'text-md'])
-                    {{ __('waterhole::cp.channel-taxonomies-label') }}
-                </div>
+                <div role="group" class="field">
+                    <div class="field__label with-icon">
+                        @icon('tabler-tags', ['class' => 'text-md'])
+                        {{ __('waterhole::cp.channel-taxonomies-label') }}
+                    </div>
 
-                <div class="card">
-                    @foreach ($taxonomies as $taxonomy)
-                        <div class="card__row">
-                            <label class="choice">
-                                <input
-                                    type="checkbox"
-                                    name="taxonomy_ids[]"
-                                    value="{{ $taxonomy->id }}"
-                                    @checked(in_array($taxonomy->id, old('taxonomy_ids', $model->taxonomies->modelKeys())))
-                                >
-                                <span>{{ $taxonomy->name }}</span>
-                            </label>
-                        </div>
-                    @endforeach
+                    <div class="card">
+                        @foreach ($taxonomies as $taxonomy)
+                            <div class="card__row">
+                                <label class="choice">
+                                    <input
+                                        type="checkbox"
+                                        name="taxonomy_ids[]"
+                                        value="{{ $taxonomy->id }}"
+                                        @checked(in_array($taxonomy->id, old('taxonomy_ids', $model->taxonomies->modelKeys())))
+                                    >
+                                    <span>{{ $taxonomy->name }}</span>
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
-            </div>
-        blade;
+            blade;
     }
 
     public function validating(Validator $validator): void

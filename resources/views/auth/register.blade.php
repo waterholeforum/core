@@ -1,6 +1,9 @@
 <x-waterhole::layout :title="__('waterhole::auth.register-title')">
     <div class="container section">
-        <x-waterhole::dialog :title="__('waterhole::auth.register-title')" class="dialog--sm">
+        <x-waterhole::dialog
+            :title="__('waterhole::auth.register-title')"
+            class="dialog--sm"
+        >
             {{--
                 Opt-out of Turbo so that any fragment that may be present in the
                 redirect URL will be followed. Also, redirect URL may be external.
@@ -13,7 +16,11 @@
                 @csrf
 
                 @if (request('payload'))
-                    <input type="hidden" name="payload" value="{{ request('payload') }}" />
+                    <input
+                        type="hidden"
+                        name="payload"
+                        value="{{ request('payload') }}"
+                    />
                 @endif
 
                 <div class="stack gap-xl">
@@ -27,7 +34,10 @@
                         @components($form->fields())
 
                         <div>
-                            <button type="submit" class="btn bg-accent full-width">
+                            <button
+                                type="submit"
+                                class="btn bg-accent full-width"
+                            >
                                 {{ __('waterhole::auth.register-submit') }}
                             </button>
                         </div>

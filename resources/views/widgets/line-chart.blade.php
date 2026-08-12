@@ -1,4 +1,7 @@
-<div class="card card__body line-chart-widget stack gap-xs" data-controller="line-chart">
+<div
+    class="card card__body line-chart-widget stack gap-xs"
+    data-controller="line-chart"
+>
     <div class="line-chart-widget__head stack gap-xs">
         <div class="row justify-between">
             <h3 class="h4">{{ $title }}</h3>
@@ -14,7 +17,9 @@
         </div>
 
         <div class="row gap-sm align-baseline" data-line-chart-target="summary">
-            <span class="text-lg">{{ Waterhole\format_number($periodTotal) }}</span>
+            <span class="text-lg">
+                {{ Waterhole\format_number($periodTotal) }}
+            </span>
             @if ($prevPeriodTotal && $periodTotal !== $prevPeriodTotal)
                 <span
                     class="badge bg-{{ $color = $periodTotal < $prevPeriodTotal ? 'warning' : 'success' }}-soft color-{{ $color }}"
@@ -25,9 +30,16 @@
             @endif
         </div>
 
-        <div class="row gap-sm align-baseline" data-line-chart-target="legend" hidden>
+        <div
+            class="row gap-sm align-baseline"
+            data-line-chart-target="legend"
+            hidden
+        >
             <span class="text-lg" data-line-chart-target="legendAmount"></span>
-            <span class="text-xs color-muted" data-line-chart-target="legendPeriod"></span>
+            <span
+                class="text-xs color-muted"
+                data-line-chart-target="legendPeriod"
+            ></span>
         </div>
     </div>
 
@@ -64,7 +76,11 @@
         </table>
     </div>
 
-    <div data-line-chart-target="chart" class="line-chart-widget__chart grow" hidden></div>
+    <div
+        data-line-chart-target="chart"
+        class="line-chart-widget__chart grow"
+        hidden
+    ></div>
 
     <div
         data-line-chart-target="axis"
@@ -72,7 +88,11 @@
         aria-hidden="true"
         hidden
     >
-        <div>{{ Str::before($units[$selectedUnit]['label']($periodStart), ' - ') }}</div>
-        <div>{{ Str::before($units[$selectedUnit]['label']($periodEnd), ' - ') }}</div>
+        <div>
+            {{ Str::before($units[$selectedUnit]['label']($periodStart), ' - ') }}
+        </div>
+        <div>
+            {{ Str::before($units[$selectedUnit]['label']($periodEnd), ' - ') }}
+        </div>
     </div>
 </div>

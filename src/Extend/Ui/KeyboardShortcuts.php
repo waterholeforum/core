@@ -31,17 +31,16 @@ class KeyboardShortcuts extends OrderedList
             'navigation.shortcuts',
         );
 
-        $this->add(
-            fn() => config('waterhole.system.search_engine')
+        $this->add(fn() => (
+            config('waterhole.system.search_engine')
                 ? new KeyboardShortcut(
                     id: 'navigation.search',
                     keys: ['/'],
                     description: __('waterhole::system.keyboard-shortcuts-search-description'),
                     category: 'navigation',
                 )
-                : null,
-            'navigation.search',
-        );
+                : null
+        ), 'navigation.search');
 
         $this->add(
             new KeyboardShortcut(
@@ -64,20 +63,19 @@ class KeyboardShortcuts extends OrderedList
             'navigation.home',
         );
 
-        $this->add(
-            fn() => Auth::check()
+        $this->add(fn() => (
+            Auth::check()
                 ? new KeyboardShortcut(
                     id: 'navigation.user-menu',
                     keys: ['g u'],
                     description: __('waterhole::system.keyboard-shortcuts-user-menu-description'),
                     category: 'navigation',
                 )
-                : null,
-            'navigation.user-menu',
-        );
+                : null
+        ), 'navigation.user-menu');
 
-        $this->add(
-            fn() => Auth::check()
+        $this->add(fn() => (
+            Auth::check()
                 ? new KeyboardShortcut(
                     id: 'navigation.notifications',
                     keys: ['g n'],
@@ -86,46 +84,41 @@ class KeyboardShortcuts extends OrderedList
                     ),
                     category: 'navigation',
                 )
-                : null,
-            'navigation.notifications',
-        );
+                : null
+        ), 'navigation.notifications');
 
-        $this->add(
-            fn() => Auth::check()
+        $this->add(fn() => (
+            Auth::check()
                 ? new KeyboardShortcut(
                     id: 'navigation.saved',
                     keys: ['g s'],
                     description: __('waterhole::system.keyboard-shortcuts-saved-description'),
                     category: 'navigation',
                 )
-                : null,
-            'navigation.saved',
-        );
+                : null
+        ), 'navigation.saved');
 
-        $this->add(
-            fn() => Auth::user()?->can('waterhole.moderate')
+        $this->add(fn() => (
+            Auth::user()?->can('waterhole.moderate')
                 ? new KeyboardShortcut(
                     id: 'navigation.moderation',
                     keys: ['g m'],
                     description: __('waterhole::system.keyboard-shortcuts-moderation-description'),
                     category: 'navigation',
                 )
-                : null,
-            'navigation.moderation',
-        );
+                : null
+        ), 'navigation.moderation');
 
-        $this->add(
-            fn() => Auth::check() &&
-            CreatePostButton::resolveTarget(Auth::user())['response']->allowed()
+        $this->add(fn() => (
+            Auth::check() && CreatePostButton::resolveTarget(Auth::user())['response']->allowed()
                 ? new KeyboardShortcut(
                     id: 'navigation.create-post',
                     keys: ['g p'],
                     description: __('waterhole::system.keyboard-shortcuts-create-post-description'),
                     category: 'navigation',
                 )
-                : null,
-            'navigation.create-post',
-        );
+                : null
+        ), 'navigation.create-post');
 
         $this->add(
             new KeyboardShortcut(
@@ -300,17 +293,13 @@ class KeyboardShortcuts extends OrderedList
             return $this->resolved;
         }
 
-        $shortcuts = array_values(
-            array_filter(
-                array_map(function ($shortcut) {
-                    if ($shortcut instanceof Closure) {
-                        $shortcut = app()->call($shortcut);
-                    }
+        $shortcuts = array_values(array_filter(array_map(function ($shortcut) {
+            if ($shortcut instanceof Closure) {
+                $shortcut = app()->call($shortcut);
+            }
 
-                    return $shortcut instanceof KeyboardShortcut ? $shortcut : null;
-                }, $this->items()),
-            ),
-        );
+            return $shortcut instanceof KeyboardShortcut ? $shortcut : null;
+        }, $this->items())));
 
         if (Auth::check()) {
             $shortcuts = [...$shortcuts, ...resolve(Actions::class)->shortcuts()];

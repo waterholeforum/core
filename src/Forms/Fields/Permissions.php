@@ -9,17 +9,19 @@ use Waterhole\Models\Model;
 
 class Permissions extends Field
 {
-    public function __construct(public ?Model $model) {}
+    public function __construct(
+        public ?Model $model,
+    ) {}
 
     public function render(): string
     {
         return <<<'blade'
-            <x-waterhole::cp.permission-grid
-                :abilities="$model->abilities()"
-                :scope="$model->exists ? $model : null"
-                :defaults="$model->defaultAbilities()"
-            />
-        blade;
+                <x-waterhole::cp.permission-grid
+                    :abilities="$model->abilities()"
+                    :scope="$model->exists ? $model : null"
+                    :defaults="$model->defaultAbilities()"
+                />
+            blade;
     }
 
     public function validating(Validator $validator): void

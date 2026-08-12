@@ -11,7 +11,9 @@ use Waterhole\View\TurboStream;
 
 class FlagReceived implements ShouldBroadcast, ShouldDispatchAfterCommit
 {
-    public function __construct(protected User $user) {}
+    public function __construct(
+        protected User $user,
+    ) {}
 
     public function broadcastOn(): PrivateChannel
     {

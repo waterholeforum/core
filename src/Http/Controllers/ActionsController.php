@@ -80,15 +80,15 @@ class ActionsController extends Controller
         // each of the actioned models from the action class. We will also
         // add on streams for any alerts that the action may have flashed.
         if (
-            $request->wantsTurboStream() &&
-            ($streams = $models->flatMap(fn($item) => $action->stream($item))->all())
+            $request->wantsTurboStream() && ($streams = $models->flatMap(
+                fn($item) => $action->stream($item),
+            )->all())
         ) {
             foreach (['success', 'warning', 'danger'] as $type) {
                 if ($message = session()->get($type)) {
-                    $streams[] = TurboStream::append(
-                        (new Alert($type, $message))->withAttributes(['data-key' => "flash-$type"]),
-                        '#alerts',
-                    );
+                    $streams[] = TurboStream::append((new Alert($type, $message))->withAttributes([
+                        'data-key' => "flash-$type",
+                    ]), '#alerts');
                 }
             }
 
@@ -117,10 +117,10 @@ class ActionsController extends Controller
         $actions = resolve(Actions::class);
 
         if (
-            !$actionable ||
-            !class_exists($actionable) ||
-            !is_subclass_of($actionable, Model::class) ||
-            !$actions->hasList($actionable)
+            !$actionable
+            || !class_exists($actionable)
+            || !is_subclass_of($actionable, Model::class)
+            || !$actions->hasList($actionable)
         ) {
             abort(400, "The actionable [$actionable] does not exist");
         }

@@ -7,8 +7,10 @@ use Waterhole\Models\User;
 
 class RegistrationForm extends Form
 {
-    public function __construct(User $user, public ?SsoPayload $payload = null)
-    {
+    public function __construct(
+        User $user,
+        public ?SsoPayload $payload = null,
+    ) {
         parent::__construct($user);
     }
 

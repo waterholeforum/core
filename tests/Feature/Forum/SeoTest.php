@@ -22,7 +22,8 @@ beforeEach(function () {
 test('home page includes default seo tags', function () {
     Channel::factory()->public()->create();
 
-    $this->get('/')
+    $this
+        ->get('/')
         ->assertSeeHtml('<meta name="description" content="Default SEO description." />')
         ->assertSeeHtml('<meta property="og:type" content="website" />')
         ->assertSeeHtml('"@type":"WebSite"');
@@ -41,7 +42,8 @@ test('post page includes seo tags', function () {
 
     $description = \Illuminate\Support\Str::limit($post->body_text ?? '', 160);
 
-    $this->get($post->url)
+    $this
+        ->get($post->url)
         ->assertSeeHtml('<meta property="og:title" content="SEO Post Title - Waterhole" />')
         ->assertSeeHtml('<meta name="description" content="' . e($description) . '" />')
         ->assertSeeHtml('<meta property="og:image" content="https://example.com/default-og.png" />')
@@ -65,7 +67,8 @@ test('standalone comment page includes discussion schema fields', function () {
         ->for($commentAuthor)
         ->create(['body' => 'SEO comment body text.']);
 
-    $this->get($comment->url)
+    $this
+        ->get($comment->url)
         ->assertSee('itemtype="https://schema.org/DiscussionForumPosting"', false)
         ->assertSee('itemprop="headline"', false)
         ->assertSee('itemprop="text"', false)
@@ -82,7 +85,8 @@ test('channel page includes seo tags', function () {
             'description' => '<p>Channel description.</p>',
         ]);
 
-    $this->get($channel->url)
+    $this
+        ->get($channel->url)
         ->assertSeeHtml('<meta property="og:title" content="SEO Channel - Waterhole" />')
         ->assertSeeHtml('<meta name="description" content="Channel description." />')
         ->assertSeeHtml('"@type":"CollectionPage"');

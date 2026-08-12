@@ -16,7 +16,10 @@
     </span>
 @elseif ($post->user)
     <span>
-        <x-waterhole::user-link :user="$post->user" class="color-inherit inline-block">
+        <x-waterhole::user-link
+            :user="$post->user"
+            class="color-inherit inline-block"
+        >
             {{ Waterhole\username($post->user) }}
         </x-waterhole::user-link>
         {{ __('waterhole::forum.post-activity-posted') }}

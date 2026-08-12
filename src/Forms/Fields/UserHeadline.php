@@ -9,25 +9,27 @@ use Waterhole\Models\User;
 
 class UserHeadline extends Field
 {
-    public function __construct(public ?User $model) {}
+    public function __construct(
+        public ?User $model,
+    ) {}
 
     public function render(): string
     {
         return <<<'blade'
-            <x-waterhole::field
-                name="headline"
-                :label="__('waterhole::user.headline-label')"
-                :description="__('waterhole::user.headline-description')"
-            >
-                <input
-                    id="{{ $component->id }}"
-                    type="text"
+                <x-waterhole::field
                     name="headline"
-                    value="{{ old('headline', $model?->headline) }}"
-                    maxlength="30"
+                    :label="__('waterhole::user.headline-label')"
+                    :description="__('waterhole::user.headline-description')"
                 >
-            </x-waterhole::field>
-        blade;
+                    <input
+                        id="{{ $component->id }}"
+                        type="text"
+                        name="headline"
+                        value="{{ old('headline', $model?->headline) }}"
+                        maxlength="30"
+                    >
+                </x-waterhole::field>
+            blade;
     }
 
     public function validating(Validator $validator): void

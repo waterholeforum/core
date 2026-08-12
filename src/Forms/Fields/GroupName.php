@@ -9,7 +9,9 @@ use Waterhole\Models\Group;
 
 class GroupName extends Field
 {
-    public function __construct(public ?Group $model) {}
+    public function __construct(
+        public ?Group $model,
+    ) {}
 
     public function shouldRender(): bool
     {
@@ -19,19 +21,19 @@ class GroupName extends Field
     public function render(): string
     {
         return <<<'blade'
-            <x-waterhole::field
-                name="name"
-                :label="__('waterhole::cp.group-name-label')"
-            >
-                <input
-                    type="text"
+                <x-waterhole::field
                     name="name"
-                    id="{{ $component->id }}"
-                    value="{{ old('name', $model->name ?? null) }}"
-                    autofocus
+                    :label="__('waterhole::cp.group-name-label')"
                 >
-            </x-waterhole::field>
-        blade;
+                    <input
+                        type="text"
+                        name="name"
+                        id="{{ $component->id }}"
+                        value="{{ old('name', $model->name ?? null) }}"
+                        autofocus
+                    >
+                </x-waterhole::field>
+            blade;
     }
 
     public function validating(Validator $validator): void

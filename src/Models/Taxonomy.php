@@ -37,9 +37,9 @@ class Taxonomy extends Model
 
     protected function editUrl(): Attribute
     {
-        return Attribute::make(
-            get: fn() => route('waterhole.cp.taxonomies.edit', ['taxonomy' => $this]),
-        )->shouldCache();
+        return Attribute::make(get: fn() => route('waterhole.cp.taxonomies.edit', [
+            'taxonomy' => $this,
+        ]))->shouldCache();
     }
 
     public function abilities(): array

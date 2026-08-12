@@ -19,7 +19,8 @@ function cpGroupsAdmin(): User
 
 describe('cp groups', function () {
     test('create group', function () {
-        $this->actingAs(cpGroupsAdmin())
+        $this
+            ->actingAs(cpGroupsAdmin())
             ->post(route('waterhole.cp.groups.store'), [
                 'name' => 'CP Group',
                 'icon' => ['type' => null],
@@ -38,7 +39,8 @@ describe('cp groups', function () {
     test('update group', function () {
         $group = Group::create(['name' => 'Old Name']);
 
-        $this->actingAs(cpGroupsAdmin())
+        $this
+            ->actingAs(cpGroupsAdmin())
             ->put(route('waterhole.cp.groups.update', $group), [
                 'name' => 'New Name',
                 'icon' => ['type' => null],
@@ -57,7 +59,8 @@ describe('cp groups', function () {
     test('update admin group', function () {
         $group = Group::admin();
 
-        $this->actingAs(cpGroupsAdmin())
+        $this
+            ->actingAs(cpGroupsAdmin())
             ->put(route('waterhole.cp.groups.update', $group), [
                 'name' => $group->name,
                 'icon' => ['type' => null],
@@ -76,33 +79,30 @@ describe('cp groups', function () {
     test('delete group', function () {
         $group = Group::create(['name' => 'Delete Group']);
 
-        $this->actingAs(cpGroupsAdmin())
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => Group::class,
-                'id' => $group->id,
-                'action_class' => Delete::class,
-                'confirmed' => true,
-            ])
-            ->assertRedirect();
+        $this->actingAs(cpGroupsAdmin())->post(route('waterhole.actions.store'), [
+            'actionable' => Group::class,
+            'id' => $group->id,
+            'action_class' => Delete::class,
+            'confirmed' => true,
+        ])->assertRedirect();
 
         $this->assertDatabaseMissing('groups', ['id' => $group->id]);
     });
 
     test('cannot delete built-in group', function () {
-        $this->actingAs(cpGroupsAdmin())
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => Group::class,
-                'id' => Group::GUEST_ID,
-                'action_class' => Delete::class,
-                'confirmed' => true,
-            ])
-            ->assertForbidden();
+        $this->actingAs(cpGroupsAdmin())->post(route('waterhole.actions.store'), [
+            'actionable' => Group::class,
+            'id' => Group::GUEST_ID,
+            'action_class' => Delete::class,
+            'confirmed' => true,
+        ])->assertForbidden();
     });
 
     test('updates group permissions', function () {
         $group = Group::create(['name' => 'Permissions Group']);
 
-        $this->actingAs(cpGroupsAdmin())
+        $this
+            ->actingAs(cpGroupsAdmin())
             ->put(route('waterhole.cp.groups.update', $group), [
                 'name' => 'Permissions Group',
                 'icon' => ['type' => null],

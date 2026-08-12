@@ -9,7 +9,10 @@ use Waterhole\Models\User;
 
 class VerifyEmail extends Notification
 {
-    public function __construct(private User $user, private string $email) {}
+    public function __construct(
+        private User $user,
+        private string $email,
+    ) {}
 
     public function via(): array
     {
@@ -23,11 +26,9 @@ class VerifyEmail extends Notification
         return (new MailMessage())
             ->markdown('waterhole::mail.email')
             ->subject(__('waterhole::auth.email-verification-mail-subject'))
-            ->line(
-                __('waterhole::auth.email-verification-mail-body', [
-                    'forum' => config('waterhole.forum.name'),
-                ]),
-            )
+            ->line(__('waterhole::auth.email-verification-mail-body', [
+                'forum' => config('waterhole.forum.name'),
+            ]))
             ->action(__('waterhole::auth.email-verification-mail-button'), $verificationUrl);
     }
 

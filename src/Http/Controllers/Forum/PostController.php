@@ -118,17 +118,14 @@ class PostController extends Controller
 
         $headings = $post->bodyHeadings();
 
-        return view(
-            'waterhole::posts.show',
-            compact(
-                'post',
-                'comments',
-                'highlightedCommentsByPage',
-                'previousCommentCreatedAt',
-                'lastReadAt',
-                'headings',
-            ),
-        );
+        return view('waterhole::posts.show', compact(
+            'post',
+            'comments',
+            'highlightedCommentsByPage',
+            'previousCommentCreatedAt',
+            'lastReadAt',
+            'headings',
+        ));
     }
 
     public function create()
@@ -154,10 +151,10 @@ class PostController extends Controller
         // explicitly clicked. This allows the form to be submitted for other
         // purposes, such as selecting a different channel.
         if (!$request->input('commit')) {
-            $this->savePostDraft(
-                $user,
-                array_replace($user->drafts()->first()?->payload ?? [], $request->all()),
-            );
+            $this->savePostDraft($user, array_replace(
+                $user->drafts()->first()?->payload ?? [],
+                $request->all(),
+            ));
 
             return redirect()
                 ->route('waterhole.posts.create', ['channel_id' => $request->input('channel_id')])
@@ -174,8 +171,8 @@ class PostController extends Controller
         Gate::authorize('waterhole.channel.post', $post->channel);
 
         $post->is_approved =
-            $user->can('waterhole.channel.moderate', $post->channel) ||
-            (!$user->requiresApproval() && !$post->channel->require_approval_posts);
+            $user->can('waterhole.channel.moderate', $post->channel)
+            || !$user->requiresApproval() && !$post->channel->require_approval_posts;
 
         if (!(new PostForm($post))->submit($request)) {
             return redirect()->back()->withInput();

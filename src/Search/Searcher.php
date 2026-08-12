@@ -7,7 +7,9 @@ use Waterhole\Models\Post;
 
 class Searcher
 {
-    public function __construct(protected EngineInterface $engine) {}
+    public function __construct(
+        protected EngineInterface $engine,
+    ) {}
 
     public function search(
         string $q,

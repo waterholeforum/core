@@ -25,24 +25,27 @@ class ChannelPicker extends Component
         $this->items = Structure::with('content')
             ->whereMorphedTo('content', Channel::class)
             ->orWhereMorphedTo('content', StructureHeading::class)
-            ->when(
-                $showLinks,
-                fn($query) => $query->orWhereMorphedTo('content', StructureLink::class),
-            )
+            ->when($showLinks, fn($query) => $query->orWhereMorphedTo(
+                'content',
+                StructureLink::class,
+            ))
             ->orderBy('position')
             ->get()
             ->toBase()
-            ->map->content->except($exclude)
+            ->map
+            ->content
+            ->except($exclude)
             ->filter(
-                fn($item) => !($item instanceof Channel) ||
-                    Gate::allows('waterhole.channel.post', $item),
+                fn($item) => !$item instanceof Channel
+                || Gate::allows('waterhole.channel.post', $item),
             );
 
         // Filter out headings with no items after them
         $this->items = $this->items->filter(function ($item, $i) {
             if ($item instanceof StructureHeading) {
-                return isset($this->items[$i + 1]) &&
-                    !($this->items[$i + 1] instanceof StructureHeading);
+                return (
+                    isset($this->items[$i + 1]) && !$this->items[$i + 1] instanceof StructureHeading
+                );
             }
             return true;
         });

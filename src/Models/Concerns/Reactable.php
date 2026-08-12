@@ -28,14 +28,15 @@ trait Reactable
      */
     public function reactionCounts(): HasManyThrough
     {
-        $relation = $this->hasManyThrough(
-            ReactionType::class,
-            Reaction::class,
-            'content_id',
-            'id',
-            'id',
-            'reaction_type_id',
-        )
+        $relation = $this
+            ->hasManyThrough(
+                ReactionType::class,
+                Reaction::class,
+                'content_id',
+                'id',
+                'id',
+                'reaction_type_id',
+            )
             ->where('reactions.content_type', $this->getMorphClass())
             ->select('reaction_types.*', 'reactions.content_type', 'reactions.content_id')
             ->selectRaw('count(*) as count')
@@ -63,7 +64,8 @@ trait Reactable
      */
     public function recalculateScore(): static
     {
-        $this->score = $this->reactions()
+        $this->score = $this
+            ->reactions()
             ->join('reaction_types', 'reaction_types.id', '=', 'reaction_type_id')
             ->sum('reaction_types.score');
 

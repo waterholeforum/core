@@ -13,8 +13,9 @@ class PostCard extends Component
 
     public array $config;
 
-    public function __construct(public Post $post)
-    {
+    public function __construct(
+        public Post $post,
+    ) {
         $this->config = $post->channel->layout_config[CardsLayout::class] ?? [];
     }
 

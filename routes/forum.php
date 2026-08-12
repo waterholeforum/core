@@ -133,8 +133,8 @@ if (config('waterhole.system.search_engine')) {
 Route::get('keyboard-shortcuts', KeyboardShortcutsController::class)->name('keyboard-shortcuts');
 
 $authAvailable =
-    count(config('waterhole.auth.providers', [])) ||
-    config('waterhole.auth.password_enabled', true);
+    count(config('waterhole.auth.providers', []))
+    || config('waterhole.auth.password_enabled', true);
 
 // Register
 if (config('waterhole.auth.allow_registration', true) && $authAvailable) {

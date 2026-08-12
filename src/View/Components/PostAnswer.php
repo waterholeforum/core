@@ -7,13 +7,17 @@ use Waterhole\Models\Post;
 
 class PostAnswer extends Component
 {
-    public function __construct(public Post $post) {}
+    public function __construct(
+        public Post $post,
+    ) {}
 
     public function shouldRender(): bool
     {
-        return $this->post->channel->answerable &&
-            $this->post->answer &&
-            $this->post->answer->index > 0;
+        return (
+            $this->post->channel->answerable
+            && $this->post->answer
+            && $this->post->answer->index > 0
+        );
     }
 
     public function render()

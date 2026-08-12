@@ -43,13 +43,14 @@ class Providers
 
     private Collection $providers;
 
-    public function __construct(protected array $config)
-    {
-        $this->providers = collect($config)->mapWithKeys(
-            fn($value, $key) => is_numeric($key)
+    public function __construct(
+        protected array $config,
+    ) {
+        $this->providers = collect($config)->mapWithKeys(fn($value, $key) => (
+            is_numeric($key)
                 ? [$value => static::DEFAULTS[$value] ?? ['icon' => null, 'name' => $value]]
-                : [$key => $value],
-        );
+                : [$key => $value]
+        ));
     }
 
     public function all(): array

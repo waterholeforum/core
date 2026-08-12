@@ -93,8 +93,8 @@ class Notification extends DatabaseNotification
 
     protected function url(): Attribute
     {
-        return Attribute::make(
-            get: fn() => route('waterhole.notifications.show', ['notification' => $this]),
-        )->shouldCache();
+        return Attribute::make(get: fn() => route('waterhole.notifications.show', [
+            'notification' => $this,
+        ]))->shouldCache();
     }
 }

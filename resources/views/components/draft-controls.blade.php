@@ -13,7 +13,11 @@
             {{ __('waterhole::forum.draft-saved-message') }}
         </span>
 
-        <span class="color-danger weight-medium" data-draft-target="error" hidden>
+        <span
+            class="color-danger weight-medium"
+            data-draft-target="error"
+            hidden
+        >
             {{ __('waterhole::forum.draft-error-message') }}
         </span>
 

@@ -8,7 +8,10 @@
                 Opt-out of Turbo so that any fragment that may be present in the
                 redirect URL will be followed.
             --}}
-            <form method="POST" action="{{ route('waterhole.confirm-password') }}">
+            <form
+                method="POST"
+                action="{{ route('waterhole.confirm-password') }}"
+            >
                 @csrf
 
                 <div class="stack gap-xl">

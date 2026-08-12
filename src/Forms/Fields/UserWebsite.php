@@ -9,21 +9,23 @@ use Waterhole\Models\User;
 
 class UserWebsite extends Field
 {
-    public function __construct(public ?User $model) {}
+    public function __construct(
+        public ?User $model,
+    ) {}
 
     public function render(): string
     {
         return <<<'blade'
-            <x-waterhole::field name="website" :label="__('waterhole::user.website-label')">
-                <input
-                    id="{{ $component->id }}"
-                    type="text"
-                    name="website"
-                    value="{{ old('website', $model?->website) }}"
-                    maxlength="100"
-                >
-            </x-waterhole::field>
-        blade;
+                <x-waterhole::field name="website" :label="__('waterhole::user.website-label')">
+                    <input
+                        id="{{ $component->id }}"
+                        type="text"
+                        name="website"
+                        value="{{ old('website', $model?->website) }}"
+                        maxlength="100"
+                    >
+                </x-waterhole::field>
+            blade;
     }
 
     public function validating(Validator $validator): void

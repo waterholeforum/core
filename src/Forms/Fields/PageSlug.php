@@ -10,29 +10,31 @@ use Waterhole\Models\Page;
 
 class PageSlug extends Field
 {
-    public function __construct(public ?Page $model) {}
+    public function __construct(
+        public ?Page $model,
+    ) {}
 
     public function render(): string
     {
         return <<<'blade'
-            <x-waterhole::field
-                name="slug"
-                :label="__('waterhole::cp.page-slug-label')"
-            >
-                <input
-                    type="text"
+                <x-waterhole::field
                     name="slug"
-                    id="{{ $component->id }}"
-                    value="{{ old('slug', $model->slug ?? null) }}"
-                    data-action="slugger#updateSlug"
-                    data-slugger-target="slug"
+                    :label="__('waterhole::cp.page-slug-label')"
                 >
-                <x-slot:description>
-                    {{ __('waterhole::cp.page-slug-url-label') }}
-                    {!! preg_replace('~^https?://~', '', str_replace('*', '<span data-slugger-target="mirror">'.old('slug', $model->slug ?? '').'</span>', route('waterhole.page', ['page' => '*']))) !!}
-                </x-slot:description>
-            </x-waterhole::field>
-        blade;
+                    <input
+                        type="text"
+                        name="slug"
+                        id="{{ $component->id }}"
+                        value="{{ old('slug', $model->slug ?? null) }}"
+                        data-action="slugger#updateSlug"
+                        data-slugger-target="slug"
+                    >
+                    <x-slot:description>
+                        {{ __('waterhole::cp.page-slug-url-label') }}
+                        {!! preg_replace('~^https?://~', '', str_replace('*', '<span data-slugger-target="mirror">'.old('slug', $model->slug ?? '').'</span>', route('waterhole.page', ['page' => '*']))) !!}
+                    </x-slot:description>
+                </x-waterhole::field>
+            blade;
     }
 
     public function validating(Validator $validator): void

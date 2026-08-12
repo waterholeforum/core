@@ -13,10 +13,12 @@ trait HasWaterholeUser
     {
         static::saved(function ($model) {
             if ($model->wasChanged('email', 'email_verified_at')) {
-                $model->waterholeUser()->update([
-                    'email' => $model->email,
-                    'email_verified_at' => $model->email_verified_at,
-                ]);
+                $model
+                    ->waterholeUser()
+                    ->update([
+                        'email' => $model->email,
+                        'email_verified_at' => $model->email_verified_at,
+                    ]);
             }
         });
     }

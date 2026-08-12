@@ -7,7 +7,9 @@ use Waterhole\Models\User;
 
 class UserJoined extends Component
 {
-    public function __construct(public User $user) {}
+    public function __construct(
+        public User $user,
+    ) {}
 
     public function shouldRender()
     {
@@ -17,13 +19,13 @@ class UserJoined extends Component
     public function render()
     {
         return <<<'blade'
-            <span class="with-icon">
-                @icon('tabler-calendar')
-                <span>
-                    {{ __('waterhole::user.user-joined-text') }}
-                    <x-waterhole::relative-time :datetime="$user->created_at"/>
+                <span class="with-icon">
+                    @icon('tabler-calendar')
+                    <span>
+                        {{ __('waterhole::user.user-joined-text') }}
+                        <x-waterhole::relative-time :datetime="$user->created_at"/>
+                    </span>
                 </span>
-            </span>
-        blade;
+            blade;
     }
 }

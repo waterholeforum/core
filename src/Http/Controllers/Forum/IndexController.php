@@ -37,10 +37,7 @@ class IndexController extends Controller
         $scope = function (Builder $query) {
             $this->scope($query);
 
-            $query->withGlobalScope(
-                Ignoring::EXCLUDE_IGNORED_SCOPE,
-                fn($query) => $query->whereNot->ignoring(),
-            );
+            $query->withGlobalScope(Ignoring::EXCLUDE_IGNORED_SCOPE, fn($query) => $query->whereNot->ignoring());
 
             $query->whereDoesntHave('channel', fn($query) => $query->ignoring());
         };
@@ -86,10 +83,7 @@ class IndexController extends Controller
 
     private function scope(Builder $query)
     {
-        $query->withGlobalScope(
-            Trash::EXCLUDE_TRASHED_SCOPE,
-            fn($query) => $query->withoutTrashed(),
-        );
+        $query->withGlobalScope(Trash::EXCLUDE_TRASHED_SCOPE, fn($query) => $query->withoutTrashed());
     }
 
     private function resolveFilters(array $filters)

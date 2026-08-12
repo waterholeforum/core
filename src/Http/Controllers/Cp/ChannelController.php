@@ -2,12 +2,12 @@
 
 namespace Waterhole\Http\Controllers\Cp;
 
-use function Waterhole\internal_url;
-
 use Illuminate\Http\Request;
 use Waterhole\Forms\ChannelForm;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\Channel;
+
+use function Waterhole\internal_url;
 
 /**
  * Controller for CP channel management (create and update).

@@ -54,14 +54,18 @@ class UserLookupController extends Controller
             $users = User::select(['users.id', 'name', 'avatar']);
 
             if ($searchUsers) {
-                $operator =
-                    (new User())->getConnection()->getDriverName() === 'pgsql' ? 'ilike' : 'like';
+                $operator = (new User())->getConnection()->getDriverName() === 'pgsql'
+                    ? 'ilike'
+                    : 'like';
 
                 $users
                     ->where('name', $operator, "$searchUsers%")
-                    ->orderByRaw("CASE WHEN name $operator ? THEN 1 ELSE 0 END DESC", [
-                        $searchUsers,
-                    ])
+                    ->orderByRaw(
+                        "CASE WHEN name $operator ? THEN 1 ELSE 0 END DESC",
+                        [
+                            $searchUsers,
+                        ],
+                    )
                     ->orderBy('name')
                     ->limit(static::LIMIT);
             }
@@ -79,10 +83,10 @@ class UserLookupController extends Controller
                     ->clone()
                     ->selectRaw("MAX($commentsCreatedAt) as created_at")
                     ->selectRaw("MAX($commentsId) as comment_id")
-                    ->joinRelationship(
-                        'comments',
-                        fn($query) => $query->where('comments.post_id', $post->getKey()),
-                    )
+                    ->joinRelationship('comments', fn($query) => $query->where(
+                        'comments.post_id',
+                        $post->getKey(),
+                    ))
                     ->groupBy(['users.id', 'name', 'avatar'])
                     ->orderByRaw("MAX($commentsCreatedAt) DESC");
 
@@ -90,10 +94,10 @@ class UserLookupController extends Controller
                     ->clone()
                     ->addSelect('posts.created_at')
                     ->selectRaw('NULL as comment_id')
-                    ->joinRelationship(
-                        'posts',
-                        fn($query) => $query->where('posts.id', $post->getKey()),
-                    );
+                    ->joinRelationship('posts', fn($query) => $query->where(
+                        'posts.id',
+                        $post->getKey(),
+                    ));
 
                 if ($user = $request->user()) {
                     $commentsQuery->where('users.id', '!=', $user->id);
@@ -129,10 +133,10 @@ class UserLookupController extends Controller
                         'type' => 'user',
                         'name' => $user->name,
                         'value' => $user->name,
-                        'html' => (string) view(
-                            'waterhole::users.mention-suggestion',
-                            compact('user', 'commentId'),
-                        ),
+                        'html' => (string) view('waterhole::users.mention-suggestion', compact(
+                            'user',
+                            'commentId',
+                        )),
                         'commentUrl' => $commentId
                             ? route('waterhole.posts.comments.show', [
                                 'post' => $post,
@@ -147,12 +151,14 @@ class UserLookupController extends Controller
         $groups = Group::query()->where('is_public', true);
 
         if ($groupSearch) {
-            $operator =
-                (new Group())->getConnection()->getDriverName() === 'pgsql' ? 'ilike' : 'like';
+            $operator = (new Group())->getConnection()->getDriverName() === 'pgsql'
+                ? 'ilike'
+                : 'like';
 
-            $groups
-                ->where('name', $operator, "$groupSearch%")
-                ->orderByRaw("CASE WHEN name $operator ? THEN 1 ELSE 0 END DESC", [$groupSearch]);
+            $groups->where('name', $operator, "$groupSearch%")->orderByRaw(
+                "CASE WHEN name $operator ? THEN 1 ELSE 0 END DESC",
+                [$groupSearch],
+            );
         }
 
         $groupResults = collect();
@@ -175,13 +181,11 @@ class UserLookupController extends Controller
                     }
 
                     $query->orWhere(function ($query) use ($user) {
-                        $query
-                            ->where(function ($query) {
-                                $query
-                                    ->where('mentionable', Mentionable::Members->value)
-                                    ->orWhereNull('mentionable');
-                            })
-                            ->whereRelation('users', 'users.id', $user->id);
+                        $query->where(function ($query) {
+                            $query
+                                ->where('mentionable', Mentionable::Members->value)
+                                ->orWhereNull('mentionable');
+                        })->whereRelation('users', 'users.id', $user->id);
                     });
                 });
             }
@@ -196,23 +200,19 @@ class UserLookupController extends Controller
                 ->groupBy('group_id')
                 ->pluck('users_count', 'group_id');
 
-            $groupResults->each(
-                fn(Group $group) => $group->setAttribute(
-                    'users_count',
-                    (int) ($usersCounts[$group->id] ?? 0),
-                ),
-            );
+            $groupResults->each(fn(Group $group) => $group->setAttribute(
+                'users_count',
+                (int) ($usersCounts[$group->id] ?? 0),
+            ));
         }
 
-        $groupResults = $groupResults->map(
-            fn(Group $group) => [
-                'id' => $group->id,
-                'type' => 'group',
-                'name' => $group->name,
-                'value' => 'group:' . $group->name,
-                'html' => (string) view('waterhole::users.mention-suggestion', compact('group')),
-            ],
-        );
+        $groupResults = $groupResults->map(fn(Group $group) => [
+            'id' => $group->id,
+            'type' => 'group',
+            'name' => $group->name,
+            'value' => 'group:' . $group->name,
+            'html' => (string) view('waterhole::users.mention-suggestion', compact('group')),
+        ]);
 
         if ($searchUsers === null) {
             return $groupResults->take(static::LIMIT)->values();

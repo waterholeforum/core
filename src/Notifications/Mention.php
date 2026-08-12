@@ -7,21 +7,25 @@ use Illuminate\Support\HtmlString;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
+
 use function Waterhole\emojify;
 
 class Mention extends Notification
 {
     protected Post $post;
 
-    public function __construct(protected Post|Comment $content)
-    {
+    public function __construct(
+        protected Post|Comment $content,
+    ) {
         $this->post = $this->content instanceof Post ? $this->content : $this->content->post;
     }
 
     public function shouldSend($notifiable): bool
     {
-        return !$this->post->ignoredBy->contains($notifiable) &&
-            !$this->post->channel->ignoredBy->contains($notifiable);
+        return (
+            !$this->post->ignoredBy->contains($notifiable)
+            && !$this->post->channel->ignoredBy->contains($notifiable)
+        );
     }
 
     public function content(): Post|Comment
@@ -41,11 +45,9 @@ class Mention extends Notification
 
     public function title(): HtmlString
     {
-        return new HtmlString(
-            __('waterhole::notifications.mention-title', [
-                'post' => '<strong>' . emojify($this->post->title) . '</strong>',
-            ]),
-        );
+        return new HtmlString(__('waterhole::notifications.mention-title', [
+            'post' => '<strong>' . emojify($this->post->title) . '</strong>',
+        ]));
     }
 
     public function excerpt(): HtmlString

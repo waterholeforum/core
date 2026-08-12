@@ -51,7 +51,9 @@
                         >
                             <x-slot name="empty">
                                 @icon("tabler-filter")
-                                <span>{{ __("waterhole::forum.search-filter-button") }}</span>
+                                <span>
+                                    {{ __("waterhole::forum.search-filter-button") }}
+                                </span>
                             </x-slot>
                         </x-waterhole::collapsible-nav>
                     </div>
@@ -73,7 +75,10 @@
                         </div>
 
                         <div class="card search-results post-list">
-                            <x-waterhole::infinite-scroll :paginator="$hits" divider>
+                            <x-waterhole::infinite-scroll
+                                :paginator="$hits"
+                                divider
+                            >
                                 @foreach ($hits as $hit)
                                     <x-waterhole::post-list-item
                                         :post="$hit->post"

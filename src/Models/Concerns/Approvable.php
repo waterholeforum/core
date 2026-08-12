@@ -26,10 +26,14 @@ trait Approvable
         static::updated(function (self $model) {
             if ($model->wasChanged('is_approved') && $model->is_approved) {
                 if ($model->user) {
-                    $groupsToRemove = $model->user->groups
+                    $groupsToRemove = $model
+                        ->user
+                        ->groups
                         ->filter(
-                            fn($group) => ($group->rules['requires_approval'] ?? false) &&
-                                ($group->rules['remove_after_approval'] ?? false),
+                            fn($group) => (
+                                ($group->rules['requires_approval'] ?? false)
+                                && ($group->rules['remove_after_approval'] ?? false)
+                            ),
                         )
                         ->pluck('id');
 

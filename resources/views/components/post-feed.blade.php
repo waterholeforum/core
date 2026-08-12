@@ -23,19 +23,25 @@
                     data-action="post-feed#scrollToTop"
                 >
                     @icon('tabler-refresh')
-                    <span>{{ __('waterhole::forum.post-feed-new-activity-button') }}</span>
+                    <span>
+                        {{ __('waterhole::forum.post-feed-new-activity-button') }}
+                    </span>
                 </button>
             </div>
         </form>
 
         @if ($posts->isNotEmpty())
-            <div class="post-feed__content {{ $feed->layout->wrapperClass() }}">
+            <div
+                class="post-feed__content {{ $feed->layout->wrapperClass() }}"
+            >
                 <x-waterhole::infinite-scroll :paginator="$posts">
                     @foreach ($posts as $post)
                         @if ($showLastVisit && $post->last_activity_at < session('previously_seen_at'))
                             @once
                                 @if (! $loop->first)
-                                    <div class="divider color-accent feed__last-visit-divider">
+                                    <div
+                                        class="divider color-accent feed__last-visit-divider"
+                                    >
                                         {{ __('waterhole::forum.post-feed-new-activity-heading') }}
                                     </div>
                                 @endif
@@ -52,7 +58,9 @@
         @else
             <div class="placeholder">
                 @icon('tabler-messages', ['class' => 'placeholder__icon'])
-                <p class="h4">{{ __('waterhole::forum.post-feed-empty-message') }}</p>
+                <p class="h4">
+                    {{ __('waterhole::forum.post-feed-empty-message') }}
+                </p>
             </div>
         @endif
     </div>

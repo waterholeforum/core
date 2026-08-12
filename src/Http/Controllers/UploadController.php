@@ -19,9 +19,9 @@ class UploadController extends Controller
         $request->validate([
             'file' => [
                 'required',
-                File::types(config('waterhole.uploads.allowed_mimetypes'))->max(
-                    config('waterhole.uploads.max_upload_size'),
-                ),
+                File::types(config('waterhole.uploads.allowed_mimetypes'))->max(config(
+                    'waterhole.uploads.max_upload_size',
+                )),
             ],
         ]);
 

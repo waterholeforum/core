@@ -18,7 +18,9 @@ class UserPolicy
      */
     public function suspend(User $user, User $target): bool
     {
-        return Waterhole::permissions()->can($user, 'suspend', User::class) &&
-            !Waterhole::permissions()->can($target, 'suspend', User::class);
+        return (
+            Waterhole::permissions()->can($user, 'suspend', User::class)
+            && !Waterhole::permissions()->can($target, 'suspend', User::class)
+        );
     }
 }

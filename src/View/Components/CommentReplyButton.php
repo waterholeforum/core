@@ -10,7 +10,9 @@ use Waterhole\Models\User;
 
 class CommentReplyButton extends Component
 {
-    public function __construct(public Comment $comment) {}
+    public function __construct(
+        public Comment $comment,
+    ) {}
 
     public function shouldRender(): bool
     {

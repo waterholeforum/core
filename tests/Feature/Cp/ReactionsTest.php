@@ -20,13 +20,11 @@ function cpReactionsAdmin(): User
 
 describe('cp reactions', function () {
     test('create reaction set', function () {
-        $this->actingAs(cpReactionsAdmin())
-            ->post(route('waterhole.cp.reaction-sets.store'), [
-                'name' => 'Emoji Set',
-                'is_default_posts' => 0,
-                'is_default_comments' => 0,
-            ])
-            ->assertRedirect();
+        $this->actingAs(cpReactionsAdmin())->post(route('waterhole.cp.reaction-sets.store'), [
+            'name' => 'Emoji Set',
+            'is_default_posts' => 0,
+            'is_default_comments' => 0,
+        ])->assertRedirect();
 
         $this->assertDatabaseHas('reaction_sets', ['name' => 'Emoji Set']);
     });
@@ -34,13 +32,11 @@ describe('cp reactions', function () {
     test('update reaction set', function () {
         $set = ReactionSet::create(['name' => 'Old']);
 
-        $this->actingAs(cpReactionsAdmin())
-            ->put(route('waterhole.cp.reaction-sets.update', $set), [
-                'name' => 'New',
-                'is_default_posts' => 0,
-                'is_default_comments' => 0,
-            ])
-            ->assertRedirect();
+        $this->actingAs(cpReactionsAdmin())->put(route('waterhole.cp.reaction-sets.update', $set), [
+            'name' => 'New',
+            'is_default_posts' => 0,
+            'is_default_comments' => 0,
+        ])->assertRedirect();
 
         $this->assertDatabaseHas('reaction_sets', ['id' => $set->id, 'name' => 'New']);
     });
@@ -48,14 +44,12 @@ describe('cp reactions', function () {
     test('delete reaction set', function () {
         $set = ReactionSet::create(['name' => 'Delete Set']);
 
-        $this->actingAs(cpReactionsAdmin())
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => ReactionSet::class,
-                'id' => $set->id,
-                'action_class' => Delete::class,
-                'confirmed' => true,
-            ])
-            ->assertRedirect();
+        $this->actingAs(cpReactionsAdmin())->post(route('waterhole.actions.store'), [
+            'actionable' => ReactionSet::class,
+            'id' => $set->id,
+            'action_class' => Delete::class,
+            'confirmed' => true,
+        ])->assertRedirect();
 
         $this->assertDatabaseMissing('reaction_sets', ['id' => $set->id]);
     });
@@ -63,7 +57,8 @@ describe('cp reactions', function () {
     test('create reaction type', function () {
         $set = ReactionSet::create(['name' => 'Set']);
 
-        $this->actingAs(cpReactionsAdmin())
+        $this
+            ->actingAs(cpReactionsAdmin())
             ->post(route('waterhole.cp.reaction-sets.reaction-types.store', $set), [
                 'name' => 'Like',
                 'icon' => ['type' => null],
@@ -86,7 +81,8 @@ describe('cp reactions', function () {
             'position' => 0,
         ]);
 
-        $this->actingAs(cpReactionsAdmin())
+        $this
+            ->actingAs(cpReactionsAdmin())
             ->put(route('waterhole.cp.reaction-sets.reaction-types.update', [$set, $type]), [
                 'name' => 'New Type',
                 'icon' => ['type' => null],
@@ -106,14 +102,12 @@ describe('cp reactions', function () {
             'position' => 0,
         ]);
 
-        $this->actingAs(cpReactionsAdmin())
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => ReactionType::class,
-                'id' => $type->id,
-                'action_class' => Delete::class,
-                'confirmed' => true,
-            ])
-            ->assertRedirect();
+        $this->actingAs(cpReactionsAdmin())->post(route('waterhole.actions.store'), [
+            'actionable' => ReactionType::class,
+            'id' => $type->id,
+            'action_class' => Delete::class,
+            'confirmed' => true,
+        ])->assertRedirect();
 
         $this->assertDatabaseMissing('reaction_types', ['id' => $type->id]);
     });

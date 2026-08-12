@@ -19,9 +19,7 @@ beforeEach(function () {
 
 describe('api/posts', function () {
     test('list posts', function () {
-        Post::factory(2)
-            ->for(Channel::factory()->public())
-            ->create();
+        Post::factory(2)->for(Channel::factory()->public())->create();
 
         $response = jsonApi('GET', '/api/posts?include=channel');
 
@@ -31,9 +29,7 @@ describe('api/posts', function () {
     });
 
     test('retrieve post', function () {
-        $post = Post::factory()
-            ->for(Channel::factory()->public())
-            ->create();
+        $post = Post::factory()->for(Channel::factory()->public())->create();
 
         $response = jsonApi('GET', "/api/posts/$post->id");
 
@@ -89,9 +85,7 @@ describe('api/posts', function () {
     test('retrieve post user state', function () {
         $this->actingAs(User::factory()->create());
 
-        $post = Post::factory()
-            ->for(Channel::factory()->public())
-            ->create();
+        $post = Post::factory()->for(Channel::factory()->public())->create();
 
         $response = jsonApi('GET', "/api/posts/$post->id?include=userState");
 
@@ -109,9 +103,7 @@ describe('api/posts', function () {
         $taxonomy = Taxonomy::create(['name' => 'Topics', 'allow_multiple' => true]);
         $tag = Tag::create(['name' => 'Feature', 'taxonomy_id' => $taxonomy->id]);
 
-        $post = Post::factory()
-            ->for(Channel::factory()->public())
-            ->create();
+        $post = Post::factory()->for(Channel::factory()->public())->create();
 
         $post->tags()->attach($tag);
 
@@ -128,9 +120,7 @@ describe('api/posts', function () {
         $user = User::factory()->create();
         $reactionType = ReactionType::firstOrFail();
 
-        $post = Post::factory()
-            ->for(Channel::factory()->public())
-            ->create();
+        $post = Post::factory()->for(Channel::factory()->public())->create();
 
         $reaction = $post->reactions()->create([
             'reaction_type_id' => $reactionType->id,

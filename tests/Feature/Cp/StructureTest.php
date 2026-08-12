@@ -23,7 +23,8 @@ function cpStructureAdmin(): User
 
 describe('cp channels', function () {
     test('create channel', function () {
-        $this->actingAs(cpStructureAdmin())
+        $this
+            ->actingAs(cpStructureAdmin())
             ->post(route('waterhole.cp.structure.channels.store'), [
                 'name' => 'CP Channel',
                 'slug' => 'cp-channel',
@@ -40,11 +41,10 @@ describe('cp channels', function () {
     });
 
     test('update channel', function () {
-        $channel = Channel::factory()
-            ->public()
-            ->create(['name' => 'Old', 'slug' => 'old']);
+        $channel = Channel::factory()->public()->create(['name' => 'Old', 'slug' => 'old']);
 
-        $this->actingAs(cpStructureAdmin())
+        $this
+            ->actingAs(cpStructureAdmin())
             ->put(route('waterhole.cp.structure.channels.update', $channel), [
                 'name' => 'New',
                 'slug' => 'new',
@@ -67,15 +67,13 @@ describe('cp channels', function () {
     test('delete channel', function () {
         $channel = Channel::factory()->public()->create();
 
-        $this->actingAs(cpStructureAdmin())
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => Channel::class,
-                'id' => $channel->id,
-                'action_class' => DeleteChannel::class,
-                'confirmed' => true,
-                'move_posts' => false,
-            ])
-            ->assertRedirect();
+        $this->actingAs(cpStructureAdmin())->post(route('waterhole.actions.store'), [
+            'actionable' => Channel::class,
+            'id' => $channel->id,
+            'action_class' => DeleteChannel::class,
+            'confirmed' => true,
+            'move_posts' => false,
+        ])->assertRedirect();
 
         $this->assertDatabaseMissing('channels', ['id' => $channel->id]);
     });
@@ -83,7 +81,8 @@ describe('cp channels', function () {
 
 describe('cp pages', function () {
     test('create page', function () {
-        $this->actingAs(cpStructureAdmin())
+        $this
+            ->actingAs(cpStructureAdmin())
             ->post(route('waterhole.cp.structure.pages.store'), [
                 'name' => 'CP Page',
                 'slug' => 'cp-page',
@@ -96,11 +95,10 @@ describe('cp pages', function () {
     });
 
     test('update page', function () {
-        $page = Page::factory()
-            ->public()
-            ->create(['name' => 'Old', 'slug' => 'old']);
+        $page = Page::factory()->public()->create(['name' => 'Old', 'slug' => 'old']);
 
-        $this->actingAs(cpStructureAdmin())
+        $this
+            ->actingAs(cpStructureAdmin())
             ->put(route('waterhole.cp.structure.pages.update', $page), [
                 'name' => 'New',
                 'slug' => 'new',
@@ -115,14 +113,12 @@ describe('cp pages', function () {
     test('delete page', function () {
         $page = Page::factory()->public()->create();
 
-        $this->actingAs(cpStructureAdmin())
-            ->post(route('waterhole.actions.store'), [
-                'actionable' => Page::class,
-                'id' => $page->id,
-                'action_class' => DeleteStructure::class,
-                'confirmed' => true,
-            ])
-            ->assertRedirect();
+        $this->actingAs(cpStructureAdmin())->post(route('waterhole.actions.store'), [
+            'actionable' => Page::class,
+            'id' => $page->id,
+            'action_class' => DeleteStructure::class,
+            'confirmed' => true,
+        ])->assertRedirect();
 
         $this->assertDatabaseMissing('pages', ['id' => $page->id]);
     });
@@ -130,15 +126,16 @@ describe('cp pages', function () {
 
 describe('cp structure links and headings', function () {
     test('create structure heading', function () {
-        $this->actingAs(cpStructureAdmin())
-            ->post(route('waterhole.cp.structure.headings.store'), ['name' => 'Heading'])
-            ->assertRedirect(route('waterhole.cp.structure'));
+        $this->actingAs(cpStructureAdmin())->post(route('waterhole.cp.structure.headings.store'), [
+            'name' => 'Heading',
+        ])->assertRedirect(route('waterhole.cp.structure'));
 
         $this->assertDatabaseHas('structure_headings', ['name' => 'Heading']);
     });
 
     test('create structure link', function () {
-        $this->actingAs(cpStructureAdmin())
+        $this
+            ->actingAs(cpStructureAdmin())
             ->post(route('waterhole.cp.structure.links.store'), [
                 'name' => 'Docs',
                 'url' => 'https://example.com/docs',
@@ -153,13 +150,15 @@ describe('cp structure links and headings', function () {
         $heading = StructureHeading::create(['name' => 'Old Heading']);
         $link = StructureLink::create(['name' => 'Old Link', 'href' => 'https://old.test']);
 
-        $this->actingAs(cpStructureAdmin())
+        $this
+            ->actingAs(cpStructureAdmin())
             ->put(route('waterhole.cp.structure.headings.update', $heading), [
                 'name' => 'New Heading',
             ])
             ->assertRedirect(route('waterhole.cp.structure'));
 
-        $this->actingAs(cpStructureAdmin())
+        $this
+            ->actingAs(cpStructureAdmin())
             ->put(route('waterhole.cp.structure.links.update', $link), [
                 'name' => 'New Link',
                 'url' => 'https://new.test',

@@ -67,33 +67,23 @@ trait HasBody
             $channel = $model instanceof Post || $model instanceof Comment ? $model->channel : null;
             $actor = $model instanceof Post || $model instanceof Comment ? $model->user : null;
 
-            $mentionRows->push(
-                ...User::whereKey($mentions->where('type', FormatMentions::TYPE_USER)->pluck('id'))
-                    ->pluck('id')
-                    ->map(
-                        fn($id) => [
-                            'mentionable_type' => (new User())->getMorphClass(),
-                            'mentionable_id' => $id,
-                        ],
-                    ),
-            );
+            $mentionRows->push(...User::whereKey(
+                $mentions->where('type', FormatMentions::TYPE_USER)->pluck('id'),
+            )->pluck('id')->map(fn($id) => [
+                'mentionable_type' => (new User())->getMorphClass(),
+                'mentionable_id' => $id,
+            ]));
 
-            $mentionRows->push(
-                ...Group::whereKey(
-                    $mentions->where('type', FormatMentions::TYPE_GROUP)->pluck('id'),
-                )
-                    ->withCount('users')
-                    ->get()
-                    ->filter(
-                        fn(Group $group) => !$actor || $actor->can('mention', [$group, $channel]),
-                    )
-                    ->map(
-                        fn(Group $group) => [
-                            'mentionable_type' => $group->getMorphClass(),
-                            'mentionable_id' => $group->id,
-                        ],
-                    ),
-            );
+            $mentionRows->push(...Group::whereKey(
+                $mentions->where('type', FormatMentions::TYPE_GROUP)->pluck('id'),
+            )
+                ->withCount('users')
+                ->get()
+                ->filter(fn(Group $group) => !$actor || $actor->can('mention', [$group, $channel]))
+                ->map(fn(Group $group) => [
+                    'mentionable_type' => $group->getMorphClass(),
+                    'mentionable_id' => $group->id,
+                ]));
 
             $model->mentions()->delete();
 
@@ -102,22 +92,26 @@ trait HasBody
                 $contentId = $model->getKey();
 
                 Mention::insert(
-                    $mentionRows
-                        ->map(
-                            fn(array $row) => $row + [
-                                'content_type' => $contentType,
-                                'content_id' => $contentId,
-                            ],
-                        )
-                        ->all(),
+                    $mentionRows->map(
+                        fn(array $row) => $row
+                        + [
+                            'content_type' => $contentType,
+                            'content_id' => $contentId,
+                        ],
+                    )->all(),
                 );
             }
 
-            $model->attachments()->sync(
-                Upload::query()
-                    ->whereIn('filename', FormatUploads::getAttachedUploads($model->parsed_body))
-                    ->pluck('id'),
-            );
+            $model
+                ->attachments()
+                ->sync(
+                    Upload::query()
+                        ->whereIn(
+                            'filename',
+                            FormatUploads::getAttachedUploads($model->parsed_body),
+                        )
+                        ->pluck('id'),
+                );
         };
 
         static::created($onSave);
@@ -156,7 +150,7 @@ trait HasBody
      */
     protected function mentionedUsers(): Collection
     {
-        if (!($this instanceof Post) && !($this instanceof Comment)) {
+        if (!$this instanceof Post && !$this instanceof Comment) {
             return collect();
         }
 
@@ -167,9 +161,8 @@ trait HasBody
         $actor = $this->user;
         $channel = $this->channel;
 
-        $mentionables = $this->mentions
-            ->load('mentionable')
-            ->loadMorph('mentionable', [
+        $mentionables = $this
+            ->mentions->load('mentionable')->loadMorph('mentionable', [
                 User::class => ['groups'],
                 Group::class => ['users.groups'],
             ])
@@ -183,11 +176,9 @@ trait HasBody
 
                 return $actor->can('mention', [$mentionable, $channel]);
             })
-            ->flatMap(
-                fn($mentionable) => $mentionable instanceof User
-                    ? [$mentionable]
-                    : $mentionable->users,
-            )
+            ->flatMap(fn($mentionable) => (
+                $mentionable instanceof User ? [$mentionable] : $mentionable->users
+            ))
             ->where('id', '!=', $actor->id)
             ->unique('id')
             ->filter(fn(User $user) => $this->isVisibleTo($user))

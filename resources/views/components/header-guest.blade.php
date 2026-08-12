@@ -8,7 +8,10 @@
 @endif
 
 @if (Route::has('waterhole.login'))
-    <a href="{{ route('waterhole.login') }}" class="header-login btn bg-accent mx-xxs text-xs">
+    <a
+        href="{{ route('waterhole.login') }}"
+        class="header-login btn bg-accent mx-xxs text-xs"
+    >
         {{ __('waterhole::forum.log-in') }}
     </a>
 @endif

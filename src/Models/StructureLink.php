@@ -23,8 +23,8 @@ class StructureLink extends Model
 
     protected function editUrl(): Attribute
     {
-        return Attribute::make(
-            get: fn() => route('waterhole.cp.structure.links.edit', ['link' => $this]),
-        )->shouldCache();
+        return Attribute::make(get: fn() => route('waterhole.cp.structure.links.edit', [
+            'link' => $this,
+        ]))->shouldCache();
     }
 }

@@ -7,7 +7,9 @@ use Waterhole\Models\User;
 
 class UserLocation extends Component
 {
-    public function __construct(public User $user) {}
+    public function __construct(
+        public User $user,
+    ) {}
 
     public function shouldRender()
     {
@@ -17,10 +19,10 @@ class UserLocation extends Component
     public function render()
     {
         return <<<'blade'
-            <span class="with-icon">
-                @icon('tabler-map-pin')
-                <span>{{ $user->location }}</span>
-            </span>
-        blade;
+                <span class="with-icon">
+                    @icon('tabler-map-pin')
+                    <span>{{ $user->location }}</span>
+                </span>
+            blade;
     }
 }

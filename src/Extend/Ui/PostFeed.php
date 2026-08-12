@@ -25,10 +25,10 @@ class PostFeed
 
     public function __construct()
     {
-        $this->header = (new ComponentList())
-            ->add(PostFeedChannel::class, 'channel')
-            ->add(PostFeedPinned::class, 'pinned')
-            ->add(PostFeedToolbar::class, 'toolbar');
+        $this->header = (new ComponentList())->add(PostFeedChannel::class, 'channel')->add(
+            PostFeedPinned::class,
+            'pinned',
+        )->add(PostFeedToolbar::class, 'toolbar');
 
         $this->toolbar = (new ComponentList())
             ->add(FeedFilters::class, 'filters')

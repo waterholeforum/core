@@ -18,9 +18,9 @@ class TaxonomiesResource extends Resource
     {
         parent::__construct();
 
-        $this->fields
-            ->add(Attribute::make('name')->type(Type\Str::make()), 'name')
-
-            ->add(ToMany::make('tags')->includable(), 'tags');
+        $this->fields->add(Attribute::make('name')->type(Type\Str::make()), 'name')->add(
+            ToMany::make('tags')->includable(),
+            'tags',
+        );
     }
 }

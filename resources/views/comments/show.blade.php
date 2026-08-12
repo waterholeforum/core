@@ -19,15 +19,29 @@
         itemid="{{ $post->url }}"
     >
         <meta itemprop="headline" content="{{ $post->title }}" />
-        <meta itemprop="datePublished" content="{{ $post->created_at?->toAtomString() }}" />
+        <meta
+            itemprop="datePublished"
+            content="{{ $post->created_at?->toAtomString() }}"
+        />
         @if ($post->edited_at)
-            <meta itemprop="dateModified" content="{{ $post->edited_at?->toAtomString() }}" />
+            <meta
+                itemprop="dateModified"
+                content="{{ $post->edited_at?->toAtomString() }}"
+            />
         @endif
 
         <meta itemprop="url" content="{{ $post->url }}" />
         <meta itemprop="commentCount" content="{{ $post->comment_count }}" />
-        <span itemprop="author" itemscope itemtype="https://schema.org/Person" hidden>
-            <meta itemprop="name" content="{{ Waterhole\username($post->user) }}" />
+        <span
+            itemprop="author"
+            itemscope
+            itemtype="https://schema.org/Person"
+            hidden
+        >
+            <meta
+                itemprop="name"
+                content="{{ Waterhole\username($post->user) }}"
+            />
             @if ($post->user)
                 <meta itemprop="url" content="{{ $post->user->url }}" />
             @endif
@@ -37,7 +51,10 @@
             <header class="stack gap-xs">
                 <ol class="breadcrumb">
                     <li>
-                        <a href="{{ $comment->post_url }}" class="inline-block">
+                        <a
+                            href="{{ $comment->post_url }}"
+                            class="inline-block"
+                        >
                             {{ Waterhole\emojify($post->title) }}
                         </a>
                     </li>

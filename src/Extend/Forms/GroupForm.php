@@ -30,10 +30,10 @@ class GroupForm extends ComponentList
             'details',
         );
 
-        $this->details = (new ComponentList())
-            ->add(GroupName::class, 'name')
-            ->add(GroupVisibility::class, 'visibility')
-            ->add(GroupRules::class, 'rules');
+        $this->details = (new ComponentList())->add(GroupName::class, 'name')->add(
+            GroupVisibility::class,
+            'visibility',
+        )->add(GroupRules::class, 'rules');
 
         $this->add(
             fn($model) => new FormSection(
@@ -43,8 +43,9 @@ class GroupForm extends ComponentList
             'permissions',
         );
 
-        $this->permissions = (new ComponentList())
-            ->add(GroupGlobalPermissions::class, 'global')
-            ->add(GroupStructurePermissions::class, 'channel');
+        $this->permissions = (new ComponentList())->add(
+            GroupGlobalPermissions::class,
+            'global',
+        )->add(GroupStructurePermissions::class, 'channel');
     }
 }

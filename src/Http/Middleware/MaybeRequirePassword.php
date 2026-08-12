@@ -12,7 +12,9 @@ use Illuminate\Http\Request;
  */
 class MaybeRequirePassword
 {
-    public function __construct(private RequirePassword $middleware) {}
+    public function __construct(
+        private RequirePassword $middleware,
+    ) {}
 
     public function handle(Request $request, Closure $next)
     {

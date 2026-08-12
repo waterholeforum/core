@@ -12,7 +12,8 @@ describe('profile preferences', function () {
 
         $user = User::factory()->create();
 
-        $this->actingAs($user)
+        $this
+            ->actingAs($user)
             ->from(route('waterhole.preferences.profile'))
             ->post(route('waterhole.preferences.profile'), [
                 'show_online' => 1,

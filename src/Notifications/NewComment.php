@@ -12,7 +12,9 @@ use function Waterhole\emojify;
 
 class NewComment extends Notification
 {
-    public function __construct(protected Comment $comment) {}
+    public function __construct(
+        protected Comment $comment,
+    ) {}
 
     public function content(): Comment
     {
@@ -31,11 +33,9 @@ class NewComment extends Notification
 
     public function title(): HtmlString
     {
-        return new HtmlString(
-            __('waterhole::notifications.new-comment-title', [
-                'post' => '<strong>' . emojify($this->comment->post->title) . '</strong>',
-            ]),
-        );
+        return new HtmlString(__('waterhole::notifications.new-comment-title', [
+            'post' => '<strong>' . emojify($this->comment->post->title) . '</strong>',
+        ]));
     }
 
     public function excerpt(): HtmlString

@@ -9,7 +9,9 @@ class Avatar extends Component
 {
     protected static array $colorCache = [];
 
-    public function __construct(public ?User $user = null) {}
+    public function __construct(
+        public ?User $user = null,
+    ) {}
 
     public function render()
     {
@@ -31,7 +33,7 @@ class Avatar extends Component
                 $hue += ord($name[$i]);
             }
 
-            static::$colorCache[$name] = 'hsl(' . $hue % 360 . ' 50% 50% / 0.5)';
+            static::$colorCache[$name] = 'hsl(' . ($hue % 360) . ' 50% 50% / 0.5)';
         }
 
         return static::$colorCache[$name];

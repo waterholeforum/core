@@ -45,14 +45,11 @@ describe('registration', function () {
     });
 
     test('rejects invalid registration input', function () {
-        $this->from(route('waterhole.register'))
-            ->post(route('waterhole.register.submit'), [
-                'name' => '',
-                'email' => 'not-email',
-                'password' => 'short',
-            ])
-            ->assertRedirect(route('waterhole.register'))
-            ->assertSessionHasErrors(['name', 'email', 'password']);
+        $this->from(route('waterhole.register'))->post(route('waterhole.register.submit'), [
+            'name' => '',
+            'email' => 'not-email',
+            'password' => 'short',
+        ])->assertRedirect(route('waterhole.register'))->assertSessionHasErrors(['name', 'email', 'password']);
     });
 });
 
@@ -75,12 +72,10 @@ describe('login', function () {
     test('rejects invalid credentials', function () {
         $user = User::factory()->create(['password' => bcrypt('Password123!')]);
 
-        $this->from(route('waterhole.login'))
-            ->post(URL::route('waterhole.login'), [
-                'email' => $user->email,
-                'password' => 'wrong-password',
-            ])
-            ->assertRedirect(route('waterhole.login'));
+        $this->from(route('waterhole.login'))->post(URL::route('waterhole.login'), [
+            'email' => $user->email,
+            'password' => 'wrong-password',
+        ])->assertRedirect(route('waterhole.login'));
 
         $this->assertGuest();
     });
@@ -124,7 +119,8 @@ describe('password reset', function () {
     test('rejects invalid token', function () {
         $user = User::factory()->create();
 
-        $this->from(URL::route('waterhole.reset-password', ['token' => 'invalid-token']))
+        $this
+            ->from(URL::route('waterhole.reset-password', ['token' => 'invalid-token']))
             ->post(URL::route('waterhole.reset-password', ['token' => 'invalid-token']), [
                 'email' => $user->email,
                 'password' => 'NewPassword123!',
@@ -138,7 +134,8 @@ describe('email verification', function () {
     test('shows verification notice for unverified users', function () {
         $user = User::factory()->create(['email_verified_at' => null]);
 
-        $this->actingAs($user)
+        $this
+            ->actingAs($user)
             ->get(route('waterhole.home'))
             ->assertOk()
             ->assertSee('verify', false);
@@ -160,7 +157,8 @@ describe('email verification', function () {
     test('rejects invalid/expired verification links', function () {
         $user = User::factory()->create(['email_verified_at' => null]);
 
-        $this->actingAs($user)
+        $this
+            ->actingAs($user)
             ->get(route('waterhole.verify-email', ['id' => $user->id]))
             ->assertForbidden();
     });
@@ -199,18 +197,22 @@ describe('sso', function () {
             {
                 return 'provider-user-1';
             }
+
             public function getEmail()
             {
                 return 'sso@example.com';
             }
+
             public function getNickname()
             {
                 return 'sso-user';
             }
+
             public function getName()
             {
                 return 'SSO User';
             }
+
             public function getAvatar()
             {
                 return null;
@@ -222,9 +224,9 @@ describe('sso', function () {
 
         Socialite::shouldReceive('driver')->once()->with('github')->andReturn($driver);
 
-        $this->get(route('waterhole.sso.callback', ['provider' => 'github']))->assertRedirect(
-            route('waterhole.home'),
-        );
+        $this->get(route('waterhole.sso.callback', ['provider' => 'github']))->assertRedirect(route(
+            'waterhole.home',
+        ));
 
         $this->assertAuthenticatedAs($existingUser);
     });
@@ -237,18 +239,22 @@ describe('sso', function () {
             {
                 return 'provider-user-2';
             }
+
             public function getEmail()
             {
                 return 'new-sso@example.com';
             }
+
             public function getNickname()
             {
                 return null;
             }
+
             public function getName()
             {
                 return 'New SSO User';
             }
+
             public function getAvatar()
             {
                 return null;
@@ -260,9 +266,9 @@ describe('sso', function () {
 
         Socialite::shouldReceive('driver')->once()->with('github')->andReturn($driver);
 
-        $this->get(
-            route('waterhole.sso.callback', ['provider' => 'github']),
-        )->assertRedirectContains('/register/');
+        $this->get(route('waterhole.sso.callback', [
+            'provider' => 'github',
+        ]))->assertRedirectContains('/register/');
 
         $this->assertGuest();
     });

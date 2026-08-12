@@ -22,12 +22,13 @@ class StructureResource extends Resource
 
         $this->endpoints->add(Endpoint\Index::make()->defaultSort('position'), 'index');
 
-        $this->fields
-            ->add(Attribute::make('position')->type(Type\Integer::make()), 'position')
-
-            ->add(Attribute::make('isListed')->type(Type\Boolean::make()), 'isListed')
-
-            ->add(ToOne::make('content')->collection('structureContent')->includable(), 'content');
+        $this->fields->add(
+            Attribute::make('position')->type(Type\Integer::make()),
+            'position',
+        )->add(Attribute::make('isListed')->type(Type\Boolean::make()), 'isListed')->add(
+            ToOne::make('content')->collection('structureContent')->includable(),
+            'content',
+        );
 
         $this->sorts->add(SortColumn::make('position'), 'position');
     }

@@ -2,12 +2,12 @@
 
 namespace Waterhole\Http\Controllers\Cp;
 
-use function Waterhole\internal_url;
-
 use Illuminate\Http\Request;
 use Waterhole\Forms\StructureLinkForm;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\StructureLink;
+
+use function Waterhole\internal_url;
 
 /**
  * Controller for CP structure link management (create and update).

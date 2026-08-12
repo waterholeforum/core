@@ -3,9 +3,9 @@
 namespace Waterhole\Extend\Forms;
 
 use Waterhole\Extend\Support\ComponentList;
-use Waterhole\Forms\Fields\ReactionTypes;
 use Waterhole\Forms\Fields\ReactionSetDefaults;
 use Waterhole\Forms\Fields\ReactionSetName;
+use Waterhole\Forms\Fields\ReactionTypes;
 use Waterhole\Forms\FormSection;
 
 /**
@@ -28,9 +28,10 @@ class ReactionSetForm extends ComponentList
             'details',
         );
 
-        $this->details = (new ComponentList())
-            ->add(ReactionSetName::class, 'name')
-            ->add(ReactionSetDefaults::class, 'defaults');
+        $this->details = (new ComponentList())->add(ReactionSetName::class, 'name')->add(
+            ReactionSetDefaults::class,
+            'defaults',
+        );
 
         $this->add(
             fn($model) => new FormSection(

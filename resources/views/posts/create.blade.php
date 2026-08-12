@@ -21,7 +21,11 @@
                 @csrf
 
                 <x-waterhole::dialog class="measure" :title="$title">
-                    <x-waterhole::channel-picker id="channel_id" name="channel_id" show-links />
+                    <x-waterhole::channel-picker
+                        id="channel_id"
+                        name="channel_id"
+                        show-links
+                    />
                 </x-waterhole::dialog>
             </form>
         @else
@@ -29,7 +33,9 @@
                 <x-slot name="header">
                     <ui-popup placement="bottom-start">
                         <button class="btn" type="button">
-                            <x-waterhole::channel-label :channel="$form->model->channel" />
+                            <x-waterhole::channel-label
+                                :channel="$form->model->channel"
+                            />
                             @icon('tabler-selector')
                         </button>
 
@@ -79,7 +85,9 @@
 
                             <ui-tooltip>
                                 {{ __('waterhole::forum.post-submit-button') }}
-                                <x-waterhole::shortcut-label shortcut="form.submit" />
+                                <x-waterhole::shortcut-label
+                                    shortcut="form.submit"
+                                />
                             </ui-tooltip>
                         </button>
 

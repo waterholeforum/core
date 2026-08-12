@@ -11,71 +11,73 @@ use Waterhole\Models\Channel;
 
 class ChannelFilters extends Field
 {
-    public function __construct(public ?Channel $model) {}
+    public function __construct(
+        public ?Channel $model,
+    ) {}
 
     public function render(): string
     {
         return <<<'blade'
-            <div role="group" class="field">
-                <div class="field__label">
-                    {{ __('waterhole::cp.channel-filters-label') }}
-                </div>
-                <div data-controller="reveal" class="stack gap-md">
-                    <label class="choice">
-                        <input
-                            type="checkbox"
-                            id="custom_filters"
-                            name="custom_filters"
-                            value="1"
-                            data-reveal-target="if"
-                            @checked(old('custom_filters', $model->filters ?? false))
-                        >
-                        <span class="stack gap-xxs">
-                            <span>{{ __('waterhole::cp.channel-custom-filters-label') }}</span>
-                            <small class="field__description">{{ __('waterhole::cp.channel-custom-filters-description') }}</small>
-                        </span>
-                    </label>
+                <div role="group" class="field">
+                    <div class="field__label">
+                        {{ __('waterhole::cp.channel-filters-label') }}
+                    </div>
+                    <div data-controller="reveal" class="stack gap-md">
+                        <label class="choice">
+                            <input
+                                type="checkbox"
+                                id="custom_filters"
+                                name="custom_filters"
+                                value="1"
+                                data-reveal-target="if"
+                                @checked(old('custom_filters', $model->filters ?? false))
+                            >
+                            <span class="stack gap-xxs">
+                                <span>{{ __('waterhole::cp.channel-custom-filters-label') }}</span>
+                                <small class="field__description">{{ __('waterhole::cp.channel-custom-filters-description') }}</small>
+                            </span>
+                        </label>
 
-                    <div data-controller="sortable" data-reveal-target="then">
-                        <ul
-                            class="card sortable"
-                            role="list"
-                            data-sortable-target="container"
-                            aria-label="{{ __('waterhole::cp.channel-filters-label') }}"
-                        >
-                            @php
-                                $filters = old('filters', $model->filters ?? config('waterhole.forum.post_filters', []));
+                        <div data-controller="sortable" data-reveal-target="then">
+                            <ul
+                                class="card sortable"
+                                role="list"
+                                data-sortable-target="container"
+                                aria-label="{{ __('waterhole::cp.channel-filters-label') }}"
+                            >
+                                @php
+                                    $filters = old('filters', $model->filters ?? config('waterhole.forum.post_filters', []));
 
-                                $availableFilters = collect(Waterhole\resolve_all(resolve(Waterhole\Extend\Core\PostFilters::class)->values()))
-                                    ->sortBy(fn($filter) => ($k = array_search(get_class($filter), $filters)) === false ? INF : $k);
-                            @endphp
+                                    $availableFilters = collect(Waterhole\resolve_all(resolve(Waterhole\Extend\Core\PostFilters::class)->values()))
+                                        ->sortBy(fn($filter) => ($k = array_search(get_class($filter), $filters)) === false ? INF : $k);
+                                @endphp
 
-                            @foreach ($availableFilters as $filter)
-                                <li
-                                    class="card__row row gap-md text-xs"
-                                    aria-label="{{ $filter->label() }}"
-                                    data-id="{{ $filter::class }}"
-                                >
-                                    <button type="button" class="drag-handle" data-handle>
-                                        @icon('tabler-grip-vertical')
-                                    </button>
+                                @foreach ($availableFilters as $filter)
+                                    <li
+                                        class="card__row row gap-md text-xs"
+                                        aria-label="{{ $filter->label() }}"
+                                        data-id="{{ $filter::class }}"
+                                    >
+                                        <button type="button" class="drag-handle" data-handle>
+                                            @icon('tabler-grip-vertical')
+                                        </button>
 
-                                    <label class="choice">
-                                        <input
-                                            type="checkbox"
-                                            name="filters[]"
-                                            value="{{ $filter::class }}"
-                                            @checked(in_array($filter::class, $filters))
-                                        >
-                                        {{ $filter->label() }}
-                                    </label>
-                                </li>
-                            @endforeach
-                        </ul>
+                                        <label class="choice">
+                                            <input
+                                                type="checkbox"
+                                                name="filters[]"
+                                                value="{{ $filter::class }}"
+                                                @checked(in_array($filter::class, $filters))
+                                            >
+                                            {{ $filter->label() }}
+                                        </label>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-        blade;
+            blade;
     }
 
     public function validating(Validator $validator): void

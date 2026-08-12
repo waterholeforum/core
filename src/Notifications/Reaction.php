@@ -9,11 +9,14 @@ use Waterhole\Models\Model;
 use Waterhole\Models\Post;
 use Waterhole\Models\Reaction as ReactionModel;
 use Waterhole\Models\User;
+
 use function Waterhole\emojify;
 
 class Reaction extends Notification
 {
-    public function __construct(protected ReactionModel $reaction) {}
+    public function __construct(
+        protected ReactionModel $reaction,
+    ) {}
 
     public function content(): ReactionModel
     {
@@ -35,20 +38,18 @@ class Reaction extends Notification
         $content = $this->reaction->content;
         $post = $content instanceof Post ? $content : $content->post;
 
-        return new HtmlString(
-            __(
-                $content instanceof Post
-                    ? 'waterhole::notifications.reaction-post-title'
-                    : 'waterhole::notifications.reaction-comment-title',
-                [
-                    'count' => $content->reactions_count,
-                    'post' => '<strong>' . emojify($post->title) . '</strong>',
-                ],
-            ),
-        );
+        return new HtmlString(__(
+            $content instanceof Post
+                ? 'waterhole::notifications.reaction-post-title'
+                : 'waterhole::notifications.reaction-comment-title',
+            [
+                'count' => $content->reactions_count,
+                'post' => '<strong>' . emojify($post->title) . '</strong>',
+            ],
+        ));
     }
 
-    public function excerpt(): null|string|HtmlString
+    public function excerpt(): string|HtmlString|null
     {
         return $this->reaction->content?->body_html;
     }

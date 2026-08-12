@@ -18,7 +18,10 @@
     >
         <div class="card">
             <div class="card__body stack dividers">
-                <x-waterhole::field name="name" :label="__('waterhole::cp.heading-name-label')">
+                <x-waterhole::field
+                    name="name"
+                    :label="__('waterhole::cp.heading-name-label')"
+                >
                     <input
                         type="text"
                         name="name"

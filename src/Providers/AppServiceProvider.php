@@ -128,10 +128,9 @@ class AppServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
 
         collect($this->configFiles)->each(function ($config) {
-            $this->publishes(
-                [__DIR__ . "/../../config/$config.php" => config_path("waterhole/$config.php")],
-                'waterhole-config',
-            );
+            $this->publishes([
+                __DIR__ . "/../../config/$config.php" => config_path("waterhole/$config.php"),
+            ], 'waterhole-config');
         });
 
         // Override the notifications database channel with our own instance.

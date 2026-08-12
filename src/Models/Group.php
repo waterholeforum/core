@@ -122,20 +122,18 @@ class Group extends Model
 
     protected function editUrl(): Attribute
     {
-        return Attribute::make(
-            get: fn() => route('waterhole.cp.groups.edit', ['group' => $this]),
-        )->shouldCache();
+        return Attribute::make(get: fn() => route('waterhole.cp.groups.edit', [
+            'group' => $this,
+        ]))->shouldCache();
     }
 
     protected function usersUrl(): Attribute
     {
-        return Attribute::make(
-            get: fn() => route('waterhole.cp.users.index', [
-                'q' => $this->isMember()
-                    ? null
-                    : 'group:' .
-                        (str_contains($this->name, ' ') ? '"' . $this->name . '"' : $this->name),
-            ]),
-        )->shouldCache();
+        return Attribute::make(get: fn() => route('waterhole.cp.users.index', [
+            'q' => $this->isMember()
+                ? null
+                : 'group:'
+                . (str_contains($this->name, ' ') ? '"' . $this->name . '"' : $this->name),
+        ]))->shouldCache();
     }
 }

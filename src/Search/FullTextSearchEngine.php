@@ -5,6 +5,7 @@ namespace Waterhole\Search;
 use Exception;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Post;
+
 use function Waterhole\remove_formatting;
 
 class FullTextSearchEngine implements EngineInterface
@@ -90,9 +91,9 @@ class FullTextSearchEngine implements EngineInterface
                 ->addSelect('comments.id as comment_id')
                 ->addSelect('comments.body as comment_body')
                 ->selectRaw(
-                    'ROW_NUMBER() OVER (PARTITION BY ' .
-                        $grammar->wrap('posts.id') .
-                        " ORDER BY $sql DESC) as r",
+                    'ROW_NUMBER() OVER (PARTITION BY '
+                    . $grammar->wrap('posts.id')
+                    . " ORDER BY $sql DESC) as r",
                     [$q],
                 )
                 ->selectRaw("$sql as cscore", [$q]);
@@ -130,15 +131,11 @@ class FullTextSearchEngine implements EngineInterface
                 $title = $highlighter->highlight($row->title);
 
                 try {
-                    $body = $highlighter->highlight(
-                        $highlighter->truncate(
-                            remove_formatting(
-                                ($row->pscore ?? 1) >= ($row->cscore ?? 0)
-                                    ? $row->post_body
-                                    : $row->comment_body,
-                            ),
-                        ),
-                    );
+                    $body = $highlighter->highlight($highlighter->truncate(remove_formatting(
+                        ($row->pscore ?? 1) >= ($row->cscore ?? 0)
+                            ? $row->post_body
+                            : $row->comment_body,
+                    )));
                 } catch (Exception) {
                     $body = '';
                 }

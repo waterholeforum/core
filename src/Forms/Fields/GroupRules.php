@@ -9,7 +9,9 @@ use Waterhole\Models\Group;
 
 class GroupRules extends Field
 {
-    public function __construct(public ?Group $model) {}
+    public function __construct(
+        public ?Group $model,
+    ) {}
 
     public function shouldRender(): bool
     {
@@ -19,54 +21,54 @@ class GroupRules extends Field
     public function render(): string
     {
         return <<<'blade'
-            <div class="field">
-                <div class="field__label">{{ __('waterhole::cp.group-rules-title') }}</div>
+                <div class="field">
+                    <div class="field__label">{{ __('waterhole::cp.group-rules-title') }}</div>
 
-                <div class="stack gap-sm">
-                    <div>
-                        <input type="hidden" name="auto_assign" value="0">
-                        <label class="choice">
-                            <input
-                                type="checkbox"
-                                name="auto_assign"
-                                value="1"
-                                @checked(old('auto_assign', $model->auto_assign ?? null))
-                            >
-                            {{ __('waterhole::cp.group-auto-assign-label') }}
-                        </label>
-                    </div>
-
-                    <div class="stack gap-sm" data-controller="reveal">
+                    <div class="stack gap-sm">
                         <div>
-                            <input type="hidden" name="rules[requires_approval]" value="0">
+                            <input type="hidden" name="auto_assign" value="0">
                             <label class="choice">
                                 <input
-                                    data-reveal-target="if"
                                     type="checkbox"
-                                    name="rules[requires_approval]"
+                                    name="auto_assign"
                                     value="1"
-                                    @checked(old('rules.requires_approval', $model?->rules['requires_approval'] ?? false))
+                                    @checked(old('auto_assign', $model->auto_assign ?? null))
                                 >
-                                {{ __('waterhole::cp.group-rules-requires-approval-label') }}
+                                {{ __('waterhole::cp.group-auto-assign-label') }}
                             </label>
                         </div>
 
-                        <div class="choice-indent">
-                            <input type="hidden" name="rules[remove_after_approval]" value="0">
-                            <label class="choice" data-reveal-target="then">
-                                <input
-                                    type="checkbox"
-                                    name="rules[remove_after_approval]"
-                                    value="1"
-                                    @checked(old('rules.remove_after_approval', $model?->rules['remove_after_approval'] ?? false))
-                                >
-                                {{ __('waterhole::cp.group-rules-remove-after-approval-label') }}
-                            </label>
+                        <div class="stack gap-sm" data-controller="reveal">
+                            <div>
+                                <input type="hidden" name="rules[requires_approval]" value="0">
+                                <label class="choice">
+                                    <input
+                                        data-reveal-target="if"
+                                        type="checkbox"
+                                        name="rules[requires_approval]"
+                                        value="1"
+                                        @checked(old('rules.requires_approval', $model?->rules['requires_approval'] ?? false))
+                                    >
+                                    {{ __('waterhole::cp.group-rules-requires-approval-label') }}
+                                </label>
+                            </div>
+
+                            <div class="choice-indent">
+                                <input type="hidden" name="rules[remove_after_approval]" value="0">
+                                <label class="choice" data-reveal-target="then">
+                                    <input
+                                        type="checkbox"
+                                        name="rules[remove_after_approval]"
+                                        value="1"
+                                        @checked(old('rules.remove_after_approval', $model?->rules['remove_after_approval'] ?? false))
+                                    >
+                                    {{ __('waterhole::cp.group-rules-remove-after-approval-label') }}
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        blade;
+            blade;
     }
 
     public function validating(Validator $validator): void

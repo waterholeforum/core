@@ -11,24 +11,43 @@
 >
     <article class="post-full__inner p-gutter stack gap-xl">
         <meta itemprop="headline" content="{{ $post->title }}" />
-        <meta itemprop="datePublished" content="{{ $post->created_at?->toAtomString() }}" />
+        <meta
+            itemprop="datePublished"
+            content="{{ $post->created_at?->toAtomString() }}"
+        />
         @if ($post->edited_at)
-            <meta itemprop="dateModified" content="{{ $post->edited_at?->toAtomString() }}" />
+            <meta
+                itemprop="dateModified"
+                content="{{ $post->edited_at?->toAtomString() }}"
+            />
         @endif
 
         <meta itemprop="url" content="{{ $post->url }}" />
-        <span itemprop="author" itemscope itemtype="https://schema.org/Person" hidden>
-            <meta itemprop="name" content="{{ Waterhole\username($post->user) }}" />
+        <span
+            itemprop="author"
+            itemscope
+            itemtype="https://schema.org/Person"
+            hidden
+        >
+            <meta
+                itemprop="name"
+                content="{{ Waterhole\username($post->user) }}"
+            />
             @if ($post->user)
                 <meta itemprop="url" content="{{ $post->user->url }}" />
             @endif
         </span>
 
         @if ($post->trashed())
-            <x-waterhole::alert class="bg-fill color-muted p-md" icon="tabler-trash">
+            <x-waterhole::alert
+                class="bg-fill color-muted p-md"
+                icon="tabler-trash"
+            >
                 <x-waterhole::removed-banner :subject="$post">
                     <x-slot name="lead">
-                        <strong>{{ __('waterhole::forum.post-removed-message') }}</strong>
+                        <strong>
+                            {{ __('waterhole::forum.post-removed-message') }}
+                        </strong>
                     </x-slot>
                 </x-waterhole::removed-banner>
             </x-waterhole::alert>
@@ -38,7 +57,11 @@
             @components(resolve(Waterhole\Extend\Ui\PostPage::class)->header, compact('post'))
         </header>
 
-        <div class="post-body content text-md" data-controller="quotable lightbox" itemprop="text">
+        <div
+            class="post-body content text-md"
+            data-controller="quotable lightbox"
+            itemprop="text"
+        >
             {{ $post->body_html }}
 
             @can('waterhole.post.comment', $post)

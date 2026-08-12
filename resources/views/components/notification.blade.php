@@ -17,11 +17,15 @@
 
             <span class="menu-item__description overflow-ellipsis">
                 @if ($user = $notification->template->sender())
-                    <x-waterhole::user-label :user="$notification->template->sender()" />
+                    <x-waterhole::user-label
+                        :user="$notification->template->sender()"
+                    />
                     &middot;
                 @endif
 
-                <span>{{ Str::limit(strip_tags($notification->template->excerpt()), 200) }}</span>
+                <span>
+                    {{ Str::limit(strip_tags($notification->template->excerpt()), 200) }}
+                </span>
             </span>
         </span>
 

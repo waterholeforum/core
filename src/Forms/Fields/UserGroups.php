@@ -14,39 +14,40 @@ class UserGroups extends Field
 {
     public Collection $groups;
 
-    public function __construct(public ?User $model)
-    {
+    public function __construct(
+        public ?User $model,
+    ) {
         $this->groups = Group::selectable()->get();
     }
 
     public function render(): string
     {
         return <<<'blade'
-            <div class="field">
-                <div class="field__label">
-                    {{ __('waterhole::cp.user-groups-label') }}
-                </div>
-                <div class="stack gap-sm">
-                    <input type="hidden" name="groups" value="">
+                <div class="field">
+                    <div class="field__label">
+                        {{ __('waterhole::cp.user-groups-label') }}
+                    </div>
+                    <div class="stack gap-sm">
+                        <input type="hidden" name="groups" value="">
 
-                    @foreach ($groups as $group)
-                        <label class="choice">
-                            <input
-                                type="checkbox"
-                                name="groups[]"
-                                value="{{ $group->id }}"
-                                @checked(in_array($group->id, (array) old('groups', isset($model) ? $model->groups->pluck('id')->all() : [])))
-                                @disabled($enforce = $group->isAdmin() && $model?->isRootAdmin())
-                            >
-                            <x-waterhole::group-badge :group="$group"/>
-                            @if ($enforce)
-                                <input type="hidden" name="groups[]" value="{{ $group->id }}">
-                            @endif
-                        </label>
-                    @endforeach
+                        @foreach ($groups as $group)
+                            <label class="choice">
+                                <input
+                                    type="checkbox"
+                                    name="groups[]"
+                                    value="{{ $group->id }}"
+                                    @checked(in_array($group->id, (array) old('groups', isset($model) ? $model->groups->pluck('id')->all() : [])))
+                                    @disabled($enforce = $group->isAdmin() && $model?->isRootAdmin())
+                                >
+                                <x-waterhole::group-badge :group="$group"/>
+                                @if ($enforce)
+                                    <input type="hidden" name="groups[]" value="{{ $group->id }}">
+                                @endif
+                            </label>
+                        @endforeach
+                    </div>
                 </div>
-            </div>
-        blade;
+            blade;
     }
 
     public function validating(Validator $validator): void

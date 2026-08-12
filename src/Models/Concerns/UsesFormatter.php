@@ -8,6 +8,7 @@ use Waterhole\Console\ReformatCommand;
 use Waterhole\Formatter\Context;
 use Waterhole\Formatter\Formatter;
 use Waterhole\Models\User;
+
 use function Waterhole\remove_formatting;
 
 trait UsesFormatter
@@ -26,14 +27,10 @@ trait UsesFormatter
         $value = $this->attributes[$attribute] ?? '';
 
         if (!isset($this->renderCache[$key])) {
-            $this->renderCache[$key] = new HtmlString(
-                rescue(
-                    fn() => $value && str_starts_with($value, '<')
-                        ? static::$formatters[$attribute]->render($value, new Context($this, $user))
-                        : e($value ?: ''),
-                    '',
-                ),
-            );
+            $this->renderCache[$key] = new HtmlString(rescue(fn() => $value
+                && str_starts_with($value, '<')
+                    ? static::$formatters[$attribute]->render($value, new Context($this, $user))
+                    : e($value ?: ''), ''));
         }
 
         return $this->renderCache[$key];

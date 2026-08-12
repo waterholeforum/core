@@ -25,12 +25,14 @@ class CommentComponent
     {
         $this->header = (new ComponentList())->add(CommentAnswerBadge::class, 'answer');
 
-        $this->footer = (new ComponentList())
-            ->add(CommentReactions::class, 'reactions')
-            ->add(CommentReplies::class, 'replies');
+        $this->footer = (new ComponentList())->add(CommentReactions::class, 'reactions')->add(
+            CommentReplies::class,
+            'replies',
+        );
 
-        $this->buttons = (new ComponentList())
-            ->add(CommentMarkAsAnswer::class, 'answer')
-            ->add(CommentReplyButton::class, 'reply');
+        $this->buttons = (new ComponentList())->add(CommentMarkAsAnswer::class, 'answer')->add(
+            CommentReplyButton::class,
+            'reply',
+        );
     }
 }

@@ -29,6 +29,7 @@ use Waterhole\Notifications\NewComment as NewCommentNotification;
 use Waterhole\Scopes\CommentIndexScope;
 use Waterhole\View\Components;
 use Waterhole\View\TurboStream;
+
 use function HotwiredLaravel\TurboLaravel\dom_id;
 
 /**
@@ -151,19 +152,17 @@ class Comment extends Model
         $mentionTags = collect(FormatMentions::getMentions($this->parsed_body));
 
         if (
-            $mentionTags->some('type', FormatMentions::TYPE_HERE) &&
-            $this->user->can('waterhole.channel.moderate', $this->post->channel)
+            $mentionTags->some('type', FormatMentions::TYPE_HERE)
+            && $this->user->can('waterhole.channel.moderate', $this->post->channel)
         ) {
-            $users = $users->merge(
-                User::findMany(
-                    $this->post
-                        ->comments()
-                        ->where('user_id', '!=', $this->user_id)
-                        ->select('user_id')
-                        ->distinct()
-                        ->pluck('user_id'),
-                ),
-            );
+            $users = $users->merge(User::findMany(
+                $this->post
+                    ->comments()
+                    ->where('user_id', '!=', $this->user_id)
+                    ->select('user_id')
+                    ->distinct()
+                    ->pluck('user_id'),
+            ));
         }
 
         $users = $users
@@ -214,6 +213,7 @@ class Comment extends Model
     {
         return $this->belongsTo(self::class);
     }
+
     public function scopeVisible(Builder $query, ?User $user): void
     {
         // Remove the default visible global scope which scopes for the
@@ -231,10 +231,13 @@ class Comment extends Model
             $query->whereHas('post', fn($query) => $query->visible($user));
         }
 
-        $moderationScope = fn(Builder $query, array $channelIds) => $query->orWhereHas(
-            'post',
-            fn(Builder $query) => $query->whereIn('channel_id', $channelIds),
-        );
+        $moderationScope = fn(
+            Builder $query,
+            array $channelIds,
+        ) => $query->orWhereHas('post', fn(Builder $query) => $query->whereIn(
+            'channel_id',
+            $channelIds,
+        ));
 
         $this->applyApprovalVisibility($query, $user, $moderationScope);
 
@@ -313,35 +316,29 @@ class Comment extends Model
 
     protected function url(): Attribute
     {
-        return Attribute::make(
-            get: fn() => route('waterhole.posts.comments.show', [
-                'post' => $this->post,
-                'comment' => $this,
-            ]),
-        )->shouldCache();
+        return Attribute::make(get: fn() => route('waterhole.posts.comments.show', [
+            'post' => $this->post,
+            'comment' => $this,
+        ]))->shouldCache();
     }
 
     protected function editUrl(): Attribute
     {
-        return Attribute::make(
-            get: fn() => route('waterhole.posts.comments.edit', [
-                'post' => $this->post,
-                'comment' => $this,
-            ]),
-        )->shouldCache();
+        return Attribute::make(get: fn() => route('waterhole.posts.comments.edit', [
+            'post' => $this->post,
+            'comment' => $this,
+        ]))->shouldCache();
     }
 
     protected function postUrl(): Attribute
     {
-        return Attribute::make(
-            get: function () {
-                if (isset($this->index)) {
-                    return $this->post->urlAtIndex($this->index) . '#' . dom_id($this);
-                }
+        return Attribute::make(get: function () {
+            if (isset($this->index)) {
+                return $this->post->urlAtIndex($this->index) . '#' . dom_id($this);
+            }
 
-                return $this->post->url . '?comment=' . $this->id;
-            },
-        )->shouldCache();
+            return $this->post->url . '?comment=' . $this->id;
+        })->shouldCache();
     }
 
     public function reactionsUrl(ReactionType $reactionType): string

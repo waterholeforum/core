@@ -8,21 +8,23 @@ use Waterhole\Forms\Field;
 
 class ChannelLayoutList extends Field
 {
-    public function __construct(public object $model) {}
+    public function __construct(
+        public object $model,
+    ) {}
 
     public function render()
     {
         return <<<'blade'
-            <div class="stack dividers">
-                <div class="stack gap-sm">
-                    <label class="choice">
-                        <input type="hidden" name="layout_config_list[show_excerpt]" value="0">
-                        <input type="checkbox" name="layout_config_list[show_excerpt]" value="1" @checked($model->show_excerpt ?? false)>
-                        {{ __('waterhole::cp.channel-layout-show-excerpt-label') }}
-                    </label>
+                <div class="stack dividers">
+                    <div class="stack gap-sm">
+                        <label class="choice">
+                            <input type="hidden" name="layout_config_list[show_excerpt]" value="0">
+                            <input type="checkbox" name="layout_config_list[show_excerpt]" value="1" @checked($model->show_excerpt ?? false)>
+                            {{ __('waterhole::cp.channel-layout-show-excerpt-label') }}
+                        </label>
+                    </div>
                 </div>
-            </div>
-        blade;
+            blade;
     }
 
     public function validating(Validator $validator): void

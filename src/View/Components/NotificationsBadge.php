@@ -12,20 +12,21 @@ class NotificationsBadge extends Component
 
     public int $count;
 
-    public function __construct(public User $user)
-    {
+    public function __construct(
+        public User $user,
+    ) {
         $this->count = $user->unread_notification_count;
     }
 
     public function render()
     {
         return <<<'blade'
-            <span
-                {{ $attributes->class('badge bg-activity')->merge([
-                    'data-notifications-popup-target' => 'badge',
-                    'hidden' => !$count
-                ]) }}
-            >{{ $count }}</span>
-        blade;
+                <span
+                    {{ $attributes->class('badge bg-activity')->merge([
+                        'data-notifications-popup-target' => 'badge',
+                        'hidden' => !$count
+                    ]) }}
+                >{{ $count }}</span>
+            blade;
     }
 }

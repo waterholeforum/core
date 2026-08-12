@@ -19,22 +19,22 @@ abstract class FormatUploads
      */
     public static function configure(Configurator $config): void
     {
-        $config->tags['IMG']->attributes
-            ->add('width', ['required' => false])
+        $config->tags['IMG']
+            ->attributes->add('width', ['required' => false])
             ->filterChain->append('#uint');
 
-        $config->tags['IMG']->attributes
-            ->add('height', ['required' => false])
+        $config->tags['IMG']
+            ->attributes->add('height', ['required' => false])
             ->filterChain->append('#uint');
 
         $config->tags['IMG']->template = <<<xsl
-            <img src="{@src}">
-                <xsl:copy-of select="@alt"/>
-                <xsl:copy-of select="@title"/>
-                <xsl:copy-of select="@width"/>
-                <xsl:copy-of select="@height"/>
-            </img>
-        xsl;
+                <img src="{@src}">
+                    <xsl:copy-of select="@alt"/>
+                    <xsl:copy-of select="@title"/>
+                    <xsl:copy-of select="@width"/>
+                    <xsl:copy-of select="@height"/>
+                </img>
+            xsl;
     }
 
     /**
@@ -84,7 +84,6 @@ abstract class FormatUploads
             ...Utils::getAttributeValues($xml, 'IMG', 'src'),
         ])
             ->filter(fn($url) => str_starts_with($url, static::PROTOCOL))
-            ->map(fn($url) => substr($url, strlen(static::PROTOCOL)))
-            ->all();
+            ->map(fn($url) => substr($url, strlen(static::PROTOCOL)))->all();
     }
 }

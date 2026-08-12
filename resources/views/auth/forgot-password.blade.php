@@ -14,7 +14,10 @@
                         {{ session('status') }}
                     </x-waterhole::alert>
                 @else
-                    <form action="{{ route('waterhole.forgot-password') }}" method="POST">
+                    <form
+                        action="{{ route('waterhole.forgot-password') }}"
+                        method="POST"
+                    >
                         @csrf
 
                         <div class="stack gap-lg">

@@ -2,7 +2,9 @@
     <div class="container section">
         <turbo-frame id="saved" class="card p-md">
             <div class="row gap-xs justify-between menu-sticky">
-                <h1 class="menu-heading">{{ __('waterhole::forum.saved-title') }}</h1>
+                <h1 class="menu-heading">
+                    {{ __('waterhole::forum.saved-title') }}
+                </h1>
             </div>
 
             @if ($bookmarks->isNotEmpty())
@@ -13,7 +15,9 @@
                 </x-waterhole::infinite-scroll>
             @else
                 <div class="placeholder">
-                    <p class="h4">{{ __('waterhole::forum.saved-empty-message') }}</p>
+                    <p class="h4">
+                        {{ __('waterhole::forum.saved-empty-message') }}
+                    </p>
                     <p class="text-sm color-muted">
                         {!!
                             __('waterhole::forum.saved-empty-description', [

@@ -25,20 +25,24 @@ class BookmarksResource extends Resource
             $query->visible(Auth::user());
         }, 'visible');
 
-        $this->endpoints
-            ->add(Endpoint\Index::make()->paginate()->defaultSort('-createdAt'), 'index')
-            ->add(Endpoint\Show::make(), 'show');
+        $this->endpoints->add(
+            Endpoint\Index::make()->paginate()->defaultSort('-createdAt'),
+            'index',
+        )->add(Endpoint\Show::make(), 'show');
 
-        $this->fields
-            ->add(
-                Attribute::make('createdAt')->type(Type\DateTime::make())->nullable(),
-                'createdAt',
-            )
-            ->add(
-                Attribute::make('updatedAt')->type(Type\DateTime::make())->nullable(),
-                'updatedAt',
-            )
-            ->add(ToOne::make('user')->type('users'), 'user')
-            ->add(ToOne::make('content')->type(['posts', 'comments']), 'content');
+        $this->fields->add(
+            Attribute::make('createdAt')
+                ->type(Type\DateTime::make())
+                ->nullable(),
+            'createdAt',
+        )->add(
+            Attribute::make('updatedAt')
+                ->type(Type\DateTime::make())
+                ->nullable(),
+            'updatedAt',
+        )->add(ToOne::make('user')->type('users'), 'user')->add(
+            ToOne::make('content')->type(['posts', 'comments']),
+            'content',
+        );
     }
 }

@@ -9,22 +9,24 @@ use Waterhole\Models\Channel;
 
 class ChannelDescription extends Field
 {
-    public function __construct(public ?Channel $model) {}
+    public function __construct(
+        public ?Channel $model,
+    ) {}
 
     public function render(): string
     {
         return <<<'blade'
-            <x-waterhole::field
-                name="description"
-                :label="__('waterhole::cp.channel-description-label')"
-                :description="__('waterhole::cp.channel-description-description')"
-            >
-                <textarea
-                    id="{{ $component->id }}"
+                <x-waterhole::field
                     name="description"
-                >{{ old('description', $model->description ?? '') }}</textarea>
-            </x-waterhole::field>
-        blade;
+                    :label="__('waterhole::cp.channel-description-label')"
+                    :description="__('waterhole::cp.channel-description-description')"
+                >
+                    <textarea
+                        id="{{ $component->id }}"
+                        name="description"
+                    >{{ old('description', $model->description ?? '') }}</textarea>
+                </x-waterhole::field>
+            blade;
     }
 
     public function validating(Validator $validator): void

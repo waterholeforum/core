@@ -58,10 +58,10 @@ class ChannelForm extends ComponentList
             'features',
         );
 
-        $this->features = (new ComponentList())
-            ->add(ChannelTaxonomies::class, 'taxonomies')
-            ->add(ChannelAnswers::class, 'answers')
-            ->add(ChannelReactions::class, 'reactions');
+        $this->features = (new ComponentList())->add(ChannelTaxonomies::class, 'taxonomies')->add(
+            ChannelAnswers::class,
+            'answers',
+        )->add(ChannelReactions::class, 'reactions');
 
         $this->add(
             fn($model) => new FormSection(
@@ -72,9 +72,10 @@ class ChannelForm extends ComponentList
             'layout',
         );
 
-        $this->layout = (new ComponentList())
-            ->add(ChannelLayout::class, 'layout')
-            ->add(ChannelFilters::class, 'filters');
+        $this->layout = (new ComponentList())->add(ChannelLayout::class, 'layout')->add(
+            ChannelFilters::class,
+            'filters',
+        );
 
         $this->add(
             fn($model) => new FormSection(
@@ -85,9 +86,10 @@ class ChannelForm extends ComponentList
             'posting',
         );
 
-        $this->posting = (new ComponentList())
-            ->add(ChannelInstructions::class, 'instructions')
-            ->add(ChannelSimilarPosts::class, 'similar-posts');
+        $this->posting = (new ComponentList())->add(
+            ChannelInstructions::class,
+            'instructions',
+        )->add(ChannelSimilarPosts::class, 'similar-posts');
 
         $this->add(
             fn($model) => new FormSection(
@@ -98,8 +100,9 @@ class ChannelForm extends ComponentList
             'permissions',
         );
 
-        $this->permissions = (new ComponentList())
-            ->add(Permissions::class, 'permissions')
-            ->add(ChannelApproval::class, 'approval');
+        $this->permissions = (new ComponentList())->add(Permissions::class, 'permissions')->add(
+            ChannelApproval::class,
+            'approval',
+        );
     }
 }

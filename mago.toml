@@ -1,0 +1,7 @@
+php-version = "8.1.0"
+
+[source]
+paths = ["database/", "routes/", "src/", "tests/"]
+
+[formatter]
+print-width = 100

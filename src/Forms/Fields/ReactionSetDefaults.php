@@ -9,30 +9,32 @@ use Waterhole\Models\ReactionSet;
 
 class ReactionSetDefaults extends Field
 {
-    public function __construct(public ?ReactionSet $model) {}
+    public function __construct(
+        public ?ReactionSet $model,
+    ) {}
 
     public function render(): string
     {
         return <<<'blade'
-            <div class="field">
-                <div class="field__label">
-                    {{ __('waterhole::cp.reaction-set-usage-label') }}
-                </div>
+                <div class="field">
+                    <div class="field__label">
+                        {{ __('waterhole::cp.reaction-set-usage-label') }}
+                    </div>
 
-                <div class="stack gap-sm">
-                    <label class="choice">
-                        <input type="hidden" name="is_default_posts" value="0">
-                        <input type="checkbox" name="is_default_posts" value="1" @checked($model->is_default_posts)>
-                        {{ __('waterhole::cp.reaction-set-default-posts') }}
-                    </label>
-                    <label class="choice">
-                        <input type="hidden" name="is_default_comments" value="0">
-                        <input type="checkbox" name="is_default_comments" value="1" @checked($model->is_default_comments)>
-                        {{ __('waterhole::cp.reaction-set-default-comments') }}
-                    </label>
+                    <div class="stack gap-sm">
+                        <label class="choice">
+                            <input type="hidden" name="is_default_posts" value="0">
+                            <input type="checkbox" name="is_default_posts" value="1" @checked($model->is_default_posts)>
+                            {{ __('waterhole::cp.reaction-set-default-posts') }}
+                        </label>
+                        <label class="choice">
+                            <input type="hidden" name="is_default_comments" value="0">
+                            <input type="checkbox" name="is_default_comments" value="1" @checked($model->is_default_comments)>
+                            {{ __('waterhole::cp.reaction-set-default-comments') }}
+                        </label>
+                    </div>
                 </div>
-            </div>
-        blade;
+            blade;
     }
 
     public function validating(Validator $validator): void

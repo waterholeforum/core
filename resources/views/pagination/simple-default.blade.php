@@ -7,7 +7,11 @@
                 {{ __('waterhole::system.pagination-previous-link') }}
             </span>
         @else
-            <a class="tab" href="{{ $paginator->previousPageUrl() }}" rel="prev">
+            <a
+                class="tab"
+                href="{{ $paginator->previousPageUrl() }}"
+                rel="prev"
+            >
                 {{ __('waterhole::system.pagination-previous-link') }}
             </a>
         @endif

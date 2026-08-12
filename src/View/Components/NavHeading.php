@@ -6,12 +6,14 @@ use Illuminate\View\Component;
 
 class NavHeading extends Component
 {
-    public function __construct(public string $heading) {}
+    public function __construct(
+        public string $heading,
+    ) {}
 
     public function render()
     {
         return <<<'blade'
-            <h3 {{ $attributes->class('nav-heading') }}>{{ $heading }}</h3>
-        blade;
+                <h3 {{ $attributes->class('nav-heading') }}>{{ $heading }}</h3>
+            blade;
     }
 }

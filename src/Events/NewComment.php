@@ -17,7 +17,9 @@ class NewComment implements ShouldBroadcast, ShouldDispatchAfterCommit
     use Dispatchable;
     use InteractsWithSockets;
 
-    public function __construct(protected Comment $comment) {}
+    public function __construct(
+        protected Comment $comment,
+    ) {}
 
     public function broadcastOn()
     {
@@ -32,12 +34,12 @@ class NewComment implements ShouldBroadcast, ShouldDispatchAfterCommit
     public function broadcastWith(): array
     {
         return [
-            'streams' => TurboStream::append(
-                (new CommentFrame($this->comment, lazy: true))->withAttributes([
-                    'class' => 'card__row',
-                ]),
-                '.comment-list',
-            ),
+            'streams' => TurboStream::append((new CommentFrame(
+                $this->comment,
+                lazy: true,
+            ))->withAttributes([
+                'class' => 'card__row',
+            ]), '.comment-list'),
         ];
     }
 }

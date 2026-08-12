@@ -70,9 +70,9 @@ class RegisterController extends Controller
             abort(400, 'Password registration is disabled');
         }
 
-        $user
-            ->groups()
-            ->syncWithoutDetaching(Group::query()->where('auto_assign', true)->pluck('id'));
+        $user->groups()->syncWithoutDetaching(
+            Group::query()->where('auto_assign', true)->pluck('id'),
+        );
 
         event(new Registered($user));
 

@@ -82,30 +82,30 @@ dataset('form_extenders', [
     'channel form' => [
         Extend\Forms\ChannelForm::class,
         fn($extender, $marker) => $extender->add(ExtendTestRenderField::class, 'extend-test'),
-        fn($test) => $test
-            ->actingAs(extendTestAdminUser())
-            ->get(URL::route('waterhole.cp.structure.channels.create')),
+        fn($test) => $test->actingAs(extendTestAdminUser())->get(URL::route(
+            'waterhole.cp.structure.channels.create',
+        )),
     ],
     'page form' => [
         Extend\Forms\PageForm::class,
         fn($extender, $marker) => $extender->add(ExtendTestRenderField::class, 'extend-test'),
-        fn($test) => $test
-            ->actingAs(extendTestAdminUser())
-            ->get(URL::route('waterhole.cp.structure.pages.create')),
+        fn($test) => $test->actingAs(extendTestAdminUser())->get(URL::route(
+            'waterhole.cp.structure.pages.create',
+        )),
     ],
     'structure link form' => [
         Extend\Forms\StructureLinkForm::class,
         fn($extender, $marker) => $extender->add(ExtendTestRenderField::class, 'extend-test'),
-        fn($test) => $test
-            ->actingAs(extendTestAdminUser())
-            ->get(URL::route('waterhole.cp.structure.links.create')),
+        fn($test) => $test->actingAs(extendTestAdminUser())->get(URL::route(
+            'waterhole.cp.structure.links.create',
+        )),
     ],
     'taxonomy form' => [
         Extend\Forms\TaxonomyForm::class,
         fn($extender, $marker) => $extender->add(ExtendTestRenderField::class, 'extend-test'),
-        fn($test) => $test
-            ->actingAs(extendTestAdminUser())
-            ->get(URL::route('waterhole.cp.taxonomies.create')),
+        fn($test) => $test->actingAs(extendTestAdminUser())->get(URL::route(
+            'waterhole.cp.taxonomies.create',
+        )),
     ],
     'tag form' => [
         Extend\Forms\TagForm::class,
@@ -113,31 +113,32 @@ dataset('form_extenders', [
         function ($test) {
             $taxonomy = Taxonomy::create(['name' => 'Test Taxonomy']);
 
-            return $test
-                ->actingAs(extendTestAdminUser())
-                ->get(URL::route('waterhole.cp.taxonomies.tags.create', $taxonomy));
+            return $test->actingAs(extendTestAdminUser())->get(URL::route(
+                'waterhole.cp.taxonomies.tags.create',
+                $taxonomy,
+            ));
         },
     ],
     'group form' => [
         Extend\Forms\GroupForm::class,
         fn($extender, $marker) => $extender->add(ExtendTestRenderField::class, 'extend-test'),
-        fn($test) => $test
-            ->actingAs(extendTestAdminUser())
-            ->get(URL::route('waterhole.cp.groups.create')),
+        fn($test) => $test->actingAs(extendTestAdminUser())->get(URL::route(
+            'waterhole.cp.groups.create',
+        )),
     ],
     'user form' => [
         Extend\Forms\UserForm::class,
         fn($extender, $marker) => $extender->add(ExtendTestRenderField::class, 'extend-test'),
-        fn($test) => $test
-            ->actingAs(extendTestAdminUser())
-            ->get(URL::route('waterhole.cp.users.create')),
+        fn($test) => $test->actingAs(extendTestAdminUser())->get(URL::route(
+            'waterhole.cp.users.create',
+        )),
     ],
     'reaction set form' => [
         Extend\Forms\ReactionSetForm::class,
         fn($extender, $marker) => $extender->add(ExtendTestRenderField::class, 'extend-test'),
-        fn($test) => $test
-            ->actingAs(extendTestAdminUser())
-            ->get(URL::route('waterhole.cp.reaction-sets.create')),
+        fn($test) => $test->actingAs(extendTestAdminUser())->get(URL::route(
+            'waterhole.cp.reaction-sets.create',
+        )),
     ],
     'reaction type form' => [
         Extend\Forms\ReactionTypeForm::class,
@@ -145,11 +146,11 @@ dataset('form_extenders', [
         function ($test) {
             $reactionSet = ReactionSet::create(['name' => 'Test Reaction Set']);
 
-            return $test->actingAs(extendTestAdminUser())->get(
-                URL::route('waterhole.cp.reaction-sets.reaction-types.create', [
-                    'reactionSet' => $reactionSet,
-                ]),
-            );
+            return $test->actingAs(
+                extendTestAdminUser(),
+            )->get(URL::route('waterhole.cp.reaction-sets.reaction-types.create', [
+                'reactionSet' => $reactionSet,
+            ]));
         },
     ],
     'registration form' => [
@@ -163,9 +164,9 @@ dataset('form_extenders', [
         function ($test) {
             $channel = Channel::factory()->public()->create();
 
-            return $test
-                ->actingAs(extendTestAdminUser())
-                ->get(URL::route('waterhole.posts.create', ['channel_id' => $channel->id]));
+            return $test->actingAs(
+                extendTestAdminUser(),
+            )->get(URL::route('waterhole.posts.create', ['channel_id' => $channel->id]));
         },
     ],
 ]);
@@ -174,7 +175,9 @@ class ExtendTestRenderField extends Field
 {
     public const MARKER = 'Extend Test Field';
 
-    public function __construct(public ?Model $model) {}
+    public function __construct(
+        public ?Model $model,
+    ) {}
 
     public function render(): string
     {
@@ -195,20 +198,22 @@ class ExtendTestPersistField extends Field
         self::$savedUserId = null;
     }
 
-    public function __construct(public ?User $model) {}
+    public function __construct(
+        public ?User $model,
+    ) {}
 
     public function render(): string
     {
         return <<<'blade'
-            <x-waterhole::field name="extend_test_headline" label="Extend Test Headline">
-                <input
-                    type="text"
-                    name="extend_test_headline"
-                    id="{{ $component->id }}"
-                    value="{{ old('extend_test_headline', $model->headline ?? '') }}"
-                >
-            </x-waterhole::field>
-        blade;
+                <x-waterhole::field name="extend_test_headline" label="Extend Test Headline">
+                    <input
+                        type="text"
+                        name="extend_test_headline"
+                        id="{{ $component->id }}"
+                        value="{{ old('extend_test_headline', $model->headline ?? '') }}"
+                    >
+                </x-waterhole::field>
+            blade;
     }
 
     public function validating(Validator $validator): void

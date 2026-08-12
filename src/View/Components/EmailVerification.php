@@ -11,9 +11,9 @@ class EmailVerification extends Component
     {
         $user = auth()->user();
 
-        return $user instanceof MustVerifyEmail &&
-            !$user->hasVerifiedEmail() &&
-            !$user->originalUser();
+        return $user instanceof MustVerifyEmail
+        && !$user->hasVerifiedEmail()
+        && !$user->originalUser();
     }
 
     public function render()

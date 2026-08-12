@@ -9,28 +9,30 @@ use Waterhole\Models\User;
 
 class UserShowOnline extends Field
 {
-    public function __construct(public ?User $model) {}
+    public function __construct(
+        public ?User $model,
+    ) {}
 
     public function render(): string
     {
         return <<<'blade'
-            <div role="group" class="field">
-                <div class="field__label">{{ __('waterhole::user.privacy-title') }}</div>
-                <div>
-                    <input type="hidden" name="show_online" value="0">
-                    <label for="show_online" class="choice">
-                        <input
-                            id="show_online"
-                            type="checkbox"
-                            name="show_online"
-                            value="1"
-                            @checked($model?->show_online)
-                        >
-                        {{ __('waterhole::user.show-online-label') }}
-                    </label>
+                <div role="group" class="field">
+                    <div class="field__label">{{ __('waterhole::user.privacy-title') }}</div>
+                    <div>
+                        <input type="hidden" name="show_online" value="0">
+                        <label for="show_online" class="choice">
+                            <input
+                                id="show_online"
+                                type="checkbox"
+                                name="show_online"
+                                value="1"
+                                @checked($model?->show_online)
+                            >
+                            {{ __('waterhole::user.show-online-label') }}
+                        </label>
+                    </div>
                 </div>
-            </div>
-        blade;
+            blade;
     }
 
     public function validating(Validator $validator): void

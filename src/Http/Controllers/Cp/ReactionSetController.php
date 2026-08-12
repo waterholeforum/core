@@ -2,12 +2,12 @@
 
 namespace Waterhole\Http\Controllers\Cp;
 
-use function Waterhole\internal_url;
-
 use Illuminate\Http\Request;
 use Waterhole\Forms\ReactionSetForm;
 use Waterhole\Http\Controllers\Controller;
 use Waterhole\Models\ReactionSet;
+
+use function Waterhole\internal_url;
 
 /**
  * Controller for CP reaction set management.
@@ -46,9 +46,11 @@ class ReactionSetController extends Controller
     {
         $this->form($reactionSet)->submit($request);
 
-        return redirect(
-            internal_url($request->input('return'), route('waterhole.cp.reaction-sets.index')),
-        )->with('success', __('waterhole::cp.reaction-set-saved-message'));
+        return redirect(internal_url(
+            $request->input('return'),
+            route('waterhole.cp.reaction-sets.index'),
+        ))
+            ->with('success', __('waterhole::cp.reaction-set-saved-message'));
     }
 
     private function form(ReactionSet $reactionSet)

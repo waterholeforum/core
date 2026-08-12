@@ -9,6 +9,7 @@ use Illuminate\Validation\Validator;
 use Waterhole\Extend\Core\PostLayouts;
 use Waterhole\Forms\Field;
 use Waterhole\Models\Channel;
+
 use function Waterhole\resolve_all;
 
 class ChannelLayout extends Field
@@ -17,66 +18,67 @@ class ChannelLayout extends Field
     public Collection $configFields;
     public array $configModels = [];
 
-    public function __construct(public ?Channel $model)
-    {
+    public function __construct(
+        public ?Channel $model,
+    ) {
         $this->layouts = resolve_all(resolve(PostLayouts::class)->values());
 
-        $this->configFields = collect($this->layouts)
-            ->mapWithKeys(function ($layout) use ($model) {
-                if ($field = $layout->configField()) {
-                    return [
-                        get_class($layout) => resolve($field, [
-                            'model' => ($this->configModels[get_class($layout)] =
-                                (object) ($model->layout_config[get_class($layout)] ?? [])),
-                        ]),
-                    ];
-                }
-                return [];
-            })
-            ->filter();
+        $this->configFields = collect($this->layouts)->mapWithKeys(function ($layout) use ($model) {
+            if ($field = $layout->configField()) {
+                return [
+                    get_class($layout) => resolve($field, [
+                        'model' =>
+                            $this->configModels[get_class($layout)] = (object) (
+                                $model->layout_config[get_class($layout)] ?? []
+                            ),
+                    ]),
+                ];
+            }
+            return [];
+        })->filter();
     }
 
     public function render(): string
     {
         return <<<'blade'
-            <div role="group" class="field">
-                <div class="field__label">
-                    {{ __('waterhole::cp.channel-layout-label') }}
-                </div>
+                <div role="group" class="field">
+                    <div class="field__label">
+                        {{ __('waterhole::cp.channel-layout-label') }}
+                    </div>
 
-                <div class="stack gap-sm" data-controller="reveal">
-                    <div class="btn-group">
-                        @foreach ($layouts as $layout)
-                            <div>
-                                <input
-                                    type="radio"
-                                    name="layout"
-                                    hidden
-                                    id="layout_{{ get_class($layout) }}"
-                                    value="{{ get_class($layout) }}"
-                                    @checked(old('layout', $model->layout) === get_class($layout))
-                                    data-reveal-target="if"
-                                >
-                                <label class="btn" for="layout_{{ get_class($layout) }}">
-                                    @icon($layout->icon(), ['class' => 'text-md'])
-                                    {{ $layout->label() }}
-                                </label>
+                    <div class="stack gap-sm" data-controller="reveal">
+                        <div class="btn-group">
+                            @foreach ($layouts as $layout)
+                                <div>
+                                    <input
+                                        type="radio"
+                                        name="layout"
+                                        hidden
+                                        id="layout_{{ get_class($layout) }}"
+                                        value="{{ get_class($layout) }}"
+                                        @checked(old('layout', $model->layout) === get_class($layout))
+                                        data-reveal-target="if"
+                                    >
+                                    <label class="btn" for="layout_{{ get_class($layout) }}">
+                                        @icon($layout->icon(), ['class' => 'text-md'])
+                                        {{ $layout->label() }}
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        @foreach ($configFields as $layoutClass => $field)
+                            <div
+                                class="card card__body"
+                                data-reveal-target="then"
+                                data-reveal-value="{{ $layoutClass }}"
+                            >
+                                @components([$field])
                             </div>
                         @endforeach
                     </div>
-
-                    @foreach ($configFields as $layoutClass => $field)
-                        <div
-                            class="card card__body"
-                            data-reveal-target="then"
-                            data-reveal-value="{{ $layoutClass }}"
-                        >
-                            @components([$field])
-                        </div>
-                    @endforeach
                 </div>
-            </div>
-        blade;
+            blade;
     }
 
     public function validating(Validator $validator): void

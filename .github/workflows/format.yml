@@ -1,9 +1,9 @@
-name: Prettier
+name: Format
 
 on: [push, pull_request]
 
 jobs:
-  prettier:
+  format:
     runs-on: ubuntu-latest
 
     permissions:
@@ -16,18 +16,23 @@ jobs:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          tools: composer
+
+      - uses: pnpm/action-setup@v4
         with:
           cache: true
 
-      - name: Build
-        run: |
-          pnpm i
-          pnpm prettier
+      - run: composer install --no-interaction --prefer-dist
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: composer fix
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: Run Prettier
+          commit_message: Format code
           branch: ${{ github.head_ref }}

@@ -68,22 +68,18 @@ trait HasPermissions
             return;
         }
 
-        $this->permissions()->createMany(
-            collect($grid)->flatMap(function ($abilities, $recipient) {
-                [$type, $id] = explode(':', $recipient) + [null, null];
+        $this->permissions()->createMany(collect($grid)->flatMap(function ($abilities, $recipient) {
+            [$type, $id] = explode(':', $recipient) + [null, null];
 
-                return collect($abilities)
-                    ->filter()
-                    ->map(
-                        fn($v, $ability) => [
-                            'recipient_type' => $type,
-                            'recipient_id' => $id,
-                            'ability' => $ability,
-                        ],
-                    )
-                    ->values();
-            }),
-        );
+            return collect($abilities)
+                ->filter()
+                ->map(fn($v, $ability) => [
+                    'recipient_type' => $type,
+                    'recipient_id' => $id,
+                    'ability' => $ability,
+                ])
+                ->values();
+        }));
     }
 
     public function isPublic(string $ability = 'view'): bool
@@ -94,8 +90,8 @@ trait HasPermissions
     public function usersWithAbility(string $ability): ?Collection
     {
         if (
-            $this->isPublic($ability) ||
-            Waterhole::permissions()->can(Group::member(), $ability, $this)
+            $this->isPublic($ability)
+            || Waterhole::permissions()->can(Group::member(), $ability, $this)
         ) {
             return null;
         }

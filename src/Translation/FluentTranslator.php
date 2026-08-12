@@ -105,9 +105,14 @@ final class FluentTranslator implements TranslatorContract
 
     private function getBundle(?string $namespace, string $locale, string $group): ?FluentBundle
     {
-        return $this->loaded[$namespace][$locale][$group] ??
-            $this->loadFtl($namespace, $locale, $group) ?:
-            null;
+        return (
+            $this->loaded[$namespace][$locale][$group] ?? $this->loadFtl(
+                $namespace,
+                $locale,
+                $group,
+            )
+            ?: null
+        );
     }
 
     private function loadFtl(?string $namespace, string $locale, string $group): ?FluentBundle
@@ -199,9 +204,9 @@ final class FluentTranslator implements TranslatorContract
         $group,
         $namespace,
     ): FluentBundle {
-        if (
-            $this->files->exists($full = "{$this->path}/vendor/{$namespace}/{$locale}/{$group}.ftl")
-        ) {
+        if ($this->files->exists(
+            $full = "{$this->path}/vendor/{$namespace}/{$locale}/{$group}.ftl",
+        )) {
             return $bundle->addFtl($this->files->get($full));
         }
 

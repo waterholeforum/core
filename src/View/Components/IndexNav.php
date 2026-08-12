@@ -16,8 +16,9 @@ class IndexNav extends Component
 {
     public Collection $nav;
 
-    public function __construct(public ?Channel $channel = null)
-    {
+    public function __construct(
+        public ?Channel $channel = null,
+    ) {
         $this->channel = $channel?->exists ? $channel : null;
 
         $structure = Structure::query()
@@ -34,42 +35,40 @@ class IndexNav extends Component
                 route: 'waterhole.home',
                 active: fn() => !$this->channel && request()->routeIs('waterhole.home'),
             ),
-            ...$structure
-                ->map(function (Structure $node) {
-                    if ($node->content instanceof StructureHeading) {
-                        return new NavHeading($node->content->name ?: '');
-                    } elseif ($node->content instanceof Channel) {
-                        return new NavLink(
-                            label: $node->content->name,
-                            icon: $node->content->icon,
-                            href: $node->content->url,
-                            active: $this->channel?->is($node->content),
-                        );
-                    } elseif ($node->content instanceof StructureLink) {
-                        return (new NavLink(
-                            label: $node->content->name,
-                            icon: $node->content->icon,
-                            href: $node->content->href,
-                        ))->withAttributes(
-                            is_absolute_url($node->content->href) ? ['target' => '_blank'] : [],
-                        );
-                    } elseif ($node->content instanceof Page) {
-                        return new NavLink(
-                            label: $node->content->name,
-                            icon: $node->content->icon,
-                            href: $node->content->url,
-                        );
-                    }
+            ...$structure->map(function (Structure $node) {
+                if ($node->content instanceof StructureHeading) {
+                    return new NavHeading($node->content->name ?: '');
+                } elseif ($node->content instanceof Channel) {
+                    return new NavLink(
+                        label: $node->content->name,
+                        icon: $node->content->icon,
+                        href: $node->content->url,
+                        active: $this->channel?->is($node->content),
+                    );
+                } elseif ($node->content instanceof StructureLink) {
+                    return (new NavLink(
+                        label: $node->content->name,
+                        icon: $node->content->icon,
+                        href: $node->content->href,
+                    ))->withAttributes(
+                        is_absolute_url($node->content->href) ? ['target' => '_blank'] : [],
+                    );
+                } elseif ($node->content instanceof Page) {
+                    return new NavLink(
+                        label: $node->content->name,
+                        icon: $node->content->icon,
+                        href: $node->content->url,
+                    );
+                }
 
-                    return null;
-                })
-                ->filter(),
+                return null;
+            })->filter(),
         ]);
 
         // Filter out headings with no items after them
         $this->nav = $this->nav->filter(function ($item, $i) {
             if ($item instanceof NavHeading) {
-                return isset($this->nav[$i + 1]) && !($this->nav[$i + 1] instanceof NavHeading);
+                return isset($this->nav[$i + 1]) && !$this->nav[$i + 1] instanceof NavHeading;
             }
 
             return true;

@@ -11,7 +11,9 @@ abstract class Form
 {
     private array $fields;
 
-    public function __construct(public Model $model) {}
+    public function __construct(
+        public Model $model,
+    ) {}
 
     abstract public function fields(): array;
 
@@ -69,9 +71,6 @@ abstract class Form
 
     private function getFields(): array
     {
-        return $this->fields ??= array_filter(
-            $this->fields(),
-            fn($field) => $field?->shouldRender(),
-        );
+        return $this->fields ??= array_filter($this->fields(), fn($field) => $field?->shouldRender());
     }
 }

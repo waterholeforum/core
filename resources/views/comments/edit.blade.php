@@ -38,7 +38,9 @@
 
                             <ui-tooltip>
                                 {{ __('waterhole::system.cancel-button') }}
-                                <x-waterhole::shortcut-label shortcut="navigation.close" />
+                                <x-waterhole::shortcut-label
+                                    shortcut="navigation.close"
+                                />
                             </ui-tooltip>
                         </a>
 

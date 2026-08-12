@@ -39,9 +39,9 @@ class ViewServiceProvider extends ServiceProvider
 
             return implode("\n", [
                 '<?php $_components = ' . $components . '; ?>',
-                '<?php foreach (Waterhole\build_components($_components, ' .
-                ($data ?: '[]') .
-                ') as $key => $instance): ?>',
+                '<?php foreach (Waterhole\build_components($_components, '
+                    . ($data ?: '[]')
+                    . ') as $key => $instance): ?>',
                 '<?php if ($instance === null && !is_numeric($key) && $__env->hasSection($key)): ?>',
                 '<?php echo $__env->yieldContent($key); ?>',
                 '<?php endif; ?>',

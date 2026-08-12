@@ -7,7 +7,12 @@
         </summary>
         <div class="card__body stack gap-md">
             <label class="choice">
-                <input type="radio" name="deleted_reason" value="" @checked(! $selectedReason) />
+                <input
+                    type="radio"
+                    name="deleted_reason"
+                    value=""
+                    @checked(! $selectedReason)
+                />
                 {{ __('waterhole::forum.removal-reason-unspecified-label') }}
             </label>
 
@@ -44,7 +49,9 @@
                 {{ __('waterhole::forum.removal-message-label') }}
             </summary>
             <div class="card__body">
-                <textarea name="deleted_message" rows="3">{{ old('deleted_message') }}</textarea>
+                <textarea name="deleted_message" rows="3">
+{{ old('deleted_message') }}</textarea
+                >
             </div>
         </details>
     @endif
@@ -91,10 +98,16 @@
                             data-action="suspend-duration#update"
                             style="width: auto"
                         >
-                            <option value="days" @selected(old('suspend_unit', 'days') === 'days')>
+                            <option
+                                value="days"
+                                @selected(old('suspend_unit', 'days') === 'days')
+                            >
                                 {{ __('waterhole::forum.user-actions-suspend-days') }}
                             </option>
-                            <option value="weeks" @selected(old('suspend_unit') === 'weeks')>
+                            <option
+                                value="weeks"
+                                @selected(old('suspend_unit') === 'weeks')
+                            >
                                 {{ __('waterhole::forum.user-actions-suspend-weeks') }}
                             </option>
                             <option

@@ -9,6 +9,7 @@ use Waterhole\Models\Tag;
 use Waterhole\Models\Taxonomy;
 use Waterhole\View\Components\Cp\TagRow;
 use Waterhole\View\TurboStream;
+
 use function Waterhole\internal_url;
 
 class TagController
@@ -28,9 +29,10 @@ class TagController
         $this->form($tag)->submit($request);
 
         if ($request->wantsTurboStream()) {
-            return TurboResponseFactory::makeStream(
-                TurboStream::before(new TagRow($tag), '#tag-list-end'),
-            );
+            return TurboResponseFactory::makeStream(TurboStream::before(
+                new TagRow($tag),
+                '#tag-list-end',
+            ));
         }
 
         return redirect($taxonomy->edit_url);
@@ -51,10 +53,8 @@ class TagController
             return TurboResponseFactory::makeStream(TurboStream::replace(new TagRow($tag)));
         }
 
-        return redirect(internal_url($request->input('return'), $taxonomy->edit_url))->with(
-            'success',
-            __('waterhole::cp.tag-saved-message'),
-        );
+        return redirect(internal_url($request->input('return'), $taxonomy->edit_url))
+            ->with('success', __('waterhole::cp.tag-saved-message'));
     }
 
     private function form(Tag $tag)

@@ -11,6 +11,7 @@ use Waterhole\Models\Comment;
 use Waterhole\Models\Post;
 use Waterhole\Models\ReactionType;
 use Waterhole\View\TurboStream;
+
 use function HotwiredLaravel\TurboLaravel\dom_id;
 
 /**
@@ -80,7 +81,8 @@ class CommentController extends Controller
 
             $body = $request->string('body')->toString();
 
-            $post->userState
+            $post
+                ->userState
                 ->setDraft($body ?: null, $request->integer('parent_id') ?: null)
                 ->save();
 
@@ -97,8 +99,8 @@ class CommentController extends Controller
         $data = Comment::validate($request->all());
         $data['user_id'] = $user->id;
         $data['is_approved'] =
-            $user->can('waterhole.channel.moderate', $post->channel) ||
-            (!$user->requiresApproval() && !$post->channel->require_approval_comments);
+            $user->can('waterhole.channel.moderate', $post->channel)
+            || !$user->requiresApproval() && !$post->channel->require_approval_comments;
 
         // Validation has already ensured that the parent comment exists, but
         // we still need to make sure that it's a comment on the same post as
@@ -116,12 +118,10 @@ class CommentController extends Controller
         }
 
         if ($request->wantsTurboStream()) {
-            return TurboResponseFactory::makeStream(
-                implode([
-                    TurboStream::dispatch('composer:reset', '#composer'),
-                    TurboStream::redirect(Comment::find($comment->getKey())->post_url),
-                ]),
-            );
+            return TurboResponseFactory::makeStream(implode([
+                TurboStream::dispatch('composer:reset', '#composer'),
+                TurboStream::redirect(Comment::find($comment->getKey())->post_url),
+            ]));
         }
 
         // If the comment was made in reply to another comment, then redirect
@@ -145,10 +145,7 @@ class CommentController extends Controller
     {
         $this->authorize('waterhole.comment.edit', $comment);
 
-        $comment
-            ->fill(Comment::validate($request->all(), $comment))
-            ->markAsEdited()
-            ->save();
+        $comment->fill(Comment::validate($request->all(), $comment))->markAsEdited()->save();
 
         return redirect($comment->post_url);
     }

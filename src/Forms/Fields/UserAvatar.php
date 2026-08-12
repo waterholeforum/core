@@ -10,33 +10,35 @@ use Waterhole\Models\User;
 
 class UserAvatar extends Field
 {
-    public function __construct(public User $model) {}
+    public function __construct(
+        public User $model,
+    ) {}
 
     public function render(): string
     {
         return <<<'blade'
-            <div class="field" role="group">
-                <div class="field__label">{{ __('waterhole::user.avatar-label') }}</div>
-                <div class="row gap-md">
-                    <x-waterhole::avatar :user="$model" style="width: 10ch"/>
-                    <div class="stack gap-md">
-                        <x-waterhole::field name="avatar">
-                            <input
-                                type="file"
-                                name="avatar"
-                                accept=".jpg,.jpeg,.png,.bmp,.gif,.webp"
-                            >
-                        </x-waterhole::field>
-                        @if ($model->avatar)
-                            <label class="choice">
-                                <input type="checkbox" name="remove_avatar" value="1">
-                                {{ __('waterhole::user.remove-avatar-label') }}
-                            </label>
-                        @endif
+                <div class="field" role="group">
+                    <div class="field__label">{{ __('waterhole::user.avatar-label') }}</div>
+                    <div class="row gap-md">
+                        <x-waterhole::avatar :user="$model" style="width: 10ch"/>
+                        <div class="stack gap-md">
+                            <x-waterhole::field name="avatar">
+                                <input
+                                    type="file"
+                                    name="avatar"
+                                    accept=".jpg,.jpeg,.png,.bmp,.gif,.webp"
+                                >
+                            </x-waterhole::field>
+                            @if ($model->avatar)
+                                <label class="choice">
+                                    <input type="checkbox" name="remove_avatar" value="1">
+                                    {{ __('waterhole::user.remove-avatar-label') }}
+                                </label>
+                            @endif
+                        </div>
                     </div>
                 </div>
-            </div>
-        blade;
+            blade;
     }
 
     public function validating(Validator $validator): void

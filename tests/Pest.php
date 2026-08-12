@@ -5,18 +5,10 @@ use Tobyz\JsonApiServer\JsonApi;
 
 function jsonApi($method, $uri, array $data = [], array $headers = [])
 {
-    return test()->json(
-        $method,
-        $uri,
-        $data,
-        array_merge(
-            [
-                'Content-Type' => JsonApi::MEDIA_TYPE,
-                'Accept' => JsonApi::MEDIA_TYPE,
-            ],
-            $headers,
-        ),
-    );
+    return test()->json($method, $uri, $data, array_merge([
+        'Content-Type' => JsonApi::MEDIA_TYPE,
+        'Accept' => JsonApi::MEDIA_TYPE,
+    ], $headers));
 }
 
 function extend(callable $callback): void

@@ -24,9 +24,7 @@ describe('Routing extenders', function () {
         Route::setRoutes(new RouteCollection());
         app()->register(RouteServiceProvider::class, true);
 
-        $this->get('/api/extend-test')
-            ->assertOk()
-            ->assertJson(['ok' => true]);
+        $this->get('/api/extend-test')->assertOk()->assertJson(['ok' => true]);
     });
 
     test('add forum route', function () {

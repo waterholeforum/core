@@ -8,8 +8,10 @@ use Waterhole\View\Components\MenuDivider;
 
 class ActionsCollection extends LazyCollection
 {
-    public function __construct($source = null, protected ?Closure $renderable = null)
-    {
+    public function __construct(
+        $source = null,
+        protected ?Closure $renderable = null,
+    ) {
         parent::__construct($source);
     }
 
@@ -18,7 +20,7 @@ class ActionsCollection extends LazyCollection
         $renderable = $this->renderable;
 
         return $this->filter(
-            fn($action) => !($action instanceof Action) || !$renderable || $renderable($action),
+            fn($action) => !$action instanceof Action || !$renderable || $renderable($action),
         );
     }
 
@@ -31,7 +33,7 @@ class ActionsCollection extends LazyCollection
                 continue;
             }
 
-            if (!($action instanceof Action) || !$renderable || $renderable($action)) {
+            if (!$action instanceof Action || !$renderable || $renderable($action)) {
                 return true;
             }
         }

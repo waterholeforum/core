@@ -48,15 +48,12 @@ class UserMenu extends ComponentList
 
         $this->add(MenuDivider::class, 'divider');
 
-        $this->add(
-            fn() => Auth::user()->can('waterhole.administrate')
-                ? new MenuItem(
-                    icon: 'tabler-tool',
-                    label: __('waterhole::user.administration-link'),
-                    href: route('waterhole.cp.dashboard'),
-                )
-                : null,
-            'administration',
-        );
+        $this->add(fn() => Auth::user()->can('waterhole.administrate')
+            ? new MenuItem(
+                icon: 'tabler-tool',
+                label: __('waterhole::user.administration-link'),
+                href: route('waterhole.cp.dashboard'),
+            )
+            : null, 'administration');
     }
 }

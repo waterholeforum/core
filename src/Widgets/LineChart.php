@@ -108,9 +108,9 @@ class LineChart extends Component
             ],
             'week' => [
                 'format' => $isPgsql ? 'YYYY"W"IW' : '%YW%v',
-                'label' => fn(CarbonImmutable $date) => $date->isoFormat('D MMM') .
-                    ' - ' .
-                    $date->addDays(6)->isoFormat('D MMM'),
+                'label' => fn(CarbonImmutable $date) => (
+                    $date->isoFormat('D MMM') . ' - ' . $date->addDays(6)->isoFormat('D MMM')
+                ),
             ],
             'month' => [
                 'format' => $isPgsql ? 'YYYY-MM-01' : '%Y-%m-01',
@@ -122,9 +122,7 @@ class LineChart extends Component
             ],
         ];
 
-        $this->selectedPeriod = isset($this->periods[($p = request('period'))])
-            ? $p
-            : $defaultPeriod;
+        $this->selectedPeriod = isset($this->periods[$p = request('period')]) ? $p : $defaultPeriod;
 
         $period = $this->periods[$this->selectedPeriod];
         $now = CarbonImmutable::now();
@@ -149,12 +147,10 @@ class LineChart extends Component
             ->where($column, '<', $this->periodEnd)
             ->groupBy('time_group')
             ->get(['count', 'time_group'])
-            ->map(
-                fn($row) => [
-                    'count' => $row['count'],
-                    'date' => CarbonImmutable::parse($row['time_group']),
-                ],
-            );
+            ->map(fn($row) => [
+                'count' => $row['count'],
+                'date' => CarbonImmutable::parse($row['time_group']),
+            ]);
 
         $this->periodTotal = $this->results
             ->where('date', '>=', $this->periodStart)

@@ -18,8 +18,10 @@ class Composer extends Component
     public ?string $body;
     public bool $hasDraft;
 
-    public function __construct(public Post $post, public ?Comment $parent = null)
-    {
+    public function __construct(
+        public Post $post,
+        public ?Comment $parent = null,
+    ) {
         $this->body = old('body', $post->userState?->draft_body);
         $draftParentId = old('parent_id', $parent?->id ?: $post->userState?->draft_parent_id);
 

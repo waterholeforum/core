@@ -37,23 +37,20 @@ describe('channel feeds', function () {
         $channel = Channel::factory()->public()->create();
         $viewer = User::factory()->create();
 
-        Post::factory()
-            ->for($channel)
-            ->create([
-                'title' => 'Visible channel post',
-            ]);
+        Post::factory()->for($channel)->create([
+            'title' => 'Visible channel post',
+        ]);
 
-        $hidden = Post::factory()
-            ->for($channel)
-            ->create([
-                'title' => 'Hidden channel post',
-                'user_id' => User::factory()->create()->id,
-            ]);
+        $hidden = Post::factory()->for($channel)->create([
+            'title' => 'Hidden channel post',
+            'user_id' => User::factory()->create()->id,
+        ]);
 
         $hidden->update(['deleted_by' => $hidden->user_id]);
         $hidden->delete();
 
-        $this->actingAs($viewer)
+        $this
+            ->actingAs($viewer)
             ->get(route('waterhole.channels.show', $channel))
             ->assertOk()
             ->assertSeeText('Visible channel post')
@@ -64,23 +61,20 @@ describe('channel feeds', function () {
         $channel = Channel::factory()->public()->create();
         $channel->update(['filters' => [Oldest::class]]);
 
-        Post::factory()
-            ->for($channel)
-            ->create([
-                'title' => 'Older post',
-                'created_at' => now()->subDay(),
-                'last_activity_at' => now()->subDay(),
-            ]);
+        Post::factory()->for($channel)->create([
+            'title' => 'Older post',
+            'created_at' => now()->subDay(),
+            'last_activity_at' => now()->subDay(),
+        ]);
 
-        Post::factory()
-            ->for($channel)
-            ->create([
-                'title' => 'Newer post',
-                'created_at' => now(),
-                'last_activity_at' => now(),
-            ]);
+        Post::factory()->for($channel)->create([
+            'title' => 'Newer post',
+            'created_at' => now(),
+            'last_activity_at' => now(),
+        ]);
 
-        $this->get(route('waterhole.channels.show', $channel))
+        $this
+            ->get(route('waterhole.channels.show', $channel))
             ->assertOk()
             ->assertSeeInOrder(['Older post', 'Newer post']);
     });

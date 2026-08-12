@@ -13,6 +13,7 @@ use Tobyz\JsonApiServer\Schema\Field\ToMany;
 use Tobyz\JsonApiServer\Schema\Field\ToOne;
 use Tobyz\JsonApiServer\Schema\Type;
 use Waterhole\Extend\Support\Resource;
+
 use function Tobyz\JsonApiServer\Laravel\can;
 
 /**
@@ -30,35 +31,42 @@ class CommentsResource extends Resource
             $query->with('post', 'mentions.mentionable', 'attachments');
         }, 'default');
 
-        $this->endpoints
-            ->add(Endpoint\Index::make()->paginate()->defaultSort('-createdAt'), 'index')
-
-            ->add(Endpoint\Show::make(), 'show');
+        $this->endpoints->add(
+            Endpoint\Index::make()->paginate()->defaultSort('-createdAt'),
+            'index',
+        )->add(Endpoint\Show::make(), 'show');
 
         $this->fields
             ->add(ToOne::make('post')->includable(), 'post')
-
             ->add(ToOne::make('parent')->type('comments')->nullable()->includable(), 'parent')
-
             ->add(ToOne::make('user')->nullable()->includable(), 'user')
-
-            ->add(Attribute::make('body')->type(Type\Str::make())->sparse(), 'body')
-
-            ->add(Attribute::make('bodyText')->type(Type\Str::make())->sparse(), 'bodyText')
-
-            ->add(Attribute::make('bodyHtml')->type(Type\Str::make()->format('html')), 'bodyHtml')
-
-            ->add(Attribute::make('createdAt')->type(Type\DateTime::make()), 'createdAt')
-
-            ->add(Attribute::make('editedAt')->type(Type\DateTime::make())->nullable(), 'editedAt')
-
-            ->add(Attribute::make('replyCount')->type(Type\Integer::make()), 'replyCount')
-
             ->add(
-                Attribute::make('deletedAt')->type(Type\DateTime::make())->nullable(),
+                Attribute::make('body')
+                    ->type(Type\Str::make())
+                    ->sparse(),
+                'body',
+            )
+            ->add(
+                Attribute::make('bodyText')
+                    ->type(Type\Str::make())
+                    ->sparse(),
+                'bodyText',
+            )
+            ->add(Attribute::make('bodyHtml')->type(Type\Str::make()->format('html')), 'bodyHtml')
+            ->add(Attribute::make('createdAt')->type(Type\DateTime::make()), 'createdAt')
+            ->add(
+                Attribute::make('editedAt')
+                    ->type(Type\DateTime::make())
+                    ->nullable(),
+                'editedAt',
+            )
+            ->add(Attribute::make('replyCount')->type(Type\Integer::make()), 'replyCount')
+            ->add(
+                Attribute::make('deletedAt')
+                    ->type(Type\DateTime::make())
+                    ->nullable(),
                 'deletedAt',
             )
-
             ->add(
                 ToOne::make('deletedBy')
                     ->type('users')
@@ -66,24 +74,18 @@ class CommentsResource extends Resource
                     ->visible(can('waterhole.comment.moderate')),
                 'deletedBy',
             )
-
             ->add(
-                Attribute::make('deletedReason')->type(Type\Str::make())->nullable(),
+                Attribute::make('deletedReason')
+                    ->type(Type\Str::make())
+                    ->nullable(),
                 'deletedReason',
             )
-
             ->add(ToMany::make('replies')->type('comments'), 'replies')
-
             ->add(Attribute::make('url')->type(Type\Str::make()->format('uri')), 'url')
-
             ->add(Attribute::make('postUrl')->type(Type\Str::make()->format('uri')), 'postUrl')
-
             ->add(ToMany::make('reactionCounts')->includable(), 'reactionCounts')
-
             ->add(ToMany::make('reactions')->includable(), 'reactions')
-
             ->add(ToMany::make('mentions')->includable(), 'mentions')
-
             ->add(
                 ToOne::make('bookmark')
                     ->type('bookmarks')
@@ -93,14 +95,17 @@ class CommentsResource extends Resource
                 'bookmark',
             );
 
-        $this->sorts
-            ->add(SortColumn::make('createdAt'), 'createdAt')
-            ->add(SortColumn::make('score'), 'score');
+        $this->sorts->add(SortColumn::make('createdAt'), 'createdAt')->add(
+            SortColumn::make('score'),
+            'score',
+        );
 
-        $this->filters
-            ->add(WhereBelongsTo::make('post'), 'post')
-            ->add(WhereBelongsTo::make('parent'), 'parent')
-            ->add(WhereBelongsTo::make('user'), 'user')
-            ->add(WhereNotNull::make('isRemoved')->column('deleted_at'), 'isRemoved');
+        $this->filters->add(WhereBelongsTo::make('post'), 'post')->add(
+            WhereBelongsTo::make('parent'),
+            'parent',
+        )->add(WhereBelongsTo::make('user'), 'user')->add(
+            WhereNotNull::make('isRemoved')->column('deleted_at'),
+            'isRemoved',
+        );
     }
 }

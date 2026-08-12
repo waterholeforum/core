@@ -3,9 +3,9 @@
 namespace Waterhole\Extend\Forms;
 
 use Waterhole\Extend\Support\ComponentList;
-use Waterhole\Forms\Fields\TaxonomyTags;
 use Waterhole\Forms\Fields\TaxonomyName;
 use Waterhole\Forms\Fields\TaxonomyOptions;
+use Waterhole\Forms\Fields\TaxonomyTags;
 use Waterhole\Forms\FormSection;
 
 /**
@@ -28,9 +28,10 @@ class TaxonomyForm extends ComponentList
             'details',
         );
 
-        $this->details = (new ComponentList())
-            ->add(TaxonomyName::class, 'name')
-            ->add(TaxonomyOptions::class, 'options');
+        $this->details = (new ComponentList())->add(TaxonomyName::class, 'name')->add(
+            TaxonomyOptions::class,
+            'options',
+        );
 
         $this->add(
             fn($model) => new FormSection(
