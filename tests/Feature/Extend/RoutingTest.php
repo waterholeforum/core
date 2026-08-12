@@ -17,6 +17,8 @@ beforeEach(function () {
 
 describe('Routing extenders', function () {
     test('add api route', function () {
+        app()->forgetInstance(Extend\Routing\ApiRoutes::class);
+
         extend(function (Extend\Routing\ApiRoutes $routes) {
             Route::get('extend-test', fn() => response()->json(['ok' => true]));
         });
@@ -28,6 +30,8 @@ describe('Routing extenders', function () {
     });
 
     test('add forum route', function () {
+        app()->forgetInstance(Extend\Routing\ForumRoutes::class);
+
         extend(function (Extend\Routing\ForumRoutes $routes) {
             Route::get('extend-test', fn() => 'ok');
         });
@@ -39,6 +43,8 @@ describe('Routing extenders', function () {
     });
 
     test('add cp route', function () {
+        app()->forgetInstance(Extend\Routing\CpRoutes::class);
+
         extend(function (Extend\Routing\CpRoutes $routes) {
             Route::get('extend-test', fn() => 'ok');
         });

@@ -32,7 +32,6 @@ class AppServiceProvider extends ServiceProvider
         Extend\Api\ChannelsResource::class,
         Extend\Api\CommentsResource::class,
         Extend\Api\GroupsResource::class,
-        Extend\Api\JsonApi::class,
         Extend\Api\MentionsResource::class,
         Extend\Api\PagesResource::class,
         Extend\Api\PostUsersResource::class,

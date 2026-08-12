@@ -130,22 +130,21 @@ final class FluentTranslator implements TranslatorContract
     {
         $full = "{$path}/{$locale}/{$group}.ftl";
 
-        $getBody = function () use ($full) {
-            if (!$this->files->exists($full)) {
-                return null;
-            }
-
-            $parser = new FluentParser(strict: true);
-
-            return $parser->parse($this->files->get($full))->body;
-        };
+        if (!$this->files->exists($full)) {
+            return false;
+        }
 
         $cacheFile = $this->cachePath ? $this->cachePath . '/' . sha1($full) : null;
 
-        if ($cacheFile && $this->files->exists($cacheFile)) {
+        if (
+            $cacheFile
+            && $this->files->exists($cacheFile)
+            && $this->files->lastModified($cacheFile) >= $this->files->lastModified($full)
+        ) {
             $body = unserialize(file_get_contents($cacheFile));
         } else {
-            $body = $getBody();
+            $body = (new FluentParser(strict: true))->parse($this->files->get($full))->body;
+
             if ($cacheFile) {
                 $this->files->ensureDirectoryExists($this->cachePath);
                 $this->files->put($cacheFile, serialize($body));
