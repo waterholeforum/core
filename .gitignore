@@ -9,3 +9,4 @@ Thumbs.db
 .vscode
 .phpunit.result.cache
 tests/Browser/Screenshots
+/resources/dist-dev/

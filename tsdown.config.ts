@@ -16,7 +16,8 @@ function defineBundle(
         inlineOnly: false,
         minify: !dev,
         clean: !dev,
-        outDir: 'resources/dist',
+        outDir:
+            process.env.DIST === '1' ? 'resources/dist' : 'resources/dist-dev',
         outputOptions: { entryFileNames: '[name].js' },
         plugins: [postcss({ extract: true, minimize: !dev })],
         ...options,

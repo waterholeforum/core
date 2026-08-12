@@ -13,6 +13,42 @@ beforeEach(function () {
 });
 
 describe('Assets extenders', function () {
+    test('use development asset sources locally with a production fallback', function () {
+        $assets = new class extends Extend\Assets\Script {
+            public function source(): string
+            {
+                return $this->sourceDirectory();
+            }
+        };
+
+        $development = dirname(__DIR__, 3) . '/resources/dist-dev';
+        $created = !is_dir($development);
+        $environment = app()->environment();
+
+        if ($created) {
+            mkdir($development);
+        }
+
+        try {
+            app()->detectEnvironment(fn() => 'local');
+            $local = $assets->source();
+
+            app()->detectEnvironment(fn() => 'production');
+            $production = $assets->source();
+        } finally {
+            app()->detectEnvironment(fn() => $environment);
+
+            if ($created) {
+                rmdir($development);
+            }
+        }
+
+        expect($local)
+            ->toBe($development)
+            ->and($production)
+            ->toBe(dirname(__DIR__, 3) . '/resources/dist');
+    });
+
     test('add stylesheet', function () {
         Storage::fake('public');
         config(['app.debug' => true]);

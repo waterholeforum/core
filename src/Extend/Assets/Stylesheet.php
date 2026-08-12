@@ -14,10 +14,12 @@ class Stylesheet extends Assets
 {
     public function __construct()
     {
-        $this->add(__DIR__ . '/../../../resources/dist/global.css');
-        $this->add(__DIR__ . '/../../../resources/dist/lightbox.css');
+        $path = $this->sourceDirectory();
 
-        $this->add(__DIR__ . '/../../../resources/dist/cp.css', 'cp');
+        $this->add("$path/global.css");
+        $this->add("$path/lightbox.css");
+
+        $this->add("$path/cp.css", 'cp');
     }
 
     protected function cacheKey(string $bundle): string

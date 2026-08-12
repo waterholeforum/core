@@ -14,12 +14,14 @@ class Script extends Assets
 {
     public function __construct()
     {
-        $this->add(__DIR__ . '/../../../resources/dist/global.js');
-        $this->add(__DIR__ . '/../../../resources/dist/highlight.js');
-        $this->add(__DIR__ . '/../../../resources/dist/emoji.js');
-        $this->add(__DIR__ . '/../../../resources/dist/lightbox.js');
+        $path = $this->sourceDirectory();
 
-        $this->add(__DIR__ . '/../../../resources/dist/cp.js', 'cp');
+        $this->add("$path/global.js");
+        $this->add("$path/highlight.js");
+        $this->add("$path/emoji.js");
+        $this->add("$path/lightbox.js");
+
+        $this->add("$path/cp.js", 'cp');
     }
 
     protected function cacheKey(string $bundle): string

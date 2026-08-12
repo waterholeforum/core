@@ -84,6 +84,15 @@ abstract class Assets
 
     abstract protected function filePath(string $filename): string;
 
+    protected function sourceDirectory(): string
+    {
+        $resources = dirname(__DIR__, 3) . '/resources';
+
+        return app()->environment('local') && is_dir("$resources/dist-dev")
+            ? "$resources/dist-dev"
+            : "$resources/dist";
+    }
+
     private function compile(array $assets, string $bundle): string
     {
         $content = '';

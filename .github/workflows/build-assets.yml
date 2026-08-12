@@ -21,7 +21,7 @@ jobs:
       - name: Build
         run: |
           pnpm i
-          pnpm build
+          DIST=1 pnpm build
 
       - name: Commit
         uses: stefanzweifel/git-auto-commit-action@v4
