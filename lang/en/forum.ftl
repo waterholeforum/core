@@ -147,6 +147,7 @@ highlighted-comments-tooltip = { $count } highlighted { $count ->
     [one] comment
     *[other] comments
 }
+comment-post-author-badge = Post Author
 
 comments-locked-message = Comments are locked.
 lock-comments-button = Lock Comments

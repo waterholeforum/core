@@ -15,6 +15,31 @@ beforeEach(function () {
     $this->seed(GroupsSeeder::class);
 });
 
+describe('view comments', function () {
+    test('marks comments by the post author', function () {
+        $channel = Channel::factory()->public()->create();
+        $author = User::factory()->create();
+        $otherUser = User::factory()->create();
+        $post = Post::factory()->for($author)->for($channel)->create();
+
+        Comment::factory()
+            ->for($post)
+            ->for($author)
+            ->create(['body' => 'Comment by the post author.']);
+
+        Comment::factory()
+            ->for($post)
+            ->for($otherUser)
+            ->create(['body' => 'Comment by somebody else.']);
+
+        $response = $this->get(route('waterhole.posts.show', $post));
+
+        $response->assertOk()->assertSeeText('Post Author');
+
+        expect(substr_count($response->getContent(), 'comment-post-author-badge'))->toBe(1);
+    });
+});
+
 describe('create comment', function () {
     test('creates comment with valid input', function () {
         $channel = Channel::factory()->public()->create();

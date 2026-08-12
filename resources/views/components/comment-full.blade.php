@@ -101,7 +101,13 @@
                     :edit-date="$comment->edited_at"
                     :permalink="$comment->url"
                     primary-target
-                />
+                >
+                    @if ($comment->user_id && $comment->user_id === $comment->post->user_id)
+                        <span class="comment-post-author-badge badge">
+                            {{ __('waterhole::forum.comment-post-author-badge') }}
+                        </span>
+                    @endif
+                </x-waterhole::attribution>
 
                 @if ($comment->parent)
                     <div

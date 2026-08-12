@@ -35,6 +35,8 @@
             </span>
         </x-waterhole::user-link>
 
+        {{ $slot }}
+
         <x-waterhole::user-groups :user="$user" />
     </span>
 
