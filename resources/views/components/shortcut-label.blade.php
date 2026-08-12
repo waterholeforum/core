@@ -1,5 +1,3 @@
-@blaze
-
 @props(['shortcut' => null])
 
 @php

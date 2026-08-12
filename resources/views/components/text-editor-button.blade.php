@@ -1,5 +1,3 @@
-@blaze
-
 @props([
     "icon",
     "label",
