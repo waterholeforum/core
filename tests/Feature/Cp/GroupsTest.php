@@ -54,6 +54,25 @@ describe('cp groups', function () {
         $this->assertDatabaseHas('groups', ['id' => $group->id, 'name' => 'New Name']);
     });
 
+    test('update admin group', function () {
+        $group = Group::admin();
+
+        $this->actingAs(cpGroupsAdmin())
+            ->put(route('waterhole.cp.groups.update', $group), [
+                'name' => $group->name,
+                'icon' => ['type' => null],
+                'is_public' => 0,
+                'color' => 'abc',
+            ])
+            ->assertRedirect(route('waterhole.cp.groups.index'));
+
+        $this->assertDatabaseHas('groups', [
+            'id' => $group->id,
+            'color' => 'abc',
+            'auto_assign' => 0,
+        ]);
+    });
+
     test('delete group', function () {
         $group = Group::create(['name' => 'Delete Group']);
 

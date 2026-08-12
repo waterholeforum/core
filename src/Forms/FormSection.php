@@ -52,9 +52,9 @@ class FormSection extends Field
 
     private function call(string $method, ...$arguments): void
     {
-        foreach ($this->items as $item) {
-            if ($item instanceof Field) {
-                $item->$method(...$arguments);
+        foreach ($this->components as $component) {
+            if ($component instanceof Field && $component->shouldRender()) {
+                $component->$method(...$arguments);
             }
         }
     }
