@@ -825,7 +825,7 @@
 .bottom-bar {
   position: sticky;
   bottom: var(--space-lg);
-  z-index: var(--z-index-header);
+  z-index: var(--z-index-floating);
 
   &::before {
     content: '';

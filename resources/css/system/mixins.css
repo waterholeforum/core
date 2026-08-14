@@ -99,19 +99,28 @@
 
   > .sidebar--bottom {
     position: sticky;
-    bottom: var(--space-lg);
+    bottom: min(var(--space-gutter), var(--space-lg));
+    margin-bottom: 1px;
     margin-left: auto;
     padding: var(--space-xxs);
     width: fit-content;
-    height: var(--toolbar-height) !important;
-    flex-basis: auto !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
+    min-width: var(--toolbar-height);
+    height: var(--toolbar-height);
+    flex-wrap: nowrap;
     align-items: center;
+    justify-content: center;
     background: var(--color-bg);
     border-radius: 99px;
-    box-shadow: var(--shadow-md);
-    z-index: var(--z-index-header);
+    z-index: var(--z-index-floating);
+    transition: box-shadow var(--transition-duration);
+
+    &.is-stuck {
+      box-shadow: var(--shadow-md);
+    }
+
+    &:has(.drawer:not([hidden])) {
+      z-index: var(--z-index-overlay);
+    }
   }
 
   > .sidebar .sidebar__expanded {

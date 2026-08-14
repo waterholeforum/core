@@ -204,6 +204,7 @@
   --measure: 92ch;
 
   // Z-indexes
+  --z-index-floating: 90;
   --z-index-header: 100;
   --z-index-overlay: 200;
   --z-index-alerts: 300;

@@ -609,9 +609,9 @@ describe('post heading sidebar', function () {
 
         Comment::factory()->for($post)->create();
 
-        $this
-            ->get(route('waterhole.posts.show', $post))
-            ->assertOk()
-            ->assertDontSee('href="#content-only-heading"', false);
+        $this->get(route('waterhole.posts.show', $post))->assertOk()->assertDontSee(
+            'href="#content-only-heading"',
+            false,
+        );
     });
 });

@@ -9,13 +9,15 @@
   background: hsl(var(--palette-bg-hsl) / 0.9);
   box-shadow: 0 10px 30px 40px hsl(var(--palette-bg-hsl) / 0.9);
   position: sticky;
-  bottom: var(--space-lg);
-  z-index: var(--z-index-header);
+  bottom: min(var(--space-gutter), var(--space-lg));
+  margin-bottom: 1px;
+  z-index: var(--z-index-floating);
 }
 
 .composer__inner {
   background: var(--color-bg);
   border-radius: inherit;
+  transition: box-shadow var(--transition-duration);
 }
 
 .composer:is(.is-stuck, .is-open) .composer__inner {
@@ -113,7 +115,7 @@
 }
 
 .composer.is-open {
-  z-index: calc(var(--z-index-header) + 1);
+  z-index: calc(var(--z-index-floating) + 1);
   min-height: 250px;
 
   .composer__expand,

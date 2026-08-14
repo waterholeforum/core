@@ -52,7 +52,7 @@
                     :paginator="$comments"
                     divider
                     endless
-                    class="comment-list card"
+                    class="post-page__comments-list comment-list card"
                 >
                     @foreach ($comments as $i => $comment)
                         @if ($lastReadAt && $comment->created_at > $lastReadAt)
@@ -184,7 +184,6 @@
                 <ui-popup
                     class="collapsible-nav stack"
                     data-post-page-target="commentsPagination"
-                    placement="top-end"
                     data-shortcut-hidden
                     hidden
                 >
@@ -198,7 +197,7 @@
                         @icon('tabler-selector', ['class' => 'icon--narrow'])
                     </button>
 
-                    <div hidden class="menu p-md">
+                    <div hidden class="drawer drawer--right overflow-hidden">
                         <nav
                             class="comments-pagination tabs tabs--vertical gap-sm"
                         >

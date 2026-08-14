@@ -39,7 +39,7 @@ class NewComment implements ShouldBroadcast, ShouldDispatchAfterCommit
                 lazy: true,
             ))->withAttributes([
                 'class' => 'card__row',
-            ]), '.comment-list'),
+            ]), '.post-page__comments-list'),
         ];
     }
 }
