@@ -4,4 +4,5 @@ php-version = "8.1.0"
 paths = ["database/", "routes/", "src/", "tests/"]
 
 [formatter]
+excludes = ["config/"]
 print-width = 100
