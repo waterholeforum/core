@@ -166,7 +166,9 @@
                                         'post-headings__tab--h3' => $heading['level'] === 'h3',
                                     ])
                                 >
-                                    {{ Waterhole\emojify($heading['text']) }}
+                                    <span>
+                                        {{ Waterhole\emojify($heading['text']) }}
+                                    </span>
                                 </a>
                             @endforeach
                         </div>
