@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'echo_config' => match (env('BROADCAST_DRIVER')) {
+    'echo_config' => match (config('broadcasting.default', env('BROADCAST_DRIVER'))) {
         'pusher' => [
             'broadcaster' => 'pusher',
             'key' => env('PUSHER_APP_KEY'),
