@@ -7,9 +7,62 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### ⚠️ Breaking Changes
+
+- **Configuration:** Set `waterhole.system.search_engine` to an engine class name instead of the `full_text` shorthand
+- **Actions:**
+    - `Actions::actionsFor()` now accepts context before user (`actionsFor($models, $context, $user)`) and returns an `ActionsCollection`
+    - Replace `Actions::hasActions()` with `ActionsCollection::hasRenderable()`
+    - Update custom overrides of `Action::render()` and `Action::renderContent()` for their new signatures
+    - Resource-specific Edit and Delete Actions are consolidated into `Edit` and `Delete`; inverse Actions (`Unfollow`, `Unignore`, `Unlock`, and `Unpin`) are merged into their corresponding toggle Actions; and built-in Action registry keys are normalized
+- **Mentions:**
+    - `HasBody::mentions()` now returns `Mention` models instead of users; access the mentioned user or group through each record's polymorphic `mentionable` relationship
+    - Replace `FormatMentions::getMentionedUsers()` with `FormatMentions::getMentions()`
+- **Layouts and components:**
+    - Replace `<x-waterhole::cp>` with `<x-waterhole::cp-layout>`, and use the new `<x-waterhole::forum-layout>` for forum pages
+    - `TextEditorButton`, `Attribution`, `FlagContainer`, `PostReplies`, `RelativeTime`, and `UserLink` are now anonymous Blade components instead of class components
+    - `ThemeSelector` and `IndexFooterLanguage` are renamed to `ThemeMenuItem` and `LanguageMenuItem` and moved into the user menu
+- **Forms:**
+    - The Group form's `GroupAppearance` field and `appearance` component key are renamed to `GroupVisibility` and `visibility`
+    - Reaction Set and Taxonomy forms now expose nested `details`, `reactionTypes`, and `tags` component lists
+
 ### Added
 
+- Add bookmarks for posts and comments, with a Saved menu and JSON:API resource
+- Add automatically saved drafts for posts and comments
+- Allow groups to be mentioned, with per-group controls for who can mention them
+- Add keyboard shortcuts for navigation, discussions, and the editor, with an extensible shortcut registry and built-in reference screen
+- Add a full-screen composer mode with live preview
+- Add warnings before leaving forms with unsaved changes
+- Allow moderators to highlight important comments
+- Add an image lightbox for formatted content
+- Add an optional global forum sidebar (`waterhole.design.global_sidebar`)
+- Add notifications for new reactions
+- Show a post author badge on their comments
+- Add a heading navigator to the post sidebar
+- Show users' email verification state in the Control Panel
 - Add support for Laravel 13
+- Allow callables to be registered in asset bundles
+
+### Changed
+
+- Refresh the composer and text editor, including smoother transitions and improved mobile behavior
+- Refresh forms throughout the forum and Control Panel with tab deep-linking and sticky action buttons
+- Show time gaps between bursts of comments
+- Encode uploaded avatars as WebP and enforce the configured upload size limit
+- Move theme and language selectors into the user menu
+- Improve rendering and query performance with Blaze templates, request-scoped caches, and reduced N+1 queries
+- Use a LIKE-based search engine by default on SQLite
+- Separate local development asset builds from CI release builds
+- Scope core extender instances to each request
+- Allow notification types to declare their supported delivery channels
+
+### Fixed
+
+- Fix feed cursor pagination skipping posts when sort values are identical
+- Prevent fields in hidden form sections from being saved
+- Fix the Following filter returning incorrect results
+- Preserve the selected destination when moving posts between channels fails validation
 
 ### Removed
 
