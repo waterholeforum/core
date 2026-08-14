@@ -17,17 +17,25 @@ export default class extends Controller {
     static targets = ['button'];
 
     private suppressSelectionChange = false;
+    private selectedRange?: Range;
 
     declare readonly hasButtonTarget: boolean;
     declare readonly buttonTarget: HTMLButtonElement;
 
-    private handleMouseDown = () => {
+    private handlePointerDown = (event: PointerEvent) => {
         this.suppressSelectionChange = true;
+
+        if (
+            !this.hasButtonTarget ||
+            !this.buttonTarget.contains(event.target as Node)
+        ) {
+            this.selectedRange = undefined;
+        }
     };
 
-    private handleMouseUp = () => {
+    private handlePointerEnd = () => {
         this.suppressSelectionChange = false;
-        this.updateQuoteButton();
+        if (!this.selectedRange) this.updateQuoteButton();
     };
 
     private handleSelectionChange = () => {
@@ -36,8 +44,9 @@ export default class extends Controller {
     };
 
     connect() {
-        document.addEventListener('mousedown', this.handleMouseDown);
-        document.addEventListener('mouseup', this.handleMouseUp);
+        document.addEventListener('pointerdown', this.handlePointerDown);
+        document.addEventListener('pointerup', this.handlePointerEnd);
+        document.addEventListener('pointercancel', this.handlePointerEnd);
         document.addEventListener(
             'selectionchange',
             this.handleSelectionChange,
@@ -45,8 +54,9 @@ export default class extends Controller {
     }
 
     disconnect() {
-        document.removeEventListener('mousedown', this.handleMouseDown);
-        document.removeEventListener('mouseup', this.handleMouseUp);
+        document.removeEventListener('pointerdown', this.handlePointerDown);
+        document.removeEventListener('pointerup', this.handlePointerEnd);
+        document.removeEventListener('pointercancel', this.handlePointerEnd);
         document.removeEventListener(
             'selectionchange',
             this.handleSelectionChange,
@@ -77,6 +87,7 @@ export default class extends Controller {
             return;
         }
 
+        this.selectedRange = range.cloneRange();
         this.buttonTarget.hidden = false;
         this.buttonTarget.style.position = 'absolute';
         this.buttonTarget.style.zIndex = 'var(--z-index-overlay)';
@@ -117,16 +128,16 @@ export default class extends Controller {
     }
 
     quoteSelectedText() {
-        const container = document.createElement('div');
-        const selection = window.getSelection();
-        if (!selection) return;
+        if (!this.selectedRange) return;
 
-        container.appendChild(selection.getRangeAt(0).cloneContents());
+        const container = document.createElement('div');
+        container.appendChild(this.selectedRange.cloneContents());
         container
             .querySelectorAll('img')
             .forEach((el) => el.replaceWith(el.alt));
 
-        selection.removeAllRanges();
+        this.selectedRange = undefined;
+        window.getSelection()?.removeAllRanges();
 
         // Wait until the next tick so that the composer has had a chance to
         // open (via turbo:before-fetch-request) before we dispatch the event.
