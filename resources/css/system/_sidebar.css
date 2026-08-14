@@ -27,6 +27,43 @@
   --sidebar-width: clamp(20ch, 17cqw, 25ch);
 }
 
+[data-global-sidebar='true'] .header > .container {
+  max-width: none;
+}
+
+.header-sidebar {
+  display: none;
+}
+
+.global-sidebar--header-only {
+  .header-sidebar {
+    display: block;
+  }
+
+  > .waterhole__body > .global-sidebar {
+    display: none;
+  }
+}
+
+.global-sidebar-drawer > .global-sidebar {
+  position: static;
+  flex-direction: column;
+  padding: 0;
+  max-height: none;
+  overflow: visible;
+
+  .collapsible-nav {
+    > :first-child {
+      display: none;
+    }
+
+    > :last-child {
+      display: contents !important;
+      --color-bg: inherit;
+    }
+  }
+}
+
 @container (width <= 52rem) {
   .with-sidebar {
     @mixin sidebar--compact;
@@ -49,7 +86,7 @@
     box-sizing: content-box;
   }
 
-  .section > .sidebar--sticky {
+  .section .sidebar--sticky {
     margin-block: calc(-1 * var(--space-gutter));
   }
 
@@ -57,15 +94,20 @@
     padding-inline-start: var(--space-gutter);
   }
 
-  .sidebar__collapsed {
+  .with-sidebar > .sidebar .sidebar__collapsed {
     display: none;
   }
 }
 
-// Give page-specific sidebars priority by compacting the global sidebar before
-// it leaves the main area too narrow.
+// Compact global sidebars before they leave the main area too narrow.
 @container (width <= 70rem) {
-  .forum-layout .waterhole__body.with-sidebar {
-    @mixin sidebar--compact;
+  [data-controller~='global-sidebar'] {
+    .header-sidebar {
+      display: block;
+    }
+
+    > .waterhole__body.with-sidebar {
+      @mixin sidebar--compact;
+    }
   }
 }

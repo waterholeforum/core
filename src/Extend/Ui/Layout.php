@@ -11,6 +11,7 @@ use Waterhole\View\Components\HeaderModeration;
 use Waterhole\View\Components\HeaderNotifications;
 use Waterhole\View\Components\HeaderSaved;
 use Waterhole\View\Components\HeaderSearch;
+use Waterhole\View\Components\HeaderSidebar;
 use Waterhole\View\Components\HeaderTitle;
 use Waterhole\View\Components\HeaderUser;
 use Waterhole\View\Components\Spacer;
@@ -30,6 +31,7 @@ class Layout
     public function __construct()
     {
         $this->header = (new ComponentList())
+            ->add(HeaderSidebar::class, 'sidebar')
             ->add(HeaderTitle::class, 'title')
             ->add(HeaderBreadcrumb::class, 'breadcrumb')
             ->add(Spacer::class, 'spacer')

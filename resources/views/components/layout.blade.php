@@ -6,7 +6,15 @@
 >
     <x-slot name="head">{{ $head ?? '' }}</x-slot>
 
-    <div class="waterhole" data-controller="page">
+    @php($hasGlobalSidebar = $globalSidebar && isset($sidebar) && $sidebar->isNotEmpty())
+
+    <div
+        @class([
+            'waterhole',
+            'global-sidebar--header-only' => $hasGlobalSidebar && ! $showSidebar,
+        ])
+        data-controller="page{{ $hasGlobalSidebar ? ' global-sidebar' : '' }}"
+    >
         <a
             href="#main"
             class="btn btn--sm bg-accent skip-link"
@@ -17,9 +25,15 @@
 
         @components(resolve(\Waterhole\Extend\Ui\Layout::class)->before)
 
-        @if ($globalSidebar && isset($sidebar) && $sidebar->isNotEmpty())
-            <div class="waterhole__body with-sidebar with-sidebar--flush grow">
-                <aside class="sidebar sidebar--sticky">
+        @if ($hasGlobalSidebar)
+            <div
+                class="waterhole__body with-sidebar with-sidebar--flush grow"
+                data-global-sidebar-target="body"
+            >
+                <aside
+                    class="global-sidebar sidebar sidebar--sticky"
+                    data-global-sidebar-target="sidebar"
+                >
                     {{ $sidebar }}
                 </aside>
 

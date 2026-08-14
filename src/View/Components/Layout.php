@@ -11,6 +11,7 @@ class Layout extends Component
         public array $assets = [],
         public array $seo = [],
         public bool $globalSidebar = false,
+        public bool $showSidebar = true,
     ) {}
 
     public function render()

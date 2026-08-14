@@ -45,6 +45,8 @@
 }
 
 @define-mixin btn--icon {
+  --btn-padding: calc(0.2 * var(--btn-height));
+
   width: var(--btn-height);
   padding: 0;
   border-radius: 100px;
@@ -112,7 +114,11 @@
     z-index: var(--z-index-header);
   }
 
-  .collapsible-nav {
+  > .sidebar .sidebar__expanded {
+    display: none;
+  }
+
+  > .sidebar .collapsible-nav {
     flex: 1 1 10ch;
     min-width: 0;
     max-width: fit-content;

@@ -13,10 +13,6 @@
   }
 }
 
-[data-global-sidebar='true'] .header > .container {
-  max-width: none;
-}
-
 .header-breadcrumb {
   --transition-hidden-y: 10px;
 

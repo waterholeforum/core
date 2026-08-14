@@ -594,7 +594,6 @@ describe('post heading sidebar', function () {
         $this
             ->get(route('waterhole.posts.show', $post))
             ->assertOk()
-            ->assertSee('class="post-headings tabs tabs--vertical gap-xxs hide-md-down"', false)
             ->assertSee('href="#content-first-heading"', false)
             ->assertSee('href="#content-second-heading"', false)
             ->assertDontSee('## First Heading')
@@ -610,9 +609,9 @@ describe('post heading sidebar', function () {
 
         Comment::factory()->for($post)->create();
 
-        $this->get(route('waterhole.posts.show', $post))->assertOk()->assertDontSee(
-            'class="post-headings tabs tabs--vertical gap-xxs hide-md-down"',
-            false,
-        );
+        $this
+            ->get(route('waterhole.posts.show', $post))
+            ->assertOk()
+            ->assertDontSee('href="#content-only-heading"', false);
     });
 });

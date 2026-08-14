@@ -30,9 +30,7 @@
                 </span>
             @endif
 
-            <span class="attribution__name">
-                {{ Waterhole\username($user) }}
-            </span>
+            <span class="attribution__name">{{ Waterhole\username($user) }}</span>
         </x-waterhole::user-link>
 
         {{ $slot }}

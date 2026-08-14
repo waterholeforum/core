@@ -123,17 +123,21 @@
             <x-waterhole::post-sidebar :post="$post" />
 
             <div
-                class="post-page__links stack gap-lg"
+                @class([
+                    'post-page__links stack gap-lg',
+                    'sidebar__expanded' => ! $comments->total(),
+                ])
                 data-post-page-target="commentsLinks"
+                @if (! $comments->total() && $headings->count() <= 1) hidden @endif
             >
                 @if ($comments->total())
                     <div class="tabs tabs--vertical gap-xxs">
                         <a href="#comments" class="tab">
                             @icon('tabler-message-circle-2')
-                            <span class="hide-md-up">
+                            <span class="sidebar__collapsed">
                                 {{ $comments->total() }}
                             </span>
-                            <span class="hide-sm">
+                            <span class="sidebar__expanded">
                                 {{ __('waterhole::forum.post-comments-link', ['count' => $comments->total()]) }}
                             </span>
                         </a>
@@ -141,7 +145,7 @@
                         <a
                             {{-- Exclude ?page=1 from the URL so that the page isn't needlessly reloaded. --}}
                             href="{{ $lastLink }}"
-                            class="tab hide-md-down"
+                            class="tab sidebar__expanded"
                             data-shortcut-trigger="selection.last"
                         >
                             @icon('tabler-chevrons-down')
@@ -152,7 +156,7 @@
 
                 @if ($headings->count() > 1)
                     <div
-                        class="post-headings tabs tabs--vertical gap-xxs hide-md-down"
+                        class="post-headings tabs tabs--vertical gap-xxs sidebar__expanded"
                     >
                         <div
                             class="post-headings__tabs scrollable-y stack"
