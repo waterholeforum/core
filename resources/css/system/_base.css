@@ -76,12 +76,14 @@ code {
   align-items: stretch;
   min-height: 100vh;
   min-height: 100svh;
+  container-type: inline-size;
 }
 
 .waterhole__main {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  container-type: inline-size;
 
   // Bug on Chrome 121: textarea with scroll-margin-top scrolls the
   // viewport when selecting text

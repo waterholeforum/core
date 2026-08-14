@@ -68,16 +68,7 @@
   }
 }
 
-@media (--md-down) {
-  // Allow the responsive nav button to shrink down to 10ch before wrapping
-  .collapsible-nav {
-    flex: 1 1 10ch;
-    min-width: 0;
-    max-width: fit-content;
-  }
-}
-
-@media (--lg-up) {
+@container (width > 52rem) {
   .collapsible-nav {
     > :first-child {
       display: none;

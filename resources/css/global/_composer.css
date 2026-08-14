@@ -133,7 +133,7 @@
 }
 
 // Make a bit more room on small screens
-@media (--md-down) {
+@container (width <= 52rem) {
   .composer.is-open {
     margin-inline: calc(-1 * var(--space-xs));
     bottom: calc(var(--space-lg) - var(--space-xs));

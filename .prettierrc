@@ -11,7 +11,7 @@
         {
             "files": ["*.css"],
             "options": {
-                "parser": "less"
+                "parser": "scss"
             }
         }
     ]

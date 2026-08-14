@@ -23,46 +23,17 @@
   display: flex;
 }
 
-@media (--md-down) {
+.forum-layout .waterhole__body > .sidebar {
+  --sidebar-width: clamp(20ch, 17cqw, 25ch);
+}
+
+@container (width <= 52rem) {
   .with-sidebar {
-    flex-direction: column;
-    gap: var(--space-md);
-    align-items: stretch;
-  }
-
-  .with-sidebar > :not(.sidebar) {
-    width: 100%;
-  }
-
-  .sidebar {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
-  .with-sidebar--flush > .sidebar {
-    padding-inline: var(--space-gutter);
-    padding-block-start: var(--space-gutter);
-  }
-
-  .sidebar--bottom {
-    position: sticky;
-    bottom: var(--space-lg);
-    margin-left: auto;
-    background: var(--color-bg);
-    width: fit-content;
-    padding: var(--space-xxs);
-    flex-wrap: nowrap !important;
-    flex-direction: row !important;
-    flex-basis: auto !important;
-    align-items: center;
-    z-index: var(--z-index-header);
-    height: var(--toolbar-height) !important;
-    border-radius: 99px;
-    box-shadow: var(--shadow-md);
+    @mixin sidebar--compact;
   }
 }
 
-@media (--lg-up) {
+@container (width > 52rem) {
   .sidebar {
     flex-basis: var(--sidebar-width);
     flex-shrink: 0;
@@ -85,5 +56,13 @@
 
   .sidebar__collapsed {
     display: none;
+  }
+}
+
+// Give page-specific sidebars priority by compacting the global sidebar before
+// it leaves the main area too narrow.
+@container (width <= 70rem) {
+  .forum-layout .waterhole__body.with-sidebar {
+    @mixin sidebar--compact;
   }
 }

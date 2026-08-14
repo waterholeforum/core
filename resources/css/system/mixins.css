@@ -69,3 +69,64 @@
     @mixin visually-hidden;
   }
 }
+
+@define-mixin sidebar--compact {
+  flex-direction: column;
+  gap: var(--space-md);
+  align-items: stretch;
+
+  > :not(.sidebar) {
+    width: 100%;
+  }
+
+  > .sidebar {
+    position: static;
+    flex-basis: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 0;
+    max-height: none;
+    overflow: visible;
+    box-sizing: border-box;
+  }
+
+  &.with-sidebar--flush > .sidebar {
+    padding-inline: var(--space-gutter);
+    padding-block: var(--space-gutter) 0;
+  }
+
+  > .sidebar--bottom {
+    position: sticky;
+    bottom: var(--space-lg);
+    margin-left: auto;
+    padding: var(--space-xxs);
+    width: fit-content;
+    height: var(--toolbar-height) !important;
+    flex-basis: auto !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center;
+    background: var(--color-bg);
+    border-radius: 99px;
+    box-shadow: var(--shadow-md);
+    z-index: var(--z-index-header);
+  }
+
+  .collapsible-nav {
+    flex: 1 1 10ch;
+    min-width: 0;
+    max-width: fit-content;
+
+    > :first-child {
+      display: inline-flex;
+    }
+
+    > :last-child {
+      display: block !important;
+    }
+
+    > :last-child[hidden] {
+      display: none !important;
+    }
+  }
+}
