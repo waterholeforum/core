@@ -1,1 +1,1 @@
-<div class="grow"></div>
+<div class="header-spacer grow"></div>
