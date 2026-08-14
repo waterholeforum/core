@@ -12,7 +12,7 @@
     }}"
     formmethod="POST"
     formnovalidate
-    {{ $attributes->class(['btn block', 'bg-warning-soft' => $followable->isFollowed()]) }}
+    {{ $attributes->class(['btn', 'bg-warning-soft' => $followable->isFollowed()]) }}
 >
     @if ($followable->isFollowed())
         @icon('tabler-bell')
