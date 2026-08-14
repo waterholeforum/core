@@ -43,11 +43,14 @@
   .sidebar--sticky {
     position: sticky;
     top: var(--header-height);
-    margin-block: calc(-1 * var(--space-gutter));
     padding-block: var(--space-gutter);
     max-height: calc(100vh - var(--header-height) - 2 * var(--space-gutter));
     overflow: auto;
     box-sizing: content-box;
+  }
+
+  .section > .sidebar--sticky {
+    margin-block: calc(-1 * var(--space-gutter));
   }
 
   .with-sidebar--flush > .sidebar {
