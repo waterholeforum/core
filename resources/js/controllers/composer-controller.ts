@@ -21,6 +21,14 @@ export default class extends Controller<HTMLElement> {
         this.syncDraftState();
 
         window.addEventListener('hashchange', this.onHashChange);
+        window.visualViewport?.addEventListener(
+            'resize',
+            this.syncComposerHeight,
+        );
+        window.visualViewport?.addEventListener(
+            'scroll',
+            this.syncComposerHeight,
+        );
         this.onHashChange();
 
         this.element.addEventListener('keydown', this.onKeydown);
@@ -37,6 +45,14 @@ export default class extends Controller<HTMLElement> {
         this.element.removeEventListener('change', this.syncDraftState);
 
         window.removeEventListener('hashchange', this.onHashChange);
+        window.visualViewport?.removeEventListener(
+            'resize',
+            this.syncComposerHeight,
+        );
+        window.visualViewport?.removeEventListener(
+            'scroll',
+            this.syncComposerHeight,
+        );
 
         this.element.removeEventListener('keydown', this.onKeydown);
     }
@@ -72,6 +88,7 @@ export default class extends Controller<HTMLElement> {
         if (this.element.classList.contains('is-open')) {
             this.element.classList.remove('is-open');
             this.element.classList.add('was-open');
+            this.element.style.removeProperty('--composer-viewport-offset');
         }
 
         if (window.location.hash === '#reply') {
@@ -172,9 +189,17 @@ export default class extends Controller<HTMLElement> {
     }
 
     private syncComposerHeight = () => {
-        if (!this.element.classList.contains('is-open')) {
-            return;
-        }
+        if (!this.element.classList.contains('is-open')) return;
+
+        const viewport = window.visualViewport;
+        const viewportOffset = viewport
+            ? window.innerHeight - viewport.height - viewport.offsetTop
+            : 0;
+
+        this.element.style.setProperty(
+            '--composer-viewport-offset',
+            `${Math.max(0, viewportOffset)}px`,
+        );
 
         this.element.style.height = '';
 

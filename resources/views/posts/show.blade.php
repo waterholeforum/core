@@ -289,4 +289,6 @@
         :source="$post"
         :type="$post->channel->isPublic() ? 'channel' : 'private'"
     />
+
+    <div class="safari-tint-sentinel" aria-hidden="true"></div>
 </x-waterhole::forum-layout>

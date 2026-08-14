@@ -3,7 +3,10 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-sm);
-  padding: var(--space-sm);
+  padding: max(var(--space-sm), var(--safe-area-top))
+    max(var(--space-sm), var(--safe-area-right))
+    max(var(--space-sm), var(--safe-area-bottom))
+    max(var(--space-sm), var(--safe-area-left));
   pointer-events: none;
   position: fixed;
   top: 0;

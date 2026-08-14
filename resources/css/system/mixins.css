@@ -99,7 +99,10 @@
 
   > .sidebar--bottom {
     position: sticky;
-    bottom: min(var(--space-gutter), var(--space-lg));
+    bottom: max(
+      min(var(--space-gutter), var(--space-lg)),
+      var(--safe-area-bottom)
+    );
     margin-bottom: 1px;
     margin-left: auto;
     padding: var(--space-xxs);

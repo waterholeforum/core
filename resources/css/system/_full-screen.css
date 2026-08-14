@@ -3,7 +3,10 @@
   --color-bg: var(--palette-surface);
 
   position: fixed;
-  inset: var(--space-md);
+  inset: max(var(--space-md), var(--safe-area-top))
+    max(var(--space-md), var(--safe-area-right))
+    max(var(--space-md), var(--safe-area-bottom))
+    max(var(--space-md), var(--safe-area-left));
   z-index: var(--z-index-overlay);
   background: var(--color-bg);
   border-radius: var(--radius);

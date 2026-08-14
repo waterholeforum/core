@@ -130,7 +130,10 @@ ui-popup:has(> .drawer)::part(backdrop) {
   height: 100vh;
   width: min(70vw, 30ch);
   box-shadow: var(--shadow-md);
-  padding: var(--space-lg);
+  padding: max(var(--space-lg), var(--safe-area-top))
+    max(var(--space-lg), var(--safe-area-right))
+    max(var(--space-lg), var(--safe-area-bottom))
+    max(var(--space-lg), var(--safe-area-left));
   z-index: var(--z-index-overlay);
   overflow: auto;
 

@@ -25,6 +25,10 @@
   display: none;
 }
 
+.safari-tint-sentinel {
+  display: none;
+}
+
 @container (width <= 52rem) {
   .post-sidebar {
     flex-direction: row;
@@ -39,6 +43,20 @@
       flex: 1;
       min-height: 0;
     }
+  }
+
+  // Safari 26 samples this painted strip to tint the area behind its floating
+  // toolbar. It must be a viewport-level fixed element at least 3px high and
+  // 80% wide.
+  .safari-tint-sentinel {
+    display: block;
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    height: 4px;
+    background-color: var(--palette-bg);
+    pointer-events: none;
+    z-index: 999999;
   }
 }
 

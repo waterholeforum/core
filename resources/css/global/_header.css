@@ -7,9 +7,14 @@
   transition: box-shadow 0.2s;
   background: var(--color-bg);
   box-shadow: var(--shadow-sm);
+  margin-left: calc(-1 * var(--safe-area-left));
+  margin-right: calc(-1 * var(--safe-area-right));
 
   .container {
     height: var(--header-height);
+    padding-top: var(--safe-area-top);
+    padding-left: max(var(--space-gutter), var(--safe-area-left));
+    padding-right: max(var(--space-gutter), var(--safe-area-right));
   }
 }
 

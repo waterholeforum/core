@@ -8,7 +8,10 @@ ui-modal {
   align-items: flex-start;
   justify-content: center;
   z-index: var(--z-index-overlay);
-  padding: var(--space-xxxl) var(--space-gutter);
+  padding: max(var(--space-xxxl), var(--safe-area-top))
+    max(var(--space-gutter), var(--safe-area-right))
+    max(var(--space-xxxl), var(--safe-area-bottom))
+    max(var(--space-gutter), var(--safe-area-left));
   overflow: auto;
 
   &:not([hidden]) {

@@ -808,6 +808,12 @@
   }
 }
 
+@media (--xl-up) {
+  .hide-xl-up {
+    display: none !important;
+  }
+}
+
 .hide-if-not-only-child:not(:only-child),
 .hide-if-empty:empty {
   display: none;
@@ -824,7 +830,7 @@
 
 .bottom-bar {
   position: sticky;
-  bottom: var(--space-lg);
+  bottom: max(var(--space-lg), var(--safe-area-bottom));
   z-index: var(--z-index-floating);
 
   &::before {

@@ -1,7 +1,14 @@
 // Composer container
 .composer {
+  --composer-viewport-offset: 0px;
+
   transform-origin: bottom;
-  max-height: calc(100vh - var(--header-height) - 2 * var(--space-md));
+  max-height: calc(
+    100vh - var(--header-height) - var(--space-md) - max(
+        var(--space-md),
+        var(--safe-area-bottom)
+      ) - var(--composer-viewport-offset)
+  );
   border-radius: var(--radius);
 }
 
@@ -9,9 +16,16 @@
   background: hsl(var(--palette-bg-hsl) / 0.9);
   box-shadow: 0 10px 30px 40px hsl(var(--palette-bg-hsl) / 0.9);
   position: sticky;
-  bottom: min(var(--space-gutter), var(--space-lg));
+  bottom: calc(
+    max(min(var(--space-gutter), var(--space-lg)), var(--safe-area-bottom)) +
+      var(--composer-viewport-offset)
+  );
   margin-bottom: 1px;
   z-index: var(--z-index-floating);
+
+  &.is-open {
+    z-index: calc(var(--z-index-header) + 1);
+  }
 }
 
 .composer__inner {
@@ -138,7 +152,10 @@
 @container (width <= 52rem) {
   .composer.is-open {
     margin-inline: calc(-1 * var(--space-xs));
-    bottom: calc(var(--space-lg) - var(--space-xs));
+    bottom: calc(
+      max(var(--space-lg) - var(--space-xs), var(--safe-area-bottom)) +
+        var(--composer-viewport-offset)
+    );
   }
 
   .composer:not(.is-open) {

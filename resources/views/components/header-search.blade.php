@@ -1,6 +1,6 @@
 <a
     href="{{ route('waterhole.search') }}"
-    class="btn btn--icon btn--transparent header-search__button hide-lg-up"
+    class="btn btn--icon btn--transparent header-search__button hide-xl-up"
     data-shortcut-trigger="navigation.search"
 >
     @icon('tabler-search')
@@ -10,4 +10,4 @@
     </ui-tooltip>
 </a>
 
-<x-waterhole::search-form class="header-search__form hide-md-down" />
+<x-waterhole::search-form class="header-search__form hide-lg-down" />
