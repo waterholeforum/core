@@ -27,7 +27,7 @@
 }
 
 .header-spacer {
-  min-width: var(--space-md);
+  min-width: var(--space-sm);
 }
 
 .header-search__form {
