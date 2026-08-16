@@ -81,7 +81,13 @@ export default class extends Controller {
     }
 
     fullScreenEnter() {
-        this.setPreviewing(true);
+        // Probe the preview layout without changing the editor's current state.
+        this.element.classList.add('is-previewing');
+        const hasSplitPreview =
+            getComputedStyle(this.inputTarget).visibility === 'visible';
+        this.element.classList.toggle('is-previewing', this.previewing);
+
+        if (hasSplitPreview) this.setPreviewing(true);
         this.focusInput();
     }
 

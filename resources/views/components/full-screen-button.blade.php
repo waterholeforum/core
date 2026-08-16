@@ -1,7 +1,7 @@
 <div {{ $attributes->class('full-screen-button') }}>
     <x-waterhole::text-editor-button
         shortcut="editor.full-screen"
-        class="full-screen-button__enter"
+        class="full-screen-button__enter hide-sm"
         data-action="full-screen#toggleFullScreen"
         :label="__('waterhole::system.full-screen-enter-button')"
         icon="tabler-arrows-diagonal"
