@@ -116,6 +116,29 @@ describe('notification types', function () {
 });
 
 describe('notifications ui', function () {
+    test('redirects a comment reaction notification to the comment', function () {
+        $recipient = User::factory()->create();
+        $reactor = User::factory()->create();
+        $post = Post::factory()->for(Channel::factory()->public())->create();
+        $comment = Comment::factory()->for($post)->create([
+            'user_id' => $recipient->id,
+        ]);
+
+        Reaction::create([
+            'content_type' => $comment->getMorphClass(),
+            'content_id' => $comment->id,
+            'reaction_type_id' => ReactionType::query()->firstOrFail()->id,
+            'user_id' => $reactor->id,
+        ]);
+
+        $notification = $recipient->notifications()->firstOrFail();
+
+        $this
+            ->actingAs($recipient)
+            ->get(route('waterhole.notifications.go', $notification))
+            ->assertRedirect(Comment::findOrFail($comment->id)->post_url);
+    });
+
     test('marks notification as read', function () {
         $user = User::factory()->create();
         $sender = User::factory()->create();

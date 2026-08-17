@@ -57,8 +57,8 @@ class Reaction extends Notification
     public function url(): ?string
     {
         return $this->reaction->content instanceof Comment
-            ? $this->reaction->post_url
-            : $this->reaction->url;
+            ? $this->reaction->content->post_url
+            : $this->reaction->content?->url;
     }
 
     public function group(): ?Model
