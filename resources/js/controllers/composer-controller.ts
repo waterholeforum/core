@@ -66,6 +66,7 @@ export default class extends Controller<HTMLElement> {
 
     async open() {
         const oldHeight = this.element.offsetHeight;
+        const isStuck = this.snapshotStickyState();
 
         if (!this.element.classList.contains('is-open')) {
             this.element.classList.add('is-open', 'was-closed');
@@ -76,7 +77,7 @@ export default class extends Controller<HTMLElement> {
 
         const newHeight = this.element.offsetHeight;
 
-        if (!this.element.classList.contains('is-stuck')) {
+        if (!isStuck) {
             animateScrollTo(window.scrollY + newHeight - oldHeight, {
                 minDuration: 200,
                 maxDuration: 200,
@@ -86,6 +87,7 @@ export default class extends Controller<HTMLElement> {
 
     close() {
         if (this.element.classList.contains('is-open')) {
+            this.snapshotStickyState();
             this.element.classList.remove('is-open');
             this.element.classList.add('was-open');
             this.element.style.removeProperty('--composer-viewport-offset');
@@ -221,6 +223,14 @@ export default class extends Controller<HTMLElement> {
     private refreshTextarea() {
         return (this.textarea =
             this.element.querySelector('textarea') || undefined);
+    }
+
+    private snapshotStickyState() {
+        const isStuck = this.element.classList.contains('is-stuck');
+
+        this.element.style.transformOrigin = isStuck ? 'bottom' : 'top';
+
+        return isStuck;
     }
 
     private onKeydown = (e: KeyboardEvent) => {

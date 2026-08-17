@@ -47,7 +47,7 @@
             @endif
         </span>
 
-        <div class="measure stack gap-lg">
+        <div class="measure stack gap-xl">
             <header class="stack gap-xs">
                 <ol class="breadcrumb">
                     <li>
