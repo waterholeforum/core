@@ -63,6 +63,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Prevent fields in hidden form sections from being saved
 - Fix the Following filter returning incorrect results
 - Preserve the selected destination when moving posts between channels fails validation
+- Fix display dimensions for high-density image uploads
 
 ### Removed
 
