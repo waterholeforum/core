@@ -164,7 +164,7 @@
   --shadow-md: 0 0 0 1px var(--palette-fill), 0 5px 15px var(--palette-stroke);
 
   // Overlays
-  --color-overlay: rgb(0 0 0 / 0.5);
+  --color-overlay: hsl(var(--palette-bg-hsl) / 0.9);
 
   // Filters
   --filter-hover: brightness(0.95);

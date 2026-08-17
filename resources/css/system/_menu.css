@@ -120,6 +120,16 @@ ui-popup:has(> .drawer)::part(backdrop) {
   background: var(--color-overlay);
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  ui-popup:has(> .drawer:is(.enter-active, .leave-active))::part(backdrop) {
+    transition: opacity var(--transition-duration) var(--ease-out);
+  }
+
+  ui-popup:has(> .drawer:is(.enter-from, .leave-to))::part(backdrop) {
+    opacity: 0;
+  }
+}
+
 .drawer {
   background: var(--color-bg);
   position: fixed !important;
