@@ -13,6 +13,7 @@
 >
     <div class="composer__inner grow stack">
         <a
+            id="reply"
             @auth
                 href="{{ route("waterhole.posts.comments.create", compact("post", "parent")) }}"
                 data-action="composer#placeholderClick"

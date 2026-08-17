@@ -14,6 +14,11 @@ class CommentsLocked extends Component
         public Post $post,
     ) {}
 
+    public function shouldRender(): bool
+    {
+        return $this->post->is_locked || $this->post->canModerate(auth()->user());
+    }
+
     public function render()
     {
         return $this->view('waterhole::components.comments-locked');

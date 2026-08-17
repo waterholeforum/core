@@ -34,7 +34,7 @@ turbo-frame {
   }
 }
 
-.page-placeholder[loading='lazy'] {
+.page-placeholder[loading='lazy']:not([complete]) {
   min-height: 70vh;
 
   &.page-placeholder--previous::after {

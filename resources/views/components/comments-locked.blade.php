@@ -1,7 +1,7 @@
-<div {{ $attributes }}>
-    @if ($post->is_locked)
-        <x-waterhole::alert icon="tabler-lock">
-            {{ __('waterhole::forum.comments-locked-message') }}
-        </x-waterhole::alert>
-    @endif
-</div>
+<x-waterhole::alert
+    {{ $attributes }}
+    icon="tabler-lock"
+    :hidden="! $post->is_locked"
+>
+    {{ __('waterhole::forum.comments-locked-message') }}
+</x-waterhole::alert>

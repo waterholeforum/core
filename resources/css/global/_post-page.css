@@ -21,7 +21,7 @@
   scroll-margin-top: calc(var(--space-lg) + var(--header-height));
 }
 
-.post-page__comments-list:not(:has(.card__row)) {
+.post-page__comments:not(:has(.card__row)) {
   display: none;
 }
 

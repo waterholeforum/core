@@ -28,7 +28,7 @@
     >
         <meta itemprop="commentCount" content="{{ $post->comment_count }}" />
 
-        <div class="stack gap-lg measure">
+        <div class="stack gap-xl measure">
             <div
                 data-post-page-target="post"
                 @if (!$comments->onFirstPage()) hidden @endif
@@ -94,6 +94,10 @@
                             </div>
                         @endif
 
+                        @if (! $comments->hasMorePages() && $loop->last)
+                            <div id="bottom" tabindex="-1"></div>
+                        @endif
+
                         <x-waterhole::comment-frame
                             :comment="$comment"
                             class="card__row"
@@ -106,12 +110,8 @@
             </section>
 
             @if (! $comments->hasMorePages())
-                <div class="stack gap-md" id="bottom" tabindex="-1">
-                    @components(resolve(\Waterhole\Extend\Ui\PostPage::class)->bottom, compact('post'))
-                </div>
+                @components(resolve(\Waterhole\Extend\Ui\PostPage::class)->bottom, compact('post'))
             @endif
-
-            <div id="reply" tabindex="-1"></div>
 
             <x-waterhole::composer :post="$post" />
         </div>

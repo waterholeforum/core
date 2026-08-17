@@ -18,7 +18,7 @@ class Lock extends Action
 
     public function authorize(?User $user, Model $model): bool
     {
-        return $user && $user->can('waterhole.post.moderate', $model);
+        return $model instanceof Post && $model->canModerate($user);
     }
 
     public function label(Collection $models): string
