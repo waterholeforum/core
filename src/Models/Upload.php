@@ -35,14 +35,22 @@ class Upload extends Model
 
         if (app('image')->driver()->supports($attributes['type'])) {
             $image = Image::read($file);
-            $attributes['width'] = $image->width();
-            $attributes['height'] = $image->height();
+            $resolution = $image->resolution()->perInch();
+
+            $attributes['width'] = static::displayDimension($image->width(), $resolution->x());
+            $attributes['height'] = static::displayDimension($image->height(), $resolution->y());
         }
 
         Storage::disk(config('waterhole.uploads.disk'))->putFile('uploads', $file);
 
         // @phpstan-ignore-next-line
         return new static($attributes);
+    }
+
+    private static function displayDimension(int $pixels, float $dpi): int
+    {
+        // The image drivers report 96 DPI when density metadata is absent.
+        return $dpi > 96 ? max(1, (int) round(($pixels * 72) / $dpi)) : $pixels;
     }
 
     protected static function booted(): void
