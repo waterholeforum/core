@@ -23,7 +23,8 @@
     }
   }
 
-  &.is-targeted {
+  &.is-targeted,
+  turbo-frame:target & {
     background: var(--color-warning-soft);
   }
 
@@ -140,11 +141,14 @@
 }
 
 .comment-list {
+  overflow: clip;
+
   .card__row:not(.time-gap) {
     padding: 0;
   }
 
-  #page_1 + .card__row {
+  #page_1 + .card__row,
+  :not(.card__row) + #bottom + .card__row {
     border-top: 0;
   }
 }
