@@ -1,6 +1,5 @@
 <x-waterhole::forum-layout
     :title="$title"
-    show-sidebar
     :seo="[
         'description' => $user->headline ?: $user->bio_html,
         'url' => $user->url,
