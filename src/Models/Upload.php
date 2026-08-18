@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Laravel\Facades\Image;
+use Intervention\Image\ImageManager;
 
 /**
  * @property int $id
@@ -33,8 +33,10 @@ class Upload extends Model
             'type' => $file->getMimeType(),
         ];
 
-        if (app('image')->driver()->supports($attributes['type'])) {
-            $image = Image::read($file);
+        $manager = app(ImageManager::class);
+
+        if ($manager->driver->supports($attributes['type'])) {
+            $image = $manager->decode($file);
             $resolution = $image->resolution()->perInch();
 
             $attributes['width'] = static::displayDimension($image->width(), $resolution->x());

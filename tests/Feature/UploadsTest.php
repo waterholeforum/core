@@ -2,6 +2,7 @@
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Encoders\PngEncoder;
 use Intervention\Image\Laravel\Facades\Image;
 use Waterhole\Models\Upload;
 
@@ -10,8 +11,11 @@ beforeEach(function () {
 });
 
 test('uses image density to determine display dimensions', function () {
-    $image = Image::create(400, 200)->setResolution(144, 144);
-    $file = UploadedFile::fake()->createWithContent('image.png', $image->toPng()->toString());
+    $image = Image::createImage(400, 200)->setResolution(144, 144);
+    $file = UploadedFile::fake()->createWithContent(
+        'image.png',
+        $image->encode(new PngEncoder())->toString(),
+    );
 
     $upload = Upload::fromFile($file);
 

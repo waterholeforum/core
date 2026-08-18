@@ -53,7 +53,7 @@ class UserAvatar extends Field
         if ($request->input('remove_avatar')) {
             $this->model->removeAvatar();
         } elseif ($file = $request->file('avatar')) {
-            $this->model->uploadAvatar(Image::read($file));
+            $this->model->uploadAvatar(Image::decode($file));
         }
     }
 }

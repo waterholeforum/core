@@ -54,7 +54,7 @@ class RegisterController extends Controller
             $user->markEmailAsVerified();
 
             if ($form->payload->user->avatar) {
-                $user->uploadAvatar(Image::read($form->payload->user->avatar));
+                $user->uploadAvatar(Image::decode($form->payload->user->avatar));
             }
 
             if ($form->payload->user->groups) {

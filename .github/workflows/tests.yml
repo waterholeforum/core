@@ -35,8 +35,15 @@ jobs:
       - name: Install dependencies
         run: composer update --prefer-dist --no-interaction --no-progress
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          cache: true
+
       - name: Install Playwright
-        run: npm install playwright@latest && npx playwright install
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm exec playwright install
 
       - name: Run tests
         run: vendor/bin/pest

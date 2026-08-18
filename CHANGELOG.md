@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### ⚠️ Breaking Changes
 
 - **Configuration:** Set `waterhole.system.search_engine` to an engine class name instead of the `full_text` shorthand
+- **Images:** Upgrade Intervention Image dependencies to 4.x and use its updated decoding and encoding APIs
 - **Actions:**
     - `Actions::actionsFor()` now accepts context before user (`actionsFor($models, $context, $user)`) and returns an `ActionsCollection`
     - Replace `Actions::hasActions()` with `ActionsCollection::hasRenderable()`

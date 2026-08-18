@@ -49,8 +49,8 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         SessionGuard::macro('logoutOnce', function () {
-            $this->user = null; // @phpstan-ignore-line
-            $this->loggedOut = true; // @phpstan-ignore-line
+            $this->user = null;
+            $this->loggedOut = true;
         });
 
         Socialite::extend('sso', fn() => $this->app->make(SsoProvider::class, [

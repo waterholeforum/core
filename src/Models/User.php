@@ -20,6 +20,7 @@ use Illuminate\Database\Query\Expression;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
+use Intervention\Image\Encoders\WebpEncoder;
 use Intervention\Image\Image;
 use Laravel\Sanctum\HasApiTokens;
 use Waterhole\Auth\AuthenticatesWaterhole;
@@ -140,7 +141,7 @@ class User extends Model implements
             $this->loadExists('drafts');
         }
 
-        return (bool) $this->drafts_exists;
+        return (bool) $this->getAttribute('drafts_exists');
     }
 
     /**
@@ -250,7 +251,7 @@ class User extends Model implements
         return $this->fileAttribute(
             attribute: 'avatar',
             directory: 'avatars',
-            encodeImage: fn(Image $image) => $image->cover(200, 200)->toWebp(90),
+            encodeImage: fn(Image $image) => $image->cover(200, 200)->encode(new WebpEncoder(90)),
         );
     }
 

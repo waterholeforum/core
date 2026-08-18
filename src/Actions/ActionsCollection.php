@@ -8,7 +8,7 @@ use Waterhole\View\Components\MenuDivider;
 
 class ActionsCollection extends LazyCollection
 {
-    public function __construct(
+    final public function __construct(
         $source = null,
         protected ?Closure $renderable = null,
     ) {

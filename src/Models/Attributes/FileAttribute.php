@@ -8,7 +8,9 @@ use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\Encoders\PngEncoder;
 use Intervention\Image\Image as ImageObject;
+use Intervention\Image\ImageManager;
 use Intervention\Image\Interfaces\EncodedImageInterface;
 use Intervention\Image\Laravel\Facades\Image;
 
@@ -29,7 +31,7 @@ class FileAttribute
     public function upload(File|UploadedFile $file): void
     {
         if ($this->encodeImage && $this->isImageFile($file)) {
-            $this->storeImage(Image::read($file), $this->encodeImage);
+            $this->storeImage(Image::decode($file), $this->encodeImage);
         }
 
         $this->storeRawFile($file);
@@ -37,7 +39,7 @@ class FileAttribute
 
     public function uploadImage(ImageObject $image): void
     {
-        $encoder = $this->encodeImage ?? fn(ImageObject $image) => $image->toPng();
+        $encoder = $this->encodeImage ?? fn(ImageObject $image) => $image->encode(new PngEncoder());
 
         $this->storeImage($image, $encoder);
     }
@@ -96,6 +98,6 @@ class FileAttribute
 
     protected function isImageFile(File|UploadedFile $file): bool
     {
-        return app('image')->driver()->supports($file->getMimeType());
+        return app(ImageManager::class)->driver->supports($file->getMimeType());
     }
 }
