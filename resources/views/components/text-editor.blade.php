@@ -52,8 +52,7 @@
                 data-uploads-target="input"
                 @if ($autofocus) autofocus @endif
             >
-{{ $value }}</textarea
-            >
+{{ $value }}</textarea>
         </text-expander>
 
         <div

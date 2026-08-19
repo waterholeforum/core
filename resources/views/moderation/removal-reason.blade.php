@@ -50,8 +50,7 @@
             </summary>
             <div class="card__body">
                 <textarea name="deleted_message" rows="3">
-{{ old('deleted_message') }}</textarea
-                >
+{{ old('deleted_message') }}</textarea>
             </div>
         </details>
     @endif
