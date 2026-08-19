@@ -3,6 +3,18 @@
 }
 
 .js img[data-lightbox-image]:focus-visible {
-  outline: 2px solid var(--color-accent);
   outline-offset: 3px;
+}
+
+.pswp__caption {
+  position: absolute;
+  bottom: var(--space-md);
+  left: 50%;
+  max-width: calc(100% - var(--space-xl));
+  transform: translateX(-50%);
+  background: rgb(0 0 0 / 60%);
+  color: white;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius);
+  text-align: center;
 }
