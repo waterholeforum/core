@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class Drafts extends Filter
 {
+    public bool $isSystem = true;
+    public ?string $icon = 'tabler-pencil';
+
     public function label(): string
     {
         return __('waterhole::forum.filter-drafts');

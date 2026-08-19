@@ -19,7 +19,9 @@ class SsoPayload
     public static function decrypt(string $value): static
     {
         try {
-            /** @var static $payload */
+            /**
+             * @var static $payload
+             */
             $payload = decrypt($value);
         } catch (DecryptException) {
             abort(400, 'Invalid payload');

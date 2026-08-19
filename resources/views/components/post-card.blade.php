@@ -26,19 +26,23 @@
             </h3>
         </div>
 
-        <div class="row">
-            <x-waterhole::action-button
-                :for="$post"
-                :action="Waterhole\Actions\Bookmark::class"
-                class="btn btn--icon btn--transparent"
-                icon
-            />
+        <div class="row gap-xs text-xs">
+            <x-waterhole::post-tags-summary :$post />
 
-            <x-waterhole::action-menu
-                :for="$post"
-                placement="bottom-end"
-                :preflight="false"
-            />
+            <div class="row">
+                <x-waterhole::action-button
+                    :for="$post"
+                    :action="Waterhole\Actions\Bookmark::class"
+                    class="btn btn--icon btn--transparent"
+                    icon
+                />
+
+                <x-waterhole::action-menu
+                    :for="$post"
+                    placement="bottom-end"
+                    :preflight="false"
+                />
+            </div>
         </div>
     </header>
 

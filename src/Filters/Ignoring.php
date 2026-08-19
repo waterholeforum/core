@@ -12,6 +12,9 @@ class Ignoring extends Filter
 {
     public const EXCLUDE_IGNORED_SCOPE = 'excludeIgnored';
 
+    public bool $isSystem = true;
+    public ?string $icon = 'tabler-eye-off';
+
     public function label(): string
     {
         return __('waterhole::forum.filter-ignoring');

@@ -32,6 +32,7 @@ class PostListItem
             ->add(PostUnread::class, 'unread')
             ->add(PostTrash::class, 'trash')
             ->add(PostChannel::class, 'channel')
+            ->add(PostTagsSummary::class, 'tags')
             ->add(PostAnswered::class, 'answered')
             ->add(PostLocked::class, 'locked')
             ->add(PostNotifications::class, 'notifications')
@@ -39,7 +40,7 @@ class PostListItem
             ->add(PostDraft::class, 'draft')
             ->add(PostActivity::class, 'activity');
 
-        $this->secondary = (new ComponentList())->add(PostTagsSummary::class, 'tags')->add(
+        $this->secondary = (new ComponentList())->add(
             PostReactionsCondensed::class,
             'reactions',
         )->add('waterhole::components.post-replies', 'replies');

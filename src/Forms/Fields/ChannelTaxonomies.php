@@ -17,7 +17,7 @@ class ChannelTaxonomies extends Field
     public function __construct(
         public ?Channel $model,
     ) {
-        $this->taxonomies = Taxonomy::all();
+        $this->taxonomies = Taxonomy::orderBy('name')->get();
     }
 
     public function shouldRender(): bool

@@ -4,7 +4,7 @@
     @if ($title || isset($header))
         <header class="dialog__header">
             @if ($title)
-                <h1 class="dialog__title h3" id="dialog-title">
+                <h1 class="dialog__title h4" id="dialog-title">
                     {{ $title }}
                 </h1>
             @endif

@@ -4,8 +4,8 @@ import {
     StreamActions,
     TurboFrameMissingEvent,
 } from '@hotwired/turbo';
+import type { AlertsElement, PopupElement } from 'inclusive-elements';
 import { cloneFromTemplate, getFragmentTarget, nextFrame } from '../utils';
-import { AlertsElement } from 'inclusive-elements';
 
 declare global {
     interface Window {
@@ -64,6 +64,13 @@ document.addEventListener('turbo:load', async () => {
     element.scrollIntoView();
 
     if (!hadTabIndex) element.removeAttribute('tabindex');
+});
+
+document.addEventListener('turbo:before-cache', () => {
+    document.querySelectorAll<PopupElement>('ui-popup').forEach((popup) => {
+        popup.children[1]?.setAttribute('hidden', '');
+        popup.open = false;
+    });
 });
 
 document.addEventListener('turbo:before-morph-element', (e) => {

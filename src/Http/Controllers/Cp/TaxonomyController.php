@@ -13,7 +13,7 @@ class TaxonomyController
     public function index()
     {
         return view('waterhole::cp.taxonomies.index', [
-            'taxonomies' => Taxonomy::withCount('tags')->get(),
+            'taxonomies' => Taxonomy::withCount('tags')->orderBy('name')->get(),
         ]);
     }
 
@@ -28,7 +28,7 @@ class TaxonomyController
     {
         $this->form($taxonomy = new Taxonomy())->submit($request);
 
-        return redirect($taxonomy->edit_url);
+        return redirect($taxonomy->edit_url)->with('active-form-section', 'tags');
     }
 
     public function edit(Taxonomy $taxonomy)

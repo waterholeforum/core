@@ -15,10 +15,11 @@ input:where(
 ),
 textarea,
 select,
+ui-combobox [data-combobox-control],
 .input {
   display: block;
   width: 100%;
-  border: 1px solid var(--color-stroke);
+  border: 1px solid var(--input-border-color, var(--color-stroke));
   background: var(--color-bg);
   color: var(--color-text);
   height: var(--control-height);
@@ -37,10 +38,10 @@ select,
   &:disabled {
     background: var(--color-fill);
   }
+}
 
-  .has-error & {
-    border-color: var(--color-danger);
-  }
+.has-error {
+  --input-border-color: var(--color-danger);
 }
 
 input[type='file'] {

@@ -201,6 +201,7 @@ class Actions
             ->add(CoreActions\Ignore::class, 'ignore')
             ->add(MenuDivider::class, 'divider')
             ->add(CoreActions\Edit::class, 'edit')
+            ->add(CoreActions\EditTags::class, 'edit-tags')
             ->add(CoreActions\Pin::class, 'pin')
             ->add(CoreActions\Lock::class, 'lock')
             ->add(CoreActions\MoveToChannel::class, 'move')

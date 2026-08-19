@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Waterhole\Actions\EditTags;
 use Waterhole\Database\Seeders\GroupsSeeder;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Post;
@@ -42,30 +43,77 @@ describe('taxonomy assignment', function () {
         expect($post->tags->modelKeys())->toContain($tag->id);
     });
 
-    test('enforces single-tag taxonomy rules', function () {
+    test('rejects multiple tags for a single-tag taxonomy', function () {
         $channel = Channel::factory()->public()->create();
         $taxonomy = Taxonomy::create(['name' => 'Single', 'allow_multiple' => false]);
         $taxonomy->savePermissions(['group:1' => ['view' => true, 'assign-tags' => true]]);
         $tagA = Tag::create(['taxonomy_id' => $taxonomy->id, 'name' => 'A']);
+        $tagB = Tag::create(['taxonomy_id' => $taxonomy->id, 'name' => 'B']);
         $channel->taxonomies()->attach($taxonomy);
 
+        $this
+            ->actingAs(User::factory()->create())
+            ->post(route('waterhole.posts.store'), [
+                'channel_id' => $channel->id,
+                'title' => 'Invalid tags',
+                'body' => 'Body',
+                'tag_ids' => [$taxonomy->id => [$tagA->id, $tagB->id]],
+                'commit' => true,
+            ])
+            ->assertSessionHasErrors("tag_ids.$taxonomy->id");
+    });
+});
+
+describe('tag editing', function () {
+    test('updates assignable tags without changing inaccessible tags', function () {
+        $channel = Channel::factory()->public()->create();
+        $assignable = Taxonomy::create(['name' => 'Topics', 'allow_multiple' => true]);
+        $assignable->savePermissions(['group:2' => ['view' => true, 'assign-tags' => true]]);
+        $inaccessible = Taxonomy::create(['name' => 'Internal']);
+        $inaccessible->savePermissions(['group:3' => ['view' => true, 'assign-tags' => true]]);
+        $channel->taxonomies()->attach([$assignable->id, $inaccessible->id]);
+        $oldTag = Tag::create(['taxonomy_id' => $assignable->id, 'name' => 'Old']);
+        $newTag = Tag::create(['taxonomy_id' => $assignable->id, 'name' => 'New']);
+        $preservedTag = Tag::create(['taxonomy_id' => $inaccessible->id, 'name' => 'Secret']);
         $user = User::factory()->create();
+        $post = Post::factory()->for($channel)->for($user)->create();
+        $post->tags()->attach([$oldTag->id, $preservedTag->id]);
 
         $this
             ->actingAs($user)
-            ->post(route('waterhole.posts.store'), [
-                'channel_id' => $channel->id,
-                'title' => 'Single taxonomy post',
-                'body' => 'Body',
-                'tag_ids' => [
-                    $taxonomy->id => [$tagA->id],
-                ],
-                'commit' => true,
+            ->withHeader('Accept', 'text/vnd.turbo-stream.html')
+            ->post(route('waterhole.actions.store'), [
+                'actionable' => Post::class,
+                'id' => $post->id,
+                'action_class' => EditTags::class,
+                'confirmed' => true,
+                'tag_ids' => [$assignable->id => [$newTag->id]],
             ])
-            ->assertRedirect();
+            ->assertOk()
+            ->assertSeeText('New')
+            ->assertDontSeeText('Old');
 
-        $post = Post::where('title', 'Single taxonomy post')->firstOrFail();
-        expect($post->tags)->toHaveCount(1);
+        expect(
+            $post->tags()->withoutGlobalScopes()->pluck('tags.id')->all(),
+        )->toEqualCanonicalizing([$newTag->id, $preservedTag->id]);
+    });
+
+    test('requires edit permission', function () {
+        $channel = Channel::factory()->public()->create();
+        $taxonomy = Taxonomy::create(['name' => 'Topics']);
+        $taxonomy->savePermissions(['group:2' => ['view' => true, 'assign-tags' => true]]);
+        Tag::create(['taxonomy_id' => $taxonomy->id, 'name' => 'Tag']);
+        $channel->taxonomies()->attach($taxonomy);
+        $post = Post::factory()->for($channel)->for(User::factory())->create();
+
+        $this
+            ->actingAs(User::factory()->create())
+            ->get(route('waterhole.actions.create', [
+                'actionable' => Post::class,
+                'id' => $post->id,
+                'action_class' => EditTags::class,
+            ]))
+            ->assertForbidden();
     });
 });
 

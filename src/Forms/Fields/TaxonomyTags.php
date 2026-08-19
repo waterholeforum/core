@@ -22,7 +22,7 @@ class TaxonomyTags extends Field
                 <turbo-frame id="tags" data-action="turbo:frame-load->page#closeModal">
                     <div class="stack gap-md">
                         <ul class="card" role="list">
-                            @foreach ($model->tags->load('taxonomy') as $tag)
+                            @foreach ($model->tags()->with('taxonomy')->get() as $tag)
                                 <x-waterhole::cp.tag-row :tag="$tag" />
                             @endforeach
 

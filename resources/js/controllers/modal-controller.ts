@@ -43,6 +43,7 @@ export default class extends Controller<ModalElement> {
 
         if (this.frameTarget.children.length) {
             this.show();
+            this.frameTarget.querySelector<HTMLElement>('[autofocus]')?.focus();
         } else {
             this.hide();
         }

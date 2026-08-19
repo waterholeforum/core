@@ -5,6 +5,8 @@ use Waterhole\Database\Seeders\GroupsSeeder;
 use Waterhole\Filters\Oldest;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Post;
+use Waterhole\Models\Tag;
+use Waterhole\Models\Taxonomy;
 use Waterhole\Models\User;
 
 uses(RefreshDatabase::class);
@@ -74,5 +76,59 @@ describe('channel feeds', function () {
         ]);
 
         $this->get($channel->url)->assertOk()->assertSeeInOrder(['Older post', 'Newer post']);
+    });
+
+    test('filters by tags', function () {
+        $channel = Channel::factory()->public()->create();
+        $topics = Taxonomy::create(['name' => 'Topics']);
+        $types = Taxonomy::create(['name' => 'Types']);
+        foreach ([$topics, $types] as $taxonomy) {
+            $taxonomy->savePermissions(['group:1' => ['view' => true]]);
+        }
+        $channel->taxonomies()->attach([$topics->id, $types->id]);
+        $alpha = Tag::create(['taxonomy_id' => $topics->id, 'name' => 'Alpha']);
+        $beta = Tag::create(['taxonomy_id' => $topics->id, 'name' => 'Beta']);
+        $guide = Tag::create(['taxonomy_id' => $types->id, 'name' => 'Guide']);
+
+        $matchingA = Post::factory()->for($channel)->create(['title' => 'Alpha guide']);
+        $matchingA->tags()->attach([$alpha->id, $guide->id]);
+        $matchingB = Post::factory()->for($channel)->create(['title' => 'Beta guide']);
+        $matchingB->tags()->attach([$beta->id, $guide->id]);
+        $wrongType = Post::factory()->for($channel)->create(['title' => 'Alpha only']);
+        $wrongType->tags()->attach($alpha);
+
+        $this
+            ->get(route('waterhole.channels.show', [
+                'channel' => $channel,
+                'tags' => [
+                    $topics->id => [$alpha->id, $beta->id],
+                    $types->id => [$guide->id],
+                ],
+            ]))
+            ->assertOk()
+            ->assertSeeText('Alpha guide')
+            ->assertSeeText('Beta guide')
+            ->assertDontSeeText('Alpha only');
+    });
+
+    test('rejects invalid tag filters', function () {
+        $channel = Channel::factory()->public()->create();
+        $taxonomy = Taxonomy::create(['name' => 'Topics']);
+        $otherTaxonomy = Taxonomy::create(['name' => 'Other']);
+        foreach ([$taxonomy, $otherTaxonomy] as $item) {
+            $item->savePermissions(['group:1' => ['view' => true]]);
+        }
+        $channel->taxonomies()->attach($taxonomy);
+        $otherTag = Tag::create(['taxonomy_id' => $otherTaxonomy->id, 'name' => 'Other tag']);
+
+        $this->get(route('waterhole.channels.show', [
+            'channel' => $channel,
+            'tags' => [$otherTaxonomy->id => [$otherTag->id]],
+        ]))->assertNotFound();
+
+        $this->get(route('waterhole.channels.show', [
+            'channel' => $channel,
+            'tags' => [$taxonomy->id => [$otherTag->id]],
+        ]))->assertNotFound();
     });
 });

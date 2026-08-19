@@ -8,44 +8,25 @@ use Waterhole\Models\Post;
 
 class PostTagsSummary extends Component
 {
-    public Collection $tags;
-    public int $limit = 3;
+    public Collection $visibleTags;
+    public Collection $hiddenTags;
 
     public function __construct(
         public Post $post,
     ) {
-        $this->tags = $post->tags->sortBy('taxonomy_id');
+        $post->loadMissing('tags');
+
+        $this->visibleTags = $post->tags->groupBy('taxonomy_id')->map->first()->take(3)->values();
+        $this->hiddenTags = $post->tags->diff($this->visibleTags)->values();
     }
 
     public function shouldRender(): bool
     {
-        return $this->tags->isNotEmpty();
+        return $this->visibleTags->isNotEmpty();
     }
 
-    public function render(): string
+    public function render()
     {
-        return <<<'blade'
-                <div class="post-tags-summary row gap-xxs">
-                    @foreach ($tags->take($limit) as $tag)
-                        <a
-                            href="{{ $post->channel->url . '?'. Arr::query(['tags' => [$tag->taxonomy_id => $tag->id]]) }}"
-                            class="tag"
-                            data-tag-id="{{ $tag->id }}"
-                        >{{ Waterhole\emojify($tag->name) }}</a>
-                    @endforeach
-                    @if ($tags->count() > $limit)
-                        <span class="cursor-default">
-                            +{{ $tags->count() - $limit }}
-                            <ui-tooltip>
-                                @foreach ($tags->slice($limit) as $tag)
-                                    <span data-tag-id="{{ $tag->id }}">
-                                        {{ Waterhole\emojify($tag->name) }}
-                                    </span>
-                                @endforeach
-                            </ui-tooltip>
-                        </span>
-                    @endif
-                </div>
-            blade;
+        return $this->view('waterhole::components.post-tags-summary');
     }
 }

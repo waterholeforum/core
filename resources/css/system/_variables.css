@@ -172,6 +172,7 @@
 
   // Spacing
   --ratio: 1.5;
+  --space-0: 0;
   --space-px: 1px;
   --space-xxs: calc(var(--space-xs) / var(--ratio));
   --space-xs: calc(var(--space-sm) / var(--ratio));

@@ -22,6 +22,7 @@ class Form extends Component
         public ?string $submitLabel = null,
         public array $submitAttributes = [],
         public array $panelAttributes = [],
+        public ?string $activeSection = null,
     ) {
         $method = strtoupper($method);
 
@@ -91,6 +92,7 @@ class Form extends Component
             $this->sections[] = [
                 'title' => $section->title,
                 'panelId' => "$prefix-$id$suffix",
+                'active' => $this->activeSection === $id,
                 'components' => $section->components,
             ];
         }

@@ -80,7 +80,9 @@ class FileAttribute
             $image->orient();
         }
 
-        /** @var EncodedImageInterface $encodedImage */
+        /**
+         * @var EncodedImageInterface $encodedImage
+         */
         $encodedImage = $encode($image);
 
         $this->storeFileContents($encodedImage, Str::after($encodedImage->mediaType(), '/'));

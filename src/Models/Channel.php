@@ -149,7 +149,7 @@ class Channel extends Model
 
     public function taxonomies(): BelongsToMany
     {
-        return $this->belongsToMany(Taxonomy::class);
+        return $this->belongsToMany(Taxonomy::class)->orderBy('taxonomies.name');
     }
 
     public function abilities(): array

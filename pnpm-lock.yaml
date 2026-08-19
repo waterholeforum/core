@@ -65,6 +65,9 @@ importers:
       inclusive-elements:
         specifier: ^0.5.5
         version: 0.5.5
+      inclusive-elements-next:
+        specifier: npm:inclusive-elements@0.7.0-beta.1
+        version: inclusive-elements@0.7.0-beta.1
       inclusive-shortcuts:
         specifier: ^0.1.2
         version: 0.1.2
@@ -1082,6 +1085,7 @@ packages:
   basic-ftp@5.3.1:
     resolution: {integrity: sha512-bopVNp6ugyA150DDuZfPFdt1KZ5a94ZDiwX4hMgZDzF+GttD80lEy8kj98kbyhLXnPvhtIo93mdnLIjpCAeeOw==}
     engines: {node: '>=10.0.0'}
+    deprecated: Security vulnerability fixed in 5.2.1, please upgrade
 
   before-after-hook@4.0.0:
     resolution: {integrity: sha512-q6tR3RPqIB1pMiTRMFcZwuG5T8vwp+vUvEG0vuI6B+Rikh5BfPp2fQ82c925FOs+b0lcFQ8CFrL+KbilfZFhOQ==}
@@ -1571,6 +1575,9 @@ packages:
 
   inclusive-elements@0.5.5:
     resolution: {integrity: sha512-w+0DXY1PscNyiB1ThmNKBbH5L6D/u6gfuiLi68yW3GwVzqM7rxZFOGh8/9iw9eOnJGHhOkCtR59ef48ERHvqPg==}
+
+  inclusive-elements@0.7.0-beta.1:
+    resolution: {integrity: sha512-pqmSkb9ezbXg/ffgBD13TTpEtG/WzV8F7KpsmnnvndkYmppW5q9AWhTK4L3FkQriu8RpXqfxr+S8bhxXaMq6bw==}
 
   inclusive-shortcuts@0.1.2:
     resolution: {integrity: sha512-ffyrwNuRgoy/hUnB0z1Xo/i+xmKD0UrPPc4Jw60fqq2xyhIAVPq/v+yalLPZFvK62hBPFtjYbQj73NrJlOIVsg==}
@@ -2611,6 +2618,9 @@ packages:
   to-regex-range@5.0.1:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
     engines: {node: '>=8.0'}
+
+  transition-kit@1.0.0:
+    resolution: {integrity: sha512-t8ZHnjKr3JRd0LmLW5Hm4X/qs41Zjz2SRJUFT3fCAniMFw+NQNiynFdPHpqeL9E0cZiBx6675+1bjljdKuYlxg==}
 
   tree-kill@1.2.2:
     resolution: {integrity: sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==}
@@ -4162,6 +4172,11 @@ snapshots:
       hello-goodbye: 0.2.2
       tabbable: 6.5.0
 
+  inclusive-elements@0.7.0-beta.1:
+    dependencies:
+      tabbable: 6.5.0
+      transition-kit: 1.0.0
+
   inclusive-shortcuts@0.1.2:
     dependencies:
       tinykeys: 3.1.0
@@ -5254,6 +5269,8 @@ snapshots:
   to-regex-range@5.0.1:
     dependencies:
       is-number: 7.0.0
+
+  transition-kit@1.0.0: {}
 
   tree-kill@1.2.2: {}
 

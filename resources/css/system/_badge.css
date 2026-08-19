@@ -54,5 +54,5 @@
   border-radius: 4px;
   font-weight: normal;
   padding: 0 0.5em;
-  font-size: var(--text-xs);
+  font-size: inherit;
 }

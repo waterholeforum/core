@@ -25,6 +25,7 @@
                                 href="#{{ $section['panelId'] }}"
                                 role="tab"
                                 class="tab"
+                                @if ($section['active']) aria-selected="true" @endif
                             >
                                 {{ $section['title'] }}
                             </a>

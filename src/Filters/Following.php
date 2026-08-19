@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class Following extends Filter
 {
+    public bool $isSystem = true;
+    public ?string $icon = 'tabler-bell';
+
     public function label(): string
     {
         return __('waterhole::forum.filter-following');

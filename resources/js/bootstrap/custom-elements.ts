@@ -10,9 +10,11 @@ import {
     ToolbarElement,
     TooltipElement,
 } from 'inclusive-elements';
+import { ComboboxElement } from 'inclusive-elements-next';
 
 window.customElements.define('ui-accordion', AccordionElement);
 window.customElements.define('ui-alerts', AlertsElement);
+window.customElements.define('ui-combobox', ComboboxElement);
 window.customElements.define('ui-disclosure', DisclosureElement);
 window.customElements.define('ui-menu', MenuElement);
 window.customElements.define('ui-modal', ModalElement);

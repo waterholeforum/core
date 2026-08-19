@@ -6,27 +6,34 @@ use Illuminate\Support\Collection;
 use Illuminate\View\Component;
 use Waterhole\Feed\Feed;
 use Waterhole\Filters\Filter;
+use Waterhole\Filters\Top;
 
 class FeedFilters extends Component
 {
-    public Collection $components;
-    public Collection $firstComponents;
+    public Collection $promotedComponents;
     public Collection $overflowComponents;
-    public NavLink $activeComponent;
+    public Collection $systemComponents;
+    public ?NavLink $activeOverflowComponent;
 
-    public function __construct(
-        public Feed $feed,
-        public int $limit = 4,
-    ) {
-        $this->components = $feed->filters->map(fn($filter) => (new NavLink(
+    public function __construct(Feed $feed, int $limit = 3)
+    {
+        $toComponent = fn(Filter $filter) => (new NavLink(
             label: $filter->label(),
+            icon: $filter->icon,
             href: $this->url($filter),
             active: $feed->currentFilter === $filter,
-        ))->withAttributes(['class' => 'tab']));
+        ))->withAttributes(['class' => 'tab']);
 
-        $this->firstComponents = $this->components->take($limit);
-        $this->overflowComponents = $this->components->slice($limit);
-        $this->activeComponent = $this->components->first->isActive;
+        [$systemFilters, $configuredFilters] =
+            $feed->filters->partition(fn(Filter $filter) => $filter->isSystem);
+        $configuredComponents = $configuredFilters->map($toComponent);
+
+        $this->promotedComponents = $configuredComponents->take($limit);
+        $this->overflowComponents = $configuredComponents->slice($limit);
+        $this->systemComponents = $systemFilters->map($toComponent);
+        $this->activeOverflowComponent = $this->overflowComponents
+            ->concat($this->systemComponents)
+            ->firstWhere('isActive');
     }
 
     public function render()
@@ -34,8 +41,13 @@ class FeedFilters extends Component
         return $this->view('waterhole::components.feed-filters');
     }
 
-    public function url(Filter $filter): string
+    private function url(Filter $filter): string
     {
-        return request()->fullUrlWithQuery(['filter' => $filter->handle(), 'page' => null]);
+        return request()->fullUrlWithQuery([
+            'filter' => $filter->handle(),
+            'period' => $filter instanceof Top ? request('period') : null,
+            'cursor' => null,
+            'page' => null,
+        ]);
     }
 }

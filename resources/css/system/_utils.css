@@ -25,7 +25,7 @@
 
 // Size
 
-@each $size in (px, xxs, xs, sm, md, lg, xl, xxl, xxxl, gutter) {
+@each $size in (0, px, xxs, xs, sm, md, lg, xl, xxl, xxxl, gutter) {
   .gap-$(size) {
     gap: var(--space-$(size));
   }
@@ -41,9 +41,7 @@
   .-m-$(size) {
     margin: calc(-1 * var(--space-$(size)));
   }
-}
 
-@each $size in (px, xxs, xs, sm, md, lg, xl, xxl, xxxl, gutter) {
   .gap-x-$(size) {
     column-gap: var(--space-$(size));
   }
@@ -852,5 +850,17 @@
     background: var(--color-bg);
     box-shadow: 0 calc(-1 * var(--space-md)) var(--space-md) var(--color-bg);
     opacity: 0.95;
+  }
+}
+
+.sticky-bottom {
+  position: sticky;
+  bottom: 0;
+  background: var(--color-bg);
+  z-index: 1;
+  transition: box-shadow var(--transition-duration);
+
+  .is-scrolled-up > & {
+    box-shadow: var(--shadow-md);
   }
 }

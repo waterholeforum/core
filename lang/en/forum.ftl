@@ -90,6 +90,9 @@ edit-post-link = Edit Post
 post-title-label = Title
 similar-posts-label = See these similar posts:
 post-body-label = Body
+post-tags-none-option = None
+edit-tags-button = Edit Tags
+edit-tags-title = Edit Tags
 
 channel-picker-placeholder = Select a Channel
 
@@ -255,6 +258,10 @@ filter-top-week = Week
 filter-top-day = Day
 filter-trending = Trending
 filter-trash = Trash
+
+tags-filter-button = Tags
+tags-filter-apply-button = Apply
+tags-filter-clear-button = Clear
 
 ## Followables
 

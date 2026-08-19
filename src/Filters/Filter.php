@@ -19,6 +19,16 @@ use ReflectionClass;
 abstract class Filter
 {
     /**
+     * Whether the filter is a system view rather than a configured view.
+     */
+    public bool $isSystem = false;
+
+    /**
+     * The optional icon displayed alongside the filter label.
+     */
+    public ?string $icon = null;
+
+    /**
      * The handle for the filter, used in query parameters.
      */
     public function handle(): string

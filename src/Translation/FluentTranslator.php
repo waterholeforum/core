@@ -33,7 +33,9 @@ final class FluentTranslator implements TranslatorContract
 {
     use ForwardsCalls;
 
-    /** @var array<string, array<string, FluentBundle|false>> */
+    /**
+     * @var array<string, array<string, FluentBundle|false>>
+     */
     private array $loaded = [];
 
     public function __construct(
@@ -42,7 +44,9 @@ final class FluentTranslator implements TranslatorContract
         protected string $path,
         protected string $locale,
         protected string $fallback,
-        /** @var array{strict: bool, useIsolating: bool, allowOverrides: bool} */
+        /**
+         * @var array{strict: bool, useIsolating: bool, allowOverrides: bool}
+         */
         protected array $bundleOptions,
         protected ?string $cachePath = null,
         protected array $functions = [],

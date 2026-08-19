@@ -16,6 +16,7 @@
             :fields="$form->fields()"
             :method="isset($taxonomy) ? 'PATCH' : 'POST'"
             :submit-label="isset($taxonomy) ? null : __('waterhole::system.continue-button')"
+            :active-section="session('active-form-section')"
             action="{{
                 isset($taxonomy)
                     ? route('waterhole.cp.taxonomies.update', compact('taxonomy'))

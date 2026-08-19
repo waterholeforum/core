@@ -2,6 +2,8 @@
 
 namespace Waterhole\View\Components;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\View\Component;
 use Waterhole\Feed\PostFeed;
 use Waterhole\Models\Channel;
@@ -9,49 +11,62 @@ use Waterhole\Models\Taxonomy;
 
 class TagsFilter extends Component
 {
-    public int $value;
+    public Collection $taxonomies;
+    public int $selectedCount;
+    public string $label;
+    public array $preservedQuery;
 
     public function __construct(
         public PostFeed $feed,
         public ?Channel $channel,
     ) {
-        $this->value = (int) request('tag_id');
+        $this->preservedQuery = array_filter(
+            [
+                'filter' => request('filter'),
+                'period' => request('period'),
+            ],
+            fn($value) => $value !== null && $value !== '',
+        );
+
+        $this->taxonomies = $channel
+            ?->taxonomies
+            ->load('tags')
+            ->filter(fn(Taxonomy $taxonomy) => $taxonomy->tags->isNotEmpty()) ?? collect();
+
+        $selections = request('tags', []);
+        $selectedIds = collect(is_array($selections) ? $selections : [])->flatten()->unique();
+        $this->selectedCount = $selectedIds->count();
+
+        $selectedTag = $this->selectedCount === 1
+            ? $this->taxonomies->flatMap(fn(Taxonomy $taxonomy) => $taxonomy->tags)->firstWhere(
+                'id',
+                $selectedIds->first(),
+            )
+            : null;
+        $this->label =
+            $selectedTag?->name
+            ?? (
+                $this->selectedCount === 0 && $this->taxonomies->count() === 1
+                    ? __($this->taxonomies->first()->name)
+                    : __('waterhole::forum.tags-filter-button')
+            );
     }
 
     public function shouldRender(): bool
     {
-        return (bool) $this->channel?->taxonomies->isNotEmpty();
+        return $this->taxonomies->isNotEmpty();
     }
 
-    public function render(): string
+    public function render()
     {
-        return <<<'blade'
-                <div class="row gap-xxs wrap">
-                    @foreach ($channel->taxonomies->load('tags') as $taxonomy)
-                        @if ($id = request("tags.$taxonomy->id"))
-                            <a href="{{ $href($taxonomy, null) }}" class="tab is-active">
-                                {{ $taxonomy->tags->find($id)?->name }}
-                                @icon('tabler-x')
-                            </a>
-                        @else
-                            <x-waterhole::selector
-                                button-class="tab"
-                                placement="bottom-end"
-                                :options="$taxonomy->tags->modelKeys()"
-                                :placeholder="__($taxonomy->name)"
-                                :label="fn($id) => $taxonomy->tags->find($id)->name ?? ''"
-                                :href="fn($id) => $href($taxonomy, $id)"
-                            />
-                        @endif
-                    @endforeach
-                </div>
-            blade;
+        return $this->view('waterhole::components.tags-filter');
     }
 
-    public function href(Taxonomy $taxonomy, $id)
+    public function clearHref(): string
     {
-        return request()->fullUrlWithQuery([
-            'tags' => array_replace(request('tags', []), [$taxonomy->id => $id]),
-        ]);
+        return (
+            url()->current()
+            . ($this->preservedQuery ? '?' . Arr::query($this->preservedQuery) : '')
+        );
     }
 }

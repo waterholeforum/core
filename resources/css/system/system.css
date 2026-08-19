@@ -19,7 +19,6 @@
 @import '_channel-picker.css';
 @import '_choice.css';
 @import '_color-picker.css';
-@import '_combobox.css';
 @import '_dialog.css';
 @import '_divider.css';
 @import '_form.css';
@@ -45,6 +44,9 @@
 
 // Other components
 @import '_emoji-picker.css';
+
+// Composed components
+@import '_combobox.css';
 
 // Utils
 @import '_utils.css';

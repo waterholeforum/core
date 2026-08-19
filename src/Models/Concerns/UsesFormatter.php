@@ -13,7 +13,9 @@ use function Waterhole\remove_formatting;
 
 trait UsesFormatter
 {
-    /** @var Formatter[] */
+    /**
+     * @var Formatter[]
+     */
     protected static array $formatters = [];
 
     private array $renderCache = [];

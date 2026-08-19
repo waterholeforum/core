@@ -1,32 +1,49 @@
-<div {{ $attributes->class('row') }}>
-    <div class="tabs hide-sm">
-        @components($firstComponents->all())
+<div
+    data-controller="watch-scroll"
+    {{ $attributes->class('tabs nowrap scrollable-x shrink') }}
+>
+    @components($promotedComponents->all())
 
-        @if (count($overflowComponents))
-            <x-waterhole::selector
-                :value="$activeComponent"
-                :options="$overflowComponents->all()"
-                :label="fn($component) => $component->label"
-                :href="fn($component) => $component->href"
-                button-class="tab"
-                placement="bottom-start"
+    @if ($overflowComponents->isNotEmpty() || $systemComponents->isNotEmpty())
+        <ui-popup placement="bottom-start">
+            <button
+                type="button"
+                @class(['tab', 'is-active' => $activeOverflowComponent])
             >
-                <x-slot name="button">
-                    @icon('tabler-dots', ['aria-label' => __('waterhole::system.more-button')])
-                </x-slot>
-            </x-waterhole::selector>
-        @endif
-    </div>
+                @if ($activeOverflowComponent)
+                    @if ($activeOverflowComponent->icon)
+                        @icon($activeOverflowComponent->icon)
+                    @endif
 
-    <div class="tabs hide-md-up">
-        <x-waterhole::selector
-            class="hide-md-up"
-            :value="$activeComponent"
-            :options="$components->all()"
-            :label="fn($component) => $component->label"
-            :href="fn($component) => $component->href"
-            button-class="tab"
-            placement="bottom-start"
-        />
-    </div>
+                    <span>{{ $activeOverflowComponent->label }}</span>
+                    @icon('tabler-selector', ['class' => 'icon--narrow'])
+                @else
+                    @icon('tabler-dots', ['aria-label' => __('waterhole::system.more-button')])
+                @endif
+            </button>
+
+            <ui-menu class="menu" hidden>
+                @foreach (collect([$overflowComponents, $systemComponents])->filter->isNotEmpty() as $group)
+                    @unless ($loop->first)
+                        <hr class="menu-divider" />
+                    @endunless
+
+                    @foreach ($group as $component)
+                        <a
+                            href="{{ $component->href }}"
+                            class="menu-item"
+                            role="menuitemradio"
+                            aria-checked="{{ $component->isActive ? 'true' : 'false' }}"
+                        >
+                            @if ($component->icon)
+                                @icon($component->icon)
+                            @endif
+
+                            <span>{{ $component->label }}</span>
+                        </a>
+                    @endforeach
+                @endforeach
+            </ui-menu>
+        </ui-popup>
+    @endif
 </div>

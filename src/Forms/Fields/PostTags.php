@@ -26,14 +26,14 @@ class PostTags extends Field
             ->filter(
                 fn(Taxonomy $taxonomy) => (
                     Gate::allows('waterhole.taxonomy.assign-tags', $taxonomy)
-                    && $taxonomy->tags->count()
+                    && $taxonomy->tags->isNotEmpty()
                 ),
             );
     }
 
     public function shouldRender(): bool
     {
-        return (bool) $this->taxonomies;
+        return $this->taxonomies?->isNotEmpty() ?? false;
     }
 
     public function render(): string
@@ -44,19 +44,24 @@ class PostTags extends Field
                         name="tag_ids.{{ $taxonomy->id }}*"
                         :label="__($taxonomy->name)"
                     >
-                        <select
-                            name="tag_ids[{{ $taxonomy->id }}][]"
-                            id="{{ $component->id }}"
-                            @if ($taxonomy->allow_multiple) multiple @endif
-                        >
-                            @unless ($taxonomy->allow_multiple) <option></option> @endunless
-                            @foreach ($taxonomy->tags as $tag)
-                                <option
-                                    value="{{ $tag->id }}"
-                                    @selected(in_array($tag->id, old("tag_ids.$taxonomy->id", $model->tags->modelKeys()) ?? []))
-                                >{{ $tag->name }}</option>
-                            @endforeach
-                        </select>
+                        <ui-combobox>
+                            <select
+                                name="tag_ids[{{ $taxonomy->id }}][]"
+                                id="{{ $component->id }}"
+                                @if ($taxonomy->allow_multiple) multiple @endif
+                                @required($taxonomy->is_required)
+                            >
+                                @unless ($taxonomy->allow_multiple)
+                                    <option value="">{{ __('waterhole::forum.post-tags-none-option') }}</option>
+                                @endunless
+                                @foreach ($taxonomy->tags as $tag)
+                                    <option
+                                        value="{{ $tag->id }}"
+                                        @selected(in_array($tag->id, old("tag_ids.$taxonomy->id", $model->tags->modelKeys()) ?? []))
+                                    >{{ $tag->name }}</option>
+                                @endforeach
+                            </select>
+                        </ui-combobox>
                     </x-waterhole::field>
                 @endforeach
             blade;
@@ -68,7 +73,11 @@ class PostTags extends Field
             $required = $taxonomy->is_required ? ['required'] : ['nullable'];
 
             $validator->addRules([
-                "tag_ids.$taxonomy->id" => [...$required, 'array'],
+                "tag_ids.$taxonomy->id" => [
+                    ...$required,
+                    'array',
+                    ...($taxonomy->allow_multiple ? [] : ['max:1']),
+                ],
                 "tag_ids.$taxonomy->id.*" => [
                     ...$required,
                     'integer',
@@ -84,6 +93,17 @@ class PostTags extends Field
             ->tags()
             ->detach($this->model->tags->filter(fn(Tag $tag) => $this->taxonomies->contains($tag->taxonomy_id)));
 
-        $this->model->tags()->attach(collect($request->validated('tag_ids'))->flatten()->filter());
+        $this->model
+            ->tags()
+            ->attach(
+                $this->taxonomies
+                    ->flatMap(fn(Taxonomy $taxonomy) => $request->validated(
+                        "tag_ids.$taxonomy->id",
+                        [],
+                    ))
+                    ->filter(),
+            );
+
+        $this->model->unsetRelation('tags');
     }
 }
