@@ -3,8 +3,10 @@
 namespace Waterhole\Extend\Api;
 
 use Tobyz\JsonApiServer\Endpoint;
+use Tobyz\JsonApiServer\Laravel\Filter\WhereBelongsTo;
 use Tobyz\JsonApiServer\Laravel\Sort\SortColumn;
 use Tobyz\JsonApiServer\Schema\Field\Attribute;
+use Tobyz\JsonApiServer\Schema\Field\ToMany;
 use Tobyz\JsonApiServer\Schema\Field\ToOne;
 use Tobyz\JsonApiServer\Schema\Type;
 use Waterhole\Extend\Support\Resource;
@@ -22,14 +24,17 @@ class StructureResource extends Resource
 
         $this->endpoints->add(Endpoint\Index::make()->defaultSort('position'), 'index');
 
-        $this->fields->add(
-            Attribute::make('position')->type(Type\Integer::make()),
-            'position',
-        )->add(Attribute::make('isListed')->type(Type\Boolean::make()), 'isListed')->add(
-            ToOne::make('content')->collection('structureContent')->includable(),
-            'content',
-        );
+        $this->fields
+            ->add(Attribute::make('position')->type(Type\Integer::make()), 'position')
+            ->add(Attribute::make('isListed')->type(Type\Boolean::make()), 'isListed')
+            ->add(ToOne::make('content')->collection('structureContent')->includable(), 'content')
+            ->add(ToOne::make('parent')->type('structure')->includable(), 'parent')
+            ->add(
+                ToMany::make('children')->type('structure')->includable()->defaultSort('position'),
+                'children',
+            );
 
         $this->sorts->add(SortColumn::make('position'), 'position');
+        $this->filters->add(WhereBelongsTo::make('parent'), 'parent');
     }
 }

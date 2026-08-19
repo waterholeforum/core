@@ -51,7 +51,7 @@ details.card:not([open]) .card__header {
 }
 
 @media (--sm) {
-  .container .card:not(.card .card) {
+  .card--full {
     margin-inline: calc(-1 * var(--space-gutter)) !important;
     border-radius: 0;
 

@@ -14,7 +14,8 @@ use Waterhole\Models\Attributes\FileAttribute;
  * following:
  *
  * - `emoji`, where `value` is an emoji character (eg. `emoji:😊`)
- * - `svg`, where `value` is the name of a Blade Icon (eg. `svg:tabler-heart`)
+ * - `svg`, where `value` is the name of a Blade Icon, optionally followed by
+ *   a hex color (eg. `svg:tabler-heart` or `svg:tabler-heart:ff0000`)
  * - `file`, where `value` is the path to an image file
  *
  * @property string $icon
@@ -47,6 +48,11 @@ trait HasIcon
         } else {
             $this->iconFile()->remove();
             $this->icon = $icon['type'] . ':' . ($icon[$icon['type']] ?? '');
+
+            if ($icon['type'] === 'svg' && !empty($icon['color'])) {
+                $this->icon .= ':' . ltrim($icon['color'], '#');
+            }
+
             $this->save();
         }
     }

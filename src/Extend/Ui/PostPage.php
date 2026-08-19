@@ -6,7 +6,7 @@ use Waterhole\Extend\Support\ComponentList;
 use Waterhole\View\Components\CommentsLocked;
 use Waterhole\View\Components\PostAnswer;
 use Waterhole\View\Components\PostAttribution;
-use Waterhole\View\Components\PostChannel;
+use Waterhole\View\Components\PostBreadcrumbs;
 use Waterhole\View\Components\PostNotifications;
 use Waterhole\View\Components\PostTagsSummary;
 use Waterhole\View\Components\PostTitle;
@@ -27,7 +27,7 @@ class PostPage
     public function __construct()
     {
         $this->header = (new ComponentList())
-            ->add(PostChannel::class, 'channel')
+            ->add(PostBreadcrumbs::class, 'channel')
             ->add(PostTagsSummary::class, 'tags')
             ->add(PostNotifications::class, 'notifications')
             ->add(PostAttribution::class, 'attribution')

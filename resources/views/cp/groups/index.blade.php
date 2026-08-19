@@ -10,15 +10,10 @@
                 type="button"
                 class="btn bg-accent"
             >
-                @icon('tabler-plus')
+                @icon('tabler-circle-plus')
                 <span>{{ __('waterhole::cp.create-group-button') }}</span>
             </a>
         </div>
-
-        @php
-            $systemGroups = $groups->filter(fn ($group) => ! $group->isCustom());
-            $customGroups = $groups->filter(fn ($group) => $group->isCustom())->sortBy('name');
-        @endphp
 
         <ul class="card" role="list">
             @foreach ($systemGroups as $group)
@@ -31,5 +26,7 @@
                 <x-waterhole::cp.group-row :group="$group" />
             @endforeach
         </ul>
+
+        {{ $customGroups->links() }}
     </div>
 </x-waterhole::cp-layout>

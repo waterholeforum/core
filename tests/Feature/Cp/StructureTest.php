@@ -1,11 +1,13 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Validation\ValidationException;
 use Waterhole\Actions\DeleteChannel;
 use Waterhole\Actions\DeleteStructure;
 use Waterhole\Database\Seeders\GroupsSeeder;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Page;
+use Waterhole\Models\Structure;
 use Waterhole\Models\StructureHeading;
 use Waterhole\Models\StructureLink;
 use Waterhole\Models\User;
@@ -20,6 +22,104 @@ function cpStructureAdmin(): User
 {
     return User::factory()->admin()->create();
 }
+
+describe('structure hierarchy', function () {
+    test('create a child from a structure node', function () {
+        $parent = Page::factory()->public()->create();
+
+        $this
+            ->actingAs(cpStructureAdmin())
+            ->post(
+                route('waterhole.cp.structure.pages.store', [
+                    'parent_id' => $parent->structure->id,
+                ]),
+                [
+                    'name' => 'Child Page',
+                    'slug' => 'child-page',
+                    'icon' => ['type' => null],
+                    'body' => 'Child body',
+                ],
+            )
+            ->assertRedirect(route('waterhole.cp.structure'));
+
+        expect(Page::where('slug', 'child-page')->firstOrFail()->structure->parent_id)
+            ->toBe($parent->structure->id);
+    });
+
+    test('save a nested structure', function () {
+        $page = Page::factory()->public()->create(['name' => 'Parent']);
+        $channel = Channel::factory()->public()->create(['name' => 'Child']);
+
+        $this
+            ->actingAs(cpStructureAdmin())
+            ->post(route('waterhole.cp.structure'), [
+                'order' => json_encode([
+                    ['id' => $page->structure->id, 'parent_id' => null, 'position' => 0],
+                    [
+                        'id' => $channel->structure->id,
+                        'parent_id' => $page->structure->id,
+                        'position' => 0,
+                    ],
+                ]),
+            ])
+            ->assertRedirect(route('waterhole.cp.structure'));
+
+        expect($channel->structure->fresh()->parent_id)->toBe($page->structure->id);
+    });
+
+    test('preserve sibling order when promoting children', function () {
+        $page = Page::factory()->public()->create();
+        $firstChild = Page::factory()->public()->create();
+        $secondChild = Page::factory()->public()->create();
+        $after = Page::factory()->public()->create();
+
+        $firstChild->structure->update(['parent_id' => $page->structure->id, 'position' => 0]);
+        $secondChild->structure->update(['parent_id' => $page->structure->id, 'position' => 1]);
+
+        $this->actingAs(cpStructureAdmin())->post(route('waterhole.actions.store'), [
+            'actionable' => Page::class,
+            'id' => $page->id,
+            'action_class' => DeleteStructure::class,
+            'confirmed' => true,
+        ])->assertRedirect();
+
+        expect(
+            Structure::withoutGlobalScopes()
+                ->whereNull('parent_id')
+                ->inSiblingOrder()
+                ->pluck('id')
+                ->all(),
+        )->toBe([
+            $firstChild->structure->id,
+            $secondChild->structure->id,
+            $after->structure->id,
+        ]);
+    });
+
+    test('reject invalid structure parents and cycles', function () {
+        $page = Page::factory()->public()->create();
+        $child = Page::factory()->public()->create();
+        $channel = Channel::factory()->public()->create();
+        $heading = StructureHeading::create(['name' => 'Heading']);
+
+        expect(fn() => $child->structure->update(['parent_id' => $heading->structure->id]))
+            ->toThrow(ValidationException::class);
+
+        $channel->structure->update(['parent_id' => $page->structure->id]);
+        $child->structure->update(['parent_id' => $channel->structure->id]);
+
+        expect(fn() => $page->structure->update(['parent_id' => $child->structure->id]))
+            ->toThrow(ValidationException::class);
+    });
+
+    test('show the active structure path on channel pages', function () {
+        $page = Page::factory()->public()->create(['name' => 'Parent']);
+        $channel = Channel::factory()->public()->create(['name' => 'Child']);
+        $channel->structure->update(['parent_id' => $page->structure->id]);
+
+        $this->get($channel->url)->assertOk()->assertSeeInOrder(['Parent', 'Child']);
+    });
+});
 
 describe('cp channels', function () {
     test('create channel', function () {
@@ -66,6 +166,7 @@ describe('cp channels', function () {
 
     test('delete channel', function () {
         $channel = Channel::factory()->public()->create();
+        $node = $channel->structure;
 
         $this->actingAs(cpStructureAdmin())->post(route('waterhole.actions.store'), [
             'actionable' => Channel::class,
@@ -76,6 +177,10 @@ describe('cp channels', function () {
         ])->assertRedirect();
 
         $this->assertDatabaseMissing('channels', ['id' => $channel->id]);
+        $this->assertDatabaseMissing('permissions', [
+            'scope_type' => $node->getMorphClass(),
+            'scope_id' => $node->id,
+        ]);
     });
 });
 

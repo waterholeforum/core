@@ -80,7 +80,7 @@
                 type="button"
                 class="btn bg-accent"
             >
-                @icon('tabler-plus')
+                @icon('tabler-circle-plus')
                 <span>{{ __('waterhole::cp.create-user-button') }}</span>
             </a>
         </div>

@@ -1,6 +1,7 @@
 ### Forum
 
-feed-link = Feed
+home-link = Home
+structure-breadcrumbs-label = Breadcrumbs
 
 ## Header
 
@@ -98,6 +99,12 @@ delete-post-success-message = Post deleted.
 original-post-link = Original Post
 
 pin-to-top-button = Pin to Top
+pin-button = Pin
+pin-post-title = Pin Post
+pin-in-channel-label = Pin in this channel
+pin-in-channel-description = Keep this post at the top of its channel.
+pin-globally-label = Pin across the community
+pin-globally-description = Keep this post at the top of Home and its channel.
 unpin-button = Unpin
 
 post-comment-button = Comment
@@ -274,3 +281,4 @@ post-feed-new-activity-button = New Activity
 post-feed-new-activity-heading = New Activity
 post-feed-empty-message = No Posts
 post-feed-controls-layout-heading = Display as
+structure-children-label = Sections

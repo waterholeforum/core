@@ -37,7 +37,7 @@ class TaxonomyTags extends Field
                                 class="btn"
                                 data-turbo-frame="modal"
                             >
-                                @icon('tabler-plus')
+                                @icon('tabler-circle-plus')
                                 Add
                             </a>
                         </div>

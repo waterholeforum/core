@@ -74,7 +74,7 @@ class ReactionTypes extends Field
                             class="btn"
                             data-turbo-frame="modal"
                         >
-                            @icon('tabler-plus')
+                            @icon('tabler-circle-plus')
                             {{ __('waterhole::cp.reaction-types-add-button') }}
                         </a>
                     </div>

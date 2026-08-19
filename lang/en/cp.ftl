@@ -43,16 +43,20 @@ structure-channel-label = Channel
 structure-page-label = Page
 structure-link-label = Link
 structure-heading-label = Heading
+structure-create-child-button = Add Child
 structure-visibility-public-label = Public
 structure-visibility-members-label = Members
 
-structure-navigation-title = Navigation
-structure-navigation-description = Move items here to show them in the navigation menu.
-
-structure-unlisted-title = Unlisted
-structure-unlisted-description = Move items here to hide them from the navigation menu.
+structure-name-label = Name
+structure-description-label = Description
+structure-description-description = A brief description of this item.
+structure-discoverability-label = Discoverability
+structure-listed-label = Listed
+structure-listed-description = Listed items appear in navigation and may be indexed by search engines. Unlisted pages and channels remain accessible by URL to anyone with permission.
+structure-unlisted-label = Unlisted
 
 delete-structure-confirm-message = Are you sure you want to delete this node?
+delete-structure-children-promoted-message = Child items will be moved up one level.
 
 ## Structure - Heading
 
@@ -74,7 +78,6 @@ link-permissions-title = Permissions
 edit-page-title = Edit Page
 create-page-title = Create a Page
 page-details-title = Details
-page-name-label = Name
 page-slug-label = Slug
 page-slug-url-label = This page will be accessible at:
 page-body-label = Body
@@ -85,15 +88,12 @@ page-permissions-title = Permissions
 edit-channel-title = Edit Channel
 create-channel-title = Create a Channel
 channel-details-title = Details
-channel-name-label = Name
 channel-slug-label = Slug
 channel-slug-url-label = This channel will be accessible at:
-channel-description-label = Description
-channel-description-description = A brief description of what this channel is for.
 channel-options-title = Options
-channel-visibility-label = Visibility
-channel-ignore-label = Ignored by default
-channel-ignore-description = Hide posts in this channel from the Feed for all users, unless they explicitly follow it.
+channel-visibility-label = Feed Visibility
+channel-ignore-label = Ignore this channel by default
+channel-ignore-description = Hide posts in this channel from the feed for all users unless they explicitly follow it.
 channel-layout-title = Layout
 channel-layout-label = Layout
 channel-layout-show-author-label = Show post author
@@ -161,6 +161,7 @@ group-rules-remove-after-approval-label = Remove from group after approval
 group-permissions-title = Permissions
 group-global-permissions-title = Global Permissions
 group-structure-permissions-title = Structure Permissions
+group-structure-permission-ancestor-required-message = Grant view permission on every ancestor first.
 group-permission-suspend-users-label = Allow suspending users
 
 delete-group-confirm-message = Are you sure you want to delete this group?

@@ -4,7 +4,7 @@
 
 <x-waterhole::forum-layout
     :title="$title"
-    :channel="$post->channel"
+    :active-node="$post->channel->structure"
     show-sidebar
 >
     <div class="container section">

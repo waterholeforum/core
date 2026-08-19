@@ -6,11 +6,13 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 use Waterhole\Forms\Field;
 use Waterhole\Models\Channel;
+use Waterhole\Models\Page;
+use Waterhole\Models\StructureLink;
 
-class ChannelDescription extends Field
+class StructureDescription extends Field
 {
     public function __construct(
-        public ?Channel $model,
+        public Channel|Page|StructureLink|null $model,
     ) {}
 
     public function render(): string
@@ -18,8 +20,8 @@ class ChannelDescription extends Field
         return <<<'blade'
                 <x-waterhole::field
                     name="description"
-                    :label="__('waterhole::cp.channel-description-label')"
-                    :description="__('waterhole::cp.channel-description-description')"
+                    :label="__('waterhole::cp.structure-description-label')"
+                    :description="__('waterhole::cp.structure-description-description')"
                 >
                     <textarea
                         id="{{ $component->id }}"

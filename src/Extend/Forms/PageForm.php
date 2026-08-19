@@ -5,9 +5,11 @@ namespace Waterhole\Extend\Forms;
 use Waterhole\Extend\Support\ComponentList;
 use Waterhole\Forms\Fields\Icon;
 use Waterhole\Forms\Fields\PageBody;
-use Waterhole\Forms\Fields\PageName;
 use Waterhole\Forms\Fields\PageSlug;
 use Waterhole\Forms\Fields\Permissions;
+use Waterhole\Forms\Fields\StructureDescription;
+use Waterhole\Forms\Fields\StructureListing;
+use Waterhole\Forms\Fields\StructureName;
 use Waterhole\Forms\FormSection;
 
 /**
@@ -30,15 +32,16 @@ class PageForm extends ComponentList
         );
 
         $this->details = (new ComponentList())
-            ->add(PageName::class, 'name')
+            ->add(StructureName::class, 'name')
             ->add(PageSlug::class, 'slug')
             ->add(Icon::class, 'icon')
+            ->add(StructureDescription::class, 'description')
             ->add(PageBody::class, 'body');
 
         $this->add(
             fn($model) => new FormSection(
                 __('waterhole::cp.page-permissions-title'),
-                [new Permissions($model)],
+                [new Permissions($model), new StructureListing($model)],
                 open: false,
             ),
             'permissions',

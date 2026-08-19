@@ -2,10 +2,9 @@
     <hex-input
         alpha
         color="{{ $value }}"
-        class="input-container"
+        class="input-container color-picker__input-container"
         data-action="color-changed->color-picker#colorChanged"
         data-color-picker-target="input"
-        class="color-picker__input-container"
     >
         <span class="no-pointer">
             <span
@@ -18,10 +17,13 @@
         <input
             type="text"
             name="{{ $name }}"
-            value="{{ $value }}"
+            value="{{ ltrim($value ?? "", "#") }}"
+            @if ($placeholder)
+                placeholder="{{ $placeholder }}"
+            @endif
             id="{{ $id }}"
             class="color-picker__input"
-            maxlength="6"
+            maxlength="8"
             pattern="[0-9A-Fa-f]{3}|[0-9A-Fa-f]{4}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8}"
             data-action="focus->color-picker#show blur->color-picker#hide"
         />
@@ -29,7 +31,7 @@
 
     <hex-alpha-color-picker
         class="color-picker__picker"
-        color="{{ $value }}"
+        color="{{ $value ?: "#000000" }}"
         hidden
         data-action="color-changed->color-picker#colorChanged focus->color-picker#show blur->color-picker#hide"
         data-color-picker-target="picker"

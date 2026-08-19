@@ -8,7 +8,7 @@ import { slug } from '../../utils';
  * on the slug input. Target the slug input as `slug`, and any elements that
  * should mirror the slug value (eg. a URL preview) as `mirror`.
  *
- * For an example usage, see the `ChannelName` and `ChannelSlug` form fields.
+ * For an example usage, see the `StructureName` and `ChannelSlug` form fields.
  */
 export default class extends Controller {
     static targets = ['slug', 'mirror'];

@@ -4,6 +4,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Waterhole\Database\Seeders\GroupsSeeder;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Comment;
+use Waterhole\Models\Page;
 use Waterhole\Models\Post;
 use Waterhole\Models\User;
 
@@ -90,4 +91,20 @@ test('channel page includes seo tags', function () {
         ->assertSeeHtml('<meta property="og:title" content="SEO Channel - Waterhole" />')
         ->assertSeeHtml('<meta name="description" content="Channel description." />')
         ->assertSeeHtml('"@type":"CollectionPage"');
+});
+
+test('page description overrides its body in the header and seo tags', function () {
+    $page = Page::factory()
+        ->public()
+        ->create([
+            'name' => 'SEO Page',
+            'description' => 'A concise page description.',
+            'body' => 'Long-form page content.',
+        ]);
+
+    $this
+        ->get($page->url)
+        ->assertOk()
+        ->assertSee('A concise page description.')
+        ->assertSeeHtml('<meta name="description" content="A concise page description." />');
 });

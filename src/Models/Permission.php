@@ -3,7 +3,7 @@
 namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Support\Facades\Cache;
+use Waterhole\Permissions\PermissionRepository;
 
 /**
  * @property int $id
@@ -21,10 +21,9 @@ class Permission extends Model
 
     protected static function booting(): void
     {
-        $flushCache = function () {
-            Cache::forget('waterhole.permissions');
-            app()->forgetInstance('waterhole.permissions');
-        };
+        $flushCache = fn() => app()->resolved(PermissionRepository::class)
+            ? app(PermissionRepository::class)->flush()
+            : null;
 
         static::saved($flushCache);
         static::deleted($flushCache);
@@ -44,10 +43,5 @@ class Permission extends Model
     public function recipient(): MorphTo
     {
         return $this->morphTo();
-    }
-
-    public function newCollection(array $models = []): PermissionCollection
-    {
-        return new PermissionCollection($models);
     }
 }

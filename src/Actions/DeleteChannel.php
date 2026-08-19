@@ -3,6 +3,7 @@
 namespace Waterhole\Actions;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Waterhole\Models\Channel;
@@ -38,8 +39,20 @@ class DeleteChannel extends Action
     {
         $channel = $models[0];
         $postCount = $channel->posts()->count();
+        $hasChildren = $channel
+            ->structure()
+            ->firstOrFail()
+            ->children()
+            ->withoutGlobalScopes()
+            ->exists();
+        $destination = Channel::find(old('channel_id', request('channel_id')));
 
-        return view('waterhole::cp.structure.delete-channel', compact('channel', 'postCount'));
+        return view('waterhole::cp.structure.delete-channel', compact(
+            'channel',
+            'postCount',
+            'hasChildren',
+            'destination',
+        ));
     }
 
     public function confirmButton(Collection $models): string
@@ -55,11 +68,14 @@ class DeleteChannel extends Action
         ]);
 
         $models->each(function (Channel $channel) use ($data) {
-            if ($data['move_posts'] ?? false) {
-                $channel->posts()->update(['channel_id' => $data['channel_id']]);
-            }
+            DB::transaction(function () use ($channel, $data) {
+                if ($data['move_posts'] ?? false) {
+                    $channel->posts()->update(['channel_id' => $data['channel_id']]);
+                }
 
-            $channel->delete();
+                $channel->structure()->firstOrFail()->promoteChildren();
+                $channel->delete();
+            });
         });
     }
 }

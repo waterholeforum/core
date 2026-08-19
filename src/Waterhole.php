@@ -6,7 +6,7 @@ use Composer\InstalledVersions;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 use Throwable;
-use Waterhole\Models\PermissionCollection;
+use Waterhole\Permissions\PermissionRepository;
 
 abstract class Waterhole
 {
@@ -41,9 +41,9 @@ abstract class Waterhole
         return Route::currentRouteNamed('waterhole.api.*');
     }
 
-    public static function permissions(): PermissionCollection
+    public static function permissions(): PermissionRepository
     {
-        return app('waterhole.permissions');
+        return app(PermissionRepository::class);
     }
 
     public static function hasPendingMigrations(): bool

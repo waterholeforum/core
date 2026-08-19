@@ -43,6 +43,8 @@ class ActionsController extends Controller
         $models = $this->getModels($request);
         $action = $this->getAction($models, $request);
 
+        abort_unless($action->shouldConfirm($models), 404);
+
         return view('waterhole::actions.confirm', [
             'action' => $action,
             'actionable' => $request->input('actionable'),

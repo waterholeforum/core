@@ -1,12 +1,12 @@
 <x-waterhole::forum-layout
     :title="$channel->name"
-    :channel="$channel"
+    :active-node="$channel->structure"
     :data-channel="$channel->slug"
     show-sidebar
     :seo="[
         'description' => $channel->description_text,
-        'url' => route('waterhole.channels.show', compact('channel')),
-        'noindex' => !$channel->structure->is_listed,
+        'url' => $channel->url,
+        'noindex' => ! $channel->isListed(),
         'schema' => ['@type' => 'CollectionPage'],
     ]"
 >
@@ -18,9 +18,7 @@
         />
     </x-slot>
 
-    <x-waterhole::index :channel="$channel">
-        <h1 class="visually-hidden">{{ $channel->name }}</h1>
-
+    <x-waterhole::index :active-node="$channel->structure">
         <x-waterhole::post-feed :feed="$feed" :channel="$channel" />
     </x-waterhole::index>
 </x-waterhole::forum-layout>

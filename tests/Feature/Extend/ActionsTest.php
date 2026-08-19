@@ -25,6 +25,8 @@ beforeEach(function () {
 
 class ExtendTestAction extends Action
 {
+    public bool $confirm = true;
+
     public function authorize(?User $user, \Waterhole\Models\Model $model): bool
     {
         return true;

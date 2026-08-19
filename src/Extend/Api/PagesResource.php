@@ -23,17 +23,24 @@ class PagesResource extends Resource
 
         $this->endpoints->add(Endpoint\Show::make(), 'show');
 
-        $this->fields->add(Attribute::make('name')->type(Type\Str::make()), 'name')->add(
-            Attribute::make('iconHtml')
+        $this->fields
+            ->add(Attribute::make('name')->type(Type\Str::make()), 'name')
+            ->add(Attribute::make('iconHtml')
                 ->type(Type\Str::make()->format('html'))
                 ->nullable()
-                ->get(fn(Page $page) => icon($page->icon)),
-            'iconHtml',
-        )->add(
-            Attribute::make('bodyHtml')
-                ->type(Type\Str::make()->format('html'))
-                ->nullable(),
-            'bodyHtml',
-        )->add(Attribute::make('url')->type(Type\Str::make()->format('uri')), 'url');
+                ->get(fn(Page $page) => icon($page->icon)), 'iconHtml')
+            ->add(
+                Attribute::make('descriptionHtml')
+                    ->type(Type\Str::make()->format('html'))
+                    ->nullable(),
+                'descriptionHtml',
+            )
+            ->add(
+                Attribute::make('bodyHtml')
+                    ->type(Type\Str::make()->format('html'))
+                    ->nullable(),
+                'bodyHtml',
+            )
+            ->add(Attribute::make('url')->type(Type\Str::make()->format('uri')), 'url');
     }
 }

@@ -4,6 +4,12 @@
         <x-waterhole::channel-label :channel="$channel" />
     </h1>
 
+    @if ($hasChildren)
+        <p>
+            {{ __('waterhole::cp.delete-structure-children-promoted-message') }}
+        </p>
+    @endif
+
     @if ($postCount > 0)
         <div class="stack gap-sm">
             <label class="choice">
@@ -28,10 +34,10 @@
                 {{ __('waterhole::cp.move-to-channel-posts-label', ['count' => $postCount]) }}
             </label>
 
-            <x-waterhole::channel-picker
+            <x-waterhole::channel-select
                 name="channel_id"
+                :channel="$destination"
                 :exclude="[$channel->id]"
-                :value="request('channel_id')"
                 data-reveal-target="then"
                 data-reveal-value="1"
             />

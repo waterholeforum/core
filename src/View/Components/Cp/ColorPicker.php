@@ -10,8 +10,9 @@ class ColorPicker extends Component
         public ?string $name = null,
         public ?string $id = null,
         public ?string $value = null,
+        public ?string $placeholder = null,
     ) {
-        $this->value = '#' . ltrim($value, '#');
+        $this->value = $value ? '#' . ltrim($value, '#') : null;
     }
 
     public function render()

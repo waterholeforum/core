@@ -6,14 +6,13 @@ use Waterhole\Extend\Support\ComponentList;
 use Waterhole\View\Components\CreatePostButton;
 use Waterhole\View\Components\FeedFilters;
 use Waterhole\View\Components\FeedTopPeriod;
-use Waterhole\View\Components\PostFeedChannel;
 use Waterhole\View\Components\PostFeedPinned;
 use Waterhole\View\Components\PostFeedToolbar;
 use Waterhole\View\Components\Spacer;
 use Waterhole\View\Components\TagsFilter;
 
 /**
- * Header and toolbar components rendered with post feeds.
+ * Feed header and toolbar components rendered inside post feeds.
  *
  * Use this extender to add, remove, or reorder components rendered in this
  * region of the UI.
@@ -25,10 +24,10 @@ class PostFeed
 
     public function __construct()
     {
-        $this->header = (new ComponentList())->add(PostFeedChannel::class, 'channel')->add(
-            PostFeedPinned::class,
-            'pinned',
-        )->add(PostFeedToolbar::class, 'toolbar');
+        $this->header = (new ComponentList())->add(PostFeedPinned::class, 'pinned')->add(
+            PostFeedToolbar::class,
+            'toolbar',
+        );
 
         $this->toolbar = (new ComponentList())
             ->add(FeedFilters::class, 'filters')

@@ -25,6 +25,11 @@ class StructureHeading extends Model
         ]))->shouldCache();
     }
 
+    protected function structureAttributes(): array
+    {
+        return ['is_listed' => true];
+    }
+
     public static function rules(?StructureHeading $instance = null): array
     {
         return [

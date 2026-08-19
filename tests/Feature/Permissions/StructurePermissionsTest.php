@@ -6,6 +6,7 @@ use Waterhole\Database\Seeders\GroupsSeeder;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Page;
 use Waterhole\Models\Post;
+use Waterhole\Models\StructureHeading;
 use Waterhole\Models\StructureLink;
 use Waterhole\Models\User;
 use Waterhole\Waterhole;
@@ -32,6 +33,27 @@ describe('gate', function () {
         ]);
 
         expect(Gate::forUser(null)->allows('waterhole.channel.view', $channel))->toBeFalse();
+    });
+
+    test('ancestor permissions govern descendants after structure changes', function () {
+        $parent = Page::factory()->public()->create();
+        $channel = Channel::factory()->public()->create();
+        $channel->structure->update(['parent_id' => $parent->structure->id]);
+
+        $parent->savePermissions(['group:2' => ['view' => true]]);
+
+        expect(Waterhole::permissions()->can(null, 'view', $channel))->toBeFalse();
+
+        $parent->savePermissions(['group:1' => ['view' => true]]);
+
+        expect(Waterhole::permissions()->can(null, 'view', $channel))->toBeTrue();
+
+        $restricted = Page::factory()->create();
+        $channel->structure->update([
+            'parent_id' => $restricted->structure()->withoutGlobalScopes()->value('id'),
+        ]);
+
+        expect(Waterhole::permissions()->can(null, 'view', $channel))->toBeFalse();
     });
 });
 
@@ -106,10 +128,17 @@ describe('api', function () {
 });
 
 describe('forum', function () {
+    test('redirects guests to login when there is no public content', function () {
+        StructureHeading::create(['name' => 'Private Content']);
+        Channel::factory()->create();
+
+        $this->get(route('waterhole.home'))->assertRedirect(route('waterhole.login'));
+    });
+
     test('private channel is not visible', function () {
         $channel = Channel::factory()->create();
 
-        $this->get(route('waterhole.channels.show', ['channel' => $channel]))->assertNotFound();
+        $this->get($channel->url)->assertNotFound();
     });
 
     test('home feed hides posts in private channels', function () {
@@ -136,6 +165,6 @@ describe('forum', function () {
     test('private pages are not visible', function () {
         $page = Page::factory()->create();
 
-        $this->get(route('waterhole.page', ['page' => $page]))->assertNotFound();
+        $this->get($page->url)->assertNotFound();
     });
 });

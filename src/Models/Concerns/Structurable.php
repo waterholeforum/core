@@ -2,8 +2,9 @@
 
 namespace Waterhole\Models\Concerns;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use LogicException;
+use Waterhole\Models\Model;
 use Waterhole\Models\Structure;
 
 /**
@@ -25,12 +26,19 @@ trait Structurable
             $model
                 ->structure()
                 ->create([
-                    'position' => ($pos = Structure::max('position')) ? $pos + 1 : 0,
+                    'position' => Structure::nextPosition(null),
+                    ...$model->structureAttributes(),
                 ]);
         });
 
+        static::deleting(function (Model $model) {
+            if ($model->structure?->children()->withoutGlobalScopes()->exists()) {
+                throw new LogicException('Cannot delete a structure node with children.');
+            }
+        });
+
         static::deleted(function (Model $model) {
-            $model->structure()->delete();
+            $model->structure?->delete();
         });
     }
 
@@ -39,6 +47,21 @@ trait Structurable
      */
     public function structure(): MorphOne
     {
-        return $this->morphOne(Structure::class, 'content');
+        return $this->morphOne(Structure::class, 'content')->withoutGlobalScopes();
+    }
+
+    protected function structureAttributes(): array
+    {
+        return [];
+    }
+
+    public function permissionScope(string $ability): Model
+    {
+        return $ability === 'view' ? $this->structure : $this;
+    }
+
+    public function isListed(): bool
+    {
+        return $this->structure->isListed();
     }
 }

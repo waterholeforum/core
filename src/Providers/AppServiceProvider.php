@@ -75,6 +75,7 @@ class AppServiceProvider extends ServiceProvider
         Extend\Ui\CpAlerts::class,
         Extend\Ui\CpNav::class,
         Extend\Ui\DocumentHead::class,
+        Extend\Ui\HomePage::class,
         Extend\Ui\IndexPage::class,
         Extend\Ui\KeyboardShortcuts::class,
         Extend\Ui\Layout::class,

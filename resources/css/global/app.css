@@ -1,7 +1,7 @@
 @import '../system/system.css';
 
 @import '_auth.css';
-@import '_channel-card.css';
+@import '_structure-header.css';
 @import '_comment.css';
 @import '_composer.css';
 @import '_emoji.css';

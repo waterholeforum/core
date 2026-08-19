@@ -5,15 +5,13 @@ namespace Waterhole\Providers;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Auth\SessionGuard;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Socialite\Facades\Socialite;
 use Waterhole\Auth\GateCache;
 use Waterhole\Auth\Providers;
 use Waterhole\Auth\SsoProvider;
-use Waterhole\Models\Permission;
-use Waterhole\Models\PermissionCollection;
 use Waterhole\Models\User;
+use Waterhole\Permissions\PermissionRepository;
 use Waterhole\Policies;
 use Waterhole\Sso\WaterholeSso;
 use Waterhole\Waterhole;
@@ -29,9 +27,7 @@ class AuthServiceProvider extends ServiceProvider
             fn() => new Providers(config('waterhole.auth.providers')),
         );
 
-        $this->app->scoped('waterhole.permissions', fn() => Cache::rememberForever('waterhole.permissions', fn() => Permission::all()));
-
-        $this->app->alias('waterhole.permissions', PermissionCollection::class);
+        $this->app->scoped(PermissionRepository::class);
 
         $this->app->singleton(
             WaterholeSso::class,

@@ -14,7 +14,7 @@
     <x-waterhole::form
         :fields="$form->fields()"
         :method="isset($link) ? 'PATCH' : 'POST'"
-        action="{{ isset($link) ? route('waterhole.cp.structure.links.update', compact('link')) : route('waterhole.cp.structure.links.store') }}"
+        action="{{ isset($link) ? route('waterhole.cp.structure.links.update', compact('link')) : route('waterhole.cp.structure.links.store', ['parent_id' => request('parent_id')]) }}"
         enctype="multipart/form-data"
         data-controller="dirty-form"
     />

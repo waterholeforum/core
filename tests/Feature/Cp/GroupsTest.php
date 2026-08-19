@@ -3,7 +3,9 @@
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Waterhole\Actions\Delete;
 use Waterhole\Database\Seeders\GroupsSeeder;
+use Waterhole\Models\Channel;
 use Waterhole\Models\Group;
+use Waterhole\Models\Page;
 use Waterhole\Models\User;
 
 uses(RefreshDatabase::class);
@@ -124,5 +126,35 @@ describe('cp groups', function () {
             'scope_type' => 'user',
             'ability' => 'suspend',
         ]);
+    });
+
+    test('cannot grant structure permissions beneath a restricted parent', function () {
+        $group = Group::create(['name' => 'Permissions Group']);
+        $parent = Page::factory()->create();
+        $child = Channel::factory()->create();
+        $parentNode = $parent->structure()->withoutGlobalScopes()->firstOrFail();
+        $childNode = $child->structure()->withoutGlobalScopes()->firstOrFail();
+        $childNode->update(['parent_id' => $parentNode->id]);
+        $structureType = $parentNode->getMorphClass();
+
+        $this
+            ->actingAs(cpGroupsAdmin())
+            ->put(route('waterhole.cp.groups.update', $group), [
+                'name' => $group->name,
+                'icon' => ['type' => null],
+                'is_public' => 0,
+                'auto_assign' => 0,
+                'rules' => [
+                    'requires_approval' => 0,
+                    'remove_after_approval' => 0,
+                ],
+                'permissions' => [
+                    "$structureType:{$parentNode->id}" => ['view' => false],
+                    "$structureType:{$childNode->id}" => ['view' => true],
+                ],
+            ])
+            ->assertSessionHasErrors("permissions.$structureType:{$childNode->id}.view");
+
+        expect($group->permissions()->exists())->toBeFalse();
     });
 });

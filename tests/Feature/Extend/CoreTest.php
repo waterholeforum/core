@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\URL;
 use Waterhole\Database\Seeders\GroupsSeeder;
 use Waterhole\Extend;
 use Waterhole\Filters\Filter;
@@ -88,9 +87,7 @@ describe('Core extenders', function () {
 
         Post::factory()->for($channel)->create(['title' => 'Layout Post']);
 
-        $this->get(URL::route('waterhole.channels.show', $channel))->assertSee(
-            'extend-test-layout',
-        );
+        $this->get($channel->url)->assertSee('extend-test-layout');
     });
 
     test('add post filter', function () {
@@ -114,10 +111,7 @@ describe('Core extenders', function () {
 
         Post::factory()->for($channel)->create(['title' => 'Other Post']);
 
-        $response = $this->get(
-            URL::route('waterhole.channels.show', $channel) . '?filter='
-                . (new ExtendTestPostFilter())->handle(),
-        );
+        $response = $this->get($channel->url . '?filter=' . (new ExtendTestPostFilter())->handle());
 
         $response->assertSeeText(ExtendTestPostFilter::TITLE);
         $response->assertDontSeeText('Other Post');

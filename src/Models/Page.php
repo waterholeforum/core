@@ -15,6 +15,7 @@ use Waterhole\Models\Concerns\Structurable;
  * @property int $id
  * @property string $name
  * @property string $slug
+ * @property ?string $description
  * @property string $url
  * @property string $edit_url
  */
@@ -23,8 +24,9 @@ class Page extends Model
     use HasFactory;
     use HasBody;
     use HasIcon;
-    use HasPermissions;
-    use Structurable;
+    use HasPermissions, Structurable {
+        Structurable::permissionScope insteadof HasPermissions;
+    }
 
     public $timestamps = false;
 

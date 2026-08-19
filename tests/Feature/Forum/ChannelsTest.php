@@ -17,7 +17,7 @@ describe('taxonomy visibility', function () {
     test('private channel not visible to guests', function () {
         $channel = Channel::factory()->create();
 
-        $this->get(route('waterhole.channels.show', $channel))->assertNotFound();
+        $this->get($channel->url)->assertNotFound();
     });
 
     test('private channel visible to members with permission', function () {
@@ -28,7 +28,7 @@ describe('taxonomy visibility', function () {
 
         $user = User::factory()->create();
 
-        $this->actingAs($user)->get(route('waterhole.channels.show', $channel))->assertOk();
+        $this->actingAs($user)->get($channel->url)->assertOk();
     });
 });
 
@@ -51,7 +51,7 @@ describe('channel feeds', function () {
 
         $this
             ->actingAs($viewer)
-            ->get(route('waterhole.channels.show', $channel))
+            ->get($channel->url)
             ->assertOk()
             ->assertSeeText('Visible channel post')
             ->assertDontSeeText('Hidden channel post');
@@ -73,9 +73,6 @@ describe('channel feeds', function () {
             'last_activity_at' => now(),
         ]);
 
-        $this
-            ->get(route('waterhole.channels.show', $channel))
-            ->assertOk()
-            ->assertSeeInOrder(['Older post', 'Newer post']);
+        $this->get($channel->url)->assertOk()->assertSeeInOrder(['Older post', 'Newer post']);
     });
 });

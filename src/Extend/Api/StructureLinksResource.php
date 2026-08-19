@@ -25,11 +25,16 @@ class StructureLinksResource extends Resource
         $this->endpoints->add(Endpoint\Show::make(), 'show');
 
         $this->fields->add(Attribute::make('name')->type(Type\Str::make()), 'name')->add(
-            Attribute::make('iconHtml')
+            Attribute::make('descriptionHtml')
                 ->type(Type\Str::make()->format('html'))
-                ->nullable()
-                ->get(fn(StructureLink $link) => icon($link->icon)),
-            'iconHtml',
-        )->add(Attribute::make('href')->type(Type\Str::make()->format('uri')), 'href');
+                ->nullable(),
+            'descriptionHtml',
+        )->add(Attribute::make('iconHtml')
+            ->type(Type\Str::make()->format('html'))
+            ->nullable()
+            ->get(fn(StructureLink $link) => icon($link->icon)), 'iconHtml')->add(
+            Attribute::make('href')->type(Type\Str::make()->format('uri')),
+            'href',
+        );
     }
 }

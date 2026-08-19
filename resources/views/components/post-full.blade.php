@@ -3,7 +3,7 @@
     :hide="$post->trashed()"
     {{
     $attributes
-        ->class('card post-full')
+        ->class('card card--full post-full')
         ->merge(['data-shortcut-selection-key' => dom_id($post)])
         ->merge(request()->routeIs('waterhole.posts.show') ? ['data-shortcut-selection-default' => ''] : [])
         ->merge(resolve(Waterhole\Extend\Ui\PostAttributes::class)->build($post))

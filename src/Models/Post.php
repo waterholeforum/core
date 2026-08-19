@@ -24,6 +24,7 @@ use Waterhole\Models\Concerns\HasBody;
 use Waterhole\Models\Concerns\HasUserState;
 use Waterhole\Models\Concerns\NotificationContent;
 use Waterhole\Models\Concerns\Reactable;
+use Waterhole\Models\Enums\PinnedScope;
 use Waterhole\Notifications\Mention;
 use Waterhole\Notifications\NewPost as NewPostNotification;
 use Waterhole\View\Components;
@@ -42,7 +43,7 @@ use Waterhole\View\TurboStream;
  * @property int $score
  * @property bool $is_locked
  * @property null|int $answer_id
- * @property bool $is_pinned
+ * @property null|PinnedScope $pinned_scope
  * @property-read Channel $channel
  * @property-read null|User $user
  * @property-read null|User $deletedBy
@@ -76,7 +77,7 @@ class Post extends Model
         'edited_at' => 'datetime',
         'last_activity_at' => 'datetime',
         'is_locked' => 'boolean',
-        'is_pinned' => 'boolean',
+        'pinned_scope' => PinnedScope::class,
     ];
 
     public static function booting(): void
@@ -337,7 +338,7 @@ class Post extends Model
             TurboStream::replace(new Components\PostSidebar($this)),
         ];
 
-        if ($this->is_pinned) {
+        if ($this->pinned_scope) {
             $streams[] = TurboStream::replace(new Components\PinnedPost($this));
         }
 
@@ -354,7 +355,7 @@ class Post extends Model
             TurboStream::remove(new Components\PostCard($this)),
         ];
 
-        if ($this->is_pinned) {
+        if ($this->pinned_scope) {
             $streams[] = TurboStream::remove(new Components\PinnedPost($this));
         }
 

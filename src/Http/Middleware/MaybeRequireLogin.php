@@ -5,10 +5,8 @@ namespace Waterhole\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Waterhole\Models\Channel;
-use Waterhole\Models\Page;
-use Waterhole\Models\PermissionCollection;
-use Waterhole\Models\StructureLink;
+use Waterhole\Models\Structure;
+use Waterhole\Models\StructureHeading;
 
 /**
  * Middleware to require guests to log in if there are no structure items
@@ -16,19 +14,15 @@ use Waterhole\Models\StructureLink;
  */
 class MaybeRequireLogin
 {
-    public function __construct(
-        protected PermissionCollection $permissions,
-    ) {}
-
     public function handle(Request $request, Closure $next)
     {
         if (
             Auth::guest()
-            && (
-                !$this->permissions->can(null, 'view', Channel::class)
-                && !$this->permissions->can(null, 'view', Page::class)
-                && !$this->permissions->can(null, 'view', StructureLink::class)
-            )
+            && !Structure::where(
+                'content_type',
+                '!=',
+                (new StructureHeading())->getMorphClass(),
+            )->exists()
         ) {
             return redirect()->route('waterhole.login');
         }

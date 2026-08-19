@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\URL;
 use Waterhole\Database\Seeders\GroupsSeeder;
 use Waterhole\Extend;
 use Waterhole\Models\Channel;
@@ -28,7 +27,7 @@ describe('Query extenders', function () {
         Post::factory()->for($channel)->create(['title' => 'Other Post']);
 
         $this
-            ->get(URL::route('waterhole.channels.show', $channel))
+            ->get($channel->url)
             ->assertSeeText('Extend Test Feed Scope')
             ->assertDontSeeText('Other Post');
     });
@@ -46,7 +45,7 @@ describe('Query extenders', function () {
         Post::factory()->for($channel)->create(['title' => 'Visible Post']);
 
         $this
-            ->get(URL::route('waterhole.channels.show', $channel))
+            ->get($channel->url)
             ->assertSeeText('Visible Post')
             ->assertDontSeeText('Extend Test Hidden');
     });

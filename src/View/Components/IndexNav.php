@@ -17,33 +17,34 @@ class IndexNav extends Component
     public Collection $nav;
 
     public function __construct(
-        public ?Channel $channel = null,
+        public ?Structure $activeNode = null,
     ) {
-        $this->channel = $channel?->exists ? $channel : null;
+        $activeRoot = $this->activeNode?->rootAncestorOrSelf()->first();
 
         $structure = Structure::query()
-            ->where('is_listed', true)
+            ->isRoot()
+            ->listed()
             ->with('content')
-            ->orderBy('position')
+            ->inSiblingOrder()
             ->get()
             ->filter(fn(Structure $node) => $node->content);
 
         $this->nav = collect([
             new NavLink(
-                label: __('waterhole::forum.feed-link'),
-                icon: 'tabler-news',
+                label: __('waterhole::forum.home-link'),
+                icon: 'tabler-home',
                 route: 'waterhole.home',
-                active: fn() => !$this->channel && request()->routeIs('waterhole.home'),
+                active: request()->routeIs('waterhole.home') && !$this->activeNode,
             ),
-            ...$structure->map(function (Structure $node) {
+            ...$structure->map(function (Structure $node) use ($activeRoot) {
                 if ($node->content instanceof StructureHeading) {
                     return new NavHeading($node->content->name ?: '');
-                } elseif ($node->content instanceof Channel) {
+                } elseif ($node->content instanceof Channel || $node->content instanceof Page) {
                     return new NavLink(
                         label: $node->content->name,
                         icon: $node->content->icon,
                         href: $node->content->url,
-                        active: $this->channel?->is($node->content),
+                        active: $activeRoot?->is($node),
                     );
                 } elseif ($node->content instanceof StructureLink) {
                     return (new NavLink(
@@ -52,12 +53,6 @@ class IndexNav extends Component
                         href: $node->content->href,
                     ))->withAttributes(
                         is_absolute_url($node->content->href) ? ['target' => '_blank'] : [],
-                    );
-                } elseif ($node->content instanceof Page) {
-                    return new NavLink(
-                        label: $node->content->name,
-                        icon: $node->content->icon,
-                        href: $node->content->url,
                     );
                 }
 

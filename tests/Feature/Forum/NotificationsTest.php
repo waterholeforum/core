@@ -6,6 +6,8 @@ use Waterhole\Database\Seeders\DefaultSeeder;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Flag;
+use Waterhole\Models\Group;
+use Waterhole\Models\Page;
 use Waterhole\Models\Post;
 use Waterhole\Models\Reaction;
 use Waterhole\Models\ReactionType;
@@ -112,6 +114,36 @@ describe('notification types', function () {
         ]);
 
         NotificationFacade::assertSentTo($moderator, NewFlag::class);
+    });
+
+    test('only notifies moderators who can view the channel', function () {
+        $parent = Page::factory()->create();
+        $channel = Channel::factory()->create();
+        $channel->structure->update(['parent_id' => $parent->structure->id]);
+        $visibleModerator = User::factory()->create();
+        $hiddenModerator = User::factory()->create();
+        $moderators = Group::create(['name' => 'Channel Moderators']);
+        $visibleModerator->groups()->attach($moderators);
+        $hiddenModerator->groups()->attach($moderators);
+        $parent->savePermissions([
+            "user:{$visibleModerator->id}" => ['view' => true],
+        ]);
+        $channel->savePermissions([
+            "group:{$moderators->id}" => ['view' => true, 'moderate' => true],
+        ]);
+        $post = Post::factory()->for($channel)->create();
+        $reporter = User::factory()->admin()->create();
+
+        $this->actingAs($reporter);
+        Flag::create([
+            'subject_type' => $post->getMorphClass(),
+            'subject_id' => $post->id,
+            'reason' => 'spam',
+            'created_by' => $reporter->id,
+        ]);
+
+        NotificationFacade::assertSentTo($visibleModerator, NewFlag::class);
+        NotificationFacade::assertNotSentTo($hiddenModerator, NewFlag::class);
     });
 });
 

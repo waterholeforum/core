@@ -30,9 +30,10 @@ return [
     | Post Filters
     |--------------------------------------------------------------------------
     |
-    | Here you can configure which filters are available on the forum index.
-    | The first one will be used as the default. This can be overridden for
-    | individual channels in the Structure section of the Control Panel.
+    | These filters are available on the home and channel post feeds. The
+    | first filter is selected initially. You can customize the available
+    | filters for individual channels in the Structure section of the Control
+    | Panel.
     |
     */
 
@@ -49,9 +50,9 @@ return [
     | Post Layout
     |--------------------------------------------------------------------------
     |
-    | Here you can specify which post layout is used on the forum index. This
-    | can be overridden for individual channels in the Structure section of
-    | the Control Panel.
+    | This is the layout used for the home and channel post feeds. You can
+    | choose a different layout for individual channels in the Structure
+    | section of the Control Panel.
     |
     */
 

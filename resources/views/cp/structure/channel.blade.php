@@ -14,7 +14,7 @@
     <x-waterhole::form
         :fields="$form->fields()"
         :method="isset($channel) ? 'PATCH' : 'POST'"
-        action="{{ isset($channel) ? route('waterhole.cp.structure.channels.update', compact('channel')) : route('waterhole.cp.structure.channels.store') }}"
+        action="{{ isset($channel) ? route('waterhole.cp.structure.channels.update', compact('channel')) : route('waterhole.cp.structure.channels.store', ['parent_id' => request('parent_id')]) }}"
         enctype="multipart/form-data"
         data-controller="dirty-form slugger"
     />

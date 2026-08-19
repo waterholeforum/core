@@ -5,18 +5,19 @@ namespace Waterhole\Extend\Forms;
 use Waterhole\Extend\Support\ComponentList;
 use Waterhole\Forms\Fields\ChannelAnswers;
 use Waterhole\Forms\Fields\ChannelApproval;
-use Waterhole\Forms\Fields\ChannelDescription;
 use Waterhole\Forms\Fields\ChannelFilters;
 use Waterhole\Forms\Fields\ChannelIgnore;
 use Waterhole\Forms\Fields\ChannelInstructions;
 use Waterhole\Forms\Fields\ChannelLayout;
-use Waterhole\Forms\Fields\ChannelName;
 use Waterhole\Forms\Fields\ChannelReactions;
 use Waterhole\Forms\Fields\ChannelSimilarPosts;
 use Waterhole\Forms\Fields\ChannelSlug;
 use Waterhole\Forms\Fields\ChannelTaxonomies;
 use Waterhole\Forms\Fields\Icon;
 use Waterhole\Forms\Fields\Permissions;
+use Waterhole\Forms\Fields\StructureDescription;
+use Waterhole\Forms\Fields\StructureListing;
+use Waterhole\Forms\Fields\StructureName;
 use Waterhole\Forms\FormSection;
 
 /**
@@ -43,11 +44,10 @@ class ChannelForm extends ComponentList
         );
 
         $this->details = (new ComponentList())
-            ->add(ChannelName::class, 'name')
+            ->add(StructureName::class, 'name')
             ->add(ChannelSlug::class, 'slug')
             ->add(Icon::class, 'icon')
-            ->add(ChannelDescription::class, 'description')
-            ->add(ChannelIgnore::class, 'ignore');
+            ->add(StructureDescription::class, 'description');
 
         $this->add(
             fn($model) => new FormSection(
@@ -100,9 +100,10 @@ class ChannelForm extends ComponentList
             'permissions',
         );
 
-        $this->permissions = (new ComponentList())->add(Permissions::class, 'permissions')->add(
-            ChannelApproval::class,
-            'approval',
-        );
+        $this->permissions = (new ComponentList())
+            ->add(Permissions::class, 'permissions')
+            ->add(ChannelIgnore::class, 'ignore')
+            ->add(StructureListing::class, 'listing')
+            ->add(ChannelApproval::class, 'approval');
     }
 }

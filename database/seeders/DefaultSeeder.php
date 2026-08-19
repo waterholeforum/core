@@ -38,6 +38,7 @@ class DefaultSeeder extends Seeder
 
         if ($guide->wasRecentlyCreated) {
             $guide
+                ->structure
                 ->permissions()
                 ->save(
                     (new Permission(['ability' => 'view']))
@@ -160,11 +161,17 @@ class DefaultSeeder extends Seeder
 
             if ($channel->wasRecentlyCreated) {
                 $channel
+                    ->structure
                     ->permissions()
-                    ->saveMany([
+                    ->save(
                         (new Permission(['ability' => 'view']))
                             ->recipient()
                             ->associate($data['group'] ?? $guest),
+                    );
+
+                $channel
+                    ->permissions()
+                    ->saveMany([
                         (new Permission(['ability' => 'post']))
                             ->recipient()
                             ->associate($data['group_post'] ?? $data['group'] ?? $member),
@@ -176,10 +183,7 @@ class DefaultSeeder extends Seeder
                             ->associate($mod),
                     ]);
 
-                $channel
-                    ->structure()
-                    ->withoutGlobalScope('hasVisibleContent')
-                    ->update(['is_listed' => true]);
+                $channel->structure->update(['is_listed' => true]);
             }
         }
     }

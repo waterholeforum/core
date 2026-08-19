@@ -6,10 +6,10 @@ import { Controller } from '@hotwired/stimulus';
  * @internal
  */
 export default class extends Controller<HTMLElement> {
-    private disabled?: HTMLInputElement[];
+    private fixedDisabled: HTMLInputElement[] = [];
 
     connect() {
-        this.disabled = Array.from(
+        this.fixedDisabled = Array.from(
             this.element.querySelectorAll('input:disabled'),
         );
         this.update();
@@ -64,14 +64,8 @@ export default class extends Controller<HTMLElement> {
                         index + 1
                     }) input[type="checkbox"]`,
                 ),
-            ).filter((checkbox) => !this.disabled?.includes(checkbox));
-
-            const checked = !checkboxes.find(
-                (checkbox) =>
-                    !checkbox.disabled &&
-                    checkbox.getAttribute('aria-disabled') !== 'true',
-            )?.checked;
-            checkboxes.forEach((el) => (el.checked = checked));
+            ).filter((checkbox) => !this.fixedDisabled.includes(checkbox));
+            this.toggle(checkboxes);
         }
 
         if (target.closest('tbody th')) {
@@ -81,18 +75,22 @@ export default class extends Controller<HTMLElement> {
                     .querySelectorAll<HTMLInputElement>(
                         `td input[type="checkbox"]`,
                     ),
-            ).filter((checkbox) => !this.disabled?.includes(checkbox));
-
-            const checked = !checkboxes.find(
-                (checkbox) =>
-                    !checkbox.disabled &&
-                    checkbox.getAttribute('aria-disabled') !== 'true',
-            )?.checked;
-            checkboxes.forEach((el) => (el.checked = checked));
+            ).filter((checkbox) => !this.fixedDisabled.includes(checkbox));
+            this.toggle(checkboxes);
         }
 
         this.update();
     };
+
+    private toggle(checkboxes: HTMLInputElement[]) {
+        const checked = !checkboxes.find(
+            (checkbox) =>
+                !checkbox.disabled &&
+                checkbox.getAttribute('aria-disabled') !== 'true',
+        )?.checked;
+
+        checkboxes.forEach((checkbox) => (checkbox.checked = checked));
+    }
 
     update() {
         this.element
@@ -100,7 +98,7 @@ export default class extends Controller<HTMLElement> {
                 'tbody td input[type="checkbox"]',
             )
             .forEach((checkbox) => {
-                if (!this.disabled?.includes(checkbox)) {
+                if (!this.fixedDisabled.includes(checkbox)) {
                     checkbox.disabled = false;
                 }
             });
@@ -115,9 +113,7 @@ export default class extends Controller<HTMLElement> {
                     .split(/\s+/)
                     .filter(Boolean)
                     .forEach((name) => {
-                        const ref = document.querySelector<HTMLInputElement>(
-                            `[name="${name}"]:last-of-type`,
-                        );
+                        const ref = this.input(name);
                         if (ref && ref.checked) {
                             el.checked = true;
                             el.disabled = true;
@@ -129,14 +125,20 @@ export default class extends Controller<HTMLElement> {
                     .split(/\s+/)
                     .filter(Boolean)
                     .forEach((name) => {
-                        const ref = document.querySelector<HTMLInputElement>(
-                            `[name="${name}"]:last-of-type`,
-                        );
+                        const ref = this.input(name);
                         if (ref && !ref.checked) {
                             el.checked = false;
                             el.disabled = true;
                         }
                     });
             });
+    }
+
+    private input(name: string) {
+        return Array.from(document.getElementsByName(name))
+            .filter((element): element is HTMLInputElement =>
+                element.matches('input'),
+            )
+            .at(-1);
     }
 }

@@ -3,8 +3,8 @@
 namespace Waterhole\Models\Concerns;
 
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Support\Facades\Cache;
 use Waterhole\Models\Permission;
+use Waterhole\Permissions\PermissionRepository;
 
 /**
  * Methods to manage permissions that are granted to a model.
@@ -12,7 +12,7 @@ use Waterhole\Models\Permission;
  * This trait is distinct from `HasPermissions` in that it is for models that
  * take action (users and groups), rather than models that can be acted *upon*.
  *
- * @property-read \Waterhole\Models\PermissionCollection $permissions
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Permission> $permissions
  */
 trait ReceivesPermissions
 {
@@ -38,9 +38,7 @@ trait ReceivesPermissions
     public function savePermissions(?array $grid): void
     {
         $this->permissions()->delete();
-
-        Cache::forget('waterhole.permissions');
-        app()->forgetInstance('waterhole.permissions');
+        app(PermissionRepository::class)->flush();
 
         if (!$grid) {
             return;

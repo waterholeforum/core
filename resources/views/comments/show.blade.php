@@ -8,7 +8,7 @@
         'description' => $comment->body_text,
         'url' => $comment->post_url,
         'type' => 'article',
-        'noindex' => ! $post->channel->structure->is_listed,
+        'noindex' => ! $post->channel->isListed(),
         'schema' => false,
     ]"
 >
@@ -51,10 +51,7 @@
             <header class="stack gap-xs">
                 <ol class="breadcrumb">
                     <li>
-                        <a
-                            href="{{ $comment->post_url }}"
-                            class="inline-block"
-                        >
+                        <a href="{{ $comment->post_url }}">
                             {{ Waterhole\emojify($post->title) }}
                         </a>
                     </li>

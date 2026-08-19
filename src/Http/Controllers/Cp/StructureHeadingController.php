@@ -4,6 +4,7 @@ namespace Waterhole\Http\Controllers\Cp;
 
 use Illuminate\Http\Request;
 use Waterhole\Http\Controllers\Controller;
+use Waterhole\Http\Controllers\Cp\Concerns\CreatesStructureChildren;
 use Waterhole\Models\StructureHeading;
 
 use function Waterhole\internal_url;
@@ -15,14 +16,20 @@ use function Waterhole\internal_url;
  */
 class StructureHeadingController extends Controller
 {
-    public function create()
+    use CreatesStructureChildren;
+
+    public function create(Request $request)
     {
+        $this->structureParent($request);
+
         return view('waterhole::cp.structure.heading');
     }
 
     public function store(Request $request)
     {
-        StructureHeading::create($request->validate(StructureHeading::rules()));
+        $parent = $this->structureParent($request);
+        $heading = StructureHeading::create($request->validate(StructureHeading::rules()));
+        $this->appendToStructureParent($heading->structure, $parent);
 
         return redirect(internal_url($request->input('return'), route('waterhole.cp.structure')));
     }

@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Support\Facades\Auth;
+use Waterhole\Models\Structure;
 use Waterhole\Models\User;
+use Waterhole\Permissions\PermissionRepository;
 
 /**
  * Scope to restrict model visibility according to the permission system.
@@ -36,14 +38,15 @@ class PermittedScope implements Scope
             return;
         }
 
-        $model = $this->model ?: $model;
-
-        // If the list of IDs is null, then the user must be an administrator,
-        // and therefore there are no restrictions to apply.
-        if (!is_null($ids = $model::allPermitted($user, $this->ability))) {
-            $qualifier = $model instanceof Model ? $model : new $model();
-
-            $builder->whereIn($qualifier->qualifyColumn($this->key), $ids);
+        if ($user?->isAdmin()) {
+            return;
         }
+
+        $scope = $this->model ?: $model::class;
+        $qualifier = new $scope();
+        $ids = app(PermissionRepository::class)->ids($user, $this->ability, $scope);
+        $column = $scope === Structure::class ? $this->key : $qualifier->qualifyColumn($this->key);
+
+        $builder->whereIntegerInRaw($column, $ids);
     }
 }

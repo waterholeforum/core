@@ -5,8 +5,10 @@ namespace Waterhole\Extend\Forms;
 use Waterhole\Extend\Support\ComponentList;
 use Waterhole\Forms\Fields\Icon;
 use Waterhole\Forms\Fields\Permissions;
+use Waterhole\Forms\Fields\StructureDescription;
 use Waterhole\Forms\Fields\StructureLinkName;
 use Waterhole\Forms\Fields\StructureLinkUrl;
+use Waterhole\Forms\Fields\StructureListing;
 use Waterhole\Forms\FormSection;
 
 /**
@@ -28,15 +30,16 @@ class StructureLinkForm extends ComponentList
             'details',
         );
 
-        $this->details = (new ComponentList())->add(StructureLinkName::class, 'name')->add(
-            Icon::class,
-            'icon',
-        )->add(StructureLinkUrl::class, 'url');
+        $this->details = (new ComponentList())
+            ->add(StructureLinkName::class, 'name')
+            ->add(Icon::class, 'icon')
+            ->add(StructureLinkUrl::class, 'url')
+            ->add(StructureDescription::class, 'description');
 
         $this->add(
             fn($model) => new FormSection(
                 __('waterhole::cp.link-permissions-title'),
-                [new Permissions($model)],
+                [new Permissions($model), new StructureListing($model)],
                 open: false,
             ),
             'permissions',

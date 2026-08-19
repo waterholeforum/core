@@ -74,7 +74,7 @@
                             />
                         </div>
 
-                        <div class="card search-results post-list">
+                        <div class="card card--full search-results post-list">
                             <x-waterhole::infinite-scroll
                                 :paginator="$hits"
                                 divider

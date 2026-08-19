@@ -89,7 +89,12 @@ class PostsResource extends Resource
             ->add(Attribute::make('commentCount')->type(Type\Integer::make()), 'commentCount')
             ->add(Attribute::make('viewCount')->type(Type\Integer::make()), 'viewCount')
             ->add(Attribute::make('isLocked')->type(Type\Boolean::make()), 'isLocked')
-            ->add(Attribute::make('isPinned')->type(Type\Boolean::make()), 'isPinned')
+            ->add(
+                Attribute::make('pinnedScope')
+                    ->type(Type\Str::make())
+                    ->nullable(),
+                'pinnedScope',
+            )
             ->add(Attribute::make('url')->type(Type\Str::make()->format('uri')), 'url')
             ->add(ToOne::make('channel')->includable(), 'channel')
             ->add(ToOne::make('user')->includable()->nullable(), 'user')
@@ -138,7 +143,7 @@ class PostsResource extends Resource
             ->add(Scope::make('following'), 'following')
             ->add(Scope::make('ignoring'), 'ignoring')
             ->add(Where::make('isLocked')->asBoolean(), 'isLocked')
-            ->add(Where::make('isPinned')->asBoolean(), 'isPinned')
+            ->add(Where::make('pinnedScope'), 'pinnedScope')
             ->add(WhereNull::make('isTrashed')->column('deleted_at'), 'isTrashed')
             ->add(WhereBelongsTo::make('channel'), 'channel')
             ->add(WhereBelongsTo::make('user'), 'user')

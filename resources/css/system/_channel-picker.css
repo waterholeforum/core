@@ -16,3 +16,22 @@
     }
   }
 }
+
+.channel-picker__children {
+  margin-inline-start: var(--space-md);
+  padding-inline-start: var(--space-sm);
+  border-inline-start: 2px solid var(--color-fill);
+  margin-bottom: var(--space-sm);
+}
+
+.channel-picker__branch > summary {
+  list-style: none;
+}
+
+.channel-picker__branch > summary::-webkit-details-marker {
+  display: none;
+}
+
+.channel-picker__branch[open] > summary .icon-tabler-chevron-right {
+  transform: rotate(90deg);
+}

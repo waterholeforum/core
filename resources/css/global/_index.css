@@ -8,3 +8,7 @@
 .index-footer {
   margin-top: var(--space-lg);
 }
+
+.structure-children__items {
+  --grid-min: 30ch;
+}

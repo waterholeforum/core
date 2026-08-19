@@ -12,6 +12,8 @@ use Waterhole\Actions\TrashPost;
 use Waterhole\Database\Seeders\GroupsSeeder;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Comment;
+use Waterhole\Models\Enums\PinnedScope;
+use Waterhole\Models\Page;
 use Waterhole\Models\Post;
 use Waterhole\Models\PostDraft;
 use Waterhole\Models\User;
@@ -26,14 +28,39 @@ beforeEach(function () {
 });
 
 describe('create post', function () {
+    test('chooses a channel before showing the form', function () {
+        $page = Page::factory()->public()->create(['name' => 'Support']);
+        $page->structure->update(['is_listed' => true]);
+        $parent = Channel::factory()->readOnly()->create(['name' => 'Products']);
+        $parent->structure->update([
+            'parent_id' => $page->structure->id,
+            'is_listed' => true,
+        ]);
+        $child = Channel::factory()->public()->create(['name' => 'Questions']);
+        $child->structure->update([
+            'parent_id' => $parent->structure->id,
+            'is_listed' => true,
+        ]);
+
+        $this
+            ->actingAs(User::factory()->create())
+            ->get(route('waterhole.posts.create'))
+            ->assertOk()
+            ->assertSeeInOrder(['Support', 'Products', 'Questions'])
+            ->assertDontSee('value="' . $parent->id . '"', false)
+            ->assertSee('value="' . $child->id . '"', false)
+            ->assertDontSee('name="title"', false);
+    });
+
     test('shows post create form', function () {
-        $channel = Channel::factory()->public()->create();
+        $channel = Channel::factory()->public()->create(['name' => 'General']);
         $user = User::factory()->create();
 
         $this
             ->actingAs($user)
             ->get(route('waterhole.posts.create', ['channel_id' => $channel->id]))
             ->assertOk()
+            ->assertSee('General')
             ->assertSee('name="title"', false)
             ->assertSee('name="body"', false);
     });
@@ -386,9 +413,13 @@ describe('delete post', function () {
 });
 
 describe('pin and unpin post', function () {
-    test('moderator can pin and unpin post', function () {
+    test('moderator can only pin a post in its channel and unpin it', function () {
         $channel = Channel::factory()->public()->create();
-        $moderator = User::factory()->admin()->create();
+        $moderator = User::factory()->create();
+        $channel->savePermissions([
+            'group:1' => ['view' => true],
+            "user:{$moderator->id}" => ['moderate' => true],
+        ]);
 
         $post = Post::factory()->for($channel)->create();
 
@@ -396,9 +427,10 @@ describe('pin and unpin post', function () {
             'actionable' => Post::class,
             'id' => $post->id,
             'action_class' => Pin::class,
+            'pinned_scope' => PinnedScope::Global->value,
         ])->assertRedirect();
 
-        expect($post->fresh()->is_pinned)->toBeTrue();
+        expect($post->fresh()->pinned_scope)->toBe(PinnedScope::Channel);
 
         $this->actingAs($moderator)->post(route('waterhole.actions.store'), [
             'actionable' => Post::class,
@@ -406,26 +438,60 @@ describe('pin and unpin post', function () {
             'action_class' => Pin::class,
         ])->assertRedirect();
 
-        expect($post->fresh()->is_pinned)->toBeFalse();
+        expect($post->fresh()->pinned_scope)->toBeNull();
     });
 
-    test('pinned post influences feed ordering', function () {
+    test('admin can pin a post across the community', function () {
         $channel = Channel::factory()->public()->create();
-        $moderator = User::factory()->admin()->create();
+        $admin = User::factory()->admin()->create();
 
-        $pinned = Post::factory()->for($channel)->create(['title' => 'Pinned Post']);
-        $other = Post::factory()->for($channel)->create(['title' => 'Other Post']);
+        $post = Post::factory()->for($channel)->create([
+            'title' => 'Global Pinned Post',
+            'last_activity_at' => now()->subDay(),
+        ]);
+        Post::factory()->for($channel)->create([
+            'title' => 'Newer Post',
+            'last_activity_at' => now(),
+        ]);
 
-        $this->actingAs($moderator)->post(route('waterhole.actions.store'), [
+        $this->actingAs($admin)->post(route('waterhole.actions.store'), [
             'actionable' => Post::class,
-            'id' => $pinned->id,
+            'id' => $post->id,
             'action_class' => Pin::class,
+            'confirmed' => true,
+            'pinned_scope' => PinnedScope::Global->value,
+        ]);
+
+        expect($post->fresh()->pinned_scope)->toBe(PinnedScope::Global);
+
+        $this
+            ->get(route('waterhole.home'))
+            ->assertOk()
+            ->assertSeeInOrder(['Global Pinned Post', 'Newer Post']);
+    });
+
+    test('channel pins stay in their channel feed', function () {
+        $channel = Channel::factory()->public()->create();
+
+        $pinned = Post::factory()->for($channel)->create([
+            'title' => 'Channel Pinned Post',
+            'pinned_scope' => PinnedScope::Channel,
+            'last_activity_at' => now()->subDay(),
+        ]);
+        Post::factory()->for($channel)->create([
+            'title' => 'Newer Post',
+            'last_activity_at' => now(),
         ]);
 
         $this
             ->get(route('waterhole.home'))
             ->assertOk()
-            ->assertSeeInOrder(['Pinned Post', 'Other Post']);
+            ->assertSeeInOrder(['Newer Post', 'Channel Pinned Post']);
+
+        $this
+            ->get($channel->url)
+            ->assertOk()
+            ->assertSeeInOrder(['Channel Pinned Post', 'Newer Post']);
     });
 });
 
@@ -570,15 +636,9 @@ describe('move post between channels', function () {
             'confirmed' => true,
         ]);
 
-        $this
-            ->get(route('waterhole.channels.show', $channelA))
-            ->assertOk()
-            ->assertDontSeeText('Moved Post');
+        $this->get($channelA->url)->assertOk()->assertDontSeeText('Moved Post');
 
-        $this
-            ->get(route('waterhole.channels.show', $channelB))
-            ->assertOk()
-            ->assertSeeText('Moved Post');
+        $this->get($channelB->url)->assertOk()->assertSeeText('Moved Post');
     });
 });
 

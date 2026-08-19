@@ -16,14 +16,18 @@
 >
     @icon($icon)
 
-    @empty($description)
+    @if ($description === null)
         {{ $label }}
     @else
         <span>
             <span class="menu-item__title">{{ $label }}</span>
-            <span class="menu-item__description">{{ $description }}</span>
+            @if (filled($description))
+                <span class="menu-item__description">
+                    {{ $description }}
+                </span>
+            @endif
         </span>
-    @endempty
+    @endif
 
     @if ($shortcut)
         <x-waterhole::shortcut-label

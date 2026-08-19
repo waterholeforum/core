@@ -13,7 +13,7 @@
 
     <x-waterhole::form
         :method="isset($heading) ? 'PATCH' : 'POST'"
-        action="{{ isset($heading) ? route('waterhole.cp.structure.headings.update', compact('heading')) : route('waterhole.cp.structure.headings.store') }}"
+        action="{{ isset($heading) ? route('waterhole.cp.structure.headings.update', compact('heading')) : route('waterhole.cp.structure.headings.store', ['parent_id' => request('parent_id')]) }}"
         data-controller="dirty-form"
     >
         <div class="card">

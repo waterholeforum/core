@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\DB;
 use Waterhole\Models\Group;
+use Waterhole\Models\Model;
 use Waterhole\Models\Permission;
-use Waterhole\Models\PermissionCollection;
 use Waterhole\Models\User;
 use Waterhole\Scopes\PermittedScope;
 use Waterhole\Waterhole;
@@ -19,7 +19,7 @@ use Waterhole\Waterhole;
  * that can be acted *upon*, rather than models that take the action (users
  * and groups).
  *
- * @property-read PermissionCollection $permissions
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Permission> $permissions
  */
 trait HasPermissions
 {
@@ -57,29 +57,47 @@ trait HasPermissions
         return ['view'];
     }
 
+    public function permissionScope(string $ability): Model
+    {
+        return $this;
+    }
+
     /**
      * Save the permissions to the database.
      */
     public function savePermissions(?array $grid): void
     {
-        $this->permissions()->delete();
+        $scopeKey = fn(Model $scope) => $scope->getMorphClass() . ':' . $scope->getKey();
+
+        collect($this->abilities())
+            ->map(fn(string $ability) => $this->permissionScope($ability))
+            ->unique($scopeKey)
+            ->each(fn(Model $scope) => $scope->permissions()->delete());
 
         if (!$grid) {
             return;
         }
 
-        $this->permissions()->createMany(collect($grid)->flatMap(function ($abilities, $recipient) {
+        $permissions = [];
+
+        foreach ($grid as $recipient => $abilities) {
             [$type, $id] = explode(':', $recipient) + [null, null];
 
-            return collect($abilities)
-                ->filter()
-                ->map(fn($v, $ability) => [
+            foreach (array_keys(array_filter($abilities)) as $ability) {
+                $scope = $this->permissionScope($ability);
+                $key = $scopeKey($scope);
+                $permissions[$key]['scope'] = $scope;
+                $permissions[$key]['attributes'][] = [
                     'recipient_type' => $type,
                     'recipient_id' => $id,
                     'ability' => $ability,
-                ])
-                ->values();
-        }));
+                ];
+            }
+        }
+
+        foreach ($permissions as $group) {
+            $group['scope']->permissions()->createMany($group['attributes']);
+        }
     }
 
     public function isPublic(string $ability = 'view'): bool
@@ -96,7 +114,7 @@ trait HasPermissions
             return null;
         }
 
-        $permissions = Waterhole::permissions()->scope($this)->where('ability', $ability);
+        $permissions = $this->permissionScope($ability)->permissions()->where('ability', $ability);
 
         $groupIds = $permissions
             ->where('recipient_type', (new Group())->getMorphClass())
@@ -112,7 +130,10 @@ trait HasPermissions
 
         $userIds = $groupUserIds->merge($userIds)->unique()->values();
 
-        return User::with('groups')->findMany($userIds);
+        return User::with('groups')
+            ->findMany($userIds)
+            ->filter(fn(User $user) => Waterhole::permissions()->can($user, $ability, $this))
+            ->values();
     }
 
     /**

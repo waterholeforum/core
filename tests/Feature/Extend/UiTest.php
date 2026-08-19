@@ -18,6 +18,14 @@ beforeEach(function () {
 });
 
 describe('Ui extenders', function () {
+    test('extend home page components', function () {
+        extend(function (Extend\Ui\HomePage $home) {
+            $home->add(new HtmlString('Extend Home Page'), 'test', -10);
+        });
+
+        $this->actingAs(User::factory()->create())->get('/')->assertSeeText('Extend Home Page');
+    });
+
     test('extend index page components', function () {
         extend(function (Extend\Ui\IndexPage $index) {
             $index->sidebar->add(new HtmlString('Extend Index Sidebar'));

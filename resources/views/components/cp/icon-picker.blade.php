@@ -61,12 +61,31 @@
             data-reveal-target="then"
             data-reveal-value="svg"
         >
-            <input
-                type="text"
-                list="icons"
-                name="{{ $name }}[svg]"
-                @if ($type === 'svg') value="{{ $content }}" @endif
-            />
+            <div class="row gap-sm align-start">
+                <label class="grow">
+                    <span class="visually-hidden">
+                        {{ __('waterhole::system.icon-picker-svg-name-label') }}
+                    </span>
+                    <input
+                        type="text"
+                        list="icons"
+                        name="{{ $name }}[svg]"
+                        placeholder="{{ __('waterhole::system.icon-picker-svg-name-label') }}"
+                        @if ($type === 'svg') value="{{ $content }}" @endif
+                    />
+                </label>
+
+                <label>
+                    <span class="visually-hidden">
+                        {{ __('waterhole::system.icon-picker-color-label') }}
+                    </span>
+                    <x-waterhole::cp.color-picker
+                        name="{{ $name }}[color]"
+                        :value="$color"
+                        :placeholder="__('waterhole::system.icon-picker-color-label')"
+                    />
+                </label>
+            </div>
 
             <div class="field__description">
                 {{

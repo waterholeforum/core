@@ -13,7 +13,12 @@
     color: var(--color-muted);
   }
 
-  [aria-current='page'] {
+  :where(a) {
+    display: inline-block;
+    color: inherit;
+  }
+
+  [aria-current] {
     color: var(--color-text);
   }
 }

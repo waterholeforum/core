@@ -5,50 +5,27 @@
 <x-waterhole::forum-layout :title="$title">
     <div class="container section">
         @if (! $form->model->channel)
-            <form
-                method="POST"
-                action="{{ route('waterhole.posts.store') }}"
-                data-controller="draft dirty-form"
-                data-action="
-                    input->draft#queue
-                    change->draft#queue
-                    focusout->draft#saveNow
-                    turbo:submit-start->draft#submitStart
-                    turbo:submit-end->draft#submitEnd
-                    draft:saved->dirty-form#markClean
-                "
-            >
-                @csrf
-
-                <x-waterhole::dialog class="measure" :title="$title">
+            <x-waterhole::dialog class="measure" :title="$title">
+                <form
+                    action="{{ route('waterhole.posts.create') }}"
+                    method="get"
+                >
                     <x-waterhole::channel-picker
                         id="channel_id"
                         name="channel_id"
                         show-links
                     />
-                </x-waterhole::dialog>
-            </form>
+                </form>
+            </x-waterhole::dialog>
         @else
             <x-waterhole::dialog class="measure" :title="$title">
-                <x-slot name="header">
-                    <ui-popup placement="bottom-start">
-                        <button class="btn" type="button">
-                            <x-waterhole::channel-label
-                                :channel="$form->model->channel"
-                            />
-                            @icon('tabler-selector')
-                        </button>
-
-                        <ui-menu class="menu menu--lg" hidden>
-                            <x-waterhole::channel-picker
-                                id="channel_id"
-                                name="channel_id"
-                                :value="$form->model->channel_id"
-                                form="post-create-form"
-                                show-links
-                            />
-                        </ui-menu>
-                    </ui-popup>
+                <x-slot:header>
+                    <x-waterhole::channel-select
+                        name="channel_id"
+                        :channel="$form->model->channel"
+                        form="post-create-form"
+                        show-links
+                    />
                 </x-slot>
 
                 <x-waterhole::form

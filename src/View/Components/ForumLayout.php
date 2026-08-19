@@ -3,7 +3,7 @@
 namespace Waterhole\View\Components;
 
 use Illuminate\View\Component;
-use Waterhole\Models\Channel;
+use Waterhole\Models\Structure;
 
 class ForumLayout extends Component
 {
@@ -11,7 +11,7 @@ class ForumLayout extends Component
         public ?string $title = null,
         public array $assets = [],
         public array $seo = [],
-        public ?Channel $channel = null,
+        public ?Structure $activeNode = null,
         public bool $showSidebar = false,
     ) {}
 

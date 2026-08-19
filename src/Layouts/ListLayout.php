@@ -18,7 +18,7 @@ class ListLayout extends Layout
 
     public function wrapperClass(): string
     {
-        return 'post-list card';
+        return 'post-list card card--full';
     }
 
     public function itemComponent(): string

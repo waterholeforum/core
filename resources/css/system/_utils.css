@@ -170,6 +170,16 @@
   );
 }
 
+.switcher {
+  display: flex;
+  flex-wrap: wrap;
+
+  > * {
+    flex-grow: 1;
+    flex-basis: calc((var(--switcher-threshold, var(--measure)) - 100%) * 999);
+  }
+}
+
 .block {
   display: block;
   width: 100%;

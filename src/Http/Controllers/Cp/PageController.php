@@ -5,6 +5,7 @@ namespace Waterhole\Http\Controllers\Cp;
 use Illuminate\Http\Request;
 use Waterhole\Forms\PageForm;
 use Waterhole\Http\Controllers\Controller;
+use Waterhole\Http\Controllers\Cp\Concerns\CreatesStructureChildren;
 use Waterhole\Models\Page;
 
 use function Waterhole\internal_url;
@@ -16,8 +17,11 @@ use function Waterhole\internal_url;
  */
 class PageController extends Controller
 {
-    public function create()
+    use CreatesStructureChildren;
+
+    public function create(Request $request)
     {
+        $this->structureParent($request);
         $form = $this->form(new Page());
 
         return view('waterhole::cp.structure.page', compact('form'));
@@ -25,7 +29,9 @@ class PageController extends Controller
 
     public function store(Request $request)
     {
-        $this->form(new Page())->submit($request);
+        $parent = $this->structureParent($request);
+        $this->form($page = new Page())->submit($request);
+        $this->appendToStructureParent($page->structure, $parent);
 
         return redirect(internal_url($request->input('return'), route('waterhole.cp.structure')));
     }

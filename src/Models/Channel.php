@@ -16,7 +16,7 @@ use Waterhole\Models\Concerns\HasPermissions;
 use Waterhole\Models\Concerns\HasUserState;
 use Waterhole\Models\Concerns\Structurable;
 use Waterhole\Models\Concerns\UsesFormatter;
-use Waterhole\View\Components\PostFeedChannel;
+use Waterhole\View\Components\StructureHeader;
 use Waterhole\View\TurboStream;
 
 /**
@@ -51,9 +51,10 @@ class Channel extends Model
     use HasFactory;
     use Followable;
     use HasIcon;
-    use HasPermissions;
+    use HasPermissions, Structurable {
+        Structurable::permissionScope insteadof HasPermissions;
+    }
     use HasUserState;
-    use Structurable;
     use UsesFormatter;
 
     public $timestamps = false;
@@ -200,6 +201,6 @@ class Channel extends Model
      */
     public function streamUpdated(): array
     {
-        return [TurboStream::replace(new PostFeedChannel($this))];
+        return [TurboStream::replace(new StructureHeader($this))];
     }
 }

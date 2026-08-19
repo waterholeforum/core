@@ -31,11 +31,11 @@ class PageBody extends Field
 
     public function validating(Validator $validator): void
     {
-        $validator->addRules(['body' => ['required', 'string']]);
+        $validator->addRules(['body' => ['nullable', 'string']]);
     }
 
     public function saving(FormRequest $request): void
     {
-        $this->model->body = $request->validated('body');
+        $this->model->body = $request->validated('body') ?? '';
     }
 }

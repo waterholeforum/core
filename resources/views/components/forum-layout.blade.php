@@ -10,7 +10,7 @@
 
     @if (config('waterhole.design.global_sidebar'))
         <x-slot:sidebar>
-            @components(resolve(\Waterhole\Extend\Ui\IndexPage::class)->sidebar, compact('channel'))
+            @components(resolve(\Waterhole\Extend\Ui\IndexPage::class)->sidebar, compact('activeNode'))
         </x-slot>
     @endif
 

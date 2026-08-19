@@ -125,8 +125,10 @@ icon-picker-none-option = None
 icon-picker-emoji-option = Emoji
 icon-picker-emoji-description = Enter a single emoji character.
 icon-picker-svg-option = SVG Icon
+icon-picker-svg-name-label = Icon Name
 icon-picker-svg-description = Enter the name of an icon from one of the following installed sets: { $sets }.
 icon-picker-svg-search-link = Search icons
+icon-picker-color-label = Color
 icon-picker-image-option = Image
 
 ## Abilities

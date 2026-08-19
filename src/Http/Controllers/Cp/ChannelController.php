@@ -5,6 +5,7 @@ namespace Waterhole\Http\Controllers\Cp;
 use Illuminate\Http\Request;
 use Waterhole\Forms\ChannelForm;
 use Waterhole\Http\Controllers\Controller;
+use Waterhole\Http\Controllers\Cp\Concerns\CreatesStructureChildren;
 use Waterhole\Models\Channel;
 
 use function Waterhole\internal_url;
@@ -16,8 +17,11 @@ use function Waterhole\internal_url;
  */
 class ChannelController extends Controller
 {
-    public function create()
+    use CreatesStructureChildren;
+
+    public function create(Request $request)
     {
+        $this->structureParent($request);
         $form = $this->form(new Channel());
 
         return view('waterhole::cp.structure.channel', compact('form'));
@@ -25,7 +29,9 @@ class ChannelController extends Controller
 
     public function store(Request $request)
     {
-        $this->form(new Channel())->submit($request);
+        $parent = $this->structureParent($request);
+        $this->form($channel = new Channel())->submit($request);
+        $this->appendToStructureParent($channel->structure, $parent);
 
         return redirect(internal_url($request->input('return'), route('waterhole.cp.structure')));
     }

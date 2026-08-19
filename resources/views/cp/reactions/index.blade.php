@@ -10,7 +10,7 @@
                 type="button"
                 class="btn bg-accent"
             >
-                @icon('tabler-plus')
+                @icon('tabler-circle-plus')
                 <span>
                     {{ __('waterhole::cp.create-reaction-set-button') }}
                 </span>

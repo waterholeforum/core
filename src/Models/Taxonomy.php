@@ -4,7 +4,6 @@ namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Auth;
 use Waterhole\Models\Concerns\HasPermissions;
 
 /**
@@ -20,15 +19,6 @@ use Waterhole\Models\Concerns\HasPermissions;
 class Taxonomy extends Model
 {
     use HasPermissions;
-
-    protected static function booted(): void
-    {
-        static::addGlobalScope(function ($query) {
-            if ($ids = static::allPermitted(Auth::user())) {
-                $query->whereKey($ids);
-            }
-        });
-    }
 
     public function tags(): HasMany
     {

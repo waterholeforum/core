@@ -15,6 +15,7 @@ use Waterhole\Models\Channel;
 use Waterhole\Models\Comment;
 use Waterhole\Models\Page;
 use Waterhole\Models\Post;
+use Waterhole\Models\StructureLink;
 use Waterhole\Models\User;
 
 class FormatterServiceProvider extends ServiceProvider
@@ -87,9 +88,11 @@ class FormatterServiceProvider extends ServiceProvider
 
         Comment::setFormatter('body', $formatter);
         Page::setFormatter('body', $formatter);
+        Page::setFormatter('description', $formatter);
         Post::setFormatter('body', $formatter);
         Channel::setFormatter('description', $formatter);
         Channel::setFormatter('instructions', $formatter);
+        StructureLink::setFormatter('description', $formatter);
         User::setFormatter('bio', $formatter);
     }
 

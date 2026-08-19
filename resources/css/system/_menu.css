@@ -38,10 +38,10 @@
 
   @mixin clickable;
 
-  &:not(.is-inert):is(
+  &:not(.is-inert, .is-active, [aria-current='page'], [aria-checked='true']):is(
       :hover,
       .is-hovered,
-      :focus,
+      :focus-visible,
       .is-focused,
       [aria-selected='true']
     ) {

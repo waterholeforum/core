@@ -18,9 +18,15 @@ class GroupController extends Controller
 {
     public function index()
     {
-        $groups = Group::withCount('users')->get();
+        $systemGroups = Group::withCount('users')->whereKey([
+            Group::GUEST_ID,
+            Group::MEMBER_ID,
+            Group::ADMIN_ID,
+        ])->get();
 
-        return view('waterhole::cp.groups.index', compact('groups'));
+        $customGroups = Group::withCount('users')->custom()->orderBy('name')->paginate(50);
+
+        return view('waterhole::cp.groups.index', compact('systemGroups', 'customGroups'));
     }
 
     public function create()

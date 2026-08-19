@@ -6,18 +6,22 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Waterhole\Models\Concerns\HasIcon;
 use Waterhole\Models\Concerns\HasPermissions;
 use Waterhole\Models\Concerns\Structurable;
+use Waterhole\Models\Concerns\UsesFormatter;
 
 /**
  * @property int $id
  * @property string $name
+ * @property ?string $description
  * @property string $href
  * @property-read string $edit_url
  */
 class StructureLink extends Model
 {
     use HasIcon;
-    use HasPermissions;
-    use Structurable;
+    use HasPermissions, Structurable {
+        Structurable::permissionScope insteadof HasPermissions;
+    }
+    use UsesFormatter;
 
     public $timestamps = false;
 

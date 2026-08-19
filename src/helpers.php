@@ -219,6 +219,18 @@ function icon(?string $icon, array $attributes = []): string
 
     if (str_starts_with($icon, 'svg:')) {
         $icon = substr($icon, 4);
+
+        if (preg_match(
+            '/^(.+):([a-f0-9]{3}|[a-f0-9]{4}|[a-f0-9]{6}|[a-f0-9]{8})$/i',
+            $icon,
+            $matches,
+        )) {
+            $icon = $matches[1];
+            $attributes['style'] = trim(
+                ($attributes['style'] ?? '') . '; color: #' . $matches[2],
+                '; ',
+            );
+        }
     }
 
     $attributes['class'] .= " icon-$icon";

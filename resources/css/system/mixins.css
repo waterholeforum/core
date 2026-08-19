@@ -11,7 +11,13 @@
   &:not(:disabled, .is-disabled, .is-inert) {
     cursor: pointer;
 
-    &:is(:hover, .is-hovered, :focus, .is-focused, [aria-selected='true']) {
+    &:is(
+      :hover,
+      .is-hovered,
+      :focus-visible,
+      .is-focused,
+      [aria-selected='true']
+    ) {
       filter: var(--filter-hover);
     }
 

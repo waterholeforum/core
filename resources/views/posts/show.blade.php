@@ -6,14 +6,14 @@
 
 <x-waterhole::forum-layout
     :title="$post->title"
-    :channel="$post->channel"
+    :active-node="$post->channel->structure"
     show-sidebar
     :seo="[
         'description' => $post->body_text,
         'url' => $post->url,
         'type' => 'article',
         'image' => $ogImage,
-        'noindex' => ! $post->channel->structure->is_listed,
+        'noindex' => ! $post->channel->isListed(),
         'schema' => false,
     ]"
 >
@@ -27,6 +27,15 @@
         {{ new Illuminate\View\ComponentAttributeBag(resolve(\Waterhole\Extend\Ui\PostAttributes::class)->build($post)) }}
     >
         <meta itemprop="commentCount" content="{{ $post->comment_count }}" />
+        <span
+            itemprop="isPartOf"
+            itemscope
+            itemtype="https://schema.org/CollectionPage"
+            hidden
+        >
+            <meta itemprop="name" content="{{ $post->channel->name }}" />
+            <link itemprop="url" href="{{ $post->channel->url }}" />
+        </span>
 
         <div class="stack gap-xl measure">
             <div
@@ -52,7 +61,7 @@
                     :paginator="$comments"
                     divider
                     endless
-                    class="post-page__comments-list comment-list card"
+                    class="post-page__comments-list comment-list card card--full"
                 >
                     @foreach ($comments as $i => $comment)
                         @if ($lastReadAt && $comment->created_at > $lastReadAt)
