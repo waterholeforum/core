@@ -71,13 +71,13 @@
                         @if ($date)
                             <div>
                                 <small>{{ __('waterhole::forum.attribution-timestamp-created-label') }}</small>
-                                {{ $date->toDayDateTimeString() }}
+                                {{ $date->locale(app()->getLocale())->isoFormat('llll') }}
                             </div>
                         @endif
                         @if ($editDate)
                             <div>
                                 <small>{{ __('waterhole::forum.attribution-timestamp-edited-label') }}</small>
-                                {{ $editDate->toDayDateTimeString() }}
+                                {{ $editDate->locale(app()->getLocale())->isoFormat('llll') }}
                             </div>
                         @endif
                     </ui-tooltip>
