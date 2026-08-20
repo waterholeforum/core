@@ -2,15 +2,15 @@
 
 feed-link = 動態消息
 
-### Header
+## Header
 
 log-in = 登入
 register = 註冊
 
-### Search
+## Search
 
 search-placeholder = 站內文章搜尋
-search-results-title = 「{ $query }」的搜尋結果
+search-results-title = "{ $query }" 的搜尋結果
 search-button = 搜尋
 
 search-filter-button = 篩選
@@ -32,7 +32,7 @@ search-sort-top = 熱門排序
 search-empty-message = 找不到結果
 search-keywords-too-short-message = 您的關鍵字太短了，請嘗試使用更長的關鍵字。
 
-### Posts
+## Posts
 
 post-activity-replied = 回覆於
 post-activity-posted = 發佈於
@@ -41,8 +41,6 @@ post-new-badge = 新
 post-new-badge-tooltip = 新的貼文
 post-locked-badge = 已鎖定
 post-answered-badge = 已回答
-post-saved-badge = 已儲存
-post-draft-badge = 草稿
 post-trash-badge = 已刪除
 
 post-removed-message = 貼文已移除
@@ -80,7 +78,6 @@ move-to-channel-confirm-button = 移動
 mark-as-read-button = 標記為已讀
 
 create-post-button = 發表文章
-resume-draft-button = 繼續編輯草稿
 create-post-title = 新增文章
 post-channel-label = 頻道
 post-submit-button = 發表
@@ -106,25 +103,10 @@ move-to-trash-button = 移至回收桶
 restore-button = 還原
 delete-forever-button = 永久刪除
 
-### Comments
+## Comments
 
 comments-unread-heading = 未讀
 comments-unread-link = 未讀
-comments-time-gap-heading =
-    { $unit ->
-        [year] { $count ->
-            [one] { $count } 年後
-            *[other] { $count } 年後
-        }
-        [month] { $count ->
-            [one] { $count } 個月後
-            *[other] { $count } 個月後
-        }
-        *[day] { $count ->
-            [one] { $count } 天後
-            *[other] { $count } 天後
-        }
-    }
 
 create-comment-title = 發表評論
 edit-comment-title = 編輯評論
@@ -140,39 +122,22 @@ mark-as-answer-button = 標記為最佳答案
 unmark-as-answer-button = 取消最佳答案
 comment-answer-badge = 最佳答案
 
-highlight-comment-button = 標記重點
-unhighlight-comment-button = 取消重點標記
-comment-highlighted-badge = 重點
-comment-highlighted-tooltip = 重點留言
-highlighted-comments-tooltip = 共 { $count } 則重點留言
-
-comment-post-author-badge = 作者
-
 comments-locked-message = 評論已鎖定。
 lock-comments-button = 鎖定評論
 unlock-comments-button = 解鎖評論
 
 composer-placeholder = 撰寫評論…
-composer-guest-placeholder = 請登入以留言
 composer-reply-to-placeholder = 回覆 { $userName }…
 composer-replying-to-label = 正在回覆
 composer-clear-reply-button = 清除
-composer-collapse-button = 收起
-composer-expand-button = 展開
 composer-submit = 發表
-
-save-draft-button = 儲存草稿
-discard-draft-button = 捨棄草稿
-draft-saving-message = 儲存中…
-draft-saved-message = 已儲存
-draft-error-message = 儲存失敗
 
 delete-comment-confirm-message = 您確定要刪除此評論嗎？
 
 comment-removed-message = 評論已移除
 comment-removed-tooltip = { $user } 已移除 { $timestamp }
 
-### Moderation
+## Moderation
 
 remove-button = 移除
 removed-by-label = 移除者
@@ -213,26 +178,16 @@ moderation-finished-message = 都處理完了。
 
 pending-approval-title = 等待核准
 
-### Misc
+## Misc
 
 quote-button = 引用
 
-attribution-timestamp-created-label = 發佈於
-attribution-timestamp-edited-label = 編輯於
+attribution-timestamp-created-label = 發佈
+attribution-timestamp-edited-label = 已編輯
 
-save-button = 儲存
-unsave-button = 取消儲存
-saved-button = 已儲存
-
-saved-title = 已儲存
-saved-empty-message = 沒有已儲存的內容
-saved-empty-description = 使用 { $icon } 儲存動作來保存內容供日後參考。
-saved-comment-title = 在 { $post } 中的評論
-
-### Filters
+## Filters
 
 filter-alphabetical = 字母順序
-filter-drafts = 草稿
 filter-following = 追蹤中
 filter-ignoring = 已忽略
 filter-newest = 近期主題
@@ -248,7 +203,7 @@ filter-top-day = 今日
 filter-trending = 流行趨勢
 filter-trash = 回收筒
 
-### Followables
+## Followables
 
 follow-button = 追蹤
 follow-button-following = 追蹤中
@@ -264,7 +219,7 @@ post-follow-description = 此貼文有新留言時通知我。
 post-following-badge = 追蹤中
 post-ignored-badge = 已忽略
 
-### Index
+## Index
 
 menu-button = 選單
 navigation-title = 論壇導覽
