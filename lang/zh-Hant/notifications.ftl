@@ -45,20 +45,6 @@ flagged-comment-title = 評論已被檢舉於 { $post }
 new-flag-reason = 您收到此通知是因為您管理某個頻道。
 new-flag-unsubscribe = 取消訂閱檢舉通知
 
-## Reactions
-
-reaction-description = 我的貼文和評論收到的表情反應
-reaction-post-title =
-    { $count ->
-        [one] 1 個表情反應於 { $post }
-       *[other] { $count } 個表情反應於 { $post }
-    }
-reaction-comment-title =
-    { $count ->
-        [one] 1 個表情反應於您在 { $post } 中的評論
-       *[other] { $count } 個表情反應於您在 { $post } 中的評論
-    }
-
 ## Content Removed
 
 post-removed-title = 貼文已移除：{ $post }
