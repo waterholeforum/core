@@ -257,8 +257,7 @@ abstract class Notification extends BaseNotification implements ShouldQueue
     }
 
     /**
-     * Load additional relationships onto the notifications models before
-     * displaying the notification list.
+     * Load additional relationships onto notification models before displaying them.
      */
     public static function load(Collection $notifications): void {}
 }

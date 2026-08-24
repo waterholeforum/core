@@ -116,6 +116,33 @@ describe('notification types', function () {
 });
 
 describe('notifications ui', function () {
+    test('renders grouped reaction count', function () {
+        $recipient = User::factory()->create();
+        $post = Post::factory()->for(Channel::factory()->public())->create();
+        $comment = Comment::factory()->for($post)->create([
+            'user_id' => $recipient->id,
+        ]);
+        $reactionType = ReactionType::query()->firstOrFail();
+
+        foreach (User::factory()->count(2)->create() as $reactor) {
+            Reaction::create([
+                'content_type' => $comment->getMorphClass(),
+                'content_id' => $comment->id,
+                'reaction_type_id' => $reactionType->id,
+                'user_id' => $reactor->id,
+            ]);
+        }
+
+        $notification = $recipient->notifications()->latest()->firstOrFail();
+
+        $this
+            ->actingAs($recipient)
+            ->get(route('waterhole.notifications.show', $notification))
+            ->assertOk()
+            ->assertSeeText(['2', 'reactions on your comment in', $post->title])
+            ->assertDontSee('{$count}', false);
+    });
+
     test('redirects a comment reaction notification to the comment', function () {
         $recipient = User::factory()->create();
         $reactor = User::factory()->create();

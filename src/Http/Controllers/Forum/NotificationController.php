@@ -57,6 +57,8 @@ class NotificationController extends Controller
 
     public function show(Notification $notification)
     {
+        $notification->type::load(new Collection([$notification]));
+
         return Blade::renderComponent(new NotificationComponent($notification));
     }
 
