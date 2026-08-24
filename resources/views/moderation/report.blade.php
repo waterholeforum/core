@@ -34,6 +34,5 @@
         rows="3"
         placeholder="{{ __('waterhole::forum.report-note-placeholder') }}"
     >
-{{ old('note') }}</textarea
-    >
+{{ old('note') }}</textarea>
 </div>

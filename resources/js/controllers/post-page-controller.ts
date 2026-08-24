@@ -99,8 +99,7 @@ export default class extends Controller {
 
     private onScrollspyChange = (event: Event) => {
         const active = (event as CustomEvent).detail?.active as
-            | HTMLElement
-            | undefined;
+            HTMLElement | undefined;
 
         if (!active?.classList.contains('comments-pagination__page-link')) {
             return;
