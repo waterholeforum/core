@@ -1,14 +1,18 @@
 // Composer container
 .composer {
   --composer-viewport-offset: 0px;
+  --composer-max-height: max(
+    0px,
+    calc(
+      100vh - var(--header-height) - var(--space-md) - max(
+          var(--space-md),
+          var(--safe-area-bottom)
+        ) - var(--composer-viewport-offset)
+    )
+  );
 
   transform-origin: bottom;
-  max-height: calc(
-    100vh - var(--header-height) - var(--space-md) - max(
-        var(--space-md),
-        var(--safe-area-bottom)
-      ) - var(--composer-viewport-offset)
-  );
+  max-height: var(--composer-max-height);
   border-radius: var(--radius);
 }
 
@@ -31,6 +35,8 @@
 .composer__inner {
   background: var(--color-bg);
   border-radius: inherit;
+  height: 100%;
+  overflow: hidden;
   transition: box-shadow var(--transition-duration);
 }
 
@@ -130,7 +136,7 @@
 
 .composer.is-open {
   z-index: calc(var(--z-index-floating) + 1);
-  min-height: 250px;
+  min-height: min(250px, var(--composer-max-height));
 
   .composer__expand,
   .composer__placeholder {
@@ -214,11 +220,14 @@
 }
 
 .composer__toolbar {
+  flex-shrink: 0;
   padding: var(--space-xxs);
   border-bottom: 1px solid var(--color-stroke);
 }
 
 .composer__form {
+  min-height: 0;
+
   .text-editor {
     min-height: 0;
     border: 0;
@@ -226,9 +235,14 @@
     transform-origin: bottom;
   }
 
+  .text-editor__content,
+  .text-editor__expander {
+    min-height: 0;
+  }
+
   .text-editor__input {
     resize: none;
-    max-height: calc(50vh - var(--header-height) - 2 * var(--space-md));
-    min-height: 100px;
+    max-height: none;
+    min-height: 0;
   }
 }
