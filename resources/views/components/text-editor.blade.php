@@ -39,6 +39,7 @@
     <div class="text-editor__content grow stack">
         <text-expander
             keys="@"
+            multiword="@"
             data-controller="mentions"
             data-mentions-user-lookup-url-value="{{ $userLookupUrl }}"
             class="text-editor__expander grow stack"

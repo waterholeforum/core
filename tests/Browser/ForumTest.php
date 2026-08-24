@@ -52,6 +52,33 @@ describe('forum', function () {
         ]);
     });
 
+    test('mentions users with multiword names', function () {
+        $channel = Channel::factory()->public()->create();
+        $user = User::factory()->create([
+            'password' => Hash::make('Password123!'),
+            'email_verified_at' => now(),
+        ]);
+
+        $mentionable = User::factory()->create(['name' => 'Lookup User']);
+        User::factory()->create(['name' => 'Lookup Other']);
+
+        visit(route('waterhole.login'))
+            ->fill('email', $user->email)
+            ->fill('password', 'Password123!')
+            ->click('button[type="submit"]');
+
+        visit(route('waterhole.posts.create', ['channel_id' => $channel->id]))
+            ->fill('body', '@Lookup U')
+            ->assertSeeIn('[role="listbox"]', 'Lookup User')
+            ->assertDontSeeIn('[role="listbox"]', 'Lookup Other')
+            ->keys('body', 'Enter')
+            ->assertValue('body', "@Lookup\xc2\xa0User ")
+            ->click('button[data-text-editor-target="previewButton"]')
+            ->assertPresent(
+                '.text-editor__preview .mention--user[data-user-id="' . $mentionable->id . '"]',
+            );
+    });
+
     test('reacts to post', function () {
         $reactionSet = ReactionSet::create([
             'name' => 'Browser Reactions',
