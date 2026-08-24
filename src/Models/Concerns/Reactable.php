@@ -40,7 +40,19 @@ trait Reactable
             ->where('reactions.content_type', $this->getMorphClass())
             ->select('reaction_types.*', 'reactions.content_type', 'reactions.content_id')
             ->selectRaw('count(*) as count')
-            ->groupBy('reaction_types.id', 'reactions.content_type', 'reactions.content_id');
+            // MariaDB does not infer functional dependencies for ONLY_FULL_GROUP_BY.
+            ->groupBy([
+                'reaction_types.id',
+                'reaction_types.reaction_set_id',
+                'reaction_types.name',
+                'reaction_types.icon',
+                'reaction_types.score',
+                'reaction_types.position',
+                'reaction_types.created_at',
+                'reaction_types.updated_at',
+                'reactions.content_type',
+                'reactions.content_id',
+            ]);
 
         if ($user = Auth::user()) {
             $userId = $relation->getGrammar()->wrap('reactions.user_id');

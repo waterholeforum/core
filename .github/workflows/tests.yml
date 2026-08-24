@@ -6,16 +6,6 @@ jobs:
   tests:
     runs-on: ubuntu-latest
 
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: waterhole_test
-        ports:
-          - 33306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
     strategy:
       fail-fast: true
       matrix:
@@ -47,13 +37,78 @@ jobs:
 
       - name: Run tests
         run: vendor/bin/pest
-        env:
-          DB_PORT: ${{ job.services.mysql.ports[3306] }}
-          DB_USERNAME: root
 
       - name: Upload screenshots on failure
         uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: screenshots
+          path: tests/Browser/Screenshots/
+
+  databases:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - name: MySQL 8.0
+            image: mysql:8.0
+            connection: mysql
+            healthcheck: mysqladmin ping
+          - name: MariaDB 11.4
+            image: mariadb:11.4
+            connection: mariadb
+            healthcheck: healthcheck.sh --connect --innodb_initialized
+
+    services:
+      database:
+        image: ${{ matrix.image }}
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: waterhole_test
+          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: yes
+          MARIADB_DATABASE: waterhole_test
+        ports:
+          - 3306/tcp
+        options: --health-cmd="${{ matrix.healthcheck }}" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    name: PHP 8.5 / ${{ matrix.name }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.5
+          coverage: none
+
+      - name: Install dependencies
+        run: composer update --prefer-dist --no-interaction --no-progress
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          cache: true
+
+      - name: Install Playwright
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm exec playwright install
+
+      - name: Run tests
+        run: vendor/bin/pest
+        env:
+          DB_CONNECTION: ${{ matrix.connection }}
+          DB_HOST: 127.0.0.1
+          DB_PORT: ${{ job.services.database.ports[3306] }}
+          DB_DATABASE: waterhole_test
+          DB_USERNAME: root
+
+      - name: Upload screenshots on failure
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: screenshots-${{ matrix.connection }}
           path: tests/Browser/Screenshots/
