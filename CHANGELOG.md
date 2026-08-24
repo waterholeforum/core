@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Improve how the image lightbox handles loading images and displays captions
+
+### Fixed
+
+- Fix attribution timestamps not respecting the application locale ([#109](https://github.com/waterholeforum/core/pull/109) by @efast1568)
+- Fix notification popups missing notification type data ([#110](https://github.com/waterholeforum/core/issues/110))
+- Fix crash when loading reaction counts on MariaDB ([#106](https://github.com/waterholeforum/core/issues/106))
+- Support mention suggestions for multiword names ([#74](https://github.com/waterholeforum/core/issues/74))
+- Fix mention previews
+- Fix `LikeSearchEngine` queries failing on MySQL when sorting results
+- Fix composer height on constrained viewports
+
 ## [0.7.0] - 2026-08-19
 
 ### ⚠️ Breaking Changes
