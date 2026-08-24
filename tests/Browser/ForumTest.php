@@ -31,7 +31,7 @@ describe('forum', function () {
         visit(route('waterhole.login'))
             ->fill('email', $user->email)
             ->fill('password', 'Password123!')
-            ->click('button[type="submit"]');
+            ->click('.dialog button[type="submit"]');
 
         visit(route('waterhole.posts.create', ['channel_id' => $channel->id]))
             ->fill('title', 'Browser smoke post')
@@ -65,7 +65,7 @@ describe('forum', function () {
         visit(route('waterhole.login'))
             ->fill('email', $user->email)
             ->fill('password', 'Password123!')
-            ->click('button[type="submit"]');
+            ->click('.dialog button[type="submit"]');
 
         visit(route('waterhole.posts.create', ['channel_id' => $channel->id]))
             ->fill('body', '@Lookup U')
@@ -112,7 +112,7 @@ describe('forum', function () {
         visit(route('waterhole.login'))
             ->fill('email', $user->email)
             ->fill('password', 'Password123!')
-            ->click('button[type="submit"]');
+            ->click('.dialog button[type="submit"]');
 
         visit($post->url)
             ->pressAndWaitFor('button[name="reaction_type_id"][value="' . $reactionType->id . '"]');

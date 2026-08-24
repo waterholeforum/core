@@ -19,7 +19,7 @@ beforeEach(function () {
     $this->seed(GroupsSeeder::class);
 });
 
-function configureSearchEngine(string $engine): void
+function configureSearchEngine(?string $engine): void
 {
     config()->set('waterhole.system.search_engine', $engine);
 
@@ -43,6 +43,35 @@ describe('search interface', function () {
             ->assertOk()
             ->assertSeeText('Waterhole search term')
             ->assertDontSeeText('Other post');
+    });
+
+    test('search sorts results by latest or top', function () {
+        configureSearchEngine(LikeSearchEngine::class);
+
+        $channel = Channel::factory()->public()->create();
+
+        Post::factory()->for($channel)->create([
+            'title' => 'Top result',
+            'body' => 'Search term',
+            'score' => 10,
+            'created_at' => now()->subDay(),
+        ]);
+        Post::factory()->for($channel)->create([
+            'title' => 'Latest result',
+            'body' => 'Search term',
+            'score' => 0,
+            'created_at' => now(),
+        ]);
+
+        $this
+            ->get('/search?q=search&sort=latest')
+            ->assertOk()
+            ->assertSeeInOrder(['Latest result', 'Top result']);
+
+        $this
+            ->get('/search?q=search&sort=top')
+            ->assertOk()
+            ->assertSeeInOrder(['Top result', 'Latest result']);
     });
 
     test('search excludes posts in private channels', function () {
@@ -83,12 +112,7 @@ describe('search interface', function () {
     });
 
     test('search disabled hides UI and route returns 404', function () {
-        config()->set('waterhole.system.search_engine', null);
-
-        app()->register(SearchServiceProvider::class, true);
-
-        Route::setRoutes(new RouteCollection());
-        app()->register(RouteServiceProvider::class, true);
+        configureSearchEngine(null);
 
         Channel::factory()->public()->create();
 

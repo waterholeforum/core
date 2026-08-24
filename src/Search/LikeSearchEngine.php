@@ -56,18 +56,17 @@ class LikeSearchEngine implements EngineInterface
             $total = $channels->sum('hits');
         }
 
-        switch ($sort) {
-            case 'top':
-                $query->orderByDesc('posts.score');
-                break;
-
-            default:
-                $query->orderByDesc('posts.created_at');
-        }
+        $sortColumn = $sort === 'top' ? 'posts.score' : 'posts.created_at';
 
         $rows = $query
+            ->orderByDesc($sortColumn)
             ->distinct()
-            ->select(['posts.id as post_id', 'posts.title', 'posts.body as post_body']);
+            ->select([
+                'posts.id as post_id',
+                'posts.title',
+                'posts.body as post_body',
+                $sortColumn,
+            ]);
 
         if ($includeComments) {
             $rows->addSelect('comments.body as comment_body');
