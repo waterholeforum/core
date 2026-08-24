@@ -10,7 +10,7 @@ use Waterhole\Models\PermissionCollection;
 
 abstract class Waterhole
 {
-    public const VERSION = '0.7.0';
+    public const VERSION = '0.7.1';
 
     public static function version(): string
     {
