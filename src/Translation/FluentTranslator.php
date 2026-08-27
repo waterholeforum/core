@@ -100,7 +100,7 @@ final class FluentTranslator implements TranslatorContract
             }
         }
 
-        return last($keys);
+        return $this->baseTranslator->get(last($keys), $replace, $locale, $fallback);
     }
 
     private function getBundle(?string $namespace, string $locale, string $group): ?FluentBundle

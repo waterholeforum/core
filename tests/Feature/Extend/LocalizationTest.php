@@ -11,12 +11,10 @@ use Waterhole\Translation\FluentTranslator;
 
 uses(RefreshDatabase::class);
 
-beforeEach(function () {
-    $this->seed(GroupsSeeder::class);
-});
-
 describe('locales', function () {
     test('lists available locales including extensions', function () {
+        $this->seed(GroupsSeeder::class);
+
         Channel::factory()->public()->create();
 
         extend(function (Extend\Assets\Locales $locales) {
@@ -57,4 +55,23 @@ describe('locales', function () {
             $files->deleteDirectory($path);
         }
     });
+});
+
+test('replaces placeholders in missing translation keys', function () {
+    expect(app(FluentTranslator::class)->get('Click the :actionText button', [
+        'actionText' => 'Renew License',
+    ]))
+        ->toBe('Click the Renew License button');
+});
+
+test('does not use fallback locale when fallback is disabled', function () {
+    $translator = app(FluentTranslator::class);
+    $translator->addLines(['messages.fallback-only' => 'Fallback'], 'en');
+
+    expect($translator->get('messages.fallback-only', [], 'fr'))
+        ->toBe('Fallback')
+        ->and($translator->get('messages.fallback-only', [], 'fr', false))
+        ->toBe('messages.fallback-only')
+        ->and($translator->hasForLocale('messages.fallback-only', 'fr'))
+        ->toBeFalse();
 });
