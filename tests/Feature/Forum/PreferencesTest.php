@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Waterhole\Actions\DeleteSelf;
 use Waterhole\Models\User;
 
 uses(RefreshDatabase::class);
@@ -23,5 +24,22 @@ describe('profile preferences', function () {
             ->assertSessionHasErrors('avatar');
 
         expect($user->fresh()->avatar)->toBeNull();
+    });
+});
+
+describe('account preferences', function () {
+    test('deleting your account redirects to the forum home', function () {
+        User::factory()->create();
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->post(route('waterhole.actions.store'), [
+            'actionable' => User::class,
+            'id' => $user->id,
+            'action_class' => DeleteSelf::class,
+            'confirmed' => true,
+        ])->assertRedirect(route('waterhole.home'));
+
+        $this->assertGuest();
+        $this->assertModelMissing($user);
     });
 });

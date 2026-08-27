@@ -79,11 +79,13 @@
         @endsection
 
         @section('delete')
-            <x-waterhole::action-button
-                :for="Auth::user()"
-                :action="Waterhole\Actions\DeleteSelf::class"
-                class="btn bg-danger"
-            />
+            <div>
+                <x-waterhole::action-button
+                    :for="Auth::user()"
+                    :action="Waterhole\Actions\DeleteSelf::class"
+                    class="btn bg-danger"
+                />
+            </div>
         @endsection
 
         @components(resolve(\Waterhole\Extend\Ui\Preferences::class)->account)
