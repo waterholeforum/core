@@ -28,10 +28,52 @@ document.addEventListener('turbo:load', () => {
     );
 });
 
+document.addEventListener('click', (e) => {
+    if (!(e instanceof MouseEvent)) return;
+    if (e.defaultPrevented) return;
+    if (e.button !== 0) return;
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+    const target = e.target;
+
+    if (!(target instanceof Element)) return;
+
+    const link = target.closest<HTMLAnchorElement>('a[href*="#"]');
+
+    if (!link) return;
+
+    const url = new URL(link.href, window.location.href);
+
+    if (
+        url.origin !== window.location.origin ||
+        url.pathname !== window.location.pathname ||
+        url.search !== window.location.search ||
+        !url.hash
+    ) {
+        return;
+    }
+
+    const id = decodeURIComponent(url.hash.slice(1));
+    const element = document.getElementById(id);
+
+    if (!element) return;
+
+    e.preventDefault();
+
+    history.pushState(null, '', url.href);
+
+    element.scrollIntoView({
+        behavior: 'auto',
+        block: 'start',
+    });
+});
+
 document.addEventListener('turbo:morph', async () => {
     await nextFrame();
     if (!window.location.hash) return;
-    document.querySelector(window.location.hash)?.scrollIntoView();
+
+    const id = decodeURIComponent(window.location.hash.slice(1));
+    document.getElementById(id)?.scrollIntoView();
 });
 
 document.addEventListener('turbo:before-morph-element', (e) => {
