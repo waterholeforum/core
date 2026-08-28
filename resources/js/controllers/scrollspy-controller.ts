@@ -134,7 +134,7 @@ export default class extends Controller<HTMLElement> {
     }
 
     private target(a: HTMLAnchorElement) {
-        const id = a.hash.substring(1);
+        const id = decodeURIComponent(a.hash.slice(1));
 
         return id ? document.getElementById(id) : null;
     }
