@@ -42,6 +42,9 @@ document.addEventListener('click', (e) => {
 
     if (!link) return;
 
+    if (link.target && link.target !== '_self') return;
+    if (link.hasAttribute('download')) return;
+
     const url = new URL(link.href, window.location.href);
 
     if (
@@ -60,7 +63,16 @@ document.addEventListener('click', (e) => {
 
     e.preventDefault();
 
+    const oldURL = window.location.href;
+
     history.pushState(null, '', url.href);
+
+    window.dispatchEvent(
+        new HashChangeEvent('hashchange', {
+            oldURL,
+            newURL: window.location.href,
+        }),
+    );
 
     element.scrollIntoView({
         behavior: 'auto',
