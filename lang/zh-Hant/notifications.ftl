@@ -13,7 +13,7 @@ manage-notification-preferences-link = 管理通知偏好設定
 
 ## Mention
 
-mention-description = 提及我或回覆我評論的通知
+mention-description = 提及我或回覆我留言的通知
 mention-title = 在 { $post } 中提及了您
 mention-reason = 您收到此通知是因為您已訂閱提及通知。
 mention-unsubscribe = 取消訂閱提及通知
@@ -21,12 +21,12 @@ mention-unsubscribe = 取消訂閱提及通知
 ## Content Approved
 
 post-approved-title = 貼文已核准：{ $post }
-comment-approved-title = 評論已在 { $post } 中核准
+comment-approved-title = 留言已在 { $post } 中核准
 
 ## New Comment
 
-new-comment-description = 我追蹤的貼文有新評論
-new-comment-title = { $post } 有新評論
+new-comment-description = 我追蹤的貼文有新留言
+new-comment-title = { $post } 有新的留言
 new-comment-reason = 您收到此通知是因為您正在追蹤此貼文。
 new-comment-unsubscribe = 取消追蹤此貼文
 
@@ -41,16 +41,30 @@ new-post-unsubscribe = 取消追蹤此頻道
 
 new-flag-description = 我所管理頻道中的檢舉
 flagged-post-title = 貼文已被檢舉：{ $post }
-flagged-comment-title = 評論已被檢舉於 { $post }
+flagged-comment-title = 留言已被檢舉於 { $post }
 new-flag-reason = 您收到此通知是因為您管理某個頻道。
 new-flag-unsubscribe = 取消訂閱檢舉通知
+
+## Reactions
+
+reaction-description = 我的貼文和留言收到的心情反應
+reaction-post-title =
+    { $count ->
+        [one] 1 個心情反應於 { $post }
+       *[other] { $count } 個心情反應於 { $post }
+    }
+reaction-comment-title =
+    { $count ->
+        [one] 1 個心情反應於您在 { $post } 中的留言
+       *[other] { $count } 個心情反應於您在 { $post } 中的留言
+    }
 
 ## Content Removed
 
 post-removed-title = 貼文已移除：{ $post }
-comment-removed-title = 評論已在 { $post } 中移除
+comment-removed-title = 留言已在 { $post } 中移除
 
 ## Common
 
 view-post-button = 查看貼文
-view-comment-button = 查看評論
+view-comment-button = 查看留言
