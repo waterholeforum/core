@@ -100,7 +100,7 @@ theme-automatic = 自動
 
 ## Language Switcher
 
-language-button = 語言
+language-button = Language
 
 ## Text Editor
 
