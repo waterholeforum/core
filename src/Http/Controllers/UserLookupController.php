@@ -31,7 +31,7 @@ class UserLookupController extends Controller
             $post = null;
         }
 
-        $search = $request->query('q');
+        $search = $request->query('q', '');
         $groupSearch = $search;
         $searchUsers = $search;
 
@@ -99,12 +99,12 @@ class UserLookupController extends Controller
                         $post->getKey(),
                     ));
 
-                if ($user = $request->user()) {
+                if ($user) {
                     $commentsQuery->where('users.id', '!=', $user->id);
                     $postQuery->where('users.id', '!=', $user->id);
                 }
 
-                $sub = $commentsQuery->unionAll($postQuery)->latest('created_at');
+                $sub = $commentsQuery->unionAll($postQuery);
 
                 // If there is a search query, then we still want to tack other
                 // users (that haven't posted here) onto the bottom of the results.
@@ -114,7 +114,10 @@ class UserLookupController extends Controller
                     );
                 }
 
-                $main->fromSub($sub, 'a')->selectRaw('MAX(comment_id) as comment_id');
+                $main
+                    ->fromSub($sub, 'a')
+                    ->selectRaw('MAX(comment_id) as comment_id')
+                    ->selectRaw('MAX(created_at) as created_at');
             } else {
                 $main->fromSub($users, 'a');
             }
@@ -123,6 +126,8 @@ class UserLookupController extends Controller
             // present them in the desired format.
             $userResults = $main
                 ->groupBy(['id', 'name', 'avatar'])
+                ->when($post, fn($query) => $query->orderByDesc('created_at'))
+                ->orderBy('name')
                 ->take(static::LIMIT)
                 ->get()
                 ->map(function (User $user) use ($post): array {
@@ -146,6 +151,10 @@ class UserLookupController extends Controller
                         'frameId' => $commentId ? dom_id($post, 'comment_parent') : null,
                     ];
                 });
+        }
+
+        if (!$search) {
+            return $userResults;
         }
 
         $groups = Group::query()->where('is_public', true);

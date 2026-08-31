@@ -283,3 +283,43 @@ test('user lookup returns matching groups and users', function () {
         ->assertJsonMissing(['name' => 'Other Group'])
         ->assertJsonMissing(['name' => 'Other User']);
 });
+
+test('user lookup suggests recent post participants', function () {
+    $actor = User::factory()->create();
+    $author = User::factory()->create(['name' => 'Post Author']);
+    $olderCommenter = User::factory()->create(['name' => 'Older Commenter']);
+    $recentCommenter = User::factory()->create(['name' => 'Recent Commenter']);
+    $post = Post::factory()
+        ->for(Channel::factory()->public())
+        ->for($author)
+        ->create(['created_at' => now()->subHour()]);
+
+    Group::create([
+        'name' => 'Unprompted Group',
+        'is_public' => true,
+        'mentionable' => Mentionable::Anyone,
+    ]);
+
+    Comment::factory()
+        ->for($post)
+        ->for($olderCommenter)
+        ->create(['created_at' => now()->subMinutes(2)]);
+
+    Comment::factory()
+        ->for($post)
+        ->for($recentCommenter)
+        ->create(['created_at' => now()->subMinute()]);
+
+    Comment::factory()->for($post)->for($actor)->create();
+
+    $response = $this
+        ->actingAs($actor)
+        ->getJson(route('waterhole.user-lookup', ['post' => $post]))
+        ->assertOk();
+
+    expect(collect($response->json())->pluck('name')->all())->toBe([
+        'Recent Commenter',
+        'Older Commenter',
+        'Post Author',
+    ]);
+});

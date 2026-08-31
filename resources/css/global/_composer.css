@@ -36,7 +36,6 @@
   background: var(--color-bg);
   border-radius: inherit;
   height: 100%;
-  overflow: hidden;
   transition: box-shadow var(--transition-duration);
 }
 
@@ -72,6 +71,10 @@
   min-height: 0;
   height: var(--toolbar-height) !important;
   border-radius: 99px;
+
+  .composer__inner {
+    overflow: hidden;
+  }
 }
 
 .composer:not(.is-stuck):not(.is-open) .composer__inner {
