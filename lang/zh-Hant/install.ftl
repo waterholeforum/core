@@ -19,7 +19,7 @@ reaction-type-sad = 傷心
 reaction-type-angry = 生氣
 
 reaction-set-votes = 投票
-reaction-type-upvote = 讚成
+reaction-type-upvote = 贊成
 
 ## Structure
 
