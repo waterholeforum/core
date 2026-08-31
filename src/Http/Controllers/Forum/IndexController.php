@@ -35,6 +35,7 @@ class IndexController extends Controller
                 $query->where('posts.channel_id', $channel->id);
                 $this->applyTagFilters($query, $channel, $request);
             },
+            channel: $channel,
         );
 
         return view('waterhole::forum.channel', compact('channel', 'feed'));

@@ -43,6 +43,8 @@ return [
         \Waterhole\Filters\Trending::class,
         \Waterhole\Filters\Top::class,
         \Waterhole\Filters\Oldest::class,
+        // \Waterhole\Filters\Answered::class,
+        // \Waterhole\Filters\Unanswered::class,
     ],
 
     /*

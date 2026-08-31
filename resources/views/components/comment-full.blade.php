@@ -16,6 +16,7 @@
                         ]
                         : [],
                 )
+                ->merge($comment->isAnswer() && (int) $comment->index === 0 ? ['id' => dom_id($comment->post, 'answer')] : [])
                 ->merge(resolve(Waterhole\Extend\Ui\CommentAttributes::class)->build($comment))
         }}
         data-comment-id="{{ $comment->id }}"

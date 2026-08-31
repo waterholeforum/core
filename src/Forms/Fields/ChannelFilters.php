@@ -9,11 +9,20 @@ use Waterhole\Extend\Core\PostFilters;
 use Waterhole\Forms\Field;
 use Waterhole\Models\Channel;
 
+use function Waterhole\resolve_all;
+
 class ChannelFilters extends Field
 {
+    public array $availableFilters;
+
     public function __construct(
         public ?Channel $model,
-    ) {}
+    ) {
+        $this->availableFilters = array_values(array_filter(
+            resolve_all(resolve(PostFilters::class)->values()),
+            fn($filter) => $filter->availableFor($model),
+        ));
+    }
 
     public function render(): string
     {
@@ -48,7 +57,7 @@ class ChannelFilters extends Field
                                 @php
                                     $filters = old('filters', $model->filters ?? config('waterhole.forum.post_filters', []));
 
-                                    $availableFilters = collect(Waterhole\resolve_all(resolve(Waterhole\Extend\Core\PostFilters::class)->values()))
+                                    $availableFilters = collect($availableFilters)
                                         ->sortBy(fn($filter) => ($k = array_search(get_class($filter), $filters)) === false ? INF : $k);
                                 @endphp
 
@@ -82,16 +91,32 @@ class ChannelFilters extends Field
 
     public function validating(Validator $validator): void
     {
+        $available = array_map(fn($filter) => $filter::class, $this->availableFilters);
+
         $validator->addRules([
             'filters' => ['required_with:custom_filters', 'array'],
-            'filters.*' => ['string', 'distinct', Rule::in(resolve(PostFilters::class)->values())],
+            'filters.*' => ['string', 'distinct', Rule::in($available)],
         ]);
     }
 
     public function saving(FormRequest $request): void
     {
-        $this->model->filters = $request->input('custom_filters')
-            ? $request->validated('filters')
-            : null;
+        if (!$request->input('custom_filters')) {
+            $this->model->filters = null;
+
+            return;
+        }
+
+        $filters = $request->validated('filters');
+        $available = array_map(fn($filter) => $filter::class, $this->availableFilters);
+        $registered = resolve(PostFilters::class)->values();
+
+        foreach ($this->model->getOriginal('filters') ?? [] as $position => $filter) {
+            if (in_array($filter, $registered) && !in_array($filter, $available)) {
+                array_splice($filters, min($position, count($filters)), 0, [$filter]);
+            }
+        }
+
+        $this->model->filters = $filters;
     }
 }

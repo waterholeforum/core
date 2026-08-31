@@ -4,11 +4,13 @@ namespace Waterhole\Extend\Core;
 
 use Waterhole\Extend\Support\Set;
 use Waterhole\Filters\Alphabetical;
+use Waterhole\Filters\Answered;
 use Waterhole\Filters\Latest;
 use Waterhole\Filters\Newest;
 use Waterhole\Filters\Oldest;
 use Waterhole\Filters\Top;
 use Waterhole\Filters\Trending;
+use Waterhole\Filters\Unanswered;
 
 /**
  * Post feed filter classes.
@@ -25,5 +27,7 @@ class PostFilters extends Set
         $this->add(Trending::class);
         $this->add(Top::class);
         $this->add(Alphabetical::class);
+        $this->add(Unanswered::class);
+        $this->add(Answered::class);
     }
 }

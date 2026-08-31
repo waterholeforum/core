@@ -50,7 +50,7 @@ post-trash-badge = Trash
 post-removed-message = Post removed
 
 post-answered-by = Answered by
-post-view-answer-link = View Answer
+post-view-answer-link = Jump to Answer
 
 post-unread-comments-badge-tooltip = { $count } { $count ->
     [one] unread comment
@@ -243,6 +243,7 @@ saved-comment-title = Comment in { $post }
 ## Filters
 
 filter-alphabetical = Alphabetical
+filter-answered = Answered
 filter-drafts = Drafts
 filter-following = Following
 filter-ignoring = Ignoring
@@ -258,6 +259,7 @@ filter-top-week = Week
 filter-top-day = Day
 filter-trending = Trending
 filter-trash = Trash
+filter-unanswered = Unanswered
 
 tags-filter-button = Tags
 tags-filter-apply-button = Apply

@@ -5,6 +5,11 @@ use Illuminate\Validation\ValidationException;
 use Waterhole\Actions\DeleteChannel;
 use Waterhole\Actions\DeleteStructure;
 use Waterhole\Database\Seeders\GroupsSeeder;
+use Waterhole\Filters\Answered;
+use Waterhole\Filters\Newest;
+use Waterhole\Filters\Oldest;
+use Waterhole\Filters\Top;
+use Waterhole\Filters\Unanswered;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Page;
 use Waterhole\Models\Structure;
@@ -162,6 +167,74 @@ describe('cp channels', function () {
             'name' => 'New',
             'slug' => 'new',
         ]);
+    });
+
+    test('show answer filters only for persisted answer-enabled channels', function () {
+        $admin = cpStructureAdmin();
+        $disabled = Channel::factory()->public()->create();
+        $enabled = Channel::factory()->public()->create(['answerable' => true]);
+
+        $this
+            ->actingAs($admin)
+            ->get(route('waterhole.cp.structure.channels.create'))
+            ->assertOk()
+            ->assertDontSeeText('Unanswered')
+            ->assertDontSeeText('Answered');
+
+        $this
+            ->get(route('waterhole.cp.structure.channels.edit', $disabled))
+            ->assertOk()
+            ->assertDontSeeText('Unanswered')
+            ->assertDontSeeText('Answered');
+
+        $this
+            ->get(route('waterhole.cp.structure.channels.edit', $enabled))
+            ->assertOk()
+            ->assertSeeText('Unanswered')
+            ->assertSeeText('Answered');
+    });
+
+    test('retain dormant answer filters while editing visible filters', function () {
+        $channel = Channel::factory()
+            ->public()
+            ->create([
+                'answerable' => false,
+                'filters' => [
+                    Newest::class,
+                    Unanswered::class,
+                    Top::class,
+                    Answered::class,
+                    Oldest::class,
+                ],
+            ]);
+
+        $this
+            ->actingAs(cpStructureAdmin())
+            ->put(route('waterhole.cp.structure.channels.update', $channel), [
+                'name' => $channel->name,
+                'slug' => $channel->slug,
+                'icon' => ['type' => null],
+                'ignore' => 0,
+                'answerable' => 1,
+                'show_similar_posts' => 0,
+                'require_approval_posts' => 0,
+                'require_approval_comments' => 0,
+                'custom_filters' => 1,
+                'filters' => [Oldest::class, Newest::class],
+            ])
+            ->assertRedirect(route('waterhole.cp.structure'));
+
+        expect($channel->fresh()->filters)->toBe([
+            Oldest::class,
+            Unanswered::class,
+            Newest::class,
+            Answered::class,
+        ]);
+
+        $this
+            ->get(route('waterhole.cp.structure.channels.edit', $channel))
+            ->assertOk()
+            ->assertSeeInOrder(['Oldest', 'Unanswered', 'Newest', 'Answered']);
     });
 
     test('delete channel', function () {

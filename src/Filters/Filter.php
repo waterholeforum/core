@@ -5,6 +5,7 @@ namespace Waterhole\Filters;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use ReflectionClass;
+use Waterhole\Models\Channel;
 
 /**
  * Base class for a Filter.
@@ -40,6 +41,14 @@ abstract class Filter
      * The text label for the filter.
      */
     abstract public function label(): string;
+
+    /**
+     * Whether the filter is available in the given channel context.
+     */
+    public function availableFor(?Channel $channel = null): bool
+    {
+        return true;
+    }
 
     /**
      * Apply the filter to the feed query builder.

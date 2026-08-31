@@ -11,6 +11,7 @@ use Waterhole\Extend\Query\PostFeedQuery;
 use Waterhole\Filters\Drafts;
 use Waterhole\Filters\Following;
 use Waterhole\Filters\Ignoring;
+use Waterhole\Filters\Latest;
 use Waterhole\Filters\Trash;
 use Waterhole\Layouts\Layout;
 use Waterhole\Models\Channel;
@@ -48,8 +49,16 @@ class PostFeed extends Feed
         array $filters,
         Layout $layout,
         ?Closure $scope = null,
+        ?Channel $channel = null,
     ): self {
-        $filters = resolve_all($filters);
+        $filters = array_values(array_filter(
+            resolve_all($filters),
+            fn($filter) => $filter->availableFor($channel),
+        ));
+
+        if (!$filters) {
+            $filters[] = new Latest();
+        }
 
         if ($user = Auth::user()) {
             $filters[] = new Drafts();
