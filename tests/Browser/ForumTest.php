@@ -124,4 +124,32 @@ describe('forum', function () {
             'content_id' => $post->id,
         ]);
     });
+
+    test('does not cache an open image lightbox during navigation', function () {
+        $channel = Channel::factory()->public()->create();
+        $post = Post::factory()->create([
+            'channel_id' => $channel->id,
+            'user_id' => User::factory(),
+        ]);
+
+        $page = visit($post->url);
+        $page->script(<<<'JS'
+            () => {
+                const image = document.createElement('img');
+                image.id = 'lightbox-test-image';
+                image.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"></svg>';
+                document.querySelector('[data-controller~="lightbox"]').append(image);
+            }
+            JS);
+
+        $page
+            ->assertPresent('#lightbox-test-image[data-lightbox-image]')
+            ->click('#lightbox-test-image')
+            ->assertPresent('.pswp');
+
+        $homeUrl = json_encode(route('waterhole.home'), JSON_THROW_ON_ERROR);
+        $page->script("() => window.Turbo.visit($homeUrl)");
+
+        $page->wait(1)->assertUrlIs(route('waterhole.home'))->back()->assertNotPresent('.pswp');
+    });
 });
