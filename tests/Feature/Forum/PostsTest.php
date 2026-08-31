@@ -413,6 +413,25 @@ describe('delete post', function () {
 });
 
 describe('pin and unpin post', function () {
+    test('admin chooses where to pin a post', function () {
+        $channel = Channel::factory()->public()->create(['name' => 'Announcements']);
+        $post = Post::factory()->for($channel)->create();
+
+        $this
+            ->actingAs(User::factory()->admin()->create())
+            ->get(route('waterhole.actions.create', [
+                'actionable' => Post::class,
+                'id' => $post->id,
+                'action_class' => Pin::class,
+            ]))
+            ->assertOk()
+            ->assertSeeText('Pin in')
+            ->assertSeeText('Announcements')
+            ->assertSee('class="channel-label"', false)
+            ->assertSeeText('Pin Everywhere')
+            ->assertSeeText('Keep this post at the top of Home and its channel.');
+    });
+
     test('moderator can only pin a post in its channel and unpin it', function () {
         $channel = Channel::factory()->public()->create();
         $moderator = User::factory()->create();

@@ -9,11 +9,9 @@
                 value="channel"
                 @checked(old('pinned_scope', 'channel') === 'channel')
             />
-            <span class="stack gap-xxs">
-                <span>{{ __('waterhole::forum.pin-in-channel-label') }}</span>
-                <small class="field__description">
-                    {{ __('waterhole::forum.pin-in-channel-description') }}
-                </small>
+            <span class="row gap-xxs">
+                {{ __('waterhole::forum.pin-in-channel-prefix') }}
+                <x-waterhole::channel-label :$channel />
             </span>
         </label>
 

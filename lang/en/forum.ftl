@@ -104,9 +104,8 @@ original-post-link = Original Post
 pin-to-top-button = Pin to Top
 pin-button = Pin
 pin-post-title = Pin Post
-pin-in-channel-label = Pin in this channel
-pin-in-channel-description = Keep this post at the top of its channel.
-pin-globally-label = Pin across the community
+pin-in-channel-prefix = Pin in
+pin-globally-label = Pin Everywhere
 pin-globally-description = Keep this post at the top of Home and its channel.
 unpin-button = Unpin
 

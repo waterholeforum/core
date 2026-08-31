@@ -48,7 +48,7 @@ class Pin extends Action
 
     public function confirm(Collection $models): View
     {
-        return view('waterhole::posts.pin');
+        return view('waterhole::posts.pin', ['channel' => $models[0]->channel]);
     }
 
     public function confirmButton(Collection $models): string
