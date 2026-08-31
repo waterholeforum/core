@@ -4,7 +4,10 @@ namespace Waterhole\Formatter;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use s9e\TextFormatter\Configurator;
+use s9e\TextFormatter\Configurator\Items\Tag;
+use s9e\TextFormatter\Parser\Tag as ParserTag;
 use s9e\TextFormatter\Utils;
 use s9e\TextFormatter\Utils\ParsedDOM;
 use Throwable;
@@ -21,6 +24,41 @@ abstract class HeadingSlugs
     public static function configure(Configurator $config): void
     {
         $config->Litedown->addHeadersId(static::PREFIX);
+
+        foreach (range(1, 6) as $level) {
+            self::addSlugFilter($config->tags['H' . $level]);
+        }
+    }
+
+    /**
+     * Add a Unicode-aware slug filter after Litedown's ASCII-only filter.
+     */
+    private static function addSlugFilter(Tag $tag): void
+    {
+        $filter = $tag->filterChain->append(static::class . '::setTagSlug($tag, $innerText)');
+
+        $filter->setJS(<<<'JS'
+            function filterTag(tag, innerText)
+            {
+                const slug = innerText
+                    .toLowerCase()
+                    .replace(/[^\p{L}\p{N}]+/gu, '-')
+                    .replace(/^-|-$/g, '');
+
+                if (slug !== '') {
+                    tag.setAttribute('slug', slug);
+                }
+            }
+            JS);
+    }
+
+    public static function setTagSlug(ParserTag $tag, string $innerText): void
+    {
+        $slug = trim(preg_replace('/[^\p{L}\p{N}]+/u', '-', Str::lower($innerText)) ?? '', '-');
+
+        if ($slug !== '') {
+            $tag->setAttribute('slug', $slug);
+        }
     }
 
     /**

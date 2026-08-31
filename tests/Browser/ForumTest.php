@@ -52,6 +52,44 @@ describe('forum', function () {
         ]);
     });
 
+    test('uses native same-page fragment navigation', function () {
+        $post = Post::factory()->for(Channel::factory()->public())->create();
+
+        $page = visit($post->url);
+
+        $page->script(<<<'JS'
+            window.hashChanged = false;
+            window.addEventListener('hashchange', () => window.hashChanged = true, { once: true });
+            JS);
+
+        $page
+            ->click('a[href="#main"]')
+            ->assertScript('window.hashChanged')
+            ->assertScript('document.activeElement.id', 'main');
+    });
+
+    test('navigates to unicode fragments with Turbo', function () {
+        $channel = Channel::factory()->public()->create();
+        $target = Post::factory()->for($channel)->create([
+            'body' => "## 中文設定\n\nTarget body.",
+        ]);
+        $source = Post::factory()->for($channel)->create([
+            'body' => "[Jump to heading]({$target->url}#content-中文設定)",
+        ]);
+
+        $page = visit($source->url);
+
+        $page->script(<<<'JS'
+            window.turboVisited = false;
+            document.addEventListener('turbo:visit', () => window.turboVisited = true, { once: true });
+            JS);
+
+        $page
+            ->click('Jump to heading')
+            ->assertScript('window.turboVisited')
+            ->assertScript('document.activeElement.id', 'content-中文設定');
+    });
+
     test('mentions users with multiword names', function () {
         $channel = Channel::factory()->public()->create();
         $user = User::factory()->create([
