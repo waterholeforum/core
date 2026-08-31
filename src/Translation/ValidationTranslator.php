@@ -23,9 +23,9 @@ final class ValidationTranslator implements TranslatorContract
         return $this->baseTranslator->parseKey($key);
     }
 
-    public function get($key, array $replace = [], $locale = null)
+    public function get($key, array $replace = [], $locale = null, bool $fallback = true)
     {
-        return $this->baseTranslator->get($key, $replace, $locale);
+        return $this->baseTranslator->get($key, $replace, $locale, $fallback);
     }
 
     public function choice($key, $number, array $replace = [], $locale = null)

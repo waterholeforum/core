@@ -10,7 +10,7 @@ use Waterhole\Permissions\PermissionRepository;
 
 abstract class Waterhole
 {
-    public const VERSION = '0.7.0';
+    public const VERSION = '0.7.2';
 
     public static function version(): string
     {

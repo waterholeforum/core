@@ -24,7 +24,7 @@ describe('auth', function () {
             ->fill('name', 'browser-user')
             ->fill('email', $email)
             ->fill('password', 'Password123!')
-            ->click('button[type="submit"]')
+            ->click('.dialog button[type="submit"]')
             ->assertSee('browser-user');
 
         $this->assertDatabaseHas('users', ['email' => $email]);
@@ -41,7 +41,7 @@ describe('auth', function () {
         visit(route('waterhole.login'))
             ->fill('email', $user->email)
             ->fill('password', 'Password123!')
-            ->click('button[type="submit"]');
+            ->click('.dialog button[type="submit"]');
 
         expect(auth()->id())->toBe($user->id);
 

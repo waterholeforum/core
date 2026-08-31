@@ -7,6 +7,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.2] - 2026-08-31
+
+### Changed
+
+- Update Traditional Chinese translations ([#111](https://github.com/waterholeforum/core/pull/111) by @efast1568)
+
+### Fixed
+
+- Fix navigation and scrollspy behavior for Unicode heading fragments ([#112](https://github.com/waterholeforum/core/pull/112) by @efast1568)
+- Fix user group and Post Author badge misalignment
+- Fix the Delete Account action layout and redirect to forum home
+- Prevent duplicate email verification emails and events
+- Fix placeholder replacement and locale fallback behavior for missing translations
+- Preserve the intended return URL through password confirmation
+- Fix empty mention suggestions not including recent authors
+- Fix translation lookup for locales with hyphenated subtags
+
+## [0.7.1] - 2026-08-24
+
+### Changed
+
+- Improve how the image lightbox handles loading images and displays captions
+
+### Fixed
+
+- Fix attribution timestamps not respecting the application locale ([#109](https://github.com/waterholeforum/core/pull/109) by @efast1568)
+- Fix notification popups missing notification type data ([#110](https://github.com/waterholeforum/core/issues/110))
+- Fix crash when loading reaction counts on MariaDB ([#106](https://github.com/waterholeforum/core/issues/106))
+- Support mention suggestions for multiword names ([#74](https://github.com/waterholeforum/core/issues/74))
+- Fix mention previews
+- Fix `LikeSearchEngine` queries failing on MySQL when sorting results
+- Fix composer height on constrained viewports
+
 ## [0.7.0] - 2026-08-19
 
 ### ⚠️ Breaking Changes
@@ -478,7 +511,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release.
 
-[Unreleased]: https://github.com/waterholeforum/core/compare/v0.7.0...HEAD
+[Unreleased]: https://github.com/waterholeforum/core/compare/v0.7.2...HEAD
+[0.7.2]: https://github.com/waterholeforum/core/compare/v0.7.1...v0.7.2
+[0.7.1]: https://github.com/waterholeforum/core/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/waterholeforum/core/compare/v0.6.2...v0.7.0
 [0.6.2]: https://github.com/waterholeforum/core/compare/v0.6.1...v0.6.2
 [0.6.1]: https://github.com/waterholeforum/core/compare/v0.6.0...v0.6.1

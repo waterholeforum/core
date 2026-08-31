@@ -25,10 +25,13 @@ class VerifyEmailController extends Controller
         }
 
         $user = $request->user();
-        $user->email = $request->query('email');
-        $user->markEmailAsVerified();
 
-        event(new Verified($request->user()));
+        if (!$user->hasVerifiedEmail() || $user->email !== $request->query('email')) {
+            $user->email = $request->query('email');
+            $user->markEmailAsVerified();
+
+            event(new Verified($user));
+        }
 
         return redirect()
             ->intended(route('waterhole.home'))

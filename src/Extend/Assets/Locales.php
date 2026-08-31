@@ -8,6 +8,7 @@ use Waterhole\Extend\Support\UnorderedList;
  * List of locales exposed in the language selector and locale assets.
  *
  * Use this extender to add locale packs and expose them in the language picker.
+ * Locale keys should be BCP 47 language tags, such as `pt-BR` or `zh-Hans`.
  */
 class Locales extends UnorderedList
 {

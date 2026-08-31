@@ -36,6 +36,10 @@
   color: var(--group-color-contrast, var(--color-muted));
 }
 
+.user-groups {
+  vertical-align: middle;
+}
+
 .badge--hidden {
   border: 1px dashed var(--color-stroke);
   background-color: transparent;

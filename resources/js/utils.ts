@@ -34,6 +34,20 @@ export function getHeaderHeight(): number {
 }
 
 /**
+ * Find the element targeted by a URL fragment.
+ */
+export function getFragmentTarget(hash: string): HTMLElement | null {
+    if (!hash) return null;
+
+    try {
+        return document.getElementById(decodeURIComponent(hash.slice(1)));
+    } catch {
+        // Malformed percent escapes should not break navigation observers.
+        return null;
+    }
+}
+
+/**
  * Create a slug out of the given string. Non-alphanumeric characters are
  * converted to hyphens.
  */

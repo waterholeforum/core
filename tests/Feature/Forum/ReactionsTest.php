@@ -125,7 +125,10 @@ describe('reaction counts', function () {
 
         $count = $post->reactionCounts()->where('reaction_types.id', $reactionType->id)->first();
 
-        expect($count->count)->toBe(2);
+        expect($count->count)
+            ->toBe(2)
+            ->and((bool) $count->user_reacted)
+            ->toBeTrue();
     });
 
     test('reaction counts for a comment are accurate', function () {

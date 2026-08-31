@@ -52,6 +52,6 @@ class DeleteSelf extends Action
 
         session()->flash('success', __('waterhole::user.delete-account-success-message'));
 
-        return redirect('/');
+        return redirect()->route('waterhole.home');
     }
 }

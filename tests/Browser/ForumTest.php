@@ -31,7 +31,7 @@ describe('forum', function () {
         visit(route('waterhole.login'))
             ->fill('email', $user->email)
             ->fill('password', 'Password123!')
-            ->click('button[type="submit"]');
+            ->click('.dialog button[type="submit"]');
 
         visit(route('waterhole.posts.create', ['channel_id' => $channel->id]))
             ->fill('title', 'Browser smoke post')
@@ -50,6 +50,33 @@ describe('forum', function () {
             'post_id' => $post->id,
             'body' => '<t><p>Browser smoke comment body.</p></t>',
         ]);
+    });
+
+    test('mentions users with multiword names', function () {
+        $channel = Channel::factory()->public()->create();
+        $user = User::factory()->create([
+            'password' => Hash::make('Password123!'),
+            'email_verified_at' => now(),
+        ]);
+
+        $mentionable = User::factory()->create(['name' => 'Lookup User']);
+        User::factory()->create(['name' => 'Lookup Other']);
+
+        visit(route('waterhole.login'))
+            ->fill('email', $user->email)
+            ->fill('password', 'Password123!')
+            ->click('.dialog button[type="submit"]');
+
+        visit(route('waterhole.posts.create', ['channel_id' => $channel->id]))
+            ->fill('body', '@Lookup U')
+            ->assertSeeIn('[role="listbox"]', 'Lookup User')
+            ->assertDontSeeIn('[role="listbox"]', 'Lookup Other')
+            ->keys('body', 'Enter')
+            ->assertValue('body', "@Lookup\xc2\xa0User ")
+            ->click('button[data-text-editor-target="previewButton"]')
+            ->assertPresent(
+                '.text-editor__preview .mention--user[data-user-id="' . $mentionable->id . '"]',
+            );
     });
 
     test('reacts to post', function () {
@@ -85,7 +112,7 @@ describe('forum', function () {
         visit(route('waterhole.login'))
             ->fill('email', $user->email)
             ->fill('password', 'Password123!')
-            ->click('button[type="submit"]');
+            ->click('.dialog button[type="submit"]');
 
         visit($post->url)
             ->pressAndWaitFor('button[name="reaction_type_id"][value="' . $reactionType->id . '"]');
@@ -96,5 +123,33 @@ describe('forum', function () {
             'content_type' => $post->getMorphClass(),
             'content_id' => $post->id,
         ]);
+    });
+
+    test('does not cache an open image lightbox during navigation', function () {
+        $channel = Channel::factory()->public()->create();
+        $post = Post::factory()->create([
+            'channel_id' => $channel->id,
+            'user_id' => User::factory(),
+        ]);
+
+        $page = visit($post->url);
+        $page->script(<<<'JS'
+            () => {
+                const image = document.createElement('img');
+                image.id = 'lightbox-test-image';
+                image.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"></svg>';
+                document.querySelector('[data-controller~="lightbox"]').append(image);
+            }
+            JS);
+
+        $page
+            ->assertPresent('#lightbox-test-image[data-lightbox-image]')
+            ->click('#lightbox-test-image')
+            ->assertPresent('.pswp');
+
+        $homeUrl = json_encode(route('waterhole.home'), JSON_THROW_ON_ERROR);
+        $page->script("() => window.Turbo.visit($homeUrl)");
+
+        $page->wait(1)->assertUrlIs(route('waterhole.home'))->back()->assertNotPresent('.pswp');
     });
 });

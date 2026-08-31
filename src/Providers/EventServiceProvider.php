@@ -17,4 +17,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         Login::class => [ReverifyInactiveUser::class],
     ];
+
+    protected function configureEmailVerification()
+    {
+        // The application provider already registers this listener;
+        // registering it here would send two verification emails.
+    }
 }

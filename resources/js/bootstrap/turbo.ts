@@ -4,7 +4,7 @@ import {
     StreamActions,
     TurboFrameMissingEvent,
 } from '@hotwired/turbo';
-import { cloneFromTemplate, nextFrame } from '../utils';
+import { cloneFromTemplate, getFragmentTarget, nextFrame } from '../utils';
 import { AlertsElement } from 'inclusive-elements';
 
 declare global {
@@ -28,10 +28,42 @@ document.addEventListener('turbo:load', () => {
     );
 });
 
-document.addEventListener('turbo:morph', async () => {
+// Leave same-document fragments to the browser so native history, hashchange,
+// scrolling, and focus behavior are preserved instead of starting a Turbo visit.
+document.addEventListener('turbo:click', (e) => {
+    const url = new URL(e.detail.url);
+
+    if (
+        url.origin !== window.location.origin ||
+        url.pathname !== window.location.pathname ||
+        url.search !== window.location.search ||
+        !url.hash
+    ) {
+        return;
+    }
+
+    e.preventDefault();
+});
+
+// After a cross-page Turbo visit, correct its fragment handling when the URL
+// contains encoded Unicode. ASCII fragments are left to Turbo's default path.
+document.addEventListener('turbo:load', async () => {
+    // Let Turbo finish rendering and applying its own scroll position first.
     await nextFrame();
-    if (!window.location.hash) return;
-    document.querySelector(window.location.hash)?.scrollIntoView();
+
+    const element = getFragmentTarget(window.location.hash);
+
+    if (!element || element.id === window.location.hash.slice(1)) return;
+
+    // Move focus for accessibility without making headings permanent tab stops.
+    const hadTabIndex = element.hasAttribute('tabindex');
+
+    if (!hadTabIndex) element.tabIndex = -1;
+
+    element.focus({ preventScroll: true });
+    element.scrollIntoView();
+
+    if (!hadTabIndex) element.removeAttribute('tabindex');
 });
 
 document.addEventListener('turbo:before-morph-element', (e) => {
