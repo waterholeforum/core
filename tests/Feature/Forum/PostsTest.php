@@ -486,7 +486,8 @@ describe('pin and unpin post', function () {
         $this
             ->get(route('waterhole.home'))
             ->assertOk()
-            ->assertSeeInOrder(['Global Pinned Post', 'Newer Post']);
+            ->assertSeeInOrder(['Global Pinned Post', 'Newer Post'])
+            ->assertSee('>Pinned</span>', false);
     });
 
     test('channel pins stay in their channel feed', function () {

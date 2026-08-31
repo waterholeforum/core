@@ -14,6 +14,10 @@
             link
             class="text-xs"
         />
+        <span class="badge">
+            @icon('tabler-pin')
+            <span>{{ __('waterhole::forum.post-pinned-badge') }}</span>
+        </span>
         <x-waterhole::action-menu
             :for="$post"
             placement="bottom-end"

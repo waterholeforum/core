@@ -40,6 +40,7 @@ post-activity-posted = posted
 
 post-new-badge = New
 post-new-badge-tooltip = New post
+post-pinned-badge = Pinned
 post-locked-badge = Locked
 post-answered-badge = Answered
 post-saved-badge = Saved
