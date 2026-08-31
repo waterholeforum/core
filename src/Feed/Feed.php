@@ -64,4 +64,9 @@ class Feed
             abort(400);
         }
     }
+
+    public function exclude(Collection $models): void
+    {
+        $this->query->except($models);
+    }
 }

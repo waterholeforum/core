@@ -483,11 +483,13 @@ describe('pin and unpin post', function () {
 
         expect($post->fresh()->pinned_scope)->toBe(PinnedScope::Global);
 
-        $this
+        $response = $this
             ->get(route('waterhole.home'))
             ->assertOk()
             ->assertSeeInOrder(['Global Pinned Post', 'Newer Post'])
             ->assertSee('>Pinned</span>', false);
+
+        expect(substr_count($response->getContent(), 'Global Pinned Post'))->toBe(1);
     });
 
     test('channel pins stay in their channel feed', function () {
@@ -508,10 +510,12 @@ describe('pin and unpin post', function () {
             ->assertOk()
             ->assertSeeInOrder(['Newer Post', 'Channel Pinned Post']);
 
-        $this
+        $response = $this
             ->get($channel->url)
             ->assertOk()
             ->assertSeeInOrder(['Channel Pinned Post', 'Newer Post']);
+
+        expect(substr_count($response->getContent(), 'Channel Pinned Post'))->toBe(1);
     });
 });
 

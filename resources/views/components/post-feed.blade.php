@@ -7,7 +7,7 @@
     data-post-feed-public-channels-value="@json($publicChannels)"
     data-post-feed-channels-value="@json($channels)"
 >
-    @components(resolve(\Waterhole\Extend\Ui\PostFeed::class)->header, compact('feed', 'channel'))
+    @components($header)
 
     <div>
         <form

@@ -10,6 +10,7 @@ use Waterhole\Models\Channel;
 
 class PostFeed extends Component
 {
+    public array $header;
     public bool $showLastVisit;
     public CursorPaginator $posts;
     public ?array $publicChannels;
@@ -26,6 +27,18 @@ class PostFeed extends Component
 
         $this->publicChannels = Channel::allPermitted(null);
         $this->channels = $this->channel ? [$this->channel->id] : Channel::pluck('id')->all();
+
+        $this->header = resolve(\Waterhole\Extend\Ui\PostFeed::class)->header->components([
+            'feed' => $feed,
+            'channel' => $this->channel,
+        ]);
+
+        $pinned = $this->header['pinned'] ?? null;
+
+        if ($pinned instanceof PostFeedPinned) {
+            $feed->exclude($pinned->posts);
+        }
+
         $this->posts = $feed->items()->withQueryString();
     }
 
