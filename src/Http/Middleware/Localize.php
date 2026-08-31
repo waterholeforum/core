@@ -33,7 +33,7 @@ class Localize
         if ($user) {
             $locale = $user->preferredLocale();
         } else {
-            $locale = session(static::SESSION_KEY, $request->getPreferredLanguage($locales));
+            $locale = session(static::SESSION_KEY) ?? $this->preferredLocale($request, $locales);
         }
 
         if ($locale) {
@@ -41,5 +41,26 @@ class Localize
         }
 
         return $next($request);
+    }
+
+    private function preferredLocale(Request $request, array $locales): ?string
+    {
+        $preferred = $request->getPreferredLanguage($locales);
+
+        if (is_null($preferred)) {
+            return null;
+        }
+
+        // Symfony uses underscores while negotiating languages. Map its result
+        // back to the registered BCP 47 identifier used by translation paths.
+        $preferred = str_replace('_', '-', $preferred);
+
+        foreach ($locales as $locale) {
+            if (strcasecmp($locale, $preferred) === 0) {
+                return $locale;
+            }
+        }
+
+        return $preferred;
     }
 }
