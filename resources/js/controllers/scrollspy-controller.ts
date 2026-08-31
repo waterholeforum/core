@@ -1,6 +1,6 @@
 import { Controller } from '@hotwired/stimulus';
 import { clamp } from 'lodash-es';
-import { getHeaderHeight } from '../utils';
+import { getFragmentTarget, getHeaderHeight } from '../utils';
 
 /**
  * Controller to apply "active" nav link styles based on the scroll position.
@@ -134,8 +134,6 @@ export default class extends Controller<HTMLElement> {
     }
 
     private target(a: HTMLAnchorElement) {
-        const id = decodeURIComponent(a.hash.slice(1));
-
-        return id ? document.getElementById(id) : null;
+        return getFragmentTarget(a.hash);
     }
 }

@@ -4,7 +4,7 @@ import {
     StreamActions,
     TurboFrameMissingEvent,
 } from '@hotwired/turbo';
-import { cloneFromTemplate, nextFrame } from '../utils';
+import { cloneFromTemplate, getFragmentTarget, nextFrame } from '../utils';
 import { AlertsElement } from 'inclusive-elements';
 
 declare global {
@@ -28,24 +28,10 @@ document.addEventListener('turbo:load', () => {
     );
 });
 
-document.addEventListener('click', (e) => {
-    if (!(e instanceof MouseEvent)) return;
-    if (e.defaultPrevented) return;
-    if (e.button !== 0) return;
-    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-
-    const target = e.target;
-
-    if (!(target instanceof Element)) return;
-
-    const link = target.closest<HTMLAnchorElement>('a[href*="#"]');
-
-    if (!link) return;
-
-    if (link.target && link.target !== '_self') return;
-    if (link.hasAttribute('download')) return;
-
-    const url = new URL(link.href, window.location.href);
+// Leave same-document fragments to the browser so native history, hashchange,
+// scrolling, and focus behavior are preserved instead of starting a Turbo visit.
+document.addEventListener('turbo:click', (e) => {
+    const url = new URL(e.detail.url);
 
     if (
         url.origin !== window.location.origin ||
@@ -56,36 +42,28 @@ document.addEventListener('click', (e) => {
         return;
     }
 
-    const id = decodeURIComponent(url.hash.slice(1));
-    const element = document.getElementById(id);
-
-    if (!element) return;
-
     e.preventDefault();
-
-    const oldURL = window.location.href;
-
-    history.pushState(null, '', url.href);
-
-    window.dispatchEvent(
-        new HashChangeEvent('hashchange', {
-            oldURL,
-            newURL: window.location.href,
-        }),
-    );
-
-    element.scrollIntoView({
-        behavior: 'auto',
-        block: 'start',
-    });
 });
 
-document.addEventListener('turbo:morph', async () => {
+// After a cross-page Turbo visit, correct its fragment handling when the URL
+// contains encoded Unicode. ASCII fragments are left to Turbo's default path.
+document.addEventListener('turbo:load', async () => {
+    // Let Turbo finish rendering and applying its own scroll position first.
     await nextFrame();
-    if (!window.location.hash) return;
 
-    const id = decodeURIComponent(window.location.hash.slice(1));
-    document.getElementById(id)?.scrollIntoView();
+    const element = getFragmentTarget(window.location.hash);
+
+    if (!element || element.id === window.location.hash.slice(1)) return;
+
+    // Move focus for accessibility without making headings permanent tab stops.
+    const hadTabIndex = element.hasAttribute('tabindex');
+
+    if (!hadTabIndex) element.tabIndex = -1;
+
+    element.focus({ preventScroll: true });
+    element.scrollIntoView();
+
+    if (!hadTabIndex) element.removeAttribute('tabindex');
 });
 
 document.addEventListener('turbo:before-morph-element', (e) => {
