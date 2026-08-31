@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Update Traditional Chinese translations ([#111](https://github.com/waterholeforum/core/pull/111) by @efast1568)
+
+### Fixed
+
+- Fix navigation and scrollspy behavior for Unicode heading fragments ([#112](https://github.com/waterholeforum/core/pull/112) by @efast1568)
+- Fix user group and Post Author badge misalignment
+- Fix the Delete Account action layout and redirect to forum home
+- Prevent duplicate email verification emails and events
+- Fix placeholder replacement and locale fallback behavior for missing translations
+- Preserve the intended return URL through password confirmation
+- Fix empty mention suggestions not including recent authors
+- Fix translation lookup for locales with hyphenated subtags
+
 ## [0.7.1] - 2026-08-24
 
 ### Changed
