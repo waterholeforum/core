@@ -243,7 +243,11 @@ class KeyboardShortcuts extends OrderedList
             ],
             'editor.bold' => ['$mod+B', 'waterhole::system.text-editor-bold', ['editor']],
             'editor.italic' => ['$mod+I', 'waterhole::system.text-editor-italic', ['editor']],
-            'editor.quote' => ['$mod+Shift+>', 'waterhole::system.text-editor-quote', ['editor']],
+            'editor.quote' => [
+                ['$mod+Shift+.', '$mod+Shift+>'],
+                'waterhole::system.text-editor-quote',
+                ['editor'],
+            ],
             'editor.code' => ['$mod+E', 'waterhole::system.text-editor-code', ['editor']],
             'editor.link' => ['$mod+K', 'waterhole::system.text-editor-link', ['editor']],
             'editor.attachment' => [
@@ -252,12 +256,12 @@ class KeyboardShortcuts extends OrderedList
                 ['editor'],
             ],
             'editor.bulleted-list' => [
-                '$mod+Shift+*',
+                ['$mod+Shift+8', '$mod+Shift+*'],
                 'waterhole::system.text-editor-bulleted-list',
                 ['editor'],
             ],
             'editor.numbered-list' => [
-                '$mod+Shift+&',
+                ['$mod+Shift+7', '$mod+Shift+&'],
                 'waterhole::system.text-editor-numbered-list',
                 ['editor'],
             ],
@@ -277,7 +281,7 @@ class KeyboardShortcuts extends OrderedList
             $this->add(
                 new KeyboardShortcut(
                     id: $id,
-                    keys: [$keys],
+                    keys: (array) $keys,
                     description: __($label),
                     category: 'editor',
                     scopes: $scopes,
