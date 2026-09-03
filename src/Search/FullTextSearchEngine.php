@@ -71,22 +71,25 @@ class FullTextSearchEngine implements EngineInterface
         // multiple relevant comments inside.
         $query->select(['posts.id as post_id', 'posts.title', 'posts.body as post_body']);
         $score = [];
+        $scoreExpressions = [];
 
         if (in_array('title', $in)) {
             $score[] = 'tscore';
             $sql = $this->getScoreSql($isPgsql, $grammar->wrap('posts.title'));
             $query->selectRaw("$sql * 10 as tscore", [$q]);
+            $scoreExpressions[] = "$sql * 10";
         }
 
         if (in_array('body', $in)) {
             $score[] = 'pscore';
             $sql = $this->getScoreSql($isPgsql, $grammar->wrap('posts.body'));
             $query->selectRaw("$sql as pscore", [$q]);
+            $scoreExpressions[] = $sql;
         }
 
         if (in_array('comments', $in)) {
             $score[] = 'cscore';
-            $sql = $this->getScoreSql($isPgsql, $grammar->wrap('posts.body'));
+            $sql = $this->getScoreSql($isPgsql, $grammar->wrap('comments.body'));
             $query
                 ->addSelect('comments.id as comment_id')
                 ->addSelect('comments.body as comment_body')
@@ -97,6 +100,8 @@ class FullTextSearchEngine implements EngineInterface
                     [$q],
                 )
                 ->selectRaw("$sql as cscore", [$q]);
+
+            $scoreExpressions[] = $sql;
         } else {
             $query->selectRaw('1 as r');
         }
@@ -111,8 +116,13 @@ class FullTextSearchEngine implements EngineInterface
                 break;
 
             default:
-                if ($score) {
-                    $query->orderByRaw(implode(' + ', $score) . ' desc');
+                if ($scoreExpressions) {
+                    $orderSql = implode(' + ', $scoreExpressions);
+
+                    $query->orderByRaw(
+                        "$orderSql desc",
+                        array_fill(0, substr_count($orderSql, '?'), $q),
+                    );
                 }
         }
 
