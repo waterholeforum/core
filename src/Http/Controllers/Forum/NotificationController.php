@@ -28,8 +28,15 @@ class NotificationController extends Controller
 
         $user->update(['notifications_read_at' => now()]);
 
-        $groupType = "COALESCE(group_type, CONCAT('', id))";
-        $groupId = "COALESCE(group_id, CONCAT('', id))";
+        $isPgsql = $user->getConnection()->getDriverName() === 'pgsql';
+
+        if ($isPgsql) {
+            $groupType = 'COALESCE(group_type, id::text)';
+            $groupId = 'COALESCE(group_id::text, id::text)';
+        } else {
+            $groupType = "COALESCE(group_type, CONCAT('', id))";
+            $groupId = "COALESCE(group_id, CONCAT('', id))";
+        }
 
         // Notifications can be grouped together by their subject. When listing
         // notifications, we only show the most recent notification in each
