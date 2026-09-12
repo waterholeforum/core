@@ -70,6 +70,42 @@ describe('answer filters', function () {
             ->assertDontSeeText($olderUnanswered->title);
     });
 
+    test('paginate answered posts in both directions with tied answer dates', function () {
+        config()->set('waterhole.forum.posts_per_page', 2);
+        $channel = Channel::factory()
+            ->public()
+            ->create([
+                'answerable' => true,
+                'filters' => [Answered::class],
+            ]);
+        $posts = collect();
+
+        foreach ([0, 0, 0, 1, 2] as $minutes) {
+            $post = Post::factory()->for($channel)->create();
+            $answer = Comment::factory()->for($post)->create([
+                'created_at' => now()->startOfDay()->subMinutes($minutes),
+            ]);
+            $post->update(['answer_id' => $answer->id]);
+            $posts->push($post);
+        }
+
+        $url = $channel->url;
+        foreach ([[2, 1], [0, 3], [4]] as $indices) {
+            $response = $this->get($url)->assertOk();
+            $page = $response->viewData('feed')->items();
+            expect(collect($page->items())->pluck('id')->all())
+                ->toBe(array_map(fn($index) => $posts[$index]->id, $indices));
+            $url = $page->nextPageUrl();
+        }
+
+        expect($url)->toBeNull();
+        $response = $this->get($page->previousPageUrl())->assertOk();
+        expect(collect($response->viewData('feed')->items()->items())->pluck('id')->all())->toBe([
+            $posts[0]->id,
+            $posts[3]->id,
+        ]);
+    });
+
     test('require explicit configuration and an answer-enabled channel', function () {
         $channel = Channel::factory()
             ->public()

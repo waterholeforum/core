@@ -26,10 +26,11 @@ class Answered extends Filter
         $query
             ->whereRelation('channel', 'answerable', true)
             ->whereNotNull('posts.answer_id')
-            ->orderByDesc(
-                Comment::withoutGlobalScopes()
+            ->addSelect([
+                'answer_created_at' => Comment::withoutGlobalScopes()
                     ->select('comments.created_at')
                     ->whereColumn('comments.id', 'posts.answer_id'),
-            );
+            ])
+            ->orderByDesc('answer_created_at');
     }
 }
