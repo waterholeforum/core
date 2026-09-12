@@ -29,11 +29,11 @@ export default class extends Controller<HTMLElement> {
 
     private manager!: DragDropManager;
     private stopMonitoring: (() => void)[] = [];
-    private sortables: Sortable[] = [];
+    private sortables = new Map<HTMLElement, Sortable>();
     private drag?: DragState;
     private dragStartFrame?: number;
     private projectionFrame?: number;
-    private cancelTimer?: number;
+    private dropTimer?: number;
 
     connect() {
         this.manager = new DragDropManager();
@@ -50,7 +50,7 @@ export default class extends Controller<HTMLElement> {
     }
 
     disconnect() {
-        if (this.cancelTimer) clearTimeout(this.cancelTimer);
+        if (this.dropTimer) clearTimeout(this.dropTimer);
         this.restoreDescendants();
         this.resetDrag();
         this.destroySortables();
@@ -60,8 +60,9 @@ export default class extends Controller<HTMLElement> {
     }
 
     private buildSortables() {
-        this.sortables = this.items().map(
-            (item, index) =>
+        this.items().forEach((item, index) => {
+            this.sortables.set(
+                item,
                 new Sortable(
                     {
                         id: item.dataset.id!,
@@ -74,12 +75,13 @@ export default class extends Controller<HTMLElement> {
                     },
                     this.manager,
                 ),
-        );
+            );
+        });
     }
 
     private destroySortables() {
         this.sortables.forEach((sortable) => sortable.destroy());
-        this.sortables = [];
+        this.sortables.clear();
     }
 
     private onDragStart: DragStartEvent = (event) => {
@@ -119,16 +121,14 @@ export default class extends Controller<HTMLElement> {
             placeholder,
         };
 
-        const descendants = new Set(this.drag.descendants);
-        this.sortables = this.sortables.filter((sortable) => {
-            if (!(sortable.element instanceof HTMLElement)) return true;
-            if (!descendants.has(sortable.element)) return true;
-
-            sortable.destroy();
-            return false;
+        this.drag.descendants.forEach((item) => {
+            this.sortables.get(item)?.destroy();
+            this.sortables.delete(item);
+            item.remove();
         });
-        this.drag.descendants.forEach((item) => item.remove());
-        this.reindexSortables();
+        this.items().forEach((item, index) => {
+            this.sortables.get(item)!.index = index;
+        });
         this.updateProjection();
     }
 
@@ -144,9 +144,6 @@ export default class extends Controller<HTMLElement> {
             event.preventDefault();
 
             this.updateProjection(this.drag.depth + Math.sign(event.by.x));
-            this.scheduleProjection();
-
-            return;
         }
 
         this.scheduleProjection();
@@ -158,15 +155,11 @@ export default class extends Controller<HTMLElement> {
     };
 
     private onDragEnd: DragEndEvent = (event) => {
-        if (this.dragStartFrame) cancelAnimationFrame(this.dragStartFrame);
-        if (this.projectionFrame) cancelAnimationFrame(this.projectionFrame);
+        this.cancelFrames();
 
         const drag = this.drag;
 
-        if (!drag) {
-            this.resetDrag();
-            return;
-        }
+        if (!drag) return;
 
         const canceled = event.canceled;
         let depthDelta = 0;
@@ -178,13 +171,14 @@ export default class extends Controller<HTMLElement> {
             depthDelta = drag.depth - drag.initialDepth;
         }
 
-        this.cancelTimer = window.setTimeout(() => {
+        // Allow dnd-kit to restore the dragged element after its drop animation.
+        this.dropTimer = window.setTimeout(() => {
             this.restoreDescendants(depthDelta);
             this.resetDrag();
             this.destroySortables();
             this.buildSortables();
             if (!canceled) this.updateOrder();
-            this.cancelTimer = undefined;
+            this.dropTimer = undefined;
         }, 300);
     };
 
@@ -192,10 +186,8 @@ export default class extends Controller<HTMLElement> {
         if (this.projectionFrame) cancelAnimationFrame(this.projectionFrame);
 
         this.projectionFrame = requestAnimationFrame(() => {
-            if (!this.drag) {
-                this.projectionFrame = undefined;
-                return;
-            }
+            this.projectionFrame = undefined;
+            if (!this.drag) return;
 
             this.updateProjection();
 
@@ -204,8 +196,6 @@ export default class extends Controller<HTMLElement> {
                     this.projectionFrame = undefined;
                     this.alignKeyboardOverlay();
                 });
-            } else {
-                this.projectionFrame = undefined;
             }
         });
     }
@@ -245,7 +235,8 @@ export default class extends Controller<HTMLElement> {
         const previous = items[index - 1];
         const next = items[index + 1];
         const maximum = previous
-            ? this.depth(previous) + (this.canHaveChildren(previous) ? 1 : 0)
+            ? this.depth(previous) +
+              (previous.dataset.canHaveChildren === '1' ? 1 : 0)
             : 0;
         const minimum = next ? this.depth(next) : 0;
 
@@ -283,17 +274,6 @@ export default class extends Controller<HTMLElement> {
         });
     }
 
-    private reindexSortables() {
-        const byElement = new Map(
-            this.sortables.map((sortable) => [sortable.element, sortable]),
-        );
-
-        this.items().forEach((item, index) => {
-            const sortable = byElement.get(item);
-            if (sortable) sortable.index = index;
-        });
-    }
-
     private items(): HTMLElement[] {
         return Array.from(this.containerTarget.children).filter(
             (item): item is HTMLElement =>
@@ -312,14 +292,14 @@ export default class extends Controller<HTMLElement> {
         item.style.setProperty('--structure-depth', String(depth));
     }
 
-    private canHaveChildren(item: HTMLElement): boolean {
-        return item.dataset.canHaveChildren === '1';
+    private resetDrag() {
+        this.cancelFrames();
+        this.drag = undefined;
     }
 
-    private resetDrag() {
+    private cancelFrames() {
         if (this.dragStartFrame) cancelAnimationFrame(this.dragStartFrame);
         if (this.projectionFrame) cancelAnimationFrame(this.projectionFrame);
-        this.drag = undefined;
         this.dragStartFrame = undefined;
         this.projectionFrame = undefined;
     }
