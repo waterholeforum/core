@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole\Search;
 
 use Illuminate\Support\HtmlString;
@@ -50,7 +52,7 @@ class Highlighter
         }
 
         if (strlen($text) > ($chars * 2)) {
-            $text = substr($text, 0, strrpos(substr($text, 0, $chars * 2), ' ')) . '...';
+            $text = substr($text, 0, (int) strrpos(substr($text, 0, $chars * 2), ' ')) . '...';
         }
 
         return $text;

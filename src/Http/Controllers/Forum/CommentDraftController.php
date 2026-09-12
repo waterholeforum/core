@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole\Http\Controllers\Forum;
 
 use HotwiredLaravel\TurboLaravel\Http\TurboResponseFactory;
@@ -24,7 +26,10 @@ class CommentDraftController extends Controller
             'parent_id' => ['nullable', 'integer'],
         ]);
 
-        $post->userState->setDraft($data['body'] ?: null, $data['parent_id'] ?? null)->save();
+        $post
+            ->userState
+            ->setDraft($data['body'] ?: null, $request->integer('parent_id') ?: null)
+            ->save();
 
         return back();
     }

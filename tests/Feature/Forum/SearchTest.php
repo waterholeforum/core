@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Routing\RouteCollection;
 use Illuminate\Support\Facades\DB;
@@ -30,7 +32,7 @@ function configureSearchEngine(?string $engine): void
 }
 
 describe('search interface', function () {
-    test('search returns matching visible posts', function () {
+    test('search returns matching visible posts', function (string $query) {
         configureSearchEngine(LikeSearchEngine::class);
 
         $channel = Channel::factory()->public()->create();
@@ -39,11 +41,11 @@ describe('search interface', function () {
         Post::factory()->for($channel)->create(['title' => 'Other post']);
 
         $this
-            ->get('/search?q=waterhole')
+            ->get('/search?q=waterhole' . $query)
             ->assertOk()
             ->assertSeeText('Waterhole search term')
             ->assertDontSeeText('Other post');
-    });
+    })->with(['without channel filter' => '', 'empty channel filter' => '&channels=']);
 
     test('search sorts results by latest or top', function () {
         configureSearchEngine(LikeSearchEngine::class);

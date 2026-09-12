@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 // https://github.com/laravel/framework/blob/master/src/Illuminate/Translation/lang/en/validation.php
 
 return [

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole;
 
 use BladeUI\Icons\Exceptions\SvgNotFound;
@@ -181,7 +183,7 @@ function build_components(array|string|ComponentList $components, array $data = 
             if ($component instanceof Closure) {
                 $component = app()->call($component, $data);
             }
-            if (is_object($component)) {
+            if ($component === null || is_object($component)) {
                 return $component;
             } elseif (class_exists($component)) {
                 return $component::resolve($data);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole\Http\Controllers;
 
 use HotwiredLaravel\TurboLaravel\Http\TurboResponseFactory;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole\Models;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -72,7 +74,7 @@ class PostUser extends Model
         return $this;
     }
 
-    public function setDraft(?string $body, ?string $parentId = null): static
+    public function setDraft(?string $body, ?int $parentId = null): static
     {
         $this->draft_body = filled($body) ? $body : null;
         $this->draft_parent_id = filled($body) ? $parentId : null;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'accepted' => 'Het :attribute veld moet geaccepteerd worden.',
     'accepted_if' =>

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole\Extend\Support;
 
 use function Waterhole\build_components;

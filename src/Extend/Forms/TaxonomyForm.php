@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole\Extend\Forms;
 
 use Waterhole\Extend\Support\ComponentList;

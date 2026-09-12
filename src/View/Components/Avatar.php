@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole\View\Components;
 
 use Illuminate\View\Component;
@@ -24,7 +26,7 @@ class Avatar extends Component
             return 'transparent';
         }
 
-        $name = $this->user->name;
+        $name = $this->user->name ?? '';
 
         if (!isset(static::$colorCache[$name])) {
             $len = strlen($name);

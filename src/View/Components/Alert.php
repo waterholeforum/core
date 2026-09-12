@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole\View\Components;
 
 use Illuminate\Contracts\Support\Htmlable;
@@ -19,7 +21,7 @@ class Alert extends Component
         public ?string $icon = null,
         public bool $dismissible = false,
     ) {
-        $this->icon = $icon ?? static::ICONS[explode('-', $type)[0]] ?? null;
+        $this->icon = $icon ?? static::ICONS[explode('-', $type ?? '')[0]] ?? null;
     }
 
     public function render()

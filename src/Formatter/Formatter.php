@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole\Formatter;
 
 use Illuminate\Contracts\Cache\Repository;

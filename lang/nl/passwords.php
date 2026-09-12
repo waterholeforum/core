@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'reset' => 'Je wachtwoord is gereset!',
     'sent' => 'We hebben je een link gestuurd om je wachtwoord te resetten!',

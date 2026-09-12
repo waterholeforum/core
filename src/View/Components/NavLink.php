@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole\View\Components;
 
 use Closure;
@@ -13,7 +15,7 @@ class NavLink extends Component
     public function __construct(
         public string $label,
         public ?string $icon = null,
-        public ?string $badge = null,
+        public string|int|null $badge = null,
         public ?string $route = null,
         public ?string $href = null,
         public bool|Closure|null $active = null,

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Waterhole\Formatter\Formatter;
 
 test('renders unicode heading IDs', function (string $heading, string $id) {

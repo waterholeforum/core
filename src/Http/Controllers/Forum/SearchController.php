@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole\Http\Controllers\Forum;
 
 use Illuminate\Http\Request;
@@ -29,7 +31,7 @@ class SearchController extends Controller
             return view('waterhole::forum.search');
         }
 
-        $channels = $selectedChannels = Channel::all();
+        $channels = Channel::all();
 
         $currentSort = in_array($sort = $request->input('sort'), static::SORTS)
             ? $sort
@@ -37,9 +39,7 @@ class SearchController extends Controller
         $currentPage = Paginator::resolveCurrentPage();
         $perPage = (new Post())->getPerPage();
 
-        if ($ids = explode(',', $request->query('channels', ''))) {
-            $selectedChannels = $channels->find($ids);
-        }
+        $selectedChannels = $channels->find(explode(',', $request->query('channels') ?? ''));
 
         $results = $searcher->search(
             q: $q,

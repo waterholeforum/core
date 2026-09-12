@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole\Search;
 
 use Waterhole\Extend\Query\PostFeedQuery;

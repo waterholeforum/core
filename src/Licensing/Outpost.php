@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole\Licensing;
 
 use Illuminate\Contracts\Cache\Repository;

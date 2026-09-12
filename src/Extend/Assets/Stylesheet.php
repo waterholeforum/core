@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole\Extend\Assets;
 
 use Waterhole\Extend\Support\Assets;

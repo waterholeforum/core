@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole\Auth;
 
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;

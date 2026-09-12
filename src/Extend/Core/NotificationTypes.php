@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole\Extend\Core;
 
 use Waterhole\Extend\Support\UnorderedList;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole\Actions\Concerns;
 
 use Illuminate\Contracts\View\View;

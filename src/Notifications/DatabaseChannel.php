@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole\Notifications;
 
 use Illuminate\Notifications\Channels\DatabaseChannel as BaseDatabaseChannel;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Benchmarks;
 
 use Illuminate\Contracts\Console\Kernel as ConsoleKernel;

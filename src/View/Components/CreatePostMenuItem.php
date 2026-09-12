@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole\View\Components;
 
 class CreatePostMenuItem extends CreatePostButton

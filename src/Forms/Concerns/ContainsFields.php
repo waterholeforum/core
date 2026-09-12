@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole\Forms\Concerns;
 
 use Illuminate\Validation\Validator;

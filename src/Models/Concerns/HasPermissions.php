@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole\Models\Concerns;
 
 use Illuminate\Database\Eloquent\Collection;

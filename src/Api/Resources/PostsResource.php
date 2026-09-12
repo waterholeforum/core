@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole\Api\Resources;
 
 use Tobyz\JsonApiServer\Context;

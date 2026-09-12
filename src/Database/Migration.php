@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole\Database;
 
 use Illuminate\Database\Migrations\Migration as BaseMigration;

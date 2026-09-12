@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole\Widgets;
 
 use Illuminate\Support\Facades\Cache;

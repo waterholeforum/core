@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole\Providers;
 
 use Illuminate\Support\Facades\Broadcast;

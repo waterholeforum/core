@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole\Mail;
 
 use Illuminate\Contracts\View\Factory as ViewFactory;

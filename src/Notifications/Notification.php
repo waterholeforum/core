@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waterhole\Notifications;
 
 use Illuminate\Bus\Queueable;
@@ -94,7 +96,7 @@ abstract class Notification extends BaseNotification implements ShouldQueue
 
         return (new Mailable())
             ->to($to)
-            ->subject(html_entity_decode(strip_tags($title), ENT_QUOTES, 'UTF-8'))
+            ->subject(html_entity_decode(strip_tags((string) $title), ENT_QUOTES, 'UTF-8'))
             ->view($markdown->render($view, $data))
             ->text($markdown->renderText($view, $data));
     }

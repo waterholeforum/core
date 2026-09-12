@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Waterhole\Actions\HighlightComment;
 use Waterhole\Actions\RemoveComment;
@@ -106,6 +108,29 @@ describe('comment drafts', function () {
         ]);
     });
 
+    test('saves a reply draft with a parent ID', function (bool $asString) {
+        $channel = Channel::factory()->public()->create();
+        $user = User::factory()->create();
+        $post = Post::factory()->for($channel)->create();
+        $parent = Comment::factory()->for($post)->create();
+
+        $this
+            ->actingAs($user)
+            ->from($post->url)
+            ->post(route('waterhole.posts.draft', $post), [
+                'body' => 'Reply draft',
+                'parent_id' => $asString ? (string) $parent->id : $parent->id,
+            ])
+            ->assertRedirect($post->url);
+
+        $this->assertDatabaseHas('post_user', [
+            'post_id' => $post->id,
+            'user_id' => $user->id,
+            'draft_body' => 'Reply draft',
+            'draft_parent_id' => $parent->id,
+        ]);
+    })->with(['integer' => false, 'string' => true]);
+
     test('removing parent saves comment draft', function () {
         $channel = Channel::factory()->public()->create();
         $user = User::factory()->create();
@@ -115,6 +140,13 @@ describe('comment drafts', function () {
         $this->actingAs($user)->post(route('waterhole.posts.draft', $post), [
             'body' => 'Draft comment body',
             'parent_id' => $parent->id,
+        ])->assertRedirect();
+
+        $this->assertDatabaseHas('post_user', [
+            'post_id' => $post->id,
+            'user_id' => $user->id,
+            'draft_body' => 'Draft comment body',
+            'draft_parent_id' => $parent->id,
         ]);
 
         $this
