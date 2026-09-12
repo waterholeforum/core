@@ -34,6 +34,7 @@ describe('forum', function () {
             ->click('.dialog button[type="submit"]');
 
         visit(route('waterhole.posts.create', ['channel_id' => $channel->id]))
+            ->assertValue('body', '')
             ->fill('title', 'Browser smoke post')
             ->fill('body', 'Post body from browser smoke test.')
             ->click('button[name="commit"][value="1"]')

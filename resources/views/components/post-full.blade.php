@@ -44,11 +44,11 @@
                 icon="tabler-trash"
             >
                 <x-waterhole::removed-banner :subject="$post">
-                    <x-slot name="lead">
+                    <x-slot:lead>
                         <strong>
                             {{ __('waterhole::forum.post-removed-message') }}
                         </strong>
-                    </x-slot>
+                    </x-slot:lead>
                 </x-waterhole::removed-banner>
             </x-waterhole::alert>
         @endif

@@ -4,7 +4,9 @@
     global-sidebar
     {{ $attributes->class('cp-layout') }}
 >
-    <x-slot name="head">{{ $head ?? '' }}</x-slot>
+    <x-slot:head>
+        {{ $head ?? '' }}
+    </x-slot:head>
 
     <x-slot:sidebar>
         <x-waterhole::collapsible-nav
@@ -13,11 +15,9 @@
                 Waterhole\View\Components\Cp\Version::class,
             ])"
         />
-    </x-slot>
+    </x-slot:sidebar>
 
     <div hidden data-page-target="title">{{ __('waterhole::cp.title') }}</div>
 
-    <div class="cp-layout__content section container">
-        {{ $slot }}
-    </div>
+    <div class="cp-layout__content section container">{{ $slot }}</div>
 </x-waterhole::layout>

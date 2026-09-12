@@ -7,12 +7,14 @@
     :show-sidebar="$showSidebar"
     {{ $attributes->class('forum-layout') }}
 >
-    <x-slot name="head">{{ $head ?? '' }}</x-slot>
+    <x-slot:head>
+        {{ $head ?? '' }}
+    </x-slot:head>
 
     @if (config('waterhole.design.global_sidebar'))
         <x-slot:sidebar>
             @components(resolve(\Waterhole\Extend\Ui\IndexPage::class)->sidebar, compact('activeNode'))
-        </x-slot>
+        </x-slot:sidebar>
     @endif
 
     {{ $slot }}

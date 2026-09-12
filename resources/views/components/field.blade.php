@@ -4,9 +4,7 @@
     @endif
 
     <div class="grow stack gap-xs">
-        <div>
-            {{ $slot }}
-        </div>
+        <div>{{ $slot }}</div>
 
         @if ($description)
             <p class="field__description">{{ $description }}</p>

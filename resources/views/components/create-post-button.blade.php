@@ -14,8 +14,6 @@
     {{ $label() }}
 
     @unless ($enabled)
-        <ui-tooltip>
-            {{ $forbiddenMessage() }}
-        </ui-tooltip>
+        <ui-tooltip> {{ $forbiddenMessage() }} </ui-tooltip>
     @endunless
 </{{ $tag }}>

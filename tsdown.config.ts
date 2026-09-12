@@ -1,5 +1,4 @@
 import { defineConfig, type UserConfig } from 'tsdown';
-import postcss from 'rollup-plugin-postcss';
 
 const dev = process.env.DEV === '1';
 
@@ -12,14 +11,19 @@ function defineBundle(
         name,
         entry: { [name]: path },
         platform: 'browser',
+        target: false,
         format: 'iife',
-        inlineOnly: false,
+        deps: { onlyBundle: false },
         minify: !dev,
         clean: !dev,
         outDir:
             process.env.DIST === '1' ? 'resources/dist' : 'resources/dist-dev',
         outputOptions: { entryFileNames: '[name].js' },
-        plugins: [postcss({ extract: true, minimize: !dev })],
+        css: {
+            transformer: 'postcss',
+            fileName: `${name}.css`,
+            minify: !dev,
+        },
         ...options,
     };
 }

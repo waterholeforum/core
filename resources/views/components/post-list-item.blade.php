@@ -10,8 +10,7 @@
     <x-waterhole::user-link :user="$post->user" class="post-list-item__avatar">
         <x-waterhole::avatar :user="$post->user" />
         <ui-tooltip>
-            {{ Waterhole\username($post->user) }}
-            {{ __('waterhole::forum.post-activity-posted') }}
+            {{ Waterhole\username($post->user) }} {{ __('waterhole::forum.post-activity-posted') }}
             <x-waterhole::relative-time :datetime="$post->created_at" />
         </ui-tooltip>
     </x-waterhole::user-link>

@@ -14,9 +14,7 @@
         </a>
 
         <ui-menu class="menu" hidden data-shortcut-hidden>
-            <h3 class="menu-heading">
-                {{ Waterhole\username(Auth::user()) }}
-            </h3>
+            <h3 class="menu-heading">{{ Waterhole\username(Auth::user()) }}</h3>
 
             @components(\Waterhole\Extend\Ui\UserMenu::class)
 

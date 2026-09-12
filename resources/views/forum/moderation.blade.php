@@ -33,8 +33,7 @@
                                     <x-waterhole::user-label
                                         :user="$flag->subject->user"
                                     />
-                                    ·
-                                    {{
+                                    · {{
                                         Str::limit(
                                             $flag->subject instanceof Waterhole\Models\Post
                                                 ? $flag->subject->title

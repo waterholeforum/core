@@ -84,7 +84,7 @@ export default class extends Controller<HTMLElement> {
         this.sortables.clear();
     }
 
-    private onDragStart: DragStartEvent = (event) => {
+    private onDragStart = (event: DragStartEvent) => {
         const { source } = event.operation;
 
         if (
@@ -132,7 +132,7 @@ export default class extends Controller<HTMLElement> {
         this.updateProjection();
     }
 
-    private onDragMove: DragMoveEvent = (event) => {
+    private onDragMove = (event: DragMoveEvent) => {
         if (event.defaultPrevented) return;
 
         if (
@@ -149,12 +149,12 @@ export default class extends Controller<HTMLElement> {
         this.scheduleProjection();
     };
 
-    private onDragOver: DragOverEvent = (event) => {
+    private onDragOver = (event: DragOverEvent) => {
         if (event.defaultPrevented) return;
         this.scheduleProjection();
     };
 
-    private onDragEnd: DragEndEvent = (event) => {
+    private onDragEnd = (event: DragEndEvent) => {
         this.cancelFrames();
 
         const drag = this.drag;

@@ -1,3 +1,5 @@
+declare module '*.css';
+
 declare module 'textarea-editor' {
     export default class TextareaEditor {
         constructor(el: HTMLElement);

@@ -57,7 +57,7 @@
                                                 : Str::headline($flag->reason)
                                         }}
                                         @if ($flag->note)
-                                                · {{ $flag->note }}
+                                            · {{ $flag->note }}
                                         @endif
                                     </div>
                                 </div>
@@ -93,7 +93,7 @@
                             />
                         @endif
                     </div>
-                </x-slot>
+                </x-slot:action>
             @endif
         </x-waterhole::alert>
     @endif

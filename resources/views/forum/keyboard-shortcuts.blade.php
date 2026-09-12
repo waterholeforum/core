@@ -4,7 +4,7 @@
             :title="__('waterhole::system.keyboard-shortcuts-title')"
             class="shortcut-reference-dialog"
         >
-            <x-slot name="header">
+            <x-slot:header>
                 <a
                     href="{{ Waterhole\internal_url(old('return', request('return')), route('waterhole.home')) }}"
                     class="btn btn--transparent btn--icon -m-xs push-end"
@@ -21,7 +21,7 @@
                         />
                     </ui-tooltip>
                 </a>
-            </x-slot>
+            </x-slot:header>
 
             <div class="stack gap-lg">
                 <label class="choice">

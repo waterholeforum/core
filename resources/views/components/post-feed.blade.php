@@ -31,9 +31,7 @@
         </form>
 
         @if ($posts->isNotEmpty())
-            <div
-                class="post-feed__content {{ $feed->layout->wrapperClass() }}"
-            >
+            <div class="post-feed__content {{ $feed->layout->wrapperClass() }}">
                 <x-waterhole::infinite-scroll :paginator="$posts">
                     @foreach ($posts as $post)
                         @if ($showLastVisit && $post->last_activity_at < session('previously_seen_at'))

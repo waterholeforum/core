@@ -13,14 +13,14 @@
         placement="bottom-start"
         :preflight="false"
     >
-        <x-slot name="button">
+        <x-slot:button>
             @icon('tabler-dots-circle-horizontal')
             <span>{{ __('waterhole::system.controls-button') }}</span>
             <ui-tooltip>
                 {{ __('waterhole::system.controls-button') }}
                 <x-waterhole::shortcut-label shortcut="selection.actions" />
             </ui-tooltip>
-        </x-slot>
+        </x-slot:button>
     </x-waterhole::action-menu>
 
     @components(resolve(\Waterhole\Extend\Ui\PostPage::class)->sidebar, compact('post'))

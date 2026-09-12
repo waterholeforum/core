@@ -65,7 +65,7 @@
 
         @if ($comment->trashed())
             <x-waterhole::removed-banner :subject="$comment">
-                <x-slot name="lead">
+                <x-slot:lead>
                     <div class="comment__icon">
                         @icon('tabler-trash')
                     </div>
@@ -79,16 +79,16 @@
                         {{ __('waterhole::forum.comment-removed-message') }}
                         @icon('tabler-chevron-right', ['class' => 'icon--narrow text-xxs'])
                     </button>
-                </x-slot>
+                </x-slot:lead>
 
-                <x-slot name="actions">
+                <x-slot:actions>
                     <x-waterhole::action-menu
                         :for="$comment"
                         placement="bottom-end"
                         class="-my-sm"
                         :preflight="false"
                     />
-                </x-slot>
+                </x-slot:actions>
             </x-waterhole::removed-banner>
         @endif
 

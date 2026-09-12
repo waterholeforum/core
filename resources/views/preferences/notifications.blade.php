@@ -25,9 +25,7 @@
                         @endphp
 
                         <div class="card__row row gap-xs">
-                            <div>
-                                {{ $type::description() }}
-                            </div>
+                            <div>{{ $type::description() }}</div>
                             <div class="push-end row">
                                 @foreach ($channels as $key => $channel)
                                     @if (in_array($channel, $supportedChannels))

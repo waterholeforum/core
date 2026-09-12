@@ -49,8 +49,11 @@
                 {{ __('waterhole::forum.removal-message-label') }}
             </summary>
             <div class="card__body">
-                <textarea name="deleted_message" rows="3">
-{{ old('deleted_message') }}</textarea>
+                <textarea
+                    name="deleted_message"
+                    rows="3"
+                    >{{ old('deleted_message') }}</textarea
+                >
             </div>
         </details>
     @endif

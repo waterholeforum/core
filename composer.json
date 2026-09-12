@@ -86,11 +86,11 @@
         ],
         "check": [
             "vendor/bin/mago fmt --check",
-            "corepack pnpm run check"
+            "pnpm run check"
         ],
         "fix": [
             "vendor/bin/mago fmt",
-            "corepack pnpm run fix"
+            "pnpm run fix"
         ],
         "test": [
             "@clear",

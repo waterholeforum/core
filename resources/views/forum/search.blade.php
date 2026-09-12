@@ -49,12 +49,12 @@
                                 ))
                             ->all()"
                         >
-                            <x-slot name="empty">
+                            <x-slot:empty>
                                 @icon("tabler-filter")
                                 <span>
                                     {{ __("waterhole::forum.search-filter-button") }}
                                 </span>
-                            </x-slot>
+                            </x-slot:empty>
                         </x-waterhole::collapsible-nav>
                     </div>
 

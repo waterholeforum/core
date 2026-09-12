@@ -11,9 +11,7 @@
                 <h4 class="field__label">
                     {{ __('waterhole::auth.name-label') }}
                 </h4>
-                <div>
-                    {{ Auth::user()->name }}
-                </div>
+                <div>{{ Auth::user()->name }}</div>
             </div>
         @endsection
 

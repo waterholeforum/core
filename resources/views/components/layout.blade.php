@@ -5,7 +5,9 @@
     :$rss
     {{ $attributes->merge(['data-global-sidebar' => $globalSidebar ? 'true' : 'false']) }}
 >
-    <x-slot name="head">{{ $head ?? '' }}</x-slot>
+    <x-slot:head>
+        {{ $head ?? '' }}
+    </x-slot:head>
 
     @php($hasGlobalSidebar = $globalSidebar && isset($sidebar) && $sidebar->isNotEmpty())
 

@@ -7,7 +7,7 @@
         <span
             class="with-icon color-success weight-medium"
             data-draft-target="saved"
-            @unless($saved) hidden @endunless
+            @unless ($saved) hidden @endunless
         >
             @icon('tabler-check', ['class' => 'icon--thick'])
             {{ __('waterhole::forum.draft-saved-message') }}

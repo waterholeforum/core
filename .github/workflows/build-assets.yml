@@ -13,6 +13,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -20,7 +24,7 @@ jobs:
 
       - name: Build
         run: |
-          pnpm i
+          pnpm install --frozen-lockfile
           DIST=1 pnpm build
 
       - name: Commit

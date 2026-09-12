@@ -26,7 +26,7 @@
                         form="post-create-form"
                         show-links
                     />
-                </x-slot>
+                </x-slot:header>
 
                 <x-waterhole::form
                     :fields="$form->fields()"
@@ -73,7 +73,7 @@
                             :action="route('waterhole.draft')"
                             class="push-end"
                         />
-                    </x-slot>
+                    </x-slot:actions>
                 </x-waterhole::form>
             </x-waterhole::dialog>
         @endif

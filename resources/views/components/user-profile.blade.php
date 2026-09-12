@@ -16,7 +16,9 @@
         ],
     ]"
 >
-    <x-slot name="head">{{ $head ?? '' }}</x-slot>
+    <x-slot:head>
+        {{ $head ?? '' }}
+    </x-slot:head>
 
     <div
         class="section container user-profile stack gap-gutter"
@@ -33,7 +35,7 @@
                     placement="bottom-end"
                     :button-attributes="['class' => 'btn']"
                 >
-                    <x-slot name="button">
+                    <x-slot:button>
                         @icon('tabler-settings')
                         <span>
                             {{ __('waterhole::system.controls-button') }}
@@ -45,7 +47,7 @@
                                 shortcut="selection.actions"
                             />
                         </ui-tooltip>
-                    </x-slot>
+                    </x-slot:button>
                 </x-waterhole::action-menu>
             </div>
 
@@ -85,9 +87,7 @@
                 />
             </div>
 
-            <div>
-                {{ $slot }}
-            </div>
+            <div>{{ $slot }}</div>
         </div>
     </div>
 </x-waterhole::forum-layout>

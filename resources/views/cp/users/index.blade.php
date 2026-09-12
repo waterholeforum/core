@@ -1,9 +1,7 @@
 <x-waterhole::cp-layout :title="__('waterhole::cp.users-title')">
     <div class="stack gap-md">
         <div class="row gap-sm wrap">
-            <h1 class="h3">
-                {{ __('waterhole::cp.users-title') }}
-            </h1>
+            <h1 class="h3">{{ __('waterhole::cp.users-title') }}</h1>
 
             <div class="grow"></div>
 

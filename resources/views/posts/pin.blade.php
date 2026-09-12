@@ -23,9 +23,7 @@
                 @checked(old('pinned_scope') === 'global')
             />
             <span class="stack gap-xxs">
-                <span>
-                    {{ __('waterhole::forum.pin-globally-label') }}
-                </span>
+                <span> {{ __('waterhole::forum.pin-globally-label') }} </span>
                 <small class="field__description">
                     {{ __('waterhole::forum.pin-globally-description') }}
                 </small>
