@@ -116,6 +116,14 @@
             <script src="{{ $url }}" defer data-turbo-track="dynamic"></script>
         @endforeach
 
+        @if ($rss)
+            <link
+                rel="alternate"
+                type="application/rss+xml"
+                href="{{ $rss }}"
+            />
+        @endif
+
         {{ $head ?? '' }}
 
         @components(\Waterhole\Extend\Ui\DocumentHead::class, compact('title', 'assets'))

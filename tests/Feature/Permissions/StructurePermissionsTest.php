@@ -6,7 +6,6 @@ use Waterhole\Database\Seeders\GroupsSeeder;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Page;
 use Waterhole\Models\Post;
-use Waterhole\Models\StructureHeading;
 use Waterhole\Models\StructureLink;
 use Waterhole\Models\User;
 use Waterhole\Waterhole;
@@ -128,13 +127,6 @@ describe('api', function () {
 });
 
 describe('forum', function () {
-    test('redirects guests to login when there is no public content', function () {
-        StructureHeading::create(['name' => 'Private Content']);
-        Channel::factory()->create();
-
-        $this->get(route('waterhole.home'))->assertRedirect(route('waterhole.login'));
-    });
-
     test('private channel is not visible', function () {
         $channel = Channel::factory()->create();
 

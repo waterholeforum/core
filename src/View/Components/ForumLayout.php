@@ -13,6 +13,7 @@ class ForumLayout extends Component
         public array $seo = [],
         public ?Structure $activeNode = null,
         public bool $showSidebar = false,
+        public ?string $rss = null,
     ) {}
 
     public function render()

@@ -12,12 +12,12 @@ class HomeFeed extends Component
 {
     public PostFeed $feed;
 
-    public function __construct(Request $request)
+    public function __construct(Request $request, ?array $filters = null, ?string $layout = null)
     {
         $this->feed = PostFeed::forIndex(
             request: $request,
-            filters: config('waterhole.forum.post_filters', []),
-            layout: resolve(config('waterhole.forum.post_layout')),
+            filters: $filters ?? config('waterhole.forum.post_filters', []),
+            layout: resolve($layout ?? config('waterhole.forum.post_layout')),
             scope: function (Builder $query) {
                 $query->withGlobalScope(Ignoring::EXCLUDE_IGNORED_SCOPE, fn($query) => $query->whereNot->ignoring());
                 $query->whereDoesntHave('channel', fn($query) => $query->ignoring());

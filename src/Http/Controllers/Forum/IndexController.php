@@ -6,25 +6,14 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Waterhole\Feed\PostFeed;
 use Waterhole\Http\Controllers\Controller;
-use Waterhole\Http\Middleware\MaybeRequireLogin;
 use Waterhole\Models\Channel;
 use Waterhole\Models\Page;
 
 /**
- * Controller for the forum home, channels, and pages.
+ * Controller for forum channels and pages.
  */
 class IndexController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(MaybeRequireLogin::class)->only('home');
-    }
-
-    public function home()
-    {
-        return view('waterhole::forum.home');
-    }
-
     public function channel(Channel $channel, Request $request)
     {
         $feed = PostFeed::forIndex(

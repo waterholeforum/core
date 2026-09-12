@@ -2,6 +2,7 @@
     :$title
     :$assets
     :$seo
+    :$rss
     {{ $attributes->merge(['data-global-sidebar' => $globalSidebar ? 'true' : 'false']) }}
 >
     <x-slot name="head">{{ $head ?? '' }}</x-slot>

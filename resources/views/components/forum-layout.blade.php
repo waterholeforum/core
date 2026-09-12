@@ -2,6 +2,7 @@
     :$title
     :$assets
     :$seo
+    :$rss
     :global-sidebar="config('waterhole.design.global_sidebar')"
     :show-sidebar="$showSidebar"
     {{ $attributes->class('forum-layout') }}

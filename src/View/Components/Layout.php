@@ -12,6 +12,7 @@ class Layout extends Component
         public array $seo = [],
         public bool $globalSidebar = false,
         public bool $showSidebar = true,
+        public ?string $rss = null,
     ) {}
 
     public function render()

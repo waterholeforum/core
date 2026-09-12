@@ -1,9 +1,11 @@
 <x-waterhole::layout
     :title="$title"
-    :assets="['cp']"
-    :global-sidebar="true"
+    :assets="array_values(array_unique(['cp', ...$assets]))"
+    global-sidebar
     {{ $attributes->class('cp-layout') }}
 >
+    <x-slot name="head">{{ $head ?? '' }}</x-slot>
+
     <x-slot:sidebar>
         <x-waterhole::collapsible-nav
             :components="Waterhole\build_components([

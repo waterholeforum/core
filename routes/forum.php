@@ -29,7 +29,7 @@ use Waterhole\Http\Controllers\UploadController;
 use Waterhole\Http\Controllers\UserLookupController;
 
 // Home
-Route::get('/', [IndexController::class, 'home'])->name('home');
+Route::view('/', 'waterhole::forum.home')->name('home');
 
 Route::get('channels/{channel:slug}', [IndexController::class, 'channel'])->name('channels.show');
 Route::get('pages/{page:slug}', [IndexController::class, 'page'])->name('page');
