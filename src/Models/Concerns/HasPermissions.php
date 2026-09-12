@@ -74,6 +74,8 @@ trait HasPermissions
             ->unique($scopeKey)
             ->each(fn(Model $scope) => $scope->permissions()->delete());
 
+        Waterhole::permissions()->flush();
+
         if (!$grid) {
             return;
         }

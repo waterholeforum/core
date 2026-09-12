@@ -34,6 +34,22 @@ describe('gate', function () {
         expect(Gate::forUser(null)->allows('waterhole.channel.view', $channel))->toBeFalse();
     });
 
+    test('clearing ancestor permissions immediately revokes descendant visibility', function ($permissions) {
+        $parent = Page::factory()->public()->create();
+        $channel = Channel::factory()->public()->create();
+        $channel->structure->update(['parent_id' => $parent->structure->id]);
+
+        expect($parent->isPublic())->toBeTrue();
+        expect($channel->isPublic())->toBeTrue();
+        expect(Channel::query()->whereKey($channel->id)->exists())->toBeTrue();
+
+        $parent->savePermissions($permissions);
+
+        expect($parent->isPublic())->toBeFalse();
+        expect($channel->isPublic())->toBeFalse();
+        expect(Channel::query()->whereKey($channel->id)->exists())->toBeFalse();
+    })->with([[null], [[]], [['group:1' => ['view' => false]]]]);
+
     test('ancestor permissions govern descendants after structure changes', function () {
         $parent = Page::factory()->public()->create();
         $channel = Channel::factory()->public()->create();
