@@ -2,14 +2,15 @@ import '../css/global/app.css';
 import '@github/relative-time-element';
 import { Application } from '@hotwired/stimulus';
 import { AlertsElement } from 'inclusive-elements';
-import ky from 'ky';
+import type ky from 'ky';
 import { type PhotoSwipeOptions } from 'photoswipe';
 
 import './bootstrap/custom-elements';
 import './bootstrap/document-title';
 import './bootstrap/echo';
+import './bootstrap/fetch';
 import './bootstrap/turbo';
-import { buildStimulusDefinitions, getCookie } from './utils';
+import { buildStimulusDefinitions } from './utils';
 
 declare global {
     const Waterhole: Waterhole;
@@ -33,7 +34,7 @@ export interface Waterhole {
     shortcuts: ShortcutPayload[];
     alerts: AlertsElement;
     fetch: typeof ky;
-    fetchError: (response?: Response) => void;
+    fetchError: (response?: Response, data?: unknown) => Promise<void>;
     openLightbox?: (options: PhotoSwipeOptions) => void;
     documentTitle: DocumentTitle;
     echoConfig: any;
@@ -50,15 +51,3 @@ window.Stimulus.load(
         import.meta.glob('./controllers/**/*.ts', { eager: true }),
     ),
 );
-
-Waterhole.fetch = ky.create({
-    headers: { 'X-XSRF-TOKEN': getCookie('XSRF-TOKEN') || undefined },
-    hooks: {
-        beforeError: [
-            (error) => {
-                Waterhole.fetchError(error.response);
-                return error;
-            },
-        ],
-    },
-});

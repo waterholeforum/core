@@ -10,5 +10,9 @@
         "lib": ["esnext", "DOM", "DOM.Iterable"],
         "types": ["node", "tsdown/client"]
     },
-    "include": ["resources/js/**/*.ts", "resources/js/**/*.d.ts"]
+    "include": [
+        "resources/js/**/*.ts",
+        "resources/js/**/*.d.ts",
+        "tests/Frontend/**/*.ts"
+    ]
 }

@@ -2,13 +2,15 @@
     "type": "module",
     "packageManager": "pnpm@12.4.1",
     "engines": {
-        "node": "^22.21.0 || ^24.11.0 || >=26.0.0"
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
     },
     "scripts": {
         "dev": "DEV=1 tsdown",
         "build": "tsdown",
-        "check": "prettier --check 'resources/**/*' --ignore-unknown",
-        "fix": "prettier --write 'resources/**/*' --ignore-unknown",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "check": "prettier --check 'resources/**/*' 'tests/Frontend/**/*.ts' --ignore-unknown",
+        "fix": "prettier --write 'resources/**/*' 'tests/Frontend/**/*.ts' --ignore-unknown",
         "release": "release-it"
     },
     "devDependencies": {
@@ -34,7 +36,8 @@
         "inclusive-elements": "^0.5.5",
         "inclusive-elements-next": "npm:inclusive-elements@0.7.0-beta.1",
         "inclusive-shortcuts": "^0.1.2",
-        "ky": "^1.14.3",
+        "jsdom": "^30.0.1",
+        "ky": "^2.1.0",
         "laravel-echo": "^2.5.0",
         "lodash-es": "^4.18.1",
         "photoswipe": "^5.4.4",
@@ -55,6 +58,7 @@
         "tsdown": "^0.23.0",
         "typescript": "^7.0.2",
         "uplot": "^1.6.32",
-        "vanilla-colorful": "^0.7.2"
+        "vanilla-colorful": "^0.7.2",
+        "vitest": "^5.0.0"
     }
 }
