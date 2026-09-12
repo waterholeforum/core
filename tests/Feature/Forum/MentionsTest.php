@@ -17,309 +17,341 @@ beforeEach(function () {
     $this->seed(DefaultSeeder::class);
 });
 
-test('user mentions notify mentioned users except for author', function () {
-    NotificationFacade::fake();
+describe('mention notifications', function () {
+    test('user mentions notify mentioned users except for author', function () {
+        NotificationFacade::fake();
 
-    $channel = Channel::factory()->public()->create();
-    $author = User::factory()->create(['name' => 'Author']);
-    $recipient = User::factory()->create(['name' => 'Mentionable']);
+        $channel = Channel::factory()->public()->create();
+        $author = User::factory()->create(['name' => 'Author']);
+        $recipient = User::factory()->create(['name' => 'Mentionable']);
 
-    $post = Post::factory()->for($channel)->create([
-        'user_id' => $author->id,
-        'body' => '@Mentionable @Author',
-    ]);
+        $post = Post::factory()->for($channel)->create([
+            'user_id' => $author->id,
+            'body' => '@mEnTiOnAbLe @Author',
+        ]);
 
-    $this->assertDatabaseHas('mentions', [
-        'content_type' => $post->getMorphClass(),
-        'content_id' => $post->id,
-        'mentionable_type' => $recipient->getMorphClass(),
-        'mentionable_id' => $recipient->id,
-    ]);
+        $this->assertDatabaseHas('mentions', [
+            'content_type' => $post->getMorphClass(),
+            'content_id' => $post->id,
+            'mentionable_type' => $recipient->getMorphClass(),
+            'mentionable_id' => $recipient->id,
+        ]);
 
-    NotificationFacade::assertSentTo($recipient, Mention::class);
-    NotificationFacade::assertNotSentTo($author, Mention::class);
-});
+        NotificationFacade::assertSentTo($recipient, Mention::class);
+        NotificationFacade::assertNotSentTo($author, Mention::class);
+    });
 
-test('group mentions notify group members except for author', function () {
-    NotificationFacade::fake();
+    test('group mentions notify group members except for author', function () {
+        NotificationFacade::fake();
 
-    $channel = Channel::factory()->public()->create();
-    $group = Group::create([
-        'name' => 'Support Team',
-        'is_public' => true,
-        'mentionable' => Mentionable::Members,
-    ]);
+        $channel = Channel::factory()->public()->create();
+        $group = Group::create([
+            'name' => 'Support Team',
+            'is_public' => true,
+            'mentionable' => Mentionable::Members,
+        ]);
 
-    $author = User::factory()->create();
-    $recipient = User::factory()->create();
+        $author = User::factory()->create();
+        $recipient = User::factory()->create();
 
-    $author->groups()->attach($group);
-    $recipient->groups()->attach($group);
+        $author->groups()->attach($group);
+        $recipient->groups()->attach($group);
 
-    $post = Post::factory()->for($channel)->create([
-        'user_id' => $author->id,
-        'body' => "@group:Support\xc2\xa0Team",
-    ]);
+        $post = Post::factory()->for($channel)->create([
+            'user_id' => $author->id,
+            'body' => "@group:sUpPoRt\xc2\xa0tEaM",
+        ]);
 
-    $this->assertDatabaseHas('mentions', [
-        'content_type' => $post->getMorphClass(),
-        'content_id' => $post->id,
-        'mentionable_type' => $group->getMorphClass(),
-        'mentionable_id' => $group->id,
-    ]);
+        $this->assertDatabaseHas('mentions', [
+            'content_type' => $post->getMorphClass(),
+            'content_id' => $post->id,
+            'mentionable_type' => $group->getMorphClass(),
+            'mentionable_id' => $group->id,
+        ]);
 
-    NotificationFacade::assertSentTo($recipient, Mention::class);
-    NotificationFacade::assertNotSentTo($author, Mention::class);
-});
+        NotificationFacade::assertSentTo($recipient, Mention::class);
+        NotificationFacade::assertNotSentTo($author, Mention::class);
+    });
 
-test('group mentions allow channel moderators even when not members', function () {
-    NotificationFacade::fake();
+    test('group mentions allow channel moderators even when not members', function () {
+        NotificationFacade::fake();
 
-    $channel = Channel::factory()->create();
-    $moderators = Group::custom()->where('is_public', true)->firstOrFail();
+        $channel = Channel::factory()->create();
+        $moderators = Group::custom()->where('is_public', true)->firstOrFail();
 
-    $channel->savePermissions([
-        'group:1' => ['view' => true],
-        'group:2' => ['view' => true, 'post' => true, 'comment' => true],
-        "group:$moderators->id" => [
-            'view' => true,
-            'post' => true,
-            'comment' => true,
-            'moderate' => true,
-        ],
-    ]);
+        $channel->savePermissions([
+            'group:1' => ['view' => true],
+            'group:2' => ['view' => true, 'post' => true, 'comment' => true],
+            "group:$moderators->id" => [
+                'view' => true,
+                'post' => true,
+                'comment' => true,
+                'moderate' => true,
+            ],
+        ]);
 
-    $group = Group::create([
-        'name' => 'Support Team',
-        'is_public' => true,
-        'mentionable' => Mentionable::Members,
-    ]);
+        $group = Group::create([
+            'name' => 'Support Team',
+            'is_public' => true,
+            'mentionable' => Mentionable::Members,
+        ]);
 
-    $author = User::factory()->create();
-    $recipient = User::factory()->create();
+        $author = User::factory()->create();
+        $recipient = User::factory()->create();
 
-    $author->groups()->attach($moderators);
-    $recipient->groups()->attach($group);
+        $author->groups()->attach($moderators);
+        $recipient->groups()->attach($group);
 
-    Post::factory()->for($channel)->create([
-        'user_id' => $author->id,
-        'body' => "@group:Support\xc2\xa0Team",
-    ]);
-
-    NotificationFacade::assertSentTo($recipient, Mention::class);
-});
-
-test('moderators-only groups cannot be mentioned by non-moderators', function () {
-    NotificationFacade::fake();
-
-    $channel = Channel::factory()->create();
-    $moderators = Group::custom()->where('is_public', true)->firstOrFail();
-
-    $channel->savePermissions([
-        'group:1' => ['view' => true],
-        'group:2' => ['view' => true, 'post' => true, 'comment' => true],
-        'group:' . $moderators->id => [
-            'view' => true,
-            'post' => true,
-            'comment' => true,
-            'moderate' => true,
-        ],
-    ]);
-
-    $group = Group::create([
-        'name' => 'Staff',
-        'is_public' => true,
-        'mentionable' => Mentionable::Moderators,
-    ]);
-
-    $author = User::factory()->create();
-    $recipient = User::factory()->create();
-
-    $author->groups()->attach($group);
-    $recipient->groups()->attach($group);
-
-    Post::factory()->for($channel)->create([
-        'user_id' => $author->id,
-        'body' => '@group:Staff',
-    ]);
-
-    NotificationFacade::assertNotSentTo($recipient, Mention::class);
-});
-
-test('group mentions do not notify users who cannot view the content', function () {
-    NotificationFacade::fake();
-
-    $channel = Channel::factory()->create();
-
-    $group = Group::create([
-        'name' => 'Foo',
-        'is_public' => true,
-        'mentionable' => Mentionable::Anyone,
-    ]);
-
-    $author = User::factory()->admin()->create();
-    $recipient = User::factory()->create();
-
-    $author->groups()->attach($group);
-    $recipient->groups()->attach($group);
-
-    Post::factory()->for($channel)->create([
-        'user_id' => $author->id,
-        'body' => '@group:Foo',
-    ]);
-
-    NotificationFacade::assertNotSentTo($recipient, Mention::class);
-});
-
-test('here mentions notify commenters when used by a moderator', function () {
-    NotificationFacade::fake();
-
-    $channel = Channel::factory()->create();
-    $moderators = Group::custom()->where('is_public', true)->firstOrFail();
-
-    $channel->savePermissions([
-        'group:1' => ['view' => true],
-        'group:2' => ['view' => true, 'post' => true, 'comment' => true],
-        "group:$moderators->id" => [
-            'view' => true,
-            'post' => true,
-            'comment' => true,
-            'moderate' => true,
-        ],
-    ]);
-
-    $post = Post::factory()->for($channel)->create([
-        'user_id' => User::factory()->create()->id,
-    ]);
-
-    $commenterA = User::factory()->create();
-    $commenterB = User::factory()->create();
-    $moderator = User::factory()->create();
-    $moderator->groups()->attach($moderators);
-
-    Comment::factory()->for($post)->create([
-        'user_id' => $commenterA->id,
-        'body' => 'First comment',
-    ]);
-
-    Comment::factory()->for($post)->create([
-        'user_id' => $commenterB->id,
-        'body' => 'Second comment',
-    ]);
-
-    Comment::factory()->for($post)->create([
-        'user_id' => $moderator->id,
-        'body' => '@here',
-    ]);
-
-    NotificationFacade::assertSentTo([$commenterA, $commenterB], Mention::class);
-    NotificationFacade::assertNotSentTo($moderator, Mention::class);
-});
-
-test('group mention is highlighted for members of the mentioned group', function () {
-    $channel = Channel::factory()->public()->create();
-    $group = Group::create([
-        'name' => 'Support Team',
-        'is_public' => true,
-        'mentionable' => Mentionable::Anyone,
-    ]);
-
-    $author = User::factory()->create();
-    $member = User::factory()->create();
-    $outsider = User::factory()->create();
-
-    $author->groups()->attach($group);
-    $member->groups()->attach($group);
-
-    $post = Post::factory()
-        ->for($channel)
-        ->create([
+        Post::factory()->for($channel)->create([
             'user_id' => $author->id,
             'body' => "@group:Support\xc2\xa0Team",
-        ])
-        ->load('mentions.mentionable');
+        ]);
 
-    $memberHtml = (string) $post->format('body', $member);
-    $outsiderHtml = (string) $post->format('body', $outsider);
+        NotificationFacade::assertSentTo($recipient, Mention::class);
+    });
 
-    expect($memberHtml)->toContain('mention--group');
-    expect($memberHtml)->toContain('mention--self');
-    expect($outsiderHtml)->toContain('mention--group');
-    expect($outsiderHtml)->not->toContain('mention--self');
+    test('moderators-only groups cannot be mentioned by non-moderators', function () {
+        NotificationFacade::fake();
+
+        $channel = Channel::factory()->create();
+        $moderators = Group::custom()->where('is_public', true)->firstOrFail();
+
+        $channel->savePermissions([
+            'group:1' => ['view' => true],
+            'group:2' => ['view' => true, 'post' => true, 'comment' => true],
+            'group:' . $moderators->id => [
+                'view' => true,
+                'post' => true,
+                'comment' => true,
+                'moderate' => true,
+            ],
+        ]);
+
+        $group = Group::create([
+            'name' => 'Staff',
+            'is_public' => true,
+            'mentionable' => Mentionable::Moderators,
+        ]);
+
+        $author = User::factory()->create();
+        $recipient = User::factory()->create();
+
+        $author->groups()->attach($group);
+        $recipient->groups()->attach($group);
+
+        Post::factory()->for($channel)->create([
+            'user_id' => $author->id,
+            'body' => '@group:Staff',
+        ]);
+
+        NotificationFacade::assertNotSentTo($recipient, Mention::class);
+    });
+
+    test('group mentions do not notify users who cannot view the content', function () {
+        NotificationFacade::fake();
+
+        $channel = Channel::factory()->create();
+
+        $group = Group::create([
+            'name' => 'Foo',
+            'is_public' => true,
+            'mentionable' => Mentionable::Anyone,
+        ]);
+
+        $author = User::factory()->admin()->create();
+        $recipient = User::factory()->create();
+
+        $author->groups()->attach($group);
+        $recipient->groups()->attach($group);
+
+        Post::factory()->for($channel)->create([
+            'user_id' => $author->id,
+            'body' => '@group:Foo',
+        ]);
+
+        NotificationFacade::assertNotSentTo($recipient, Mention::class);
+    });
+
+    test('here mentions notify commenters when used by a moderator', function () {
+        NotificationFacade::fake();
+
+        $channel = Channel::factory()->create();
+        $moderators = Group::custom()->where('is_public', true)->firstOrFail();
+
+        $channel->savePermissions([
+            'group:1' => ['view' => true],
+            'group:2' => ['view' => true, 'post' => true, 'comment' => true],
+            "group:$moderators->id" => [
+                'view' => true,
+                'post' => true,
+                'comment' => true,
+                'moderate' => true,
+            ],
+        ]);
+
+        $post = Post::factory()->for($channel)->create([
+            'user_id' => User::factory()->create()->id,
+        ]);
+
+        $commenterA = User::factory()->create();
+        $commenterB = User::factory()->create();
+        $moderator = User::factory()->create();
+        $moderator->groups()->attach($moderators);
+
+        Comment::factory()->for($post)->create([
+            'user_id' => $commenterA->id,
+            'body' => 'First comment',
+        ]);
+
+        Comment::factory()->for($post)->create([
+            'user_id' => $commenterB->id,
+            'body' => 'Second comment',
+        ]);
+
+        Comment::factory()->for($post)->create([
+            'user_id' => $moderator->id,
+            'body' => '@here',
+        ]);
+
+        NotificationFacade::assertSentTo([$commenterA, $commenterB], Mention::class);
+        NotificationFacade::assertNotSentTo($moderator, Mention::class);
+    });
 });
 
-test('user lookup returns matching groups and users', function () {
-    $actor = User::factory()->create();
+describe('mention rendering', function () {
+    test('group mention is highlighted for members of the mentioned group', function () {
+        $channel = Channel::factory()->public()->create();
+        $group = Group::create([
+            'name' => 'Support Team',
+            'is_public' => true,
+            'mentionable' => Mentionable::Anyone,
+        ]);
 
-    User::factory()->create(['name' => 'Lookup User']);
-    User::factory()->create(['name' => 'Other User']);
+        $author = User::factory()->create();
+        $member = User::factory()->create();
+        $outsider = User::factory()->create();
 
-    Group::create([
-        'name' => 'Lookup Group',
-        'is_public' => true,
-        'mentionable' => Mentionable::Anyone,
-    ]);
+        $author->groups()->attach($group);
+        $member->groups()->attach($group);
 
-    Group::create([
-        'name' => 'Other Group',
-        'is_public' => true,
-        'mentionable' => Mentionable::Anyone,
-    ]);
+        $post = Post::factory()
+            ->for($channel)
+            ->create([
+                'user_id' => $author->id,
+                'body' => "@group:Support\xc2\xa0Team",
+            ])
+            ->load('mentions.mentionable');
 
-    $this
-        ->actingAs($actor)
-        ->getJson(route('waterhole.user-lookup', ['q' => 'Look']))
-        ->assertOk()
-        ->assertJsonFragment([
-            'type' => 'group',
+        $memberHtml = (string) $post->format('body', $member);
+        $outsiderHtml = (string) $post->format('body', $outsider);
+
+        expect($memberHtml)->toContain('mention--group');
+        expect($memberHtml)->toContain('mention--self');
+        expect($outsiderHtml)->toContain('mention--group');
+        expect($outsiderHtml)->not->toContain('mention--self');
+    });
+});
+
+describe('user lookup', function () {
+    test('user lookup returns matching groups and users', function () {
+        $actor = User::factory()->create();
+
+        User::factory()->create(['name' => 'Lookup User']);
+        User::factory()->create(['name' => 'Other User']);
+
+        Group::create([
             'name' => 'Lookup Group',
-            'value' => 'group:Lookup Group',
-        ])
-        ->assertJsonFragment([
-            'type' => 'user',
-            'name' => 'Lookup User',
-            'value' => 'Lookup User',
-        ])
-        ->assertJsonMissing(['name' => 'Other Group'])
-        ->assertJsonMissing(['name' => 'Other User']);
-});
+            'is_public' => true,
+            'mentionable' => Mentionable::Anyone,
+        ]);
 
-test('user lookup suggests recent post participants', function () {
-    $actor = User::factory()->create();
-    $author = User::factory()->create(['name' => 'Post Author']);
-    $olderCommenter = User::factory()->create(['name' => 'Older Commenter']);
-    $recentCommenter = User::factory()->create(['name' => 'Recent Commenter']);
-    $post = Post::factory()
-        ->for(Channel::factory()->public())
-        ->for($author)
-        ->create(['created_at' => now()->subHour()]);
+        Group::create([
+            'name' => 'Other Group',
+            'is_public' => true,
+            'mentionable' => Mentionable::Anyone,
+        ]);
 
-    Group::create([
-        'name' => 'Unprompted Group',
-        'is_public' => true,
-        'mentionable' => Mentionable::Anyone,
-    ]);
+        $this
+            ->actingAs($actor)
+            ->getJson(route('waterhole.user-lookup', ['q' => 'lOoK']))
+            ->assertOk()
+            ->assertJsonFragment([
+                'type' => 'group',
+                'name' => 'Lookup Group',
+                'value' => 'group:Lookup Group',
+            ])
+            ->assertJsonFragment([
+                'type' => 'user',
+                'name' => 'Lookup User',
+                'value' => 'Lookup User',
+            ])
+            ->assertJsonMissing(['name' => 'Other Group'])
+            ->assertJsonMissing(['name' => 'Other User']);
+    });
 
-    Comment::factory()
-        ->for($post)
-        ->for($olderCommenter)
-        ->create(['created_at' => now()->subMinutes(2)]);
+    test('user lookup only suggests members-only groups the actor belongs to', function () {
+        $actor = User::factory()->create();
+        $otherUser = User::factory()->create();
 
-    Comment::factory()
-        ->for($post)
-        ->for($recentCommenter)
-        ->create(['created_at' => now()->subMinute()]);
+        $joined = Group::create([
+            'name' => 'Lookup Joined',
+            'is_public' => true,
+            'mentionable' => Mentionable::Members,
+        ]);
+        $unjoined = Group::create([
+            'name' => 'Lookup Unjoined',
+            'is_public' => true,
+            'mentionable' => Mentionable::Members,
+        ]);
 
-    Comment::factory()->for($post)->for($actor)->create();
+        $actor->groups()->attach($joined);
+        $otherUser->groups()->attach($unjoined);
 
-    $response = $this
-        ->actingAs($actor)
-        ->getJson(route('waterhole.user-lookup', ['post' => $post]))
-        ->assertOk();
+        $this
+            ->actingAs($actor)
+            ->getJson(route('waterhole.user-lookup', ['q' => 'Lookup']))
+            ->assertOk()
+            ->assertJsonFragment(['type' => 'group', 'name' => 'Lookup Joined'])
+            ->assertJsonMissing(['name' => 'Lookup Unjoined']);
+    });
 
-    expect(collect($response->json())->pluck('name')->all())->toBe([
-        'Recent Commenter',
-        'Older Commenter',
-        'Post Author',
-    ]);
+    test('user lookup suggests recent post participants', function () {
+        $actor = User::factory()->create();
+        $author = User::factory()->create(['name' => 'Post Author']);
+        $olderCommenter = User::factory()->create(['name' => 'Older Commenter']);
+        $recentCommenter = User::factory()->create(['name' => 'Recent Commenter']);
+        $post = Post::factory()
+            ->for(Channel::factory()->public())
+            ->for($author)
+            ->create(['created_at' => now()->subHour()]);
+
+        Group::create([
+            'name' => 'Unprompted Group',
+            'is_public' => true,
+            'mentionable' => Mentionable::Anyone,
+        ]);
+
+        Comment::factory()
+            ->for($post)
+            ->for($olderCommenter)
+            ->create(['created_at' => now()->subMinutes(2)]);
+
+        Comment::factory()
+            ->for($post)
+            ->for($recentCommenter)
+            ->create(['created_at' => now()->subMinute()]);
+
+        Comment::factory()->for($post)->for($actor)->create();
+
+        $response = $this
+            ->actingAs($actor)
+            ->getJson(route('waterhole.user-lookup', ['post' => $post]))
+            ->assertOk();
+
+        expect(collect($response->json())->pluck('name')->all())->toBe([
+            'Recent Commenter',
+            'Older Commenter',
+            'Post Author',
+        ]);
+    });
 });

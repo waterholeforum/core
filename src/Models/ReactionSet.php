@@ -19,8 +19,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class ReactionSet extends Model
 {
-    private static Collection $defaults;
-
     protected $casts = [
         'is_default_posts' => 'bool',
         'is_default_comments' => 'bool',
@@ -30,7 +28,7 @@ class ReactionSet extends Model
 
     public function reactionTypes(): HasMany
     {
-        return $this->hasMany(ReactionType::class)->orderBy('position');
+        return $this->hasMany(ReactionType::class)->inverse('reactionSet')->orderBy('position');
     }
 
     protected function editUrl(): Attribute
@@ -42,10 +40,12 @@ class ReactionSet extends Model
 
     private static function defaults(): Collection
     {
-        return static::$defaults ??= static::query()
-            ->where('is_default_posts', true)
-            ->orWhere('is_default_comments', true)
-            ->get();
+        return once(
+            fn() => static::query()
+                ->where('is_default_posts', true)
+                ->orWhere('is_default_comments', true)
+                ->get(),
+        );
     }
 
     public static function defaultPosts(): ?static

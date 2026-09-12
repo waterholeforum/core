@@ -134,7 +134,7 @@ trait HasBody
      */
     public function mentions(): MorphMany
     {
-        return $this->morphMany(Mention::class, 'content');
+        return $this->morphMany(Mention::class, 'content')->inverse('content');
     }
 
     /**

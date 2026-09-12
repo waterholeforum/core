@@ -2,6 +2,7 @@
 
 namespace Waterhole\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -37,8 +38,6 @@ class Group extends Model
         'mentionable' => Mentionable::class,
         'rules' => 'array',
     ];
-
-    private static array $instances = [];
 
     /**
      * Relationship with the group's users.
@@ -85,7 +84,7 @@ class Group extends Model
      */
     public static function guest(): static
     {
-        return static::$instances[static::GUEST_ID] ??= static::findOrFail(static::GUEST_ID);
+        return once(fn() => static::findOrFail(static::GUEST_ID));
     }
 
     /**
@@ -93,7 +92,7 @@ class Group extends Model
      */
     public static function member(): static
     {
-        return static::$instances[static::MEMBER_ID] ??= static::findOrFail(static::MEMBER_ID);
+        return once(fn() => static::findOrFail(static::MEMBER_ID));
     }
 
     /**
@@ -101,13 +100,14 @@ class Group extends Model
      */
     public static function admin(): static
     {
-        return static::$instances[static::ADMIN_ID] ??= static::findOrFail(static::ADMIN_ID);
+        return once(fn() => static::findOrFail(static::ADMIN_ID));
     }
 
     /**
      * Get only custom (user-defined) groups.
      */
-    public function scopeCustom(Builder $query)
+    #[Scope]
+    protected function custom(Builder $query)
     {
         $query->whereKeyNot([static::GUEST_ID, static::MEMBER_ID, static::ADMIN_ID]);
     }
@@ -115,7 +115,8 @@ class Group extends Model
     /**
      * Get only groups that can be selected for users (admin + custom groups).
      */
-    public function scopeSelectable(Builder $query)
+    #[Scope]
+    protected function selectable(Builder $query)
     {
         $query->whereKeyNot([static::GUEST_ID, static::MEMBER_ID]);
     }

@@ -31,9 +31,6 @@ class UserController extends Controller
         // space is not within a pair of quotes). For each token, add a where
         // clause to the query.
         if ($q = $request->query('q')) {
-            $isPgsql = (new User())->getConnection()->getDriverName() === 'pgsql';
-            $likeOperator = $isPgsql ? 'ilike' : 'like';
-
             preg_match_all('/(?:[^\s"]*)"([^"]*)(?:"|$)|[^\s"]+/i', $q, $tokens, PREG_SET_ORDER);
 
             foreach ($tokens as $token) {
@@ -50,7 +47,7 @@ class UserController extends Controller
                 } elseif (filter_var($token[0], FILTER_VALIDATE_INT)) {
                     $query->where('id', $token[0]);
                 } else {
-                    $query->where('name', $likeOperator, $token[0] . '%');
+                    $query->whereLike('name', $token[0] . '%');
                 }
             }
         }

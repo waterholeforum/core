@@ -2,6 +2,7 @@
 
 namespace Waterhole\Models\Concerns;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Waterhole\Models\User;
@@ -38,7 +39,8 @@ trait Followable
     /**
      * Find only models that the current user is following.
      */
-    public function scopeFollowing(Builder $query): void
+    #[Scope]
+    protected function following(Builder $query): void
     {
         $query->whereHas('userState', fn($query) => $query->where('notifications', 'follow'));
     }
@@ -46,7 +48,8 @@ trait Followable
     /**
      * Find only models that the current user is ignoring.
      */
-    public function scopeIgnoring(Builder $query): void
+    #[Scope]
+    protected function ignoring(Builder $query): void
     {
         $query->whereHas('userState', fn($query) => $query->where('notifications', 'ignore'));
     }

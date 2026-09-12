@@ -2,6 +2,7 @@
 
 namespace Waterhole\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -72,12 +73,14 @@ class Flag extends Model
         return $this->belongsTo(User::class, 'resolved_by');
     }
 
-    public function scopePending(Builder $query): void
+    #[Scope]
+    protected function pending(Builder $query): void
     {
         $query->whereNull('resolved_at');
     }
 
-    public function scopeVisible(Builder $query, ?User $user): void
+    #[Scope]
+    protected function visible(Builder $query, ?User $user): void
     {
         // Remove the default visible global scope which scopes for the
         // currently authenticated user.

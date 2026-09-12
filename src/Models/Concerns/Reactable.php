@@ -19,7 +19,7 @@ trait Reactable
      */
     public function reactions(): MorphMany
     {
-        return $this->morphMany(Reaction::class, 'content');
+        return $this->morphMany(Reaction::class, 'content')->inverse('content');
     }
 
     /**

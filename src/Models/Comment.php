@@ -3,6 +3,7 @@
 namespace Waterhole\Models;
 
 use HotwiredLaravel\TurboLaravel\Models\Broadcasts;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -187,6 +188,24 @@ class Comment extends Model
         return $this->belongsTo(Post::class)->withoutGlobalScope('visible');
     }
 
+    /**
+     * Reuse the thread's post on this comment and its loaded parent and children.
+     */
+    public function hydratePostRelation(Post $post): static
+    {
+        $this->setRelation('post', $post);
+
+        if ($this->relationLoaded('parent')) {
+            $this->parent?->setRelation('post', $post);
+        }
+
+        if ($this->relationLoaded('children')) {
+            $this->children->each->hydratePostRelation($post);
+        }
+
+        return $this;
+    }
+
     public function channel(): HasOneThrough
     {
         return $this->hasOneThrough(
@@ -206,7 +225,7 @@ class Comment extends Model
 
     public function replies(): HasMany
     {
-        return $this->hasMany(self::class, 'parent_id');
+        return $this->hasMany(self::class, 'parent_id')->inverse('parent');
     }
 
     public function parent(): BelongsTo
@@ -214,7 +233,8 @@ class Comment extends Model
         return $this->belongsTo(self::class);
     }
 
-    public function scopeVisible(Builder $query, ?User $user): void
+    #[Scope]
+    protected function visible(Builder $query, ?User $user): void
     {
         // Remove the default visible global scope which scopes for the
         // currently authenticated user.

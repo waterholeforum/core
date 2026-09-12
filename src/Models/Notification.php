@@ -2,6 +2,7 @@
 
 namespace Waterhole\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -67,7 +68,8 @@ class Notification extends DatabaseNotification
     /**
      * Query notifications that have the same type and group as a notification.
      */
-    public function scopeGroupedWith(Builder $query, Notification $notification): void
+    #[Scope]
+    protected function groupedWith(Builder $query, Notification $notification): void
     {
         if ($notification->group_type && $notification->group_id) {
             $query->where($notification->only(['type', 'group_type', 'group_id']));

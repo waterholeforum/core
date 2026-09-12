@@ -10,11 +10,17 @@ jobs:
       fail-fast: true
       matrix:
         php: [8.3, 8.4, 8.5]
+        laravel: ['12', '13']
+        include:
+          - laravel: '12'
+            testbench: '^10.2'
+          - laravel: '13'
+            testbench: '^11.0'
 
-    name: PHP ${{ matrix.php }}
+    name: Laravel ${{ matrix.laravel }} / PHP ${{ matrix.php }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -23,7 +29,13 @@ jobs:
           coverage: none
 
       - name: Install dependencies
-        run: composer update --prefer-dist --no-interaction --no-progress
+        env:
+          LARAVEL_VERSION: ${{ matrix.laravel }}
+          TESTBENCH_VERSION: ${{ matrix.testbench }}
+        run: |
+          composer require "laravel/framework:$LARAVEL_VERSION.*" --no-update --no-interaction
+          composer require --dev "orchestra/testbench:$TESTBENCH_VERSION" --no-update --no-interaction
+          composer update --prefer-dist --no-interaction --no-progress
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -42,7 +54,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: screenshots
+          name: screenshots-laravel-${{ matrix.laravel }}-php-${{ matrix.php }}
           path: tests/Browser/Screenshots/
 
   databases:
@@ -76,7 +88,7 @@ jobs:
     name: PHP 8.5 / ${{ matrix.name }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -102,7 +114,7 @@ jobs:
         env:
           DB_CONNECTION: ${{ matrix.connection }}
           DB_HOST: 127.0.0.1
-          DB_PORT: ${{ job.services.database.ports[3306] }}
+          DB_PORT: ${{ job.services.database.ports['3306'] }}
           DB_DATABASE: waterhole_test
           DB_USERNAME: root
 

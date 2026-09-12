@@ -26,6 +26,7 @@ class RouteServiceProvider extends ServiceProvider
         );
 
         Route::middlewareGroup('waterhole.web', [
+            \Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks::class,
             \Illuminate\Cookie\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,

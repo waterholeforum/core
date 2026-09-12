@@ -2,6 +2,7 @@
 
 namespace Waterhole\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Collection;
@@ -64,12 +65,14 @@ class Structure extends Model
         return true;
     }
 
-    public function scopeInSiblingOrder(Builder $query): void
+    #[Scope]
+    protected function inSiblingOrder(Builder $query): void
     {
         $query->orderBy('position')->orderBy($this->getQualifiedKeyName());
     }
 
-    public function scopeListed(Builder $query): void
+    #[Scope]
+    protected function listed(Builder $query): void
     {
         $query->where(
             'is_listed',

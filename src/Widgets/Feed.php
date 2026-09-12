@@ -19,10 +19,11 @@ class Feed extends Component
         public int $limit = 3,
         public ?string $title = null,
     ) {
-        // TODO: be smarter about caching (ie. HTTP Conditional GET)
-        $content = Cache::remember(
+        // Keep feeds fresh for six hours, then refresh after the response
+        // while allowing cached content to be served for another six hours.
+        $content = Cache::flexible(
             'waterhole.feed.' . sha1($url),
-            60 * 60 * 6,
+            [60 * 60 * 6, 60 * 60 * 12],
             fn() => Http::throw()->get($url)->body(),
         );
 

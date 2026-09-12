@@ -2,6 +2,7 @@
 
 namespace Waterhole\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -166,7 +167,8 @@ class Post extends Model
     /**
      * Query posts that are unread for the current user.
      */
-    public function scopeUnread(Builder $query)
+    #[Scope]
+    protected function unread(Builder $query)
     {
         $query->whereDoesntHave('userState', function ($query) {
             $query->whereColumn('last_read_at', '>=', 'last_activity_at');
@@ -176,7 +178,8 @@ class Post extends Model
     /**
      * Scope to select count of comments that are unread.
      */
-    public function scopeWithUnreadCommentsCount(Builder $query): void
+    #[Scope]
+    protected function withUnreadCommentsCount(Builder $query): void
     {
         if (!$query->getQuery()->columns) {
             $query->select($query->qualifyColumn('*'));
@@ -213,7 +216,7 @@ class Post extends Model
      */
     public function comments(): HasMany
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class)->inverse('post');
     }
 
     /**
@@ -221,7 +224,7 @@ class Post extends Model
      */
     public function lastComment(): HasOne
     {
-        return $this->hasOne(Comment::class)->latestOfMany();
+        return $this->hasOne(Comment::class)->latestOfMany()->inverse('post');
     }
 
     /**
@@ -240,7 +243,8 @@ class Post extends Model
         return $this->belongsToMany(Tag::class);
     }
 
-    public function scopeVisible(Builder $query, ?User $user): void
+    #[Scope]
+    protected function visible(Builder $query, ?User $user): void
     {
         $query->withoutGlobalScope('visible');
 

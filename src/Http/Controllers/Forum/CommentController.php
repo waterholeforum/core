@@ -39,13 +39,7 @@ class CommentController extends Controller
             $scope($query, $post);
         }
 
-        $comment = $query
-            ->get()
-            ->each(function ($comment) use ($post) {
-                $comment->setRelation('post', $post);
-                $comment->parent?->setRelation('post', $post);
-            })
-            ->toTree()[0];
+        $comment = $query->get()->each->hydratePostRelation($post)->toTree()[0];
 
         $request->user()?->markNotificationsRead($comment);
 

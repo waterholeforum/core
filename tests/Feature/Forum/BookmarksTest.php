@@ -16,6 +16,19 @@ beforeEach(function () {
 });
 
 describe('bookmarks', function () {
+    test("bookmark visibility uses the supplied user's content permissions", function () {
+        $user = User::factory()->create();
+        $channel = Channel::factory()->public()->create();
+        $ownPost = Post::factory()->for($channel)->for($user)->create(['is_approved' => false]);
+        $otherPost = Post::factory()->for($channel)->create(['is_approved' => false]);
+
+        $ownBookmark = $ownPost->bookmarks()->create(['user_id' => $user->id]);
+        $otherPost->bookmarks()->create(['user_id' => $user->id]);
+
+        expect(Bookmark::visible($user)->pluck('id')->all())->toBe([$ownBookmark->id]);
+        expect(Bookmark::visible(null)->exists())->toBeFalse();
+    });
+
     test('toggles bookmarks for posts and comments', function () {
         $channel = Channel::factory()->public()->create();
         $post = Post::factory()->for($channel)->create();

@@ -72,6 +72,8 @@ class PostController extends Controller
             ->orderBy('comments.id')
             ->paginate();
 
+        $comments->getCollection()->each->hydratePostRelation($post);
+
         $previousCommentCreatedAt = null;
 
         if (!$comments->onFirstPage() && ($firstComment = $comments->first())) {
@@ -82,26 +84,6 @@ class PostController extends Controller
                 ->orderByDesc('comments.id')
                 ->value('created_at');
         }
-
-        // We already have an instance of the `post` relation for each comment,
-        // since we are on the post page!
-        $setCommentPostRelation = function (Comment $comment) use (
-            $post,
-            &$setCommentPostRelation,
-        ) {
-            $comment->setRelation('post', $post);
-
-            if ($comment->relationLoaded('parent')) {
-                $comment->parent?->setRelation('post', $post);
-            }
-
-            if ($comment->relationLoaded('children')) {
-                $comment->children->each($setCommentPostRelation);
-            }
-        };
-
-        $comments->getCollection()->each($setCommentPostRelation);
-        $highlightedComments->each($setCommentPostRelation);
 
         $lastReadAt = $post->userState?->last_read_at;
 

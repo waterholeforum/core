@@ -31,7 +31,7 @@ trait Bookmarkable
      */
     public function bookmarks(): MorphMany
     {
-        return $this->morphMany(Bookmark::class, 'content');
+        return $this->morphMany(Bookmark::class, 'content')->inverse('content');
     }
 
     /**
@@ -42,7 +42,7 @@ trait Bookmarkable
      */
     public function bookmark(?User $user = null): MorphOne
     {
-        $relation = $this->morphOne(Bookmark::class, 'content');
+        $relation = $this->morphOne(Bookmark::class, 'content')->inverse('content');
 
         if ($userId = $user->id ?? Auth::id()) {
             $relation

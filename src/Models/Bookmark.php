@@ -2,6 +2,7 @@
 
 namespace Waterhole\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -59,7 +60,8 @@ class Bookmark extends Model
     /**
      * Scope to bookmarks where content is visible to the given user.
      */
-    public function scopeVisible(Builder $query, ?User $user): void
+    #[Scope]
+    protected function visible(Builder $query, ?User $user): void
     {
         if (!$user) {
             $query->whereRaw('1 = 0');
@@ -75,10 +77,8 @@ class Bookmark extends Model
             return;
         }
 
-        $query->whereHasMorph('content', $classes, function (Builder $query, string $type) use (
-            $user,
-        ) {
-            if (method_exists($type, 'scopeVisible')) {
+        $query->whereHasMorph('content', $classes, function (Builder $query) use ($user) {
+            if ($query->hasNamedScope('visible')) {
                 $query->visible($user);
             }
         });

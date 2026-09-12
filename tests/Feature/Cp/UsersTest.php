@@ -11,14 +11,9 @@ beforeEach(function () {
     $this->seed(GroupsSeeder::class);
 });
 
-function cpUsersAdmin(): User
-{
-    return User::factory()->admin()->create();
-}
-
 describe('cp users', function () {
     test('set email verification state on user create', function (bool $emailVerified) {
-        $admin = cpUsersAdmin();
+        $admin = User::factory()->admin()->create();
 
         $this
             ->actingAs($admin)
@@ -43,7 +38,7 @@ describe('cp users', function () {
         bool $initiallyVerified,
         bool $emailVerified,
     ) {
-        $admin = cpUsersAdmin();
+        $admin = User::factory()->admin()->create();
         $user = User::factory()->create([
             'email_verified_at' => $initiallyVerified ? now()->subDay() : null,
         ]);
@@ -67,7 +62,7 @@ describe('cp users', function () {
     ]);
 
     test('update user fields', function () {
-        $admin = cpUsersAdmin();
+        $admin = User::factory()->admin()->create();
         $user = User::factory()->create(['name' => 'Old Name']);
 
         $this->actingAs($admin)->put(route('waterhole.cp.users.update', $user), [
@@ -80,7 +75,7 @@ describe('cp users', function () {
     });
 
     test('impersonate user', function () {
-        $admin = cpUsersAdmin();
+        $admin = User::factory()->admin()->create();
         $target = User::factory()->create();
 
         $url = URL::signedRoute('waterhole.impersonate', ['user' => $target]);
@@ -88,5 +83,18 @@ describe('cp users', function () {
         $this->actingAs($admin)->get($url)->assertRedirect(route('waterhole.home'));
 
         $this->assertAuthenticatedAs($target);
+    });
+
+    test('user search matches name prefixes regardless of case', function () {
+        $admin = User::factory()->admin()->create();
+        User::factory()->create(['name' => 'Searchable Person']);
+        User::factory()->create(['name' => 'Other Searchable Person']);
+
+        $this
+            ->actingAs($admin)
+            ->get(route('waterhole.cp.users.index', ['q' => 'sEaRcH']))
+            ->assertOk()
+            ->assertSeeText('Searchable Person')
+            ->assertDontSeeText('Other Searchable Person');
     });
 });

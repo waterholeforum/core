@@ -59,7 +59,7 @@ class UserLookupController extends Controller
                     : 'like';
 
                 $users
-                    ->where('name', $operator, "$searchUsers%")
+                    ->whereLike('name', "$searchUsers%")
                     ->orderByRaw(
                         "CASE WHEN name $operator ? THEN 1 ELSE 0 END DESC",
                         [
@@ -164,7 +164,7 @@ class UserLookupController extends Controller
                 ? 'ilike'
                 : 'like';
 
-            $groups->where('name', $operator, "$groupSearch%")->orderByRaw(
+            $groups->whereLike('name', "$groupSearch%")->orderByRaw(
                 "CASE WHEN name $operator ? THEN 1 ELSE 0 END DESC",
                 [$groupSearch],
             );
@@ -194,7 +194,7 @@ class UserLookupController extends Controller
                             $query
                                 ->where('mentionable', Mentionable::Members->value)
                                 ->orWhereNull('mentionable');
-                        })->whereRelation('users', 'users.id', $user->id);
+                        })->whereAttachedTo($user, 'users');
                     });
                 });
             }

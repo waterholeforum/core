@@ -18,7 +18,7 @@ trait Flaggable
 
     public function flags(): MorphMany
     {
-        return $this->morphMany(Flag::class, 'subject');
+        return $this->morphMany(Flag::class, 'subject')->inverse('subject');
     }
 
     public function pendingFlags(): MorphMany

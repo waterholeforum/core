@@ -123,10 +123,8 @@ abstract class FormatMentions
             return false;
         }
 
-        $operator = (new User())->getConnection()->getDriverName() === 'pgsql' ? 'ilike' : 'like';
-
         if ($type === static::TYPE_GROUP) {
-            if ($group = Group::where('is_public', true)->firstWhere('name', $operator, $name)) {
+            if ($group = Group::where('is_public', true)->whereLike('name', $name)->first()) {
                 $tag->setAttribute('id', $group->id);
                 $tag->setAttribute('name', $group->name);
 
@@ -136,7 +134,7 @@ abstract class FormatMentions
             return false;
         }
 
-        if ($user = User::firstWhere('name', $operator, $name)) {
+        if ($user = User::whereLike('name', $name)->first()) {
             $tag->setAttribute('id', $user->id);
             $tag->setAttribute('name', $user->name);
 

@@ -22,7 +22,7 @@ class Taxonomy extends Model
 
     public function tags(): HasMany
     {
-        return $this->hasMany(Tag::class)->orderBy('name');
+        return $this->hasMany(Tag::class)->inverse('taxonomy')->orderBy('name');
     }
 
     protected function editUrl(): Attribute

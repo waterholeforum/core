@@ -2,6 +2,7 @@
 
 namespace Waterhole\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -88,7 +89,7 @@ class Channel extends Model
      */
     public function posts(): HasMany
     {
-        return $this->hasMany(Post::class);
+        return $this->hasMany(Post::class)->inverse('channel');
     }
 
     /**
@@ -102,7 +103,8 @@ class Channel extends Model
     /**
      * Scope to select count of posts that are new since a channel was followed.
      */
-    public function scopeWithNewPostsCount(Builder $query): void
+    #[Scope]
+    protected function withNewPostsCount(Builder $query): void
     {
         $sub = Post::query()
             ->selectRaw('COUNT(*)')
@@ -176,7 +178,8 @@ class Channel extends Model
         ]))->shouldCache();
     }
 
-    public function scopeIgnoring(Builder $query): void
+    #[Scope]
+    protected function ignoring(Builder $query): void
     {
         $query
             ->leftJoinRelation('userState')
