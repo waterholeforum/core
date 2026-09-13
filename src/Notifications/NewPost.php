@@ -40,7 +40,7 @@ class NewPost extends Notification
 
     public function excerpt(): string
     {
-        return $this->post->body_html;
+        return (string) $this->post->body_html;
     }
 
     public function url(): string
