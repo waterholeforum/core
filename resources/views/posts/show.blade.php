@@ -46,6 +46,8 @@
                     >
                         {{ __('waterhole::forum.post-comments-heading', ['count' => $post->comment_count]) }}
                     </h2>
+                @else
+                    <div data-post-page-target="commentsHeading" hidden></div>
                 @endif
 
                 <x-waterhole::infinite-scroll
