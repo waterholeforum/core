@@ -69,31 +69,51 @@ export default class extends Controller<HTMLElement> {
     }
 
     async uploadFile(file: File) {
-        const prefix = file.type.startsWith('image/') ? '!' : '';
-        const placeholder = `${prefix}[Uploading ${file.name}]()\n`;
-        let replacement = '';
+        if (!this.editor) return;
 
-        this.editor?.insert(placeholder);
+        const prefix = file.type.startsWith('image/') ? '!' : '';
+        const placeholder = `${prefix}[Uploading ${file.name}]()`;
+        const [selectionStart, selectionEnd] = this.editor.range();
+        const before = this.inputTarget.value.slice(0, selectionStart);
+        const after = this.inputTarget.value.slice(selectionEnd);
+        let separator = '';
+
+        if (before && !before.endsWith('\n\n')) {
+            separator = before.endsWith('\n') ? '\n' : '\n\n';
+        }
+
+        // Reuse up to two existing newlines and leave the cursor in the next paragraph.
+        this.editor
+            .range([
+                selectionStart,
+                selectionEnd + after.match(/^\n{0,2}/)![0].length,
+            ])
+            .insert(separator + placeholder + '\n\n');
 
         const body = new FormData();
         body.append('file', file);
+        let replacement = '';
 
         try {
             const data = await Waterhole.fetch
                 .post(this.urlValue, { body })
                 .json<{ url: string }>();
 
-            replacement = `${prefix}[${file.name}](${data.url})\n`;
+            replacement = `${prefix}[${file.name}](${data.url})`;
         } catch (e) {}
 
         const start = this.inputTarget.value.indexOf(placeholder);
-        if (start === -1 || !this.editor) return;
+        if (start === -1) return;
 
         const delta = replacement.length - placeholder.length;
-        const range = this.editor.range();
+        const range = this.editor.range().map((position: number) => {
+            if (position <= start) return position;
+            if (position >= start + placeholder.length) return position + delta;
+            return start + replacement.length;
+        });
         this.editor
             .range([start, start + placeholder.length])
             .insert(replacement)
-            .range([range[0] + delta, range[1] + delta]);
+            .range(range);
     }
 }
