@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix resized channel and group icons being overwritten by the original file
+- Fix editor keyboard shortcuts that use Shift
+- Fix lightbox restoration after navigation
+- Fix paragraph spacing and cursor position when inserting uploads
+
 ## [0.7.2] - 2026-08-31
 
 ### Changed
