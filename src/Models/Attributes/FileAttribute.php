@@ -32,6 +32,8 @@ class FileAttribute
     {
         if ($this->encodeImage && $this->isImageFile($file)) {
             $this->storeImage(Image::decode($file), $this->encodeImage);
+
+            return;
         }
 
         $this->storeRawFile($file);

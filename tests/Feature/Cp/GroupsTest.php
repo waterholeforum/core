@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Waterhole\Actions\Delete;
 use Waterhole\Database\Seeders\GroupsSeeder;
 use Waterhole\Models\Group;
@@ -54,6 +56,32 @@ describe('cp groups', function () {
             ->assertRedirect(route('waterhole.cp.groups.index'));
 
         $this->assertDatabaseHas('groups', ['id' => $group->id, 'name' => 'New Name']);
+    });
+
+    test('stores uploaded icons as resized images', function () {
+        Storage::fake(config('waterhole.uploads.disk'));
+        $group = Group::create(['name' => 'Group']);
+
+        $this->actingAs(cpGroupsAdmin())->put(route('waterhole.cp.groups.update', $group), [
+            'name' => 'Group',
+            'icon' => [
+                'type' => 'file',
+                'file' => UploadedFile::fake()->image('icon.jpg', 200, 200),
+            ],
+            'is_public' => 0,
+            'auto_assign' => 0,
+            'rules' => [
+                'requires_approval' => 0,
+                'remove_after_approval' => 0,
+            ],
+        ]);
+
+        $icon = $group->fresh()->icon_file;
+
+        expect($icon)->toEndWith('.png');
+        expect(Storage::disk(config('waterhole.uploads.disk'))->files('icons'))->toBe([
+            "icons/$icon",
+        ]);
     });
 
     test('update admin group', function () {
