@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+
+- Store browser-executable uploads as plain text to prevent stored XSS ([GHSA-r324-29wm-vcjm](https://github.com/waterholeforum/core/security/advisories/GHSA-r324-29wm-vcjm))
+
 ### Fixed
 
 - Fix resized channel and group icons being overwritten by the original file
