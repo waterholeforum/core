@@ -71,7 +71,11 @@ export default class extends Controller<HTMLElement> {
     async uploadFile(file: File) {
         if (!this.editor) return;
 
-        const prefix = file.type.startsWith('image/') ? '!' : '';
+        // SVGs are stored as inert text, so link to them rather than embedding them.
+        const prefix =
+            file.type.startsWith('image/') && file.type !== 'image/svg+xml'
+                ? '!'
+                : '';
         const placeholder = `${prefix}[Uploading ${file.name}]()`;
         const [selectionStart, selectionEnd] = this.editor.range();
         const before = this.inputTarget.value.slice(0, selectionStart);
